@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromUsingStatementCodeFixProvider))]
     [Shared]
-    public class RemoveBracesFromUsingStatementCodeFixProvider : BaseCodeFixProvider
+    public class RemoveBracesFromUsingStatementCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement);
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces from using statement",
                 cancellationToken => RemoveBracesFromUsingStatementAsync(context.Document, usingStatement, cancellationToken),
-                DiagnosticIdentifiers.SimplifyNestedUsingStatement + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.SimplifyNestedUsingStatement + BaseCodeFixProvider.EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
