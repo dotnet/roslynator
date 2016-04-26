@@ -20,37 +20,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
 
-            InitializerExpressionSyntax initializerExpression = root
+            InitializerExpressionSyntax initializer = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<InitializerExpressionSyntax>();
 
-            if (initializerExpression == null)
-                return;
-
-            if (!initializerExpression.IsKind(SyntaxKind.ObjectInitializerExpression))
-                return;
-
-            if (initializerExpression.Expressions.Count == 0)
-                return;
-
-            if (initializerExpression.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) != true)
-                return;
-
-            if (initializerExpression.DescendantNodes().Any(f => f.IsKind(SyntaxKind.ImplicitElementAccess)))
-                return;
-
-            switch (initializerExpression.Parent.Parent?.Kind())
+            if (initializer != null
+                && initializer.IsKind(SyntaxKind.ObjectInitializerExpression)
+                && initializer.Expressions.Count > 0
+                && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true
+                && !initializer.DescendantNodes().Any(f => f.IsKind(SyntaxKind.ImplicitElementAccess)))
             {
-                case SyntaxKind.SimpleAssignmentExpression:
-                    {
-                        ExpandObjectInitializer(context, initializerExpression, (AssignmentExpressionSyntax)initializerExpression.Parent.Parent);
-                        break;
-                    }
-                case SyntaxKind.EqualsValueClause:
-                    {
-                        ExpandObjectInitializer(context, initializerExpression, (EqualsValueClauseSyntax)initializerExpression.Parent.Parent);
-                        break;
-                    }
+                switch (initializer.Parent.Parent?.Kind())
+                {
+                    case SyntaxKind.SimpleAssignmentExpression:
+                        {
+                            ExpandObjectInitializer(context, initializer, (AssignmentExpressionSyntax)initializer.Parent.Parent);
+                            break;
+                        }
+                    case SyntaxKind.EqualsValueClause:
+                        {
+                            ExpandObjectInitializer(context, initializer, (EqualsValueClauseSyntax)initializer.Parent.Parent);
+                            break;
+                        }
+                }
             }
         }
 
