@@ -4,7 +4,9 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -27,11 +29,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.AvoidImplicitArrayCreation,
-                context.Node.GetLocation());
+            var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 
-            context.ReportDiagnostic(diagnostic);
+            if (!expression.NewKeyword.IsMissing
+                && !expression.OpenBracketToken.IsMissing
+                && !expression.CloseBracketToken.IsMissing)
+            {
+                TextSpan span = TextSpan.FromBounds(
+                    expression.NewKeyword.Span.Start,
+                    expression.CloseBracketToken.Span.End);
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AvoidImplicitArrayCreation,
+                    Location.Create(expression.SyntaxTree, span));
+            }
         }
     }
 }
