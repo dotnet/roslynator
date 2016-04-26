@@ -40,6 +40,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (identifierName.Parent?.IsKind(SyntaxKind.QualifiedName) == true)
                 return;
 
+            if (identifierName.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
+                return;
+
             ISymbol symbol = context.SemanticModel.GetSymbolInfo(identifierName, context.CancellationToken).Symbol;
 
             if (symbol == null)

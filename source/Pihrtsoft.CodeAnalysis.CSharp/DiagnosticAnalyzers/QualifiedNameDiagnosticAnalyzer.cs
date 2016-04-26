@@ -35,6 +35,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
+            if (context.Node.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
+                return;
+
             var type = (QualifiedNameSyntax)context.Node;
 
             var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(type, context.CancellationToken).Symbol as INamedTypeSymbol;

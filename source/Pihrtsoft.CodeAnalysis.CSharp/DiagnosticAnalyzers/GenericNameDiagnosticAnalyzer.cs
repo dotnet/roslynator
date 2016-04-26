@@ -31,6 +31,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context.Node.Parent?.IsKind(SyntaxKind.QualifiedName) == true)
                 return;
 
+            if (context.Node.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
+                return;
+
             var type = (GenericNameSyntax)context.Node;
 
             if (type.TypeArgumentList?.Arguments.Count != 1)
