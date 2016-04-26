@@ -27,10 +27,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (initializerExpression == null)
                 return;
 
+            if (!initializerExpression.IsKind(SyntaxKind.ObjectInitializerExpression))
+                return;
+
             if (initializerExpression.Expressions.Count == 0)
                 return;
 
             if (initializerExpression.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) != true)
+                return;
+
+            if (initializerExpression.DescendantNodes().Any(f => f.IsKind(SyntaxKind.ImplicitElementAccess)))
                 return;
 
             switch (initializerExpression.Parent.Parent?.Kind())
