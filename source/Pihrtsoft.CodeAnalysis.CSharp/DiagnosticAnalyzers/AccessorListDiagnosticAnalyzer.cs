@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
+using Pihrtsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -56,16 +58,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             BlockSyntax body = accessor.Body;
 
-            if (body == null)
-                return false;
-
-            if (body.Statements.Count > 1)
-                return false;
-
-            if (accessor.IsSingleline(includeExteriorTrivia: false))
-                return false;
-
-            if (body.Statements.Count == 0 || body.Statements[0].IsSingleline())
+            if (body != null
+                && body.Statements.Count <= 1
+                && TextSpan.FromBounds(accessor.Keyword.Span.Start, accessor.Span.End).IsMultiline(accessor.SyntaxTree)
+                && (body.Statements.Count == 0 || body.Statements[0].IsSingleline()))
             {
                 return accessor
                     .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
