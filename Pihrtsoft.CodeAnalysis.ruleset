@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for Pihrtsoft.CodeAnalysis" ToolsVersion="14.0">
+  <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
+    <Rule Id="RCS1006" Action="Info" />
+    <Rule Id="RCS1008" Action="Info" />
+    <Rule Id="RCS1009" Action="Info" />
+    <Rule Id="RCS1010" Action="Info" />
+    <Rule Id="RCS1013" Action="Info" />
+    <Rule Id="RCS1017" Action="Info" />
+    <Rule Id="RCS1018" Action="Warning" />
+    <Rule Id="RCS1019" Action="Warning" />
+    <Rule Id="RCS1026" Action="Warning" />
+    <Rule Id="RCS1027" Action="Warning" />
+    <Rule Id="RCS1028" Action="Warning" />
+    <Rule Id="RCS1029" Action="Warning" />
+    <Rule Id="RCS1030" Action="Warning" />
+    <Rule Id="RCS1039" Action="Info" />
+    <Rule Id="RCS1040" Action="Hidden" />
+    <Rule Id="RCS1042" Action="Info" />
+    <Rule Id="RCS1045" Action="Warning" />
+    <Rule Id="RCS1050" Action="Info" />
+    <Rule Id="RCS1052" Action="Info" />
+  </Rules>
+</RuleSet>

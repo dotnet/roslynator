@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Pihrtsoft.CodeAnalysis.CSharp</RootNamespace>
+    <AssemblyName>Pihrtsoft.CodeAnalysis.CSharp</AssemblyName>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\Pihrtsoft.CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\Pihrtsoft.CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ArgumentInfo.cs" />
+    <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AnonymousMethodCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\CombineLocalDeclarationAndReturnStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SpecifyExplicitTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ConvertForEachToForCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveEnumDefaultBaseTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\InitializerCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ElseClauseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\EmptyStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\EnumDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatAccessorListCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatBlockCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ImplicitArrayCreationExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ParenthesizedLambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveEmptyObjectInitializerCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantBracesCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantParenthesesCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantPartialModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantSealedModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceTabWithSpacesCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveTriviaCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatEachStatementOnSeparateLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatEmbeddedStatementOnSeparateLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseExpressionBodiedMember.cs" />
+    <Compile Include="CodeFixProviders\UseNameOfOperatorCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
+    <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
+    <Compile Include="IfElseChainAnalysisResult.cs" />
+    <Compile Include="Refactoring\RefactoringHelper.cs" />
+    <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
+    <Compile Include="Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\CatchClauseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ConditionalExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ElseClauseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ConvertForEachToForDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\BaseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\GenericNameDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\InitializerDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantSealedModifierDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantBracesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\EmptyStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\EnumDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ImplicitArrayCreationExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\NamedTypeDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReturnStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\SwitchSectionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\SyntaxTreeDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ParenthesizedExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\QualifiedNameDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\IdentifierNameDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\IfStatementSyntaxDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\BinaryExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ParenthesizedLambdaExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ObjectCreationExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\EqualsExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AttributeArgumentListDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\AddAccessModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatBinaryOperatorOnNextLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReorderModifiersCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ChangeForEachDeclaredTypeToExplicitCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SpecifyImplicitTypeCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\SimpleMemberAccessExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ArgumentDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UsingStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\WhitespaceDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseExpressionBodiedMemberDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticCategories.cs" />
+    <Compile Include="DiagnosticIdentifiers.cs" />
+    <Compile Include="DiagnosticDescriptors.cs" />
+    <Compile Include="DiagnosticAnalyzers\AttributeListDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\DeclareEachAttributeSeparatelyCodeFixProvider.cs" />
+    <Compile Include="Extensions\SymbolAnalysisContextExtensions.cs" />
+    <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
+    <Compile Include="Extensions\SyntaxTreeAnalysisContextExtensions.cs" />
+    <Compile Include="DiagnosticHelper.cs" />
+    <Compile Include="Refactoring\ForEachToForRefactoring.cs" />
+    <Compile Include="Refactoring\UseLogicalNotOperatorRefactoring.cs" />
+    <Compile Include="SyntaxRewriters\SimplifyLambdaExpressionParameterListSyntaxRewriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DiagnosticAnalyzers\BlockThatCanBeEmbeddedStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\RemoveBracesFromStatementCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\VariableDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\EmbeddedStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\AddBracesToStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveBracesFromIfElseChainCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\FieldSymbolDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\AddBracesToIfElseChainCodeFixProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Pihrtsoft.CodeAnalysis.CSharp.nuspec" />
+    <None Include="packages.config" />
+    <None Include="tools\install.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tools\uninstall.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.1.0.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.1.0.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.0.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.0.21.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pihrtsoft.CodeAnalysis.Common\Pihrtsoft.CodeAnalysis.Common.csproj">
+      <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
+      <Name>Pihrtsoft.CodeAnalysis.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.0.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.Common.dll" />
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.0.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.CSharp.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
+  <Target Name="AfterBuild">
+    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
+      <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <!--<Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe&quot; pack $(ProjectName).nuspec -Prop Configuration=Release -NoPackageAnalysis -Version %(AnalyzerAssemblyInfo.Version)" WorkingDirectory="$(OutDir)" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>-->
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
