@@ -42,8 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 SyntaxKind.GreaterThanExpression,
                 SyntaxKind.GreaterThanOrEqualExpression,
                 SyntaxKind.IsExpression,
-                SyntaxKind.AsExpression,
-                SyntaxKind.CoalesceExpression);
+                SyntaxKind.AsExpression);
         }
 
         private void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
