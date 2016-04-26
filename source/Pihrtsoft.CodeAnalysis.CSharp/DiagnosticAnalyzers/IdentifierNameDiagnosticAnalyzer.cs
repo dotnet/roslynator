@@ -31,35 +31,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var identifierName = (IdentifierNameSyntax)context.Node;
 
-            if (identifierName.IsVar)
-                return;
-
-            if (identifierName.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                return;
-
-            if (identifierName.Parent?.IsKind(SyntaxKind.QualifiedName) == true)
-                return;
-
-            if (identifierName.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
-                return;
-
-            ISymbol symbol = context.SemanticModel.GetSymbolInfo(identifierName, context.CancellationToken).Symbol;
-
-            if (symbol == null)
-                return;
-
-            if (!symbol.IsKind(SymbolKind.NamedType))
-                return;
-
-            var namedTypeSymbol = (INamedTypeSymbol)symbol;
-
-            if (namedTypeSymbol.HasPredefinedType())
+            if (!identifierName.IsVar
+                && identifierName.Parent != null
+                && !identifierName.Parent.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                && !identifierName.Parent.IsKind(SyntaxKind.QualifiedName)
+                && !identifierName.Parent.IsKind(SyntaxKind.UsingDirective))
             {
-                Diagnostic diagnostic = Diagnostic.Create(
-                    DiagnosticDescriptors.UsePredefinedType,
-                    context.Node.GetLocation());
+                var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(identifierName, context.CancellationToken).Symbol as INamedTypeSymbol;
 
-                context.ReportDiagnostic(diagnostic);
+                if (namedTypeSymbol?.HasPredefinedType() == true)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.UsePredefinedType,
+                        identifierName.GetLocation());
+                }
             }
         }
     }
