@@ -55,7 +55,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         methodDeclaration.Identifier.GetLocation());
                 }
             }
-            else if (methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
+            else if (!methodSymbol.IsAbstract
+                && methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
             {
                 SyntaxToken identifier = methodDeclaration.Identifier;
 
