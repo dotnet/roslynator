@@ -338,8 +338,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor UseLogicalNotOperator = new DiagnosticDescriptor(
             DiagnosticIdentifiers.UseLogicalNotOperator,
-            "Use '!' operator.",
-            "Consider using '!' operator.",
+            "Use '!' operator instead of comparison with boolean literal.",
+            "Consider using '!' operator instead of comparison with boolean literal.",
             DiagnosticCategories.General,
             DiagnosticSeverity.Info,
             isEnabledByDefault: true,
