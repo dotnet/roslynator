@@ -132,7 +132,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             Diagnostic diagnostic = Diagnostic.Create(
                 DiagnosticDescriptors.RemoveRedundantParentheses,
-                parenthesizedExpression.GetLocation());
+                parenthesizedExpression.OpenParenToken.GetLocation(),
+                additionalLocations: new Location[] { parenthesizedExpression.CloseParenToken.GetLocation() });
 
             context.ReportDiagnostic(diagnostic);
 
