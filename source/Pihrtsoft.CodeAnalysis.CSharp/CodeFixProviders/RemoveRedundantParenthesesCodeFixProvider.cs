@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove parentheses",
+                "Extract expression from parentheses",
                 cancellationToken => RemoveRedundantParenthesesAsync(context.Document, parenthesizedExpression, cancellationToken),
                 DiagnosticIdentifiers.RemoveRedundantParentheses + EquivalenceKeySuffix);
 
