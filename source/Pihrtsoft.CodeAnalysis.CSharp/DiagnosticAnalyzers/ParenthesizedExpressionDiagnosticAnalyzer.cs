@@ -108,37 +108,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             AnalyzeExpression(context, switchStatement.Expression, switchStatement.OpenParenToken, switchStatement.CloseParenToken);
         }
 
-        private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, SyntaxToken openParenToken, SyntaxToken closeParenToken)
+        private static void AnalyzeExpression(
+            SyntaxNodeAnalysisContext context,
+            ExpressionSyntax expression,
+            SyntaxToken openParenToken,
+            SyntaxToken closeParenToken)
         {
-            if (expression == null)
-                return;
+            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
+            {
+                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
 
-            if (!expression.IsKind(SyntaxKind.ParenthesizedExpression))
-                return;
+                if (openParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine()) 
+                    && closeParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()) 
+                    && parenthesizedExpression.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine())
+                    && parenthesizedExpression.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLine()))
+                {
+                    Diagnostic diagnostic = Diagnostic.Create(
+                        DiagnosticDescriptors.RemoveRedundantParentheses,
+                        parenthesizedExpression.OpenParenToken.GetLocation(),
+                        additionalLocations: new Location[] { parenthesizedExpression.CloseParenToken.GetLocation() });
 
-            var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+                    context.ReportDiagnostic(diagnostic);
 
-            if (!openParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            if (!closeParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            if (!parenthesizedExpression.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            if (!parenthesizedExpression.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.RemoveRedundantParentheses,
-                parenthesizedExpression.OpenParenToken.GetLocation(),
-                additionalLocations: new Location[] { parenthesizedExpression.CloseParenToken.GetLocation() });
-
-            context.ReportDiagnostic(diagnostic);
-
-            DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.OpenParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
-            DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.CloseParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
+                    DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.OpenParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
+                    DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.CloseParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
+                }
+            }
         }
     }
 }
