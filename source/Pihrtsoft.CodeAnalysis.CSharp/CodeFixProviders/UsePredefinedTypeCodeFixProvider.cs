@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Use predefined type",
+                $"Use predefined type '{namedTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                 cancellationToken => UsePredefinedTypeAsync(context.Document, node, namedTypeSymbol, cancellationToken),
                 DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 
