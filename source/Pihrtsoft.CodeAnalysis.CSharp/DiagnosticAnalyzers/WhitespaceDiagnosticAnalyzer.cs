@@ -43,7 +43,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (!context.Tree.TryGetRoot(out root))
                 return;
 
+            TextSpan emptyLines = default(TextSpan);
             bool previousLineIsEmpty = false;
+            int i = 0;
 
             foreach (TextLine textLine in sourceText.Lines)
             {
@@ -54,39 +56,62 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     SyntaxTrivia endOfLine = root.FindTrivia(textLine.End);
 
                     if (endOfLine.IsKind(SyntaxKind.EndOfLineTrivia))
+                    {
                         lineIsEmpty = true;
 
-                    if (previousLineIsEmpty && lineIsEmpty)
+                        if (previousLineIsEmpty)
+                        {
+                            if (emptyLines.IsEmpty)
+                                emptyLines = endOfLine.Span;
+                            else
+                                emptyLines = TextSpan.FromBounds(emptyLines.Start, endOfLine.Span.End);
+                        }
+                    }
+                    else
+                    {
+                        emptyLines = default(TextSpan);
+                    }
+                }
+                else
+                {
+                    if (!emptyLines.IsEmpty)
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.RemoveRedundantEmptyLine,
-                            endOfLine.GetLocation());
+                            Location.Create(context.Tree, emptyLines));
+                    }
+
+                    emptyLines = default(TextSpan);
+
+                    int end = textLine.End - 1;
+
+                    if (char.IsWhiteSpace(sourceText[end]))
+                    {
+                        int start = end;
+
+                        while (start > textLine.Span.Start && char.IsWhiteSpace(sourceText[start - 1]))
+                            start--;
+
+                        TextSpan whitespace = TextSpan.FromBounds(start, end + 1);
+
+                        if (root.FindTrivia(start).IsKind(SyntaxKind.WhitespaceTrivia))
+                        {
+                            if (previousLineIsEmpty && start == textLine.Start)
+                            {
+                                whitespace = TextSpan.FromBounds(
+                                    sourceText.Lines[i - 1].End,
+                                    whitespace.End);
+                            }
+
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.RemoveTrailingWhitespace,
+                                Location.Create(context.Tree, whitespace));
+                        }
                     }
                 }
 
                 previousLineIsEmpty = lineIsEmpty;
-
-                if (textLine.Span.Length == 0)
-                    continue;
-
-                int end = textLine.End - 1;
-
-                if (!char.IsWhiteSpace(sourceText[end]))
-                    continue;
-
-                int start = end;
-
-                while (start > textLine.Span.Start && char.IsWhiteSpace(sourceText[start - 1]))
-                    start--;
-
-                TextSpan span = TextSpan.FromBounds(start, end + 1);
-
-                if (root.FindTrivia(start).IsKind(SyntaxKind.WhitespaceTrivia))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveTrailingWhitespace,
-                        Location.Create(context.Tree, span));
-                }
+                i++;
             }
         }
     }
