@@ -81,9 +81,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (memberName != "Count" && memberName != "Length")
                 return false;
 
-            if (memberAccessExpression.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
-                return false;
-
             if (forStatement.Incrementors.SingleOrDefault()?.IsKind(SyntaxKind.PostIncrementExpression) != true)
                 return false;
 
