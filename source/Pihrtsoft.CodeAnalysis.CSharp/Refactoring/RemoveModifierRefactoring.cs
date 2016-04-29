@@ -54,35 +54,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         var declaration = (PropertyDeclarationSyntax)node;
 
                         return declaration
-                            .WithModifiers(RemoveModifier(declaration.Modifiers, declaration.Modifiers.IndexOf(modifierKind)));
+                            .WithModifiers(RemoveModifier(declaration.Modifiers, modifierKind));
                     }
                 case SyntaxKind.MethodDeclaration:
                     {
                         var declaration = (MethodDeclarationSyntax)node;
 
                         return declaration
-                            .WithModifiers(RemoveModifier(declaration.Modifiers, declaration.Modifiers.IndexOf(modifierKind)));
+                            .WithModifiers(RemoveModifier(declaration.Modifiers, modifierKind));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var declaration = (ClassDeclarationSyntax)node;
 
                         return declaration
-                            .WithModifiers(RemoveModifier(declaration.Modifiers, declaration.Modifiers.IndexOf(modifierKind)));
+                            .WithModifiers(RemoveModifier(declaration.Modifiers, modifierKind));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)node;
 
                         return declaration
-                            .WithModifiers(RemoveModifier(declaration.Modifiers, declaration.Modifiers.IndexOf(modifierKind)));
+                            .WithModifiers(RemoveModifier(declaration.Modifiers, modifierKind));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var declaration = (InterfaceDeclarationSyntax)node;
 
                         return declaration
-                            .WithModifiers(RemoveModifier(declaration.Modifiers, declaration.Modifiers.IndexOf(modifierKind)));
+                            .WithModifiers(RemoveModifier(declaration.Modifiers, modifierKind));
                     }
             }
 
@@ -91,8 +91,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return node;
         }
 
-        private static SyntaxTokenList RemoveModifier(SyntaxTokenList modifiers, int i)
+        private static SyntaxTokenList RemoveModifier(SyntaxTokenList modifiers, SyntaxKind modifierKind)
         {
+            int i = modifiers.IndexOf(modifierKind);
+
             if (i == -1)
                 return modifiers;
 
@@ -117,11 +119,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 trailing = TriviaList();
             }
 
-            SyntaxToken newToken = MissingToken(SyntaxKind.None)
-                .WithLeadingTrivia(leading)
-                .WithTrailingTrivia(trailing);
+            SyntaxToken newToken = MissingToken(leading, SyntaxKind.None, trailing);
 
-            return modifiers.Replace(modifier, newToken);
+            return modifiers.Replace(modifiers[i], newToken);
         }
     }
 }
