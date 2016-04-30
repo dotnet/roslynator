@@ -88,30 +88,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 ParenthesizedExpression(expression));
         }
 
-        private static bool IsConversionDefined(this ExpressionSyntax expression)
-        {
-            switch (expression?.Kind())
-            {
-                case SyntaxKind.TrueLiteralExpression:
-                case SyntaxKind.FalseLiteralExpression:
-                case SyntaxKind.IdentifierName:
-                case SyntaxKind.InvocationExpression:
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.LogicalNotExpression:
-                case SyntaxKind.LogicalAndExpression:
-                case SyntaxKind.LogicalOrExpression:
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
-                case SyntaxKind.GreaterThanExpression:
-                case SyntaxKind.GreaterThanOrEqualExpression:
-                case SyntaxKind.LessThanExpression:
-                case SyntaxKind.LessThanOrEqualExpression:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         private static SyntaxKind GetOperatorTokenKind(this SyntaxKind kind)
         {
             switch (kind)
