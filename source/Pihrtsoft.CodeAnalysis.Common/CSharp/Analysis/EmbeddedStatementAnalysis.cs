@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
             return null;
         }
-        
+
         public static bool IsEmbeddableStatement(StatementSyntax statement)
         {
             if (statement == null)

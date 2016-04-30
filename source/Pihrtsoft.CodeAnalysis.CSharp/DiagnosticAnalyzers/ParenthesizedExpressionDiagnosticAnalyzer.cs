@@ -118,8 +118,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
 
-                if (openParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine()) 
-                    && closeParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()) 
+                if (openParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
+                    && closeParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
                     && parenthesizedExpression.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine())
                     && parenthesizedExpression.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLine()))
                 {
