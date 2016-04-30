@@ -35,6 +35,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
     <Compile Include="Refactoring\SimplifyLambdaExpressionRefactoring.cs" />

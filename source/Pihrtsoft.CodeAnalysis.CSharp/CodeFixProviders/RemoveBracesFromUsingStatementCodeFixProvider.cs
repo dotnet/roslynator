@@ -2,19 +2,21 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromUsingStatementCodeFixProvider))]
     [Shared]
-    public class RemoveBracesFromUsingStatementCodeFixProvider : CodeFixProvider
+    public class RemoveBracesFromUsingStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement);
@@ -30,30 +32,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (usingStatement == null)
                 return;
 
+            bool isMultiple = usingStatement.Statement
+                .DescendantNodes()
+                .Where(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f))
+                .Any();
+
             CodeAction codeAction = CodeAction.Create(
-                "Remove braces from using statement",
-                cancellationToken => RemoveBracesFromUsingStatementAsync(context.Document, usingStatement, cancellationToken),
-                DiagnosticIdentifiers.SimplifyNestedUsingStatement + BaseCodeFixProvider.EquivalenceKeySuffix);
+                "Remove braces from nested using statement" + ((isMultiple) ? "s" : ""),
+                cancellationToken =>
+                {
+                    return RemoveBracesFromNestedUsingStatementRefactoring.RefactorAsync(
+                        context.Document,
+                        usingStatement,
+                        cancellationToken);
+                },
+                DiagnosticIdentifiers.SimplifyNestedUsingStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> RemoveBracesFromUsingStatementAsync(
-            Document document,
-            UsingStatementSyntax usingStatement,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            var block = (BlockSyntax)usingStatement.Statement;
-
-            UsingStatementSyntax newNode = usingStatement
-                .WithStatement(block.Statements[0])
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(usingStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

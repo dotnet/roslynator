@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -19,8 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                  DiagnosticDescriptors.SimplifyNestedUsingStatement,
-                  DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut);
+                    DiagnosticDescriptors.SimplifyNestedUsingStatement,
+                    DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut);
             }
         }
 
@@ -38,28 +37,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return;
 
             var usingStatement = (UsingStatementSyntax)context.Node;
-            if (usingStatement.Statement?.IsKind(SyntaxKind.Block) == true)
+
+            if (RemoveBracesFromNestedUsingStatementRefactoring.CanRefactor(usingStatement))
             {
                 var block = (BlockSyntax)usingStatement.Statement;
-                if (block.Statements.Count == 1
-                    && block.Statements[0].IsKind(SyntaxKind.UsingStatement)
-                    && CheckTrivia(block, (UsingStatementSyntax)block.Statements[0]))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.SimplifyNestedUsingStatement,
-                        block.GetLocation());
 
-                    DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut);
-                }
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyNestedUsingStatement,
+                    block.GetLocation());
+
+                DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut);
             }
-        }
-
-        private static bool CheckTrivia(BlockSyntax block, UsingStatementSyntax usingStatement)
-        {
-            return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && usingStatement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine())
-                && usingStatement.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLine());
         }
     }
 }
