@@ -242,9 +242,9 @@
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
       <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
     </GetAssemblyIdentity>
-    <!--<Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe&quot; pack $(ProjectName).nuspec -Prop Configuration=Release -NoPackageAnalysis -Version %(AnalyzerAssemblyInfo.Version)" WorkingDirectory="$(OutDir)" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.2.8.5\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\CSharpAnalyzers.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Version %(AnalyzerAssemblyInfo.Version) -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>-->
+    </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
