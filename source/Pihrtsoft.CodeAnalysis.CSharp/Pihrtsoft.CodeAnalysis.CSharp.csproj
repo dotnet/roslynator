@@ -165,7 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Pihrtsoft.CodeAnalysis.CSharp.nuspec" />
+    <None Include="CSharpAnalyzers.nuspec" />
     <None Include="packages.config" />
     <None Include="tools\install.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
