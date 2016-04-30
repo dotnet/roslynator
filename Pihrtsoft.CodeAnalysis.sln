@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSharp.Vsix", "vsix\Pihrtsoft.CodeAnalysis.CSharp.Vsix\Pihrtsoft.CodeAnalysis.CSharp.Vsix.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerXml", "tools\AnalyzerXml\AnalyzerXml.csproj", "{EDE10DAB-EB98-49CA-897C-4B4CCACECD2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDE10DAB-EB98-49CA-897C-4B4CCACECD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE10DAB-EB98-49CA-897C-4B4CCACECD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE10DAB-EB98-49CA-897C-4B4CCACECD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE10DAB-EB98-49CA-897C-4B4CCACECD2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
