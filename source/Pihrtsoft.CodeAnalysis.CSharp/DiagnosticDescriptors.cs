@@ -526,6 +526,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyElseClauseContainingIfStatementFadeOut = SimplifyElseClauseContainingIfStatement.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor RemoveSemicolonFromDeclaration = new DiagnosticDescriptor(
+            DiagnosticIdentifiers.RemoveSemicolonFromDeclaration,
+            "Remove semicolon from declaration.",
+            "Consider removing semicolon from declaration.",
+            DiagnosticCategories.General,
+            DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             DiagnosticIdentifiers.UseLinefeedAsNewLine,
