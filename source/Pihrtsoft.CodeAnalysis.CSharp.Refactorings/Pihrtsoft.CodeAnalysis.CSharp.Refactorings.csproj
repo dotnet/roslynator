@@ -40,7 +40,7 @@
     <Compile Include="CodeRefactoringProviders\SwitchStatementCodeRefactoringProvider_.cs" />
     <Compile Include="CodeRefactoringProviders\InitializerExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\BinaryExpressionCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\ConvertToStringEmptyCodeRefactoringProvider.cs" />
+    <Compile Include="CodeRefactoringProviders\StringLiteralExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\FieldDeclarationCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\GenericNameCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\RenameFieldAccordingToPropertyNameCodeRefactoringProvider.cs" />
@@ -62,7 +62,8 @@
     <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactoring\AddBracesToEmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
-    <Compile Include="Refactoring\EmptyStringRefactoring.cs" />
+    <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
+    <Compile Include="Refactoring\StringEmptyRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\ExpressionChainRefactoring.cs" />
     <Compile Include="Refactoring\ExtractStatementRefactoring.cs" />

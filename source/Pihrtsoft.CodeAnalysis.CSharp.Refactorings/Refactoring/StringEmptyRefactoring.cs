@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class EmptyStringRefactoring
+    internal static class StringEmptyRefactoring
     {
         public static bool CanConvertStringEmptyToEmptyStringLiteral(
             MemberAccessExpressionSyntax node,
@@ -39,31 +38,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithTriviaFrom(node);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        public static bool CanConvertEmptyStringLiteralToStringEmpty(LiteralExpressionSyntax literalExpression)
-        {
-            return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
-                && literalExpression.Token.ValueText.Length == 0;
-        }
-
-        public static async Task<Document> ConvertEmptyStringLiteralToStringEmptyAsync(
-            Document document,
-            LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            MemberAccessExpressionSyntax newNode = MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    PredefinedType(Token(SyntaxKind.StringKeyword)),
-                    IdentifierName("Empty"))
-                .WithTriviaFrom(literalExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }

@@ -29,11 +29,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (semanticModel == null)
                 return;
 
-            if (EmptyStringRefactoring.CanConvertStringEmptyToEmptyStringLiteral(node, semanticModel))
+            if (StringEmptyRefactoring.CanConvertStringEmptyToEmptyStringLiteral(node, semanticModel))
             {
                 context.RegisterRefactoring(
                     "Convert to \"\"",
-                    cancellationToken => EmptyStringRefactoring.ConvertStringEmptyToEmptyStringLiteralAsync(context.Document, node, cancellationToken));
+                    cancellationToken => StringEmptyRefactoring.ConvertStringEmptyToEmptyStringLiteralAsync(context.Document, node, cancellationToken));
             }
         }
     }
