@@ -22,6 +22,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (whileStatement == null)
                 return;
 
+            if (whileStatement.Condition != null
+                && whileStatement.Condition.Span.Contains(context.Span)
+                && context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+                NullableBooleanRefactoring.Refactor(whileStatement, context, semanticModel);
+            }
+
             FormatBinaryExpressionRefactoring.Refactor(context, whileStatement);
         }
     }

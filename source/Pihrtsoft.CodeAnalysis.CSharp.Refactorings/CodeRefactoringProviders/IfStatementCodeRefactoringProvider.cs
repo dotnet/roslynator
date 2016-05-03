@@ -28,6 +28,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             AddBracesToIfElseChain(context, ifStatement);
 
+            if (ifStatement.Condition != null
+                && ifStatement.Condition.Span.Contains(context.Span)
+                && context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+                NullableBooleanRefactoring.Refactor(ifStatement, context, semanticModel);
+            }
+
             FormatBinaryExpressionRefactoring.Refactor(context, ifStatement);
 
             SwapStatements(context, ifStatement);
