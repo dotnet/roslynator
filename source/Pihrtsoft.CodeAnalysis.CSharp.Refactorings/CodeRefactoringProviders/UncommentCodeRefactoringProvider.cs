@@ -12,12 +12,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(UncommentCodeRefactoringProvider))]
     public class UncommentCodeRefactoringProvider : CodeRefactoringProvider
     {
-        private static readonly Regex _uncommentRegex = new Regex(@"
-(?<=
-    ^
-    [\s-[\r\n]]*
-)
-//", RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex _uncommentManyCommentsRegex = new Regex(@"
+            (?<=
+                ^
+                [\s-[\r\n]]*
+            )
+            //",
+            RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+
+        private static readonly Regex _uncommentSingleCommentRegex = new Regex("//");
 
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
@@ -42,24 +45,42 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             SyntaxToken token = comment.Token;
 
+            SyntaxTriviaList triviaList = default(SyntaxTriviaList);
+
             int index = token.LeadingTrivia.IndexOf(comment);
 
-            SyntaxTriviaList triviaList = (index != -1) ? token.LeadingTrivia : token.TrailingTrivia;
+            if (index != -1)
+            {
+                triviaList = token.LeadingTrivia;
+            }
+            else
+            {
+                index = token.TrailingTrivia.IndexOf(comment);
+                triviaList = token.TrailingTrivia;
+            }
 
-            int firstIndex = FindFirstTriviaToRemove(triviaList, index);
-            int lastIndex = FindLastTriviaToRemove(triviaList, index);
-
-            string text = _uncommentRegex.Replace(
-                oldRoot.ToFullString(),
-                string.Empty,
-                GetSingleLineCommentCount(triviaList, firstIndex, lastIndex),
-                triviaList[firstIndex].SpanStart);
+            string text = GetNewText(oldRoot.ToFullString(), triviaList, index);
 
             SyntaxTree tree = CSharpSyntaxTree.ParseText(text);
 
             SyntaxNode newRoot = await tree.GetRootAsync();
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static string GetNewText(string input, SyntaxTriviaList triviaList, int index)
+        {
+            int firstIndex = FindFirstTriviaToRemove(triviaList, index);
+            int lastIndex = FindLastTriviaToRemove(triviaList, index);
+            int count = GetSingleLineCommentCount(triviaList, firstIndex, lastIndex);
+
+            Regex regex = (count == 1) ? _uncommentSingleCommentRegex : _uncommentManyCommentsRegex;
+
+            return regex.Replace(
+                input,
+                string.Empty,
+                count,
+                triviaList[firstIndex].SpanStart);
         }
 
         private static int GetSingleLineCommentCount(SyntaxTriviaList triviaList, int firstIndex, int lastIndex)
