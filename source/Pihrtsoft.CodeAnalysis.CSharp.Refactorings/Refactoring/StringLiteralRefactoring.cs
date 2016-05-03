@@ -44,7 +44,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + literalExpression.ToString());
+            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + literalExpression.ToString())
+                .WithTriviaFrom(literalExpression);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, interpolatedString);
 
