@@ -1,59 +1,32 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveRedundantBooleanLiteralRefactoring
+    internal static class RemoveRedundantBooleanComparisonRefactoring
     {
-        public static bool CanRefactor(LiteralExpressionSyntax literalExpression)
-        {
-            if (literalExpression == null)
-                throw new ArgumentNullException(nameof(literalExpression));
-
-            var binaryExpression = literalExpression.Parent as BinaryExpressionSyntax;
-
-            if (binaryExpression != null
-                && binaryExpression.Left != null
-                && binaryExpression.Right != null)
-            {
-                switch (literalExpression.Kind())
-                {
-                    case SyntaxKind.TrueLiteralExpression:
-                        return binaryExpression.IsKind(SyntaxKind.EqualsExpression);
-                    case SyntaxKind.FalseLiteralExpression:
-                        return binaryExpression.IsKind(SyntaxKind.NotEqualsExpression);
-                }
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
-            LiteralExpressionSyntax literalExpression,
+            BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var oldNode = (BinaryExpressionSyntax)literalExpression.Parent;
-
-            SyntaxNode newNode = RemoveRedundantBooleanLiteral(oldNode)
+            SyntaxNode newNode = Refactor(binaryExpression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(oldNode, newNode);
+            SyntaxNode newRoot = oldRoot.ReplaceNode(binaryExpression, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static SyntaxNode RemoveRedundantBooleanLiteral(BinaryExpressionSyntax binaryExpression)
+        private static SyntaxNode Refactor(BinaryExpressionSyntax binaryExpression)
         {
             if (binaryExpression.Left.IsAnyKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
             {

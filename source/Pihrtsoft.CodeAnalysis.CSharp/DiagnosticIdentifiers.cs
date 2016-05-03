@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AddEmptyLineAfterEmbeddedStatement = Prefix + "1030";
         public const string RemoveRedundantBraces = Prefix + "1031";
         public const string RemoveRedundantParentheses = Prefix + "1032";
-        public const string RemoveRedundantBooleanLiteral = Prefix + "1033";
+        public const string RemoveRedundantBooleanComparison = Prefix + "1033";
         public const string RemoveRedundantSealedModifier = Prefix + "1034";
         public const string RemoveRedundantCommaInInitializer = Prefix + "1035";
         public const string RemoveRedundantEmptyLine = Prefix + "1036";
@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AsyncMethodShouldHaveAsyncSuffix = Prefix + "1046";
         public const string NonAsyncMethodShouldNotHaveAsyncSuffix = Prefix + "1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "1048";
-        public const string UseLogicalNotOperator = Prefix + "1049";
+        public const string SimplifyBooleanComparison = Prefix + "1049";
         public const string AddConstructorArgumentList = Prefix + "1050";
         public const string AddParenthesesToConditionalExpressionCondition = Prefix + "1051";
         public const string DeclareEachAttributeSeparately = Prefix + "1052";

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
+    //TODO: add parameter names
     public static class DiagnosticDescriptors
     {
         public static readonly DiagnosticDescriptor DeclareExplicitType = new DiagnosticDescriptor(
@@ -112,15 +113,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteral = new DiagnosticDescriptor(
-            DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
-            "Remove redundant boolean literal.",
-            "Consider removing redundant boolean literal.",
+        public static readonly DiagnosticDescriptor RemoveRedundantBooleanComparison = new DiagnosticDescriptor(
+            DiagnosticIdentifiers.RemoveRedundantBooleanComparison,
+            "Remove redundant boolean comparison.",
+            "Consider removing redundant boolean comparison.",
             DiagnosticCategories.General,
             DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantBooleanComparisonFadeOut = RemoveRedundantBooleanComparison.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor ReorderModifiers = new DiagnosticDescriptor(
             DiagnosticIdentifiers.ReorderModifiers,
@@ -336,15 +338,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor UseLogicalNotOperator = new DiagnosticDescriptor(
-            DiagnosticIdentifiers.UseLogicalNotOperator,
-            "Use '!' operator instead of comparison with boolean literal.",
-            "Consider using '!' operator instead of comparison with boolean literal.",
+        public static readonly DiagnosticDescriptor SimplifyBooleanComparison = new DiagnosticDescriptor(
+            DiagnosticIdentifiers.SimplifyBooleanComparison,
+            "Simplify boolean comparison.",
+            "Consider simplifying boolean comparison.",
             DiagnosticCategories.General,
             DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor SimplifyBooleanComparisonFadeOut = SimplifyBooleanComparison.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor FormatEmbeddedStatementOnSeparateLine = new DiagnosticDescriptor(
             DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine,
