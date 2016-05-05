@@ -22,8 +22,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (condition == null)
                 return false;
 
+            if (condition.IsKind(SyntaxKind.LogicalNotExpression))
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)condition;
+
+                if (logicalNot.Operand != null)
+                    return IsNullableBoolean(logicalNot.Operand, semanticModel, cancellationToken);
+            }
+            else
+            {
+                return IsNullableBoolean(condition, semanticModel, cancellationToken);
+            }
+
+            return false;
+        }
+
+        private static bool IsNullableBoolean(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
             var namedTypeSymbol = semanticModel
-                .GetTypeInfo(condition, cancellationToken)
+                .GetTypeInfo(expression, cancellationToken)
                 .ConvertedType as INamedTypeSymbol;
 
             return namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
@@ -68,6 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             Debug.Assert(false, statement.Kind().ToString());
+
             return null;
         }
 
@@ -93,15 +114,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             Debug.Assert(false, statement.Kind().ToString());
+
             return statement;
         }
 
         private static BinaryExpressionSyntax CreateNewCondition(ExpressionSyntax expression)
         {
-            return SyntaxFactory.BinaryExpression(
-                SyntaxKind.EqualsExpression,
-                expression,
-                SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression));
+            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+                return SyntaxFactory.BinaryExpression(
+                    SyntaxKind.EqualsExpression,
+                    logicalNot.Operand.WithTriviaFrom(expression),
+                    SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression));
+            }
+            else
+            {
+                return SyntaxFactory.BinaryExpression(
+                    SyntaxKind.EqualsExpression,
+                    expression,
+                    SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression));
+            }
         }
     }
 }
