@@ -519,8 +519,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyElseClauseContainingIfStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.SimplifyElseClauseContainingIfStatement,
-            title: "Simplify else clause containing if statement.",
-            messageFormat: "Consider simplifying else clause containing if statement.",
+            title: "Simplify else clause containing only if statement.",
+            messageFormat: "Consider simplifying else clause containing only if statement.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
