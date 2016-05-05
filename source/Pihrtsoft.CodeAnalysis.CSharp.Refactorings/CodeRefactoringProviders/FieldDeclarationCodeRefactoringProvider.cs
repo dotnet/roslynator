@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -31,12 +32,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     cancellationToken => ConvertConstantToReadOnlyFieldAsync(context.Document, node, cancellationToken));
             }
             else if (node.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
-                && node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && node.Modifiers.Contains(SyntaxKind.StaticKeyword)
+                && context.Document.SupportsSemanticModel)
             {
-                context.RegisterRefactoring(
-                    "Convert to constant",
-                    cancellationToken => ConvertReadOnlyFieldToConstantAsync(context.Document, node, cancellationToken));
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                if (CanBeConvertedToConstant(node, semanticModel, context.CancellationToken))
+                {
+                    context.RegisterRefactoring(
+                        "Convert to constant",
+                        cancellationToken => ConvertReadOnlyFieldToConstantAsync(context.Document, node, cancellationToken));
+                }
             }
+        }
+
+        private static bool CanBeConvertedToConstant(
+            FieldDeclarationSyntax declaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            TypeSyntax type = declaration.Declaration?.Type;
+
+            if (type != null
+                && declaration.Declaration.Variables.All(f => f.Initializer != null))
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
+
+                return typeSymbol != null
+                    && typeSymbol.SpecialType != SpecialType.System_Object
+                    && typeSymbol.HasPredefinedType();
+            }
+
+            return false;
         }
 
         private static async Task<Document> ConvertConstantToReadOnlyFieldAsync(
