@@ -50,7 +50,7 @@
     <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveSemicolonFromDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SpecifyExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\RemoveSemicolonFromDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />

@@ -10,12 +10,12 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveSemicolonFromDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         private static readonly SyntaxToken _noneToken = SyntaxFactory.Token(SyntaxKind.None);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveSemicolonFromDeclaration);
+            => ImmutableArray.Create(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (!closeBrace.IsKind(SyntaxKind.None) && !closeBrace.IsMissing)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveSemicolonFromDeclaration,
+                        DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration,
                         semicolon.GetLocation());
                 }
             }

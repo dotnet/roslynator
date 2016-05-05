@@ -60,8 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string DeclareEachAttributeSeparately = Prefix + "1052";
         public const string ConvertForEachToFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
-
-        public const string RemoveSemicolonFromDeclaration = Prefix + "1055";
+        public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
         public const string AvoidUsingAliasDirective = Prefix + "1056";
 
 #if DEBUG

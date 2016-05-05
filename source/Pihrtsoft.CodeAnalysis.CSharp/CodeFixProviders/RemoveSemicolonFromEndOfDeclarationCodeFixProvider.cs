@@ -13,12 +13,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveSemicolonFromDeclarationCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveSemicolonFromEndOfDeclarationCodeFixProvider))]
     [Shared]
-    public class RemoveSemicolonFromDeclarationCodeFixProvider : BaseCodeFixProvider
+    public class RemoveSemicolonFromEndOfDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveSemicolonFromDeclaration);
+            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Remove unnecessary semicolon",
                 cancellationToken => RemoveSemicolonAsync(context.Document, declaration, cancellationToken),
-                DiagnosticIdentifiers.RemoveSemicolonFromDeclaration + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

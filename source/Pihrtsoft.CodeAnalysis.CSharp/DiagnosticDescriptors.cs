@@ -528,10 +528,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyElseClauseContainingIfStatementFadeOut = SimplifyElseClauseContainingIfStatement.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor RemoveSemicolonFromDeclaration = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveSemicolonFromDeclaration,
-            title: "Remove semicolon from declaration.",
-            messageFormat: "Consider removing semicolon from declaration.",
+        public static readonly DiagnosticDescriptor AvoidSemicolonAtEndOfDeclaration = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
+            title: "Avoid semicolon at the end of declaration.",
+            messageFormat: "Consider removing semicolon from the end of declaration.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
