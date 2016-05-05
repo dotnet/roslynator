@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
-            if (!namedTypeSymbol.HasPredefinedType())
+            if (!namedTypeSymbol.IsPredefinedType())
                 return;
 
             CodeAction codeAction = CodeAction.Create(

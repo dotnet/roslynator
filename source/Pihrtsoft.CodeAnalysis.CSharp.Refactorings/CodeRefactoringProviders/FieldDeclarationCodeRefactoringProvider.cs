@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 return typeSymbol != null
                     && typeSymbol.SpecialType != SpecialType.System_Object
-                    && typeSymbol.HasPredefinedType();
+                    && typeSymbol.IsPredefinedType();
             }
 
             return false;

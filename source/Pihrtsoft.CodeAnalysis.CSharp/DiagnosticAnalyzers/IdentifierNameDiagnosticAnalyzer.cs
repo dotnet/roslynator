@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(identifierName, context.CancellationToken).Symbol as INamedTypeSymbol;
 
-                if (namedTypeSymbol?.HasPredefinedType() == true)
+                if (namedTypeSymbol?.IsPredefinedType() == true)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.UsePredefinedType,

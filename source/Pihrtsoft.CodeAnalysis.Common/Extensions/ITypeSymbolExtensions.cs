@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis
             return typeSymbol.Kind == symbolKind;
         }
 
-        public static bool HasPredefinedType(this ITypeSymbol typeSymbol)
+        public static bool IsPredefinedType(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));

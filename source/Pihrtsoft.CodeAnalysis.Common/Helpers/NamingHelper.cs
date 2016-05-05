@@ -118,7 +118,7 @@ namespace Pihrtsoft.CodeAnalysis
                 else
                     return DefaultName;
             }
-            else if (typeSymbol.HasPredefinedType())
+            else if (typeSymbol.IsPredefinedType())
             {
                 return DefaultName;
             }

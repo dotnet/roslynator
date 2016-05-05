@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (namedTypeSymbol == null)
                 return;
 
-            if (namedTypeSymbol.HasPredefinedType())
+            if (namedTypeSymbol.IsPredefinedType())
             {
                 Diagnostic diagnostic = Diagnostic.Create(
                     DiagnosticDescriptors.UsePredefinedType,
