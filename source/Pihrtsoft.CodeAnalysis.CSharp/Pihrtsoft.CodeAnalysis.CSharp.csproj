@@ -39,6 +39,7 @@
     <Compile Include="Analysis\BooleanComparisonAnalysisResult.cs" />
     <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="ArgumentInfo.cs" />
+    <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
@@ -161,6 +163,7 @@
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesToIfElseChainCodeFixProvider.cs" />
+    <Compile Include="TokenPair.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

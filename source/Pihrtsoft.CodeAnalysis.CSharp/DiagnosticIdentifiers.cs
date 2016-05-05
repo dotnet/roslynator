@@ -62,6 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
         public const string AvoidUsingAliasDirective = Prefix + "1056";
+        public const string AddEmptyLineBetweenDeclarations = Prefix + "1057";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

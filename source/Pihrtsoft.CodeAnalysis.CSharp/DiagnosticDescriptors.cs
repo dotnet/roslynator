@@ -547,6 +547,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
+        public static readonly DiagnosticDescriptor AddEmptyLineBetweenDeclarations = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
+            title: "Add empty line between declarations.",
+            messageFormat: "Consider adding empty line between declarations.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning, //TODO: změnit na info
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
