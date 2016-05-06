@@ -54,6 +54,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (binaryExpression.Left != null
                 && binaryExpression.Right != null
+                && !binaryExpression.Left.IsMissing
+                && !binaryExpression.Right.IsMissing
                 && !IsStringConcatenation(context, binaryExpression)
                 && binaryExpression.Left.GetTrailingTrivia().All(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
                 && CheckOperatorTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia)
@@ -83,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .GetTypeInfo(expression, context.CancellationToken)
                 .ConvertedType;
 
-            return typeSymbol.Kind == SymbolKind.NamedType
+            return typeSymbol?.Kind == SymbolKind.NamedType
                 && ((INamedTypeSymbol)typeSymbol).SpecialType == SpecialType.System_String;
         }
 
