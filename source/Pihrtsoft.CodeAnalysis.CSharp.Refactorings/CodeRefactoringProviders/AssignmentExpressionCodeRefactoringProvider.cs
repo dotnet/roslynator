@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -24,32 +22,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (assignmentExpression == null)
                 return;
 
-            if (!assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
-                && assignmentExpression.Left != null
-                && assignmentExpression.Right != null
+            if (AssignmentExpressionRefactoring.CanExpand(assignmentExpression)
                 && assignmentExpression.OperatorToken.Span.Contains(context.Span))
             {
                 context.RegisterRefactoring(
                     "Expand assignment expression",
-                    cancellationToken => ExpandAssignmentExpressionAsync(context.Document, assignmentExpression, cancellationToken));
+                    cancellationToken =>
+                    {
+                        return AssignmentExpressionRefactoring.ExpandAsync(
+                            context.Document,
+                            assignmentExpression,
+                            cancellationToken);
+                    });
             }
-        }
-
-        private static async Task<Document> ExpandAssignmentExpressionAsync(
-            Document document,
-            AssignmentExpressionSyntax assignmentExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            AssignmentExpressionSyntax newAssignmentExpression = assignmentExpression
-                .Expand()
-                .WithTriviaFrom(assignmentExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(assignmentExpression, newAssignmentExpression);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

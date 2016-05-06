@@ -39,7 +39,6 @@
     <Compile Include="CSharp\Comparers\SwitchLabelSorter.cs" />
     <Compile Include="CSharp\Comparers\SwitchSectionSorter.cs" />
     <Compile Include="CSharp\Extensions\AccessorListExtensions.cs" />
-    <Compile Include="CSharp\Extensions\AssignmentExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\CSharpSyntaxNodeExtensions.cs" />
     <Compile Include="CSharp\Extensions\ExpressionSyntaxExtensions.cs" />
@@ -47,6 +46,7 @@
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
     <Compile Include="CSharp\Refactoring\AddBracesToIfElseChainRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\AssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\RemoveAllCommentsSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\RemoveAllRegionsSyntaxRewriter.cs" />

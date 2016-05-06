@@ -88,7 +88,6 @@
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
-    <Compile Include="Refactoring\AssignmentExpressionRefactoring.cs" />
     <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
