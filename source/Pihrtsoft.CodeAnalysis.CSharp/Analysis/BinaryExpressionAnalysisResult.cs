@@ -2,10 +2,10 @@
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 {
-    internal enum BooleanComparisonAnalysisResult
+    internal enum BinaryExpressionAnalysisResult
     {
         None,
-        RemoveRedundantBooleanComparison,
+        RemoveRedundantBooleanLiteral,
         SimplifyBooleanComparison
     }
 }

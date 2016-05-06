@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveRedundantBooleanComparisonRefactoring
+    internal static class RemoveRedundantBooleanLiteralRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

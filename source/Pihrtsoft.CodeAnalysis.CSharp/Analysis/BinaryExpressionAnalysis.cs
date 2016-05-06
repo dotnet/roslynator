@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 {
-    internal static class BooleanComparisonAnalysis
+    internal static class BinaryExpressionAnalysis
     {
-        public static BooleanComparisonAnalysisResult Analyze(
+        public static BinaryExpressionAnalysisResult Analyze(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -23,30 +23,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
             if (binaryExpression.Left != null && binaryExpression.Right != null)
             {
-                if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
+                switch (binaryExpression.Kind())
                 {
-                    return Analyze(
-                        binaryExpression,
-                        SyntaxKind.FalseLiteralExpression,
-                        SyntaxKind.TrueLiteralExpression,
-                        semanticModel,
-                        cancellationToken);
-                }
-                else if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
-                {
-                    return Analyze(
-                        binaryExpression,
-                        SyntaxKind.TrueLiteralExpression,
-                        SyntaxKind.FalseLiteralExpression,
-                        semanticModel,
-                        cancellationToken);
+                    case SyntaxKind.EqualsExpression:
+                        {
+                            return AnalyzeComparison(
+                                binaryExpression,
+                                SyntaxKind.FalseLiteralExpression,
+                                SyntaxKind.TrueLiteralExpression,
+                                semanticModel,
+                                cancellationToken);
+                        }
+                    case SyntaxKind.NotEqualsExpression:
+                        {
+                            return AnalyzeComparison(
+                                binaryExpression,
+                                SyntaxKind.TrueLiteralExpression,
+                                SyntaxKind.FalseLiteralExpression,
+                                semanticModel,
+                                cancellationToken);
+                        }
+                    case SyntaxKind.LogicalAndExpression:
+                        {
+                            return AnalyzeLogicalExpression(binaryExpression, SyntaxKind.TrueLiteralExpression);
+                        }
+                    case SyntaxKind.LogicalOrExpression:
+                        {
+                            return AnalyzeLogicalExpression(binaryExpression, SyntaxKind.FalseLiteralExpression);
+                        }
                 }
             }
 
-            return BooleanComparisonAnalysisResult.None;
+            return BinaryExpressionAnalysisResult.None;
         }
 
-        private static BooleanComparisonAnalysisResult Analyze(
+        private static BinaryExpressionAnalysisResult AnalyzeComparison(
             BinaryExpressionSyntax binaryExpression,
             SyntaxKind booleanLiteralKind,
             SyntaxKind booleanLiteralKind2,
@@ -59,25 +70,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (left.IsKind(booleanLiteralKind))
             {
                 if (IsBooleanExpressionButNotBooleanLiteral(right, semanticModel, cancellationToken))
-                    return BooleanComparisonAnalysisResult.SimplifyBooleanComparison;
+                    return BinaryExpressionAnalysisResult.SimplifyBooleanComparison;
             }
             else if (left.IsKind(booleanLiteralKind2))
             {
                 if (IsBooleanExpressionButNotBooleanLiteral(right, semanticModel, cancellationToken))
-                    return BooleanComparisonAnalysisResult.RemoveRedundantBooleanComparison;
+                    return BinaryExpressionAnalysisResult.RemoveRedundantBooleanLiteral;
             }
             else if (right.IsKind(booleanLiteralKind))
             {
                 if (IsBooleanExpressionButNotBooleanLiteral(left, semanticModel, cancellationToken))
-                    return BooleanComparisonAnalysisResult.SimplifyBooleanComparison;
+                    return BinaryExpressionAnalysisResult.SimplifyBooleanComparison;
             }
             else if (right.IsKind(booleanLiteralKind2))
             {
                 if (IsBooleanExpressionButNotBooleanLiteral(left, semanticModel, cancellationToken))
-                    return BooleanComparisonAnalysisResult.RemoveRedundantBooleanComparison;
+                    return BinaryExpressionAnalysisResult.RemoveRedundantBooleanLiteral;
             }
 
-            return BooleanComparisonAnalysisResult.None;
+            return BinaryExpressionAnalysisResult.None;
+        }
+
+        private static BinaryExpressionAnalysisResult AnalyzeLogicalExpression(
+            BinaryExpressionSyntax binaryExpression,
+            SyntaxKind booleanLiteralKind)
+        {
+            if (binaryExpression.Left.IsKind(booleanLiteralKind)
+                || binaryExpression.Right.IsKind(booleanLiteralKind))
+            {
+                return BinaryExpressionAnalysisResult.RemoveRedundantBooleanLiteral;
+            }
+
+            return BinaryExpressionAnalysisResult.None;
         }
 
         private static bool IsBooleanExpressionButNotBooleanLiteral(

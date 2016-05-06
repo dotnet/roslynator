@@ -112,16 +112,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantBooleanComparison = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveRedundantBooleanComparison,
-            title: "Remove redundant boolean comparison.",
-            messageFormat: "Consider removing redundant boolean comparison.",
+        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteral = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
+            title: "Remove redundant boolean literal.",
+            messageFormat: "Consider removing redundant boolean literal.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantBooleanComparisonFadeOut = RemoveRedundantBooleanComparison.CreateFadeOut();
+        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteralFadeOut = RemoveRedundantBooleanLiteral.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor ReorderModifiers = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.ReorderModifiers,

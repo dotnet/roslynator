@@ -35,8 +35,8 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Analysis\BooleanComparisonAnalysis.cs" />
-    <Compile Include="Analysis\BooleanComparisonAnalysisResult.cs" />
+    <Compile Include="Analysis\BinaryExpressionAnalysis.cs" />
+    <Compile Include="Analysis\BinaryExpressionAnalysisResult.cs" />
     <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveRedundantBooleanComparisonRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
     <Compile Include="Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
@@ -120,12 +120,12 @@
     <Compile Include="DiagnosticAnalyzers\ParenthesizedLambdaExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ObjectCreationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\BooleanComparisonDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\BooleanLiteralDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AttributeArgumentListDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddAccessModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatBinaryOperatorOnNextLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReorderModifiersCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\SimplifyBooleanComparisonCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ChangeForEachDeclaredTypeToExplicitCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SpecifyImplicitTypeCodeFixProvider.cs" />
@@ -245,6 +245,7 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'">
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">

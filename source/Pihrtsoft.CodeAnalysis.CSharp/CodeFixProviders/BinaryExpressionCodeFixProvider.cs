@@ -13,14 +13,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeArgumentListCodeFixProvider))]
     [Shared]
-    public class SimplifyBooleanComparisonCodeFixProvider : BaseCodeFixProvider
+    public class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveRedundantBooleanComparison,
+                    DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
                     DiagnosticIdentifiers.SimplifyBooleanComparison);
             }
         }
@@ -40,18 +40,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case   DiagnosticIdentifiers.RemoveRedundantBooleanComparison:
+                    case DiagnosticIdentifiers.RemoveRedundantBooleanLiteral:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant boolean comparison",
-                                cancellationToken => RemoveRedundantBooleanComparisonRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                "Remove redundant boolean literal",
+                                cancellationToken => RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
 
                             break;
                         }
-                    case  DiagnosticIdentifiers.SimplifyBooleanComparison:
+                    case DiagnosticIdentifiers.SimplifyBooleanComparison:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify boolean comparison",
