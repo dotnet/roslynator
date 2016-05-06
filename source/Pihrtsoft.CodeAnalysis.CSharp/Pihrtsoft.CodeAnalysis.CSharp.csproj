@@ -52,6 +52,7 @@
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SpecifyExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
+    <Compile Include="Refactoring\AssignmentExpressionRefactoring.cs" />
     <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
