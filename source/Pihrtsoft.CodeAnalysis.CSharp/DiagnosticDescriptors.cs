@@ -552,7 +552,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             title: "Add empty line between declarations.",
             messageFormat: "Consider adding empty line between declarations.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Warning, //TODO: změnit na info
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
