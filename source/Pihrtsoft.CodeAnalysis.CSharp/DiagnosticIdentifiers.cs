@@ -66,6 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string SimplifyAssignmentExpression = Prefix + "1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
         public const string DeclareEachTypeInSeparateFile = Prefix + "1060";
+        public const string MergeIfStatementWithContainedIfStatement = Prefix + "1061";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -20,7 +21,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddBracesToIfElseChain,
                     DiagnosticDescriptors.RemoveBracesFromIfElseChain,
-                    DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                    DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
+                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatement,
+                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatementFadeOut);
             }
         }
 
@@ -42,34 +45,92 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (ifStatement.Else == null)
-                return;
-
-            var result = new IfElseChainAnalysisResult(ifStatement);
-
-            if (result.AddBracesToChain)
+            if (ifStatement.Else != null)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddBracesToIfElseChain,
-                    ifStatement.GetLocation());
-            }
+                var result = new IfElseChainAnalysisResult(ifStatement);
 
-            if (result.RemoveBracesFromChain)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveBracesFromIfElseChain,
-                    ifStatement.GetLocation());
-
-                foreach (SyntaxNode node in ifStatement.DescendantNodes())
+                if (result.AddBracesToChain)
                 {
-                    if (node.IsKind(SyntaxKind.Block))
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AddBracesToIfElseChain,
+                        ifStatement.GetLocation());
+                }
+
+                if (result.RemoveBracesFromChain)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveBracesFromIfElseChain,
+                        ifStatement.GetLocation());
+
+                    foreach (SyntaxNode node in ifStatement.DescendantNodes())
                     {
-                        DiagnosticHelper.FadeOutBraces(
-                            context,
-                            (BlockSyntax)node,
-                            DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                        if (node.IsKind(SyntaxKind.Block))
+                        {
+                            DiagnosticHelper.FadeOutBraces(
+                                context,
+                                (BlockSyntax)node,
+                                DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                        }
                     }
                 }
+            }
+            else if (IfElseChainAnalysis.IsTopIf(ifStatement) && ifStatement.Condition?.IsMissing == false)
+            {
+                IfStatementSyntax ifStatement2 = GetContainingIfStatement(ifStatement);
+
+                if (ifStatement2?.Condition?.IsMissing == false)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.MergeIfStatementWithContainedIfStatement,
+                        ifStatement.GetLocation());
+
+                    MergeIfStatementWithContainedIfStatementFadeOut(context, ifStatement, ifStatement2);
+                }
+            }
+        }
+
+        private static IfStatementSyntax GetContainingIfStatement(IfStatementSyntax ifStatement)
+        {
+            StatementSyntax statement = ifStatement.Statement;
+
+            switch (statement?.Kind())
+            {
+                case SyntaxKind.Block:
+                    {
+                        var block = (BlockSyntax)statement;
+
+                        if (block.Statements.Count == 1
+                            && block.Statements[0].IsKind(SyntaxKind.IfStatement))
+                        {
+                            return (IfStatementSyntax)block.Statements[0];
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.IfStatement:
+                    {
+                        return (IfStatementSyntax)statement;
+                    }
+            }
+
+            return null;
+        }
+
+        private static void MergeIfStatementWithContainedIfStatementFadeOut(
+            SyntaxNodeAnalysisContext context,
+            IfStatementSyntax ifStatement,
+            IfStatementSyntax ifStatement2)
+        {
+            DiagnosticDescriptor descriptor = DiagnosticDescriptors.MergeIfStatementWithContainedIfStatementFadeOut;
+
+            DiagnosticHelper.FadeOutToken(context, ifStatement2.IfKeyword, descriptor);
+            DiagnosticHelper.FadeOutToken(context, ifStatement2.OpenParenToken, descriptor);
+            DiagnosticHelper.FadeOutToken(context, ifStatement2.CloseParenToken, descriptor);
+
+            if (ifStatement.Statement.IsKind(SyntaxKind.Block)
+                && ifStatement2.Statement.IsKind(SyntaxKind.Block))
+            {
+                DiagnosticHelper.FadeOutBraces(context, (BlockSyntax)ifStatement2.Statement, descriptor);
             }
         }
     }

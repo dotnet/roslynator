@@ -585,6 +585,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor MergeIfStatementWithContainedIfStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeIfStatementWithContainedIfStatement,
+            title: "Merge if statement with contained if statement.",
+            messageFormat: "Consider merging if statement with contained if statement.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor MergeIfStatementWithContainedIfStatementFadeOut = MergeIfStatementWithContainedIfStatement.CreateFadeOut();
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
