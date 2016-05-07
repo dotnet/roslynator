@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -60,22 +61,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             SemanticModel semanticModel,
             MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.ReturnType == null || methodDeclaration.ReturnType.IsVoid())
-                return;
+            if (methodDeclaration.ReturnType?.IsVoid() == false
+                && methodDeclaration.Identifier.Span.Contains(context.Span))
+            {
+                string newName = NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
 
-            if (!methodDeclaration.Identifier.Span.Contains(context.Span))
-                return;
+                Debug.Assert(!string.IsNullOrEmpty(newName), methodDeclaration.ReturnType.ToString());
 
-            string newName = "Get" + NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
+                if (!string.IsNullOrEmpty(newName))
+                {
+                    newName = "Get" + newName;
 
-            if (string.Equals(newName, methodDeclaration.Identifier.ToString(), StringComparison.Ordinal))
-                return;
+                    if (!string.Equals(newName, methodDeclaration.Identifier.ToString(), StringComparison.Ordinal))
+                    {
+                        ISymbol symbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-            context.RegisterRefactoring(
-                $"Rename method to '{newName}'",
-                cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                        context.RegisterRefactoring(
+                            $"Rename method to '{newName}'",
+                            cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                    }
+                }
+            }
         }
 
         private static async Task<Document> ConvertToPropertyAsync(
