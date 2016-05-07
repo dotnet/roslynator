@@ -98,8 +98,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     return ((StructDeclarationSyntax)memberDeclaration).Identifier;
             }
 
-            Debug.Assert(false, memberDeclaration.Kind().ToString());
-
             return default(SyntaxToken);
         }
     }
