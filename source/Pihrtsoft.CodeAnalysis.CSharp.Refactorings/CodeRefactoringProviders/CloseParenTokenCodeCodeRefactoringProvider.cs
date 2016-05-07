@@ -22,27 +22,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (!closeParen.IsKind(SyntaxKind.CloseParenToken))
                 return;
 
-            if (closeParen.Parent?.IsKind(SyntaxKind.ParameterList) != true)
+            if (!context.Document.SupportsSemanticModel)
                 return;
 
             if (context.Span.Start == 0)
                 return;
 
-            ParameterSyntax parameter = root
-                .FindNode(new TextSpan(context.Span.Start - 1, 1))?
-                .FirstAncestorOrSelf<ParameterSyntax>();
+            if (closeParen.Parent?.IsKind(SyntaxKind.ParameterList) == true)
+            {
+                ParameterSyntax parameter = root
+                    .FindNode(new TextSpan(context.Span.Start - 1, 1))?
+                    .FirstAncestorOrSelf<ParameterSyntax>();
 
-            if (parameter == null)
-                return;
+                if (parameter == null)
+                    return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                RenameParameterAccordingToTypeNameRefactoring.Refactor(context, parameter, semanticModel);
 
-            RenameParameterAccordingToTypeNameRefactoring.Refactor(context, parameter, semanticModel);
+                AddParameterNullCheckRefactoring.Refactor(context, parameter, semanticModel);
+            }
+            else if (closeParen.Parent?.IsKind(SyntaxKind.ArgumentList) == true)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            AddParameterNullCheckRefactoring.Refactor(context, parameter, semanticModel);
+                ArgumentSyntax argument = root
+                    .FindNode(new TextSpan(context.Span.Start - 1, 1))?
+                    .FirstAncestorOrSelf<ArgumentSyntax>();
+
+                if (argument != null)
+                    ArgumentRefactoring.AddOrRemoveArgumentName(context, argument, semanticModel);
+
+                ArgumentRefactoring.AddOrRemoveArgumentName(context, (ArgumentListSyntax)closeParen.Parent, semanticModel);
+            }
         }
     }
 }
