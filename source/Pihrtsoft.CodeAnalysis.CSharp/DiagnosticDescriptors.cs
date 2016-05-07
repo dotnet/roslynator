@@ -567,6 +567,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyAssignmentExpressionFadeOut = SimplifyAssignmentExpression.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor AvoidLockingOnPubliclyAccessibleInstance = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance,
+            title: "Avoid locking on publicly accessible instance.",
+            messageFormat: "Avoid locking on publicly accessible instance.", //TODO: Improve messageFormat for AvoidLockingOnPubliclyAccessibleInstance
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

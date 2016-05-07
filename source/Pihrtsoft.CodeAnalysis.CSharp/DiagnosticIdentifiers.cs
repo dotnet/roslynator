@@ -64,6 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidUsingAliasDirective = Prefix + "1056";
         public const string AddEmptyLineBetweenDeclarations = Prefix + "1057";
         public const string SimplifyAssignmentExpression = Prefix + "1058";
+        public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

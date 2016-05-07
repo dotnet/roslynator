@@ -48,6 +48,7 @@
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CombineLocalDeclarationAndReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\LockStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\LockStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
