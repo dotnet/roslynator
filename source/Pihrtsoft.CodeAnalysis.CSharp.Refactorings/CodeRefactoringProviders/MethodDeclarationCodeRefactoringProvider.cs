@@ -2,14 +2,12 @@
 
 using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -27,33 +25,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (methodDeclaration == null)
                 return;
 
-            ConvertToReadOnlyProperty(context, methodDeclaration);
+            if (methodDeclaration.Identifier.Span.Contains(context.Span)
+                && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Convert to read-only property",
+                    cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (!context.Document.SupportsSemanticModel)
+                return;
 
             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
-
             RenameMethodAccordingToTypeName(context, semanticModel, methodDeclaration);
-        }
-
-        private static void ConvertToReadOnlyProperty(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration.ReturnType == null || methodDeclaration.ReturnType.IsVoid())
-                return;
-
-            if (methodDeclaration.ParameterList?.Parameters.Count != 0)
-                return;
-
-            if (methodDeclaration.Body == null)
-                return;
-
-            if (methodDeclaration.Body.Span.IntersectsWith(context.Span))
-                return;
-
-            context.RegisterRefactoring(
-                "Convert to read-only property",
-                cancellationToken => ConvertToPropertyAsync(context.Document, methodDeclaration, cancellationToken));
         }
 
         private static void RenameMethodAccordingToTypeName(
@@ -82,51 +67,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     }
                 }
             }
-        }
-
-        private static async Task<Document> ConvertToPropertyAsync(
-            Document document,
-            MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            PropertyDeclarationSyntax propertyDeclaration = ConvertMethodToReadOnlyProperty(methodDeclaration)
-                .WithTriviaFrom(methodDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(methodDeclaration, propertyDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static PropertyDeclarationSyntax ConvertMethodToReadOnlyProperty(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return PropertyDeclaration(
-                methodDeclaration.AttributeLists,
-                methodDeclaration.Modifiers,
-                methodDeclaration.ReturnType,
-                methodDeclaration.ExplicitInterfaceSpecifier,
-                methodDeclaration.Identifier,
-                AccessorList(
-                    SingletonList(
-                        AccessorDeclaration(
-                            SyntaxKind.GetAccessorDeclaration,
-                            GetMethodBody(methodDeclaration)))));
-        }
-
-        private static BlockSyntax GetMethodBody(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration.Body != null)
-                return methodDeclaration.Body;
-
-            if (methodDeclaration.ExpressionBody != null)
-                return Block(ReturnStatement(methodDeclaration.ExpressionBody.Expression));
-
-            return Block();
         }
     }
 }
