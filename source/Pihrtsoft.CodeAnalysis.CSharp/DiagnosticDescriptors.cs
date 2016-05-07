@@ -576,6 +576,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor DeclareEachTypeInSeparateFile = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.DeclareEachTypeInSeparateFile,
+            title: "Declare each type in separate file.",
+            messageFormat: "Consider declaring each type in separate file.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
