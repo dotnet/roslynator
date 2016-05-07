@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
 
-            SyntaxTrivia trivia = root.FindTrivia(context.Span.Start);
+            SyntaxTrivia trivia = root.FindTrivia(context.Span.Start, findInsideTrivia: true);
 
             if (IsComment(trivia))
             {
@@ -51,11 +51,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             switch (trivia.Kind())
             {
                 case SyntaxKind.SingleLineCommentTrivia:
-                    return true;
                 case SyntaxKind.MultiLineCommentTrivia:
-                    return true;
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                    return true;
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     return true;
                 default:

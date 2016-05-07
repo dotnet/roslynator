@@ -12,6 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
         private readonly bool _keepXmlComment;
 
         private RemoveAllCommentsSyntaxRewriter(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
+            : base(visitIntoStructuredTrivia: true)
         {
             _compilationUnit = compilationUnit;
             _keepXmlComment = keepXmlComment;
