@@ -63,6 +63,7 @@
     <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactoring\AddBracesToEmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
+    <Compile Include="Refactoring\ArgumentRefactoring.cs" />
     <Compile Include="Refactoring\CommentRefactoring.cs" />
     <Compile Include="Refactoring\NullableBooleanRefactoring.cs" />
     <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
