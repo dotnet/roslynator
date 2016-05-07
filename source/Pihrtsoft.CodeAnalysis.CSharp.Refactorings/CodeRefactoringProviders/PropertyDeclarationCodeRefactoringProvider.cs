@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
@@ -27,16 +28,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (propertyDeclaration == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-
-            if (semanticModel == null)
-                return;
-
-            RenamePropertyAccordingToTypeName(context, semanticModel, propertyDeclaration);
+            SemanticModel semanticModel = null;
 
             ConvertPropertyToMethod(context, propertyDeclaration);
 
-            ExpandProperty(context, semanticModel, propertyDeclaration);
+            if (context.Document.SupportsSemanticModel)
+            {
+                if (semanticModel == null)
+                    semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                ExpandProperty(context, semanticModel, propertyDeclaration);
+            }
+
+            if (MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
+            {
+                context.RegisterRefactoring(
+                    $"Make property abstract",
+                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+            }
+
+            if (context.Document.SupportsSemanticModel)
+            {
+                if (semanticModel == null)
+                    semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                RenamePropertyAccordingToTypeName(context, semanticModel, propertyDeclaration);
+            }
 
             DeletePropertyInitializer(context, propertyDeclaration);
         }

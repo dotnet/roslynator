@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -28,13 +27,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             DeleteMember(context, memberDeclaration);
 
             DuplicateMember(context, memberDeclaration);
-
-            if (MakeMemberAbstractRefactoring.CanRefactor(context, memberDeclaration))
-            {
-                context.RegisterRefactoring(
-                    $"Make {SyntaxHelper.GetSyntaxNodeName(memberDeclaration)} abstract",
-                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken));
-            }
         }
 
         private static void DeleteMember(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)

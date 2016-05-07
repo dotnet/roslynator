@@ -33,6 +33,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
+            if (MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    $"Make method abstract",
+                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
             if (!context.Document.SupportsSemanticModel)
                 return;
 
