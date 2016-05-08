@@ -34,62 +34,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool CanRefactor(CodeRefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration.AccessorList != null
-                && context.Span.IntersectsWith(propertyDeclaration.AccessorList.Span))
-            {
-                return false;
-            }
-
-            if (propertyDeclaration.ExpressionBody != null
-                && context.Span.IntersectsWith(propertyDeclaration.ExpressionBody.Span))
-            {
-                return false;
-            }
-
-            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
-                return false;
-
-            return true;
+            return !propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && IsAbstractClass(propertyDeclaration.Parent);
         }
 
         private static bool CanRefactor(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.Body != null
-                && context.Span.IntersectsWith(methodDeclaration.Body.Span))
-            {
-                return false;
-            }
-
-            if (methodDeclaration.ExpressionBody != null
-                && context.Span.IntersectsWith(methodDeclaration.ExpressionBody.Span))
-            {
-                return false;
-            }
-
-            if (methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
-                return false;
-
-            return true;
+            return !methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && IsAbstractClass(methodDeclaration.Parent);
         }
 
         private static bool CanRefactor(CodeRefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (indexerDeclaration.AccessorList != null
-                && context.Span.IntersectsWith(indexerDeclaration.AccessorList.Span))
-            {
-                return false;
-            }
+            return !indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && IsAbstractClass(indexerDeclaration.Parent);
+        }
 
-            if (indexerDeclaration.ExpressionBody != null
-                && context.Span.IntersectsWith(indexerDeclaration.ExpressionBody.Span))
-            {
-                return false;
-            }
-
-            if (indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
-                return false;
-
-            return true;
+        private static bool IsAbstractClass(SyntaxNode node)
+        {
+            return node?.IsKind(SyntaxKind.ClassDeclaration) == true
+                && ((ClassDeclarationSyntax)node).Modifiers.Contains(SyntaxKind.AbstractKeyword);
         }
 
         public static async Task<Document> RefactorAsync(
