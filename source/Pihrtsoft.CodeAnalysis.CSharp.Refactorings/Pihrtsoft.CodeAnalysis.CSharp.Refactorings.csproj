@@ -68,6 +68,7 @@
     <Compile Include="Refactoring\CommentRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\NullableBooleanRefactoring.cs" />
+    <Compile Include="Refactoring\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
     <Compile Include="Refactoring\StringEmptyRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
