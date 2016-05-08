@@ -28,8 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             MemberDeclarationRefactoring.Remove(context, methodDeclaration);
             MemberDeclarationRefactoring.Duplicate(context, methodDeclaration);
 
-            if (methodDeclaration.Identifier.Span.Contains(context.Span)
-                && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
+            if (MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
             {
                 context.RegisterRefactoring(
                     "Convert to read-only property",
