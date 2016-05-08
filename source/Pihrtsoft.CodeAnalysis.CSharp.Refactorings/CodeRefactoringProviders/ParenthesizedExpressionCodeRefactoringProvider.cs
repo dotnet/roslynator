@@ -23,9 +23,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (parenthesizedExpression == null)
                 return;
 
-            context.RegisterRefactoring(
-                "Extract expression from parentheses",
-                cancellationToken => ExtractExpressionFromParenthesesAsync(context.Document, parenthesizedExpression, cancellationToken));
+            if (!parenthesizedExpression.OpenParenToken.IsMissing
+                && !parenthesizedExpression.CloseParenToken.IsMissing)
+            {
+                context.RegisterRefactoring(
+                    "Extract expression from parentheses",
+                    cancellationToken => ExtractExpressionFromParenthesesAsync(context.Document, parenthesizedExpression, cancellationToken));
+            }
         }
 
         private static async Task<Document> ExtractExpressionFromParenthesesAsync(
