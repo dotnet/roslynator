@@ -66,6 +66,7 @@
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
     <Compile Include="Refactoring\CommentRefactoring.cs" />
+    <Compile Include="Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\NullableBooleanRefactoring.cs" />
     <Compile Include="Refactoring\PropertyDeclarationRefactoring.cs" />

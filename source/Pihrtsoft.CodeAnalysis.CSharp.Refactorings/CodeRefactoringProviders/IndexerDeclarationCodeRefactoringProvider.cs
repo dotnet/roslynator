@@ -22,6 +22,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (indexerDeclaration == null)
                 return;
 
+            MemberDeclarationRefactoring.Remove(context, indexerDeclaration);
+            MemberDeclarationRefactoring.Duplicate(context, indexerDeclaration);
+
             if (MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
             {
                 context.RegisterRefactoring(

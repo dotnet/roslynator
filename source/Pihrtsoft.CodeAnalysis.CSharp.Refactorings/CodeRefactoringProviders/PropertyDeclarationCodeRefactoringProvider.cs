@@ -24,6 +24,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (propertyDeclaration == null)
                 return;
 
+            MemberDeclarationRefactoring.Remove(context, propertyDeclaration);
+            MemberDeclarationRefactoring.Duplicate(context, propertyDeclaration);
+
             if (PropertyDeclarationRefactoring.CanConvertToMethod(propertyDeclaration))
             {
                 context.RegisterRefactoring(
