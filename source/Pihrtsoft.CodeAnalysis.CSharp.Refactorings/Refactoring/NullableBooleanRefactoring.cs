@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -19,19 +20,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             ExpressionSyntax condition = GetCondition(statement);
 
-            if (condition == null)
-                return false;
+            if (condition != null)
+                return CanRefactor(condition, semanticModel, cancellationToken);
 
-            if (condition.IsKind(SyntaxKind.LogicalNotExpression))
+            return false;
+        }
+
+        private static ExpressionSyntax GetCondition(StatementSyntax statement)
+        {
+            switch (statement.Kind())
             {
-                var logicalNot = (PrefixUnaryExpressionSyntax)condition;
+                case SyntaxKind.IfStatement:
+                    return ((IfStatementSyntax)statement).Condition;
+                case SyntaxKind.WhileStatement:
+                    return ((WhileStatementSyntax)statement).Condition;
+                case SyntaxKind.DoStatement:
+                    return ((DoStatementSyntax)statement).Condition;
+            }
+
+            Debug.Assert(false, statement.Kind().ToString());
+
+            return null;
+        }
+
+        private static bool CanRefactor(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
 
                 if (logicalNot.Operand != null)
                     return IsNullableBoolean(logicalNot.Operand, semanticModel, cancellationToken);
             }
             else
             {
-                return IsNullableBoolean(condition, semanticModel, cancellationToken);
+                return IsNullableBoolean(expression, semanticModel, cancellationToken);
             }
 
             return false;
@@ -55,6 +81,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             CodeRefactoringContext context,
             SemanticModel semanticModel)
         {
+            if (statement == null)
+                throw new System.ArgumentNullException(nameof(statement));
+
+            if (semanticModel == null)
+                throw new System.ArgumentNullException(nameof(semanticModel));
+
             if (CanRefactor(statement, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
@@ -63,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
@@ -75,21 +107,36 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(oldRoot.ReplaceNode(statement, newNode));
         }
 
-        private static ExpressionSyntax GetCondition(StatementSyntax statement)
+        public static void Refactor(
+            ExpressionSyntax expression,
+            CodeRefactoringContext context,
+            SemanticModel semanticModel)
         {
-            switch (statement.Kind())
+            if (expression == null)
+                throw new System.ArgumentNullException(nameof(expression));
+
+            if (semanticModel == null)
+                throw new System.ArgumentNullException(nameof(semanticModel));
+
+            if (CanRefactor(expression, semanticModel, context.CancellationToken))
             {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)statement).Condition;
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)statement).Condition;
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)statement).Condition;
+                context.RegisterRefactoring(
+                    "Add boolean comparison",
+                    cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
             }
+        }
 
-            Debug.Assert(false, statement.Kind().ToString());
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken)
+        {
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            return null;
+            SyntaxNode newNode = CreateNewExpression(expression)
+                .WithAdditionalAnnotations(Formatter.Annotation);
+
+            return document.WithSyntaxRoot(oldRoot.ReplaceNode(expression, newNode));
         }
 
         private static StatementSyntax SetCondition(StatementSyntax statement)
@@ -99,17 +146,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.IfStatement:
                     {
                         var ifStatement = (IfStatementSyntax)statement;
-                        return ifStatement.WithCondition(CreateNewCondition(ifStatement.Condition));
+                        return ifStatement.WithCondition(CreateNewExpression(ifStatement.Condition));
                     }
                 case SyntaxKind.WhileStatement:
                     {
                         var whileStatement = (WhileStatementSyntax)statement;
-                        return whileStatement.WithCondition(CreateNewCondition(whileStatement.Condition));
+                        return whileStatement.WithCondition(CreateNewExpression(whileStatement.Condition));
                     }
                 case SyntaxKind.DoStatement:
                     {
                         var doStatement = (DoStatementSyntax)statement;
-                        return doStatement.WithCondition(CreateNewCondition(doStatement.Condition));
+                        return doStatement.WithCondition(CreateNewExpression(doStatement.Condition));
                     }
             }
 
@@ -118,7 +165,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return statement;
         }
 
-        private static BinaryExpressionSyntax CreateNewCondition(ExpressionSyntax expression)
+        private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
             {

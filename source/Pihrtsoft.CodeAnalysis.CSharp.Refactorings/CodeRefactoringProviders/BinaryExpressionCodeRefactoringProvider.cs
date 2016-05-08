@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -24,10 +25,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (binaryExpression == null)
                 return;
 
-            if (binaryExpression.Left != null
-                && binaryExpression.Right != null
-                && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
+            if (binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && binaryExpression.Left?.IsMissing == false
+                && binaryExpression.Right?.IsMissing == false)
             {
+                if (context.Document.SupportsSemanticModel)
+                {
+                    SemanticModel semanticModel = null;
+
+                    if (binaryExpression.Left.Span.Contains(context.Span))
+                    {
+                        if (semanticModel == null)
+                            semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                        NullableBooleanRefactoring.Refactor(binaryExpression.Left, context, semanticModel);
+                    }
+                    else if (binaryExpression.Right.Span.Contains(context.Span))
+                    {
+                        if (semanticModel == null)
+                            semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                        NullableBooleanRefactoring.Refactor(binaryExpression.Right, context, semanticModel);
+                    }
+                }
+
                 context.RegisterRefactoring(
                     "Negate binary expression",
                     cancellationToken =>
