@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis
 
             ITypeSymbol typeSymbol2 = ExtractFromNullableType(typeSymbol);
 
-            ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericType(typeSymbol2);
+            ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
 
             string name = GetName(typeSymbol3);
 
@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis
             return typeSymbol;
         }
 
-        private static ITypeSymbol ExtractFromArrayOrGenericType(ITypeSymbol typeSymbol)
+        private static ITypeSymbol ExtractFromArrayOrGenericCollection(ITypeSymbol typeSymbol)
         {
             switch (typeSymbol.Kind)
             {
@@ -86,8 +86,11 @@ namespace Pihrtsoft.CodeAnalysis
                     {
                         var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                        if (namedTypeSymbol.TypeArguments.Length == 1)
+                        if (namedTypeSymbol.TypeArguments.Length == 1
+                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable))
+                        {
                             return namedTypeSymbol.TypeArguments[0];
+                        }
 
                         break;
                     }
