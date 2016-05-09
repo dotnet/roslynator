@@ -48,14 +48,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     if (throwStatement.Expression != null)
                     {
                         ISymbol expressionSymbol = context.SemanticModel.GetSymbolInfo(throwStatement.Expression, context.CancellationToken).Symbol;
-                        if (expressionSymbol != null)
+
+                        if (expressionSymbol != null
+                            && symbol.Equals(expressionSymbol))
                         {
-                            if (symbol.Equals(expressionSymbol))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                                    throwStatement.Expression.GetLocation());
-                            }
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
+                                throwStatement.Expression.GetLocation());
                         }
                     }
                 }

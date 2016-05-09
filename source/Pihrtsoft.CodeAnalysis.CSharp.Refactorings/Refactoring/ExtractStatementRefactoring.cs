@@ -30,17 +30,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (statement.Parent?.IsKind(SyntaxKind.Block) == true)
                 statement = (BlockSyntax)statement.Parent;
 
-            if (statement.Parent != null)
+            if (statement.Parent != null
+                && (CheckContainingNode(statement.Parent)
+                && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
             {
-                if (CheckContainingNode(statement.Parent)
-                    && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true)
-                {
-                    string s = (UsePlural(statement)) ? "s" : "";
+                string s = (UsePlural(statement)) ? "s" : "";
 
-                    context.RegisterRefactoring(
-                        $"Extract statement{s} from {SyntaxHelper.GetSyntaxNodeName(statement.Parent)}",
-                        cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
-                }
+                context.RegisterRefactoring(
+                    $"Extract statement{s} from {SyntaxHelper.GetSyntaxNodeName(statement.Parent)}",
+                    cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
             }
         }
 

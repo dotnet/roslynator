@@ -92,11 +92,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         if (simpleBaseType.Type?.IsKind(SyntaxKind.PredefinedType) == true)
                         {
                             var symbol = context.SemanticModel.GetSymbolInfo(simpleBaseType.Type, context.CancellationToken).Symbol as INamedTypeSymbol;
-                            if (symbol != null)
-                            {
-                                if (symbol.SpecialType == SpecialType.System_Int32)
-                                    return baseType;
-                            }
+
+                            if (symbol?.SpecialType == SpecialType.System_Int32)
+                                return baseType;
                         }
                     }
                 }

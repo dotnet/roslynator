@@ -30,21 +30,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var lockStatement = (LockStatementSyntax)context.Node;
 
-            if (lockStatement.Expression != null)
+            if (lockStatement.Expression != null
+                && lockStatement.Expression.IsAnyKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression))
             {
-                if (lockStatement.Expression.IsAnyKind(
-                    SyntaxKind.ThisExpression,
-                    SyntaxKind.TypeOfExpression))
-                {
-                    ITypeSymbol typeSymbol = context.SemanticModel
-                        .GetTypeInfo(lockStatement.Expression, context.CancellationToken).Type;
+                ITypeSymbol typeSymbol = context.SemanticModel
+                    .GetTypeInfo(lockStatement.Expression, context.CancellationToken).Type;
 
-                    if (typeSymbol != null && IsPubliclyAccessible(typeSymbol))
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
-                            lockStatement.Expression.GetLocation());
-                    }
+                if (typeSymbol != null && IsPubliclyAccessible(typeSymbol))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
+                        lockStatement.Expression.GetLocation());
                 }
             }
         }

@@ -25,10 +25,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
-            if (trivia.IsWhitespaceOrEndOfLine())
+            if (trivia.IsWhitespaceOrEndOfLine()
+                && (_span == null || _span.Value.Contains(trivia.Span)))
             {
-                if (_span == null || _span.Value.Contains(trivia.Span))
-                    return SyntaxHelper.EmptyTrivia;
+                return SyntaxHelper.EmptyTrivia;
             }
 
             return base.VisitTrivia(trivia);

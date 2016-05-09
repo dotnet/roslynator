@@ -44,15 +44,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 }
             }
 
-            if (cnt > 1 && allSupportsEmbedded)
+            if (cnt > 1
+                && allSupportsEmbedded
+                && anyHasBlock)
             {
-                if (anyHasBlock)
-                {
-                    RemoveBracesFromChain = true;
+                RemoveBracesFromChain = true;
 
-                    if (anyHasEmbedded)
-                        AddBracesToChain = true;
-                }
+                if (anyHasEmbedded)
+                    AddBracesToChain = true;
             }
         }
 
