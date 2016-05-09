@@ -76,9 +76,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
             else if (IfElseChainAnalysis.IsTopIf(ifStatement) && ifStatement.Condition?.IsMissing == false)
             {
-                IfStatementSyntax ifStatement2 = GetContainingIfStatement(ifStatement);
+                IfStatementSyntax ifStatement2 = GetContainedIfStatement(ifStatement);
 
-                if (ifStatement2?.Condition?.IsMissing == false)
+                if (ifStatement2 != null
+                    && ifStatement2.Else == null
+                    && ifStatement2.Condition?.IsMissing == false)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.MergeIfStatementWithContainedIfStatement,
@@ -89,7 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private static IfStatementSyntax GetContainingIfStatement(IfStatementSyntax ifStatement)
+        private static IfStatementSyntax GetContainedIfStatement(IfStatementSyntax ifStatement)
         {
             StatementSyntax statement = ifStatement.Statement;
 
