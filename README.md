@@ -1,5 +1,6 @@
 ## Pihrtsoft.CodeAnalysis
 * Roslyn-based library that offers more than 60 analyzers and more than 70 refactorings for C#.
+* [Release Notes](https://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
 * http://pihrt.net/roslyn
 
 ### Distribution
