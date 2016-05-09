@@ -246,8 +246,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.20.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.Common.dll" />
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.20.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.CSharp.dll" />
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.21.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.Common.dll" />
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.9.21.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.CSharp.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
