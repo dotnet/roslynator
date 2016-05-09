@@ -21,6 +21,7 @@ namespace Pihrtsoft.CodeAnalysis
 
             } while (@namespace != null);
         }
+
         public static IEnumerable<INamespaceSymbol> ContainingNamespaces(this INamespaceSymbol @namespace)
         {
             if (@namespace == null)
