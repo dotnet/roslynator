@@ -9,8 +9,8 @@
     <licenseUrl>https://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Roslyn-based library that offers more than 50 analyzers for C#.</description>
-    <summary>Roslyn-based library that offers more than 50 analyzers for C#.</summary>
+    <description>Roslyn-based library that offers more than 60 analyzers for C#.</description>
+    <summary>Roslyn-based library that offers more than 60 analyzers for C#.</summary>
     <copyright>Copyright (c) 2016 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <frameworkAssemblies>
