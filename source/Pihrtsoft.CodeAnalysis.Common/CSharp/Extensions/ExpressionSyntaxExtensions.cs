@@ -78,8 +78,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
                     {
-                        return ((BinaryExpressionSyntax)expression)
-                            .WithOperatorToken(Token(GetOperatorTokenKind(expression.Kind())));
+                        var binaryExpression = (BinaryExpressionSyntax)expression;
+
+                        return BinaryExpression(
+                            NegateExpressionKind(expression.Kind()),
+                            binaryExpression.Left,
+                            Token(NegateOperatorTokenKind(binaryExpression.OperatorToken.Kind()))
+                                .WithTriviaFrom(binaryExpression.OperatorToken),
+                            binaryExpression.Right
+                        ).WithTriviaFrom(binaryExpression);
                     }
             }
 
@@ -88,28 +95,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 ParenthesizedExpression(expression));
         }
 
-        private static SyntaxKind GetOperatorTokenKind(this SyntaxKind kind)
+        private static SyntaxKind NegateOperatorTokenKind(this SyntaxKind operatorKind)
         {
-            switch (kind)
+            switch (operatorKind)
+            {
+                case SyntaxKind.EqualsEqualsToken:
+                    return SyntaxKind.ExclamationEqualsToken;
+                case SyntaxKind.ExclamationEqualsToken:
+                    return SyntaxKind.EqualsEqualsToken;
+                case SyntaxKind.GreaterThanToken:
+                    return SyntaxKind.LessThanEqualsToken;
+                case SyntaxKind.GreaterThanEqualsToken:
+                    return SyntaxKind.LessThanToken;
+                case SyntaxKind.LessThanToken:
+                    return SyntaxKind.GreaterThanEqualsToken;
+                case SyntaxKind.LessThanEqualsToken:
+                    return SyntaxKind.GreaterThanToken;
+            }
+
+            Debug.Assert(false, operatorKind.ToString());
+            return SyntaxKind.None;
+        }
+
+        private static SyntaxKind NegateExpressionKind(this SyntaxKind expressionKind)
+        {
+            switch (expressionKind)
             {
                 case SyntaxKind.EqualsExpression:
-                    return SyntaxKind.ExclamationEqualsToken;
+                    return SyntaxKind.NotEqualsExpression;
                 case SyntaxKind.NotEqualsExpression:
-                    return SyntaxKind.EqualsEqualsToken;
+                    return SyntaxKind.EqualsExpression;
                 case SyntaxKind.GreaterThanExpression:
-                    return SyntaxKind.LessThanEqualsToken;
+                    return SyntaxKind.LessThanOrEqualExpression;
                 case SyntaxKind.GreaterThanOrEqualExpression:
-                    return SyntaxKind.LessThanToken;
+                    return SyntaxKind.LessThanExpression;
                 case SyntaxKind.LessThanExpression:
                     return SyntaxKind.GreaterThanOrEqualExpression;
                 case SyntaxKind.LessThanOrEqualExpression:
-                    return SyntaxKind.GreaterThanToken;
-                default:
-                    {
-                        Debug.Assert(false, kind.ToString());
-                        return SyntaxKind.None;
-                    }
+                    return SyntaxKind.GreaterThanExpression;
             }
+
+            Debug.Assert(false, expressionKind.ToString());
+            return SyntaxKind.None;
         }
     }
 }
