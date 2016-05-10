@@ -141,7 +141,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 case SyntaxKind.IdentifierName:
                 case SyntaxKind.InvocationExpression:
                 case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.ElementAccessExpression:
                 case SyntaxKind.LogicalNotExpression:
+                case SyntaxKind.CastExpression:
+                case SyntaxKind.MultiplyExpression:
+                case SyntaxKind.DivideExpression:
+                case SyntaxKind.ModuloExpression:
+                case SyntaxKind.AddExpression:
+                case SyntaxKind.SubtractExpression:
+                case SyntaxKind.LeftShiftExpression:
+                case SyntaxKind.RightShiftExpression:
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                case SyntaxKind.IsExpression:
+                case SyntaxKind.AsExpression:
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                case SyntaxKind.ExclusiveOrExpression:
                     return expression;
                 default:
                     {
