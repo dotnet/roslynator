@@ -596,6 +596,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor MergeIfStatementWithContainedIfStatementFadeOut = MergeIfStatementWithContainedIfStatement.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor UseStringLiteralInsteadOfInterpolatedString = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseStringLiteralInsteadOfInterpolatedString,
+            title: "Use string literal instead of interpolated string.",
+            messageFormat: "Consider using string literal instead of interpolated string.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithStringLiteralFadeOut = UseStringLiteralInsteadOfInterpolatedString.CreateFadeOut();
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

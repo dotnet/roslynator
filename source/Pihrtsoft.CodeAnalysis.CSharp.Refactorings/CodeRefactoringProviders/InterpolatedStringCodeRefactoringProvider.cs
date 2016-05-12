@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -23,40 +22,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (interpolatedString == null)
                 return;
 
-            if (CanConvertToInterpolatedString(interpolatedString))
+            if (InterpolatedStringRefactoring.CanConvertToStringLiteral(interpolatedString))
             {
                 context.RegisterRefactoring("Convert to string literal",
                     cancellationToken =>
                     {
-                        return ConvertToInterpolatedStringAsync(
+                        return InterpolatedStringRefactoring.ConvertToStringLiteralAsync(
                             context.Document,
                             interpolatedString,
                             cancellationToken);
                     });
             }
-        }
-
-        private static bool CanConvertToInterpolatedString(InterpolatedStringExpressionSyntax interpolatedString)
-        {
-            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
-
-            return contents.Count == 0
-                || (contents.Count == 1 && contents[0].IsKind(SyntaxKind.InterpolatedStringText));
-        }
-
-        private static async Task<Document> ConvertToInterpolatedStringAsync(
-            Document document,
-            InterpolatedStringExpressionSyntax interpolatedString,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(interpolatedString.ToString().Substring(1))
-                .WithTriviaFrom(interpolatedString);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(interpolatedString, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }
