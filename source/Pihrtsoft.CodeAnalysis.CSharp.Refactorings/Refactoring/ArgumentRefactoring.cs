@@ -99,6 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             ArgumentSyntax newNode = argument
                 .WithNameColon(NameColon(parameterSymbol.Name))
+                .WithTriviaFrom(argument)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argument, newNode);
@@ -115,6 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             ArgumentSyntax newArgument = argument
                 .WithNameColon(null)
+                .WithTriviaFrom(argument)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argument, newArgument);
