@@ -15,6 +15,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     public static class ArgumentRefactoring
     {
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
+            parameterOptions: SymbolDisplayParameterOptions.IncludeName);
+
         public static void AddOrRemoveArgumentName(
             CodeRefactoringContext context,
             ArgumentSyntax argument,
@@ -98,7 +102,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             ArgumentSyntax newNode = argument
-                .WithNameColon(NameColon(parameterSymbol.Name))
+                .WithNameColon(NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat)))
                 .WithTriviaFrom(argument)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 

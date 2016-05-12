@@ -13,6 +13,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ArgumentSyntaxExtensions
     {
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
+            parameterOptions: SymbolDisplayParameterOptions.IncludeName);
+
         public static ArgumentSyntax AddParameterName(
             this ArgumentSyntax argument,
             SemanticModel semanticModel,
@@ -37,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             return argument
                 .WithNameColon(
-                    SyntaxFactory.NameColon(parameterSymbol.Name)
+                    SyntaxFactory.NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
                         .WithTrailingTrivia(SyntaxFactory.Space))
                 .WithTriviaFrom(argument);
         }
