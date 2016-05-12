@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -75,18 +76,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (propertyDeclaration.AccessorList != null
+            return propertyDeclaration.Parent != null
+                && propertyDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+                && propertyDeclaration.AccessorList != null
                 && propertyDeclaration
                     .AccessorList
-                    .Accessors.All(f => f.Body == null))
-            {
-                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
-
-                if (propertySymbol?.ContainingType?.TypeKind != TypeKind.Interface)
-                    return true;
-            }
-
-            return false;
+                    .Accessors.All(f => f.Body == null);
         }
 
         public static async Task<Document> ExpandPropertyAsync(
@@ -127,28 +122,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxTokenList modifiers = TokenList(Token(SyntaxKind.PrivateKeyword));
 
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                modifiers.Add(Token(SyntaxKind.StaticKeyword));
+                modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            VariableDeclarationSyntax variableDeclaration = VariableDeclaration(
-                    propertyDeclaration.Type,
-                    SingletonSeparatedList(
-                        VariableDeclarator(NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText))
-                            .WithInitializer(propertyDeclaration.Initializer)));
-
-            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                List<AttributeListSyntax>(),
-                modifiers,
-                variableDeclaration);
-
-            fieldDeclaration = fieldDeclaration.WithAdditionalAnnotations(Formatter.Annotation);
+            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, modifiers)
+                .WithAdditionalAnnotations(Formatter.Annotation);
 
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration)
                 .WithTriviaFrom(propertyDeclaration)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
-                propertyDeclaration,
-                new MemberDeclarationSyntax[] { fieldDeclaration, newPropertyDeclaration });
+            SyntaxList<MemberDeclarationSyntax> members = GetMembers((MemberDeclarationSyntax)propertyDeclaration.Parent);
+
+            SyntaxList<MemberDeclarationSyntax> newMembers = members
+                .Replace(propertyDeclaration, newPropertyDeclaration)
+                .Insert(IndexOfLastField(members) + 1, fieldDeclaration);
+
+            SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration.Parent, SetMembers(propertyDeclaration.Parent, newMembers));
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -207,7 +196,62 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         propertyDeclaration.AccessorList.ReplaceNode(setter, newSetter));
             }
 
-            return propertyDeclaration;
+            AccessorListSyntax accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(propertyDeclaration.AccessorList)
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+
+            return propertyDeclaration
+                .WithAccessorList(accessorList);
+        }
+
+        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, SyntaxTokenList modifiers)
+        {
+            VariableDeclarationSyntax variableDeclaration = VariableDeclaration(
+                propertyDeclaration.Type,
+                SingletonSeparatedList(
+                    VariableDeclarator(NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText))
+                        .WithInitializer(propertyDeclaration.Initializer)));
+
+            return FieldDeclaration(
+                List<AttributeListSyntax>(),
+                modifiers,
+                variableDeclaration);
+        }
+
+        private static SyntaxList<MemberDeclarationSyntax> GetMembers(MemberDeclarationSyntax declaration)
+        {
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)declaration).Members;
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)declaration).Members;
+                default:
+                    return default(SyntaxList<MemberDeclarationSyntax>);
+            }
+        }
+
+        private static MemberDeclarationSyntax SetMembers(SyntaxNode declaration, SyntaxList<MemberDeclarationSyntax> newMembers)
+        {
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)declaration).WithMembers(newMembers);
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)declaration).WithMembers(newMembers);
+                default:
+                    return null;
+            }
+        }
+
+        private static int IndexOfLastField(SyntaxList<MemberDeclarationSyntax> members)
+        {
+            for (int i = members.Count - 1; i >= 0; i--)
+            {
+                if (members[i].IsKind(SyntaxKind.FieldDeclaration))
+                    return i;
+            }
+
+            return -1;
         }
 
         public static async Task<Document> RemoveInitializerAsync(
