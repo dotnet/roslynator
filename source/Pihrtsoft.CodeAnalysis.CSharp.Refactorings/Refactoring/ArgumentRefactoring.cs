@@ -78,7 +78,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 cancellationToken);
                         });
                 }
-                else if (argumentList.Arguments.All(f => f.NameColon != null))
+
+                if (argumentList.Arguments.Any(f => f.NameColon != null))
                 {
                     context.RegisterRefactoring(
                         "Remove parameter name from each argument",
