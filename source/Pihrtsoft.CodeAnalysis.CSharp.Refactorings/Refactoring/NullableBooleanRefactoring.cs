@@ -134,6 +134,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             SyntaxNode newNode = CreateNewExpression(expression)
+                .WithTriviaFrom(expression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             return document.WithSyntaxRoot(oldRoot.ReplaceNode(expression, newNode));
@@ -173,14 +174,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 return SyntaxFactory.BinaryExpression(
                     SyntaxKind.EqualsExpression,
-                    logicalNot.Operand.WithTriviaFrom(expression),
+                    logicalNot.Operand.WithoutTrivia(),
                     SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression));
             }
             else
             {
                 return SyntaxFactory.BinaryExpression(
                     SyntaxKind.EqualsExpression,
-                    expression,
+                    expression.WithoutTrivia(),
                     SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression));
             }
         }
