@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     {
                         return NegateBinaryExpressionAsync(
                             context.Document,
-                            binaryExpression,
+                            GetTopmostExpression(binaryExpression),
                             cancellationToken);
                     });
             }
@@ -74,6 +74,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             root = root.ReplaceNode(binaryExpression, newNode);
 
             return document.WithSyntaxRoot(root);
+        }
+
+        private static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
+        {
+            bool success = true;
+
+            while (success)
+            {
+                success = false;
+
+                if (binaryExpression.Parent != null
+                    && binaryExpression.Parent.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
+                {
+                    var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
+
+                    if (parent.Left?.IsMissing == false
+                        && parent.Right?.IsMissing == false)
+                    {
+                        binaryExpression = parent;
+                        success = true;
+                    }
+                }
+            }
+
+            return binaryExpression;
         }
     }
 }
