@@ -158,5 +158,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             return document.WithSyntaxRoot(newRoot);
         }
+
+        public static ArgumentSyntax AddParameterName(
+            ArgumentSyntax argument,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (argument == null)
+                throw new ArgumentNullException(nameof(argument));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (argument.NameColon != null && !argument.NameColon.IsMissing)
+                return argument;
+
+            IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                semanticModel,
+                allowParams: false,
+                cancellationToken: cancellationToken);
+
+            if (parameterSymbol == null)
+                return argument;
+
+            return argument
+                .WithNameColon(
+                    NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
+                        .WithTrailingTrivia(Space))
+                .WithTriviaFrom(argument);
+        }
     }
 }

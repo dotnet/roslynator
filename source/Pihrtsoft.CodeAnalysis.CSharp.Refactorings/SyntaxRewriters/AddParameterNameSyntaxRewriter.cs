@@ -3,6 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 {
@@ -22,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 
         public override SyntaxNode VisitArgument(ArgumentSyntax node)
         {
-            return node.AddParameterName(_semanticModel);
+            return ArgumentRefactoring.AddParameterName(node, _semanticModel);
         }
     }
 }

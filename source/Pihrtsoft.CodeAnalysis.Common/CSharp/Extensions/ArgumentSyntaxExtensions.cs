@@ -13,39 +13,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ArgumentSyntaxExtensions
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
-            parameterOptions: SymbolDisplayParameterOptions.IncludeName);
-
-        public static ArgumentSyntax AddParameterName(
-            this ArgumentSyntax argument,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (argument.NameColon != null && !argument.NameColon.IsMissing)
-                return argument;
-
-            IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                semanticModel,
-                allowParams: false,
-                cancellationToken: cancellationToken);
-
-            if (parameterSymbol == null)
-                return argument;
-
-            return argument
-                .WithNameColon(
-                    SyntaxFactory.NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
-                        .WithTrailingTrivia(SyntaxFactory.Space))
-                .WithTriviaFrom(argument);
-        }
-
         public static IParameterSymbol DetermineParameter(
             this ArgumentSyntax argument,
             SemanticModel semanticModel,
