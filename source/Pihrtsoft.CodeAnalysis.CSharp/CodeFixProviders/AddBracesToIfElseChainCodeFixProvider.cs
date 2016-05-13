@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (ifStatement == null)
                 return;
 
-            ifStatement = IfElseChainAnalysis.GetTopIf(ifStatement);
+            ifStatement = IfElseChainAnalysis.GetTopmostIf(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
                 "Add braces to if-else chain",

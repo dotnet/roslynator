@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            ifStatement = GetTopIf(ifStatement);
+            ifStatement = GetTopmostIf(ifStatement);
 
             while (true)
             {
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 yield return ifStatement.Else;
         }
 
-        public static IfStatementSyntax GetTopIf(ElseClauseSyntax elseClause)
+        public static IfStatementSyntax GetTopmostIf(ElseClauseSyntax elseClause)
         {
             if (elseClause == null)
                 throw new ArgumentNullException(nameof(elseClause));
@@ -41,12 +41,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             var ifStatement = elseClause.Parent as IfStatementSyntax;
 
             if (ifStatement != null)
-                return GetTopIf(ifStatement);
+                return GetTopmostIf(ifStatement);
 
             return null;
         }
 
-        public static IfStatementSyntax GetTopIf(IfStatementSyntax ifStatement)
+        public static IfStatementSyntax GetTopmostIf(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
