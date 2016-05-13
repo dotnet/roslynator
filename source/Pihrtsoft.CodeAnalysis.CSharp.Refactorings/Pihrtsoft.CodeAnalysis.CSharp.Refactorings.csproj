@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeRefactoringProviders\InterpolatedStringCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\IndexerDeclarationCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\StatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\LambdaExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\SwitchStatementCodeRefactoringProvider_.cs" />
@@ -85,8 +84,6 @@
     <Compile Include="CodeRefactoringProviders\CloseParenTokenCodeCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\PostfixUnaryExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\PrefixUnaryExpressionCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\PropertyDeclarationCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\MethodDeclarationCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\CommaTokenCodeCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\SyntaxTriviaCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ParameterCodeRefactoringProvider.cs" />

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -276,6 +277,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, newNode);
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        internal static void RenameAccordingToTypeName(
+            PropertyDeclarationSyntax propertyDeclaration,
+            CodeRefactoringContext context,
+            SemanticModel semanticModel)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (propertyDeclaration.Type == null)
+                return;
+
+            if (!propertyDeclaration.Identifier.Span.Contains(context.Span))
+                return;
+
+            string newName = NamingHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
+
+            if (string.Equals(newName, propertyDeclaration.Identifier.ToString(), StringComparison.Ordinal))
+                return;
+
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+
+            context.RegisterRefactoring(
+                $"Rename property to '{newName}'",
+                cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
         }
     }
 }

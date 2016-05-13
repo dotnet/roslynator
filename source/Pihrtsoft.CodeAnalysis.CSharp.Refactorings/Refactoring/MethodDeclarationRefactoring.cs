@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -71,6 +73,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 return Block(ReturnStatement(methodDeclaration.ExpressionBody.Expression));
 
             return Block();
+        }
+
+        internal static void RenameAccordingToTypeName(
+            MethodDeclarationSyntax methodDeclaration,
+            CodeRefactoringContext context,
+            SemanticModel semanticModel)
+        {
+            if (methodDeclaration == null)
+                throw new ArgumentNullException(nameof(methodDeclaration));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (methodDeclaration.ReturnType?.IsVoid() == false
+                && methodDeclaration.Identifier.Span.Contains(context.Span))
+            {
+                string newName = NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
+
+                Debug.Assert(!string.IsNullOrEmpty(newName), methodDeclaration.ReturnType.ToString());
+
+                if (!string.IsNullOrEmpty(newName))
+                {
+                    newName = "Get" + newName;
+
+                    if (!string.Equals(newName, methodDeclaration.Identifier.ToString(), StringComparison.Ordinal))
+                    {
+                        ISymbol symbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                        context.RegisterRefactoring(
+                            $"Rename method to '{newName}'",
+                            cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                    }
+                }
+            }
         }
     }
 }
