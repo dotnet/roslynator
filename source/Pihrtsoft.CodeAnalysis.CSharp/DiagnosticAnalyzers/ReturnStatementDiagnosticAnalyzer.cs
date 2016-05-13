@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -28,58 +28,43 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.ReturnStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var returnStatement = (ReturnStatementSyntax)context.Node;
 
-            if (returnStatement.Expression == null || returnStatement.Parent == null)
+            if (returnStatement.Expression?.IsKind(SyntaxKind.IdentifierName) != true)
                 return;
 
-            if (!returnStatement.Parent.IsKind(SyntaxKind.Block))
+            LocalDeclarationStatementSyntax localDeclaration = GetLocalDeclaration(returnStatement);
+
+            if (localDeclaration == null)
                 return;
 
-            var block = (BlockSyntax)returnStatement.Parent;
-            if (block.Statements.Count <= 1)
-                return;
+            VariableDeclaratorSyntax declarator = GetVariableDeclarator(localDeclaration);
 
-            int index = block.Statements.IndexOf(returnStatement);
-            if (index == 0)
-                return;
-
-            StatementSyntax statement = block.Statements[index - 1];
-
-            if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement))
-                return;
-
-            var localDeclaration = (LocalDeclarationStatementSyntax)statement;
-
-            ISymbol returnSymbol = context.SemanticModel.GetSymbolInfo(returnStatement.Expression, context.CancellationToken).Symbol;
-            if (returnSymbol == null)
-                return;
-
-            VariableDeclaratorSyntax declarator = localDeclaration.Declaration.Variables.SingleOrDefault();
             if (declarator == null)
                 return;
 
-            if (declarator.Initializer?.Value == null)
+            ISymbol returnSymbol = context.SemanticModel.GetSymbolInfo(returnStatement.Expression, context.CancellationToken).Symbol;
+
+            if (returnSymbol == null || returnSymbol.Kind == SymbolKind.ErrorType)
                 return;
 
             ISymbol declaredSymbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
             if (returnSymbol.Equals(declaredSymbol))
             {
-                Diagnostic diagnostic = Diagnostic.Create(
+                context.ReportDiagnostic(
                     DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatement,
-                    localDeclaration.GetLocation(),
-                    new Location[] { returnStatement.GetLocation() }.AsEnumerable());
-
-                context.ReportDiagnostic(diagnostic);
+                    Location.Create(
+                        returnStatement.SyntaxTree,
+                        TextSpan.FromBounds(localDeclaration.Span.Start, returnStatement.Span.End)));
 
                 DiagnosticDescriptor descriptor = DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut;
 
@@ -89,6 +74,42 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 DiagnosticHelper.FadeOutToken(context, localDeclaration.SemicolonToken, descriptor);
                 DiagnosticHelper.FadeOutNode(context, returnStatement.Expression, descriptor);
             }
+        }
+
+        private static LocalDeclarationStatementSyntax GetLocalDeclaration(ReturnStatementSyntax returnStatement)
+        {
+            if (returnStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+            {
+                var block = (BlockSyntax)returnStatement.Parent;
+
+                if (block.Statements.Count > 1)
+                {
+                    int index = block.Statements.IndexOf(returnStatement);
+
+                    if (index > 0)
+                    {
+                        StatementSyntax statement = block.Statements[index - 1];
+
+                        if (statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+                            return (LocalDeclarationStatementSyntax)statement;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static VariableDeclaratorSyntax GetVariableDeclarator(LocalDeclarationStatementSyntax localDeclaration)
+        {
+            if (localDeclaration.Declaration?.Variables.Count == 1)
+            {
+                VariableDeclaratorSyntax declarator = localDeclaration.Declaration.Variables[0];
+
+                if (declarator.Initializer?.Value != null)
+                    return declarator;
+            }
+
+            return null;
         }
     }
 }

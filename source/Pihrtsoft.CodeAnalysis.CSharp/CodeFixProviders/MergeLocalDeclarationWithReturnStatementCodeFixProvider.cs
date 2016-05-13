@@ -2,7 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -27,60 +26,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            StatementSyntax statement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<StatementSyntax>();
+            var localDeclaration = (LocalDeclarationStatementSyntax)root.DescendantNodes(context.Span)
+                .FirstOrDefault(f => f.IsKind(SyntaxKind.LocalDeclarationStatement) && f.Span.Start == context.Span.Start);
 
-            if (statement == null)
+            if (localDeclaration == null)
                 return;
 
-            var block = (BlockSyntax)statement.Parent;
-            int index = block.Statements.IndexOf(statement);
+            var block = (BlockSyntax)localDeclaration.Parent;
 
-            LocalDeclarationStatementSyntax localDeclaration = null;
-            ReturnStatementSyntax returnStatement = null;
+            int index = block.Statements.IndexOf(localDeclaration);
 
-            if (statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+            var returnStatement = (ReturnStatementSyntax)block.Statements[index + 1];
+
+            if (root
+                .DescendantTrivia(context.Span, descendIntoTrivia: true)
+                .All(f => f.IsWhitespaceOrEndOfLine()))
             {
-                localDeclaration = (LocalDeclarationStatementSyntax)statement;
-                returnStatement = (ReturnStatementSyntax)block.Statements[index + 1];
+                CodeAction codeAction = CodeAction.Create(
+                    "Merge local declaration with return statement",
+                    cancellationToken =>
+                    {
+                        return MergeLocalDeclarationWithReturnStatementAsync(
+                            context.Document,
+                            localDeclaration,
+                            returnStatement,
+                            block,
+                            cancellationToken);
+                    },
+                    DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement + EquivalenceKeySuffix);
+
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
             }
-
-            if (statement.IsKind(SyntaxKind.ReturnStatement))
-            {
-                localDeclaration = (LocalDeclarationStatementSyntax)block.Statements[index - 1];
-                returnStatement = (ReturnStatementSyntax)statement;
-            }
-
-            Debug.Assert(localDeclaration != null, "");
-            Debug.Assert(returnStatement != null, "");
-
-            if (localDeclaration == null || returnStatement == null)
-                return;
-
-            if (!CheckTrivia(root, TextSpan.FromBounds(localDeclaration.Span.Start, returnStatement.Span.End)))
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                "Merge local declaration with return statement",
-                cancellationToken => CombineLocalDeclarationAndReturnStatementAsync(context.Document, localDeclaration, returnStatement, block, cancellationToken),
-                DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement + EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static bool CheckTrivia(SyntaxNode root, TextSpan span)
-        {
-            foreach (SyntaxTrivia trivia in root.DescendantTrivia(span, descendIntoTrivia: true))
-            {
-                if (!trivia.IsWhitespaceOrEndOfLine())
-                    return false;
-            }
-
-            return true;
-        }
-
-        private static async Task<Document> CombineLocalDeclarationAndReturnStatementAsync(
+        private static async Task<Document> MergeLocalDeclarationWithReturnStatementAsync(
             Document document,
             LocalDeclarationStatementSyntax localDeclaration,
             ReturnStatementSyntax returnStatement,
