@@ -625,6 +625,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
+        public static readonly DiagnosticDescriptor UseForStatementToCreateInfiniteLoop = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseForStatementToCreateInfiniteLoop,
+            title: "Use for statement to create an infinite loop.",
+            messageFormat: "Consider using for statement to create an infinite loop.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: false
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

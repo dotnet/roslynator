@@ -85,6 +85,7 @@
     <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\WhileStatement.cs" />
     <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompilationUnitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactoring\DoStatementRefactoring.cs" />
