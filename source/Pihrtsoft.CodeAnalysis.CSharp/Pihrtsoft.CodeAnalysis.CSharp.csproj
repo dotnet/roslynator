@@ -46,7 +46,7 @@
     <Compile Include="CodeFixProviders\AnonymousMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\CombineLocalDeclarationAndReturnStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\MergeLocalDeclarationWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\IfStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InterpolatedStringCodeFixProvider.cs" />

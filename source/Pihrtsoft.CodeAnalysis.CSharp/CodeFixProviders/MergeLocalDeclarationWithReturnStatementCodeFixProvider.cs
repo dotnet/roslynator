@@ -16,9 +16,9 @@ using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CombineLocalDeclarationAndReturnStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MergeLocalDeclarationWithReturnStatementCodeFixProvider))]
     [Shared]
-    public class CombineLocalDeclarationAndReturnStatementCodeFixProvider : BaseCodeFixProvider
+    public class MergeLocalDeclarationWithReturnStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement);
