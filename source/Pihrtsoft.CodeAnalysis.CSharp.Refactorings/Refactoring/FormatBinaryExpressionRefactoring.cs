@@ -41,11 +41,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (condition != null
                 && condition.Span.Contains(context.Span)
                 && condition.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && ((BinaryExpressionSyntax)condition).Left?.IsKind(condition.Kind()) == true
                 && condition.IsSingleline())
             {
+                string title = (((BinaryExpressionSyntax)condition).Left?.IsKind(condition.Kind()) == true)
+                    ? "Format binary expressions on multiple lines"
+                    : "Format binary expression on multiple lines";
+
                 context.RegisterRefactoring(
-                    "Format binary expressions on multiple lines",
+                    title,
                     cancellationToken =>
                     {
                         return RefactorAsync(
