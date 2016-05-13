@@ -607,6 +607,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithStringLiteralFadeOut = UseStringLiteralInsteadOfInterpolatedString.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop,
+            title: "Avoid usage of do statement create an infinite loop.",
+            messageFormat: "Consider using while statement to create an infinite loop.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

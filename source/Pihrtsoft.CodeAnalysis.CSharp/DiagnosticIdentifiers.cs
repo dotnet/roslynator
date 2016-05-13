@@ -68,6 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string DeclareEachTypeInSeparateFile = Prefix + "1060";
         public const string MergeIfStatementWithContainedIfStatement = Prefix + "1061";
         public const string UseStringLiteralInsteadOfInterpolatedString = Prefix + "1062";
+        public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = Prefix + "1063";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
