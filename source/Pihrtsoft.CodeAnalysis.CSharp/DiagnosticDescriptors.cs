@@ -609,7 +609,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop,
-            title: "Avoid usage of do statement create an infinite loop.",
+            title: "Avoid usage of do statement to create an infinite loop.",
             messageFormat: "Consider using while statement to create an infinite loop.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
