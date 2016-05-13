@@ -33,24 +33,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var accessorList = (AccessorListSyntax)context.Node;
 
-            if (accessorList.Accessors.All(f => f.Body == null))
-                return;
-
-            if (accessorList.IsSingleline(includeExteriorTrivia: false))
+            if (accessorList.Accessors.Any(f => f.Body != null))
             {
-                Diagnostic diagnostic = Diagnostic.Create(
-                    DiagnosticDescriptors.FormatAccessorList,
-                    accessorList.GetLocation());
-
-                context.ReportDiagnostic(diagnostic);
-            }
-            else if (accessorList.Accessors.Any(accessor => ShouldBeFormatted(accessor)))
-            {
-                Diagnostic diagnostic = Diagnostic.Create(
-                    DiagnosticDescriptors.FormatAccessorList,
-                    accessorList.GetLocation());
-
-                context.ReportDiagnostic(diagnostic);
+                if (accessorList.IsSingleline(includeExteriorTrivia: false))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.FormatAccessorList,
+                        accessorList.GetLocation());
+                }
+                else
+                {
+                    foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+                    {
+                        if (ShouldBeFormatted(accessor))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.FormatAccessorList,
+                                accessor.GetLocation());
+                        }
+                    }
+                }
             }
         }
 
