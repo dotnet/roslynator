@@ -73,5 +73,19 @@ namespace Pihrtsoft.CodeAnalysis
 
             return SyntaxFactory.TriviaList(list.Skip(startIndex).Take(endIndex + 1 - startIndex));
         }
+
+        public static bool IsWhitespaceOrEndOfLine(this SyntaxTriviaList triviaList)
+        {
+            foreach (SyntaxTrivia trivia in triviaList)
+            {
+                if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia)
+                    && !trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
