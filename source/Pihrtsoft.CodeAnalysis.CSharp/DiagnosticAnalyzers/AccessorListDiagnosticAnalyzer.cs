@@ -54,6 +54,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     }
                 }
             }
+            else if (accessorList.Parent?.IsKind(SyntaxKind.PropertyDeclaration) == true
+                && accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
+                && !accessorList.IsSingleline(includeExteriorTrivia: false))
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)accessorList.Parent;
+
+                if (!propertyDeclaration.Identifier.IsMissing
+                    && !accessorList.CloseBraceToken.IsMissing)
+                {
+                    TextSpan span = TextSpan.FromBounds(
+                        propertyDeclaration.Identifier.Span.End,
+                        accessorList.CloseBraceToken.Span.Start);
+
+                    if (propertyDeclaration
+                        .DescendantTrivia(span)
+                        .All(f => f.IsWhitespaceOrEndOfLine()))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.FormatAccessorList,
+                            accessorList.GetLocation());
+                    }
+                }
+            }
         }
 
         internal static bool ShouldBeFormatted(AccessorDeclarationSyntax accessor)

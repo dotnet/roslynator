@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,8 +12,9 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -49,10 +51,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+            if (accessorList.Accessors.All(f => f.Body == null))
+            {
+                var propertyDeclaration = (PropertyDeclarationSyntax)accessorList.Parent;
 
-            root = root.ReplaceNode(accessorList, newAccessorList);
+                TextSpan span = TextSpan.FromBounds(
+                    propertyDeclaration.Identifier.Span.End,
+                    accessorList.CloseBraceToken.Span.Start);
+
+                PropertyDeclarationSyntax newPropertyDeclaration =
+                    RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(propertyDeclaration, span);
+
+                newPropertyDeclaration = newPropertyDeclaration
+                    .WithAdditionalAnnotations(Formatter.Annotation);
+
+                root = root.ReplaceNode(propertyDeclaration, newPropertyDeclaration);
+            }
+            else
+            {
+                AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList)
+                    .WithAdditionalAnnotations(Formatter.Annotation);
+
+                root = root.ReplaceNode(accessorList, newAccessorList);
+            }
 
             return document.WithSyntaxRoot(root);
         }
