@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,10 +83,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SemanticModel semanticModel)
         {
             if (statement == null)
-                throw new System.ArgumentNullException(nameof(statement));
+                throw new ArgumentNullException(nameof(statement));
 
             if (semanticModel == null)
-                throw new System.ArgumentNullException(nameof(semanticModel));
+                throw new ArgumentNullException(nameof(semanticModel));
 
             if (CanRefactor(statement, semanticModel, context.CancellationToken))
             {
@@ -113,10 +114,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SemanticModel semanticModel)
         {
             if (expression == null)
-                throw new System.ArgumentNullException(nameof(expression));
+                throw new ArgumentNullException(nameof(expression));
 
             if (semanticModel == null)
-                throw new System.ArgumentNullException(nameof(semanticModel));
+                throw new ArgumentNullException(nameof(semanticModel));
 
             if (CanRefactor(expression, semanticModel, context.CancellationToken))
             {
