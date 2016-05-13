@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.UncheckedStatement:
                     return true;
                 case SyntaxKind.IfStatement:
-                    return IfElseChainAnalysis.IsTopIf((IfStatementSyntax)node);
+                    return IfElseChainAnalysis.IsTopmostIf((IfStatementSyntax)node);
                 case SyntaxKind.ElseClause:
                     return IfElseChainAnalysis.IsEndOfChain((ElseClauseSyntax)node);
             }

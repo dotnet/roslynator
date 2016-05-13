@@ -65,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             return ifStatement;
         }
 
-        public static bool IsTopIf(IfStatementSyntax ifStatement)
+        public static bool IsTopmostIf(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));

@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private static void AddBracesToIfElseChain(CodeRefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChainAnalysis.IsTopIf(ifStatement)
+            if (IfElseChainAnalysis.IsTopmostIf(ifStatement)
                 && ifStatement.Else != null
                 && ifStatement.IfKeyword.Span.Contains(context.Span))
             {
@@ -79,7 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private static void SwapStatements(CodeRefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChainAnalysis.IsTopIf(ifStatement)
+            if (IfElseChainAnalysis.IsTopmostIf(ifStatement)
                 && ifStatement.Statement != null
                 && ifStatement.Condition != null
                 && ifStatement.Condition.Span.Contains(context.Span))

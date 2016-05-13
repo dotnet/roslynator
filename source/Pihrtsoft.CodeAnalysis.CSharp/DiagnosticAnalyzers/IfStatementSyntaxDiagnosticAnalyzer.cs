@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     }
                 }
             }
-            else if (IfElseChainAnalysis.IsTopIf(ifStatement) && ifStatement.Condition?.IsMissing == false)
+            else if (IfElseChainAnalysis.IsTopmostIf(ifStatement) && ifStatement.Condition?.IsMissing == false)
             {
                 IfStatementSyntax ifStatement2 = GetContainedIfStatement(ifStatement);
 
