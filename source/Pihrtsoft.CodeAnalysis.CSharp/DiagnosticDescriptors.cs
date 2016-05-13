@@ -616,6 +616,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor UseWhileStatementToCreateInfiniteLoop = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseWhileStatementToCreateInfiniteLoop,
+            title: "Use while statement to create an infinite loop.",
+            messageFormat: "Consider using while statement to create an infinite loop.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: false
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
