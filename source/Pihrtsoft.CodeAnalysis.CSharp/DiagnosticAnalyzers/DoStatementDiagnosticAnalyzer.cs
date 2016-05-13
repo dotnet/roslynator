@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfDoStatementToCreateInfiniteLoop,
-                    doStatement.GetLocation());
+                    doStatement.DoKeyword.GetLocation());
             }
         }
     }
