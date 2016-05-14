@@ -19,10 +19,26 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
+        public static int GetFullSpanStartLine(this SyntaxToken token)
+        {
+            if (token.SyntaxTree != null)
+                return token.SyntaxTree.GetLineSpan(token.FullSpan).StartLinePosition.Line;
+
+            return -1;
+        }
+
         public static int GetSpanEndLine(this SyntaxToken token)
         {
             if (token.SyntaxTree != null)
                 return token.SyntaxTree.GetLineSpan(token.Span).EndLinePosition.Line;
+
+            return -1;
+        }
+
+        public static int GetFullSpanEndLine(this SyntaxToken token)
+        {
+            if (token.SyntaxTree != null)
+                return token.SyntaxTree.GetLineSpan(token.FullSpan).EndLinePosition.Line;
 
             return -1;
         }

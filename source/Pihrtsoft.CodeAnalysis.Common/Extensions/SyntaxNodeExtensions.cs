@@ -26,6 +26,17 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
+        public static int GetFullSpanStartLine(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.SyntaxTree != null)
+                return node.SyntaxTree.GetLineSpan(node.FullSpan).StartLinePosition.Line;
+
+            return -1;
+        }
+
         public static int GetSpanEndLine(this SyntaxNode node)
         {
             if (node == null)
@@ -33,6 +44,17 @@ namespace Pihrtsoft.CodeAnalysis
 
             if (node.SyntaxTree != null)
                 return node.SyntaxTree.GetLineSpan(node.Span).EndLinePosition.Line;
+
+            return -1;
+        }
+
+        public static int GetFullSpanEndLine(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.SyntaxTree != null)
+                return node.SyntaxTree.GetLineSpan(node.FullSpan).EndLinePosition.Line;
 
             return -1;
         }
