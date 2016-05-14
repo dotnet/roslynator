@@ -20,6 +20,7 @@ namespace AddCodeFileHeader
             string dirPath = @"D:\Documents\Visual Studio 2015\Projects\Pihrtsoft.CodeAnalysis";
 #else
             string dirPath = Environment.CurrentDirectory;
+            dirPath = Path.GetDirectoryName(dirPath);
 #endif
 
             var filesWithoutHeader = new List<string>();
