@@ -44,23 +44,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.IsKind(SyntaxKind.IfStatement)
-                && !IfElseChainAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
+            if (!context.Node.IsKind(SyntaxKind.IfStatement)
+                || IfElseChainAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
             {
-                return;
+                BlockSyntax block = EmbeddedStatementAnalysis.GetBlockThatCanBeEmbeddedStatement(context.Node);
+
+                if (block != null
+                    && !block.OpenBraceToken.IsMissing
+                    && !block.CloseBraceToken.IsMissing
+                    && block.OpenBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
+                    && block.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                    && block.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
+                    && block.CloseBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine())
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveBracesFromStatement,
+                        block.GetLocation());
+
+                    DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                }
             }
-
-            BlockSyntax block = EmbeddedStatementAnalysis.GetBlockThatCanBeEmbeddedStatement(context.Node);
-
-            if (block == null)
-                return;
-
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveBracesFromStatement, block.GetLocation());
-
-            DiagnosticHelper.FadeOutBraces(
-                context,
-                block,
-                DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
         }
     }
 }
