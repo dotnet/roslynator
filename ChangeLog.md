@@ -1,4 +1,27 @@
-### 0.9.2 (2016-05-09)
+### 0.9.30 (2016-05-16)
+
+#### Analyzers
+
+* **NEW** - **"UseForStatementToCreateInfiniteLoop"** analyzer and code fix added
+* **NEW** - **"UseWhileStatementToCreateInfiniteLoop"** analyzer and code fix added
+* **NEW** - **"AvoidUsageOfDoStatementToCreateInfiniteLoop"** analyzer and code fix added
+* **NEW** - **UseStringLiteralInsteadOfInterpolatedString** analyzer and code fix added
+
+* **"RemoveRedundantEmptyLine"** analyzer enhanced
+* **"FormatAccessorList"** analyzer now works for auto-property accessor list
+* **"MergeLocalDeclarationWithReturnStatement"** code fix now works when cursor is in return statement
+* **"MergeIfStatementWithContainedIfStatement"** code fix improved (unnecessary parentheses are not added) 
+* bug fixed in **"SimplifyAssignmentExpression"** analyzer
+
+#### Refactorings
+
+* **"Extract statement(s) from if statement"** refactoring now works for topmost if statement that has else clause
+* **"Format binary expression on multiple lines"** refactoring now works for a single binary expression
+* **"Negate binary expression"** refactoring now works properly for a chain of logical and/or expressions
+* **"Remove parameter name from each argument"** refactoring now works when any argument has parameter name 
+* **"Expand property and add backing field"** improved (accessor is on a single line)
+
+### 0.9.20 (2016-05-09)
 
 #### Analyzers
 
