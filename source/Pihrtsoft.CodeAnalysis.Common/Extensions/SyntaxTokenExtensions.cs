@@ -6,9 +6,6 @@ using Pihrtsoft.CodeAnalysis.CSharp;
 
 namespace Pihrtsoft.CodeAnalysis
 {
-    /// <summary>
-    /// Provides a set of static methods that extends <see cref="SyntaxToken"/>.
-    /// </summary>
     public static class SyntaxTokenExtensions
     {
         public static int GetSpanStartLine(this SyntaxToken token)
