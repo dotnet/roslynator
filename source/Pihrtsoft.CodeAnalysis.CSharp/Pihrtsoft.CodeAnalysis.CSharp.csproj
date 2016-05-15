@@ -39,6 +39,7 @@
     <Compile Include="Analysis\BinaryExpressionAnalysisResult.cs" />
     <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="Analyzers\FormatEachStatementOnSeparateLineAnalyzer.cs" />
+    <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RedundantEmptyLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />

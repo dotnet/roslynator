@@ -23,7 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.FormatBlock,
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
                     DiagnosticDescriptors.SimplifyLambdaExpression,
-                    DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut);
+                    DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut,
+                    DiagnosticDescriptors.RemoveRedundantEmptyLine);
             }
         }
 
@@ -41,6 +42,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return;
 
             var block = (BlockSyntax)context.Node;
+
+            RedundantEmptyLineAnalyzer.AnalyzeBlock(context, block);
 
             FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, block.Statements);
 
