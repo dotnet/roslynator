@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Analyzers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -41,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var block = (BlockSyntax)context.Node;
 
-            DiagnosticHelper.AnalyzeStatements(context, block.Statements);
+            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, block.Statements);
 
             if (block.Parent != null)
             {
