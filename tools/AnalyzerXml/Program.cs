@@ -39,7 +39,6 @@ namespace AnalyzerXml
                     new XElement("SupportsFadeOut", descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Unnecessary)),
                     new XElement("SupportsFadeOutAnalyzer", fieldInfos.Any(f => f.Name == fieldInfo.Name + "FadeOut"))
                 ));
-
             }
 
             doc.Add(root);

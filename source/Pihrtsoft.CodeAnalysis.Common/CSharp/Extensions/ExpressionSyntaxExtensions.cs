@@ -58,7 +58,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                             binaryExpression.Left?.Negate().WithTriviaFrom(binaryExpression.Left),
                             Token(SyntaxKind.BarBarToken).WithTriviaFrom(binaryExpression.OperatorToken),
                             binaryExpression.Right?.Negate().WithTriviaFrom(binaryExpression.Right));
-
                     }
                 case SyntaxKind.LogicalOrExpression:
                     {
@@ -69,7 +68,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                             binaryExpression.Left?.Negate().WithTriviaFrom(binaryExpression.Left),
                             Token(SyntaxKind.AmpersandAmpersandToken).WithTriviaFrom(binaryExpression.OperatorToken),
                             binaryExpression.Right?.Negate().WithTriviaFrom(binaryExpression.Right));
-
                     }
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:

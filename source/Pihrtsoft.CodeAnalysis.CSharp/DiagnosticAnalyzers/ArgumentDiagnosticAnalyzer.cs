@@ -91,7 +91,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 if (string.Equals(parameterName, enumerator.Current.Identifier.ValueText, StringComparison.Ordinal))
                     return true;
-
             } while (enumerator.MoveNext());
 
             return false;

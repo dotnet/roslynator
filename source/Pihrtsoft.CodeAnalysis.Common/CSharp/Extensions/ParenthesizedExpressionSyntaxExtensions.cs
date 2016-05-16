@@ -19,7 +19,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             do
             {
                 syntaxNode = parenthesizedExpression.Parent;
-
             } while (syntaxNode?.IsKind(SyntaxKind.ParenthesizedExpression) == true);
 
             return syntaxNode;

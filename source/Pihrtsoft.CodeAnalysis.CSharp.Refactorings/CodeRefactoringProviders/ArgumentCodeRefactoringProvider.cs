@@ -40,7 +40,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             if (argumentList != null)
                 ArgumentRefactoring.AddOrRemoveArgumentName(context, argumentList, semanticModel);
-
         }
 
         private static void AddCastAccordingToParameterType(
