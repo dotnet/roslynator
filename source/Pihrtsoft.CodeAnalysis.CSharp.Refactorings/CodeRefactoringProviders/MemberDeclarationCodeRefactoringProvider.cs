@@ -67,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
             {
                 context.RegisterRefactoring(
-                    $"Make method abstract",
+                    "Make method abstract",
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
             {
                 context.RegisterRefactoring(
-                    $"Make indexer abstract",
+                    "Make indexer abstract",
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
             }
         }
@@ -117,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
             {
                 context.RegisterRefactoring(
-                    $"Make property abstract",
+                    "Make property abstract",
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 

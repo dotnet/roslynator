@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Introduce field to lock on",
+                "Introduce field to lock on",
                 cancellationToken => IntroduceFieldToLockOnAsync(context.Document, lockStatement, cancellationToken),
                 DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance + BaseCodeFixProvider.EquivalenceKeySuffix);
 
