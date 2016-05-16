@@ -71,6 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = Prefix + "1063";
         public const string UseWhileStatementToCreateInfiniteLoop = Prefix + "1064";
         public const string UseForStatementToCreateInfiniteLoop = Prefix + "1065";
+        public const string RemoveEmptyFinallyClause = Prefix + "1066";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

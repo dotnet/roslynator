@@ -49,6 +49,7 @@
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FinallyClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ForStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MergeLocalDeclarationWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\IfStatementCodeFixProvider.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="DiagnosticAnalyzers\CompilationUnitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DoStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\FinallyClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ForStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InterpolatedStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LockStatementDiagnosticAnalyzer.cs" />
