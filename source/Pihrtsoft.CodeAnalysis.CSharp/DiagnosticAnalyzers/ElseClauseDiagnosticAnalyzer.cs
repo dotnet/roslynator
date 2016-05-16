@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -41,73 +40,53 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var elseClause = (ElseClauseSyntax)context.Node;
 
-            AnalyzeEmptyElseClause(context, elseClause);
-
-            AnalyzeEmbeddedStatement(context, elseClause);
-
-            AnalyzeElseClauseWithSingleIfStatement(context, elseClause);
-        }
-
-        private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
-        {
             StatementSyntax statement = elseClause.Statement;
 
-            if (statement == null)
-                return;
-
-            if (statement.IsKind(SyntaxKind.Block))
-                return;
-
-            if (statement.IsKind(SyntaxKind.IfStatement))
-                return;
-
-            if (elseClause.ElseKeyword.GetSpanStartLine() == statement.GetSpanStartLine())
+            if (statement != null)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
-                    statement.GetLocation());
-            }
-        }
-
-        private static void AnalyzeEmptyElseClause(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
-        {
-            if (!elseClause.Statement.IsKind(SyntaxKind.Block))
-                return;
-
-            var block = (BlockSyntax)elseClause.Statement;
-
-            if (block.Statements.Count != 0)
-                return;
-
-            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
-                return;
-
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.RemoveEmptyElseClause,
-                context.Node.GetLocation());
-        }
-
-        private static void AnalyzeElseClauseWithSingleIfStatement(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
-        {
-            if (elseClause.Statement?.IsKind(SyntaxKind.Block) == true)
-            {
-                var block = (BlockSyntax)elseClause.Statement;
-
-                if (block.Statements.Count == 1
-                    && block.Statements[0].IsKind(SyntaxKind.IfStatement))
+                if (!statement.IsKind(SyntaxKind.Block)
+                    && !statement.IsKind(SyntaxKind.IfStatement)
+                    && elseClause.ElseKeyword.GetSpanStartLine() == statement.GetSpanStartLine())
                 {
-                    var ifStatement = (IfStatementSyntax)block.Statements[0];
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
+                        statement.GetLocation());
+                }
 
-                    if (ifStatement.Else == null)
+                if (statement.IsKind(SyntaxKind.Block))
+                {
+                    var block = (BlockSyntax)statement;
+
+                    if (block.Statements.Count == 0)
                     {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.SimplifyElseClauseContainingIfStatement,
-                            block.GetLocation());
+                        if (elseClause.ElseKeyword.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                            && block.OpenBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
+                            && block.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                            && block.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.RemoveEmptyElseClause,
+                                elseClause.GetLocation());
+                        }
+                    }
+                    else if (block.Statements.Count == 1)
+                    {
+                        if (block.Statements[0].IsKind(SyntaxKind.IfStatement))
+                        {
+                            var ifStatement = (IfStatementSyntax)block.Statements[0];
 
-                        DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut);
+                            if (ifStatement.Else == null)
+                            {
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatement,
+                                    block.GetLocation());
+
+                                DiagnosticHelper.FadeOutBraces(
+                                    context,
+                                    block,
+                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut);
+                            }
+                        }
                     }
                 }
             }
