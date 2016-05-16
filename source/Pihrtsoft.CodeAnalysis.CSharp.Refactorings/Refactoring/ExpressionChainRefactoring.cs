@@ -15,6 +15,7 @@ using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
+    //TODO: add ElementAccessExpressionSyntax
     internal static class ExpressionChainRefactoring
     {
         public static void FormatExpressionChain(CodeRefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
