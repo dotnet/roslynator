@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -44,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case  DiagnosticIdentifiers.RemoveEmptyElseClause:
+                    case DiagnosticIdentifiers.RemoveEmptyElseClause:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty else clause",
@@ -54,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case  DiagnosticIdentifiers.SimplifyElseClauseContainingIfStatement:
+                    case DiagnosticIdentifiers.SimplifyElseClauseContainingIfStatement:
                         {
                             if (!CheckTrivia(elseClause))
                                 return;
@@ -105,7 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxNode newRoot = oldRoot.RemoveNode(elseClause, GetRemoveOptions(elseClause.GetTrailingTrivia()));
+            SyntaxNode newRoot = GetNewRoot(oldRoot, elseClause);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -131,17 +132,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static SyntaxRemoveOptions GetRemoveOptions(SyntaxTriviaList triviaList)
+        private static SyntaxNode GetNewRoot(SyntaxNode oldRoot, ElseClauseSyntax elseClause)
         {
-            if (triviaList.Count == 1
-                && triviaList[0].IsKind(SyntaxKind.EndOfLineTrivia))
+            if (elseClause.Parent?.IsKind(SyntaxKind.IfStatement) == true)
             {
-                return SyntaxRemoveOptions.KeepLeadingTrivia;
+                var ifStatement = (IfStatementSyntax)elseClause.Parent;
+
+                if (ifStatement.Statement?.GetTrailingTrivia().IsWhitespaceOrEndOfLine() == true)
+                {
+                    IfStatementSyntax newIfStatement = ifStatement
+                        .WithStatement(ifStatement.Statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))
+                        .WithElse(null);
+
+                    return oldRoot.ReplaceNode(ifStatement, newIfStatement);
+                }
             }
-            else
-            {
-                return SyntaxRemoveOptions.KeepExteriorTrivia;
-            }
+
+            return oldRoot.RemoveNode(elseClause, SyntaxRemoveOptions.KeepExteriorTrivia);
         }
     }
 }
