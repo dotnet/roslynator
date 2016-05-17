@@ -67,27 +67,5 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             return document.WithSyntaxRoot(root);
         }
-
-        public static async Task<Document> ConvertAnonymousMethodToLambdaExpressionAsync(
-            Document document,
-            AnonymousMethodExpressionSyntax anonymousMethod,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
-                anonymousMethod.AsyncKeyword,
-                anonymousMethod.ParameterList,
-                Token(SyntaxKind.EqualsGreaterThanToken),
-                anonymousMethod.Block);
-
-            lambda = SimplifyLambdaExpressionRefactoring.SimplifyLambdaExpression(lambda)
-                .WithTriviaFrom(anonymousMethod)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(anonymousMethod, lambda);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
     }
 }
