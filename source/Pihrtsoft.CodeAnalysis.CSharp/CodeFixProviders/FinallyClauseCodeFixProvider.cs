@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -55,17 +53,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SyntaxNode GetNewRoot(SyntaxNode oldRoot, FinallyClauseSyntax finallyClause)
         {
-            var tryStatement = (TryStatementSyntax)finallyClause.Parent;
-
-            CatchClauseSyntax lastCatch = tryStatement.Catches[tryStatement.Catches.Count - 1];
-
-            if (lastCatch.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+            if (finallyClause.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
             {
-                TryStatementSyntax newTryStatement = tryStatement
-                    .WithCatches(tryStatement.Catches.Replace(lastCatch, lastCatch.WithTrailingTrivia(finallyClause.GetTrailingTrivia())))
-                    .WithFinally(null);
+                var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 
-                return oldRoot.ReplaceNode(tryStatement, newTryStatement);
+                CatchClauseSyntax lastCatch = tryStatement.Catches[tryStatement.Catches.Count - 1];
+
+                if (lastCatch.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+                {
+                    TryStatementSyntax newTryStatement = tryStatement
+                        .WithCatches(tryStatement.Catches.Replace(lastCatch, lastCatch.WithTrailingTrivia(finallyClause.GetTrailingTrivia())))
+                        .WithFinally(null);
+
+                    return oldRoot.ReplaceNode(tryStatement, newTryStatement);
+                }
             }
 
             return oldRoot.RemoveNode(finallyClause, SyntaxRemoveOptions.KeepExteriorTrivia);
