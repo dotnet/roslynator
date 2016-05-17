@@ -113,9 +113,9 @@
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
+    <Compile Include="Refactoring\AddBracesToStatementRefactoring.cs" />
     <Compile Include="Refactoring\DoStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatStatementOnNextLineRefactoring.cs" />
-    <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />

@@ -3,22 +3,22 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RefactoringHelper
+    internal static class AddBracesToStatementRefactoring
     {
-        public static async Task<Document> AddBracesToStatementAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            BlockSyntax block = Block(statement)
+            BlockSyntax block = SyntaxFactory.Block(statement)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(statement, block);
