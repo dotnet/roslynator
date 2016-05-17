@@ -132,13 +132,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithTriviaFrom(propertyDeclaration)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxList<MemberDeclarationSyntax> members = GetMembers((MemberDeclarationSyntax)propertyDeclaration.Parent);
+            var declaration = (MemberDeclarationSyntax)propertyDeclaration.Parent;
+            SyntaxList<MemberDeclarationSyntax> members = declaration.GetMembers();
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members
                 .Replace(propertyDeclaration, newPropertyDeclaration)
                 .Insert(IndexOfLastField(members) + 1, fieldDeclaration);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration.Parent, SetMembers(propertyDeclaration.Parent, newMembers));
+            SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, declaration.SetMembers(newMembers));
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -216,32 +217,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 List<AttributeListSyntax>(),
                 modifiers,
                 variableDeclaration);
-        }
-
-        private static SyntaxList<MemberDeclarationSyntax> GetMembers(MemberDeclarationSyntax declaration)
-        {
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).Members;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).Members;
-                default:
-                    return default(SyntaxList<MemberDeclarationSyntax>);
-            }
-        }
-
-        private static MemberDeclarationSyntax SetMembers(SyntaxNode declaration, SyntaxList<MemberDeclarationSyntax> newMembers)
-        {
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).WithMembers(newMembers);
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).WithMembers(newMembers);
-                default:
-                    return null;
-            }
         }
 
         private static int IndexOfLastField(SyntaxList<MemberDeclarationSyntax> members)

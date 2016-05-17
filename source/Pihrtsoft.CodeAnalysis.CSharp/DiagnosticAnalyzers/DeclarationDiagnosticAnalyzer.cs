@@ -89,36 +89,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static MemberDeclarationSyntax GetNextDeclaration(MemberDeclarationSyntax declaration)
         {
-            SyntaxList<MemberDeclarationSyntax> members = GetMembers(declaration.Parent);
-
-            if (members.Count > 1)
+            var containingDeclaration = declaration.Parent as MemberDeclarationSyntax;
+            if (containingDeclaration != null)
             {
-                int index = members.IndexOf(declaration);
+                SyntaxList<MemberDeclarationSyntax> members = containingDeclaration.GetMembers();
 
-                if (index != (members.Count - 1))
-                    return members[index + 1];
+                if (members.Count > 1)
+                {
+                    int index = members.IndexOf(declaration);
+
+                    if (index != (members.Count - 1))
+                        return members[index + 1];
+                }
             }
 
             return null;
-        }
-
-        private static SyntaxList<MemberDeclarationSyntax> GetMembers(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).Members;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).Members;
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).Members;
-                case SyntaxKind.NamespaceDeclaration:
-                    return ((NamespaceDeclarationSyntax)node).Members;
-            }
-
-            Debug.Assert(false, node.Kind().ToString());
-
-            return default(SyntaxList<MemberDeclarationSyntax>);
         }
 
         private static TokenPair GetTokenPair(SyntaxNode node)

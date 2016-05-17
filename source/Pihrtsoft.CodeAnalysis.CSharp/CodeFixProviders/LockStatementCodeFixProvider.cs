@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 if (containingDeclaration != null)
                 {
-                    SyntaxList<MemberDeclarationSyntax> members = GetMembers(containingDeclaration);
+                    SyntaxList<MemberDeclarationSyntax> members = containingDeclaration.GetMembers();
 
                     int index = members.IndexOf(containingMember);
 
@@ -81,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         .Replace(members[index], newContainingMember)
                         .Insert(FindField(members, index) + 1, field);
 
-                    MemberDeclarationSyntax newNode = SetMembers(containingDeclaration, newMembers);
+                    MemberDeclarationSyntax newNode = containingDeclaration.SetMembers(newMembers);
 
                     SyntaxNode newRoot = oldRoot.ReplaceNode(containingDeclaration, newNode);
 
@@ -90,42 +90,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             }
 
             return document;
-        }
-
-        private static SyntaxList<MemberDeclarationSyntax> GetMembers(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).Members;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).Members;
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).Members;
-            }
-
-            Debug.Assert(false, node.Kind().ToString());
-
-            return default(SyntaxList<MemberDeclarationSyntax>);
-        }
-
-        private static MemberDeclarationSyntax SetMembers(
-            MemberDeclarationSyntax declaration,
-            SyntaxList<MemberDeclarationSyntax> newMembers)
-        {
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)declaration).WithMembers(newMembers);
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).WithMembers(newMembers);
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).WithMembers(newMembers);
-            }
-
-            Debug.Assert(false, declaration.Kind().ToString());
-
-            return declaration;
         }
 
         private static int FindField(SyntaxList<MemberDeclarationSyntax> members, int index)
