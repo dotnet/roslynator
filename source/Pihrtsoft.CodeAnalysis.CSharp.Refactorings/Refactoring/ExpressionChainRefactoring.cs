@@ -1,21 +1,20 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    //TODO: add ElementAccessExpressionSyntax
     internal static class ExpressionChainRefactoring
     {
         public static void FormatExpressionChain(CodeRefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
@@ -98,6 +97,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         return (MemberAccessExpressionSyntax)expression.Expression;
                     }
+                case SyntaxKind.ElementAccessExpression:
+                    {
+                        var elementAccess = (ElementAccessExpressionSyntax)expression.Expression;
+
+                        switch (elementAccess.Expression?.Kind())
+                        {
+                            case SyntaxKind.SimpleMemberAccessExpression:
+                                {
+                                    return (MemberAccessExpressionSyntax)elementAccess.Expression;
+                                }
+                            case SyntaxKind.InvocationExpression:
+                                {
+                                    var invocationExpression = (InvocationExpressionSyntax)elementAccess.Expression;
+                                    if (invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                                        return (MemberAccessExpressionSyntax)invocationExpression.Expression;
+
+                                    break;
+                                }
+                        }
+
+                        break;
+                    }
                 case SyntaxKind.InvocationExpression:
                     {
                         var invocationExpression = (InvocationExpressionSyntax)expression.Expression;
@@ -134,8 +155,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 case SyntaxKind.InvocationExpression:
                     {
-                        if (expression.Parent.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                            return (MemberAccessExpressionSyntax)expression.Parent.Parent;
+                        SyntaxNode node = expression.Parent.Parent;
+
+                        if (node?.IsKind(SyntaxKind.ElementAccessExpression) == true)
+                            node = node.Parent;
+
+                        if (node?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                            return (MemberAccessExpressionSyntax)node;
+
+                        break;
+                    }
+                case SyntaxKind.ElementAccessExpression:
+                    {
+                        var elementAccess = (ElementAccessExpressionSyntax)expression.Parent;
+
+                        if (elementAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                            return (MemberAccessExpressionSyntax)elementAccess.Parent;
 
                         break;
                     }
