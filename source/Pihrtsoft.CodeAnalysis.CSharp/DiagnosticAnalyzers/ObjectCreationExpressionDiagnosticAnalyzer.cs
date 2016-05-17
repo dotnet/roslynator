@@ -19,7 +19,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddConstructorArgumentList,
-                    DiagnosticDescriptors.RemoveEmptyObjectInitializer);
+                    DiagnosticDescriptors.RemoveEmptyObjectInitializer,
+                    DiagnosticDescriptors.RemoveEmptyArgumentList);
             }
         }
 
@@ -31,35 +32,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
         }
 
-        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
             var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreationExpression.Type == null)
+            if (objectCreationExpression.Type == null || objectCreationExpression.Initializer == null)
                 return;
 
             InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
-            if (initializer == null)
-                return;
-
             if (initializer.Expressions.Count == 0
-                && !initializer.OpenBraceToken.TrimTrailingWhitespace().HasTrailingTrivia
-                && !initializer.CloseBraceToken.TrimLeadingWhitespace().HasLeadingTrivia)
+                && initializer.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                && initializer.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyObjectInitializer,
                     initializer.GetLocation());
             }
 
-            if (objectCreationExpression.ArgumentList == null)
+            ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
+
+            if (argumentList == null)
             {
-                Location location = Location.Create(context.Node.SyntaxTree, new TextSpan(
-                    objectCreationExpression.Type.Span.End, 1));
+                Location location = Location.Create(
+                    context.Node.SyntaxTree,
+                    new TextSpan(objectCreationExpression.Type.Span.End, 1));
 
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddConstructorArgumentList,
                     location);
+            }
+            else if (argumentList.Arguments.Count == 0
+                && !argumentList.OpenParenToken.IsMissing
+                && !argumentList.CloseParenToken.IsMissing
+                && argumentList.OpenParenToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                && argumentList.CloseParenToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveEmptyArgumentList,
+                    argumentList.GetLocation());
             }
         }
     }

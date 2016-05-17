@@ -42,6 +42,7 @@
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />

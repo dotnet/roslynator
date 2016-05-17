@@ -644,6 +644,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
+        public static readonly DiagnosticDescriptor RemoveEmptyArgumentList = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveEmptyArgumentList,
+            title: "Remove empty argument list.",
+            messageFormat: "Consider removing empty argument list.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
