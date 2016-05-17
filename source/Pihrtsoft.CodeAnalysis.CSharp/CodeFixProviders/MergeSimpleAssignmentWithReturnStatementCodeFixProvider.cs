@@ -15,61 +15,65 @@ using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MergeLocalDeclarationWithReturnStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MergeSimpleAssignmentWithReturnStatementCodeFixProvider))]
     [Shared]
-    public class MergeLocalDeclarationWithReturnStatementCodeFixProvider : BaseCodeFixProvider
+    public class MergeSimpleAssignmentWithReturnStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement);
+            => ImmutableArray.Create(DiagnosticIdentifiers.MergeSimpleAssignmentWithReturnStatement);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await context.Document
+                .GetSyntaxRootAsync(context.CancellationToken)
+                .ConfigureAwait(false);
 
-            var localDeclaration = (LocalDeclarationStatementSyntax)root.DescendantNodes(context.Span)
-                .FirstOrDefault(f => f.IsKind(SyntaxKind.LocalDeclarationStatement) && f.Span.Start == context.Span.Start);
+            var expressionStatement = (ExpressionStatementSyntax)root.DescendantNodes(context.Span)
+                .FirstOrDefault(f => f.IsKind(SyntaxKind.ExpressionStatement) && f.Span.Start == context.Span.Start);
 
-            if (localDeclaration == null)
+            if (expressionStatement == null)
                 return;
 
-            var block = (BlockSyntax)localDeclaration.Parent;
+            var block = (BlockSyntax)expressionStatement.Parent;
 
-            int index = block.Statements.IndexOf(localDeclaration);
+            int index = block.Statements.IndexOf(expressionStatement);
 
             var returnStatement = (ReturnStatementSyntax)block.Statements[index + 1];
 
             CodeAction codeAction = CodeAction.Create(
-                "Merge local declaration with return statement",
+                "Merge assignment with return statement",
                 cancellationToken =>
                 {
-                    return MergeLocalDeclarationWithReturnStatementAsync(
+                    return MergeSimpleAssignmentWithReturnStatementAsync(
                         context.Document,
-                        localDeclaration,
+                        expressionStatement,
                         returnStatement,
                         block,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.MergeSimpleAssignmentWithReturnStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> MergeLocalDeclarationWithReturnStatementAsync(
+        private static async Task<Document> MergeSimpleAssignmentWithReturnStatementAsync(
             Document document,
-            LocalDeclarationStatementSyntax localDeclaration,
+            ExpressionStatementSyntax expressionStatement,
             ReturnStatementSyntax returnStatement,
             BlockSyntax block,
             CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
+            var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
             ReturnStatementSyntax newReturnStatement = returnStatement
-                .WithExpression(localDeclaration.Declaration.Variables[0].Initializer.Value.WithoutTrivia())
-                .WithLeadingTrivia(localDeclaration.GetLeadingTrivia())
+                .WithExpression(assignment.Right.WithoutTrivia())
+                .WithLeadingTrivia(expressionStatement.GetLeadingTrivia())
                 .WithTrailingTrivia(returnStatement.GetTrailingTrivia())
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            int index = block.Statements.IndexOf(localDeclaration);
+            int index = block.Statements.IndexOf(expressionStatement);
 
             SyntaxList<StatementSyntax> newStatements = block.Statements
                 .RemoveAt(index)

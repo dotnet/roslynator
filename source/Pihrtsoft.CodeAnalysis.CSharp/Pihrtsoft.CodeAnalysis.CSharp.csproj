@@ -39,6 +39,8 @@
     <Compile Include="Analysis\BinaryExpressionAnalysisResult.cs" />
     <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="Analyzers\FormatEachStatementOnSeparateLineAnalyzer.cs" />
+    <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
+    <Compile Include="Analyzers\MergeSimpleAssignmentWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FinallyClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ForStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\MergeSimpleAssignmentWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MergeLocalDeclarationWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\IfStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
