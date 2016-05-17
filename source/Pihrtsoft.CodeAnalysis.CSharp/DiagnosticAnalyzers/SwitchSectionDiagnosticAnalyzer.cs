@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -19,7 +20,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.FormatCaseLabelStatementOnSeparateLine,
-                    DiagnosticDescriptors.FormatEachStatementOnSeparateLine);
+                    DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
+                    DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
+                    DiagnosticDescriptors.RemoveUnnecessaryCaseLabel);
             }
         }
 
@@ -40,14 +43,81 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, switchSection.Statements);
 
+            if (switchSection.Parent?.IsKind(SyntaxKind.SwitchStatement) == true)
+            {
+                AnalyzeRedundantDefaultSwitchSection(context, switchSection);
+                AnalyzeUnnecessaryCaseLabel(context, switchSection);
+            }
+
             AnalyzeFirstStatement(context, switchSection);
         }
 
-        public static void AnalyzeFirstStatement(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
+        private static void AnalyzeRedundantDefaultSwitchSection(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
         {
-            if (switchSection == null)
-                throw new ArgumentNullException(nameof(switchSection));
+            if (switchSection.Labels.Any(SyntaxKind.DefaultSwitchLabel)
+                && ContainsOnlyBreakStatement(switchSection)
+                && switchSection
+                    .DescendantTrivia(switchSection.Span)
+                    .All(f => f.IsWhitespaceOrEndOfLine()))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
+                    switchSection.GetLocation());
+            }
+        }
 
+        private static bool ContainsOnlyBreakStatement(SwitchSectionSyntax switchSection)
+        {
+            if (switchSection.Statements.Count == 1)
+            {
+                StatementSyntax statement = switchSection.Statements[0];
+
+                switch (statement.Kind())
+                {
+                    case SyntaxKind.Block:
+                        {
+                            var block = (BlockSyntax)statement;
+
+                            if (block.Statements.Count == 1
+                                && block.Statements[0].IsKind(SyntaxKind.BreakStatement))
+                            {
+                                return true;
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.BreakStatement:
+                        {
+                            return true;
+                        }
+                }
+            }
+
+            return false;
+        }
+
+        private static void AnalyzeUnnecessaryCaseLabel(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
+        {
+            if (switchSection.Labels.Count > 1
+                && switchSection.Labels.Any(SyntaxKind.DefaultSwitchLabel))
+            {
+                foreach (SwitchLabelSyntax label in switchSection.Labels)
+                {
+                    if (!label.IsKind(SyntaxKind.DefaultSwitchLabel)
+                        && label
+                            .DescendantTrivia(label.Span)
+                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
+                            label.GetLocation());
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeFirstStatement(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
+        {
             SyntaxList<StatementSyntax> statements = switchSection.Statements;
 
             if (statements.Count == 0)

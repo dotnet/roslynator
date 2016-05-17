@@ -75,6 +75,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveEmptyArgumentList = Prefix + "1067";
         public const string SimplifyLogicalNotExpression = Prefix + "1068";
         public const string MergeSimpleAssignmentWithReturnStatement = Prefix + "1069";
+        public const string RemoveUnnecessaryCaseLabel = Prefix + "1070";
+        public const string RemoveRedundantDefaultSwitchSection = Prefix + "1071";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

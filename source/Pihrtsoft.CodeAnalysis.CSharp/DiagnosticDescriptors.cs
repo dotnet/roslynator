@@ -674,6 +674,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor MergeSimpleAssignmentWithReturnStatementFadeOut = MergeSimpleAssignmentWithReturnStatement.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryCaseLabel = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel,
+            title: "Remove unnecessary case label.",
+            messageFormat: "Consider removing unnecessary case label.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantDefaultSwitchSection = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
+            title: "Remove redundant default switch section.",
+            messageFormat: "Consider removing default switch section.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

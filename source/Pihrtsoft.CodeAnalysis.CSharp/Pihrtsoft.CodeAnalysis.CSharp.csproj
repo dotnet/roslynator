@@ -51,6 +51,7 @@
     <Compile Include="CodeFixProviders\AnonymousMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FinallyClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ForStatementCodeFixProvider.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="CodeFixProviders\RemoveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEachStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEmbeddedStatementOnSeparateLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SwitchSectionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseExpressionBodiedMember.cs" />
     <Compile Include="CodeFixProviders\UseNameOfOperatorCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
