@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Format statement on separate line",
-                cancellationToken => RefactoringHelper.FormatStatementOnNextLineAsync(context.Document, statement, cancellationToken),
+                cancellationToken => FormatStatementOnNextLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 DiagnosticIdentifiers.FormatCaseLabelStatementOnSeparateLine + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
