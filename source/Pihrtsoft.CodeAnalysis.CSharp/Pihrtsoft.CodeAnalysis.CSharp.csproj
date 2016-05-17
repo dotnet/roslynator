@@ -62,6 +62,7 @@
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SpecifyExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RedundantEmptyLineDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\LogicalNotExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />

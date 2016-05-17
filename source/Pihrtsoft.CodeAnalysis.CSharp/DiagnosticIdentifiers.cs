@@ -73,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string UseForStatementToCreateInfiniteLoop = Prefix + "1065";
         public const string RemoveEmptyFinallyClause = Prefix + "1066";
         public const string RemoveEmptyArgumentList = Prefix + "1067";
+        public const string SimplifyLogicalNotExpression = Prefix + "1068";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
