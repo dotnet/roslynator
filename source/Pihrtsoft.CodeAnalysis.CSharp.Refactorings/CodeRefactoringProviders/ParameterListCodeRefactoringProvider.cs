@@ -47,6 +47,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     cancellationToken => FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
             }
 
+            DuplicateParameterRefactoring.Refactor(context, parameterList);
+
             SwapParametersRefactoring.Refactor(context, parameterList);
         }
 
