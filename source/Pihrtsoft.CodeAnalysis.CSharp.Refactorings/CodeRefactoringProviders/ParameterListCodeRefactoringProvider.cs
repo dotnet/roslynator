@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -45,6 +46,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     "Format all parameters on a single line",
                     cancellationToken => FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
             }
+
+            SwapParametersRefactoring.Refactor(context, parameterList);
         }
 
         private static async Task<Document> FormatEachParameterOnNewLineAsync(
