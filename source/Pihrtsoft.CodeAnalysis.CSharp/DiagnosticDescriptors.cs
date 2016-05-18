@@ -687,7 +687,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantDefaultSwitchSection = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
             title: "Remove redundant default switch section.",
-            messageFormat: "Consider removing default switch section.",
+            messageFormat: "Consider removing redundant default switch section.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantBaseConstructorCall = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
+            title: "Remove redundant base constructor call.",
+            messageFormat: "Consider removing redundant base constructor call.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,

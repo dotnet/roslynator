@@ -77,6 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string MergeSimpleAssignmentWithReturnStatement = Prefix + "1069";
         public const string RemoveUnnecessaryCaseLabel = Prefix + "1070";
         public const string RemoveRedundantDefaultSwitchSection = Prefix + "1071";
+        public const string RemoveRedundantBaseConstructorCall = Prefix + "1072";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
