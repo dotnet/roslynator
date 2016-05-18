@@ -78,6 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveUnnecessaryCaseLabel = Prefix + "1070";
         public const string RemoveRedundantDefaultSwitchSection = Prefix + "1071";
         public const string RemoveRedundantBaseConstructorCall = Prefix + "1072";
+        public const string RemoveEmptyNamespaceDeclaration = Prefix + "1073";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
