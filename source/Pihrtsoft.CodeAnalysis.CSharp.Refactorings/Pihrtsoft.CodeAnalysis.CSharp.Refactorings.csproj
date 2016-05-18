@@ -68,7 +68,7 @@
     <Compile Include="Refactoring\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
-    <Compile Include="Refactoring\NullableBooleanRefactoring.cs" />
+    <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
     <Compile Include="Refactoring\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
     <Compile Include="Refactoring\StringEmptyRefactoring.cs" />

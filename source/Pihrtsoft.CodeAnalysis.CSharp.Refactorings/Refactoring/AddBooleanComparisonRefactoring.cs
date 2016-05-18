@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class NullableBooleanRefactoring
+    internal static class AddBooleanComparisonRefactoring
     {
         private static bool CanRefactor(
             StatementSyntax statement,

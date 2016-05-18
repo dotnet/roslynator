@@ -38,14 +38,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         if (semanticModel == null)
                             semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-                        NullableBooleanRefactoring.Refactor(binaryExpression.Left, context, semanticModel);
+                        AddBooleanComparisonRefactoring.Refactor(binaryExpression.Left, context, semanticModel);
                     }
                     else if (binaryExpression.Right.Span.Contains(context.Span))
                     {
                         if (semanticModel == null)
                             semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-                        NullableBooleanRefactoring.Refactor(binaryExpression.Right, context, semanticModel);
+                        AddBooleanComparisonRefactoring.Refactor(binaryExpression.Right, context, semanticModel);
                     }
                 }
 

@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 && context.Document.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-                NullableBooleanRefactoring.Refactor(ifStatement, context, semanticModel);
+                AddBooleanComparisonRefactoring.Refactor(ifStatement, context, semanticModel);
             }
 
             FormatBinaryExpressionRefactoring.Refactor(context, ifStatement);
