@@ -42,6 +42,7 @@
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeSimpleAssignmentWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
+    <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
     <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyIfStatementToReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SpecifyExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />

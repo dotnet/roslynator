@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Analyzers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -23,7 +24,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.RemoveBracesFromIfElseChain,
                     DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
                     DiagnosticDescriptors.MergeIfStatementWithContainedIfStatement,
-                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatementFadeOut);
+                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatementFadeOut,
+                    DiagnosticDescriptors.SimplifyIfStatementToReturnStatement,
+                    DiagnosticDescriptors.SimplifyIfStatementToReturnStatementFadeOut);
             }
         }
 
@@ -89,6 +92,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     MergeIfStatementWithContainedIfStatementFadeOut(context, ifStatement, ifStatement2);
                 }
             }
+
+            SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
         }
 
         private static IfStatementSyntax GetContainedIfStatement(IfStatementSyntax ifStatement)

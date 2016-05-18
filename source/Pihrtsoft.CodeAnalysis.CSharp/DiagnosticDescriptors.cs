@@ -714,6 +714,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
+        public static readonly DiagnosticDescriptor SimplifyIfStatementToReturnStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SimplifyIfStatementToReturnStatement,
+            title: "Simplify if statement to return statement.",
+            messageFormat: "Consider simplifying if statement to return statement.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor SimplifyIfStatementToReturnStatementFadeOut = SimplifyIfStatementToReturnStatement.CreateFadeOut();
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
