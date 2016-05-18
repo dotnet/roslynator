@@ -22,14 +22,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (parameter == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                RenameParameterAccordingToTypeNameRefactoring.Refactor(context, parameter, semanticModel);
 
-            RenameParameterAccordingToTypeNameRefactoring.Refactor(context, parameter, semanticModel);
-
-            AddParameterNullCheckRefactoring.Refactor(context, parameter, semanticModel);
+                AddParameterNullCheckRefactoring.Refactor(context, parameter, semanticModel);
+            }
         }
     }
 }
