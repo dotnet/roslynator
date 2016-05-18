@@ -32,9 +32,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove base constructor call",
+                "Remove redundant base constructor call",
                 cancellationToken => RemoveBaseConstructorCallAsync(context.Document, constructor, cancellationToken),
-                DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall);
+                DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
