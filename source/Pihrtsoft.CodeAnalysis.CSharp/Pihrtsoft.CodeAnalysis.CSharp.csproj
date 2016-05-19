@@ -65,7 +65,7 @@
     <Compile Include="CodeFixProviders\InterpolatedStringCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\LockStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\NamespaceDeclaration.cs" />
+    <Compile Include="CodeFixProviders\NamespaceDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
