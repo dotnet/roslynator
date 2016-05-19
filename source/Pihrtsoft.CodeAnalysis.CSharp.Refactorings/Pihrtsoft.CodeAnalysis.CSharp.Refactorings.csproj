@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeRefactoringProviders\InterpolatedStringCodeRefactoringProvider.cs" />
+    <Compile Include="CodeRefactoringProviders\ReturnStatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\StatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\LambdaExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\SwitchStatementCodeRefactoringProvider_.cs" />
