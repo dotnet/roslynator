@@ -57,12 +57,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 ? SyntaxKind.FalseLiteralExpression
                 : SyntaxKind.TrueLiteralExpression;
 
-            ExpressionSyntax newNode = SyntaxFactory.LiteralExpression(booleanLiteralKind)
+            ExpressionSyntax newNode = GetNewNode(logicalNot.Operand)
                 .WithTriviaFrom(logicalNot);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(logicalNot, newNode);
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static ExpressionSyntax GetNewNode(ExpressionSyntax expression)
+        {
+            switch (expression.Kind())
+            {
+                case SyntaxKind.TrueLiteralExpression:
+                    return SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression);
+                case SyntaxKind.FalseLiteralExpression:
+                    return SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression);
+                case SyntaxKind.LogicalNotExpression:
+                    return ((PrefixUnaryExpressionSyntax)expression).Operand;
+            }
+
+            return null;
         }
     }
 }

@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -30,14 +32,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
 
-            if (logicalNot.Operand?.IsAnyKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression) == true
-                && logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (CanBeSimplified(logicalNot))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.SimplifyLogicalNotExpression,
                     logicalNot.GetLocation());
             }
+        }
+
+        private static bool CanBeSimplified(PrefixUnaryExpressionSyntax logicalNot)
+        {
+            switch (logicalNot.Operand?.Kind())
+            {
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                    {
+                        return logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                            && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine();
+                    }
+                case SyntaxKind.LogicalNotExpression:
+                    {
+                        var logicalNot2 = (PrefixUnaryExpressionSyntax)logicalNot.Operand;
+
+                        TextSpan span = TextSpan.FromBounds(
+                            logicalNot.OperatorToken.Span.End,
+                            logicalNot2.Operand.Span.Start);
+
+                        return logicalNot
+                            .DescendantTrivia(span)
+                            .All(f => f.IsWhitespaceOrEndOfLine());
+                    }
+            }
+
+            return false;
         }
     }
 }
