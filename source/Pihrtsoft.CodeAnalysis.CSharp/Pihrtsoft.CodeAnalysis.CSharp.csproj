@@ -39,6 +39,7 @@
     <Compile Include="Analysis\BinaryExpressionAnalysisResult.cs" />
     <Compile Include="Analysis\UsingStatementAnalysis.cs" />
     <Compile Include="Analyzers\FormatEachStatementOnSeparateLineAnalyzer.cs" />
+    <Compile Include="Analyzers\MergeIfStatementWithContainedIfStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeSimpleAssignmentWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
