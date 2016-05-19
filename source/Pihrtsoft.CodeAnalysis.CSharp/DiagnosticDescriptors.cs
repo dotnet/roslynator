@@ -744,6 +744,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor FormatDeclarationBraces = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatDeclarationBraces,
+            title: "Format declaration braces.",
+            messageFormat: "Consider formatting declaration braces.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
