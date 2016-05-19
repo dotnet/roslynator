@@ -81,6 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveEmptyNamespaceDeclaration = Prefix + "1073";
         public const string SimplifyIfStatementToReturnStatement = Prefix + "1074";
         public const string RemoveRedundantConstructor = Prefix + "1075";
+        public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1076";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

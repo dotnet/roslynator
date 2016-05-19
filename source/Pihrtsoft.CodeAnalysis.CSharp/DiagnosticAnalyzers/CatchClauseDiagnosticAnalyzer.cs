@@ -13,7 +13,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class CatchClauseDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
+                    DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,29 +40,56 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (catchClause.Declaration == null || catchClause.Block == null)
                 return;
 
-            CatchDeclarationSyntax declaration = catchClause.Declaration;
+            ILocalSymbol symbol = context
+                .SemanticModel
+                .GetDeclaredSymbol(catchClause.Declaration, context.CancellationToken);
 
-            ILocalSymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
-
-            if (symbol == null)
-                return;
-
-            foreach (SyntaxNode node in catchClause.Block.DescendantNodes(f => !f.IsKind(SyntaxKind.CatchClause)))
+            if (symbol != null)
             {
-                if (node.IsKind(SyntaxKind.ThrowStatement))
+                foreach (SyntaxNode node in catchClause.Block.DescendantNodes(f => !f.IsKind(SyntaxKind.CatchClause)))
                 {
-                    var throwStatement = (ThrowStatementSyntax)node;
-                    if (throwStatement.Expression != null)
+                    if (node.IsKind(SyntaxKind.ThrowStatement))
                     {
-                        ISymbol expressionSymbol = context.SemanticModel.GetSymbolInfo(throwStatement.Expression, context.CancellationToken).Symbol;
-
-                        if (expressionSymbol != null
-                            && symbol.Equals(expressionSymbol))
+                        var throwStatement = (ThrowStatementSyntax)node;
+                        if (throwStatement.Expression != null)
                         {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                                throwStatement.Expression.GetLocation());
+                            ISymbol expressionSymbol = context
+                                .SemanticModel
+                                .GetSymbolInfo(throwStatement.Expression, context.CancellationToken)
+                                .Symbol;
+
+                            if (expressionSymbol != null
+                                && symbol.Equals(expressionSymbol))
+                            {
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
+                                    throwStatement.Expression.GetLocation());
+                            }
                         }
+                    }
+                }
+            }
+
+            if (catchClause.Declaration.Type != null
+                && catchClause.Block.Statements.Count == 0)
+            {
+                ITypeSymbol typeSymbol = context
+                    .SemanticModel
+                    .GetTypeInfo(catchClause.Declaration.Type, context.CancellationToken)
+                    .Type;
+
+                if (typeSymbol != null)
+                {
+                    INamedTypeSymbol exceptionTypeSymbol = context
+                        .SemanticModel
+                        .Compilation
+                        .GetTypeByMetadataName("System.Exception");
+
+                    if (typeSymbol.Equals(exceptionTypeSymbol))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
+                            catchClause.CatchKeyword.GetLocation());
                     }
                 }
             }
