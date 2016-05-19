@@ -401,37 +401,21 @@ namespace Pihrtsoft.CodeAnalysis
             switch (node.Kind())
             {
                 case SyntaxKind.FieldDeclaration:
-                    return true;
                 case SyntaxKind.ConstructorDeclaration:
-                    return true;
                 case SyntaxKind.DestructorDeclaration:
-                    return true;
                 case SyntaxKind.DelegateDeclaration:
-                    return true;
                 case SyntaxKind.EventDeclaration:
-                    return true;
                 case SyntaxKind.EventFieldDeclaration:
-                    return true;
                 case SyntaxKind.PropertyDeclaration:
-                    return true;
                 case SyntaxKind.IndexerDeclaration:
-                    return true;
                 case SyntaxKind.MethodDeclaration:
-                    return true;
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    return true;
                 case SyntaxKind.OperatorDeclaration:
-                    return true;
                 case SyntaxKind.EnumDeclaration:
-                    return true;
                 case SyntaxKind.InterfaceDeclaration:
-                    return true;
                 case SyntaxKind.StructDeclaration:
-                    return true;
                 case SyntaxKind.ClassDeclaration:
-                    return true;
                 case SyntaxKind.NamespaceDeclaration:
-                    return true;
                 case SyntaxKind.IncompleteMember:
                     return true;
                 default:

@@ -23,33 +23,19 @@ namespace Pihrtsoft.CodeAnalysis
             switch (typeSymbol.SpecialType)
             {
                 case SpecialType.System_Object:
-                    return true;
                 case SpecialType.System_Boolean:
-                    return true;
                 case SpecialType.System_Char:
-                    return true;
                 case SpecialType.System_SByte:
-                    return true;
                 case SpecialType.System_Byte:
-                    return true;
                 case SpecialType.System_Int16:
-                    return true;
                 case SpecialType.System_UInt16:
-                    return true;
                 case SpecialType.System_Int32:
-                    return true;
                 case SpecialType.System_UInt32:
-                    return true;
                 case SpecialType.System_Int64:
-                    return true;
                 case SpecialType.System_UInt64:
-                    return true;
                 case SpecialType.System_Decimal:
-                    return true;
                 case SpecialType.System_Single:
-                    return true;
                 case SpecialType.System_Double:
-                    return true;
                 case SpecialType.System_String:
                     return true;
                 default:
