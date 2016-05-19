@@ -35,8 +35,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.EventFieldDeclaration:
                     {
-                        MemberDeclarationRefactoring.Remove(context, memberDeclaration);
-                        MemberDeclarationRefactoring.Duplicate(context, memberDeclaration);
+                        if (MemberDeclarationRefactoring.CanBeRemoved(memberDeclaration))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
+                                cancellationToken => MemberDeclarationRefactoring.RemoveAsync(context.Document, memberDeclaration, cancellationToken));
+                        }
+
+                        if (MemberDeclarationRefactoring.CanBeDuplicated(memberDeclaration))
+                        {
+                            context.RegisterRefactoring(
+                                "Duplicate " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
+                                cancellationToken => MemberDeclarationRefactoring.DuplicateAsync(context.Document, memberDeclaration, cancellationToken));
+                        }
+
                         break;
                     }
             }

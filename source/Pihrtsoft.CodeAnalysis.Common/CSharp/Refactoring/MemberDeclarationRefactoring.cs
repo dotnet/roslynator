@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -49,16 +48,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static void Remove(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)
-        {
-            if (CanBeRemoved(memberDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Remove " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
-                    cancellationToken => RemoveAsync(context.Document, memberDeclaration, cancellationToken));
-            }
-        }
-
         public static async Task<Document> RemoveAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
@@ -83,35 +72,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxRemoveOptions removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
 
-            if (leading.Count == 1
-                && leading[0].IsKind(SyntaxKind.EndOfLineTrivia))
-            {
+            if (RemoveLeadingTrivia(leading))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-            }
-            else if (leading.Count == 2
-                && leading[0].IsKind(SyntaxKind.EndOfLineTrivia)
-                && leading[1].IsKind(SyntaxKind.WhitespaceTrivia))
-            {
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-            }
 
             if (trailing.Count == 1
                 && trailing[0].IsKind(SyntaxKind.EndOfLineTrivia))
             {
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
             }
+            else if (trailing.Count == 2
+                && trailing[0].IsKind(SyntaxKind.WhitespaceTrivia)
+                && trailing[1].IsKind(SyntaxKind.EndOfLineTrivia))
+            {
+                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+            }
 
             return removeOptions;
         }
 
-        public static void Duplicate(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)
+        private static bool RemoveLeadingTrivia(SyntaxTriviaList triviaList)
         {
-            if (CanBeDuplicated(memberDeclaration))
+            SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
+
+            bool commentFound = false;
+
+            while (en.MoveNext())
             {
-                context.RegisterRefactoring(
-                    "Duplicate " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
-                    cancellationToken => DuplicateAsync(context.Document, memberDeclaration, cancellationToken));
+                if (en.Current.IsWhitespaceOrEndOfLine())
+                {
+                    continue;
+                }
+                else if (!commentFound && en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                {
+                    commentFound = true;
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
 
         public static async Task<Document> DuplicateAsync(
