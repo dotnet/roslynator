@@ -14,7 +14,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ConstructorDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantBaseConstructorCall);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemoveRedundantBaseConstructorCall,
+                    DiagnosticDescriptors.RemoveRedundantConstructor);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -45,6 +52,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         initializer.GetLocation());
                 }
             }
+
+            if (constructor.ParameterList?.Parameters.Count == 0
+                && constructor.Body?.Statements.Count == 0
+                && constructor.Modifiers.Contains(SyntaxKind.PublicKeyword)
+                && !constructor.Modifiers.Contains(SyntaxKind.StaticKeyword)
+                && (constructor.Initializer == null || constructor.Initializer.ArgumentList?.Arguments.Count == 0)
+                && IsSingleInstanceConstructor(constructor)
+                && constructor
+                    .DescendantTrivia(constructor.Span)
+                    .All(f => f.IsWhitespaceOrEndOfLine()))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveRedundantConstructor,
+                    constructor.GetLocation());
+            }
+        }
+
+        private static bool IsSingleInstanceConstructor(ConstructorDeclarationSyntax constructor)
+        {
+            var parent = constructor.Parent as MemberDeclarationSyntax;
+
+            return parent != null
+                && parent
+                    .GetMembers()
+                    .OfType<ConstructorDeclarationSyntax>()
+                    .All(f => f.Equals(constructor)
+                        || f.Modifiers.Contains(SyntaxKind.StaticKeyword));
         }
     }
 }

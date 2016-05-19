@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -16,7 +17,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
+                    DiagnosticIdentifiers.RemoveRedundantConstructor);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -31,12 +39,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (constructor == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove redundant base constructor call",
-                cancellationToken => RemoveBaseConstructorCallAsync(context.Document, constructor, cancellationToken),
-                DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant base constructor call",
+                                cancellationToken => RemoveBaseConstructorCallAsync(context.Document, constructor, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantConstructor:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant constructor",
+                                cancellationToken => MemberDeclarationRefactoring.RemoveAsync(context.Document, constructor, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
 
         private static async Task<Document> RemoveBaseConstructorCallAsync(

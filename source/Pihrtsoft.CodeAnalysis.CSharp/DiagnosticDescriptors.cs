@@ -725,6 +725,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyIfStatementToReturnStatementFadeOut = SimplifyIfStatementToReturnStatement.CreateFadeOut();
 
+        public static readonly DiagnosticDescriptor RemoveRedundantConstructor = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantConstructor,
+            title: "Remove redundant constructor.",
+            messageFormat: "Consider removing redundant constructor.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

@@ -80,6 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveRedundantBaseConstructorCall = Prefix + "1072";
         public const string RemoveEmptyNamespaceDeclaration = Prefix + "1073";
         public const string SimplifyIfStatementToReturnStatement = Prefix + "1074";
+        public const string RemoveRedundantConstructor = Prefix + "1075";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
