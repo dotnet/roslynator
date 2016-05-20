@@ -51,6 +51,7 @@
     <Compile Include="CSharp\Refactoring\InterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\StringEmptyRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\RemoveAllCommentsSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\RemoveAllRegionsSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\RemoveWhitespaceOrEndOfLineSyntaxRewriter.cs" />

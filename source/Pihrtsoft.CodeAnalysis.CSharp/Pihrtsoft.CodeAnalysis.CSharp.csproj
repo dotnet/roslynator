@@ -71,6 +71,7 @@
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyIfStatementToReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />

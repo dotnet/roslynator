@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -14,7 +15,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class SimpleMemberAccessExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UsePredefinedType);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UsePredefinedType,
+                    DiagnosticDescriptors.AvoidUsageOfStringEmpty);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -29,39 +37,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                return;
+            var memberAccess = (MemberAccessExpressionSyntax)context.Node;
 
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
+            AnalyzePredefinedType(context, memberAccess);
 
-            ExpressionSyntax expression = memberAccessExpression.Expression;
-
-            if (expression == null)
-                return;
-
-            if (expression.IsKind(SyntaxKind.PredefinedType))
-                return;
-
-            if (!expression.IsAnyKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.IdentifierName))
-                return;
-
-            ISymbol symbol = context.SemanticModel.GetSymbolInfo(expression, context.CancellationToken).Symbol;
-
-            if (symbol == null)
-                return;
-
-            if (!symbol.IsKind(SymbolKind.NamedType))
-                return;
-
-            var namedTypeSymbol = (INamedTypeSymbol)symbol;
-
-            if (namedTypeSymbol.IsPredefinedType())
+            if (StringEmptyRefactoring.CanConvertStringEmptyToEmptyStringLiteral(memberAccess, context.SemanticModel, context.CancellationToken))
             {
-                Diagnostic diagnostic = Diagnostic.Create(
-                    DiagnosticDescriptors.UsePredefinedType,
-                    expression.GetLocation());
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AvoidUsageOfStringEmpty,
+                    memberAccess.GetLocation());
+            }
+        }
 
-                context.ReportDiagnostic(diagnostic);
+        private static void AnalyzePredefinedType(
+            SyntaxNodeAnalysisContext context,
+            MemberAccessExpressionSyntax memberAccess)
+        {
+            ExpressionSyntax expression = memberAccess.Expression;
+
+            if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true
+                && expression?.IsAnyKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.IdentifierName) == true)
+            {
+                var namedTypeSymbol = context
+                    .SemanticModel
+                    .GetSymbolInfo(expression, context.CancellationToken)
+                    .Symbol as INamedTypeSymbol;
+
+                if (namedTypeSymbol?.IsPredefinedType() == true)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.UsePredefinedType,
+                        expression.GetLocation());
+                }
             }
         }
     }

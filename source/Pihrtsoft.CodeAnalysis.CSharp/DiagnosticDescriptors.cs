@@ -763,6 +763,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
+        public static readonly DiagnosticDescriptor AvoidUsageOfStringEmpty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidUsageOfStringEmpty,
+            title: "Avoid usage of string.Empty.",
+            messageFormat: "Consider replacing string.Empty with empty string literal.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

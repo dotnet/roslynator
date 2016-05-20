@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -9,19 +10,32 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class StringEmptyRefactoring
+    public static class StringEmptyRefactoring
     {
         public static bool CanConvertStringEmptyToEmptyStringLiteral(
-            MemberAccessExpressionSyntax node,
-            SemanticModel semanticModel)
+            MemberAccessExpressionSyntax memberAccess,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            var namedTypeSymbol = semanticModel.GetSymbolInfo(node.Expression).Symbol as INamedTypeSymbol;
+            if (memberAccess == null)
+                throw new ArgumentNullException(nameof(memberAccess));
 
-            if (namedTypeSymbol?.SpecialType == SpecialType.System_String)
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true
+                && memberAccess.Expression != null
+                && memberAccess.Name?.Identifier.ValueText == "Empty")
             {
-                var identifierName = node.Name as IdentifierNameSyntax;
+                var fieldSymbol = semanticModel
+                    .GetSymbolInfo(memberAccess.Name, cancellationToken)
+                    .Symbol as IFieldSymbol;
 
-                return identifierName?.Identifier.ValueText == "Empty";
+                return fieldSymbol != null
+                    && fieldSymbol.DeclaredAccessibility == Accessibility.Public
+                    && fieldSymbol.IsReadOnly
+                    && fieldSymbol.IsStatic
+                    && fieldSymbol.ContainingType?.SpecialType == SpecialType.System_String;
             }
 
             return false;

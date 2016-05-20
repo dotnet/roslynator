@@ -84,6 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1076";
         public const string FormatDeclarationBraces = Prefix + "1077";
         public const string SimplifyLinqMethodChain = Prefix + "1078";
+        public const string AvoidUsageOfStringEmpty = Prefix + "1079";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

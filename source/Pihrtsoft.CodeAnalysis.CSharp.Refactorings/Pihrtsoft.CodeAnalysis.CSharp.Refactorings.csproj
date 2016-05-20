@@ -71,7 +71,6 @@
     <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
     <Compile Include="Refactoring\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
-    <Compile Include="Refactoring\StringEmptyRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\ExpressionChainRefactoring.cs" />
     <Compile Include="Refactoring\ExtractStatementRefactoring.cs" />
