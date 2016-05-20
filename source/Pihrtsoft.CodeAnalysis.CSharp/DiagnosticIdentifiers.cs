@@ -83,6 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveRedundantConstructor = Prefix + "1075";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1076";
         public const string FormatDeclarationBraces = Prefix + "1077";
+        public const string SimplifyLinqMethodChain = Prefix + "1078";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
