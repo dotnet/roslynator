@@ -45,7 +45,7 @@
     <Compile Include="CodeRefactoringProviders\StringLiteralExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\FieldDeclarationCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\GenericNameCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\RenameFieldAccordingToPropertyNameCodeRefactoringProvider.cs" />
+    <Compile Include="CodeRefactoringProviders\IdentifierNameCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\InvocationExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\LocalDeclarationStatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ArgumentCodeRefactoringProvider.cs" />

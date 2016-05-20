@@ -43,6 +43,7 @@
     <Compile Include="CSharp\Extensions\CSharpSyntaxNodeExtensions.cs" />
     <Compile Include="CSharp\Extensions\ExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\MemberDeclarationSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SimpleNameSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\TypeSyntaxExtensions.cs" />
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
