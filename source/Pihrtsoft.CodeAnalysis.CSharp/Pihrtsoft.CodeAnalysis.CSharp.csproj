@@ -121,6 +121,7 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RedundantEmptyLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LogicalNotExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ThrowStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />

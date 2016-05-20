@@ -773,6 +773,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
+        public static readonly DiagnosticDescriptor ThrowingOfNewNotImplementedException = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ThrowingOfNewNotImplementedException,
+            title: "Throwing of new NotImplementedException.",
+            messageFormat: "Consider implementing the functionality instead of throwing new NotImplementedException.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
