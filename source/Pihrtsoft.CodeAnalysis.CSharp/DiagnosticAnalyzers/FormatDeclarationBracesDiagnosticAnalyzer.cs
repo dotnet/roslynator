@@ -90,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             return !openBrace.IsMissing
                 && !closeBrace.IsMissing
-                && openBrace.GetSpanEndLine() != closeBrace.GetSpanStartLine()
+                && closeBrace.GetSpanStartLine() - openBrace.GetSpanEndLine() != 1
                 && openBrace.TrailingTrivia.IsWhitespaceOrEndOfLine()
                 && closeBrace.LeadingTrivia.IsWhitespaceOrEndOfLine();
         }
