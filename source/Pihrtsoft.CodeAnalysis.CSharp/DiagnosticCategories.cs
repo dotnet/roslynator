@@ -15,7 +15,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string Performance = "Performance";
         public const string Style = "Style";
         public const string Usage = "Usage";
-
 #endif
     }
 }
