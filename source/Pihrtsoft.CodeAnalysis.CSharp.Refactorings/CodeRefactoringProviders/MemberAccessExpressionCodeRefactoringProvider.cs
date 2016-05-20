@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
@@ -19,21 +21,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
 
-            if (node == null)
+            if (node?.Kind() != SyntaxKind.SimpleMemberAccessExpression)
                 return;
 
             ExpressionChainRefactoring.FormatExpressionChain(context, node);
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                ConvertStringEmptyToEmptyStringLiteral(context, node, semanticModel);
+            }
+        }
 
-            if (StringEmptyRefactoring.CanConvertStringEmptyToEmptyStringLiteral(node, semanticModel))
+        private static void ConvertStringEmptyToEmptyStringLiteral(CodeRefactoringContext context, MemberAccessExpressionSyntax memberAccess, SemanticModel semanticModel)
+        {
+            if (StringEmptyRefactoring.CanConvertStringEmptyToEmptyStringLiteral(memberAccess, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
                     "Convert to \"\"",
-                    cancellationToken => StringEmptyRefactoring.ConvertStringEmptyToEmptyStringLiteralAsync(context.Document, node, cancellationToken));
+                    cancellationToken =>
+                    {
+                        return StringEmptyRefactoring.ConvertStringEmptyToEmptyStringLiteralAsync(
+                            context.Document,
+                            memberAccess,
+                            cancellationToken);
+                    });
+            }
+            else
+            {
+                memberAccess = (MemberAccessExpressionSyntax)memberAccess
+                    .FirstAncestor(SyntaxKind.SimpleMemberAccessExpression);
+
+                if (memberAccess != null)
+                    ConvertStringEmptyToEmptyStringLiteral(context, memberAccess, semanticModel);
             }
         }
     }

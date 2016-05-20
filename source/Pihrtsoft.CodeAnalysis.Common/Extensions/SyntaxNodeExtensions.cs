@@ -367,6 +367,19 @@ namespace Pihrtsoft.CodeAnalysis
             return node.Parent?.FirstAncestorOrSelf<TNode>(predicate, ascendOutOfTrivia);
         }
 
+        public static SyntaxNode FirstAncestor(
+            this SyntaxNode node,
+            SyntaxKind kind,
+            bool ascendOutOfTrivia = true)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node
+                .Ancestors(ascendOutOfTrivia)
+                .FirstOrDefault(f => f.IsKind(kind));
+        }
+
         public static TNode TrimLeadingWhitespace<TNode>(this TNode node) where TNode : SyntaxNode
         {
             if (node == null)
