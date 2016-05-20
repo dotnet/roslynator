@@ -34,8 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             bool isMultiple = usingStatement.Statement
                 .DescendantNodes()
-                .Where(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f))
-                .Any();
+                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces from nested using statement" + ((isMultiple) ? "s" : ""),
