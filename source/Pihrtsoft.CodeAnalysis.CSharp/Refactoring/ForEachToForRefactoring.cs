@@ -205,10 +205,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-            if (namedTypeSymbol.ConstructedFrom.Equals(immutableArraySymbol))
-                return true;
-
-            return false;
+            return namedTypeSymbol.ConstructedFrom.Equals(immutableArraySymbol);
         }
     }
 }

@@ -266,23 +266,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool IsValueOfLocalDeclaration(this ExpressionSyntax expression)
         {
-            var equalsValueClause = expression.Parent as EqualsValueClauseSyntax;
-            if (equalsValueClause == null)
-                return false;
-
-            var variableDeclarator = equalsValueClause.Parent as VariableDeclaratorSyntax;
-            if (variableDeclarator == null)
-                return false;
-
-            var variableDeclaration = variableDeclarator.Parent as VariableDeclarationSyntax;
-            if (variableDeclaration == null)
-                return false;
-
-            var localDeclarationStatement = variableDeclaration.Parent as LocalDeclarationStatementSyntax;
-            if (localDeclarationStatement == null)
-                return false;
-
-            return true;
+            return expression.Parent is EqualsValueClauseSyntax
+                && expression.Parent.Parent is VariableDeclaratorSyntax
+                && expression.Parent.Parent.Parent is VariableDeclarationSyntax
+                && expression.Parent.Parent.Parent.Parent is LocalDeclarationStatementSyntax;
         }
     }
 }
