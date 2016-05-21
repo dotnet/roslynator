@@ -34,41 +34,65 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 if (declaration != null)
                 {
-                    TypeSyntax type = GetReturnType(declaration);
+                    TypeSyntax memberType = GetReturnType(declaration);
 
-                    if (type != null)
+                    if (memberType != null)
                     {
                         SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-                        ITypeSymbol typeSymbol = semanticModel
-                            .GetTypeInfo(type, context.CancellationToken)
+                        ITypeSymbol memberTypeSymbol = semanticModel
+                            .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
 
-                        if (typeSymbol != null)
+                        if (memberTypeSymbol != null)
                         {
-                            ITypeSymbol typeSymbol2 = semanticModel
+                            ITypeSymbol typeSymbol = semanticModel
                                 .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
                                 .Type;
 
-                            if (typeSymbol2 != null
-                                && !typeSymbol.Equals(typeSymbol2))
+                            if (typeSymbol != null)
                             {
-                                TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol2);
-
-                                if (newType != null)
+                                if (memberTypeSymbol.SpecialType == SpecialType.System_Boolean
+                                    && typeSymbol.IsKind(SymbolKind.NamedType))
                                 {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        $"Change {GetText(declaration)} type to '{typeSymbol2.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                                        cancellationToken =>
-                                        {
-                                            return ChangeReturnTypeAsync(
-                                                context.Document,
-                                                type,
-                                                newType,
-                                                cancellationToken);
-                                        });
+                                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                                    context.RegisterRefactoring(codeAction);
+                                    if (namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
+                                        && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Add boolean comparison",
+                                            cancellationToken =>
+                                            {
+                                                return AddBooleanComparisonRefactoring.RefactorAsync(
+                                                    context.Document,
+                                                    returnStatement.Expression,
+                                                    context.CancellationToken);
+                                            });
+
+                                        context.RegisterRefactoring(codeAction);
+                                    }
+                                }
+
+                                if (!memberTypeSymbol.Equals(typeSymbol))
+                                {
+                                    TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol);
+
+                                    if (newType != null)
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            $"Change {GetText(declaration)} type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                                            cancellationToken =>
+                                            {
+                                                return ChangeReturnTypeAsync(
+                                                    context.Document,
+                                                    memberType,
+                                                    newType,
+                                                    cancellationToken);
+                                            });
+
+                                        context.RegisterRefactoring(codeAction);
+                                    }
                                 }
                             }
                         }

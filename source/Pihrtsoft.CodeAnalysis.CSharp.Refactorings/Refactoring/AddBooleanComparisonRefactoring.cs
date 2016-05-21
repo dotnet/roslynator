@@ -127,7 +127,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
