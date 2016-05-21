@@ -162,6 +162,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 case SyntaxKind.BitwiseAndExpression:
                 case SyntaxKind.BitwiseOrExpression:
                 case SyntaxKind.ExclusiveOrExpression:
+                case SyntaxKind.LogicalAndExpression:
                     return expression;
                 default:
                     {
