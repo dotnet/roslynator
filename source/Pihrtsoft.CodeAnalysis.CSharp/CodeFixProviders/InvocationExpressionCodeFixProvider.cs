@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -16,7 +18,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLinqMethodChain);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.SimplifyLinqMethodChain,
+                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -28,18 +37,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<InvocationExpressionSyntax>();
 
-            CodeAction codeAction = CodeAction.Create(
-                "Simplify method chain",
-                cancellationToken =>
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
                 {
-                    return SimplifyMethodChainAsync(
-                        context.Document,
-                        invocation,
-                        cancellationToken);
-                },
-                DiagnosticIdentifiers.SimplifyLinqMethodChain);
+                    case DiagnosticIdentifiers.SimplifyLinqMethodChain:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Simplify method chain",
+                                cancellationToken =>
+                                {
+                                    return SimplifyMethodChainAsync(
+                                        context.Document,
+                                        invocation,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
+                        {
+                            string propertyName = diagnostic.Properties["PropertyName"];
+                            string sign = (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true) ? "==" : ">";
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Replace 'Any' with '{propertyName} {sign} 0'",
+                                cancellationToken =>
+                                {
+                                    return ReplaceAnyMethodWithCountOrLengthPropertyAsync(
+                                        context.Document,
+                                        invocation,
+                                        propertyName,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
 
         private static async Task<Document> SimplifyMethodChainAsync(
@@ -62,6 +101,51 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .WithTrailingTrivia(invocation2.GetTrailingTrivia());
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(invocation2, invocation);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static async Task<Document> ReplaceAnyMethodWithCountOrLengthPropertyAsync(
+            Document document,
+            InvocationExpressionSyntax invocation,
+            string propertyName,
+            CancellationToken cancellationToken)
+        {
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+
+            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+            memberAccess = memberAccess
+                .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name));
+
+            SyntaxNode newRoot = null;
+
+            if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+            {
+                BinaryExpressionSyntax binaryExpression = BinaryExpression(
+                    SyntaxKind.EqualsExpression,
+                    memberAccess,
+                    LiteralExpression(
+                        SyntaxKind.NumericLiteralExpression,
+                        Literal(0)));
+
+                newRoot = oldRoot.ReplaceNode(
+                    invocation.Parent,
+                    binaryExpression.WithTriviaFrom(invocation.Parent));
+            }
+            else
+            {
+                BinaryExpressionSyntax binaryExpression = BinaryExpression(
+                    SyntaxKind.GreaterThanExpression,
+                    memberAccess,
+                    LiteralExpression(
+                        SyntaxKind.NumericLiteralExpression,
+                        Literal(0)));
+
+                newRoot = oldRoot.ReplaceNode(
+                    invocation,
+                    binaryExpression.WithTriviaFrom(invocation));
+            }
 
             return document.WithSyntaxRoot(newRoot);
         }

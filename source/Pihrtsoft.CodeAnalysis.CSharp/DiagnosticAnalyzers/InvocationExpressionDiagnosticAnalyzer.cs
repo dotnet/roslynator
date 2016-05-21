@@ -29,8 +29,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         },
         StringComparer.Ordinal);
 
+        private static readonly ImmutableDictionary<string, string> _propertiesCount
+            = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Count") });
+
+        private static readonly ImmutableDictionary<string, string> _propertiesLength
+            = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Length") });
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.SimplifyLinqMethodChain);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.SimplifyLinqMethodChain,
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -81,7 +94,83 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         }
                     }
                 }
+
+                if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
+                    && methodName == "Any"
+                    && IsEnumerableMethod(context, invocation, "Any"))
+                {
+                    ITypeSymbol typeSymbol = context
+                        .SemanticModel
+                        .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
+                        .Type;
+
+                    if (typeSymbol != null
+                        && !typeSymbol.IsKind(SymbolKind.ErrorType)
+                        && !IsIEnumerableOfT(typeSymbol))
+                    {
+                        string propertyName = GetPropertyName(typeSymbol, context);
+
+                        if (propertyName != null)
+                        {
+                            string messageArg = null;
+
+                            TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+
+                            if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
+                            {
+                                if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+                                {
+                                    var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+
+                                    if (logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                                        && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+                                    {
+                                        messageArg = $"{propertyName} == 0";
+                                    }
+                                }
+                                else
+                                {
+                                    messageArg = $"{propertyName} > 0";
+                                }
+                            }
+
+                            if (messageArg != null)
+                            {
+                                Diagnostic diagnostic = Diagnostic.Create(
+                                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                                    Location.Create(context.Node.SyntaxTree, span),
+                                    (propertyName == "Count") ? _propertiesCount : _propertiesLength,
+                                    messageArg);
+
+                                context.ReportDiagnostic(diagnostic);
+                            }
+                        }
+                    }
+                }
             }
+        }
+
+        private static string GetPropertyName(ITypeSymbol typeSymbol, SyntaxNodeAnalysisContext context)
+        {
+            if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
+                return "Length";
+
+            for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+            {
+                if (typeSymbol.AllInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                {
+                    foreach (ISymbol members in typeSymbol.GetMembers("Count"))
+                    {
+                        if (members.IsKind(SymbolKind.Property)
+                            && members.DeclaredAccessibility == Accessibility.Public)
+                        {
+                            return "Count";
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static bool IsEnumerableMethod(
@@ -99,7 +188,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     && methodSymbol.ContainingType?.Equals(
                         context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
                     && methodSymbol.Parameters.Length == 1
-                    && IsIEnumerableOfT(methodSymbol.Parameters[0]);
+                    && IsIEnumerableOfT(methodSymbol.Parameters[0].Type);
             }
 
             return false;
@@ -117,7 +206,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     && methodSymbol.ContainingType?.Equals(
                         context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
                     && methodSymbol.Parameters.Length == 2
-                    && IsIEnumerableOfT(methodSymbol.Parameters[0]))
+                    && IsIEnumerableOfT(methodSymbol.Parameters[0].Type))
                 {
                     IParameterSymbol parameterSymbol = methodSymbol.Parameters[1];
 
@@ -135,16 +224,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             return false;
         }
 
-        private static bool IsIEnumerableOfT(IParameterSymbol parameterSymbol)
+        private static bool IsIEnumerableOfT(ITypeSymbol typeSymbol)
         {
-            if (parameterSymbol.Type?.IsKind(SymbolKind.NamedType) == true)
-            {
-                var parameterTypeSymbol = (INamedTypeSymbol)parameterSymbol.Type;
-
-                return parameterTypeSymbol.ConstructedFrom?.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
-            }
-
-            return false;
+            return typeSymbol?.Kind == SymbolKind.NamedType
+                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
         }
     }
 }

@@ -86,6 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string SimplifyLinqMethodChain = Prefix + "1078";
         public const string AvoidUsageOfStringEmpty = Prefix + "1079";
         public const string ThrowingOfNewNotImplementedException = Prefix + "1080";
+        public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1081";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
