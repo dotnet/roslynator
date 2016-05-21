@@ -45,9 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static ReturnStatementSyntax CreateReturnStatement(IfStatementSyntax ifStatement)
         {
-            ReturnStatementSyntax returnStatement = SimplifyIfStatementToReturnStatementAnalyzer.GetReturnStatement(ifStatement.Statement);
-
-            LiteralExpressionSyntax booleanLiteral = SimplifyIfStatementToReturnStatementAnalyzer.GetBooleanLiteral(returnStatement);
+            LiteralExpressionSyntax booleanLiteral = SimplifyIfStatementToReturnStatementAnalyzer.GetBooleanLiteral(ifStatement.Statement);
 
             ExpressionSyntax expression = ifStatement.Condition;
 

@@ -40,7 +40,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
                     int index = block.Statements.IndexOf(ifStatement);
 
-                    if (index < block.Statements.Count - 1)
+                    if (index < block.Statements.Count - 1
+                        && (index == 0 || !IsPreviousStatementIfStatementWithReturnStatement(block.Statements[index - 1])))
                     {
                         StatementSyntax nextStatement = block.Statements[index + 1];
 
@@ -80,6 +81,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                 default:
                     return null;
             }
+        }
+
+        internal static LiteralExpressionSyntax GetBooleanLiteral(StatementSyntax statement)
+        {
+            ReturnStatementSyntax returnStatement = GetReturnStatement(statement);
+
+            return GetBooleanLiteral(returnStatement);
         }
 
         internal static ReturnStatementSyntax GetReturnStatement(StatementSyntax statement)
@@ -134,6 +142,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
             {
                 DiagnosticHelper.FadeOutNode(context, returnStatement, _fadeOutDescriptor);
             }
+        }
+
+        private static bool IsPreviousStatementIfStatementWithReturnStatement(StatementSyntax statement)
+        {
+            if (statement.IsKind(SyntaxKind.IfStatement))
+            {
+                var ifStatement2 = (IfStatementSyntax)statement;
+
+                if (ifStatement2.Else == null)
+                    return GetBooleanLiteral(ifStatement2.Statement) != null;
+            }
+
+            return false;
         }
     }
 }
