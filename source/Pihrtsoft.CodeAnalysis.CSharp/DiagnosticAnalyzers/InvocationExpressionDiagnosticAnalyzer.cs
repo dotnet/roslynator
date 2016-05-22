@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,20 +16,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InvocationExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
-        private static readonly HashSet<string> _methodNames = new HashSet<string>(new string[]
-        {
-            "Any",
-            "Count",
-            "First",
-            "FirstOrDefault",
-            "Last",
-            "LastOrDefault",
-            "LongCount",
-            "Single",
-            "SingleOrDefault"
-        },
-        StringComparer.Ordinal);
-
         private static readonly ImmutableDictionary<string, string> _propertiesCount
             = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Count") });
 
@@ -60,111 +47,140 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var invocation = (InvocationExpressionSyntax)context.Node;
 
-            if (invocation.ArgumentList?.Arguments.Count == 0
-                && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+            if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+                && invocation.ArgumentList?.Arguments.Count == 0)
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
                 string methodName = memberAccess.Name?.Identifier.ValueText;
 
-                if (_methodNames.Contains(methodName)
-                    && memberAccess.Expression?.IsKind(SyntaxKind.InvocationExpression) == true)
+                switch (methodName)
                 {
-                    var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
-
-                    if (invocation2.ArgumentList?.Arguments.Count == 1
-                        && invocation2.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                    {
-                        var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
-
-                        if (memberAccess2.Name?.Identifier.ValueText == "Where"
-                            && IsEnumerableMethod(context, invocation, methodName)
-                            && IsEnumerableWhere(context, invocation2))
+                    case "Any":
                         {
-                            TextSpan span = TextSpan.FromBounds(invocation2.Span.End, invocation.Span.End);
-
-                            if (invocation
-                                .DescendantTrivia(span)
-                                .All(f => f.IsWhitespaceOrEndOfLine()))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.SimplifyLinqMethodChain,
-                                    memberAccess2.Name.GetLocation());
-                            }
+                            ProcessWhere(context, invocation, memberAccess, methodName);
+                            ProcessAny(context, invocation, memberAccess);
+                            break;
                         }
-                    }
-                }
-
-                if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
-                    && methodName == "Any"
-                    && IsEnumerableMethod(context, invocation, "Any"))
-                {
-                    ITypeSymbol typeSymbol = context
-                        .SemanticModel
-                        .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
-                        .Type;
-
-                    if (typeSymbol != null
-                        && !typeSymbol.IsKind(SymbolKind.ErrorType)
-                        && !IsIEnumerableOfT(typeSymbol))
-                    {
-                        string propertyName = GetPropertyName(typeSymbol, context);
-
-                        if (propertyName != null)
+                    case "Count":
+                    case "First":
+                    case "FirstOrDefault":
+                    case "Last":
+                    case "LastOrDefault":
+                    case "LongCount":
+                    case "Single":
+                    case "SingleOrDefault":
                         {
-                            string messageArg = null;
+                            ProcessWhere(context, invocation, memberAccess, methodName);
+                            break;
+                        }
+                }
+            }
+        }
 
-                            TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+        private static void ProcessWhere(
+            SyntaxNodeAnalysisContext context,
+            InvocationExpressionSyntax invocation,
+            MemberAccessExpressionSyntax memberAccess,
+            string methodName)
+        {
+            if (memberAccess.Expression?.IsKind(SyntaxKind.InvocationExpression) == true)
+            {
+                var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
 
-                            if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
-                            {
-                                if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
-                                {
-                                    var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+                if (invocation2.ArgumentList?.Arguments.Count == 1
+                    && invocation2.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                {
+                    var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
-                                    if (logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                                        && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
-                                    {
-                                        messageArg = $"{propertyName} == 0";
-                                    }
-                                }
-                                else
-                                {
-                                    messageArg = $"{propertyName} > 0";
-                                }
-                            }
+                    if (memberAccess2.Name?.Identifier.ValueText == "Where"
+                        && IsEnumerableExtensionMethod(context, invocation, methodName)
+                        && (IsEnumerableWhereMethod(context, invocation2) || IsImmutableArrayWhereMethod( context, invocation2)))
+                    {
+                        TextSpan span = TextSpan.FromBounds(invocation2.Span.End, invocation.Span.End);
 
-                            if (messageArg != null)
-                            {
-                                Diagnostic diagnostic = Diagnostic.Create(
-                                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                                    Location.Create(context.Node.SyntaxTree, span),
-                                    (propertyName == "Count") ? _propertiesCount : _propertiesLength,
-                                    messageArg);
-
-                                context.ReportDiagnostic(diagnostic);
-                            }
+                        if (invocation
+                            .DescendantTrivia(span)
+                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.SimplifyLinqMethodChain,
+                                memberAccess2.Name.GetLocation());
                         }
                     }
                 }
             }
         }
 
-        private static string GetPropertyName(ITypeSymbol typeSymbol, SyntaxNodeAnalysisContext context)
+        private static void ProcessAny(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
-                return "Length";
-
-            for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+            if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
+                && IsEnumerableExtensionMethod(context, invocation, "Any"))
             {
-                if (typeSymbol.AllInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                string propertyName = GetCountOrLengthPropertyName(context, memberAccess.Expression);
+
+                if (propertyName != null)
                 {
-                    foreach (ISymbol members in typeSymbol.GetMembers("Count"))
+                    string messageArg = null;
+
+                    TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+
+                    if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
                     {
-                        if (members.IsKind(SymbolKind.Property)
-                            && members.DeclaredAccessibility == Accessibility.Public)
+                        if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
                         {
-                            return "Count";
+                            var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+
+                            if (logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
+                                && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+                            {
+                                messageArg = $"{propertyName} == 0";
+                            }
+                        }
+                        else
+                        {
+                            messageArg = $"{propertyName} > 0";
+                        }
+                    }
+
+                    if (messageArg != null)
+                    {
+                        Diagnostic diagnostic = Diagnostic.Create(
+                            DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                            Location.Create(context.Node.SyntaxTree, span),
+                            (propertyName == "Count") ? _propertiesCount : _propertiesLength,
+                            messageArg);
+
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                }
+            }
+        }
+
+        private static string GetCountOrLengthPropertyName(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
+        {
+            ITypeSymbol typeSymbol = context
+                .SemanticModel
+                .GetTypeInfo(expression, context.CancellationToken)
+                .Type;
+
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
+                && !IsGenericIEnumerable(typeSymbol))
+            {
+                if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
+                    return "Length";
+
+                for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+                {
+                    if (typeSymbol.AllInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                    {
+                        foreach (ISymbol members in typeSymbol.GetMembers("Count"))
+                        {
+                            if (members.IsKind(SymbolKind.Property)
+                                && members.DeclaredAccessibility == Accessibility.Public)
+                            {
+                                return "Count";
+                            }
                         }
                     }
                 }
@@ -173,10 +189,51 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             return null;
         }
 
-        private static bool IsEnumerableMethod(
+        private static bool IsEnumerableWhereMethod(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        {
+            var methodSymbol = context.SemanticModel
+                .GetSymbolInfo(invocation, context.CancellationToken)
+                .Symbol as IMethodSymbol;
+
+            if (methodSymbol?.ReducedFrom != null)
+            {
+                methodSymbol = methodSymbol.ReducedFrom;
+
+                return methodSymbol.MetadataName == "Where"
+                    && methodSymbol.Parameters.Length == 2
+                    && methodSymbol.ContainingType?.Equals(context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
+                    && IsGenericIEnumerable(methodSymbol.Parameters[0].Type)
+                    && IsPredicate(methodSymbol.Parameters[1].Type, context.SemanticModel);
+            }
+
+            return false;
+        }
+
+        private static bool IsImmutableArrayWhereMethod(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        {
+            var methodSymbol = context.SemanticModel
+                .GetSymbolInfo(invocation, context.CancellationToken)
+                .Symbol as IMethodSymbol;
+
+            if (methodSymbol?.ReducedFrom != null)
+            {
+                methodSymbol = methodSymbol.ReducedFrom;
+
+                return methodSymbol.MetadataName == "Where"
+                    && methodSymbol.Parameters.Length == 2
+                    && methodSymbol.ContainingType?.Equals(context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
+                    && IsGenericImmutableArray(methodSymbol.Parameters[0].Type, context.SemanticModel)
+                    && IsPredicate(methodSymbol.Parameters[1].Type, context.SemanticModel);
+            }
+
+            return false;
+        }
+
+        private static bool IsEnumerableExtensionMethod(
             SyntaxNodeAnalysisContext context,
             InvocationExpressionSyntax invocation,
-            string methodName)
+            string methodName,
+            int parameterCount = 1)
         {
             var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
 
@@ -185,49 +242,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 methodSymbol = methodSymbol.ReducedFrom;
 
                 return methodSymbol.MetadataName == methodName
-                    && methodSymbol.ContainingType?.Equals(
-                        context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
-                    && methodSymbol.Parameters.Length == 1
-                    && IsIEnumerableOfT(methodSymbol.Parameters[0].Type);
+                    && methodSymbol.Parameters.Length == parameterCount
+                    && methodSymbol.ContainingType?.Equals(context.GetTypeByMetadataName("System.Linq.Enumerable")) == true
+                    && IsGenericIEnumerable(methodSymbol.Parameters[0].Type);
             }
 
             return false;
         }
 
-        private static bool IsEnumerableWhere(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
-        {
-            var methodSymbol = context.SemanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
-
-            if (methodSymbol?.ReducedFrom != null)
-            {
-                methodSymbol = methodSymbol.ReducedFrom;
-
-                if (methodSymbol.MetadataName == "Where"
-                    && methodSymbol.ContainingType?.Equals(
-                        context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
-                    && methodSymbol.Parameters.Length == 2
-                    && IsIEnumerableOfT(methodSymbol.Parameters[0].Type))
-                {
-                    IParameterSymbol parameterSymbol = methodSymbol.Parameters[1];
-
-                    if (parameterSymbol.Type?.IsKind(SymbolKind.NamedType) == true)
-                    {
-                        var parameterTypeSymbol = (INamedTypeSymbol)parameterSymbol.Type;
-
-                        return parameterTypeSymbol.ConstructedFrom != null
-                            && parameterTypeSymbol.ConstructedFrom.Equals(
-                                context.SemanticModel.Compilation.GetTypeByMetadataName("System.Func`2"));
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsIEnumerableOfT(ITypeSymbol typeSymbol)
+        private static bool IsGenericIEnumerable(ITypeSymbol typeSymbol)
         {
             return typeSymbol?.Kind == SymbolKind.NamedType
                 && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
+        }
+
+        private static bool IsPredicate(ISymbol symbol, SemanticModel semanticModel)
+        {
+            return symbol?.IsKind(SymbolKind.NamedType) == true
+                && ((INamedTypeSymbol)symbol)
+                    .ConstructedFrom
+                    .Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Func`2"));
+        }
+
+        private static bool IsGenericImmutableArray(ISymbol symbol, SemanticModel semanticModel)
+        {
+            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            {
+                INamedTypeSymbol namedTypeSymbol = semanticModel
+                    .Compilation
+                    .GetTypeByMetadataName("System.Collections.Immutable.ImmutableArray`1");
+
+                return namedTypeSymbol != null
+                    && ((INamedTypeSymbol)symbol).ConstructedFrom.Equals(namedTypeSymbol);
+            }
+
+            return false;
         }
     }
 }
