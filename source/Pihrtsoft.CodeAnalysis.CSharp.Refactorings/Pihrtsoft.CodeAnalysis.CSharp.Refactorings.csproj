@@ -102,7 +102,6 @@
     <Compile Include="CodeRefactoringProviders\DeclarationCodeRefactoringProvider_.cs" />
     <Compile Include="Extensions\CodeRefactoringContextExtensions.cs" />
     <Compile Include="Refactoring\ConditionalExpressionToIfElseRefactoring.cs" />
-    <Compile Include="Refactoring\ForEachToForRefactoring.cs" />
     <Compile Include="Refactoring\ReverseForRefactoring.cs" />
     <Compile Include="Refactoring\ForToForEachRefactoring.cs" />
     <Compile Include="Refactoring\SwapArgumentsRefactoring.cs" />

@@ -56,5 +56,29 @@ namespace Pihrtsoft.CodeAnalysis
 
             return false;
         }
+
+        public static bool HasPublicIndexer(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            foreach (ISymbol symbol in typeSymbol.GetMembers("get_Item"))
+            {
+                if (symbol.IsKind(SymbolKind.Method)
+                    && !symbol.IsStatic
+                    && symbol.DeclaredAccessibility == Accessibility.Public)
+                {
+                    var methodSymbol = (IMethodSymbol)symbol;
+
+                    if (methodSymbol.Parameters.Length == 1
+                        && methodSymbol.Parameters[0].Type?.SpecialType == SpecialType.System_Int32)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

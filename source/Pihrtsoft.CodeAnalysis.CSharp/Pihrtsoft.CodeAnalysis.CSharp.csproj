@@ -185,7 +185,6 @@
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
     <Compile Include="Extensions\SyntaxTreeAnalysisContextExtensions.cs" />
     <Compile Include="DiagnosticHelper.cs" />
-    <Compile Include="Refactoring\ForEachToForRefactoring.cs" />
     <Compile Include="Refactoring\SimplifyBooleanComparisonRefactoring.cs" />
     <Compile Include="SyntaxRewriters\SimplifyLambdaExpressionParameterListSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

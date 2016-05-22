@@ -49,6 +49,7 @@
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
     <Compile Include="CSharp\Refactoring\AddBracesToIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AssignmentExpressionRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\ForEachToForRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\InterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
