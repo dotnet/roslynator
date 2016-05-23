@@ -43,10 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (typeSymbol != null)
                     {
-                        INamedTypeSymbol notImplementedExceptionSymbol = context
-                            .SemanticModel
-                            .Compilation
-                            .GetTypeByMetadataName("System.NotImplementedException");
+                        INamedTypeSymbol notImplementedExceptionSymbol = context.GetTypeByMetadataName("System.NotImplementedException");
 
                         if (typeSymbol.Equals(notImplementedExceptionSymbol))
                         {

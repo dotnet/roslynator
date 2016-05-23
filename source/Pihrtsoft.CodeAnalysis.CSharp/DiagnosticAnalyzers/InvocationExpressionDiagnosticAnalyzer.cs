@@ -201,7 +201,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 return methodSymbol.MetadataName == "Where"
                     && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
+                    && methodSymbol.ContainingType?.Equals(context.GetTypeByMetadataName("System.Linq.Enumerable")) == true
                     && IsGenericIEnumerable(methodSymbol.Parameters[0].Type)
                     && IsPredicate(methodSymbol.Parameters[1].Type, context.SemanticModel);
             }
@@ -221,7 +221,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 return methodSymbol.MetadataName == "Where"
                     && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(context.SemanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
+                    && methodSymbol.ContainingType?.Equals(context.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
                     && IsGenericImmutableArray(methodSymbol.Parameters[0].Type, context.SemanticModel)
                     && IsPredicate(methodSymbol.Parameters[1].Type, context.SemanticModel);
             }

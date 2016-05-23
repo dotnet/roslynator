@@ -80,10 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 if (typeSymbol != null)
                 {
-                    INamedTypeSymbol exceptionTypeSymbol = context
-                        .SemanticModel
-                        .Compilation
-                        .GetTypeByMetadataName("System.Exception");
+                    INamedTypeSymbol exceptionTypeSymbol = context.GetTypeByMetadataName("System.Exception");
 
                     if (typeSymbol.Equals(exceptionTypeSymbol))
                     {
