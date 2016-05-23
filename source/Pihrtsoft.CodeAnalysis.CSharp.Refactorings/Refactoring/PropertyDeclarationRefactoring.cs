@@ -125,10 +125,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                 modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, modifiers)
+            string fieldName = NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText);
+
+            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName, modifiers)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration)
+            PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName)
                 .WithTriviaFrom(propertyDeclaration)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
@@ -146,31 +148,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static PropertyDeclarationSyntax ExpandProperty(PropertyDeclarationSyntax propertyDeclaration)
         {
+            AccessorListSyntax accessorList = AccessorList(
+                List(propertyDeclaration
+                    .AccessorList
+                    .Accessors.Select(accessor => accessor
+                        .WithBody(Block())
+                        .WithSemicolonToken(Token(SyntaxKind.None)))));
+
+            accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(accessorList)
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+
             return propertyDeclaration
                 .WithInitializer(null)
-                .WithAccessorList(
-                    AccessorList(
-                        List(propertyDeclaration
-                            .AccessorList
-                            .Accessors.Select(accessor => accessor
-                                .WithBody(Block())
-                                .WithSemicolonToken(Token(SyntaxKind.None))))
-                    )
-                );
+                .WithAccessorList(accessorList);
         }
 
-        private static PropertyDeclarationSyntax ExpandPropertyAndAddBackingField(PropertyDeclarationSyntax propertyDeclaration)
+        private static PropertyDeclarationSyntax ExpandPropertyAndAddBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            string fieldName = NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText);
-
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
+
             if (getter != null)
             {
                 AccessorDeclarationSyntax newGetter = getter
                     .WithBody(
                         Block(
                             SingletonList<StatementSyntax>(
-                                ReturnStatement(IdentifierName(fieldName)))))
+                                ReturnStatement(IdentifierName(name)))))
                     .WithSemicolonToken(Token(SyntaxKind.None));
 
                 propertyDeclaration = propertyDeclaration
@@ -180,6 +183,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
+
             if (setter != null)
             {
                 AccessorDeclarationSyntax newSetter = setter
@@ -189,7 +193,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 ExpressionStatement(
                                     AssignmentExpression(
                                         SyntaxKind.SimpleAssignmentExpression,
-                                        IdentifierName(fieldName),
+                                        IdentifierName(name),
                                         IdentifierName("value"))))))
                     .WithSemicolonToken(Token(SyntaxKind.None));
 
@@ -205,18 +209,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithAccessorList(accessorList);
         }
 
-        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, SyntaxTokenList modifiers)
+        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name, SyntaxTokenList modifiers)
         {
-            VariableDeclarationSyntax variableDeclaration = VariableDeclaration(
-                propertyDeclaration.Type,
-                SingletonSeparatedList(
-                    VariableDeclarator(NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText))
-                        .WithInitializer(propertyDeclaration.Initializer)));
-
             return FieldDeclaration(
                 List<AttributeListSyntax>(),
                 modifiers,
-                variableDeclaration);
+                VariableDeclaration(
+                    propertyDeclaration.Type,
+                    SingletonSeparatedList(
+                        VariableDeclarator(name)
+                            .WithInitializer(propertyDeclaration.Initializer))));
         }
 
         private static int IndexOfLastField(SyntaxList<MemberDeclarationSyntax> members)
