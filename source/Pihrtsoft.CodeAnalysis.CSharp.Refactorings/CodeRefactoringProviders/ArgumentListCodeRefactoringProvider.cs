@@ -28,14 +28,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (argumentList == null)
                 return;
 
-            if (argumentList.Arguments.Count <= 1)
+            if (argumentList.Arguments.Count == 0)
                 return;
 
             if (argumentList.IsSingleline())
             {
-                context.RegisterRefactoring(
-                    "Format each argument on separate line",
-                    cancellationToken => FormatEachArgumentOnNewLineAsync(context.Document, argumentList, cancellationToken));
+                if (argumentList.Arguments.Count > 1)
+                {
+                    context.RegisterRefactoring(
+                        "Format each argument on separate line",
+                        cancellationToken => FormatEachArgumentOnNewLineAsync(context.Document, argumentList, cancellationToken));
+                }
             }
             else
             {
