@@ -65,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     {
                         context.RegisterRefactoring(
                             "Change type to 'var'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, type, context.CancellationToken));
+                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, type, cancellationToken));
 
                         break;
                     }
@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                         context.RegisterRefactoring(
                             $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, type, typeSymbol, context.CancellationToken));
+                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, type, typeSymbol, cancellationToken));
 
                         break;
                     }

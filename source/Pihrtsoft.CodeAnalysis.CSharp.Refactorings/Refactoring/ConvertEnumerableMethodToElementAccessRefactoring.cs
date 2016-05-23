@@ -95,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                             "Access element using '[]' instead of 'ElementAt' method",
-                        cancellationToken => RefactorAsync(context.Document, invocation, null, context.CancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                 }
             }
 
