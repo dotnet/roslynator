@@ -66,6 +66,7 @@
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
     <Compile Include="Refactoring\CommentRefactoring.cs" />
+    <Compile Include="Refactoring\ConvertEnumerableMethodToElementAccessRefactoring.cs" />
     <Compile Include="Refactoring\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
