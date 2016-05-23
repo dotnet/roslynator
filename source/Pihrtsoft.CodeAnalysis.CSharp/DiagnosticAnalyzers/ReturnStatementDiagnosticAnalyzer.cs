@@ -18,9 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatement,
-                    DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut,
-                    DiagnosticDescriptors.MergeSimpleAssignmentWithReturnStatement,
-                    DiagnosticDescriptors.MergeSimpleAssignmentWithReturnStatementFadeOut);
+                    DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
             }
         }
 
@@ -38,8 +36,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return;
 
             MergeLocalDeclarationWithReturnStatementAnalyzer.Analyze(context);
-
-            MergeSimpleAssignmentWithReturnStatementAnalyzer.Analyze(context);
         }
     }
 }

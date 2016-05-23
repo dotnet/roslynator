@@ -663,17 +663,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MergeSimpleAssignmentWithReturnStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MergeSimpleAssignmentWithReturnStatement,
-            title: "Merge simple assignment with return statement.",
-            messageFormat: "Consider merging simple assignment with return statement.",
-            category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor MergeSimpleAssignmentWithReturnStatementFadeOut = MergeSimpleAssignmentWithReturnStatement.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor RemoveUnnecessaryCaseLabel = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel,
             title: "Remove unnecessary case label.",

@@ -74,19 +74,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveEmptyFinallyClause = Prefix + "1066";
         public const string RemoveEmptyArgumentList = Prefix + "1067";
         public const string SimplifyLogicalNotExpression = Prefix + "1068";
-        public const string MergeSimpleAssignmentWithReturnStatement = Prefix + "1069";
-        public const string RemoveUnnecessaryCaseLabel = Prefix + "1070";
-        public const string RemoveRedundantDefaultSwitchSection = Prefix + "1071";
-        public const string RemoveRedundantBaseConstructorCall = Prefix + "1072";
-        public const string RemoveEmptyNamespaceDeclaration = Prefix + "1073";
-        public const string SimplifyIfStatementToReturnStatement = Prefix + "1074";
-        public const string RemoveRedundantConstructor = Prefix + "1075";
-        public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1076";
-        public const string FormatDeclarationBraces = Prefix + "1077";
-        public const string SimplifyLinqMethodChain = Prefix + "1078";
-        public const string AvoidUsageOfStringEmpty = Prefix + "1079";
-        public const string ThrowingOfNewNotImplementedException = Prefix + "1080";
-        public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1081";
+        public const string RemoveUnnecessaryCaseLabel = Prefix + "1069";
+        public const string RemoveRedundantDefaultSwitchSection = Prefix + "1070";
+        public const string RemoveRedundantBaseConstructorCall = Prefix + "1071";
+        public const string RemoveEmptyNamespaceDeclaration = Prefix + "1072";
+        public const string SimplifyIfStatementToReturnStatement = Prefix + "1073";
+        public const string RemoveRedundantConstructor = Prefix + "1074";
+        public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1075";
+        public const string FormatDeclarationBraces = Prefix + "1076";
+        public const string SimplifyLinqMethodChain = Prefix + "1077";
+        public const string AvoidUsageOfStringEmpty = Prefix + "1078";
+        public const string ThrowingOfNewNotImplementedException = Prefix + "1079";
+        public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1080";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
