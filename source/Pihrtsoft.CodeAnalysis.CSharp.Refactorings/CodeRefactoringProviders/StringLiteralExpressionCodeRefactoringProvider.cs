@@ -27,9 +27,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 "Convert to interpolated string",
                 cancellationToken =>
                 {
+                    int interpolationIndex = (context.Span.IsEmpty)
+                        ? context.Span.Start - literalExpression.Span.Start
+                        : -1;
+
                     return StringLiteralRefactoring.ConvertStringLiteralToInterpolatedStringAsync(
                         context.Document,
                         literalExpression,
+                        interpolationIndex,
                         cancellationToken);
                 });
 

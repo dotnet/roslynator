@@ -40,11 +40,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> ConvertStringLiteralToInterpolatedStringAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken)
+            int interpolationIndex = -1,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + literalExpression.ToString())
+            string s = literalExpression.ToString();
+
+            if (interpolationIndex != -1)
+                s = s.Substring(0, interpolationIndex) + "{}" + s.Substring(interpolationIndex);
+
+            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
                 .WithTriviaFrom(literalExpression);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, interpolatedString);
