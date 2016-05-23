@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            string s = literalExpression.ToString();
+            string s = literalExpression.Token.Text.ToString();
 
             if (interpolationIndex != -1)
                 s = s.Substring(0, interpolationIndex) + "{}" + s.Substring(interpolationIndex);

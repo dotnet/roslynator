@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
@@ -27,14 +28,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 "Convert to interpolated string",
                 cancellationToken =>
                 {
-                    int interpolationIndex = (context.Span.IsEmpty)
-                        ? context.Span.Start - literalExpression.Span.Start
-                        : -1;
-
                     return StringLiteralRefactoring.ConvertStringLiteralToInterpolatedStringAsync(
                         context.Document,
                         literalExpression,
-                        interpolationIndex,
+                        GetInterpolationIndex(context, literalExpression),
                         cancellationToken);
                 });
 
@@ -50,6 +47,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                             cancellationToken);
                     });
             }
+        }
+
+        private static int GetInterpolationIndex(CodeRefactoringContext context, LiteralExpressionSyntax literalExpression)
+        {
+            if (context.Span.IsEmpty)
+            {
+                string s = literalExpression.Token.Text;
+
+                int index = context.Span.Start - literalExpression.Span.Start;
+
+                if (s.StartsWith("@", StringComparison.Ordinal))
+                {
+                    if (index > 1)
+                        return index;
+                }
+                else if (index > 0)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
         }
     }
 }
