@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                                         && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
                                     {
                                         CodeAction codeAction = CodeAction.Create(
-                                            "Add boolean comparison",
+                                            AddBooleanComparisonRefactoring.Title,
                                             cancellationToken =>
                                             {
                                                 return AddBooleanComparisonRefactoring.RefactorAsync(

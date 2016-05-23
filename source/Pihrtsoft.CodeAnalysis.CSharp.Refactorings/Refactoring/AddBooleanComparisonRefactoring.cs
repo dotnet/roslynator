@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -14,35 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class AddBooleanComparisonRefactoring
     {
-        private static bool CanRefactor(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax condition = GetCondition(statement);
-
-            if (condition != null)
-                return CanRefactor(condition, semanticModel, cancellationToken);
-
-            return false;
-        }
-
-        private static ExpressionSyntax GetCondition(StatementSyntax statement)
-        {
-            switch (statement.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)statement).Condition;
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)statement).Condition;
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)statement).Condition;
-            }
-
-            Debug.Assert(false, statement.Kind().ToString());
-
-            return null;
-        }
+        public const string Title = "Add boolean comparison";
 
         private static bool CanRefactor(
             ExpressionSyntax expression,
@@ -78,51 +48,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         }
 
         public static void Refactor(
-            StatementSyntax statement,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
-        {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (CanRefactor(statement, semanticModel, context.CancellationToken))
-            {
-                context.RegisterRefactoring(
-                    "Add boolean comparison",
-                    cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
-            }
-        }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            StatementSyntax newNode = SetCondition(statement);
-
-            return document.WithSyntaxRoot(oldRoot.ReplaceNode(statement, newNode));
-        }
-
-        public static void Refactor(
             ExpressionSyntax expression,
             CodeRefactoringContext context,
             SemanticModel semanticModel)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
             if (CanRefactor(expression, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
-                    "Add boolean comparison",
+                    Title,
                     cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
             }
         }
@@ -134,37 +67,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxNode newNode = CreateNewExpression(expression)
+            BinaryExpressionSyntax newNode = CreateNewExpression(expression)
                 .WithTriviaFrom(expression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            return document.WithSyntaxRoot(oldRoot.ReplaceNode(expression, newNode));
-        }
+            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
 
-        private static StatementSyntax SetCondition(StatementSyntax statement)
-        {
-            switch (statement.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    {
-                        var ifStatement = (IfStatementSyntax)statement;
-                        return ifStatement.WithCondition(CreateNewExpression(ifStatement.Condition));
-                    }
-                case SyntaxKind.WhileStatement:
-                    {
-                        var whileStatement = (WhileStatementSyntax)statement;
-                        return whileStatement.WithCondition(CreateNewExpression(whileStatement.Condition));
-                    }
-                case SyntaxKind.DoStatement:
-                    {
-                        var doStatement = (DoStatementSyntax)statement;
-                        return doStatement.WithCondition(CreateNewExpression(doStatement.Condition));
-                    }
-            }
-
-            Debug.Assert(false, statement.Kind().ToString());
-
-            return statement;
+            return document.WithSyntaxRoot(newRoot);
         }
 
         private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)
