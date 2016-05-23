@@ -14,13 +14,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (literalExpression == null)
                 throw new ArgumentNullException(nameof(literalExpression));
 
-            if (!literalExpression.IsKind(SyntaxKind.StringLiteralExpression))
-                return false;
-
-            if (!literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal))
-                return false;
-
-            return true;
+            return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
+                && literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal);
         }
     }
 }
