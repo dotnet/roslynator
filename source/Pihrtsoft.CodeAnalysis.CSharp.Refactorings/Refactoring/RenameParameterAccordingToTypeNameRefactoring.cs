@@ -41,19 +41,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 }
             }
-            else
+            else if (parameter.Identifier.Span.Contains(context.Span))
             {
-                if (parameter.Identifier.Span.Contains(context.Span))
+                string name = CreateParameterName(parameter, semanticModel);
+                if (name != null)
                 {
-                    string name = CreateParameterName(parameter, semanticModel);
-                    if (name != null)
-                    {
-                        ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
-                        context.RegisterRefactoring(
-                            $"Rename parameter to '{name}'",
-                            cancellationToken => symbol.RenameAsync(name, context.Document, cancellationToken));
-                    }
+                    context.RegisterRefactoring(
+                        $"Rename parameter to '{name}'",
+                        cancellationToken => symbol.RenameAsync(name, context.Document, cancellationToken));
                 }
             }
         }
