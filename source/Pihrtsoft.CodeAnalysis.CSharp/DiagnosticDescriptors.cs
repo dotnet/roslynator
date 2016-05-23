@@ -719,7 +719,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             title: "Simplify if statement to return statement.",
             messageFormat: "Consider simplifying if statement to return statement.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Info,
+            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
