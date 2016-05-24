@@ -781,6 +781,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
+        public static readonly DiagnosticDescriptor SplitDeclarationIntoMultipleDeclarations = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SplitDeclarationIntoMultipleDeclarations,
+            title: "Split declaration into multiple declarations.",
+            messageFormat: "Consider splitting declaration into multiple declarations.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
