@@ -26,16 +26,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (variableDeclaration == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                RenameVariableAccordingToTypeName(context, semanticModel, variableDeclaration);
 
-            RenameVariableAccordingToTypeName(context, semanticModel, variableDeclaration);
+                ChangeTypeAccordingToExpression(context, semanticModel, variableDeclaration);
 
-            ChangeTypeAccordingToExpression(context, semanticModel, variableDeclaration);
-
-            ChangeType(context, semanticModel, variableDeclaration);
+                ChangeType(context, semanticModel, variableDeclaration);
+            }
         }
 
         private static void ChangeType(
@@ -82,6 +82,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             VariableDeclarationSyntax variableDeclaration)
         {
             if (variableDeclaration.Type == null)
+                return;
+
+            if (variableDeclaration.Parent?.IsKind(SyntaxKind.EventFieldDeclaration) == true)
                 return;
 
             if (variableDeclaration.Variables.Count != 1)
