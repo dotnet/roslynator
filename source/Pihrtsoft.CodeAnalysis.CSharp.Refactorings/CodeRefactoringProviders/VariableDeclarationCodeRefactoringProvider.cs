@@ -53,9 +53,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case TypeAnalysisResult.Explicit:
                 case TypeAnalysisResult.ExplicitButShouldBeImplicit:
                     {
-                        context.RegisterRefactoring(
-                            "Change type to 'var'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
+                        if (variableDeclaration.Type.Span.Contains(context.Span))
+                        {
+                            context.RegisterRefactoring(
+                                "Change type to 'var'",
+                                cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
+                        }
 
                         break;
                     }
