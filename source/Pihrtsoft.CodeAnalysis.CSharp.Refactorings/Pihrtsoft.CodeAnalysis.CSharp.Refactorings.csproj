@@ -72,6 +72,7 @@
     <Compile Include="Refactoring\ExpandCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
+    <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\StringLiteralRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />

@@ -53,17 +53,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     }
             }
 
-            if (memberDeclaration.IsKind(SyntaxKind.MethodDeclaration))
+            switch (memberDeclaration.Kind())
             {
-                await ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)memberDeclaration);
-            }
-            else if (memberDeclaration.IsKind(SyntaxKind.IndexerDeclaration))
-            {
-                ComputeRefactorings(context, (IndexerDeclarationSyntax)memberDeclaration);
-            }
-            else if (memberDeclaration.IsKind(SyntaxKind.PropertyDeclaration))
-            {
-                await ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)memberDeclaration);
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        await ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        ComputeRefactorings(context, (IndexerDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        await ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
+                case SyntaxKind.EventFieldDeclaration:
+                    {
+                        await ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
             }
         }
 
@@ -145,6 +156,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 context.RegisterRefactoring(
                     "Remove initializer",
                     cancellationToken => PropertyDeclarationRefactoring.RemoveInitializerAsync(context.Document, propertyDeclaration, cancellationToken));
+            }
+        }
+
+        private async Task ComputeRefactoringsAsync(CodeRefactoringContext context, EventFieldDeclarationSyntax eventDeclaration)
+        {
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                if (EventFieldDeclarationRefactoring.CanExpand(eventDeclaration, semanticModel, context.CancellationToken))
+                {
+                    context.RegisterRefactoring(
+                        "Expand event",
+                        cancellationToken =>
+                        {
+                            return EventFieldDeclarationRefactoring.ExpandAsync(
+                                context.Document,
+                                eventDeclaration,
+                                cancellationToken);
+                        });
+                }
             }
         }
     }
