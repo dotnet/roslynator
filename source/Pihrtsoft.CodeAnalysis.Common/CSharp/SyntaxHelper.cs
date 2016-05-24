@@ -30,7 +30,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                     return CarriageReturn;
                 case "\n":
                     return LineFeed;
-                case "\r\n":
                 default:
                     return CarriageReturnLineFeed;
             }
