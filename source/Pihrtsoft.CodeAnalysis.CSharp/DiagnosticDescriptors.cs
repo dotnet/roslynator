@@ -787,7 +787,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider splitting declaration into multiple declarations.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
 #if DEBUG
