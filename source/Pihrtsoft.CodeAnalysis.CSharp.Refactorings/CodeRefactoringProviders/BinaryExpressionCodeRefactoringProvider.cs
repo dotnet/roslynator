@@ -60,6 +60,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     });
             }
 
+            if (binaryExpression.OperatorToken.Span.Contains(context.Span)
+                && ExpandCoalesceExpressionRefactoring.CanRefactor(binaryExpression))
+            {
+                context.RegisterRefactoring(
+                    "Expand coalesce expression",
+                    cancellationToken =>
+                    {
+                        return ExpandCoalesceExpressionRefactoring.RefactorAsync(
+                            context.Document,
+                            binaryExpression,
+                            cancellationToken);
+                    });
+            }
+
             SwapExpressionsRefactoring.Refactor(context, binaryExpression);
         }
 
