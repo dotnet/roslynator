@@ -60,18 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     });
             }
 
-            if (binaryExpression.OperatorToken.Span.Contains(context.Span))
-            {
-                context.RegisterRefactoring(
-                    "Swap expressions",
-                    cancellationToken =>
-                    {
-                        return SwapExpressionsAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
-            }
+            SwapExpressionsRefactoring.Refactor(context, binaryExpression);
         }
 
         private static async Task<Document> NegateBinaryExpressionAsync(
@@ -83,22 +72,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             ExpressionSyntax newNode = binaryExpression.Negate()
                 .WithAdditionalAnnotations(Formatter.Annotation);
-
-            root = root.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(root);
-        }
-
-        private static async Task<Document> SwapExpressionsAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
-
-            ExpressionSyntax newNode = binaryExpression
-                .WithLeft(binaryExpression.Right.WithTriviaFrom(binaryExpression.Left))
-                .WithRight(binaryExpression.Left.WithTriviaFrom(binaryExpression.Right));
 
             root = root.ReplaceNode(binaryExpression, newNode);
 

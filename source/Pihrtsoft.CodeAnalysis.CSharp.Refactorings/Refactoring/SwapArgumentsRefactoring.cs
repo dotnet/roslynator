@@ -16,29 +16,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (argumentList == null)
                 throw new ArgumentNullException(nameof(argumentList));
 
-            if (!context.Span.IsEmpty)
+            if (context.Span.IsEmpty)
             {
-                SeparatedSyntaxList<ArgumentSyntax>.Enumerator en = argumentList.Arguments.GetEnumerator();
+                int i = 0;
+                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-                while (en.MoveNext())
+                foreach (SyntaxToken token in arguments.GetSeparators())
                 {
-                    if (context.Span.Contains(en.Current.Span))
+                    if (token.Span.Contains(context.Span))
                     {
-                        ArgumentSyntax argument = en.Current;
-
-                        if (en.MoveNext()
-                            && context.Span.Contains(en.Current.Span)
-                            && (!en.MoveNext() || !context.Span.IntersectsWith(en.Current.Span)))
+                        if (arguments.Count - 1 > i
+                            && !arguments[i].IsMissing
+                            && !arguments[i + 1].IsMissing)
                         {
-                            return argument;
+                            return arguments[i];
                         }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
-                        break;
-                    }
-                    else if (context.Span.IntersectsWith(en.Current.Span))
-                    {
-                        break;
-                    }
+                    i++;
                 }
             }
 

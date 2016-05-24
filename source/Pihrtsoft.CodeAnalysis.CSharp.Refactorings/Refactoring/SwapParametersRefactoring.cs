@@ -16,29 +16,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (parameterList == null)
                 throw new ArgumentNullException(nameof(parameterList));
 
-            if (!context.Span.IsEmpty)
+            if (context.Span.IsEmpty)
             {
-                SeparatedSyntaxList<ParameterSyntax>.Enumerator en = parameterList.Parameters.GetEnumerator();
+                int i = 0;
+                SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-                while (en.MoveNext())
+                foreach (SyntaxToken token in parameters.GetSeparators())
                 {
-                    if (context.Span.Contains(en.Current.Span))
+                    if (token.Span.Contains(context.Span))
                     {
-                        ParameterSyntax parameter = en.Current;
-
-                        if (en.MoveNext()
-                            && context.Span.Contains(en.Current.Span)
-                            && (!en.MoveNext() || !context.Span.IntersectsWith(en.Current.Span)))
+                        if (parameters.Count - 1 > i
+                            && !parameters[i].IsMissing
+                            && !parameters[i + 1].IsMissing)
                         {
-                            return parameter;
+                            return parameters[i];
                         }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
-                        break;
-                    }
-                    else if (context.Span.IntersectsWith(en.Current.Span))
-                    {
-                        break;
-                    }
+                    i++;
                 }
             }
 
