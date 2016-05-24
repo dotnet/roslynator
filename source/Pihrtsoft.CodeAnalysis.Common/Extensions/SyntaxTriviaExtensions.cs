@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -9,6 +10,38 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTriviaExtensions
     {
+        public static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (trivia.SyntaxTree != null)
+                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLinePosition.Line;
+
+            return -1;
+        }
+
+        public static int GetFullSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (trivia.SyntaxTree != null)
+                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLinePosition.Line;
+
+            return -1;
+        }
+
+        public static int GetSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (trivia.SyntaxTree != null)
+                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLinePosition.Line;
+
+            return -1;
+        }
+
+        public static int GetFullSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (trivia.SyntaxTree != null)
+                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLinePosition.Line;
+
+            return -1;
+        }
+
         public static bool IsAnyKind(this SyntaxTrivia syntaxTrivia, params SyntaxKind[] syntaxKinds)
         {
             if (syntaxKinds == null)

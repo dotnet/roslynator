@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,46 +16,46 @@ namespace Pihrtsoft.CodeAnalysis
     {
         private static readonly SyntaxTokenList _emptySyntaxTokenList = SyntaxFactory.TokenList();
 
-        public static int GetSpanStartLine(this SyntaxNode node)
+        public static int GetSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.Span).StartLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).StartLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetFullSpanStartLine(this SyntaxNode node)
+        public static int GetFullSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.FullSpan).StartLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetSpanEndLine(this SyntaxNode node)
+        public static int GetSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.Span).EndLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).EndLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetFullSpanEndLine(this SyntaxNode node)
+        public static int GetFullSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.FullSpan).EndLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLinePosition.Line;
 
             return -1;
         }

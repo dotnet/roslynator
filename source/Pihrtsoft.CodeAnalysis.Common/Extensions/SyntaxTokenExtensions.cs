@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Pihrtsoft.CodeAnalysis.CSharp;
@@ -8,34 +9,34 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
-        public static int GetSpanStartLine(this SyntaxToken token)
+        public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.Span).StartLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetFullSpanStartLine(this SyntaxToken token)
+        public static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.FullSpan).StartLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetSpanEndLine(this SyntaxToken token)
+        public static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.Span).EndLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLinePosition.Line;
 
             return -1;
         }
 
-        public static int GetFullSpanEndLine(this SyntaxToken token)
+        public static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.FullSpan).EndLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLinePosition.Line;
 
             return -1;
         }

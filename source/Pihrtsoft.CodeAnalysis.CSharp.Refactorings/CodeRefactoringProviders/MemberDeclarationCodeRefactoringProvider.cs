@@ -53,6 +53,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     }
             }
 
+            if (root.FindTrivia(context.Span.Start).IsWhitespaceOrEndOfLine())
+                SwapMembersRefactoring.Refactor(context, memberDeclaration);
+
             switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.MethodDeclaration:

@@ -110,6 +110,7 @@
     <Compile Include="Refactoring\ForToForEachRefactoring.cs" />
     <Compile Include="Refactoring\SwapArgumentsRefactoring.cs" />
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
+    <Compile Include="Refactoring\SwapMembersRefactoring.cs" />
     <Compile Include="Refactoring\SwapParametersRefactoring.cs" />
     <Compile Include="SyntaxRewriters\RemoveParameterNameSyntaxRewriter.cs" />
     <Compile Include="SyntaxRewriters\AddParameterNameSyntaxRewriter.cs" />
