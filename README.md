@@ -1,7 +1,6 @@
 ## C# Analyzers and Refactorings
 * Roslyn-based library that offers 60+ analyzers and 70+ refactorings for C#.
 * [Release Notes](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
-* http://pihrt.net/roslyn
 
 ### Distribution
 
@@ -80,9 +79,25 @@
 * RCS1063 - Avoid usage of do statement to create an infinite loop
 * RCS1064 - Use while statement to create an infinite loop
 * RCS1065 - Use for statement to create an infinite loop
+* RCS1066 - Remove empty finally clause
+* RCS1067 - Remove empty argument list
+* RCS1068 - Simplify logical not expression
+* RCS1069 - Remove unnecessary case label
+* RCS1070 - Remove redundant default switch section
+* RCS1071 - Remove redundant base constructor call
+* RCS1072 - Remove empty namespace declaration
+* RCS1073 - Simplify if statement to return statement
+* RCS1074 - Remove redundant constructor
+* RCS1075 - Avoid empty catch clause that catches System.Exception
+* RCS1076 - Format declaration braces
+* RCS1077 - Simplify LINQ method chain
+* RCS1078 - Avoid usage of string.Empty
+* RCS1079 - Throwing of new NotImplementedException
+* RCS1080 - Use 'Count' or 'Length' property instead of 'Any' method
 
 ### List of Refactorings
 
+* Access element using '[]' instead of 'First/Last/ElementAt' method
 * Add boolean comparison
 * Add braces to embedded statement
 * Add braces to if-else chain
@@ -109,6 +124,7 @@
 * Convert to interpolated string
 * Convert to prefix/postfix operator
 * Duplicate member
+* Duplicate parameter
 * Expand assignment expression
 * Expand expression-bodied member
 * Expand lambda expression's body
@@ -136,6 +152,7 @@
 * Change type
 * Change type according to expression
 * Check parameter for null
+* Introduce constructor from selected member(s)
 * Make member abstract
 * Negate binary expression
 * Negate boolean literal
@@ -158,6 +175,9 @@
 * Rename property according to type name
 * Rename variable/field/const according to type name
 * Reverse for loop
+* Swap arguments
+* Swap binary expression's expressions
 * Swap conditional expression's statements
 * Swap if-else statements
+* Swap parameters
 * Uncomment
