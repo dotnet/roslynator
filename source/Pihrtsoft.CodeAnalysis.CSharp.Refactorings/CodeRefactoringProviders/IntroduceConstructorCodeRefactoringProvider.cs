@@ -65,8 +65,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.FieldDeclaration:
                     {
-                        if (CanBeAssignedFromConstructor(declaration, context, semanticModel))
+                        if (context.Span.Contains(declaration.Span)
+                            && CanBeAssignedFromConstructor(declaration, context, semanticModel))
+                        {
                             yield return declaration;
+                        }
 
                         break;
                     }
