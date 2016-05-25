@@ -20,7 +20,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLinqMethodChain,
-                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod);
+                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod);
             }
         }
 
@@ -46,6 +47,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
                         {
                             UseCountOrLengthPropertyInsteadOfAnyMethodCodeFix.Register(context, diagnostic, invocation);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod:
+                        {
+                            UseCountOrLengthPropertyInsteadOfCountMethodCodeFix.Register(context, diagnostic, invocation);
                             break;
                         }
                 }

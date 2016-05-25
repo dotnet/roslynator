@@ -87,6 +87,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string ThrowingOfNewNotImplementedException = Prefix + "1079";
         public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1080";
         public const string SplitDeclarationIntoMultipleDeclarations = Prefix + "1081";
+        public const string UseCountOrLengthPropertyInsteadOfCountMethod = Prefix + "1082";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

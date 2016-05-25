@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,7 +27,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
-                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod);
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod);
             }
         }
 
@@ -63,6 +63,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             break;
                         }
                     case "Count":
+                        {
+                            ProcessWhere(context, invocation, memberAccess, methodName);
+                            ProcessCount(context, invocation, memberAccess);
+                            break;
+                        }
                     case "First":
                     case "FirstOrDefault":
                     case "Last":
@@ -95,7 +100,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (memberAccess2.Name?.Identifier.ValueText == "Where"
                         && IsEnumerableExtensionMethod(context, invocation, methodName)
-                        && (IsEnumerableWhereMethod(context, invocation2) || IsImmutableArrayWhereMethod( context, invocation2)))
+                        && (IsEnumerableWhereMethod(context, invocation2) || IsImmutableArrayWhereMethod(context, invocation2)))
                     {
                         TextSpan span = TextSpan.FromBounds(invocation2.Span.End, invocation.Span.End);
 
@@ -117,7 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
                 && IsEnumerableExtensionMethod(context, invocation, "Any"))
             {
-                string propertyName = GetCountOrLengthPropertyName(context, memberAccess.Expression);
+                string propertyName = GetCountOrLengthPropertyName(context, memberAccess.Expression, allowImmutableArray: false);
 
                 if (propertyName != null)
                 {
@@ -157,7 +162,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private static string GetCountOrLengthPropertyName(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
+        private static void ProcessCount(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+        {
+            if (IsEnumerableExtensionMethod(context, invocation, "Count"))
+            {
+                string propertyName = GetCountOrLengthPropertyName(context, memberAccess.Expression, allowImmutableArray: true);
+
+                if (propertyName != null)
+                {
+                    TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+                    if (invocation
+                         .DescendantTrivia(span)
+                         .All(f => f.IsWhitespaceOrEndOfLine()))
+                    {
+                        Diagnostic diagnostic = Diagnostic.Create(
+                            DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
+                            Location.Create(context.Node.SyntaxTree, span),
+                            (propertyName == "Count") ? _propertiesCount : _propertiesLength,
+                            propertyName);
+
+                        context.ReportDiagnostic(diagnostic);
+                    }
+                }
+            }
+        }
+
+        private static string GetCountOrLengthPropertyName(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, bool allowImmutableArray)
         {
             ITypeSymbol typeSymbol = context
                 .SemanticModel
@@ -169,6 +199,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
+
+                if (allowImmutableArray
+                    && typeSymbol.IsGenericImmutableArray(context.SemanticModel))
+                {
+                    return "Length";
+                }
 
                 for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
                 {

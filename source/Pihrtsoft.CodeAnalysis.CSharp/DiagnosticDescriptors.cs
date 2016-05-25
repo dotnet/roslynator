@@ -787,7 +787,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider splitting declaration into multiple declarations.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: false
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod,
+            title: "Use 'Count' or 'Length' property instead of 'Count' method.",
+            messageFormat: "Consider using '{0}' property instead of 'Count' method.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
         );
 
 #if DEBUG
