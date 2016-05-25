@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,32 +14,79 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ConditionalExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition,
+                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.ConditionalExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
 
-            if (conditionalExpression.Condition == null)
-                return;
+            if (conditionalExpression.Condition?.IsKind(SyntaxKind.ParenthesizedExpression) == false)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition,
+                    conditionalExpression.Condition.GetLocation());
+            }
 
-            if (conditionalExpression.Condition.IsKind(SyntaxKind.ParenthesizedExpression))
-                return;
+            if (conditionalExpression.Condition?.IsMissing == false
+                && CanBeConvertedToCoalesceExpression(conditionalExpression)
+                && conditionalExpression
+                    .DescendantTrivia(conditionalExpression.Span)
+                    .All(f => f.IsWhitespaceOrEndOfLine()))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
+                    conditionalExpression.GetLocation());
+            }
+        }
 
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition,
-                conditionalExpression.Condition.GetLocation());
+        private static bool CanBeConvertedToCoalesceExpression(ConditionalExpressionSyntax conditionalExpression)
+        {
+            ExpressionSyntax condition = conditionalExpression.Condition.UnwrapParentheses();
+
+            if (condition.IsKind(SyntaxKind.EqualsExpression))
+            {
+                var binaryExpression = (BinaryExpressionSyntax)condition;
+
+                if (binaryExpression.Left?.IsMissing == false
+                    && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                {
+                    return binaryExpression.Left.IsEquivalentTo(
+                        conditionalExpression.WhenFalse.UnwrapParentheses(),
+                        topLevel: false);
+                }
+            }
+            else if (condition.IsKind(SyntaxKind.NotEqualsExpression))
+            {
+                var binaryExpression = (BinaryExpressionSyntax)condition;
+
+                if (binaryExpression.Left?.IsMissing == false
+                    && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                {
+                    return binaryExpression.Left.IsEquivalentTo(
+                        conditionalExpression.WhenTrue.UnwrapParentheses(),
+                        topLevel: false);
+                }
+            }
+
+            return false;
         }
     }
 }

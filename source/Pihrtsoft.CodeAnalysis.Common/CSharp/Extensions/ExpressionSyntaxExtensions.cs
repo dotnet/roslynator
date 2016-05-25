@@ -11,6 +11,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ExpressionSyntaxExtensions
     {
+        [DebuggerStepThrough]
+        public static ExpressionSyntax UnwrapParentheses(this ExpressionSyntax expression)
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            while (expression.IsKind(SyntaxKind.ParenthesizedExpression))
+                expression = ((ParenthesizedExpressionSyntax)expression).Expression;
+
+            return expression;
+        }
+
         public static ExpressionSyntax Negate(this ExpressionSyntax expression)
         {
             return NegateInternal(expression)

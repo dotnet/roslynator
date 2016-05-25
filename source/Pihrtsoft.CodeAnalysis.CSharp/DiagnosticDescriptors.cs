@@ -808,6 +808,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfConditionalExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
+            title: "Use coalesce expression instead of conditional expression.",
+            messageFormat: "Consider using coalesce expression instead of conditional expression.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
