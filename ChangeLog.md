@@ -26,6 +26,7 @@
 * **NEW** - **"Duplicate parameter"** refactoring added
 * **NEW** - **"Access element using '[]' instead of 'First/Last/ElementAt' method"** refactoring added
 * **NEW** - **"Introduce constructor from selected member(s)"** refactoring added
+* **NEW** - **"Change method/property/indexer type according to return statement"** refactoring added
 
 * **"Remove member"** refactoring removes xml comment that belongs to a member
 * **"Add boolean comparison"** refactoring works for return statement in method/property/indexer

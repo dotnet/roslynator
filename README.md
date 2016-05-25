@@ -149,6 +149,7 @@
 * Change 'Any/All' to 'All/Any'
 * Change foreach variable's declared type according to expression
 * Change foreach variable's declared type to implicit
+* Change method/property/indexer type according to return statement
 * Change type
 * Change type according to expression
 * Check parameter for null
