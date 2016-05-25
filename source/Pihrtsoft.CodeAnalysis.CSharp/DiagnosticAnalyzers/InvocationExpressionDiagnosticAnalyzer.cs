@@ -28,7 +28,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod);
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
+                    DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod);
             }
         }
 
@@ -184,7 +185,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         context.ReportDiagnostic(diagnostic);
                     }
                 }
+                else if (invocation.Parent?.IsAnyKind(
+                    SyntaxKind.EqualsExpression,
+                    SyntaxKind.GreaterThanExpression,
+                    SyntaxKind.LessThanExpression) == true)
+                {
+                    var binaryExpression = (BinaryExpressionSyntax)invocation.Parent;
+
+                    if (IsFixableBinaryExpression(binaryExpression))
+                    {
+                        TextSpan span = TextSpan.FromBounds(invocation.Span.End, binaryExpression.Span.End);
+
+                        if (binaryExpression
+                            .DescendantTrivia(span)
+                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
+                                binaryExpression.GetLocation());
+                        }
+                    }
+                }
             }
+        }
+
+        private static bool IsFixableBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        {
+            if (binaryExpression.Left?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
+            {
+                return ((LiteralExpressionSyntax)binaryExpression.Left).Token.ValueText == "0"
+                    && binaryExpression.IsAnyKind(
+                        SyntaxKind.EqualsExpression,
+                        SyntaxKind.LessThanExpression);
+            }
+            else if (binaryExpression.Right?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
+            {
+                return ((LiteralExpressionSyntax)binaryExpression.Right).Token.ValueText == "0"
+                    && binaryExpression.IsAnyKind(
+                        SyntaxKind.EqualsExpression,
+                        SyntaxKind.GreaterThanExpression);
+            }
+
+            return false;
         }
 
         private static string GetCountOrLengthPropertyName(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, bool allowImmutableArray)

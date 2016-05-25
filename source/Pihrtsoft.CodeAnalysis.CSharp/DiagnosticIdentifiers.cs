@@ -88,6 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1080";
         public const string SplitDeclarationIntoMultipleDeclarations = Prefix + "1081";
         public const string UseCountOrLengthPropertyInsteadOfCountMethod = Prefix + "1082";
+        public const string UseAnyMethodInsteadOfCountMethod = Prefix + "1083";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";

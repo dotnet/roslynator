@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -21,7 +22,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
-                    DiagnosticIdentifiers.SimplifyBooleanComparison);
+                    DiagnosticIdentifiers.SimplifyBooleanComparison,
+                    DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod);
             }
         }
 
@@ -60,6 +62,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                             context.RegisterCodeFix(codeAction, diagnostic);
 
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod:
+                        {
+                            UseAnyMethodInsteadOfCountMethodCodeFix.Register(context, diagnostic, binaryExpression);
                             break;
                         }
                 }

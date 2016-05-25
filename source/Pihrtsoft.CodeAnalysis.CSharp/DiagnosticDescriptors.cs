@@ -799,6 +799,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor UseAnyMethodInsteadOfCountMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod,
+            title: "Use 'Any' method instead of 'Count' method.",
+            messageFormat: "Consider using 'Any' method instead of 'Count' method.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
