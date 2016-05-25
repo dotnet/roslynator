@@ -44,13 +44,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
 
-                        if (memberTypeSymbol != null)
+                        if (memberTypeSymbol?.IsKind(SymbolKind.ErrorType) == false)
                         {
                             ITypeSymbol typeSymbol = semanticModel
                                 .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
                                 .Type;
 
-                            if (typeSymbol != null)
+                            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
                             {
                                 if (memberTypeSymbol.SpecialType == SpecialType.System_Boolean
                                     && typeSymbol.IsKind(SymbolKind.NamedType))
