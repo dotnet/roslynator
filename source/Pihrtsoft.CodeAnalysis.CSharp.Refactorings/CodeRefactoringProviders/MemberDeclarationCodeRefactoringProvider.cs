@@ -141,6 +141,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         "Expand property and add backing field",
                         cancellationToken => PropertyDeclarationRefactoring.ExpandPropertyAndAddBackingFieldAsync(context.Document, propertyDeclaration, cancellationToken));
                 }
+
+                NotifyPropertyChangedRefactoring.Refactor(propertyDeclaration, context, semanticModel);
             }
 
             if (MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
