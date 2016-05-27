@@ -34,7 +34,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 ChangeTypeAccordingToExpression(context, semanticModel, variableDeclaration);
 
-                ChangeType(context, semanticModel, variableDeclaration);
+                if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
+                    ChangeType(context, semanticModel, variableDeclaration);
             }
         }
 
@@ -53,12 +54,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case TypeAnalysisResult.Explicit:
                 case TypeAnalysisResult.ExplicitButShouldBeImplicit:
                     {
-                        if (variableDeclaration.Type.Span.Contains(context.Span))
-                        {
-                            context.RegisterRefactoring(
-                                "Change type to 'var'",
-                                cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
-                        }
+                        context.RegisterRefactoring(
+                            "Change type to 'var'",
+                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
 
                         break;
                     }
