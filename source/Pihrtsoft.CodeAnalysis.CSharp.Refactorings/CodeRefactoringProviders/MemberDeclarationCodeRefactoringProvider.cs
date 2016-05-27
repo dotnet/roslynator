@@ -23,6 +23,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (memberDeclaration == null)
                 return;
 
+            SplitAttributesRefactoring.Refactor(context, memberDeclaration);
+            MergeAttributesRefactoring.Refactor(context, memberDeclaration);
+
             switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.MethodDeclaration:

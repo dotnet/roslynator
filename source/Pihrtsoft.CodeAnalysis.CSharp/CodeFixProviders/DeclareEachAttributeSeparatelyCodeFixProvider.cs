@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -47,21 +47,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            AttributeListSyntax[] attributeLists = attributeList
-                .Attributes
-                .Select(f => SyntaxFactory
-                    .AttributeList()
-                    .AddAttributes(f)
-                    .WithAdditionalAnnotations(Formatter.Annotation))
-                .ToArray();
-
-            attributeLists[0] = attributeLists[0]
-                .WithLeadingTrivia(attributeList.GetLeadingTrivia());
-
-            attributeLists[attributeLists.Length - 1] = attributeLists[attributeLists.Length - 1]
-                .WithTrailingTrivia(attributeList.GetTrailingTrivia());
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(attributeList, attributeLists);
+            SyntaxNode newRoot = oldRoot.ReplaceNode(
+                attributeList,
+                AttributeRefactoring.SplitAttributes(attributeList)
+                    .Select(f => f.WithAdditionalAnnotations(Formatter.Annotation)));
 
             return document.WithSyntaxRoot(newRoot);
         }

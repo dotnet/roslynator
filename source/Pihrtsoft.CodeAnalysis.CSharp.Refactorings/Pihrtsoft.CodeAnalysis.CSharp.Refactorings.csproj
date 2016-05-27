@@ -66,6 +66,8 @@
     <Compile Include="Refactoring\AddBracesToEmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
+    <Compile Include="Refactoring\SplitAttributesRefactoring.cs" />
+    <Compile Include="Refactoring\MergeAttributesRefactoring.cs" />
     <Compile Include="Refactoring\CommentRefactoring.cs" />
     <Compile Include="Refactoring\ConvertEnumerableMethodToElementAccessRefactoring.cs" />
     <Compile Include="Refactoring\DuplicateParameterRefactoring.cs" />
