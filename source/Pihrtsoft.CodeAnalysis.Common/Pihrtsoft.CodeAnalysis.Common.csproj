@@ -47,6 +47,7 @@
     <Compile Include="CSharp\Extensions\TypeSyntaxExtensions.cs" />
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
+    <Compile Include="CSharp\Extensions\YieldStatementSyntaxExtensions.cs" />
     <Compile Include="CSharp\Refactoring\AddBracesToIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AttributeRefactoring.cs" />

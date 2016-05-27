@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="CodeRefactoringProviders\InterpolatedStringCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\IntroduceConstructorCodeRefactoringProvider.cs" />
+    <Compile Include="CodeRefactoringProviders\YieldReturnStatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ReturnStatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\StatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\LambdaExpressionCodeRefactoringProvider.cs" />

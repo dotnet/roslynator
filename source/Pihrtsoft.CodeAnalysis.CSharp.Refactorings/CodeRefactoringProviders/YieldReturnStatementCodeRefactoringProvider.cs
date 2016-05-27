@@ -3,34 +3,34 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Simplification;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
-    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(ReturnStatementCodeRefactoringProvider))]
-    public class ReturnStatementCodeRefactoringProvider : CodeRefactoringProvider
+    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(YieldReturnStatementCodeRefactoringProvider))]
+    public class YieldReturnStatementCodeRefactoringProvider : CodeRefactoringProvider
     {
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
 
-            ReturnStatementSyntax returnStatement = root
+            YieldStatementSyntax yieldStatement = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ReturnStatementSyntax>();
+                .FirstAncestorOrSelf<YieldStatementSyntax>();
 
-            if (returnStatement == null)
+            if (yieldStatement == null)
                 return;
 
-            if (returnStatement.Expression != null
-                && returnStatement.Expression.Span.Contains(context.Span)
+            if (yieldStatement.IsYieldReturn()
+                && yieldStatement.Expression?.Span.Contains(context.Span) == true
                 && context.Document.SupportsSemanticModel)
             {
-                MemberDeclarationSyntax declaration = GetDeclaration(returnStatement);
+                MemberDeclarationSyntax declaration = GetDeclaration(yieldStatement);
 
                 if (declaration != null)
                 {
@@ -44,55 +44,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
 
-                        if (memberTypeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                        if (memberTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable)
                         {
                             ITypeSymbol typeSymbol = semanticModel
-                                .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
+                                .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
                                 .Type;
 
                             if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
                             {
-                                if (memberTypeSymbol.SpecialType == SpecialType.System_Boolean
-                                    && typeSymbol.IsKind(SymbolKind.NamedType))
+                                if (memberTypeSymbol == null
+                                    || memberTypeSymbol.IsKind(SymbolKind.ErrorType)
+                                    || !memberTypeSymbol.IsGenericIEnumerable()
+                                    || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol))
                                 {
-                                    var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+                                    TypeSyntax newType = QualifiedName(
+                                        ParseName("System.Collections.Generic"),
+                                        GenericName(
+                                            Identifier("IEnumerable"),
+                                            TypeArgumentList(
+                                                SingletonSeparatedList(
+                                                    TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
 
-                                    if (namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
-                                        && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            AddBooleanComparisonRefactoring.Title,
-                                            cancellationToken =>
-                                            {
-                                                return AddBooleanComparisonRefactoring.RefactorAsync(
-                                                    context.Document,
-                                                    returnStatement.Expression,
-                                                    context.CancellationToken);
-                                            });
-
-                                        context.RegisterRefactoring(codeAction);
-                                    }
-                                }
-
-                                if (!memberTypeSymbol.Equals(typeSymbol))
-                                {
-                                    TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol);
-
-                                    if (newType != null)
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            $"Change {GetText(declaration)} type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                                            cancellationToken =>
-                                            {
-                                                return ChangeReturnTypeAsync(
-                                                    context.Document,
-                                                    memberType,
-                                                    newType,
-                                                    cancellationToken);
-                                            });
-
-                                        context.RegisterRefactoring(codeAction);
-                                    }
+                                    context.RegisterRefactoring(
+                                        $"Change {GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                        cancellationToken =>
+                                        {
+                                            return ChangeReturnTypeAsync(
+                                                context.Document,
+                                                memberType,
+                                                newType,
+                                                cancellationToken);
+                                        });
                                 }
                             }
                         }
@@ -148,11 +130,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             }
         }
 
-        private static MemberDeclarationSyntax GetDeclaration(ReturnStatementSyntax returnStatement)
+        private static MemberDeclarationSyntax GetDeclaration(YieldStatementSyntax yieldStatement)
         {
-            if (returnStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+            if (yieldStatement.Parent?.IsKind(SyntaxKind.Block) == true)
             {
-                var block = (BlockSyntax)returnStatement.Parent;
+                var block = (BlockSyntax)yieldStatement.Parent;
 
                 SyntaxNode node = block.Parent;
 
