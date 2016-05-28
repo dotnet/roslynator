@@ -26,25 +26,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var field = (IFieldSymbol)context.Symbol;
+            var fieldSymbol = (IFieldSymbol)context.Symbol;
 
-            if (field.IsConst)
-                return;
-
-            if (field.IsImplicitlyDeclared)
-                return;
-
-            if (string.IsNullOrEmpty(field.Name))
-                return;
-
-            if (field.DeclaredAccessibility != Accessibility.Private)
-                return;
-
-            if (!NamingHelper.IsValidCamelCaseWithUnderscore(field.Name))
+            if (!fieldSymbol.IsConst
+                && !fieldSymbol.IsImplicitlyDeclared
+                && fieldSymbol.DeclaredAccessibility == Accessibility.Private
+                && !string.IsNullOrEmpty(fieldSymbol.Name)
+                && !NamingHelper.IsValidCamelCaseWithUnderscore(fieldSymbol.Name))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
-                    field.Locations[0]);
+                    fieldSymbol.Locations[0]);
             }
         }
     }
