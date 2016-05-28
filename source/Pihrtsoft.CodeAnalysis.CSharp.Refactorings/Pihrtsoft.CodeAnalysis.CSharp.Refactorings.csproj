@@ -56,7 +56,6 @@
     <Compile Include="CodeRefactoringProviders\DoStatementCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ExpandExpressionBodiedMemberCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ForStatementCodeRefactoringProvider.cs" />
-    <Compile Include="CodeRefactoringProviders\ObjectInitializerCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\MemberAccessExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\ParenthesizedExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\IfStatementCodeRefactoringProvider.cs" />
@@ -67,6 +66,7 @@
     <Compile Include="Refactoring\AddBracesToEmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
+    <Compile Include="Refactoring\ExpandInitializerRefactoring.cs" />
     <Compile Include="Refactoring\NotifyPropertyChangedRefactoring.cs" />
     <Compile Include="Refactoring\SplitAttributesRefactoring.cs" />
     <Compile Include="Refactoring\MergeAttributesRefactoring.cs" />
