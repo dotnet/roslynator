@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
-            if (setter.Body?.Statements.Count == 1)
+            if (setter?.Body?.Statements.Count == 1)
             {
                 StatementSyntax statement = setter.Body.Statements[0];
 
