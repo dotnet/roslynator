@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         {
                             string newName = NamingHelper.ToCamelCaseWithUnderscore(propertySymbol.Name);
 
-                            if (!string.Equals(newName, propertySymbol.Name, StringComparison.Ordinal))
+                            if (!string.Equals(newName, fieldSymbol.Name, StringComparison.Ordinal))
                             {
                                 context.RegisterRefactoring(
                                     $"Rename field to '{newName}'",
