@@ -23,6 +23,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
             }
         }
 
+        public static void AnalyzeNamespaceDeclaration(
+            SyntaxNodeAnalysisContext context,
+            NamespaceDeclarationSyntax declaration)
+        {
+            if (declaration.Externs.Count > 0)
+            {
+                AnalyzeStart(context, declaration.Externs[0], declaration.OpenBraceToken);
+            }
+            else if (declaration.Usings.Count > 0)
+            {
+                AnalyzeStart(context, declaration.Usings[0], declaration.OpenBraceToken);
+            }
+            else if (declaration.Members.Count > 0)
+            {
+                AnalyzeStart(context, declaration.Members[0], declaration.OpenBraceToken);
+            }
+
+            if (declaration.Members.Count > 0)
+                AnalyzeEnd(context, declaration.Members.Last(), declaration.CloseBraceToken);
+        }
+
         public static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
             if (block.Statements.Count > 0)

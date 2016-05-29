@@ -76,11 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var declaration = (NamespaceDeclarationSyntax)context.Node;
 
-            RedundantEmptyLineAnalyzer.AnalyzeDeclaration(
-                context,
-                declaration.Members,
-                declaration.OpenBraceToken,
-                declaration.CloseBraceToken);
+            RedundantEmptyLineAnalyzer.AnalyzeNamespaceDeclaration(context, declaration);
         }
     }
 }
