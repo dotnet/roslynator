@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -14,27 +15,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static SyntaxRemoveOptions DefaultRemoveOptions { get; }
             = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
 
-        public static bool CanBeRemoved(MemberDeclarationSyntax memberDeclaration)
+        public static bool CanBeRemoved(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
 
-            return CanBeDeletedOrDuplicated(memberDeclaration);
+            return CanBeRemovedOrDuplicated(context, memberDeclaration);
         }
 
-        public static bool CanBeDuplicated(MemberDeclarationSyntax memberDeclaration)
+        public static bool CanBeDuplicated(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
 
-            return memberDeclaration.Parent != null
-                && memberDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
-                && CanBeDeletedOrDuplicated(memberDeclaration);
+            return CanBeRemovedOrDuplicated(context, memberDeclaration);
         }
 
-        private static bool CanBeDeletedOrDuplicated(MemberDeclarationSyntax memberDeclaration)
+        private static bool CanBeRemovedOrDuplicated(CodeRefactoringContext context, MemberDeclarationSyntax member)
         {
-            switch (memberDeclaration.Kind())
+            if (member.Parent?.IsAnyKind(
+                    SyntaxKind.NamespaceDeclaration,
+                    SyntaxKind.ClassDeclaration,
+                    SyntaxKind.StructDeclaration,
+                    SyntaxKind.InterfaceDeclaration) != true)
+            {
+                return false;
+            }
+
+            switch (member.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.IndexerDeclaration:
@@ -45,13 +53,43 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.FieldDeclaration:
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.EventFieldDeclaration:
-                    return true;
-                default:
-                    return false;
+                    {
+                        return !member.IsSingleline();
+                    }
+                case SyntaxKind.NamespaceDeclaration:
+                    {
+                        var declaration = (NamespaceDeclarationSyntax)member;
+
+                        return declaration.OpenBraceToken.Span.Contains(context.Span)
+                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                    }
+                case SyntaxKind.ClassDeclaration:
+                    {
+                        var declaration = (ClassDeclarationSyntax)member;
+
+                        return declaration.OpenBraceToken.Span.Contains(context.Span)
+                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                    }
+                case SyntaxKind.StructDeclaration:
+                    {
+                        var declaration = (StructDeclarationSyntax)member;
+
+                        return declaration.OpenBraceToken.Span.Contains(context.Span)
+                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                    }
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        var declaration = (InterfaceDeclarationSyntax)member;
+
+                        return declaration.OpenBraceToken.Span.Contains(context.Span)
+                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                    }
             }
+
+            return false;
         }
 
-        public static async Task<Document> RemoveAsync(
+        public static async Task<Document> RemoveMemberAsync(
             Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -91,40 +129,51 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return removeOptions;
         }
 
-        public static async Task<Document> DuplicateAsync(
+        public static async Task<Document> DuplicateMemberAsync(
             Document document,
-            MemberDeclarationSyntax memberDeclaration,
-            CancellationToken cancellationToken)
+            MemberDeclarationSyntax member,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (memberDeclaration == null)
-                throw new ArgumentNullException(nameof(memberDeclaration));
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(memberDeclaration.Parent, GetNewNode(memberDeclaration));
+            root = root.ReplaceNode(member.Parent, DuplicateMember(member));
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxNode GetNewNode(MemberDeclarationSyntax memberDeclaration)
+        private static SyntaxNode DuplicateMember(MemberDeclarationSyntax member)
         {
-            switch (memberDeclaration.Parent.Kind())
+            switch (member.Parent.Kind())
             {
+                case SyntaxKind.NamespaceDeclaration:
+                    {
+                        var parent = (NamespaceDeclarationSyntax)member.Parent;
+                        int index = parent.Members.IndexOf(member);
+                        return parent.WithMembers(parent.Members.Insert(index, member));
+                    }
                 case SyntaxKind.ClassDeclaration:
                     {
-                        var parent = (ClassDeclarationSyntax)memberDeclaration.Parent;
-                        int index = parent.Members.IndexOf(memberDeclaration);
-                        return parent.WithMembers(parent.Members.Insert(index, memberDeclaration));
+                        var parent = (ClassDeclarationSyntax)member.Parent;
+                        int index = parent.Members.IndexOf(member);
+                        return parent.WithMembers(parent.Members.Insert(index, member));
                     }
-
                 case SyntaxKind.StructDeclaration:
                     {
-                        var parent = (StructDeclarationSyntax)memberDeclaration.Parent;
-                        int index = parent.Members.IndexOf(memberDeclaration);
-                        return parent.WithMembers(parent.Members.Insert(index, memberDeclaration));
+                        var parent = (StructDeclarationSyntax)member.Parent;
+                        int index = parent.Members.IndexOf(member);
+                        return parent.WithMembers(parent.Members.Insert(index, member));
+                    }
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        var parent = (InterfaceDeclarationSyntax)member.Parent;
+                        int index = parent.Members.IndexOf(member);
+                        return parent.WithMembers(parent.Members.Insert(index, member));
                     }
             }
 

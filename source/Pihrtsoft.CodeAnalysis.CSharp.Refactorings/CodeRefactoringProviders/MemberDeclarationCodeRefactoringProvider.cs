@@ -37,19 +37,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case SyntaxKind.FieldDeclaration:
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.EventFieldDeclaration:
+                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
                     {
-                        if (MemberDeclarationRefactoring.CanBeRemoved(memberDeclaration))
+                        if (MemberDeclarationRefactoring.CanBeRemoved(context, memberDeclaration))
                         {
                             context.RegisterRefactoring(
                                 "Remove " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
-                                cancellationToken => MemberDeclarationRefactoring.RemoveAsync(context.Document, memberDeclaration, cancellationToken));
+                                cancellationToken => MemberDeclarationRefactoring.RemoveMemberAsync(context.Document, memberDeclaration, cancellationToken));
                         }
 
-                        if (MemberDeclarationRefactoring.CanBeDuplicated(memberDeclaration))
+                        if (MemberDeclarationRefactoring.CanBeDuplicated(context, memberDeclaration))
                         {
                             context.RegisterRefactoring(
                                 "Duplicate " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
-                                cancellationToken => MemberDeclarationRefactoring.DuplicateAsync(context.Document, memberDeclaration, cancellationToken));
+                                cancellationToken => MemberDeclarationRefactoring.DuplicateMemberAsync(context.Document, memberDeclaration, cancellationToken));
                         }
 
                         break;

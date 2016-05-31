@@ -95,6 +95,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                     return "event";
                 case SyntaxKind.FieldDeclaration:
                     return "field";
+                case SyntaxKind.NamespaceDeclaration:
+                    return "namespace";
+                case SyntaxKind.ClassDeclaration:
+                    return "class";
+                case SyntaxKind.StructDeclaration:
+                    return "struct";
+                case SyntaxKind.InterfaceDeclaration:
+                    return "interface";
                 default:
                     Debug.Assert(false, node.Kind().ToString());
                     return string.Empty;
