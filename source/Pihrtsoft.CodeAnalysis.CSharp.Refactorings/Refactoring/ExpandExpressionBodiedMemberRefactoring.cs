@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -16,67 +18,78 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ArrowExpressionClauseSyntax arrowExpressionClause,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            BlockSyntax block = Block(ReturnStatement(arrowExpressionClause.Expression));
+            MemberDeclarationSyntax newNode = ExpandExpressionBodiedMember(arrowExpressionClause.Parent, arrowExpressionClause.Expression)
+                .WithAdditionalAnnotations(Formatter.Annotation);
 
-            MemberDeclarationSyntax newMemberDeclaration = GetNewDeclaration(arrowExpressionClause.Parent, block);
+            root = root.ReplaceNode(arrowExpressionClause.Parent, newNode);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(arrowExpressionClause.Parent, newMemberDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
-        private static MemberDeclarationSyntax GetNewDeclaration(SyntaxNode memberDeclaration, BlockSyntax block)
+        private static MemberDeclarationSyntax ExpandExpressionBodiedMember(SyntaxNode member, ExpressionSyntax expression)
         {
-            switch (memberDeclaration.Kind())
+            BlockSyntax block = Block(ReturnStatement(expression));
+
+            switch (member.Kind())
             {
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        AccessorDeclarationSyntax accessorDeclaration = AccessorDeclaration(
-                            SyntaxKind.GetAccessorDeclaration,
-                            block);
-
-                        return ((PropertyDeclarationSyntax)memberDeclaration)
-                            .WithAccessorList(AccessorList(SingletonList(accessorDeclaration)))
+                        return ((PropertyDeclarationSyntax)member)
+                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleline()))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
                 case SyntaxKind.MethodDeclaration:
                     {
-                        return ((MethodDeclarationSyntax)memberDeclaration)
+                        return ((MethodDeclarationSyntax)member)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
                             .WithBody(block);
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
-                        return ((OperatorDeclarationSyntax)memberDeclaration)
+                        return ((OperatorDeclarationSyntax)member)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
                             .WithBody(block);
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
-                        return ((ConversionOperatorDeclarationSyntax)memberDeclaration)
+                        return ((ConversionOperatorDeclarationSyntax)member)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
                             .WithBody(block);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        AccessorDeclarationSyntax accessorDeclaration = AccessorDeclaration(
-                            SyntaxKind.GetAccessorDeclaration,
-                            block);
-
-                        return ((IndexerDeclarationSyntax)memberDeclaration)
+                        return ((IndexerDeclarationSyntax)member)
+                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleline()))
                             .WithExpressionBody(null)
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithAccessorList(AccessorList(SingletonList(accessorDeclaration)));
+                            .WithSemicolonToken(default(SyntaxToken));
                     }
             }
 
             return null;
+        }
+
+        private static AccessorListSyntax CreateAccessorList(BlockSyntax block, bool singleline)
+        {
+            AccessorListSyntax accessorList =
+                AccessorList(
+                    SingletonList(
+                        AccessorDeclaration(
+                            SyntaxKind.GetAccessorDeclaration,
+                            block)));
+
+            if (singleline)
+            {
+                accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(accessorList)
+                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+            }
+
+            return accessorList;
         }
     }
 }
