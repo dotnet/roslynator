@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
@@ -47,9 +48,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         cancellationToken => RemoveBracesFromSwitchSectionsAsync(context.Document, switchStatement, cancellationToken));
                 }
 
-                context.RegisterRefactoring(
-                    "Convert to if-else chain",
-                    cancellationToken => ConvertSwitchToIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                if (switchStatement.Sections
+                    .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
+                {
+                    context.RegisterRefactoring(
+                        "Convert to if-else chain",
+                        cancellationToken => ConvertSwitchToIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                }
             }
         }
 

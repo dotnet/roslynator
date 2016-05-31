@@ -33,24 +33,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             IfStatementSyntax ifStatement = null;
             ElseClauseSyntax elseClause = null;
 
-            int index = switchStatement.Sections.IndexOf(f => f.Labels.IndexOf(SyntaxKind.DefaultSwitchLabel) != -1);
+            int defaultSectionIndex = switchStatement.Sections
+                .IndexOf(section => section.Labels.Contains(SyntaxKind.DefaultSwitchLabel));
 
-            if (index != -1)
+            if (defaultSectionIndex != -1)
             {
-                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(switchStatement.Sections[index].Statements);
+                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(switchStatement.Sections[defaultSectionIndex].Statements);
 
                 elseClause = ElseClause(Block(statements));
             }
 
-            for (int i = switchStatement.Sections.Count - 1; i >= 0; i--)
+            int i = 0;
+            foreach (SwitchSectionSyntax section in switchStatement.Sections)
             {
-                if (i == index)
+                if (i == defaultSectionIndex)
                     continue;
 
-                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(switchStatement.Sections[i].Statements);
+                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(section.Statements);
 
                 IfStatementSyntax @if = IfStatement(
-                    CreateCondition(switchStatement, switchStatement.Sections[i]),
+                    CreateCondition(switchStatement, section),
                     Block(statements));
 
                 if (ifStatement != null)
@@ -64,6 +66,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (elseClause != null)
                         ifStatement = ifStatement.WithElse(elseClause);
                 }
+
+                i++;
             }
 
             return ifStatement;
