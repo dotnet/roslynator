@@ -68,22 +68,45 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private static async Task<Document> ConvertConstantToReadOnlyFieldAsync(
             Document document,
-            FieldDeclarationSyntax node,
+            FieldDeclarationSyntax field,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            int index = node.Modifiers.IndexOf(SyntaxKind.ConstKeyword);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
-            FieldDeclarationSyntax newNode = node
-                .WithModifiers(node.Modifiers
-                    .RemoveAt(index)
-                    .Add(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword).WithTriviaFrom(node.Modifiers[index])))
+            FieldDeclarationSyntax newField = field
+                .WithModifiers(GetModifiers(field, semanticModel, cancellationToken))
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
+            root = root.ReplaceNode(field, newField);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
+        }
+
+        private static SyntaxTokenList GetModifiers(FieldDeclarationSyntax field, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SyntaxToken constModifier = field.Modifiers.FirstOrDefault(f => f.IsKind(SyntaxKind.ConstKeyword));
+
+            var parentMember = (MemberDeclarationSyntax)field.Parent;
+
+            if (parentMember != null
+                && semanticModel.GetDeclaredSymbol(parentMember, cancellationToken)?.IsStatic == true)
+            {
+                return field.Modifiers.ReplaceRange(
+                    constModifier,
+                    new SyntaxToken[]
+                    {
+                        SyntaxFactory.Token(SyntaxKind.StaticKeyword).WithLeadingTrivia(constModifier.LeadingTrivia),
+                        SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia(constModifier.TrailingTrivia)
+                    });
+            }
+            else
+            {
+                return field.Modifiers.Replace(
+                    constModifier,
+                    SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword).WithTriviaFrom(constModifier));
+            }
         }
 
         private static async Task<Document> ConvertReadOnlyFieldToConstantAsync(
