@@ -129,7 +129,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     return "field";
             }
 
-            return "variable";
+            return "local";
         }
 
         private static bool FirstCharToLower(ISymbol symbol)
