@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
@@ -34,6 +35,36 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                             assignmentExpression,
                             cancellationToken);
                     });
+            }
+
+            if (assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
+                && assignmentExpression.Left?.IsMissing == false
+                && assignmentExpression.Right?.IsMissing == false
+                && !assignmentExpression.Right.IsKind(SyntaxKind.CastExpression)
+                && context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+
+                ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(assignmentExpression.Left).Type;
+
+                if (leftSymbol != null)
+                {
+                    ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(assignmentExpression.Right).Type;
+
+                    if (!leftSymbol.Equals(rightSymbol))
+                    {
+                        context.RegisterRefactoring(
+                            $"Add cast to '{leftSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            cancellationToken =>
+                            {
+                                return AddCastRefactoring.RefactorAsync(
+                                    context.Document,
+                                    assignmentExpression.Right,
+                                    leftSymbol,
+                                    cancellationToken);
+                            });
+                    }
+                }
             }
         }
     }

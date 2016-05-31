@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -25,21 +22,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (argument == null)
                 return;
 
-            if (!context.Document.SupportsSemanticModel)
-                return;
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+                if (argument.Expression?.IsMissing == false)
+                    AddCastAccordingToParameterType(context, argument, semanticModel);
 
-            AddCastAccordingToParameterType(context, argument, semanticModel);
+                ArgumentRefactoring.AddOrRemoveArgumentName(context, argument, semanticModel);
 
-            ArgumentRefactoring.AddOrRemoveArgumentName(context, argument, semanticModel);
+                ArgumentListSyntax argumentList = root
+                    .FindNode(context.Span, getInnermostNodeForTie: true)?
+                    .FirstAncestorOrSelf<ArgumentListSyntax>();
 
-            ArgumentListSyntax argumentList = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ArgumentListSyntax>();
-
-            if (argumentList != null)
-                ArgumentRefactoring.AddOrRemoveArgumentName(context, argumentList, semanticModel);
+                if (argumentList != null)
+                    ArgumentRefactoring.AddOrRemoveArgumentName(context, argumentList, semanticModel);
+            }
         }
 
         private static void AddCastAccordingToParameterType(
@@ -66,28 +64,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             context.RegisterRefactoring(
                 $"Add cast to '{parameterSymbol.Type.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken => AddCastAsync(context.Document, argument.Expression, parameterSymbol.Type, cancellationToken));
-        }
-
-        private static async Task<Document> AddCastAsync(
-            Document document,
-            ExpressionSyntax expression,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
-
-            TypeSyntax type = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
-                .WithAdditionalAnnotations(Simplifier.Annotation);
-
-            CastExpressionSyntax castExpression = CastExpression(type, expression)
-                .WithTriviaFrom(expression);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, castExpression);
-
-            return document.WithSyntaxRoot(newRoot);
+                cancellationToken =>
+                {
+                    return AddCastRefactoring.RefactorAsync(
+                        context.Document,
+                        argument.Expression,
+                        parameterSymbol.Type,
+                        cancellationToken);
+                });
         }
     }
 }
