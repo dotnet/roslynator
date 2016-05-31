@@ -88,10 +88,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (variableDeclaration.Variables.Count != 1)
                 return;
 
-            if (!variableDeclaration.Variables[0].Identifier.Span.Contains(context.Span))
+            VariableDeclaratorSyntax declarator = variableDeclaration.Variables[0];
+
+            if (!declarator.Identifier.Span.Contains(context.Span))
                 return;
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken);
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
             if (symbol == null)
                 return;
@@ -111,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 newName = NamingHelper.ToCamelCaseWithUnderscore(newName);
             }
 
-            if (string.Equals(variableDeclaration.Variables[0].Identifier.ToString(), newName, StringComparison.Ordinal))
+            if (string.Equals(declarator.Identifier.ValueText, newName, StringComparison.Ordinal))
                 return;
 
             context.RegisterRefactoring(

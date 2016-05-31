@@ -98,7 +98,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 semanticModel,
                 firstCharToLower: true);
 
-            if (string.Equals(newName, forEachStatement.Identifier.ToString(), StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(newName))
+                return;
+
+            if (string.Equals(newName, forEachStatement.Identifier.ValueText, StringComparison.Ordinal))
                 return;
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);

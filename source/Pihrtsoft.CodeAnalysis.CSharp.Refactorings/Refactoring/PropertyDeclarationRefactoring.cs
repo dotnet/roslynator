@@ -275,7 +275,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             string newName = NamingHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
 
-            if (string.Equals(newName, propertyDeclaration.Identifier.ToString(), StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(newName))
+                return;
+
+            if (string.Equals(newName, propertyDeclaration.Identifier.ValueText, StringComparison.Ordinal))
                 return;
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);

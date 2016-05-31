@@ -91,8 +91,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 string newName = NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
 
-                Debug.Assert(!string.IsNullOrEmpty(newName), methodDeclaration.ReturnType.ToString());
-
                 if (!string.IsNullOrEmpty(newName))
                 {
                     newName = "Get" + newName;

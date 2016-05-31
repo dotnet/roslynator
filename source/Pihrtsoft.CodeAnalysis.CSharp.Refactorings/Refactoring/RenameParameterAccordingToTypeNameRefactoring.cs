@@ -62,7 +62,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 semanticModel,
                 firstCharToLower: true);
 
-            if (string.Equals(parameter.Identifier.ToString(), name, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(name))
+                return null;
+
+            if (string.Equals(parameter.Identifier.ValueText, name, StringComparison.Ordinal))
                 return null;
 
             return name;

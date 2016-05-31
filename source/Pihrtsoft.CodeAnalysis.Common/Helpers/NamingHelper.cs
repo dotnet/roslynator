@@ -11,8 +11,6 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class NamingHelper
     {
-        private const string DefaultName = "Value";
-
         public static string CreateIdentifierName(TypeSyntax type, SemanticModel semanticModel, bool firstCharToLower = false)
         {
             if (type == null)
@@ -36,6 +34,9 @@ namespace Pihrtsoft.CodeAnalysis
             ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
 
             string name = GetName(typeSymbol3);
+
+            if (name == null)
+                return null;
 
             if (typeSymbol3.TypeKind == TypeKind.Interface
                 && name.Length > 1
@@ -116,19 +117,18 @@ namespace Pihrtsoft.CodeAnalysis
         {
             if (typeSymbol.IsKind(SymbolKind.TypeParameter))
             {
-                if (typeSymbol.Name.Length > 1 && typeSymbol.Name[0] == 'T')
+                if (typeSymbol.Name.Length > 1
+                    && typeSymbol.Name[0] == 'T')
+                {
                     return typeSymbol.Name.Substring(1);
-                else
-                    return DefaultName;
+                }
             }
             else if (typeSymbol.IsPredefinedType())
             {
-                return DefaultName;
+                return null;
             }
-            else
-            {
-                return typeSymbol.Name;
-            }
+
+            return typeSymbol.Name;
         }
 
         public static string ToCamelCaseWithUnderscore(string value)
