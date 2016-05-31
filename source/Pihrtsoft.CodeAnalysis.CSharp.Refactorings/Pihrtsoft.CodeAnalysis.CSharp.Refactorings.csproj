@@ -35,6 +35,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeRefactoringProviders\AccessorDeclarationCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\InterpolatedStringCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\IntroduceConstructorCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\YieldReturnStatementCodeRefactoringProvider.cs" />
