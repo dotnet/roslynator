@@ -46,6 +46,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 return TypeAnalysisResult.None;
             }
 
+            if (variableDeclaration.Variables.Count > 1)
+            {
+                if (variableDeclaration.Type.IsVar)
+                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                else
+                    return TypeAnalysisResult.None;
+            }
+
             if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
             {
                 if (variableDeclaration.Type.IsVar)

@@ -39,6 +39,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
+            if (variableDeclaration.Variables.Count != 1)
+                return;
+
             TypeAnalysisResult result = VariableDeclarationAnalysis.AnalyzeType(
                 variableDeclaration,
                 context.SemanticModel,
