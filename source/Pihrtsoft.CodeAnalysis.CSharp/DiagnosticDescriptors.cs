@@ -817,6 +817,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor UseAutoImplementedProperty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseAutoImplementedProperty,
+            title: "Use auto-implemented property.",
+            messageFormat: "Consider using auto-implemented property.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseAutoImplementedPropertyFadeOut = UseAutoImplementedProperty.CreateFadeOut();
+
 #if DEBUG
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

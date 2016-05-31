@@ -11,6 +11,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     public static class MemberDeclarationRefactoring
     {
+        public static SyntaxRemoveOptions DefaultRemoveOptions { get; }
+            = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
+
         public static bool CanBeRemoved(MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
@@ -50,70 +53,42 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static async Task<Document> RemoveAsync(
             Document document,
-            MemberDeclarationSyntax memberDeclaration,
-            CancellationToken cancellationToken)
+            MemberDeclarationSyntax member,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (memberDeclaration == null)
-                throw new ArgumentNullException(nameof(memberDeclaration));
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxNode newRoot = oldRoot.RemoveNode(
-                memberDeclaration,
-                GetRemoveOptions(memberDeclaration.GetLeadingTrivia(), memberDeclaration.GetTrailingTrivia()));
+            var parentMember = (MemberDeclarationSyntax)member.Parent;
 
-            return document.WithSyntaxRoot(newRoot);
+            if (parentMember != null)
+            {
+                root = root.ReplaceNode(parentMember, parentMember.RemoveMember(member));
+            }
+            else
+            {
+                root = root.RemoveNode(member, DefaultRemoveOptions);
+            }
+
+            return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxRemoveOptions GetRemoveOptions(SyntaxTriviaList leading, SyntaxTriviaList trailing)
+        internal static SyntaxRemoveOptions GetRemoveOptions(MemberDeclarationSyntax newMember)
         {
-            SyntaxRemoveOptions removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
+            SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
 
-            if (RemoveLeadingTrivia(leading))
+            if (newMember.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (trailing.Count == 1
-                && trailing[0].IsKind(SyntaxKind.EndOfLineTrivia))
-            {
+            if (newMember.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-            }
-            else if (trailing.Count == 2
-                && trailing[0].IsKind(SyntaxKind.WhitespaceTrivia)
-                && trailing[1].IsKind(SyntaxKind.EndOfLineTrivia))
-            {
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-            }
 
             return removeOptions;
-        }
-
-        private static bool RemoveLeadingTrivia(SyntaxTriviaList triviaList)
-        {
-            SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
-
-            bool commentFound = false;
-
-            while (en.MoveNext())
-            {
-                if (en.Current.IsWhitespaceOrEndOfLine())
-                {
-                    continue;
-                }
-                else if (!commentFound && en.Current.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
-                {
-                    commentFound = true;
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         public static async Task<Document> DuplicateAsync(

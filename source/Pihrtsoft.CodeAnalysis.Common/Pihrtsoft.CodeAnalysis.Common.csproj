@@ -40,6 +40,10 @@
     <Compile Include="CSharp\Comparers\SwitchSectionSorter.cs" />
     <Compile Include="CSharp\Extensions\AccessorListExtensions.cs" />
     <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\InterfaceDeclarationSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\StructDeclarationSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\NamespaceDeclarationSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\ClassDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\CSharpSyntaxNodeExtensions.cs" />
     <Compile Include="CSharp\Extensions\ExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\MemberDeclarationSyntaxExtensions.cs" />
