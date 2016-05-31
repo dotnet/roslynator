@@ -422,57 +422,31 @@ namespace Pihrtsoft.CodeAnalysis
             switch (node.Kind())
             {
                 case SyntaxKind.LocalDeclarationStatement:
-                    return true;
                 case SyntaxKind.ExpressionStatement:
-                    return true;
                 case SyntaxKind.EmptyStatement:
-                    return true;
                 case SyntaxKind.LabeledStatement:
-                    return true;
                 case SyntaxKind.GotoStatement:
-                    return true;
                 case SyntaxKind.GotoCaseStatement:
-                    return true;
                 case SyntaxKind.GotoDefaultStatement:
-                    return true;
                 case SyntaxKind.BreakStatement:
-                    return true;
                 case SyntaxKind.ContinueStatement:
-                    return true;
                 case SyntaxKind.ReturnStatement:
-                    return true;
                 case SyntaxKind.YieldReturnStatement:
-                    return true;
                 case SyntaxKind.YieldBreakStatement:
-                    return true;
                 case SyntaxKind.ThrowStatement:
-                    return true;
                 case SyntaxKind.WhileStatement:
-                    return true;
                 case SyntaxKind.DoStatement:
-                    return true;
                 case SyntaxKind.ForStatement:
-                    return true;
                 case SyntaxKind.ForEachStatement:
-                    return true;
                 case SyntaxKind.UsingStatement:
-                    return true;
                 case SyntaxKind.FixedStatement:
-                    return true;
                 case SyntaxKind.CheckedStatement:
-                    return true;
                 case SyntaxKind.UncheckedStatement:
-                    return true;
                 case SyntaxKind.UnsafeStatement:
-                    return true;
                 case SyntaxKind.LockStatement:
-                    return true;
                 case SyntaxKind.IfStatement:
-                    return true;
                 case SyntaxKind.SwitchStatement:
-                    return true;
                 case SyntaxKind.TryStatement:
-                    return true;
                 case SyntaxKind.GlobalStatement:
                     return true;
                 default:
@@ -488,13 +462,9 @@ namespace Pihrtsoft.CodeAnalysis
             switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                    return true;
                 case SyntaxKind.PropertyDeclaration:
-                    return true;
                 case SyntaxKind.IndexerDeclaration:
-                    return true;
                 case SyntaxKind.OperatorDeclaration:
-                    return true;
                 case SyntaxKind.ConversionOperatorDeclaration:
                     return true;
                 default:
