@@ -90,29 +90,6 @@ namespace Pihrtsoft.CodeAnalysis
             return node.HasLeadingTrivia || node.HasTrailingTrivia;
         }
 
-        public static bool IsAccessorDeclaration(this SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (node.IsKind(SyntaxKind.AddAccessorDeclaration))
-                return true;
-
-            if (node.IsKind(SyntaxKind.GetAccessorDeclaration))
-                return true;
-
-            if (node.IsKind(SyntaxKind.RemoveAccessorDeclaration))
-                return true;
-
-            if (node.IsKind(SyntaxKind.SetAccessorDeclaration))
-                return true;
-
-            if (node.IsKind(SyntaxKind.UnknownAccessorDeclaration))
-                return true;
-
-            return false;
-        }
-
         public static SyntaxTokenList GetDeclarationModifiers(this SyntaxNode declaration)
         {
             if (declaration == null)

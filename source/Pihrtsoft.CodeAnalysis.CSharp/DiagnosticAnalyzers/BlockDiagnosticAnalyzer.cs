@@ -47,29 +47,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, block.Statements);
 
-            if (block.Parent != null)
+            if (block.Parent?.IsAnyKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression) == true)
             {
-                if (block.Parent.IsAccessorDeclaration())
-                    return;
-
-                if (block.Parent.IsKind(SyntaxKind.AnonymousMethodExpression))
-                    return;
-
-                if (block.Parent.IsKind(SyntaxKind.SimpleLambdaExpression) || block.Parent.IsKind(SyntaxKind.ParenthesizedLambdaExpression))
+                if (block.Statements.Count == 1
+                    && block.Statements[0].IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement)
+                    && block.IsSingleline())
                 {
-                    if (block.Statements.Count == 1
-                        && block.Statements[0].IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement)
-                        && block.IsSingleline())
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.SimplifyLambdaExpression,
-                            block.GetLocation());
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.SimplifyLambdaExpression,
+                        block.GetLocation());
 
-                        FadeOut(context, block);
-                    }
-
-                    return;
+                    FadeOut(context, block);
                 }
+
+                return;
             }
 
             if (block.Statements.Count == 0)
