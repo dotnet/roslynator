@@ -25,14 +25,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (parameter.Type == null)
+            IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+            if (parameterSymbol?.Type == null)
                 return;
 
             if (parameter.Identifier.IsMissing)
             {
-                if (TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End).Contains(context.Span))
+                TextSpan span = (parameter.Type != null)
+                    ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
+                    : parameter.Span;
+
+                if (span.Contains(context.Span))
                 {
-                    string name = CreateParameterName(parameter, semanticModel);
+                    string name = CreateParameterName(parameterSymbol.Type, semanticModel);
+
                     if (name != null)
                     {
                         context.RegisterRefactoring(
@@ -43,7 +50,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else if (parameter.Identifier.Span.Contains(context.Span))
             {
-                string name = CreateParameterName(parameter, semanticModel);
+                string name = CreateParameterName(parameterSymbol.Type, semanticModel);
+
                 if (name != null)
                 {
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
@@ -55,20 +63,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static string CreateParameterName(ParameterSyntax parameter, SemanticModel semanticModel)
+        private static string CreateParameterName(ITypeSymbol typeSymbol, SemanticModel semanticModel)
         {
             string name = NamingHelper.CreateIdentifierName(
-                parameter.Type,
-                semanticModel,
+                typeSymbol,
                 firstCharToLower: true);
 
-            if (string.IsNullOrEmpty(name))
-                return null;
+            if (!string.IsNullOrEmpty(name)
+                && !string.Equals(typeSymbol.Name, name, StringComparison.Ordinal))
+            {
+                return name;
+            }
 
-            if (string.Equals(parameter.Identifier.ValueText, name, StringComparison.Ordinal))
-                return null;
-
-            return name;
+            return null;
         }
 
         private static async Task<Document> AddParameterNameAccordingToTypeNameRefactorAsync(
