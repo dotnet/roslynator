@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,45 +53,61 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
+        public static void AddOrRemoveArgumentName(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        {
+            List<ArgumentSyntax> arguments = null;
+
+            foreach (ArgumentSyntax argument in argumentList.Arguments)
+            {
+                if (argument.Expression != null && context.Span.Contains(argument.Expression.Span))
+                {
+                    if (arguments == null)
+                        arguments = new List<ArgumentSyntax>();
+
+                    arguments.Add(argument);
+                }
+            }
+
+            if (arguments?.Count > 0)
+                AddOrRemoveArgumentName(context, argumentList, arguments.ToArray());
+        }
+
         public static void AddOrRemoveArgumentName(
             CodeRefactoringContext context,
             ArgumentListSyntax argumentList,
-            SemanticModel semanticModel)
+            ArgumentSyntax[] arguments)
         {
             if (argumentList == null)
                 throw new ArgumentNullException(nameof(argumentList));
 
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
+            if (arguments == null)
+                throw new ArgumentNullException(nameof(arguments));
 
-            if (argumentList.Arguments.Count > 1)
+            if (arguments.Any(f => f.NameColon == null))
             {
-                if (argumentList.Arguments.Any(f => f.NameColon == null))
-                {
-                    context.RegisterRefactoring(
-                        "Add parameter name to each argument",
-                        cancellationToken =>
-                        {
-                            return AddParameterNameToEachArgumentAsync(
-                                context.Document,
-                                argumentList,
-                                semanticModel,
-                                cancellationToken);
-                        });
-                }
+                context.RegisterRefactoring(
+                    "Add parameter name",
+                    cancellationToken =>
+                    {
+                        return AddParameterNameToEachArgumentAsync(
+                            context.Document,
+                            argumentList,
+                            arguments,
+                            cancellationToken);
+                    });
+            }
 
-                if (argumentList.Arguments.Any(f => f.NameColon != null))
-                {
-                    context.RegisterRefactoring(
-                        "Remove parameter name from each argument",
-                        cancellationToken =>
-                        {
-                            return RemoveParameterNameFromEachArgumentAsync(
-                                context.Document,
-                                argumentList,
-                                cancellationToken);
-                        });
-                }
+            if (arguments.Any(f => f.NameColon != null))
+            {
+                context.RegisterRefactoring(
+                    "Remove parameter name",
+                    cancellationToken =>
+                    {
+                        return RemoveParameterNameFromEachArgumentAsync(
+                            context.Document,
+                            argumentList,
+                            cancellationToken);
+                    });
             }
         }
 
@@ -132,12 +149,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> AddParameterNameToEachArgumentAsync(
             Document document,
             ArgumentListSyntax argumentList,
-            SemanticModel semanticModel,
+            ArgumentSyntax[] arguments,
             CancellationToken cancellationToken)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            ArgumentListSyntax newArgumentList = AddParameterNameSyntaxRewriter.VisitNode(argumentList, semanticModel)
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+
+            ArgumentListSyntax newArgumentList = AddParameterNameSyntaxRewriter.VisitNode(argumentList, arguments, semanticModel)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);

@@ -43,19 +43,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 AddParameterNullCheckRefactoring.Refactor(context, parameter, semanticModel);
             }
-            else if (commaToken.Parent?.IsKind(SyntaxKind.ArgumentList) == true)
-            {
-                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-
-                ArgumentSyntax argument = root
-                    .FindNode(new TextSpan(context.Span.Start - 1, 1))?
-                    .FirstAncestorOrSelf<ArgumentSyntax>();
-
-                if (argument != null)
-                    ArgumentRefactoring.AddOrRemoveArgumentName(context, argument, semanticModel);
-
-                ArgumentRefactoring.AddOrRemoveArgumentName(context, (ArgumentListSyntax)commaToken.Parent, semanticModel);
-            }
         }
     }
 }

@@ -31,6 +31,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (argumentList.Arguments.Count == 0)
                 return;
 
+            if (!context.Span.IsEmpty)
+                ArgumentRefactoring.AddOrRemoveArgumentName(context, argumentList);
+
             if (argumentList.IsSingleline())
             {
                 if (argumentList.Arguments.Count > 1)

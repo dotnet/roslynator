@@ -28,15 +28,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 if (argument.Expression?.IsMissing == false)
                     AddCastAccordingToParameterType(context, argument, semanticModel);
-
-                ArgumentRefactoring.AddOrRemoveArgumentName(context, argument, semanticModel);
-
-                ArgumentListSyntax argumentList = root
-                    .FindNode(context.Span, getInnermostNodeForTie: true)?
-                    .FirstAncestorOrSelf<ArgumentListSyntax>();
-
-                if (argumentList != null)
-                    ArgumentRefactoring.AddOrRemoveArgumentName(context, argumentList, semanticModel);
             }
         }
 
