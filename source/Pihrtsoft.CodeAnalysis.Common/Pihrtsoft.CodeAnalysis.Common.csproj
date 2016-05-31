@@ -61,9 +61,10 @@
     <Compile Include="CSharp\Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\StringEmptyRefactoring.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\RemoveAllCommentsSyntaxRewriter.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\RemoveAllRegionsSyntaxRewriter.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\RemoveWhitespaceOrEndOfLineSyntaxRewriter.cs" />
+    <Compile Include="CSharp\Removers\CommentRemover.cs" />
+    <Compile Include="CSharp\Removers\RegionRemover.cs" />
+    <Compile Include="CSharp\Removers\ParameterNameRemover.cs" />
+    <Compile Include="CSharp\Removers\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactoring\TypeSyntaxRefactoring.cs" />
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="IGeneratedCodeAnalyzer.cs" />
     <Compile Include="Helpers\NamingHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\RemoveTriviaSyntaxRewriter.cs" />
+    <Compile Include="CSharp\Removers\TriviaRemover.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

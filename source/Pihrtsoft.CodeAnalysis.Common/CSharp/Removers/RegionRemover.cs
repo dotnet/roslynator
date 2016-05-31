@@ -4,18 +4,18 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
-    public class RemoveAllRegionsSyntaxRewriter : CSharpSyntaxRewriter
+    public sealed class RegionRemover : CSharpSyntaxRewriter
     {
-        private static readonly RemoveAllRegionsSyntaxRewriter _instance = new RemoveAllRegionsSyntaxRewriter();
+        private static readonly RegionRemover _instance = new RegionRemover();
 
-        private RemoveAllRegionsSyntaxRewriter()
+        private RegionRemover()
             : base(visitIntoStructuredTrivia: true)
         {
         }
 
-        public static CompilationUnitSyntax VisitNode(CompilationUnitSyntax compilationUnit)
+        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit)
             => (CompilationUnitSyntax)_instance.Visit(compilationUnit);
 
         public override SyntaxNode VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)

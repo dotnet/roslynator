@@ -14,7 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -172,7 +172,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             AccessorListSyntax accessorList = CreateAccessorList(property);
 
-            accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(accessorList);
+            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList);
 
             if (initializer != null)
             {

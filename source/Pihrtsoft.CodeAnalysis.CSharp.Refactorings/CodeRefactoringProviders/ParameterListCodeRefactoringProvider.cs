@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
@@ -73,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            ParameterListSyntax newParameterList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(parameterList)
+            ParameterListSyntax newParameterList = WhitespaceOrEndOfLineRemover.RemoveFrom(parameterList)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(parameterList, newParameterList);

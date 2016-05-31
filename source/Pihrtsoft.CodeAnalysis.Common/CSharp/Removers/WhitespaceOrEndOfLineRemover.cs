@@ -4,24 +4,24 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
-    public class RemoveWhitespaceOrEndOfLineSyntaxRewriter : CSharpSyntaxRewriter
+    public sealed class WhitespaceOrEndOfLineRemover : CSharpSyntaxRewriter
     {
-        private static readonly RemoveWhitespaceOrEndOfLineSyntaxRewriter _defaultInstance = new RemoveWhitespaceOrEndOfLineSyntaxRewriter();
+        private static readonly WhitespaceOrEndOfLineRemover _defaultInstance = new WhitespaceOrEndOfLineRemover();
 
         private readonly TextSpan? _span;
 
-        private RemoveWhitespaceOrEndOfLineSyntaxRewriter(TextSpan? span = null)
+        private WhitespaceOrEndOfLineRemover(TextSpan? span = null)
         {
             _span = span;
         }
 
-        public static TNode VisitNode<TNode>(TNode node) where TNode : SyntaxNode
+        public static TNode RemoveFrom<TNode>(TNode node) where TNode : SyntaxNode
             => (TNode)_defaultInstance.Visit(node);
 
-        public static TNode VisitNode<TNode>(TNode node, TextSpan span) where TNode : SyntaxNode
-            => (TNode)new RemoveWhitespaceOrEndOfLineSyntaxRewriter(span).Visit(node);
+        public static TNode RemoveFrom<TNode>(TNode node, TextSpan span) where TNode : SyntaxNode
+            => (TNode)new WhitespaceOrEndOfLineRemover(span).Visit(node);
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {

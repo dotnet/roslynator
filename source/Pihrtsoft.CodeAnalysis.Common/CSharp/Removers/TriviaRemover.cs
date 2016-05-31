@@ -3,17 +3,17 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
-    public sealed class RemoveTriviaSyntaxRewriter : CSharpSyntaxRewriter
+    public sealed class TriviaRemover : CSharpSyntaxRewriter
     {
-        private static readonly RemoveTriviaSyntaxRewriter _instance = new RemoveTriviaSyntaxRewriter();
+        private static readonly TriviaRemover _instance = new TriviaRemover();
 
-        private RemoveTriviaSyntaxRewriter()
+        private TriviaRemover()
         {
         }
 
-        public static SyntaxNode VisitNode(SyntaxNode node)
+        public static SyntaxNode RemoveFrom(SyntaxNode node)
             => _instance.Visit(node);
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)

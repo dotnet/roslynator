@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -155,7 +155,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .WithBody(Block())
                         .WithSemicolonToken(Token(SyntaxKind.None)))));
 
-            accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(accessorList)
+            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
 
             return propertyDeclaration
@@ -202,7 +202,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         propertyDeclaration.AccessorList.ReplaceNode(setter, newSetter));
             }
 
-            AccessorListSyntax accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(propertyDeclaration.AccessorList)
+            AccessorListSyntax accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration.AccessorList)
                 .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
 
             return propertyDeclaration

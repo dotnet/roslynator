@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -285,7 +285,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .DescendantTrivia(expression.Span)
                 .All(f => f.IsWhitespaceOrEndOfLine()))
             {
-                expression = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(expression)
+                expression = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
                     .WithAdditionalAnnotations(Formatter.Annotation);
             }
 

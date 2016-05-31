@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            CompilationUnitSyntax newRoot = RemoveAllCommentsSyntaxRewriter.VisitNode((CompilationUnitSyntax)oldRoot)
+            CompilationUnitSyntax newRoot = CommentRemover.RemoveFrom((CompilationUnitSyntax)oldRoot)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             return document.WithSyntaxRoot(newRoot);
@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            CompilationUnitSyntax newRoot = RemoveAllCommentsSyntaxRewriter.VisitNode((CompilationUnitSyntax)oldRoot, keepXmlComment: true)
+            CompilationUnitSyntax newRoot = CommentRemover.RemoveFrom((CompilationUnitSyntax)oldRoot, keepXmlComment: true)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             return document.WithSyntaxRoot(newRoot);

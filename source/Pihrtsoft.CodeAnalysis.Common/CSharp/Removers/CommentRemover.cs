@@ -4,23 +4,23 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
-    public class RemoveAllCommentsSyntaxRewriter : CSharpSyntaxRewriter
+    public sealed class CommentRemover : CSharpSyntaxRewriter
     {
         private readonly CompilationUnitSyntax _compilationUnit;
         private readonly bool _keepXmlComment;
 
-        private RemoveAllCommentsSyntaxRewriter(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
+        private CommentRemover(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
             : base(visitIntoStructuredTrivia: true)
         {
             _compilationUnit = compilationUnit;
             _keepXmlComment = keepXmlComment;
         }
 
-        public static CompilationUnitSyntax VisitNode(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
+        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
         {
-            return (CompilationUnitSyntax)new RemoveAllCommentsSyntaxRewriter(compilationUnit, keepXmlComment).Visit(compilationUnit);
+            return (CompilationUnitSyntax)new CommentRemover(compilationUnit, keepXmlComment).Visit(compilationUnit);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)

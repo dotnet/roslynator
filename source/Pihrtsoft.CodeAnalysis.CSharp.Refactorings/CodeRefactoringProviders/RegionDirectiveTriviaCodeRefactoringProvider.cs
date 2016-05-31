@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 {
@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            CompilationUnitSyntax newRoot = RemoveAllRegionsSyntaxRewriter.VisitNode((CompilationUnitSyntax)oldRoot)
+            CompilationUnitSyntax newRoot = RegionRemover.RemoveFrom((CompilationUnitSyntax)oldRoot)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             return document.WithSyntaxRoot(newRoot);

@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, Block()),
                 }));
 
-            accessorList = RemoveWhitespaceOrEndOfLineSyntaxRewriter.VisitNode(accessorList)
+            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
 
             VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];
