@@ -1,5 +1,5 @@
 ## C# Analyzers and Refactorings
-* Roslyn-based library that offers 60+ analyzers and 70+ refactorings for C#.
+* Roslyn-based library that offers 80+ analyzers and 90+ refactorings for C#.
 * [Release Notes](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
 
 ### Distribution
@@ -94,6 +94,11 @@
 * RCS1078 - Avoid usage of string.Empty
 * RCS1079 - Throwing of new NotImplementedException
 * RCS1080 - Use 'Count' or 'Length' property instead of 'Any' method
+* RCS1081 - Split declaration into multiple declarations
+* RCS1082 - Use 'Count' or 'Length' property instead of 'Count' method
+* RCS1083 - Use 'Any' method instead of 'Count' method
+* RCS1084 - Use coalesce expression instead of conditional expression
+* RCS1085 - Use auto-implemented property
 
 ### List of Refactorings
 
@@ -104,10 +109,19 @@
 * Add braces to switch section
 * Add braces to switch sections
 * Add cast according to parameter type
+* Add cast to assignment expression
 * Add parameter name
 * Add parameter name to each argument
 * Add parentheses
 * Add using statement
+* Change 'Any/All' to 'All/Any'
+* Change foreach variable's declared type according to expression
+* Change foreach variable's declared type to implicit
+* Change method/property/indexer type according to return statement
+* Change method/property/indexer type according to yield return statement
+* Change type
+* Change type according to expression
+* Check parameter for null
 * Convert "" to string.Empty
 * Convert conditional expression to if-else
 * Convert constant to read-only field
@@ -126,6 +140,8 @@
 * Duplicate member
 * Duplicate parameter
 * Expand assignment expression
+* Expand coalesce expression
+* Expand event
 * Expand expression-bodied member
 * Expand lambda expression's body
 * Expand object initializer
@@ -135,6 +151,7 @@
 * Extract expression from parentheses
 * Extract generic type
 * Extract statement(s)
+* Format accessor braces on multiple lines
 * Format all arguments on a single line
 * Format all parameters on a single line
 * Format binary expressions on multiple lines
@@ -146,18 +163,13 @@
 * Format expression chain on multiple lines
 * Format initializer on a single line
 * Format initializer on multiple lines
-* Change 'Any/All' to 'All/Any'
-* Change foreach variable's declared type according to expression
-* Change foreach variable's declared type to implicit
-* Change method/property/indexer type according to return statement
-* Change type
-* Change type according to expression
-* Check parameter for null
 * Introduce constructor from selected member(s)
 * Make member abstract
+* Merge attributes
 * Negate binary expression
 * Negate boolean literal
 * Negate operator
+* Notify property changed
 * Remove all comments
 * Remove all comments (except xml comments)
 * Remove all regions
@@ -171,14 +183,16 @@
 * Remove property initializer
 * Rename backing field according to property name
 * Rename foreach variable according to its type name
+* Rename local/field/const according to type name
 * Rename method according to type name
 * Rename parameter according to its type name
 * Rename property according to type name
-* Rename variable/field/const according to type name
 * Reverse for loop
+* Split attributes
 * Swap arguments
 * Swap binary expression's expressions
 * Swap conditional expression's statements
 * Swap if-else statements
+* Swap members
 * Swap parameters
 * Uncomment
