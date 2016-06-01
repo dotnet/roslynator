@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="0.9.40" Language="en-US" Publisher="Josef Pihrt"/>
+    <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="0.9.50" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>C# Analyzers and Refactorings</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 80+ refactorings for C#.</Description>
+    <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 90+ refactorings for C#.</Description>
     <MoreInfo>http://pihrt.net/Roslyn</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://pihrt.net/Roslyn/ReleaseNotes</ReleaseNotes>
