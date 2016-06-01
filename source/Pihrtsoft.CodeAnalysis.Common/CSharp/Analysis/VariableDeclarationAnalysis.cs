@@ -78,9 +78,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
         {
             if (!expression.IsAnyKind(
                 SyntaxKind.ObjectCreationExpression,
-                SyntaxKind.AsExpression,
+                SyntaxKind.ArrayCreationExpression,
                 SyntaxKind.CastExpression,
-                SyntaxKind.ArrayCreationExpression))
+                SyntaxKind.AsExpression,
+                SyntaxKind.ThisExpression))
             {
                 return false;
             }
