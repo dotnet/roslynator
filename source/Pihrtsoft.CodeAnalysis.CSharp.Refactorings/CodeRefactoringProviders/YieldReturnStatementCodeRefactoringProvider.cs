@@ -50,32 +50,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                                 .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
                                 .Type;
 
-                            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
-                            {
-                                if (memberTypeSymbol == null
+                            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
+                                && (memberTypeSymbol == null
                                     || memberTypeSymbol.IsKind(SymbolKind.ErrorType)
                                     || !memberTypeSymbol.IsGenericIEnumerable()
-                                    || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol))
-                                {
-                                    TypeSyntax newType = QualifiedName(
-                                        ParseName("System.Collections.Generic"),
-                                        GenericName(
-                                            Identifier("IEnumerable"),
-                                            TypeArgumentList(
-                                                SingletonSeparatedList(
-                                                    TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
+                                    || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
+                            {
+                                TypeSyntax newType = QualifiedName(
+                                    ParseName("System.Collections.Generic"),
+                                    GenericName(
+                                        Identifier("IEnumerable"),
+                                        TypeArgumentList(
+                                            SingletonSeparatedList(
+                                                TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
 
-                                    context.RegisterRefactoring(
-                                        $"Change {GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
-                                        cancellationToken =>
-                                        {
-                                            return ChangeReturnTypeAsync(
-                                                context.Document,
-                                                memberType,
-                                                newType,
-                                                cancellationToken);
-                                        });
-                                }
+                                context.RegisterRefactoring(
+                                    $"Change {GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                    cancellationToken =>
+                                    {
+                                        return ChangeReturnTypeAsync(
+                                            context.Document,
+                                            memberType,
+                                            newType,
+                                            cancellationToken);
+                                    });
                             }
                         }
                     }
