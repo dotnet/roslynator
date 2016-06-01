@@ -125,7 +125,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private async Task ComputeRefactoringsAsync(CodeRefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (PropertyDeclarationRefactoring.CanConvertToMethod(propertyDeclaration))
+            if (propertyDeclaration.HeaderSpan().Contains(context.Span)
+                && PropertyDeclarationRefactoring.CanConvertToMethod(propertyDeclaration))
             {
                 context.RegisterRefactoring(
                     "Convert to method",

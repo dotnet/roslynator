@@ -2,11 +2,22 @@
 
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class PropertyDeclarationExtensions
     {
+        public static TextSpan HeaderSpan(this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            return TextSpan.FromBounds(
+                propertyDeclaration.Span.Start,
+                propertyDeclaration.Identifier.Span.End);
+        }
+
         public static AccessorDeclarationSyntax Getter(this PropertyDeclarationSyntax propertyDeclaration)
         {
             if (propertyDeclaration == null)
