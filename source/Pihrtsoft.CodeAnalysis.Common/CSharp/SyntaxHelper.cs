@@ -12,13 +12,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxHelper
     {
-        private static readonly SyntaxTrivia _newLine = CreateNewLine();
+        public static SyntaxTrivia EmptyTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
 
-        private static readonly SyntaxTrivia _emptyTrivia = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
-
-        public static SyntaxTrivia EmptyTrivia => _emptyTrivia;
-
-        public static SyntaxTrivia NewLine => _newLine;
+        public static SyntaxTrivia NewLine { get; } = CreateNewLine();
 
         public static SyntaxTrivia DefaultIndent => Whitespace(TextUtility.DefaultIndent);
 

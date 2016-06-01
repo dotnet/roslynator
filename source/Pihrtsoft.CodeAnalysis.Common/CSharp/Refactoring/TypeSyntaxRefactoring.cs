@@ -12,18 +12,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     public static class TypeSyntaxRefactoring
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
-
         private static readonly SymbolDisplayFormat _symbolDisplayFormatForTypeSyntax = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-        public static SymbolDisplayFormat SymbolDisplayFormat
-            => _symbolDisplayFormat;
+        public static SymbolDisplayFormat SymbolDisplayFormat { get; } = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
         public static TypeSyntax CreateTypeSyntax(ITypeSymbol typeSymbol)
         {
