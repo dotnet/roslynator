@@ -90,19 +90,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private async Task ComputeRefactoringsAsync(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.HeaderSpan().Contains(context.Span)
-                && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
+            if (methodDeclaration.HeaderSpan().Contains(context.Span))
             {
-                context.RegisterRefactoring(
-                    "Convert to read-only property",
-                    cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
-            }
+                if (MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
+                {
+                    context.RegisterRefactoring(
+                        "Convert to read-only property",
+                        cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
+                }
 
-            if (MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Make method abstract",
-                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                if (MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
+                {
+                    context.RegisterRefactoring(
+                        "Make method abstract",
+                        cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                }
             }
 
             if (context.Document.SupportsSemanticModel)
@@ -115,7 +117,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private void ComputeRefactorings(CodeRefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
+            if (indexerDeclaration.HeaderSpan().Contains(context.Span)
+                && MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
             {
                 context.RegisterRefactoring(
                     "Make indexer abstract",
@@ -151,7 +154,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 NotifyPropertyChangedRefactoring.Refactor(propertyDeclaration, context, semanticModel);
             }
 
-            if (MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
+            if (propertyDeclaration.HeaderSpan().Contains(context.Span)
+                && MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
             {
                 context.RegisterRefactoring(
                     "Make property abstract",
