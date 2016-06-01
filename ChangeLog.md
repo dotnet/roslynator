@@ -1,3 +1,55 @@
+### 0.9.50 (2016-06-02)
+
+#### Analyzers
+
+##### New Analyzers
+
+* SplitDeclarationIntoMultipleDeclarations
+* UseCountOrLengthPropertyInsteadOfCountMethod
+* UseAnyMethodInsteadOfCountMethod
+* UseCoalesceExpressionInsteadOfConditionalExpression
+* UseAutoImplementedProperty
+
+##### Changes
+
+* DeclareExplicitType and DeclareImplicitType analyzers - 'var' is allowed for ThisExpression.
+
+##### Bug Fixes
+
+* "RemoveRedundantEmptyLine" analyzer - empty line can be between using directive (or extern alias) inside namespace declaration and first member declaration.
+
+#### Refactorings
+
+##### New Refactorings
+
+* Expand coalesce expression
+* Expand event
+* Swap members
+* Split attributes
+* Merge attributes
+* Change method/property/indexer type according to yield return statement
+* Notify property changed
+* Add cast to assignment expression
+* Format accessor braces on multiple lines
+
+##### Changes
+
+* "Remove/duplicate member" refactoring: 
+  * triggers inside header or on closing brace (if any)
+  * is available for method/constructor/property/indexer/operator/event/namespace/class/struct/interface.
+* "Add/remove parameter name" refactoring - argument(s) must be selected.
+* "Rename variable/method/property/parameter according to type name" refactorings - predefined types are excluded.
+* "Convert method to read-only property" refactoring - triggers only inside method header.
+* "Convert property to method" refactoring - triggers only inside property header
+* "Make method/property/indexer method" refactoring - triggers only inside method/property/indexer header
+
+##### Bug Fixes
+
+* "Convert constant to read-only field" refactoring - static keyword is added if the constant is declared in static class.
+* "Convert switch to if-else chain" refactoring - there must be at least one non-default section.
+* "Rename parameter according to type name" refactoring - now works for lambda's argument list.
+* "Add parentheses" refactoring
+
 ### 0.9.40 (2016-05-24)
 
 #### Analyzers
