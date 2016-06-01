@@ -90,7 +90,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private async Task ComputeRefactoringsAsync(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
+            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+                && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
             {
                 context.RegisterRefactoring(
                     "Convert to read-only property",

@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
@@ -16,6 +17,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 return false;
 
             return methodDeclaration.ReturnType.IsVoid();
+        }
+
+        public static TextSpan HeaderSpan(this MethodDeclarationSyntax methodDeclaration)
+        {
+            if (methodDeclaration == null)
+                throw new ArgumentNullException(nameof(methodDeclaration));
+
+            return TextSpan.FromBounds(
+                methodDeclaration.Span.Start,
+                methodDeclaration.ParameterList?.Span.End ?? methodDeclaration.Identifier.Span.End);
         }
     }
 }
