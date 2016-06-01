@@ -3,12 +3,23 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ClassDeclarationSyntaxExtensions
     {
+        public static TextSpan HeaderSpan(this ClassDeclarationSyntax classDeclaration)
+        {
+            if (classDeclaration == null)
+                throw new ArgumentNullException(nameof(classDeclaration));
+
+            return TextSpan.FromBounds(
+                classDeclaration.Span.Start,
+                classDeclaration.Identifier.Span.End);
+        }
+
         public static MemberDeclarationSyntax RemoveMember(this ClassDeclarationSyntax declaration, int index)
         {
             if (declaration == null)

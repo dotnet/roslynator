@@ -45,44 +45,81 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             switch (member.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.IndexerDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                case SyntaxKind.ConstructorDeclaration:
-                case SyntaxKind.PropertyDeclaration:
-                case SyntaxKind.FieldDeclaration:
-                case SyntaxKind.EventDeclaration:
-                case SyntaxKind.EventFieldDeclaration:
                     {
-                        return !member.IsSingleline();
+                        var declaration = (MethodDeclarationSyntax)member;
+
+                        return declaration.Body?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        var declaration = (IndexerDeclarationSyntax)member;
+
+                        return declaration.AccessorList?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        var declaration = (OperatorDeclarationSyntax)member;
+
+                        return declaration.Body?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    {
+                        var declaration = (ConversionOperatorDeclarationSyntax)member;
+
+                        return declaration.Body?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        var declaration = (MethodDeclarationSyntax)member;
+
+                        return declaration.Body?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        var declaration = (PropertyDeclarationSyntax)member;
+
+                        return declaration.AccessorList?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
+                    }
+                case SyntaxKind.EventDeclaration:
+                    {
+                        var declaration = (EventDeclarationSyntax)member;
+
+                        return declaration.AccessorList?.CloseBraceToken.Span.Contains(context.Span) == true
+                            || declaration.HeaderSpan().Contains(context.Span);
                     }
                 case SyntaxKind.NamespaceDeclaration:
                     {
                         var declaration = (NamespaceDeclarationSyntax)member;
 
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                        return declaration.CloseBraceToken.Span.Contains(context.Span)
+                            || declaration.HeaderSpan().Contains(context.Span);
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var declaration = (ClassDeclarationSyntax)member;
 
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                        return declaration.CloseBraceToken.Span.Contains(context.Span)
+                            || declaration.HeaderSpan().Contains(context.Span);
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)member;
 
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                        return declaration.CloseBraceToken.Span.Contains(context.Span)
+                            || declaration.HeaderSpan().Contains(context.Span);
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var declaration = (InterfaceDeclarationSyntax)member;
 
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
+                        return declaration.CloseBraceToken.Span.Contains(context.Span)
+                            || declaration.HeaderSpan().Contains(context.Span);
                     }
             }
 

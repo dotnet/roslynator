@@ -34,9 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.ConversionOperatorDeclaration:
                 case SyntaxKind.ConstructorDeclaration:
-                case SyntaxKind.FieldDeclaration:
                 case SyntaxKind.EventDeclaration:
-                case SyntaxKind.EventFieldDeclaration:
                 case SyntaxKind.NamespaceDeclaration:
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
