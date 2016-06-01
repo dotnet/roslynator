@@ -35,5 +35,6 @@
     <Rule Id="RCS1071" Action="Info" />
     <Rule Id="RCS1073" Action="Info" />
     <Rule Id="RCS1074" Action="Info" />
+    <Rule Id="RCS1081" Action="Warning" />
   </Rules>
 </RuleSet>
