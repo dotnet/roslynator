@@ -1,0 +1,570 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactorings>
+  <!--<Refactoring Title="" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax></Syntax>
+    </Syntaxes>
+    <Scope></Scope>
+  </Refactoring>-->
+  <Refactoring Title="Access element using '[]' instead of 'First/Last/ElementAt' method" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>First/Last/ElementAt method name</Syntax>
+    </Syntaxes>
+    <Scope></Scope>
+  </Refactoring>
+  <Refactoring Title="Add boolean comparison" ExtensionVersion="0.9.2">
+    <Syntaxes>
+      <Syntax>boolean? expression in place where must be boolean expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add braces to embedded statement" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>else clause</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add braces to if-else chain" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>if-else chain</Syntax>
+    </Syntaxes>
+    <Scope>topmost if keyword</Scope>
+  </Refactoring>
+  <Refactoring Title="Add braces to switch section" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add braces to switch sections" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>switch keyword</Scope>
+  </Refactoring>
+  <Refactoring Title="Add cast according to parameter type" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add cast to assignment expression" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>assignment expression</Syntax>
+    </Syntaxes>
+    <Scope>right expression</Scope>
+  </Refactoring>
+  <Refactoring Title="Add parameter name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add parameter name to each argument" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Add parentheses" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>expression</Syntax>
+    </Syntaxes>
+    <Scope>selected expression</Scope>
+  </Refactoring>
+  <Refactoring Title="Add using statement" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>local declaration of type that implements IDisposable</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Change 'Any/All' to 'All/Any'" ExtensionVersion="0.9.2">
+    <Syntaxes>
+      <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
+    </Syntaxes>
+    <Scope>Any/All name</Scope>
+  </Refactoring>
+  <Refactoring Title="Convert &quot;&quot; to string.Empty" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>empty string literal</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert conditional expression to if-else" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert constant to read-only field" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>constant declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert for to foreach" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>for statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert foreach to for" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert interpolated string to string literal" ExtensionVersion="0.9.2">
+    <Syntaxes>
+      <Syntax>Interpolated string without any expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert method to read-only property" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+    </Syntaxes>
+    <Scope>method header</Scope>
+  </Refactoring>
+  <Refactoring Title="Convert read-only field to constant" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>read-only field</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert read-only property to method" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>read-only property</Syntax>
+    </Syntaxes>
+    <Scope>property header</Scope>
+  </Refactoring>
+  <Refactoring Title="Convert string literal to interpolated string" ExtensionVersion="0.9.2">
+    <Syntaxes>
+      <Syntax>String literal</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert string.Empty to &quot;&quot;" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>string.Empty</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert switch to if-else chain" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>switch keyword</Scope>
+  </Refactoring>
+  <Refactoring Title="Convert to increment/decrement operator" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>prefix/postfix unary expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert to interpolated string" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>string.Format method</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Convert to prefix/postfix operator" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>prefix/postfix unary expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Duplicate member" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>constructor</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+      <Syntax>operator</Syntax>
+      <Syntax>event</Syntax>
+      <Syntax>namespace</Syntax>
+      <Syntax>class</Syntax>
+      <Syntax>struct</Syntax>
+      <Syntax>interface</Syntax>
+    </Syntaxes>
+    <Scope>header or closing brace</Scope>
+  </Refactoring>
+  <Refactoring Title="Duplicate parameter" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>missing parameter</Syntax>
+    </Syntaxes>
+    <Scope></Scope>
+  </Refactoring>
+  <Refactoring Title="Expand assignment expression" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>assignment expression</Syntax>
+    </Syntaxes>
+    <Scope>operator</Scope>
+  </Refactoring>
+  <Refactoring Title="Expand coalesce expression" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>coalesce expression</Syntax>
+    </Syntaxes>
+    <Scope>?? operator</Scope>
+  </Refactoring>
+  <Refactoring Title="Expand event" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>event field declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Expand expression-bodied member" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>expression body</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Expand lambda expression's body" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>lambda expression</Syntax>
+    </Syntaxes>
+    <Scope>body</Scope>
+  </Refactoring>
+  <Refactoring Title="Expand object initializer" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>object initializer</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Expand property" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>auto-property</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Expand property and add backing field" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>auto-property</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Extract declaration from using statement" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>using statement</Syntax>
+    </Syntaxes>
+    <Scope>declaration</Scope>
+  </Refactoring>
+  <Refactoring Title="Extract expression from parentheses" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parenthesized expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Extract generic type" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>generic name (with single type argument)</Syntax>
+    </Syntaxes>
+    <Scope>type argument</Scope>
+  </Refactoring>
+  <Refactoring Title="Extract statement(s)" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>else clause</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>checked statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>try statement</Syntax>
+      <Syntax>unsafe statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format all arguments on a single line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format all parameters on a single line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parameter list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format binary expressions on multiple lines" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>condition</Scope>
+  </Refactoring>
+  <Refactoring Title="Format accessor braces on multiple lines" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>get accessor</Syntax>
+      <Syntax>set accessor</Syntax>
+      <Syntax>add accessor</Syntax>
+      <Syntax>remove accessor</Syntax>
+    </Syntaxes>
+    <Scope>block</Scope>
+  </Refactoring>
+  <Refactoring Title="Format conditional expression on multiple lines" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format conditional expression to a single line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format each argument on separate line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format each parameter on separate line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parameter list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format expression chain on a single line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>expression chain</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format expression chain on multiple lines" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>expression chain</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format initializer on a single line" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>initializer</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Format initializer on multiple lines" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>initializer</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Change foreach variable's declared type according to expression" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+    <Scope>element type</Scope>
+  </Refactoring>
+  <Refactoring Title="Change foreach variable's declared type to implicit" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+    <Scope>element type</Scope>
+  </Refactoring>
+  <Refactoring Title="Change method/property/indexer type according to return statement" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+    </Syntaxes>
+    <Scope>return statement's expression</Scope>
+  </Refactoring>
+  <Refactoring Title="Change method/property/indexer type according to yield return statement" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+    </Syntaxes>
+    <Scope>yield return statement's expression</Scope>
+  </Refactoring>
+  <Refactoring Title="Change type" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>variable declaration</Syntax>
+    </Syntaxes>
+    <Scope>type</Scope>
+  </Refactoring>
+  <Refactoring Title="Change type according to expression" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>variable declaration</Syntax>
+    </Syntaxes>
+    <Scope>type</Scope>
+  </Refactoring>
+  <Refactoring Title="Check parameter for null" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parameter</Syntax>
+    </Syntaxes>
+    <Scope>parameter identifier</Scope>
+  </Refactoring>
+  <Refactoring Title="Introduce constructor from selected member(s)" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>selected fields/properties</Syntax>
+    </Syntaxes>
+    <Scope></Scope>
+  </Refactoring>
+  <Refactoring Title="Make member abstract" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>non-abstract indexer/method/property in abstract class</Syntax>
+    </Syntaxes>
+    <Scope>indexer/method/property header</Scope>
+  </Refactoring>
+  <Refactoring Title="Merge attributes" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>selected attribute lists</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Negate binary expression" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>logical and/or expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Negate boolean literal" ExtensionVersion="0.9.0">
+    <Syntaxes />
+  </Refactoring>
+  <Refactoring Title="Negate operator" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>!=</Syntax>
+      <Syntax>&amp;&amp;</Syntax>
+      <Syntax>||</Syntax>
+      <Syntax>&lt;</Syntax>
+      <Syntax>&lt;=</Syntax>
+      <Syntax>==</Syntax>
+      <Syntax>&gt;</Syntax>
+      <Syntax>&gt;=</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Notify property changed" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>property in class/struct that implements INotifyPropertyChanged</Syntax>
+    </Syntaxes>
+    <Scope>setter</Scope>
+  </Refactoring>
+  <Refactoring Title="Remove all comments" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>singleline/multiline comment</Syntax>
+      <Syntax>singleline/multiline xml documentation comment</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove all comments (except xml comments)" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>singleline/multiline comment</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove all regions" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>region directive</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove braces from if-else chain" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>if-else chain</Syntax>
+    </Syntaxes>
+    <Scope>topmost if keyword</Scope>
+  </Refactoring>
+  <Refactoring Title="Remove braces from switch section" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove braces from switch sections" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>switch keyword</Scope>
+  </Refactoring>
+  <Refactoring Title="Remove comment" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>singleline/multiline comment</Syntax>
+      <Syntax>singleline/multiline xml documentation comment</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove member" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>constructor</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+      <Syntax>operator</Syntax>
+      <Syntax>event</Syntax>
+      <Syntax>namespace</Syntax>
+      <Syntax>class</Syntax>
+      <Syntax>struct</Syntax>
+      <Syntax>interface</Syntax>
+    </Syntaxes>
+    <Scope>header or closing brace</Scope>
+  </Refactoring>
+  <Refactoring Title="Remove parameter name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove parameter name from each argument" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>argument list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Remove property initializer" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>property initializer</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Rename backing field according to property name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>backing field</Syntax>
+    </Syntaxes>
+    <Scope>property declaration</Scope>
+  </Refactoring>
+  <Refactoring Title="Rename foreach variable according to its type name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+    <Scope>foreach statement identifier</Scope>
+  </Refactoring>
+  <Refactoring Title="Rename method according to type name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Rename parameter according to its type name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parameter</Syntax>
+    </Syntaxes>
+    <Scope>parameter identifier</Scope>
+  </Refactoring>
+  <Refactoring Title="Rename property according to type name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>property identifier</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Rename local/field/const according to type name" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>local/field/constant declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Reverse for loop" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>for statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Split attributes" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>selected attribute list</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Swap arguments" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>arguments</Syntax>
+    </Syntaxes>
+    <Scope>comma between parameters</Scope>
+  </Refactoring>
+  <Refactoring Title="Swap binary expression's expressions" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>binary expression</Syntax>
+    </Syntaxes>
+    <Scope>binary operator</Scope>
+  </Refactoring>
+  <Refactoring Title="Swap conditional expression's statements" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+    <Scope>condition</Scope>
+  </Refactoring>
+  <Refactoring Title="Swap if-else statements" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+    <Scope>condition</Scope>
+  </Refactoring>
+  <Refactoring Title="Swap members" ExtensionVersion="0.9.50">
+    <Syntaxes>
+      <Syntax>empty line between member declarations</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Swap parameters" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>parameters</Syntax>
+    </Syntaxes>
+    <Scope>comma between parameters</Scope>
+  </Refactoring>
+  <Refactoring Title="Uncomment" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>single-line comment(s)</Syntax>
+    </Syntaxes>
+  </Refactoring>
+</Refactorings>
