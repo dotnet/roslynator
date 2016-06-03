@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
-                        var declaration = (MethodDeclarationSyntax)member;
+                        var declaration = (ConstructorDeclarationSyntax)member;
 
                         return declaration.Body?.CloseBraceToken.Span.Contains(context.Span) == true
                             || declaration.HeaderSpan().Contains(context.Span);
