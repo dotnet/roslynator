@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
 
-            SyntaxTrivia trivia = root.FindTrivia(context.Span.Start, findInsideTrivia: true);
+            SyntaxTrivia trivia = root.FindTrivia(context.Span.Start);
 
             if (CommentRefactoring.CanRemove(trivia))
             {
