@@ -50,6 +50,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     cancellationToken => FormatAllArgumentsOnSingleLineAsync(context.Document, argumentList, cancellationToken));
             }
 
+            DuplicateArgumentRefactoring.Refactor(context, argumentList);
+
             SwapArgumentsRefactoring.Refactor(context, argumentList);
         }
 

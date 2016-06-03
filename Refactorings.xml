@@ -163,6 +163,11 @@
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Title="Duplicate argument" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>missing argument</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Title="Duplicate member" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>method</Syntax>
@@ -182,7 +187,6 @@
     <Syntaxes>
       <Syntax>missing parameter</Syntax>
     </Syntaxes>
-    <Scope></Scope>
   </Refactoring>
   <Refactoring Title="Expand assignment expression" ExtensionVersion="0.9.0">
     <Syntaxes>
