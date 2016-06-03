@@ -1,13 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Analyzers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
@@ -22,8 +21,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.FormatBlock,
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
-                    DiagnosticDescriptors.SimplifyLambdaExpression,
-                    DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut,
                     DiagnosticDescriptors.RemoveRedundantEmptyLine);
             }
         }
@@ -47,22 +44,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, block.Statements);
 
-            if (block.Parent?.IsAnyKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression) == true)
-            {
-                if (block.Statements.Count == 1
-                    && block.Statements[0].IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement)
-                    && block.IsSingleline())
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.SimplifyLambdaExpression,
-                        block.GetLocation());
-
-                    FadeOut(context, block);
-                }
-
-                return;
-            }
-
             if (block.Statements.Count == 0)
             {
                 int startLineIndex = block.OpenBraceToken.GetSpanStartLine();
@@ -77,16 +58,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         block.GetLocation());
                 }
             }
-        }
-
-        private static void FadeOut(SyntaxNodeAnalysisContext context, BlockSyntax block)
-        {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut;
-
-            DiagnosticHelper.FadeOutBraces(context, block, descriptor);
-
-            if (block.Statements[0].IsKind(SyntaxKind.ReturnStatement))
-                DiagnosticHelper.FadeOutToken(context, ((ReturnStatementSyntax)block.Statements[0]).ReturnKeyword, descriptor);
         }
     }
 }

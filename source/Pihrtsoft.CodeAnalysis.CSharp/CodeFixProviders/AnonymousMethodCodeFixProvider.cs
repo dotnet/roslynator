@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 Token(SyntaxKind.EqualsGreaterThanToken),
                 anonymousMethod.Block);
 
-            lambda = SimplifyLambdaExpressionRefactoring.SimplifyLambdaExpression(lambda)
+            lambda = lambda
                 .WithTriviaFrom(anonymousMethod)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 

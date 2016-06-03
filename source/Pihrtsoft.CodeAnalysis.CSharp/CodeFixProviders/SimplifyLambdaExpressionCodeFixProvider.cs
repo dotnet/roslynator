@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            LambdaExpressionSyntax newLambda = SimplifyLambdaExpressionRefactoring.SimplifyLambdaExpression(lambda)
+            LambdaExpressionSyntax newLambda = SimplifyLambdaExpressionRefactoring.Refactor(lambda)
                 .WithTriviaFrom(lambda)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
