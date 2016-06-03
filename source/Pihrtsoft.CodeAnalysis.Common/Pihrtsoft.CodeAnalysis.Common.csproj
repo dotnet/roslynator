@@ -74,7 +74,6 @@
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ParameterSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
     <Compile Include="Comparers\ModifierSorter.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />

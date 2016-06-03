@@ -43,29 +43,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
 
-            if (parameter.Type == null)
-                return false;
+            if (!parameter.Identifier.IsMissing)
+            {
+                BlockSyntax body = GetBody(parameter);
 
-            if (parameter.Identifier.IsMissing)
-                return false;
+                if (body != null)
+                {
+                    IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
 
-            BlockSyntax body = parameter.GetMethodOrConstructorBody();
+                    return parameterSymbol?.Type?.IsReferenceType == true
+                        && !ContainsParameterNullCheck(body, parameter, semanticModel, cancellationToken);
+                }
+            }
 
-            if (body == null)
-                return false;
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(parameter.Type).ConvertedType;
-
-            if (typeSymbol == null || typeSymbol.IsKind(SymbolKind.ErrorType))
-                return false;
-
-            if (!typeSymbol.IsReferenceType)
-                return false;
-
-            if (ContainsParameterNullCheck(body, parameter, semanticModel, cancellationToken))
-                return false;
-
-            return true;
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -76,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            BlockSyntax body = parameter.GetMethodOrConstructorBody();
+            BlockSyntax body = GetBody(parameter);
 
             int index = body.Statements
                 .TakeWhile(f => IsParameterNullCheck(f, null, semanticModel, cancellationToken))
@@ -206,6 +197,58 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (block.Statements.Count == 1)
                 return block.Statements[0];
+
+            return null;
+        }
+
+        private static BlockSyntax GetBody(ParameterSyntax parameter)
+        {
+            SyntaxNode parent = parameter.Parent;
+
+            if (parent == null)
+                return null;
+
+            if (parent.IsKind(SyntaxKind.SimpleLambdaExpression))
+            {
+                var lambda = (SimpleLambdaExpressionSyntax)parent;
+
+                if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
+                    return (BlockSyntax)lambda.Body;
+            }
+            else if (parent.IsKind(SyntaxKind.ParameterList))
+            {
+                parent = parent.Parent;
+
+                switch (parent?.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                        {
+                            return ((MethodDeclarationSyntax)parent).Body;
+                        }
+                    case SyntaxKind.ConstructorDeclaration:
+                        {
+                            return ((ConstructorDeclarationSyntax)parent).Body;
+                        }
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                        {
+                            var lambda = (ParenthesizedLambdaExpressionSyntax)parent;
+
+                            if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
+                                return (BlockSyntax)lambda.Body;
+
+                            break;
+                        }
+                    case SyntaxKind.AnonymousMethodExpression:
+                        {
+                            var method = (AnonymousMethodExpressionSyntax)parent;
+
+                            if (method.Body?.IsKind(SyntaxKind.Block) == true)
+                                return (BlockSyntax)method.Body;
+
+                            break;
+                        }
+                }
+            }
 
             return null;
         }
