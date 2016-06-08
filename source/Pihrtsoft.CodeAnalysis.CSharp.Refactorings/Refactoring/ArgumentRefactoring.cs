@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (arguments == null)
                 throw new ArgumentNullException(nameof(arguments));
 
-            if (arguments.Any(f => f.NameColon == null))
+            if (CanAddParameterName(context, arguments))
             {
                 context.RegisterRefactoring(
                     "Add parameter name",
@@ -207,6 +207,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
                         .WithTrailingTrivia(Space))
                 .WithTriviaFrom(argument);
+        }
+
+        public static bool CanAddParameterName(
+            CodeRefactoringContext context,
+            ArgumentSyntax[] arguments)
+        {
+            SemanticModel semanticModel = null;
+
+            foreach (ArgumentSyntax argument in arguments)
+            {
+                if (argument.NameColon == null || argument.NameColon.IsMissing)
+                {
+                    if (semanticModel == null
+                        && !context.Document.TryGetSemanticModel(out semanticModel))
+                    {
+                        return false;
+                    }
+
+                    IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                        semanticModel,
+                        allowParams: false,
+                        cancellationToken: context.CancellationToken);
+
+                    if (parameterSymbol != null)
+                        return true;
+                }
+            }
+
+            return false;
         }
     }
 }
