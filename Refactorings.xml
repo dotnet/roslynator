@@ -8,9 +8,9 @@
   </Refactoring>-->
   <Refactoring Title="Access element using '[]' instead of 'First/Last/ElementAt' method" ExtensionVersion="0.9.40">
     <Syntaxes>
-      <Syntax>First/Last/ElementAt method name</Syntax>
+      <Syntax>First/Last/ElementAt method invocation</Syntax>
     </Syntaxes>
-    <Scope></Scope>
+    <Scope>method name</Scope>
   </Refactoring>
   <Refactoring Title="Add boolean comparison" ExtensionVersion="0.9.2">
     <Syntaxes>
