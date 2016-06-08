@@ -26,6 +26,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (variableDeclaration == null)
                 return;
 
+            if (variableDeclaration.Parent?.IsAnyKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement) == false)
+                await ComputeRefactoringsAsync(context, variableDeclaration);
+        }
+
+        internal static async Task ComputeRefactoringsAsync(CodeRefactoringContext context, VariableDeclarationSyntax variableDeclaration)
+        {
             if (context.Document.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);

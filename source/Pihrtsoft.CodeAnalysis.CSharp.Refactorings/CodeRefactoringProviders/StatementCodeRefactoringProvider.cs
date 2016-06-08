@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
@@ -21,6 +22,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
             if (statement == null)
                 return;
+
+            if (statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+            {
+                var localDeclaration = (LocalDeclarationStatementSyntax)statement;
+
+                if (localDeclaration.Declaration?.Span.Contains(context.Span) == true)
+                {
+                    await VariableDeclarationCodeRefactoringProvider.ComputeRefactoringsAsync(
+                        context,
+                        localDeclaration.Declaration);
+                }
+            }
+            else if (statement.IsKind(SyntaxKind.UsingStatement))
+            {
+                var usingStatement = (UsingStatementSyntax)statement;
+
+                if (usingStatement.Declaration?.Span.Contains(context.Span) == true)
+                {
+                    await VariableDeclarationCodeRefactoringProvider.ComputeRefactoringsAsync(
+                        context,
+                        usingStatement.Declaration);
+                }
+            }
 
             AddBracesToEmbeddedStatementRefactoring.Refactor(context, statement);
             RemoveBracesFromStatementRefactoring.Refactor(context, statement);
