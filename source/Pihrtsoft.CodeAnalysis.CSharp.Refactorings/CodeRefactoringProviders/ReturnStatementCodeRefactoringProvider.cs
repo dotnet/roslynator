@@ -93,6 +93,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                                         context.RegisterRefactoring(codeAction);
                                     }
+
+                                    AddCastRefactoring.Refactor(context, returnStatement.Expression, memberTypeSymbol);
                                 }
                             }
                         }

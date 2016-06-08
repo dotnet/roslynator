@@ -38,31 +38,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(argument.Expression).ConvertedType;
 
-            if (typeSymbol == null)
-                return;
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+            {
+                IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                    semanticModel,
+                    allowParams: false,
+                    allowCandidate: true,
+                    cancellationToken: context.CancellationToken);
 
-            IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                semanticModel,
-                allowParams: false,
-                allowCandidate: true,
-                cancellationToken: context.CancellationToken);
-
-            if (parameterSymbol == null)
-                return;
-
-            if (typeSymbol.Equals(parameterSymbol.Type))
-                return;
-
-            context.RegisterRefactoring(
-                $"Add cast to '{parameterSymbol.Type.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken =>
-                {
-                    return AddCastRefactoring.RefactorAsync(
-                        context.Document,
-                        argument.Expression,
-                        parameterSymbol.Type,
-                        cancellationToken);
-                });
+                if (parameterSymbol?.Type?.Equals(typeSymbol) == false)
+                    AddCastRefactoring.Refactor(context, argument.Expression, parameterSymbol.Type);
+            }
         }
     }
 }

@@ -58,6 +58,12 @@
     </Syntaxes>
     <Scope>right expression</Scope>
   </Refactoring>
+  <Refactoring Title="Add cast to return statement's expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>return statement</Syntax>
+    </Syntaxes>
+    <Scope>expression</Scope>
+  </Refactoring>
   <Refactoring Title="Add parameter name" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>argument</Syntax>

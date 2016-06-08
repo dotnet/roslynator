@@ -52,18 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                     ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(assignmentExpression.Right).Type;
 
                     if (!leftSymbol.Equals(rightSymbol))
-                    {
-                        context.RegisterRefactoring(
-                            $"Add cast to '{leftSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                            cancellationToken =>
-                            {
-                                return AddCastRefactoring.RefactorAsync(
-                                    context.Document,
-                                    assignmentExpression.Right,
-                                    leftSymbol,
-                                    cancellationToken);
-                            });
-                    }
+                        AddCastRefactoring.Refactor(context, assignmentExpression.Right, leftSymbol);
                 }
             }
         }

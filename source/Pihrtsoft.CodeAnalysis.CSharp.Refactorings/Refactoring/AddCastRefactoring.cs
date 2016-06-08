@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Simplification;
@@ -11,6 +12,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class AddCastRefactoring
     {
+        public static void Refactor(
+            CodeRefactoringContext context,
+            ExpressionSyntax expression,
+            ITypeSymbol typeSymbol)
+        {
+            context.RegisterRefactoring(
+                $"Add cast to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                cancellationToken =>
+                {
+                    return RefactorAsync(
+                        context.Document,
+                        expression,
+                        typeSymbol,
+                        cancellationToken);
+                });
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
