@@ -23,8 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (parenthesizedExpression == null)
                 return;
 
-            if (!parenthesizedExpression.OpenParenToken.IsMissing
-                && !parenthesizedExpression.CloseParenToken.IsMissing)
+            if ((!parenthesizedExpression.OpenParenToken.IsMissing && parenthesizedExpression.OpenParenToken.Span.Contains(context.Span))
+                || (!parenthesizedExpression.CloseParenToken.IsMissing && parenthesizedExpression.CloseParenToken.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(
                     "Extract expression from parentheses",

@@ -241,6 +241,7 @@
     <Syntaxes>
       <Syntax>parenthesized expression</Syntax>
     </Syntaxes>
+    <Scope>opening/closing parenthesis</Scope>
   </Refactoring>
   <Refactoring Title="Extract generic type" ExtensionVersion="0.9.0">
     <Syntaxes>
