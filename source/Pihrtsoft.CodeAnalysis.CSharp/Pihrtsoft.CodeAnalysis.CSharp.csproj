@@ -43,7 +43,6 @@
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
-    <Compile Include="ArgumentInfo.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />

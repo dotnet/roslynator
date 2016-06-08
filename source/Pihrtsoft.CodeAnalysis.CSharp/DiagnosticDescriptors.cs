@@ -245,9 +245,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider using nameof operator.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseNameOfOperatorFadeOut = UseNameOfOperator.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor RemoveEmptyObjectInitializer = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveEmptyObjectInitializer,

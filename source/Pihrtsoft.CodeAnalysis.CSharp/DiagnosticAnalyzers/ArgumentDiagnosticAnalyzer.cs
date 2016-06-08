@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
@@ -15,7 +16,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ArgumentDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UseNameOfOperator);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UseNameOfOperator,
+                    DiagnosticDescriptors.UseNameOfOperatorFadeOut);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -32,41 +40,63 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var argument = (ArgumentSyntax)context.Node;
 
+            if (argument.Expression?.IsKind(SyntaxKind.StringLiteralExpression) != true)
+                return;
+
             using (IEnumerator<ParameterSyntax> en = GetParametersInScope(argument).GetEnumerator())
             {
-                if (!en.MoveNext())
-                    return;
-
-                if (argument.Expression?.IsKind(SyntaxKind.StringLiteralExpression) != true)
-                    return;
-
-                var literalExpression = (LiteralExpressionSyntax)argument.Expression;
-
-                string parameterName = (literalExpression).Token.ValueText;
-
-                if (!IsAnyParameter(en, parameterName))
-                    return;
-
-                ArgumentInfo argumentInfo = GetArgumentInfo(argument, context.SemanticModel);
-
-                if (argumentInfo.Parameter == null)
-                    return;
-
-                if (IsAllowedParameterName(argumentInfo.Parameter.Name))
+                if (en.MoveNext())
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseNameOfOperator,
-                        literalExpression.GetLocation(),
-                        parameterName);
+                    var literalExpression = (LiteralExpressionSyntax)argument.Expression;
+
+                    string text = (literalExpression).Token.ValueText;
+
+                    if (ExistsParameterWithName(en, text))
+                    {
+                        IParameterSymbol parameterSymbol = GetParameterSymbol(argument, context.SemanticModel);
+
+                        if (parameterSymbol != null
+                            && (IdentifierEquals(parameterSymbol.Name, "paramName")
+                                || IdentifierEquals(parameterSymbol.Name, "parameterName")))
+                        {
+                            ReportDiagnostic(context, literalExpression, text);
+                        }
+                    }
+                }
+                else
+                {
+                    AccessorDeclarationSyntax setter = argument
+                        .FirstAncestor<AccessorDeclarationSyntax>();
+
+                    if (setter?.IsKind(SyntaxKind.SetAccessorDeclaration) == true)
+                    {
+                        PropertyDeclarationSyntax property = setter
+                            .FirstAncestor<PropertyDeclarationSyntax>();
+
+                        if (property != null)
+                        {
+                            var literalExpression = (LiteralExpressionSyntax)argument.Expression;
+
+                            string text = (literalExpression).Token.ValueText;
+
+                            if (IdentifierEquals(property.Identifier.ValueText, text))
+                            {
+                                IParameterSymbol parameterSymbol = GetParameterSymbol(argument, context.SemanticModel);
+
+                                if (parameterSymbol != null
+                                    && IdentifierEquals(parameterSymbol.Name, "propertyName"))
+                                {
+                                    ReportDiagnostic(context, literalExpression, text);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
         private static IEnumerable<ParameterSyntax> GetParametersInScope(SyntaxNode node)
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
             foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
             {
                 if (ancestor.IsKind(SyntaxKind.SimpleLambdaExpression))
@@ -76,6 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 else
                 {
                     BaseParameterListSyntax parameterList = ancestor.GetParameterList();
+
                     if (parameterList != null)
                     {
                         for (int i = 0; i < parameterList.Parameters.Count; i++)
@@ -85,88 +116,96 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private static bool IsAnyParameter(IEnumerator<ParameterSyntax> enumerator, string parameterName)
+        private static bool ExistsParameterWithName(IEnumerator<ParameterSyntax> enumerator, string name)
         {
             do
             {
-                if (string.Equals(parameterName, enumerator.Current.Identifier.ValueText, StringComparison.Ordinal))
+                if (IdentifierEquals(enumerator.Current.Identifier.ValueText, name))
                     return true;
-            } while (enumerator.MoveNext());
+            }
+            while (enumerator.MoveNext());
 
             return false;
         }
 
-        private static ArgumentInfo GetArgumentInfo(ArgumentSyntax argument, SemanticModel semanticModel)
+        private static IParameterSymbol GetParameterSymbol(ArgumentSyntax argument, SemanticModel semanticModel)
         {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
-
             var argumentList = argument.Parent as ArgumentListSyntax;
+
             if (argumentList == null)
-                return default(ArgumentInfo);
+                return null;
 
             var expression = argumentList.Parent as ExpressionSyntax;
+
             if (expression == null)
-                return default(ArgumentInfo);
+                return null;
 
-            ISymbol methodOrProperty = semanticModel.GetSymbolInfo(expression).Symbol;
-            if (methodOrProperty == null)
-                return default(ArgumentInfo);
+            ISymbol symbol = semanticModel.GetSymbolInfo(expression).Symbol;
 
-            ImmutableArray<IParameterSymbol> parameters = methodOrProperty.GetParameters();
+            if (symbol == null)
+                return null;
+
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
+
             if (parameters.Length == 0)
-                return default(ArgumentInfo);
+                return null;
 
             if (argument.NameColon != null)
             {
-                if (argument.NameColon.Name == null)
-                    return default(ArgumentInfo);
+                string name = argument.NameColon.Name?.Identifier.ValueText;
 
-                string nameText = argument.NameColon.Name.Identifier.ValueText;
-
-                if (nameText == null)
-                    return default(ArgumentInfo);
-
-                for (int i = 0; i < parameters.Length; i++)
+                if (name != null)
                 {
-                    if (string.Equals(parameters[i].Name, nameText, StringComparison.Ordinal))
-                        return new ArgumentInfo(methodOrProperty, parameters[i]);
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        if (IdentifierEquals(parameters[i].Name, name))
+                            return parameters[i];
+                    }
                 }
             }
             else
             {
                 int index = argumentList.Arguments.IndexOf(argument);
 
-                if (index < 0)
-                    return default(ArgumentInfo);
-
                 if (index < parameters.Length)
-                    return new ArgumentInfo(methodOrProperty, parameters[index]);
+                    return parameters[index];
 
                 if (index >= parameters.Length
                     && parameters[parameters.Length - 1].IsParams)
                 {
-                    return new ArgumentInfo(methodOrProperty, parameters[parameters.Length - 1]);
+                    return parameters[parameters.Length - 1];
                 }
             }
 
-            return default(ArgumentInfo);
+            return null;
         }
 
-        private static bool IsAllowedParameterName(string value)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LiteralExpressionSyntax literalExpression, string text)
         {
-            switch (value)
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.UseNameOfOperator,
+                literalExpression.GetLocation(),
+                text);
+
+            text = literalExpression.Token.Text;
+
+            if (text.Length >= 2)
             {
-                case "paramName":
-                    return true;
-                case "parameterName":
-                    return true;
-                default:
-                    return false;
+                ReportDiagnostic(context, literalExpression, new TextSpan(literalExpression.Span.Start, (text[0] == '@') ? 2 : 1));
+                ReportDiagnostic(context, literalExpression, new TextSpan(literalExpression.Span.End - 1, 1));
             }
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LiteralExpressionSyntax literalExpression, TextSpan span)
+        {
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.UseNameOfOperatorFadeOut,
+                Location.Create(literalExpression.SyntaxTree, span));
+        }
+
+        private static bool IdentifierEquals(string a, string b)
+        {
+            return string.Equals(a, b, StringComparison.Ordinal);
         }
     }
 }
