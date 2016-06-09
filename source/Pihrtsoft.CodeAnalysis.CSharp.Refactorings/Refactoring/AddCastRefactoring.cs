@@ -17,6 +17,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             ITypeSymbol typeSymbol)
         {
+            if (typeSymbol.SpecialType == SpecialType.System_Void)
+                return;
+
             context.RegisterRefactoring(
                 $"Add cast to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                 cancellationToken =>
