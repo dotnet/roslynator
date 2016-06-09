@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
@@ -98,10 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 }
             }
 
-            return (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(
-                ((IsAllVerbatim) ? AmpersandQuote : Quote) +
-                sb.ToString() +
-                Quote);
+            return ParseExpression(sb.ToString(), start: (IsAllVerbatim) ? AmpersandQuote : Quote);
         }
 
         public LiteralExpressionSyntax MergeMultiline()
@@ -138,7 +134,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 }
             }
 
-            return (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(AmpersandQuote + sb.ToString() + Quote);
+            return ParseExpression(sb.ToString(), start: AmpersandQuote);
+        }
+
+        private LiteralExpressionSyntax ParseExpression(string text, string start)
+        {
+            var literal = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(start + text + Quote);
+
+            return literal
+                .WithLeadingTrivia(Literals[Literals.Length - 1].GetLeadingTrivia())
+                .WithTrailingTrivia(Literals[0].GetTrailingTrivia());
         }
 
         private static string EscapeQuotes(string value)
