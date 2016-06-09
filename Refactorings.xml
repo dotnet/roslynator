@@ -400,6 +400,16 @@
       <Syntax>selected attribute lists</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Title="Merge string literals" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>concatenated string literals</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Title="Merge string literals into multiline string literal" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>concatenated string literals</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Title="Negate binary expression" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>logical and/or expression</Syntax>

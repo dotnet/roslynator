@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeRefactoringProviders\AccessorDeclarationCodeRefactoringProvider.cs" />
+    <Compile Include="CodeRefactoringProviders\AddExpressionCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\InterpolatedStringCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\IntroduceConstructorCodeRefactoringProvider.cs" />
     <Compile Include="CodeRefactoringProviders\YieldReturnStatementCodeRefactoringProvider.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactoring\SwapMembersRefactoring.cs" />
     <Compile Include="Refactoring\SwapParametersRefactoring.cs" />
+    <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxRewriters\AddParameterNameSyntaxRewriter.cs" />
     <Compile Include="SyntaxRewriters\InterpolatedStringSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
