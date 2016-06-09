@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Pihrtsoft.CodeAnalysis.CSharp.DiagnosticHelper;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -28,59 +28,73 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.ParenthesizedLambdaExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f), SyntaxKind.ParenthesizedLambdaExpression);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void Analyze(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var lambda = (ParenthesizedLambdaExpressionSyntax)context.Node;
 
-            if (lambda.ParameterList == null)
-                return;
+            ParameterListSyntax parameterList = lambda.ParameterList;
 
-            SeparatedSyntaxList<ParameterSyntax> parameters = lambda.ParameterList.Parameters;
-
-            if (parameters.Count == 0)
-                return;
-
-            foreach (ParameterSyntax parameter in parameters)
+            if (parameterList != null)
             {
-                if (parameter.Modifiers.Count > 0)
-                    return;
+                SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-                if (parameter.Type == null)
-                    return;
+                if (parameters.Count == 1)
+                {
+                    ParameterSyntax parameter = parameters[0];
 
-                if (parameter.IsMissing)
-                    return;
+                    if (parameter.Modifiers.Count == 0
+                        && parameter.AttributeLists.Count == 0
+                        && parameter.Default == null)
+                    {
+                        Analyze(context, parameterList);
+                    }
+                }
+                else if (parameters.Count > 1)
+                {
+                    if (parameters.All(parameter => parameter.Modifiers.Count == 0
+                        && parameter.AttributeLists.Count == 0
+                        && parameter.Default == null
+                        && parameter.Type?.IsMissing == false))
+                    {
+                        Analyze(context, parameterList);
+                    }
+                }
             }
-
-            Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.SimplifyLambdaExpressionParameterList,
-                lambda.ParameterList.GetLocation());
-
-            context.ReportDiagnostic(diagnostic);
-
-            FadeOut(context, lambda);
         }
 
-        private static void FadeOut(SyntaxNodeAnalysisContext context, ParenthesizedLambdaExpressionSyntax lambda)
+        private static void Analyze(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut;
-
-            SeparatedSyntaxList<ParameterSyntax> parameters = lambda.ParameterList.Parameters;
-
-            if (parameters.Count == 1)
+            if (parameterList
+                .DescendantTrivia(parameterList.Span)
+                .All(f => f.IsWhitespaceOrEndOfLine()))
             {
-                FadeOutToken(context, lambda.ParameterList.OpenParenToken, descriptor);
-                FadeOutToken(context, lambda.ParameterList.CloseParenToken, descriptor);
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyLambdaExpressionParameterList,
+                    parameterList.GetLocation());
+
+                FadeOut(context, parameterList);
+            }
+        }
+
+        private static void FadeOut(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList)
+        {
+            foreach (ParameterSyntax parameter in parameterList.Parameters)
+            {
+                if (parameter.Type != null)
+                    DiagnosticHelper.FadeOutNode(context, parameter.Type, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
             }
 
-            for (int i = 0; i < parameters.Count; i++)
-                FadeOutNode(context, parameters[i].Type, descriptor);
+            if (parameterList.Parameters.Count == 1)
+            {
+                DiagnosticHelper.FadeOutToken(context, parameterList.OpenParenToken, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
+                DiagnosticHelper.FadeOutToken(context, parameterList.CloseParenToken, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
+            }
         }
     }
 }

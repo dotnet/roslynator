@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -45,39 +44,54 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ParenthesizedLambdaExpressionSyntax lambda,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            LambdaExpressionSyntax newLambda = SimplifyLambdaExpressionParameterListSyntaxRewriter.VisitNode(lambda);
+            LambdaExpressionSyntax newLambda = SyntaxRewriter.VisitNode(lambda);
 
             if (lambda.ParameterList.Parameters.Count == 1)
                 newLambda = ConvertParenthesizedLambdaToSimpleLambda((ParenthesizedLambdaExpressionSyntax)newLambda);
 
             newLambda = newLambda.WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(lambda, newLambda);
+            root = root.ReplaceNode(lambda, newLambda);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
-        private static SimpleLambdaExpressionSyntax ConvertParenthesizedLambdaToSimpleLambda(ParenthesizedLambdaExpressionSyntax parenthesizedLambda)
+        private static SimpleLambdaExpressionSyntax ConvertParenthesizedLambdaToSimpleLambda(ParenthesizedLambdaExpressionSyntax lambda)
         {
-            ParameterSyntax parameter = parenthesizedLambda.ParameterList.Parameters[0];
-
-            SyntaxTriviaList leading = parenthesizedLambda.ParameterList.GetLeadingTrivia()
-                .AddRange(parameter.GetLeadingTrivia());
-
-            SyntaxTriviaList trailing = parameter.GetTrailingTrivia()
-                .AddRange(parenthesizedLambda.ParameterList.GetTrailingTrivia());
-
-            parameter = parameter
-                .WithLeadingTrivia(leading)
-                .WithTrailingTrivia(trailing);
-
             return SyntaxFactory.SimpleLambdaExpression(
-                parenthesizedLambda.AsyncKeyword,
-                parameter,
-                parenthesizedLambda.ArrowToken,
-                parenthesizedLambda.Body);
+                lambda.AsyncKeyword,
+                lambda.ParameterList.Parameters[0]
+                    .WithTriviaFrom(lambda.ParameterList),
+                lambda.ArrowToken,
+                lambda.Body);
+        }
+
+        private class SyntaxRewriter : CSharpSyntaxRewriter
+        {
+            private static readonly SyntaxRewriter _instance = new SyntaxRewriter();
+
+            private SyntaxRewriter()
+            {
+            }
+
+            public static ParenthesizedLambdaExpressionSyntax VisitNode(ParenthesizedLambdaExpressionSyntax parenthesizedLambda)
+            {
+                return (ParenthesizedLambdaExpressionSyntax)_instance.Visit(parenthesizedLambda);
+            }
+
+            public override SyntaxNode VisitParameter(ParameterSyntax node)
+            {
+                if (node.Type != null)
+                {
+                    return node
+                        .WithType(null)
+                        .WithTriviaFrom(node);
+                }
+
+                return node;
+            }
         }
     }
 }

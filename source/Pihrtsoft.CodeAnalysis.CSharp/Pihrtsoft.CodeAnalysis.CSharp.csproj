@@ -194,7 +194,6 @@
     <Compile Include="Extensions\SyntaxTreeAnalysisContextExtensions.cs" />
     <Compile Include="DiagnosticHelper.cs" />
     <Compile Include="Refactoring\SimplifyBooleanComparisonRefactoring.cs" />
-    <Compile Include="SyntaxRewriters\SimplifyLambdaExpressionParameterListSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
