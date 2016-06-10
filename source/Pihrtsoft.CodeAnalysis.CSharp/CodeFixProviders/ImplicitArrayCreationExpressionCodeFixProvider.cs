@@ -33,10 +33,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (node == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-
-            if (semanticModel == null)
+            if (!context.Document.SupportsSemanticModel)
                 return;
+
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(node, context.CancellationToken).Type;
 

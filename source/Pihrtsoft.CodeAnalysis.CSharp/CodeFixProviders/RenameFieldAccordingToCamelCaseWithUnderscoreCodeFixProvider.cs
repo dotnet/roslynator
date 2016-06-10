@@ -29,21 +29,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (declarator == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
+                string newName = NamingHelper.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
 
-            string newName = NamingHelper.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
+                CodeAction codeAction = CodeAction.Create(
+                    $"Rename field to '{newName}'",
+                    cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken),
+                    DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
 
-            CodeAction codeAction = CodeAction.Create(
-                $"Rename field to '{newName}'",
-                cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken),
-                DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+            }
         }
     }
 }

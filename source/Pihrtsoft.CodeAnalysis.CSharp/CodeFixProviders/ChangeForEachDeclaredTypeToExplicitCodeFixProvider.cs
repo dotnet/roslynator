@@ -25,27 +25,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            ForEachStatementSyntax forEachStatement = root.FindNode(context.Span, getInnermostNodeForTie: true)?.FirstAncestorOrSelf<ForEachStatementSyntax>();
+            ForEachStatementSyntax forEachStatement = root
+                .FindNode(context.Span, getInnermostNodeForTie: true)?
+                .FirstAncestorOrSelf<ForEachStatementSyntax>();
 
             if (forEachStatement == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, context.CancellationToken).Type;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, context.CancellationToken).Type;
+                if (typeSymbol != null)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        cancellationToken => ChangeDeclaredTypeToExplicitAsync(context.Document, forEachStatement.Type, typeSymbol, cancellationToken),
+                        DiagnosticIdentifiers.DeclareExplicitTypeInForEach + EquivalenceKeySuffix);
 
-            if (typeSymbol == null)
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken => ChangeDeclaredTypeToExplicitAsync(context.Document, forEachStatement.Type, typeSymbol, cancellationToken),
-                DiagnosticIdentifiers.DeclareExplicitTypeInForEach + EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    context.RegisterCodeFix(codeAction, context.Diagnostics);
+                }
+            }
         }
 
         private static async Task<Document> ChangeDeclaredTypeToExplicitAsync(

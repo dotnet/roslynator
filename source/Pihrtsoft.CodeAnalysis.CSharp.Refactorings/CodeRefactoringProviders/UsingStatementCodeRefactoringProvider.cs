@@ -25,12 +25,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (usingStatement == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            if (context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
-            if (semanticModel == null)
-                return;
-
-            ExtractDeclarationFromUsingStatement(context, semanticModel, usingStatement);
+                ExtractDeclarationFromUsingStatement(context, semanticModel, usingStatement);
+            }
         }
 
         private static void ExtractDeclarationFromUsingStatement(

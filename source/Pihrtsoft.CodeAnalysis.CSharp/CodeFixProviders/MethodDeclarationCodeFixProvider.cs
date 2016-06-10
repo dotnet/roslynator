@@ -39,10 +39,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (methodDeclaration == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-
-            if (semanticModel == null)
+            if (!context.Document.SupportsSemanticModel)
                 return;
+
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
 
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 

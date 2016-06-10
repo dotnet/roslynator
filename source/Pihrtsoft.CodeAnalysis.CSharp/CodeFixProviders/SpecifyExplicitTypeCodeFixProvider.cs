@@ -37,12 +37,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (variableDeclaration == null)
                 return;
 
-            if (variableDeclaration.Type.IsVar)
+            if (variableDeclaration.Type.IsVar
+                && context.Document.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
-
-                if (semanticModel == null)
-                    return;
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).Type;
 
