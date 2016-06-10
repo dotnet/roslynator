@@ -35,6 +35,47 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         cancellationToken);
                 });
 
+            if (literalExpression.Span.Equals(context.Span))
+            {
+                if (literalExpression.IsVerbatimStringLiteral())
+                {
+                    context.RegisterRefactoring(
+                        "Convert to regular string literal",
+                        cancellationToken =>
+                        {
+                            return StringLiteralRefactoring.ConvertToRegularStringLiteralAsync(
+                                context.Document,
+                                literalExpression,
+                                cancellationToken);
+                        });
+
+                    if (literalExpression.Token.ValueText.Contains("\n"))
+                    {
+                        context.RegisterRefactoring(
+                            "Convert to regular string literals",
+                            cancellationToken =>
+                            {
+                                return StringLiteralRefactoring.ConvertToRegularStringLiteralsAsync(
+                                    context.Document,
+                                    literalExpression,
+                                    cancellationToken);
+                            });
+                    }
+                }
+                else
+                {
+                    context.RegisterRefactoring(
+                        "Convert to verbatim string literal",
+                        cancellationToken =>
+                        {
+                            return StringLiteralRefactoring.ConvertToVerbatimStringLiteralAsync(
+                                context.Document,
+                                literalExpression,
+                                cancellationToken);
+                        });
+                }
+            }
+
             if (StringLiteralRefactoring.CanConvertStringLiteralToStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
