@@ -37,7 +37,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .Type;
 
                 if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
-                    return typeSymbol.IsKind(SymbolKind.ArrayType) || typeSymbol.HasPublicIndexer();
+                {
+                    return typeSymbol.IsKind(SymbolKind.ArrayType)
+                       || typeSymbol.SpecialType == SpecialType.System_String
+                       || typeSymbol.HasPublicIndexer();
+                }
             }
 
             return false;
