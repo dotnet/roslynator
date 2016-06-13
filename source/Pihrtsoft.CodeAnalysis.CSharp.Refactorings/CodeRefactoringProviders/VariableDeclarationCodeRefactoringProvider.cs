@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
@@ -42,6 +43,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
                 if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
                     ChangeType(context, semanticModel, variableDeclaration);
+
+                AddCastToExpression(context, variableDeclaration, semanticModel);
             }
         }
 
@@ -196,6 +199,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 context.RegisterRefactoring(
                     $"Change type to '{initializerTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                     cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, initializerTypeSymbol, cancellationToken));
+            }
+        }
+
+        private static void AddCastToExpression(
+            CodeRefactoringContext context,
+            VariableDeclarationSyntax variableDeclaration,
+            SemanticModel semanticModel)
+        {
+            if (variableDeclaration.Type?.IsVar == false)
+            {
+                VariableDeclaratorSyntax declarator = variableDeclaration.Variables
+                    .FirstOrDefault(f => f.Initializer?.Value?.Span.Contains(context.Span) == true);
+
+                if (declarator != null)
+                {
+                    ITypeSymbol declarationType = semanticModel
+                        .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
+                        .Type;
+
+                    if (declarationType != null)
+                    {
+                        ITypeSymbol expressionType = semanticModel
+                            .GetTypeInfo(declarator.Initializer.Value, context.CancellationToken)
+                            .Type;
+
+                        if (!declarationType.Equals(expressionType))
+                            AddCastRefactoring.Refactor(context, declarator.Initializer.Value, declarationType);
+                    }
+                }
             }
         }
     }
