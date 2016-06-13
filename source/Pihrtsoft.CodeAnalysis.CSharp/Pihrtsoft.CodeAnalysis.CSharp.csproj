@@ -231,6 +231,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Analyzers.xml" />
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -109,8 +109,8 @@
     <Category>General</Category>
     <Severity>Info</Severity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Title="Use expression-bodied member." ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1016</Id>
