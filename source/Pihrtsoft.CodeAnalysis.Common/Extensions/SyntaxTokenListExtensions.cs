@@ -24,14 +24,6 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool Contains(this SyntaxTokenList tokenList, SyntaxKind kind)
             => tokenList.IndexOf(kind) != -1;
 
-        public static void Remove(this SyntaxTokenList tokenList, SyntaxKind kind)
-        {
-            int index = tokenList.IndexOf(kind);
-
-            if (index != -1)
-                tokenList.RemoveAt(index);
-        }
-
         public static bool ContainsAccessModifier(this SyntaxTokenList modifiers)
         {
             for (int i = 0; i < modifiers.Count; i++)
