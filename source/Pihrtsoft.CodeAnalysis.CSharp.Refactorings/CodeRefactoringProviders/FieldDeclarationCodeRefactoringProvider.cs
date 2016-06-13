@@ -116,12 +116,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            int index = node.Modifiers.IndexOf(SyntaxKind.ReadOnlyKeyword);
+            SyntaxTokenList modifiers = node.Modifiers;
+
+            int index = modifiers.IndexOf(SyntaxKind.StaticKeyword);
+
+            if (index != -1)
+                modifiers = modifiers.RemoveAt(index);
+
+            index = modifiers.IndexOf(SyntaxKind.ReadOnlyKeyword);
+
+            modifiers = modifiers
+                .RemoveAt(index)
+                .Insert(index, SyntaxFactory.Token(SyntaxKind.ConstKeyword).WithTriviaFrom(modifiers[index]));
 
             FieldDeclarationSyntax newNode = node
-                .WithModifiers(node.Modifiers
-                    .RemoveAt(index)
-                    .Add(SyntaxFactory.Token(SyntaxKind.ConstKeyword).WithTriviaFrom(node.Modifiers[index])))
+                .WithModifiers(modifiers)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
