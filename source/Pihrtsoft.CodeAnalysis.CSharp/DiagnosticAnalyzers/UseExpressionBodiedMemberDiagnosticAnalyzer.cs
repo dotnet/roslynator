@@ -148,7 +148,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return false;
 
             SyntaxList<StatementSyntax> statements = block.Statements;
-            if (statements.Count == 0)
+            if (statements.Count != 1)
                 return false;
 
             var returnStatement = statements[0] as ReturnStatementSyntax;
