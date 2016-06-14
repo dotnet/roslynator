@@ -1,3 +1,42 @@
+### 0.9.60 (2016-06-14)
+
+#### Analyzers
+
+##### Changes
+
+* UseNameOfOperator analyzer:
+  * only quote marks (and at sign) are faded out.
+  * analyzer detects property name in property setter.
+* SimplifyLambdaExpressionParameterList analyzer - parenthesized lambda with parameter list with a single parameter without type can be simplified to simple lambda
+
+##### Bug Fixes
+
+* UseExpressionBodiedMember analyzer
+
+#### Refactorings
+
+##### New Refactorings
+
+* Duplicate argument
+* Add cast to return statement's expression
+* Add cast to variable declaration
+* Merge string literals
+* Merge string literals into multiline string literal
+* Convert regular string literal to verbatim string literal
+* Convert verbatim string literal to regular string literal
+* Convert verbatim string literal to regular string literals
+* Use expression-bodied member
+
+##### Changes
+
+* "Extract expression from parentheses" refactoring is available when cursor is on opening/closing parenthesis.
+
+##### Bug Fixes
+
+* "Check parameter for null" refactoring is available for lambda expression and anonymous method.
+* "Remove comment" and "Remove all comments" refactorings is available when cursor is inside xml documentation comment.
+* "Convert foreach to for" refactoring is available for string expression.
+
 ### 0.9.50 (2016-06-02)
 
 #### Analyzers
