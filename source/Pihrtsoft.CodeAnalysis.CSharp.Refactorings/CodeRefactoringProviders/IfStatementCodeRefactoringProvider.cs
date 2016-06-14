@@ -82,14 +82,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (IfElseChainAnalysis.IsTopmostIf(ifStatement)
                 && ifStatement.Statement != null
                 && ifStatement.Condition != null
-                && ifStatement.Condition.Span.Contains(context.Span))
+                && ifStatement.IfKeyword.Span.Contains(context.Span))
             {
                 StatementSyntax falseStatement = ifStatement.Else?.Statement;
                 if (falseStatement != null
                     && !falseStatement.IsKind(SyntaxKind.IfStatement))
                 {
                     context.RegisterRefactoring(
-                        "Swap if-else statements",
+                        "Swap statements",
                         cancellationToken =>
                         {
                             return SwapStatementsAsync(
