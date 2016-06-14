@@ -1,5 +1,5 @@
 ## C# Analyzers and Refactorings
-* Roslyn-based library that offers 80+ analyzers and 90+ refactorings for C#.
+* Roslyn-based library that offers 80+ analyzers and 100+ refactorings for C#.
 * [Release Notes](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
 
 ### Distribution
@@ -110,17 +110,19 @@
 * Add braces to switch sections
 * Add cast according to parameter type
 * Add cast to assignment expression
-* Add parameter name
-* Add parameter name to each argument
+* Add cast to return statement's expression
+* Add cast to variable declaration
+* Add parameter according to its type name
+* Add parameter name to argument
 * Add parentheses
 * Add using statement
 * Change 'Any/All' to 'All/Any'
 * Change foreach variable's declared type according to expression
-* Change foreach variable's declared type to implicit
+* Change foreach variable's declared type to 'var'
 * Change method/property/indexer type according to return statement
 * Change method/property/indexer type according to yield return statement
-* Change type
 * Change type according to expression
+* Change variable declaration type
 * Check parameter for null
 * Convert "" to string.Empty
 * Convert conditional expression to if-else
@@ -131,12 +133,16 @@
 * Convert method to read-only property
 * Convert read-only field to constant
 * Convert read-only property to method
+* Convert regular string literal to verbatim string literal
 * Convert string literal to interpolated string
 * Convert string.Empty to ""
 * Convert switch to if-else chain
 * Convert to increment/decrement operator
 * Convert to interpolated string
 * Convert to prefix/postfix operator
+* Convert verbatim string literal to regular string literal
+* Convert verbatim string literal to regular string literals
+* Duplicate argument
 * Duplicate member
 * Duplicate parameter
 * Expand assignment expression
@@ -166,6 +172,8 @@
 * Introduce constructor from selected member(s)
 * Make member abstract
 * Merge attributes
+* Merge string literals
+* Merge string literals into multiline string literal
 * Negate binary expression
 * Negate boolean literal
 * Negate operator
@@ -178,8 +186,7 @@
 * Remove braces from switch sections
 * Remove comment
 * Remove member
-* Remove parameter name
-* Remove parameter name from each argument
+* Remove parameter name from argument
 * Remove property initializer
 * Rename backing field according to property name
 * Rename foreach variable according to its type name
@@ -190,9 +197,10 @@
 * Reverse for loop
 * Split attributes
 * Swap arguments
-* Swap binary expression's expressions
-* Swap conditional expression's statements
-* Swap if-else statements
+* Swap expressions in binary expression
+* Swap expressions in conditional expression
 * Swap members
 * Swap parameters
+* Swap statements in if-else
 * Uncomment
+* Use expression-bodied member
