@@ -78,6 +78,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                         await ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)memberDeclaration);
                         break;
                     }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        ComputeRefactorings(context, (OperatorDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    {
+                        ComputeRefactorings(context, (ConversionOperatorDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         await ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)memberDeclaration);
@@ -88,21 +98,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private async Task ComputeRefactoringsAsync(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.HeaderSpan().Contains(context.Span))
+            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+                && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
             {
-                if (MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
-                {
-                    context.RegisterRefactoring(
-                        "Convert to read-only property",
-                        cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
-                }
+                context.RegisterRefactoring(
+                    "Convert to read-only property",
+                    cancellationToken => MethodDeclarationRefactoring.ConvertToReadOnlyPropertyAsync(context.Document, methodDeclaration, cancellationToken));
+            }
 
-                if (MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
-                {
-                    context.RegisterRefactoring(
-                        "Make method abstract",
-                        cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
-                }
+            if (methodDeclaration.Body?.Span.Contains(context.Span) == true
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+                && MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Make method abstract",
+                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
             if (context.Document.SupportsSemanticModel)
@@ -113,8 +130,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             }
         }
 
+        private void ComputeRefactorings(CodeRefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
+        {
+            if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken));
+            }
+        }
+
+        private void ComputeRefactorings(CodeRefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
+        {
+            if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken));
+            }
+        }
+
         private void ComputeRefactorings(CodeRefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
+            if (indexerDeclaration.AccessorList?.Span.Contains(context.Span) == true
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(indexerDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
+            }
+
             if (indexerDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
             {
@@ -132,6 +179,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 context.RegisterRefactoring(
                     "Convert to method",
                     cancellationToken => PropertyDeclarationRefactoring.ConvertToMethodAsync(context.Document, propertyDeclaration, cancellationToken));
+            }
+
+            if (propertyDeclaration.AccessorList?.Span.Contains(context.Span) == true
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
             if (context.Document.SupportsSemanticModel)

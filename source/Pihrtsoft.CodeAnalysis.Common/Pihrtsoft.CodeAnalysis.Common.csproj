@@ -65,6 +65,7 @@
     <Compile Include="CSharp\Refactoring\MemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\StringEmptyRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Removers\CommentRemover.cs" />
     <Compile Include="CSharp\Removers\RegionRemover.cs" />
     <Compile Include="CSharp\Removers\ParameterNameRemover.cs" />

@@ -103,7 +103,7 @@
     <Compile Include="CodeFixProviders\FormatEachStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEmbeddedStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SwitchSectionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\UseExpressionBodiedMember.cs" />
+    <Compile Include="CodeFixProviders\UseExpressionBodiedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseNameOfOperatorCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyNullableOfTCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
