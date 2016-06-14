@@ -1,6 +1,6 @@
 ﻿<h3>Introduction</h3>
 <p>
-    Roslyn-based extension that offers 90+ refactorings for C#. 
+    Roslyn-based extension that offers 100+ refactorings for C#. 
 </p>
 
 <h3>Links</h3>
@@ -39,17 +39,19 @@
         <li>Add braces to switch sections</li>
         <li>Add cast according to parameter type</li>
         <li>Add cast to assignment expression</li>
-        <li>Add parameter name</li>
-        <li>Add parameter name to each argument</li>
+        <li>Add cast to return statement&#39;s expression</li>
+        <li>Add cast to variable declaration</li>
+        <li>Add parameter according to its type name</li>
+        <li>Add parameter name to argument</li>
         <li>Add parentheses</li>
         <li>Add using statement</li>
         <li>Change &#39;Any/All&#39; to &#39;All/Any&#39;</li>
         <li>Change foreach variable&#39;s declared type according to expression</li>
-        <li>Change foreach variable&#39;s declared type to implicit</li>
+        <li>Change foreach variable&#39;s declared type to &#39;var&#39;</li>
         <li>Change method/property/indexer type according to return statement</li>
         <li>Change method/property/indexer type according to yield return statement</li>
-        <li>Change type</li>
         <li>Change type according to expression</li>
+        <li>Change variable declaration type</li>
         <li>Check parameter for null</li>
         <li>Convert &quot;&quot; to string.Empty</li>
         <li>Convert conditional expression to if-else</li>
@@ -60,12 +62,16 @@
         <li>Convert method to read-only property</li>
         <li>Convert read-only field to constant</li>
         <li>Convert read-only property to method</li>
+        <li>Convert regular string literal to verbatim string literal</li>
         <li>Convert string literal to interpolated string</li>
         <li>Convert string.Empty to &quot;&quot;</li>
         <li>Convert switch to if-else chain</li>
         <li>Convert to increment/decrement operator</li>
         <li>Convert to interpolated string</li>
         <li>Convert to prefix/postfix operator</li>
+        <li>Convert verbatim string literal to regular string literal</li>
+        <li>Convert verbatim string literal to regular string literals</li>
+        <li>Duplicate argument</li>
         <li>Duplicate member</li>
         <li>Duplicate parameter</li>
         <li>Expand assignment expression</li>
@@ -95,6 +101,8 @@
         <li>Introduce constructor from selected member(s)</li>
         <li>Make member abstract</li>
         <li>Merge attributes</li>
+        <li>Merge string literals</li>
+        <li>Merge string literals into multiline string literal</li>
         <li>Negate binary expression</li>
         <li>Negate boolean literal</li>
         <li>Negate operator</li>
@@ -107,8 +115,7 @@
         <li>Remove braces from switch sections</li>
         <li>Remove comment</li>
         <li>Remove member</li>
-        <li>Remove parameter name</li>
-        <li>Remove parameter name from each argument</li>
+        <li>Remove parameter name from argument</li>
         <li>Remove property initializer</li>
         <li>Rename backing field according to property name</li>
         <li>Rename foreach variable according to its type name</li>
@@ -119,11 +126,12 @@
         <li>Reverse for loop</li>
         <li>Split attributes</li>
         <li>Swap arguments</li>
-        <li>Swap binary expression&#39;s expressions</li>
-        <li>Swap conditional expression&#39;s statements</li>
-        <li>Swap if-else statements</li>
+        <li>Swap expressions in binary expression</li>
+        <li>Swap expressions in conditional expression</li>
         <li>Swap members</li>
         <li>Swap parameters</li>
+        <li>Swap statements in if-else</li>
         <li>Uncomment</li>
+        <li>Use expression-bodied member</li>
 
 </ul>
