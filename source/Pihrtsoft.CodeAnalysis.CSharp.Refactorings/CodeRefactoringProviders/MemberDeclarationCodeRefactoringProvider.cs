@@ -225,7 +225,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             if (propertyDeclaration.Initializer != null)
             {
                 context.RegisterRefactoring(
-                    "Remove initializer",
+                    "Remove property initializer",
                     cancellationToken => PropertyDeclarationRefactoring.RemoveInitializerAsync(context.Document, propertyDeclaration, cancellationToken));
             }
         }
