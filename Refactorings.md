@@ -1,6 +1,6 @@
 ## C# Refactorings
 
-#### Access element using '[]' instead of 'First/Last/ElementAt' method
+#### [Access element using '[]' instead of 'First/Last/ElementAt' method](#UseElementAccessInsteadOfMethod) 
 
 * **Syntax**: First/Last/ElementAt method invocation
 * **Scope**: method name
