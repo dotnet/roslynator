@@ -75,7 +75,7 @@
       <Syntax>argument list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddParameterNameAccordingToTypeName" Title="Add parameter according to its type name" ExtensionVersion="0.9.0">
+  <Refactoring Id="AddParameterNameAccordingToTypeName" Title="Add parameter name according to its type name" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>parameter</Syntax>
     </Syntaxes>
