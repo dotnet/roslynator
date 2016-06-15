@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 && conditionalExpression.Condition.Span.Contains(context.Span))
             {
                 context.RegisterRefactoring(
-                    "Swap conditional expression's statements",
+                    "Swap expressions in conditional expression",
                     cancellationToken =>
                     {
                         return SwapStatementsAsync(
