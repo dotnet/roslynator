@@ -66,12 +66,12 @@
 
 ![Add cast to variable declaration](/images/refactorings/AddCastToVariableDeclaration.png)
 
-#### Add parameter according to its type name
+#### Add parameter name according to its type name
 
 * **Syntax**: parameter
 * **Scope**: missing identifier
 
-![Add parameter according to its type name](/images/refactorings/AddParameterNameAccordingToTypeName.png)
+![Add parameter name according to its type name](/images/refactorings/AddParameterNameAccordingToTypeName.png)
 
 #### Add parameter name to argument
 
