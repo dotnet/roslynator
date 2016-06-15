@@ -116,7 +116,7 @@
 * [Add cast to assignment expression](Refactorings.md#add-cast-to-assignment-expression)
 * [Add cast to return statement's expression](Refactorings.md#add-cast-to-return-statements-expression)
 * [Add cast to variable declaration](Refactorings.md#add-cast-to-variable-declaration)
-* [Add parameter according to its type name](Refactorings.md#add-parameter-according-to-its-type-name)
+* [Add parameter name according to its type name](Refactorings.md#add-parameter-name-according-to-its-type-name)
 * [Add parameter name to argument](Refactorings.md#add-parameter-name-to-argument)
 * [Add parentheses](Refactorings.md#add-parentheses)
 * [Add using statement](Refactorings.md#add-using-statement)
