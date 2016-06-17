@@ -36,7 +36,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 }
             }
 
-            if (ReverseForRefactoring.CanRefactor(forStatement))
+            if (forStatement.ForKeyword.Span.Contains(context.Span)
+                && ReverseForRefactoring.CanRefactor(forStatement))
             {
                 context.RegisterRefactoring(
                     "Reverse for loop",

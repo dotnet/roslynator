@@ -561,6 +561,7 @@
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
+    <Scope>for keyword</Scope>
   </Refactoring>
   <Refactoring Id="SplitAttributes" Title="Split attributes" ExtensionVersion="0.9.50">
     <Syntaxes>
