@@ -29,10 +29,11 @@ namespace AnalyzerXml
 
                 root.Add(new XElement(
                     "Analyzer",
-                    new XAttribute("Title", descriptor.Title),
-                    new XAttribute("ExtensionVersion", "0.5.0"),
-                    new XAttribute("NuGetVersion", "0.5.0"),
+                    new XAttribute("Identifier", fieldInfo.Name),
+                    new XAttribute("ExtensionVersion", "0.1.0"),
+                    new XAttribute("NuGetVersion", "0.1.0"),
                     new XElement("Id", descriptor.Id),
+                    new XElement("Title", descriptor.Title),
                     new XElement("Category", descriptor.Category),
                     new XElement("Severity", descriptor.DefaultSeverity),
                     new XElement("IsEnabledByDefault", descriptor.IsEnabledByDefault),
