@@ -46,15 +46,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> ConvertStringLiteralToInterpolatedStringAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            int interpolationIndex = -1,
+            int interpolationStartIndex = -1,
+            int interpolationLength = 0,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             string s = literalExpression.Token.Text.ToString();
 
-            if (interpolationIndex != -1)
-                s = s.Substring(0, interpolationIndex) + "{}" + s.Substring(interpolationIndex);
+            if (interpolationStartIndex != -1)
+            {
+                s = s.Substring(0, interpolationStartIndex) +
+                   "{" +
+                   s.Substring(interpolationStartIndex, interpolationLength) +
+                   "}" +
+                   s.Substring(interpolationStartIndex + interpolationLength);
+            }
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
                 .WithTriviaFrom(literalExpression);

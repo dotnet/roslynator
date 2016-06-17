@@ -28,10 +28,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
                 "Convert to interpolated string",
                 cancellationToken =>
                 {
+                    int startIndex = -1;
+                    int length = 0;
+
+                    if (context.Span.End < literalExpression.Span.End)
+                    {
+                        startIndex = GetInterpolationStartIndex(context, literalExpression);
+
+                        if (startIndex != 1)
+                            length = context.Span.Length;
+                    }
+
                     return StringLiteralRefactoring.ConvertStringLiteralToInterpolatedStringAsync(
                         context.Document,
                         literalExpression,
-                        GetInterpolationIndex(context, literalExpression),
+                        startIndex,
+                        length,
                         cancellationToken);
                 });
 
@@ -90,23 +102,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
             }
         }
 
-        private static int GetInterpolationIndex(CodeRefactoringContext context, LiteralExpressionSyntax literalExpression)
+        private static int GetInterpolationStartIndex(CodeRefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
-            if (context.Span.IsEmpty)
+            string s = literalExpression.Token.Text;
+
+            int index = context.Span.Start - literalExpression.Span.Start;
+
+            if (s.StartsWith("@", StringComparison.Ordinal))
             {
-                string s = literalExpression.Token.Text;
-
-                int index = context.Span.Start - literalExpression.Span.Start;
-
-                if (s.StartsWith("@", StringComparison.Ordinal))
-                {
-                    if (index > 1)
-                        return index;
-                }
-                else if (index > 0)
-                {
+                if (index > 1)
                     return index;
-                }
+            }
+            else if (index > 0)
+            {
+                return index;
             }
 
             return -1;
