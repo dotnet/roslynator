@@ -152,24 +152,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeRefactoringProviders
 
         private static MemberDeclarationSyntax GetDeclaration(ReturnStatementSyntax returnStatement)
         {
-            if (returnStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+            foreach (SyntaxNode ancestor in returnStatement.Ancestors())
             {
-                var block = (BlockSyntax)returnStatement.Parent;
-
-                SyntaxNode node = block.Parent;
-
-                if (block.Parent?.IsKind(SyntaxKind.GetAccessorDeclaration) == true
-                    && block.Parent.Parent?.IsKind(SyntaxKind.AccessorList) == true)
-                {
-                    node = block.Parent.Parent.Parent;
-                }
-
-                switch (node?.Kind())
+                switch (ancestor.Kind())
                 {
                     case SyntaxKind.MethodDeclaration:
                     case SyntaxKind.PropertyDeclaration:
                     case SyntaxKind.IndexerDeclaration:
-                        return (MemberDeclarationSyntax)node;
+                        return (MemberDeclarationSyntax)ancestor;
+                    case SyntaxKind.SimpleLambdaExpression:
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                    case SyntaxKind.AnonymousMethodExpression:
+                    case SyntaxKind.ConstructorDeclaration:
+                    case SyntaxKind.DestructorDeclaration:
+                    case SyntaxKind.EventDeclaration:
+                    case SyntaxKind.ConversionOperatorDeclaration:
+                    case SyntaxKind.OperatorDeclaration:
+                    case SyntaxKind.IncompleteMember:
+                        return null;
                 }
             }
 
