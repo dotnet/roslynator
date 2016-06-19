@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\Pihrtsoft.CodeAnalysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.Common.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
@@ -124,6 +130,7 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Pihrtsoft.CodeAnalysis.Common.snk" />
     <None Include="Pihrtsoft.CodeAnalysis.nuspec" />
   </ItemGroup>
   <ItemGroup>
