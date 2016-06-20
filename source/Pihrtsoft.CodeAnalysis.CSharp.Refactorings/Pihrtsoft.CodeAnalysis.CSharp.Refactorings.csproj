@@ -34,6 +34,12 @@
     <CodeAnalysisRuleSet>..\..\Pihrtsoft.CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Refactoring\DefaultCodeRefactoringProvider.cs" />
     <Compile Include="Refactoring\AddParenthesesRefactoring.cs" />
@@ -130,6 +136,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Refactorings.snk" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeAnalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
