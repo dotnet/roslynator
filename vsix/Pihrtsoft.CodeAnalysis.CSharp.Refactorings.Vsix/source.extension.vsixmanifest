@@ -4,9 +4,9 @@
     <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.9.60" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>C# Refactorings</DisplayName>
     <Description xml:space="preserve">Roslyn-based extension that offers 100+ refactorings for C#.</Description>
-    <MoreInfo>http://pihrt.net/Roslyn</MoreInfo>
+    <MoreInfo>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis</MoreInfo>
     <License>LICENSE.txt</License>
-    <ReleaseNotes>http://pihrt.net/Roslyn/ReleaseNotes</ReleaseNotes>
+    <ReleaseNotes>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md</ReleaseNotes>
     <Tags>Roslyn,Refactoring,CodeAnalysis,C#,CSharp,Productivity</Tags>
   </Metadata>
   <Installation>

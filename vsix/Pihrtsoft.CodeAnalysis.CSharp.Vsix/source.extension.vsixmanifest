@@ -4,9 +4,9 @@
     <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="0.9.60" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>C# Analyzers and Refactorings</DisplayName>
     <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 100+ refactorings for C#.</Description>
-    <MoreInfo>http://pihrt.net/Roslyn</MoreInfo>
+    <MoreInfo>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis</MoreInfo>
     <License>LICENSE.txt</License>
-    <ReleaseNotes>http://pihrt.net/Roslyn/ReleaseNotes</ReleaseNotes>
+    <ReleaseNotes>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md</ReleaseNotes>
     <Tags>Roslyn,Refactoring,Analyzer,CodeAnalysis,C#,CSharp,Productivity,Diagnostic</Tags>
   </Metadata>
   <Installation>
