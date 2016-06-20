@@ -114,22 +114,59 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-                string newName = NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
+                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-                if (!string.IsNullOrEmpty(newName))
+                ITypeSymbol typeSymbol = GetType(methodDeclaration.ReturnType, semanticModel, context.CancellationToken);
+
+                if (typeSymbol != null)
                 {
-                    newName = "Get" + newName;
+                    string newName = NamingHelper.CreateIdentifierName(typeSymbol);
 
-                    if (!string.Equals(newName, methodDeclaration.Identifier.ToString(), StringComparison.Ordinal))
+                    if (!string.IsNullOrEmpty(newName))
                     {
-                        ISymbol symbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+                        newName = "Get" + newName;
 
-                        context.RegisterRefactoring(
-                            $"Rename method to '{newName}'",
-                            cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                        if (methodSymbol.IsAsync)
+                            newName += "Async";
+
+                        if (!string.Equals(newName, methodDeclaration.Identifier.ValueText, StringComparison.Ordinal))
+                        {
+                            context.RegisterRefactoring(
+                                $"Rename method to '{newName}'",
+                                cancellationToken => methodSymbol.RenameAsync(newName, context.Document, cancellationToken));
+                        }
                     }
                 }
             }
+        }
+
+        private static ITypeSymbol GetType(
+            TypeSyntax returnType,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            var returnTypeSymbol = semanticModel.GetTypeInfo(returnType, cancellationToken).Type as INamedTypeSymbol;
+
+            if (returnTypeSymbol != null)
+            {
+                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+
+                if (taskSymbol != null)
+                {
+                    if (returnTypeSymbol.Equals(taskSymbol))
+                        return null;
+
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+
+                    if (taskOfTSymbol != null
+                        && returnTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol))
+                    {
+                        return returnTypeSymbol.TypeArguments[0];
+                    }
+                }
+            }
+
+            return returnTypeSymbol;
         }
     }
 }
