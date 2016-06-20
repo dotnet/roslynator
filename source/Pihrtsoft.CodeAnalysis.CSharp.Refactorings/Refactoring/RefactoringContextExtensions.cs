@@ -26,10 +26,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     node = en.Current;
 
                     if (!fRegionDirectiveTrivia
-                        && node.IsKind(SyntaxKind.RegionDirectiveTrivia)
+                        && node.IsAnyKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia)
                         && context.Root.IsKind(SyntaxKind.CompilationUnit))
                     {
-                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context, (RegionDirectiveTriviaSyntax)node);
+                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
                         fRegionDirectiveTrivia = true;
                         continue;
                     }

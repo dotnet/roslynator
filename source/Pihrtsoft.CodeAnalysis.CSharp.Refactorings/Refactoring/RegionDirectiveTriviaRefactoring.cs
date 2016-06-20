@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RegionDirectiveTriviaRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, RegionDirectiveTriviaSyntax regionDirectiveTrivia)
+        public static void ComputeRefactorings(RefactoringContext context)
         {
             context.RegisterRefactoring(
                 "Remove all regions",
