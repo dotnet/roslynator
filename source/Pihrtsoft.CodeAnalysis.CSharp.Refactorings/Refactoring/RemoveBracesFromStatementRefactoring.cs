@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
@@ -15,17 +13,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static bool CanRefactor(StatementSyntax statement)
         {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
             return EmbeddedStatementAnalysis.IsEmbeddableStatement(statement);
         }
 
-        public static void Refactor(CodeRefactoringContext context, StatementSyntax statement)
+        public static void Refactor(RefactoringContext context, StatementSyntax statement)
         {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
             if (CanRefactor(statement))
             {
                 context.RegisterRefactoring(

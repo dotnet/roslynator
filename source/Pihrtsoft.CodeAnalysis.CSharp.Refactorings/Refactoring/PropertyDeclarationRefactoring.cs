@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -66,16 +65,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static bool CanExpand(
-            PropertyDeclarationSyntax propertyDeclaration,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        public static bool CanExpand(PropertyDeclarationSyntax propertyDeclaration)
         {
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
 
             return propertyDeclaration.Parent != null
                 && propertyDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
@@ -88,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> ExpandPropertyAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -256,22 +249,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        internal static void RenameAccordingToTypeName(
-            PropertyDeclarationSyntax propertyDeclaration,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
+        internal static async Task RenameAccordingToTypeNameAsync(
+            RefactoringContext context,
+            PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
             if (propertyDeclaration.Type == null)
                 return;
 
             if (!propertyDeclaration.Identifier.Span.Contains(context.Span))
                 return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             string newName = NamingHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
 

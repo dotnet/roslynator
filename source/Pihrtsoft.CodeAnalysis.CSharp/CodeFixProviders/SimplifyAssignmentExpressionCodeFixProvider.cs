@@ -3,13 +3,11 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -40,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     "Simplify assignment expression",
                     cancellationToken =>
                     {
-                        return SimplifyAssignmentExpressionAsync(
+                        return SimplifyAssignmentExpressionRefactoring.RefactorAsync(
                             context.Document,
                             assignmentExpression,
                             cancellationToken);
@@ -49,22 +47,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }
-        }
-
-        private static async Task<Document> SimplifyAssignmentExpressionAsync(
-            Document document,
-            AssignmentExpressionSyntax assignmentExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            AssignmentExpressionSyntax newNode = AssignmentExpressionRefactoring.Simplify(assignmentExpression)
-                .WithTriviaFrom(assignmentExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(assignmentExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -18,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         private const string Title = "Expand object initializer";
 
-        public static void Register(CodeRefactoringContext context, InitializerExpressionSyntax initializer)
+        public static void Register(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
             if (initializer == null)
                 throw new ArgumentNullException(nameof(initializer));

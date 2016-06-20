@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -12,18 +11,11 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class RenameParameterAccordingToTypeNameRefactoring
+    internal static class RenameParameterAccordingToTypeNameRefactoring
     {
-        public static void Refactor(
-            CodeRefactoringContext context,
-            ParameterSyntax parameter,
-            SemanticModel semanticModel)
+        public static async Task RefactorAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
@@ -38,9 +30,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (span.Contains(context.Span))
                 {
-                    string name = CreateParameterName(parameterSymbol.Type, semanticModel);
+                    string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
-                    if (name != null)
+                    if (!string.IsNullOrEmpty(name))
                     {
                         context.RegisterRefactoring(
                             $"Add parameter name '{name}'",
@@ -50,9 +42,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else if (parameter.Identifier.Span.Contains(context.Span))
             {
-                string name = CreateParameterName(parameterSymbol.Type, semanticModel);
+                string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
-                if (name != null)
+                if (!string.IsNullOrEmpty(name)
+                    && !string.Equals(name, parameter.Identifier.ValueText, StringComparison.Ordinal))
                 {
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
@@ -63,26 +56,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static string CreateParameterName(ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            string name = NamingHelper.CreateIdentifierName(
-                typeSymbol,
-                firstCharToLower: true);
-
-            if (!string.IsNullOrEmpty(name)
-                && !string.Equals(typeSymbol.Name, name, StringComparison.Ordinal))
-            {
-                return name;
-            }
-
-            return null;
-        }
-
         private static async Task<Document> AddParameterNameAccordingToTypeNameRefactorAsync(
             Document document,
             ParameterSyntax parameter,
             string name,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

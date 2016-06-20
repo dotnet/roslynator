@@ -5,15 +5,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class SplitAttributesRefactoring
+    internal static class SplitAttributesRefactoring
     {
-        public static void Refactor(CodeRefactoringContext context, MemberDeclarationSyntax member)
+        public static void Refactor(RefactoringContext context, MemberDeclarationSyntax member)
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));

@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .WithMembers(declaration.Members.Replace(member, newMember));
 
             return declaration
-                .RemoveNode(declaration.Members[index], MemberDeclarationRefactoring.GetRemoveOptions(newMember));
+                .RemoveNode(declaration.Members[index], RemoveMemberDeclarationRefactoring.GetRemoveOptions(newMember));
         }
     }
 }

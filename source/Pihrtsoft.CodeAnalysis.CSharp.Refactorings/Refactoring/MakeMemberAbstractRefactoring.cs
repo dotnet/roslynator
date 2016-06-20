@@ -14,37 +14,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class MakeMemberAbstractRefactoring
     {
-        public static bool CanRefactor(CodeRefactoringContext context, MemberDeclarationSyntax memberDeclaration)
+        public static bool CanRefactor(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
-            if (memberDeclaration == null)
-                throw new ArgumentNullException(nameof(memberDeclaration));
-
             switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.PropertyDeclaration:
-                    return CanRefactor(context, (PropertyDeclarationSyntax)memberDeclaration);
+                    return CanRefactor((PropertyDeclarationSyntax)memberDeclaration);
                 case SyntaxKind.MethodDeclaration:
-                    return CanRefactor(context, (MethodDeclarationSyntax)memberDeclaration);
+                    return CanRefactor((MethodDeclarationSyntax)memberDeclaration);
                 case SyntaxKind.IndexerDeclaration:
-                    return CanRefactor(context, (IndexerDeclarationSyntax)memberDeclaration);
+                    return CanRefactor((IndexerDeclarationSyntax)memberDeclaration);
                 default:
                     return false;
             }
         }
 
-        private static bool CanRefactor(CodeRefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
+        private static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
             return !propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(propertyDeclaration.Parent);
         }
 
-        private static bool CanRefactor(CodeRefactoringContext context, MethodDeclarationSyntax methodDeclaration)
+        private static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
             return !methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(methodDeclaration.Parent);
         }
 
-        private static bool CanRefactor(CodeRefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
+        private static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration)
         {
             return !indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(indexerDeclaration.Parent);

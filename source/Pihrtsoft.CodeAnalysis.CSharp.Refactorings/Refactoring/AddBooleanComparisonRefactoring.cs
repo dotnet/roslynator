@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -14,45 +13,43 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public const string Title = "Add boolean comparison";
 
-        private static bool CanRefactor(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static async Task<bool> CanRefactorAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)expression;
 
                 if (logicalNot.Operand != null)
-                    return IsNullableBoolean(logicalNot.Operand, semanticModel, cancellationToken);
+                    return await IsNullableBooleanAsync(context, logicalNot.Operand);
             }
             else
             {
-                return IsNullableBoolean(expression, semanticModel, cancellationToken);
+                return await IsNullableBooleanAsync(context, expression);
             }
 
             return false;
         }
 
-        private static bool IsNullableBoolean(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static async Task<bool> IsNullableBooleanAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            var namedTypeSymbol = semanticModel
-                .GetTypeInfo(expression, cancellationToken)
-                .ConvertedType as INamedTypeSymbol;
+            if (context.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-            return namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
-                && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean;
+                var namedTypeSymbol = semanticModel
+                    .GetTypeInfo(expression, context.CancellationToken)
+                    .ConvertedType as INamedTypeSymbol;
+
+                return namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
+                    && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean;
+            }
+
+            return false;
         }
 
-        public static void Refactor(
-            ExpressionSyntax expression,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
+        public static async Task RefactorAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (CanRefactor(expression, semanticModel, context.CancellationToken))
+            if (await CanRefactorAsync(context, expression))
             {
                 context.RegisterRefactoring(
                     Title,
@@ -63,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

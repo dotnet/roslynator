@@ -3,14 +3,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class DuplicateArgumentRefactoring
     {
-        public static void Refactor(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        public static void Refactor(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             ArgumentSyntax argument = GetArgument(context, argumentList);
 
@@ -22,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static ArgumentSyntax GetArgument(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        private static ArgumentSyntax GetArgument(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             if (context.Span.IsEmpty)
             {

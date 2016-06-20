@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -13,12 +12,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class NotifyPropertyChangedRefactoring
     {
-        public static void Refactor(
-            PropertyDeclarationSyntax property,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
+        public static async Task RefactorAsync(RefactoringContext context, PropertyDeclarationSyntax property)
         {
-            if (CanRefactor(property, semanticModel, context.CancellationToken))
+            if (await CanRefactorAsync(context, property))
             {
                 context.RegisterRefactoring(
                     "Notify property changed",
@@ -32,10 +28,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static bool CanRefactor(
-            PropertyDeclarationSyntax property,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<bool> CanRefactorAsync(
+            RefactoringContext context,
+            PropertyDeclarationSyntax property)
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
@@ -57,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             var identifierName = (IdentifierNameSyntax)assignment.Right;
 
                             if (identifierName.Identifier.ValueText == "value")
-                                return ImplementsINotifyPropertyChanged(property, semanticModel, cancellationToken);
+                                return await ImplementsINotifyPropertyChangedAsync(context, property);
                         }
                     }
                 }
@@ -66,18 +61,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return false;
         }
 
-        private static bool ImplementsINotifyPropertyChanged(
-            PropertyDeclarationSyntax property,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private static async Task<bool> ImplementsINotifyPropertyChangedAsync(
+            RefactoringContext context,
+            PropertyDeclarationSyntax property)
         {
-            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, cancellationToken);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, context.CancellationToken);
             if (propertySymbol != null
                 && propertySymbol.ContainingType != null)
             {
-                INamedTypeSymbol inotifyPropertyChanged = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
+                INamedTypeSymbol inotifyPropertyChanged = semanticModel.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
 
                 if (inotifyPropertyChanged != null)
                     return propertySymbol.ContainingType.AllInterfaces.Contains(inotifyPropertyChanged);

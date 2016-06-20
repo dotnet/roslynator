@@ -1,0 +1,34 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
+
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+{
+    internal static class FormatAccessorBraceOnMultipleLinesRefactoring
+    {
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            AccessorDeclarationSyntax accessor,
+            CancellationToken cancellationToken)
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+            SyntaxToken closeBrace = accessor.Body.CloseBraceToken;
+
+            AccessorDeclarationSyntax newAccessor = accessor
+                .WithBody(
+                    accessor.Body.WithCloseBraceToken(
+                        closeBrace.WithLeadingTrivia(
+                            closeBrace.LeadingTrivia.Add(SyntaxHelper.NewLine))))
+                .WithAdditionalAnnotations(Formatter.Annotation);
+
+            root = root.ReplaceNode(accessor, newAccessor);
+
+            return document.WithSyntaxRoot(root);
+        }
+    }
+}

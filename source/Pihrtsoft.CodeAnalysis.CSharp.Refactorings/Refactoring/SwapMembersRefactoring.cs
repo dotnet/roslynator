@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
@@ -38,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return -1;
         }
 
-        public static void Refactor(CodeRefactoringContext context, MemberDeclarationSyntax member)
+        public static void Refactor(RefactoringContext context, MemberDeclarationSyntax member)
         {
             var containingMember = member.Parent as MemberDeclarationSyntax;
 

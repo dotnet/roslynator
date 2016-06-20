@@ -105,7 +105,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 FieldDeclarationSyntax newField = field.RemoveNode(
                     field.Declaration.Variables[variableDeclaration.Variables.IndexOf(declarator)],
-                    MemberDeclarationRefactoring.DefaultRemoveOptions);
+                    DuplicateMemberDeclarationRefactoring.DefaultRemoveOptions);
 
                 members = members.Replace(field, newField.WithAdditionalAnnotations(Formatter.Annotation));
 

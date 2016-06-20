@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
@@ -21,10 +20,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, oldRoot, semanticModel, cancellationToken);
 
@@ -51,9 +51,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         }
 
         public static async Task<bool> CanRefactorAsync(
-            CodeRefactoringContext context,
-            ForStatementSyntax forStatement,
-            SemanticModel semanticModel)
+            RefactoringContext context,
+            ForStatementSyntax forStatement)
         {
             ExpressionSyntax value = forStatement
                 .Declaration?
@@ -84,22 +83,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forStatement.Incrementors.SingleOrDefault()?.IsKind(SyntaxKind.PostIncrementExpression) != true)
                 return false;
 
-            return await CheckIndexReferencesAsync(context, forStatement, semanticModel);
+            return await CheckIndexReferencesAsync(context, forStatement);
         }
 
         private static async Task<bool> CheckIndexReferencesAsync(
-            CodeRefactoringContext context,
-            ForStatementSyntax forStatement,
-            SemanticModel semanticModel)
+            RefactoringContext context,
+            ForStatementSyntax forStatement)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             ISymbol collectionSymbol = semanticModel.GetSymbolInfo(GetCollectionExpression(forStatement)).Symbol;
 
             if (collectionSymbol == null)
                 return false;
 
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(context.Document, forStatement, root, semanticModel, context.CancellationToken);
+            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(context.Document, forStatement, context.Root, semanticModel, context.CancellationToken);
 
             foreach (IdentifierNameSyntax identifierName in identifierNames)
             {

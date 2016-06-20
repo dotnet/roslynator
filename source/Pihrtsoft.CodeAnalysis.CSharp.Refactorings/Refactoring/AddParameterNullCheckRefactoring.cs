@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -17,42 +16,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class AddParameterNullCheckRefactoring
     {
-        public static void Refactor(CodeRefactoringContext context, ParameterSyntax parameter, SemanticModel semanticModel)
+        public static async Task RefactorAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
-
             if (parameter.Identifier.Span.Contains(context.Span)
-                && CanRefactor(parameter, semanticModel, context.CancellationToken))
+                && await CanRefactorAsync(context, parameter))
             {
                 context.RegisterRefactoring(
                     "Check parameter for null",
                     cancellationToken => RefactorAsync(
                         context.Document,
                         parameter,
-                        semanticModel,
                         cancellationToken));
             }
         }
 
-        public static bool CanRefactor(
-            ParameterSyntax parameter,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        public static async Task<bool> CanRefactorAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (parameter == null)
-                throw new ArgumentNullException(nameof(parameter));
-
             if (!parameter.Identifier.IsMissing)
             {
                 BlockSyntax body = GetBody(parameter);
 
                 if (body != null)
                 {
-                    IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                    IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
                     return parameterSymbol?.Type?.IsReferenceType == true
-                        && !ContainsParameterNullCheck(body, parameter, semanticModel, cancellationToken);
+                        && !ContainsParameterNullCheck(body, parameter, semanticModel, context.CancellationToken);
                 }
             }
 
@@ -62,12 +53,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ParameterSyntax parameter,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             BlockSyntax body = GetBody(parameter);
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             int index = body.Statements
                 .TakeWhile(f => IsParameterNullCheck(f, null, semanticModel, cancellationToken))

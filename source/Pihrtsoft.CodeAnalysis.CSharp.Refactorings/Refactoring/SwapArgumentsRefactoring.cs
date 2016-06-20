@@ -4,14 +4,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SwapArgumentsRefactoring
     {
-        private static ArgumentSyntax GetArgumentToSwap(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        private static ArgumentSyntax GetArgumentToSwap(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             if (argumentList == null)
                 throw new ArgumentNullException(nameof(argumentList));
@@ -44,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return null;
         }
 
-        public static void Refactor(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        public static void Refactor(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             ArgumentSyntax argument = GetArgumentToSwap(context, argumentList);
 

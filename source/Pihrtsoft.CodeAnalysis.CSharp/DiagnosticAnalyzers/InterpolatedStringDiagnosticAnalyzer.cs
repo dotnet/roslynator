@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
 
-            if (InterpolatedStringRefactoring.CanConvertToStringLiteral(interpolatedString))
+            if (ConvertInterpolatedStringToStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseStringLiteralInsteadOfInterpolatedString,

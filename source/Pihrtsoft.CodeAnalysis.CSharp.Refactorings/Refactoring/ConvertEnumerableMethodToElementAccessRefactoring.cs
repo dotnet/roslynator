@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -15,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class ConvertEnumerableMethodToElementAccessRefactoring
     {
-        public static void Refactor(CodeRefactoringContext context, InvocationExpressionSyntax invocation, SemanticModel semanticModel)
+        public static async Task RefactorAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
             if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
                 && invocation.ArgumentList != null)
@@ -29,23 +28,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     case "First":
                     case "Last":
                         {
-                            ProcessFirstOrLast(invocation, methodName, context, semanticModel);
+                            await ProcessFirstOrLastAsync(context, invocation, methodName);
                             break;
                         }
                     case "ElementAt":
                         {
-                            ProcessElementAt(invocation, context, semanticModel);
+                            await ProcessElementAtAsync(context, invocation);
                             break;
                         }
                 }
             }
         }
 
-        private static void ProcessFirstOrLast(InvocationExpressionSyntax invocation, string methodName, CodeRefactoringContext context, SemanticModel semanticModel)
+        private static async Task ProcessFirstOrLastAsync(RefactoringContext context, InvocationExpressionSyntax invocation, string methodName)
         {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
             if (invocation.ArgumentList.Arguments.Count == 0
-                && (IsEnumerableExtensionMethod(invocation, methodName, semanticModel, context.CancellationToken)
-                    || IsImmutableArrayExtensionMethod(invocation, methodName, semanticModel, context.CancellationToken)))
+                && (IsEnumerableExtensionMethod(invocation, methodName, semanticModel)
+                    || IsImmutableArrayExtensionMethod(invocation, methodName, semanticModel)))
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
@@ -75,11 +76,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static bool ProcessElementAt(
-            InvocationExpressionSyntax invocation,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
+        private static async Task ProcessElementAtAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
             if (invocation.ArgumentList?.Arguments.Count == 1
                 && (IsEnumerableElementAtMethod(invocation, semanticModel)
                     || IsImmutableArrayElementAtMethod(invocation, semanticModel)))
@@ -98,11 +98,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                 }
             }
-
-            return false;
         }
 
-        private static string GetCountOrLengthPropertyName(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
+        private static string GetCountOrLengthPropertyName(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             ITypeSymbol typeSymbol = semanticModel
                 .GetTypeInfo(expression, cancellationToken)
@@ -139,8 +140,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static bool IsEnumerableExtensionMethod(
             InvocationExpressionSyntax invocation,
             string methodName,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            SemanticModel semanticModel)
         {
             var methodSymbol = semanticModel
                 .GetSymbolInfo(invocation)
@@ -162,8 +162,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static bool IsImmutableArrayExtensionMethod(
             InvocationExpressionSyntax invocation,
             string methodName,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            SemanticModel semanticModel)
         {
             var methodSymbol = semanticModel
                 .GetSymbolInfo(invocation)

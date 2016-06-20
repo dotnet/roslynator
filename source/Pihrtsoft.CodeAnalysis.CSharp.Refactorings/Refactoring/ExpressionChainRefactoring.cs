@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -17,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class ExpressionChainRefactoring
     {
-        public static void FormatExpressionChain(CodeRefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
+        public static void FormatExpressionChain(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
         {
             if (!memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                 return;

@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -106,20 +105,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return accessorList;
         }
 
-        internal static void RenameAccordingToTypeName(
-            MethodDeclarationSyntax methodDeclaration,
-            CodeRefactoringContext context,
-            SemanticModel semanticModel)
+        internal static async Task RenameAccordingToTypeNameAsync(
+            RefactoringContext context,
+            MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
             if (methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Identifier.Span.Contains(context.Span))
             {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
                 string newName = NamingHelper.CreateIdentifierName(methodDeclaration.ReturnType, semanticModel);
 
                 if (!string.IsNullOrEmpty(newName))

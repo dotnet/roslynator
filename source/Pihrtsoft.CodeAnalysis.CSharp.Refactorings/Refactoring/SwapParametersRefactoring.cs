@@ -4,14 +4,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SwapParametersRefactoring
     {
-        private static ParameterSyntax GetParameterToSwap(CodeRefactoringContext context, ParameterListSyntax parameterList)
+        private static ParameterSyntax GetParameterToSwap(RefactoringContext context, ParameterListSyntax parameterList)
         {
             if (parameterList == null)
                 throw new ArgumentNullException(nameof(parameterList));
@@ -26,8 +25,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (token.Span.Contains(context.Span))
                     {
                         if (parameters.Count - 1 > i
-                            && !parameters[i].IsMissing
-                            && !parameters[i + 1].IsMissing)
+                            && CanBeSwapped(parameters[i])
+                            && CanBeSwapped(parameters[i + 1]))
                         {
                             return parameters[i];
                         }
@@ -44,7 +43,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return null;
         }
 
-        public static void Refactor(CodeRefactoringContext context, ParameterListSyntax parameterList)
+        private static bool CanBeSwapped(ParameterSyntax parameter)
+        {
+            return parameter.Type != null
+                && !parameter.Type.IsMissing
+                && !parameter.Identifier.IsMissing;
+        }
+
+        public static void Refactor(RefactoringContext context, ParameterListSyntax parameterList)
         {
             ParameterSyntax parameter = GetParameterToSwap(context, parameterList);
 

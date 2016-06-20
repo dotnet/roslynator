@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
@@ -15,14 +14,42 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class ArgumentRefactoring
+    internal static class ArgumentRefactoring
     {
         private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
             parameterOptions: SymbolDisplayParameterOptions.IncludeName);
 
-        public static void AddOrRemoveArgumentName(
-            CodeRefactoringContext context,
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
+        {
+            if (argument.Expression?.IsMissing == false
+                && context.SupportsSemanticModel)
+            {
+                await AddCastAccordingToParameterTypeAsync(context, argument);
+            }
+        }
+
+        private static async Task AddCastAccordingToParameterTypeAsync(RefactoringContext context, ArgumentSyntax argument)
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(argument.Expression).ConvertedType;
+
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+            {
+                IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                    semanticModel,
+                    allowParams: false,
+                    allowCandidate: true,
+                    cancellationToken: context.CancellationToken);
+
+                if (parameterSymbol?.Type?.Equals(typeSymbol) == false)
+                    AddCastRefactoring.Refactor(context, argument.Expression, parameterSymbol.Type);
+            }
+        }
+
+        public static void AddOrRemoveParameterName(
+            RefactoringContext context,
             ArgumentSyntax argument,
             SemanticModel semanticModel)
         {
@@ -54,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static void AddOrRemoveArgumentName(CodeRefactoringContext context, ArgumentListSyntax argumentList)
+        public static async Task AddOrRemoveParameterNameAsync(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             List<ArgumentSyntax> arguments = null;
 
@@ -70,21 +97,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (arguments?.Count > 0)
-                AddOrRemoveArgumentName(context, argumentList, arguments.ToArray());
+                await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray());
         }
 
-        public static void AddOrRemoveArgumentName(
-            CodeRefactoringContext context,
+        private static async Task AddOrRemoveParameterNameAsync(
+            RefactoringContext context,
             ArgumentListSyntax argumentList,
             ArgumentSyntax[] arguments)
         {
-            if (argumentList == null)
-                throw new ArgumentNullException(nameof(argumentList));
-
-            if (arguments == null)
-                throw new ArgumentNullException(nameof(arguments));
-
-            if (CanAddParameterName(context, arguments))
+            if (await CanAddParameterNameAsync(context, arguments))
             {
                 context.RegisterRefactoring(
                     "Add parameter name",
@@ -104,9 +125,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     "Remove parameter name",
                     cancellationToken =>
                     {
-                        return RemoveParameterNameFromEachArgumentAsync(
+                        return RemoveParameterNameFromArgumentsAsync(
                             context.Document,
                             argumentList,
+                            arguments,
                             cancellationToken);
                     });
             }
@@ -165,14 +187,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static async Task<Document> RemoveParameterNameFromEachArgumentAsync(
+        private static async Task<Document> RemoveParameterNameFromArgumentsAsync(
             Document document,
             ArgumentListSyntax argumentList,
-            CancellationToken cancellationToken)
+            ArgumentSyntax[] arguments,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            ArgumentListSyntax newArgumentList = ParameterNameRemover.VisitNode(argumentList)
+            ArgumentListSyntax newArgumentList = ParameterNameRemover.VisitNode(argumentList, arguments)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
@@ -209,24 +232,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithTriviaFrom(argument);
         }
 
-        public static bool CanAddParameterName(
-            CodeRefactoringContext context,
+        private static async Task<bool> CanAddParameterNameAsync(
+            RefactoringContext context,
             ArgumentSyntax[] arguments)
         {
-            SemanticModel semanticModel = null;
-
             foreach (ArgumentSyntax argument in arguments)
             {
                 if (argument.NameColon == null || argument.NameColon.IsMissing)
                 {
-                    if (semanticModel == null
-                        && !context.Document.TryGetSemanticModel(out semanticModel))
-                    {
-                        return false;
-                    }
-
                     IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                        semanticModel,
+                        await context.GetSemanticModelAsync(),
                         allowParams: false,
                         cancellationToken: context.CancellationToken);
 

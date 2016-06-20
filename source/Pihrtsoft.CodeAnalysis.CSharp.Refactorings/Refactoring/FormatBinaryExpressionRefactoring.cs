@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -15,29 +13,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class FormatBinaryExpressionRefactoring
     {
-        public static void Refactor(CodeRefactoringContext context, IfStatementSyntax ifStatement)
+        public static void ComputeRefactorings(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            Refactor(context, ifStatement, ifStatement.Condition);
+            ComputeRefactorings(context, ifStatement, ifStatement.Condition);
         }
 
-        public static void Refactor(CodeRefactoringContext context, WhileStatementSyntax whileStatement)
+        public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
         {
-            Refactor(context, whileStatement, whileStatement.Condition);
+            ComputeRefactorings(context, whileStatement, whileStatement.Condition);
         }
 
-        public static void Refactor(CodeRefactoringContext context, DoStatementSyntax doStatement)
+        public static void ComputeRefactorings(RefactoringContext context, DoStatementSyntax doStatement)
         {
-            Refactor(context, doStatement, doStatement.Condition);
+            ComputeRefactorings(context, doStatement, doStatement.Condition);
         }
 
-        public static void Refactor(
-            CodeRefactoringContext context,
+        private static void ComputeRefactorings(
+            RefactoringContext context,
             StatementSyntax statement,
             ExpressionSyntax condition)
         {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
             if (condition != null
                 && condition.Span.Contains(context.Span)
                 && condition.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)

@@ -11,26 +11,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
     {
         private static readonly ParameterNameRemover _instance = new ParameterNameRemover();
 
-        private ParameterNameRemover()
+        private readonly ArgumentSyntax[] _arguments;
+
+        private ParameterNameRemover(ArgumentSyntax[] arguments = null)
         {
+            _arguments = arguments;
         }
 
-        public static ArgumentListSyntax VisitNode(ArgumentListSyntax argumentList)
+        public static ArgumentListSyntax VisitNode(ArgumentListSyntax argumentList, ArgumentSyntax[] arguments = null)
         {
             if (argumentList == null)
                 throw new ArgumentNullException(nameof(argumentList));
 
-            return (ArgumentListSyntax)_instance.Visit(argumentList);
+            if (arguments == null)
+            {
+                return (ArgumentListSyntax)_instance.Visit(argumentList);
+            }
+            else
+            {
+                var instance = new ParameterNameRemover(arguments);
+                return (ArgumentListSyntax)instance.Visit(argumentList);
+            }
         }
 
         public override SyntaxNode VisitArgument(ArgumentSyntax node)
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
+            if (_arguments == null || Array.IndexOf(_arguments, node) != -1)
+            {
+                return node
+                    .WithNameColon(null)
+                    .WithTriviaFrom(node);
+            }
 
-            return node
-                .WithNameColon(null)
-                .WithTriviaFrom(node);
+            return base.VisitArgument(node);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 "Convert to \"\"",
                 cancellationToken =>
                 {
-                    return StringEmptyRefactoring.ConvertStringEmptyToEmptyStringLiteralAsync(
+                    return ConvertStringEmptyToEmptyStringLiteralRefactoring.RefactorAsync(
                         context.Document,
                         memberAccess,
                         cancellationToken);

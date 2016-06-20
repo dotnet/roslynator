@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Convert to string literal",
-                cancellationToken => InterpolatedStringRefactoring.ConvertToStringLiteralAsync(context.Document, interpolatedString, cancellationToken),
+                cancellationToken => ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
                 DiagnosticIdentifiers.UseStringLiteralInsteadOfInterpolatedString + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

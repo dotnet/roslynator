@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             AnalyzePredefinedType(context, memberAccess);
 
-            if (StringEmptyRefactoring.CanConvertStringEmptyToEmptyStringLiteral(memberAccess, context.SemanticModel, context.CancellationToken))
+            if (ConvertStringEmptyToEmptyStringLiteralRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfStringEmpty,

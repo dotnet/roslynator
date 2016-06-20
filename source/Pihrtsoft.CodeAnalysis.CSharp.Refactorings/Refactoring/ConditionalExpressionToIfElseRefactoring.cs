@@ -4,7 +4,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
@@ -18,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         private const string Title = "Convert conditional expression to if-else";
 
-        public static void Refactor(CodeRefactoringContext context, ConditionalExpressionSyntax expression)
+        public static void Refactor(RefactoringContext context, ConditionalExpressionSyntax expression)
         {
             SyntaxNode parent = expression.Parent;
 

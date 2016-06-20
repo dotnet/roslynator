@@ -50,8 +50,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ForEachStatementSyntax forEachStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (forEachStatement == null)
+                throw new ArgumentNullException(nameof(forEachStatement));
+
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             ForStatementSyntax forStatement = await GetForStatementAsync(

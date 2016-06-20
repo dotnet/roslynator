@@ -16,8 +16,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (ifStatement == null)
+                throw new ArgumentNullException(nameof(ifStatement));
+
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement)
