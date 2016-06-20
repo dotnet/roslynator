@@ -576,7 +576,7 @@
   </Refactoring>
   <Refactoring Id="SwapExpressionsInBinaryExpression" Title="Swap expressions in binary expression" ExtensionVersion="0.9.40">
     <Syntaxes>
-      <Syntax>binary expression</Syntax>
+      <Syntax>logical and/or expression</Syntax>
     </Syntaxes>
     <Scope>binary operator</Scope>
   </Refactoring>

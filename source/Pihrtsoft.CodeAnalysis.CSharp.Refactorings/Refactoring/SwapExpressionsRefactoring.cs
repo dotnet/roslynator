@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -13,6 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false
+                && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.OperatorToken.Span.Contains(context.Span))
             {
                 context.RegisterRefactoring(
