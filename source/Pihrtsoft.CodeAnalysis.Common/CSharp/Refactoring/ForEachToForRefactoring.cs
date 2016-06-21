@@ -58,34 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forEachStatement == null)
                 throw new ArgumentNullException(nameof(forEachStatement));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            ForStatementSyntax forStatement = await GetForStatementAsync(
-                document,
-                forEachStatement,
-                cancellationToken);
-
-            forStatement = forStatement
-                 .WithTriviaFrom(forEachStatement)
-                 .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(forEachStatement, forStatement);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static async Task<ForStatementSyntax> GetForStatementAsync(
-            Document document,
-            ForEachStatementSyntax forEachStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (forEachStatement == null)
-                throw new ArgumentNullException(nameof(forEachStatement));
-
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            SyntaxNode root = await document.GetSyntaxRootAsync();
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
@@ -94,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 document.Project.Solution,
                 cancellationToken);
 
-            return ForStatement(
+            ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
                     PredefinedType(Token(SyntaxKind.IntKeyword)),
                     SingletonSeparatedList(
@@ -126,6 +99,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 SingletonSeparatedList(Argument(IdentifierName(CounterIdentifierName))))
                         ).WithTriviaFrom(f);
                     }));
+
+            forStatement = forStatement
+                 .WithTriviaFrom(forEachStatement)
+                 .WithAdditionalAnnotations(Formatter.Annotation);
+
+            root = root.ReplaceNode(forEachStatement, forStatement);
+
+            return document.WithSyntaxRoot(root);
         }
 
         private static IEnumerable<IdentifierNameSyntax> GetIdentifiers(SyntaxNode root, IEnumerable<ReferencedSymbol> referencedSymbols)
