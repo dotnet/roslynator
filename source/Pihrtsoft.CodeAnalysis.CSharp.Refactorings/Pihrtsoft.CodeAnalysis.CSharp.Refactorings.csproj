@@ -47,6 +47,7 @@
     <Compile Include="Refactoring\RefactoringContextExtensions.cs" />
     <Compile Include="Refactoring\RefactoringContext.cs" />
     <Compile Include="Refactoring\InterpolatedStringRefactoring.cs" />
+    <Compile Include="Refactoring\GenerateSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactoring\YieldReturnStatementRefactoring.cs" />
     <Compile Include="Refactoring\ReturnStatementRefactoring.cs" />
     <Compile Include="Refactoring\LambdaExpressionRefactoring.cs" />

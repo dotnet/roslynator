@@ -364,6 +364,11 @@
       <Syntax>initializer</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="GenerateSwitchSections" Title="Generate switch sections" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>switch statement (that is empty or contains only default section)</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ChangeForeachTypeAccordingToExpression" Title="Change foreach variable's declared type according to expression" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>

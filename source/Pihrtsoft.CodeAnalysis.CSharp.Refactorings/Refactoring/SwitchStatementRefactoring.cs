@@ -17,9 +17,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SwitchStatementRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SwitchStatementSyntax switchStatement)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            if (switchStatement.Sections.Count > 0
+            if (await GenerateSwitchSectionsRefactoring.CanRefactorAsync(context, switchStatement))
+            {
+                context.RegisterRefactoring(
+                    "Generate switch sections",
+                    cancellationToken =>
+                    {
+                        return GenerateSwitchSectionsRefactoring.RefactorAsync(
+                            context.Document,
+                            switchStatement,
+                            cancellationToken);
+                    });
+            }
+
+            if (switchStatement.Sections.Count == 1
                 && switchStatement.SwitchKeyword.Span.Contains(context.Span))
             {
                 SwitchStatementAnalysisResult result = SwitchStatementAnalysis.Analyze(switchStatement);

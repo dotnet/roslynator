@@ -422,7 +422,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!fSwitchStatement
                             && node.IsKind(SyntaxKind.SwitchStatement))
                         {
-                            SwitchStatementRefactoring.ComputeRefactorings(context, (SwitchStatementSyntax)statement);
+                            await SwitchStatementRefactoring.ComputeRefactoringsAsync(context, (SwitchStatementSyntax)statement);
                             fSwitchStatement = true;
                         }
 
