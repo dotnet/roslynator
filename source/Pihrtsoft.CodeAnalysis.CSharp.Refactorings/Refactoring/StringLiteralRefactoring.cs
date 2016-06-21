@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             length = context.Span.Length;
                     }
 
-                    return StringLiteralRefactoring.ConvertStringLiteralToInterpolatedStringAsync(
+                    return ConvertStringLiteralToInterpolatedStringAsync(
                         context.Document,
                         literalExpression,
                         startIndex,
@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         "Convert to regular string literal",
                         cancellationToken =>
                         {
-                            return StringLiteralRefactoring.ConvertToRegularStringLiteralAsync(
+                            return ConvertToRegularStringLiteralAsync(
                                 context.Document,
                                 literalExpression,
                                 cancellationToken);
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             "Convert to regular string literals",
                             cancellationToken =>
                             {
-                                return StringLiteralRefactoring.ConvertToRegularStringLiteralsAsync(
+                                return ConvertToRegularStringLiteralsAsync(
                                     context.Document,
                                     literalExpression,
                                     cancellationToken);
@@ -77,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         "Convert to verbatim string literal",
                         cancellationToken =>
                         {
-                            return StringLiteralRefactoring.ConvertToVerbatimStringLiteralAsync(
+                            return ConvertToVerbatimStringLiteralAsync(
                                 context.Document,
                                 literalExpression,
                                 cancellationToken);
@@ -85,13 +85,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            if (StringLiteralRefactoring.CanConvertStringLiteralToStringEmpty(literalExpression))
+            if (CanConvertStringLiteralToStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
                     "Convert to string.Empty",
                     cancellationToken =>
                     {
-                        return StringLiteralRefactoring.ConvertStringLiteralToStringEmptyAsync(
+                        return ConvertStringLiteralToStringEmptyAsync(
                             context.Document,
                             literalExpression,
                             cancellationToken);
