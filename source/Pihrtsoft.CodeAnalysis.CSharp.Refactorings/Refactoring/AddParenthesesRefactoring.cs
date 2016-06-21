@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (expression.Parent.IsKind(SyntaxKind.ParenthesizedExpression))
                     return false;
 
-                if (expression.IsKind(SyntaxKind.IdentifierName) && expression.Parent.IsKind(SyntaxKind.Argument))
+                if (expression.Parent.IsKind(SyntaxKind.Argument))
                     return false;
             }
 
