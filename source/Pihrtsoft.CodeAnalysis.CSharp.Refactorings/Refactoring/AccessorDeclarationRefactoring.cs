@@ -8,14 +8,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, AccessorDeclarationSyntax accessor)
         {
-            if (accessor.Body?.Span.Contains(context.Span) == true
-                && !accessor.Body.OpenBraceToken.IsMissing
-                && !accessor.Body.CloseBraceToken.IsMissing
-                && accessor.Body.IsSingleline())
+            BlockSyntax body = accessor.Body;
+
+            if (body?.Span.Contains(context.Span) == true
+                && !body.OpenBraceToken.IsMissing
+                && !body.CloseBraceToken.IsMissing)
             {
-                context.RegisterRefactoring(
-                    "Format braces on multiple lines",
-                    cancellationToken => FormatAccessorBraceOnMultipleLinesRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                if (body.IsSingleline())
+                {
+                    context.RegisterRefactoring(
+                        "Format braces on multiple lines",
+                        cancellationToken => FormatAccessorBraceOnMultipleLinesRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                }
+                else if (body.Statements.Count == 1
+                    && body.Statements[0].IsSingleline())
+                {
+                    context.RegisterRefactoring(
+                        "Format braces on single line",
+                        cancellationToken => FormatAccessorBraceOnSingleLineRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                }
             }
         }
     }

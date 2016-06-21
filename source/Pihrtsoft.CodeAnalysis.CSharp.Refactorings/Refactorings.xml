@@ -324,6 +324,15 @@
     </Syntaxes>
     <Scope>block</Scope>
   </Refactoring>
+  <Refactoring Id="FormatAccessorBracesOnSingleLine" Title="Format accessor braces on single line" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>get accessor</Syntax>
+      <Syntax>set accessor</Syntax>
+      <Syntax>add accessor</Syntax>
+      <Syntax>remove accessor</Syntax>
+    </Syntaxes>
+    <Scope>block</Scope>
+  </Refactoring>
   <Refactoring Id="FormatConditionalExpressionOnMultipleLines" Title="Format conditional expression on multiple lines" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
