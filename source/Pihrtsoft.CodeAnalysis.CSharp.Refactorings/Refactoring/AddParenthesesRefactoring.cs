@@ -14,18 +14,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression.IsKind(SyntaxKind.ParenthesizedExpression))
-                return false;
-
-            if (expression.IsKind(SyntaxKind.Argument))
-                return false;
-
-            if (expression.Parent != null)
+            switch (expression.Kind())
             {
-                if (expression.Parent.IsKind(SyntaxKind.ParenthesizedExpression))
+                case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.Argument:
                     return false;
+            }
 
-                if (expression.Parent.IsKind(SyntaxKind.Argument))
+            switch (expression.Parent?.Kind())
+            {
+                case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.Argument:
+                case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.InvocationExpression:
                     return false;
             }
 
