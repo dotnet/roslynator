@@ -97,6 +97,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             cancellationToken);
                     });
             }
+
+            if (ConvertStringLiteralToCharacterLiteralRefactoring.CanRefactor(literalExpression))
+            {
+                context.RegisterRefactoring(
+                    "Convert to character literal",
+                    cancellationToken =>
+                    {
+                        return ConvertStringLiteralToCharacterLiteralRefactoring.RefactorAsync(
+                            context.Document,
+                            literalExpression,
+                            cancellationToken);
+                    });
+            }
         }
 
         private static int GetInterpolationStartIndex(int spanStartIndex, LiteralExpressionSyntax literalExpression)
