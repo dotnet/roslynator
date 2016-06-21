@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public async Task<SemanticModel> GetSemanticModelAsync()
         {
             if (_semanticModel == null)
-                _semanticModel = await Document.GetSemanticModelAsync(CancellationToken);
+                _semanticModel = await Document.GetSemanticModelAsync(CancellationToken).ConfigureAwait(false);
 
             return _semanticModel;
         }

@@ -13,7 +13,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken);
+            SyntaxNode root = await context.Document
+                .GetSyntaxRootAsync(context.CancellationToken)
+                .ConfigureAwait(false);
 #if DEBUG
             try
             {
