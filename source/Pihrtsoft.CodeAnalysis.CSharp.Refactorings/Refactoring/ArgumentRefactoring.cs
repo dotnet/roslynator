@@ -37,14 +37,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
             {
-                IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                    semanticModel,
-                    allowParams: false,
-                    allowCandidate: true,
-                    cancellationToken: context.CancellationToken);
-
-                if (parameterSymbol?.Type?.Equals(typeSymbol) == false)
-                    AddCastRefactoring.Refactor(context, argument.Expression, parameterSymbol.Type);
+                foreach (IParameterSymbol parameterSymbol in argument.DetermineParameters(semanticModel, context.CancellationToken))
+                {
+                    if (parameterSymbol.Type != null
+                        && !typeSymbol.Equals(parameterSymbol.Type))
+                    {
+                        AddCastRefactoring.Refactor(context, argument.Expression, parameterSymbol.Type);
+                    }
+                }
             }
         }
 
