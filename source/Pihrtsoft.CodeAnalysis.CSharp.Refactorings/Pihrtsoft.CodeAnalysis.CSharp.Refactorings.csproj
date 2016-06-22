@@ -44,6 +44,7 @@
     <Compile Include="Refactoring\ConvertStringLiteralToCharacterLiteralRefactoring.cs" />
     <Compile Include="Refactoring\DefaultCodeRefactoringProvider.cs" />
     <Compile Include="Refactoring\AddParenthesesRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveAllStatementsRefactoring.cs" />
     <Compile Include="Refactoring\MarkAllMembersAsStaticRefactoring.cs" />
     <Compile Include="Refactoring\MarkMemberAsStaticRefactoring.cs" />
     <Compile Include="Refactoring\FormatAccessorBraceOnSingleLineRefactoring.cs" />

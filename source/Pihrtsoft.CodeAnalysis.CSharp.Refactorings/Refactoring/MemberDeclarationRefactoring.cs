@@ -41,6 +41,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 "Duplicate " + SyntaxHelper.GetSyntaxNodeName(memberDeclaration),
                                 cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken));
                         }
+#if DEBUG
+                        if (RemoveAllStatementsRefactoring.CanRefactor(context, memberDeclaration))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove all statements",
+                                cancellationToken => RemoveAllStatementsRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken));
+                        }
+#endif
 
                         break;
                     }
