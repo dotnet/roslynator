@@ -56,6 +56,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         await ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)memberDeclaration);
                         break;
                     }
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        ComputeRefactorings(context, (ConstructorDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
                 case SyntaxKind.IndexerDeclaration:
                     {
                         ComputeRefactorings(context, (IndexerDeclarationSyntax)memberDeclaration);
@@ -76,6 +81,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         ComputeRefactorings(context, (ConversionOperatorDeclarationSyntax)memberDeclaration);
                         break;
                     }
+                case SyntaxKind.FieldDeclaration:
+                    {
+                        await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
+                case SyntaxKind.EventDeclaration:
+                    {
+                        ComputeRefactorings(context, (EventDeclarationSyntax)memberDeclaration);
+                        break;
+                    }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         await ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)memberDeclaration);
@@ -86,6 +101,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ComputeRefactoringsAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
+            if (MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark method as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
+            }
+
             if (methodDeclaration.HeaderSpan().Contains(context.Span)
                 && MethodDeclarationRefactoring.CanConvertToReadOnlyProperty(methodDeclaration))
             {
@@ -113,6 +137,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.SupportsSemanticModel)
             {
                 await MethodDeclarationRefactoring.RenameAccordingToTypeNameAsync(context, methodDeclaration);
+            }
+        }
+
+        private static void ComputeRefactorings(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
+        {
+            if (MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark constructor as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, constructorDeclaration, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)constructorDeclaration.Parent);
             }
         }
 
@@ -159,6 +195,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ComputeRefactoringsAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
+            if (MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark property as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
+            }
+
             if (propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && PropertyDeclarationRefactoring.CanConvertToMethod(propertyDeclaration))
             {
@@ -212,8 +257,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 await PropertyDeclarationRefactoring.RenameAccordingToTypeNameAsync(context, propertyDeclaration);
         }
 
+        private static void ComputeRefactorings(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
+        {
+            if (MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark event as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventDeclaration, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventDeclaration.Parent);
+            }
+        }
+
         private static async Task ComputeRefactoringsAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
+            if (MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark event as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
+            }
+
             if (eventFieldDeclaration.Span.Contains(context.Span)
                 && context.SupportsSemanticModel
                 && EventFieldDeclarationRefactoring.CanExpand(eventFieldDeclaration, await context.GetSemanticModelAsync(), context.CancellationToken))

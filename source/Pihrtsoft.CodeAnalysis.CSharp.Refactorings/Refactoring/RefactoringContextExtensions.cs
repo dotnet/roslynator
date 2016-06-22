@@ -72,7 +72,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fSimpleLambdaExpression = false;
 
             bool fMemberDeclaration = false;
-            bool fFieldDeclaration = false;
 #if DEBUG
             bool fReorderMembers = false;
 #endif
@@ -350,12 +349,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     var memberDeclaration = node as MemberDeclarationSyntax;
                     if (memberDeclaration != null)
                     {
-                        if (!fFieldDeclaration
-                            && node.IsKind(SyntaxKind.FieldDeclaration))
-                        {
-                            await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)memberDeclaration);
-                            fFieldDeclaration = true;
-                        }
 #if DEBUG
                         if (!fReorderMembers
                             && node.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))

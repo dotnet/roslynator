@@ -31,6 +31,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         cancellationToken => ConvertReadOnlyFieldToConstantAsync(context.Document, node, cancellationToken));
                 }
             }
+
+            if (MarkMemberAsStaticRefactoring.CanRefactor(node))
+            {
+                context.RegisterRefactoring(
+                    "Mark field as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)node.Parent);
+            }
         }
 
         private static async Task<bool> CanBeConvertedToConstantAsync(
