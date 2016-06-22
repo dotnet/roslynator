@@ -91,7 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> ChangeReturnTypeAsync(
+        internal static async Task<Document> ChangeReturnTypeAsync(
             Document document,
             TypeSyntax type,
             TypeSyntax newType,
@@ -108,7 +108,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static TypeSyntax GetMemberType(MemberDeclarationSyntax declaration)
+        internal static TypeSyntax GetMemberType(MemberDeclarationSyntax declaration)
         {
             switch (declaration.Kind())
             {
@@ -123,7 +123,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static string GetText(MemberDeclarationSyntax declaration)
+        internal static string GetText(MemberDeclarationSyntax declaration)
         {
             switch (declaration.Kind())
             {
@@ -138,9 +138,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static MemberDeclarationSyntax GetDeclaration(ReturnStatementSyntax returnStatement)
+        internal static MemberDeclarationSyntax GetDeclaration(StatementSyntax statement)
         {
-            foreach (SyntaxNode ancestor in returnStatement.Ancestors())
+            foreach (SyntaxNode ancestor in statement.Ancestors())
             {
                 switch (ancestor.Kind())
                 {
