@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AnalyzerXml")]
+[assembly: AssemblyTitle("MetadataGenerator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AnalyzerXml")]
+[assembly: AssemblyProduct("MetadataGenerator")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ede10dab-eb98-49ca-897c-4b4ccacecd2d")]
+[assembly: Guid("dd303eb5-1c57-4588-980c-c55a401db125")]
 
 // Version information for an assembly consists of the following four values:
 //
