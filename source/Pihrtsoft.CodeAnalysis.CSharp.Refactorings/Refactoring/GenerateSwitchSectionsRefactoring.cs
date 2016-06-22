@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -43,17 +44,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static bool IsEmptyOrContainsOnlyDefaultSection(SwitchStatementSyntax switchStatement)
         {
             if (switchStatement.Sections.Count == 0)
+            {
                 return true;
-
-            if (switchStatement.Sections.Count == 1)
+            }
+            else if (switchStatement.Sections.Count == 1)
             {
                 SwitchSectionSyntax section = switchStatement.Sections[0];
 
                 return section.Labels.Count == 1
                     && section.Labels[0].IsKind(SyntaxKind.DefaultSwitchLabel);
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         public static async Task<Document> RefactorAsync(
@@ -78,28 +82,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol)
+        private static List<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol)
         {
-            foreach (ISymbol memberSymbol in enumTypeSymbol.GetMembers())
+            SyntaxList<StatementSyntax> statements = SingletonList<StatementSyntax>(BreakStatement());
+
+            ImmutableArray<ISymbol> members = enumTypeSymbol.GetMembers();
+
+            var sections = new List<SwitchSectionSyntax>(members.Length);
+
+            TypeSyntax enumType = TypeSyntaxRefactoring.CreateTypeSyntax(enumTypeSymbol);
+
+            if (members.Length < 32)
+                enumType = enumType.WithAdditionalAnnotations(Simplifier.Annotation);
+
+            foreach (ISymbol memberSymbol in members)
             {
                 if (memberSymbol.Kind == SymbolKind.Field)
                 {
-                    yield return SwitchSection(
-                        SingletonList<SwitchLabelSyntax>(
-                            CaseSwitchLabel(
-                                MemberAccessExpression(
-                                    SyntaxKind.SimpleMemberAccessExpression,
-                                    TypeSyntaxRefactoring.CreateTypeSyntax(enumTypeSymbol)
-                                        .WithAdditionalAnnotations(Simplifier.Annotation),
-                                    (SimpleNameSyntax)ParseName(memberSymbol.Name)))),
-                        SingletonList<StatementSyntax>(BreakStatement()));
+                    sections.Add(
+                        SwitchSection(
+                            SingletonList<SwitchLabelSyntax>(
+                                CaseSwitchLabel(
+                                    MemberAccessExpression(
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        enumType,
+                                        IdentifierName(memberSymbol.Name)))),
+                            statements));
                 }
             }
 
-            yield return SwitchSection(
-                SingletonList<SwitchLabelSyntax>(
-                    DefaultSwitchLabel()),
-                SingletonList<StatementSyntax>(BreakStatement()));
+            sections.Add(SwitchSection(
+                SingletonList<SwitchLabelSyntax>(DefaultSwitchLabel()),
+                statements));
+
+            return sections;
         }
     }
 }
