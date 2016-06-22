@@ -21,8 +21,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             DuplicateParameterRefactoring.Refactor(context, parameterList);
 
-            SwapParametersRefactoring.Refactor(context, parameterList);
-
             if (parameterList.IsSingleline())
             {
                 if (parameterList.Parameters.Count > 1)

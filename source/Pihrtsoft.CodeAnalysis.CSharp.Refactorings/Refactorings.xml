@@ -597,12 +597,6 @@
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="SwapArguments" Title="Swap arguments" ExtensionVersion="0.9.40">
-    <Syntaxes>
-      <Syntax>arguments</Syntax>
-    </Syntaxes>
-    <Scope>comma between parameters</Scope>
-  </Refactoring>
   <Refactoring Id="SwapExpressionsInBinaryExpression" Title="Swap expressions in binary expression" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>logical and/or expression</Syntax>
@@ -625,12 +619,6 @@
     <Syntaxes>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="SwapParameters" Title="Swap parameters" ExtensionVersion="0.9.40">
-    <Syntaxes>
-      <Syntax>parameters</Syntax>
-    </Syntaxes>
-    <Scope>comma between parameters</Scope>
   </Refactoring>
   <Refactoring Id="Uncomment" Title="Uncomment" ExtensionVersion="0.9.0">
     <Syntaxes>

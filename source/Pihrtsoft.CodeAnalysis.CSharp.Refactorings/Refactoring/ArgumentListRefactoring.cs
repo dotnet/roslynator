@@ -24,8 +24,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             DuplicateArgumentRefactoring.Refactor(context, argumentList);
 
-            SwapArgumentsRefactoring.Refactor(context, argumentList);
-
             if (argumentList.IsSingleline())
             {
                 if (argumentList.Arguments.Count > 1)
