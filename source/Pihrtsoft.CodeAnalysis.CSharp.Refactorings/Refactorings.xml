@@ -214,7 +214,7 @@
       <Syntax>struct</Syntax>
       <Syntax>interface</Syntax>
     </Syntaxes>
-    <Scope>header or closing brace</Scope>
+    <Scope>opening or closing brace</Scope>
   </Refactoring>
   <Refactoring Id="DuplicateParameter" Title="Duplicate parameter" ExtensionVersion="0.9.40">
     <Syntaxes>
@@ -541,7 +541,7 @@
       <Syntax>struct</Syntax>
       <Syntax>interface</Syntax>
     </Syntaxes>
-    <Scope>header or closing brace</Scope>
+    <Scope>opening or closing brace</Scope>
   </Refactoring>
   <Refactoring Id="RemoveParameterNameFromArgument" Title="Remove parameter name from argument" ExtensionVersion="0.9.0">
     <Syntaxes>
