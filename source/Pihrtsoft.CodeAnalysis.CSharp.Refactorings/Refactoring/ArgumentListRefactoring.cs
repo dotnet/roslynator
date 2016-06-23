@@ -36,7 +36,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             else
             {
                 context.RegisterRefactoring(
-                    "Format all arguments on a single line",
+                    (argumentList.Arguments.Count == 1)
+                        ? "Format argument on a single line"
+                        : "Format all arguments on a single line",
                     cancellationToken => FormatAllArgumentsOnSingleLineAsync(context.Document, argumentList, cancellationToken));
             }
         }
