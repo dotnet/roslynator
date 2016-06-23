@@ -52,6 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fParameterList = false;
             bool fSwitchSection = false;
             bool fVariableDeclaration = false;
+            bool fInterpolatedStringText = false;
 
             bool fExpression = false;
             bool fAssignmentExpression = false;
@@ -169,6 +170,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         await VariableDeclarationRefactoring.ComputeRefactoringsAsync(context, (VariableDeclarationSyntax)node);
                         fVariableDeclaration = true;
+                        continue;
+                    }
+
+                    if (!fInterpolatedStringText
+                        && node.IsKind(SyntaxKind.InterpolatedStringText))
+                    {
+                        InterpolatedStringTextRefactoring.ComputeRefactorings(context, (InterpolatedStringTextSyntax)node);
+                        fInterpolatedStringText = true;
                         continue;
                     }
 

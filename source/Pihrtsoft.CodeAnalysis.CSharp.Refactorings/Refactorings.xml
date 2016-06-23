@@ -70,6 +70,11 @@
     </Syntaxes>
     <Scope>initializer value</Scope>
   </Refactoring>
+  <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>selected text inside interpolation string text</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="AddParameterNameToArgument" Title="Add parameter name to argument" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>argument list</Syntax>
