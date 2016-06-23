@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp;
@@ -33,42 +34,61 @@ namespace MetadataGenerator
 
         private static void CreateRefactoringsExtensionDescription()
         {
-            using (var fs = new FileStream(DirectoryName + "RefactoringsExtensionDescription.txt", DefaultFileMode))
+            using (var fs = new FileStream(DirectoryName + "RefactoringsExtensionDescription.txt", FileMode.Create))
             {
-                using (var sw = new StreamWriter(fs, Encoding.UTF8))
+                using (XmlWriter xw = XmlWriter.Create(fs, CreateXmlWriterSettings()))
                 {
-                    sw.WriteLine("<ul>");
-
-                    foreach (Refactoring refactoring in Refactoring.Items
-                        .OrderBy(f => f.Title, StringComparer.InvariantCulture))
-                    {
-                        string href = "http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#" + refactoring.GetGitHubHref();
-                        sw.WriteLine("    <li>");
-                        sw.WriteLine($"       <a href=\"{href}\">{refactoring.Title}</a>");
-                        sw.WriteLine("    </li>");
-                        sw.WriteLine("</ul>");
-                    }
+                    xw.WriteStartElement("html");
+                    WriteRefactoringsExtensionDescription(xw);
                 }
             }
         }
 
         private static void CreateAnalyzersExtensionDescription()
         {
-            using (var fs = new FileStream(DirectoryName + "AnalyzersExtensionDescription.txt", DefaultFileMode))
+            using (var fs = new FileStream(DirectoryName + "AnalyzersExtensionDescription.txt", FileMode.Create))
             {
-                using (var sw = new StreamWriter(fs, Encoding.UTF8))
+                using (XmlWriter xw = XmlWriter.Create(fs, CreateXmlWriterSettings()))
                 {
-                    sw.WriteLine("<ul>");
-
-                    foreach (Analyzer analyzer in Analyzer.Items
-                        .OrderBy(f => f.Id, StringComparer.InvariantCulture))
-                    {
-                        sw.WriteLine($"    <li>{analyzer.Id} - {analyzer.Title}</li>");
-                    }
-
-                    sw.WriteLine("</ul>");
+                    xw.WriteStartElement("html");
+                    WriteAnalyzersExtensionDescription(xw);
+                    WriteRefactoringsExtensionDescription(xw);
                 }
             }
+        }
+
+        private static void WriteRefactoringsExtensionDescription(XmlWriter xw)
+        {
+            xw.WriteElementString("h3", "List of Refactoring");
+            xw.WriteStartElement("ul");
+
+            foreach (Refactoring refactoring in Refactoring.Items
+                .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+            {
+                string href = "http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#" + refactoring.GetGitHubHref();
+                xw.WriteStartElement("li");
+                xw.WriteStartElement("a");
+                xw.WriteAttributeString("href", href);
+                xw.WriteString(refactoring.Title);
+                xw.WriteEndElement();
+                xw.WriteEndElement();
+            }
+
+            xw.WriteEndElement();
+        }
+
+        private static void WriteAnalyzersExtensionDescription(XmlWriter xw)
+        {
+            xw.WriteElementString("h3", "List of Analyzers");
+
+            xw.WriteStartElement("ul");
+            foreach (Analyzer analyzer in Analyzer.Items
+                .OrderBy(f => f.Id, StringComparer.InvariantCulture))
+            {
+                xw.WriteElementString("li", $"{analyzer.Id} - {analyzer.Title}");
+            }
+
+            xw.WriteEndElement();
         }
 
         private static void CreateGitHubReadMe()
@@ -105,6 +125,7 @@ namespace MetadataGenerator
                 using (var sw = new StreamWriter(fs, Encoding.UTF8))
                 {
                     sw.WriteLine("## " + "C# Refactorings");
+
                     foreach (Refactoring refactoring in Refactoring.Items
                         .OrderBy(f => f.Title, StringComparer.InvariantCulture))
                     {
@@ -114,9 +135,7 @@ namespace MetadataGenerator
                         sw.WriteLine("* **Syntax**: " + string.Join(", ", refactoring.Syntaxes.Select(f => f.Name)));
 
                         if (!string.IsNullOrEmpty(refactoring.Scope))
-                        {
                             sw.WriteLine("* **Scope**: " + refactoring.Scope);
-                        }
 
                         sw.WriteLine("");
                         sw.WriteLine("![" + refactoring.Title + "](/images/refactorings/" + refactoring.Id + ".png)");
@@ -158,6 +177,18 @@ namespace MetadataGenerator
             doc.Add(root);
 
             doc.Save(DirectoryName + "Analyzers.xml");
+        }
+
+        private static XmlWriterSettings CreateXmlWriterSettings()
+        {
+            var settings = new XmlWriterSettings();
+
+            settings.OmitXmlDeclaration = true;
+            settings.NewLineChars = "\r\n";
+            settings.IndentChars = "    ";
+            settings.Indent = true;
+
+            return settings;
         }
     }
 }
