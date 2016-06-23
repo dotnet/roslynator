@@ -150,7 +150,7 @@
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ConvertStringLiteralToCharacterLiteral" Title="Convert string literal to character literal" ExtensionVersion="0.0.0">
+  <Refactoring Id="ConvertStringLiteralToCharacterLiteral" Title="Convert string literal to character literal" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>string literal</Syntax>
     </Syntaxes>
@@ -324,7 +324,7 @@
     </Syntaxes>
     <Scope>block</Scope>
   </Refactoring>
-  <Refactoring Id="FormatAccessorBracesOnSingleLine" Title="Format accessor braces on single line" ExtensionVersion="0.0.0">
+  <Refactoring Id="FormatAccessorBracesOnSingleLine" Title="Format accessor braces on single line" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>get accessor</Syntax>
       <Syntax>set accessor</Syntax>
@@ -373,7 +373,7 @@
       <Syntax>initializer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="GenerateSwitchSections" Title="Generate switch sections" ExtensionVersion="0.0.0">
+  <Refactoring Id="GenerateSwitchSections" Title="Generate switch sections" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>switch statement (that is empty or contains only default section)</Syntax>
     </Syntaxes>
@@ -436,12 +436,12 @@
     </Syntaxes>
     <Scope>indexer/method/property header</Scope>
   </Refactoring>
-  <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as static" ExtensionVersion="0.0.0">
+  <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as static" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MarkMemberAsStatic" Title="Mark member as static" ExtensionVersion="0.0.0">
+  <Refactoring Id="MarkMemberAsStatic" Title="Mark member as static" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
