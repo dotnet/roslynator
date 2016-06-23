@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string SimplifyAssignmentExpression = Prefix + "1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
         public const string DeclareEachTypeInSeparateFile = Prefix + "1060";
-        public const string MergeIfStatementWithContainedIfStatement = Prefix + "1061";
+        public const string MergeIfStatementWithNestedIfStatement = Prefix + "1061";
         public const string UseStringLiteralInsteadOfInterpolatedString = Prefix + "1062";
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = Prefix + "1063";
         public const string UseWhileStatementToCreateInfiniteLoop = Prefix + "1064";

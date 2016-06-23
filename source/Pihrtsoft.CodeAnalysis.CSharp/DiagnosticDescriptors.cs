@@ -586,16 +586,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MergeIfStatementWithContainedIfStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MergeIfStatementWithContainedIfStatement,
-            title: "Merge if statement with contained if statement.",
-            messageFormat: "Consider merging if statement with contained if statement.",
+        public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
+            title: "Merge if statement with nested if statement.",
+            messageFormat: "Consider merging if statement with nested if statement.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MergeIfStatementWithContainedIfStatementFadeOut = MergeIfStatementWithContainedIfStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatementFadeOut = MergeIfStatementWithNestedIfStatement.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor UseStringLiteralInsteadOfInterpolatedString = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseStringLiteralInsteadOfInterpolatedString,

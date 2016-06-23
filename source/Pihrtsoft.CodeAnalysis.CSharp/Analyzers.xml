@@ -531,9 +531,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeIfStatementWithContainedIfStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
     <Id>RCS1061</Id>
-    <Title>Merge if statement with contained if statement.</Title>
+    <Title>Merge if statement with nested if statement.</Title>
     <Category>General</Category>
     <Severity>Hidden</Severity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

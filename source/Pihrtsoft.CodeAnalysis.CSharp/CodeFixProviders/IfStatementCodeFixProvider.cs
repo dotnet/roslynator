@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -21,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class IfStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.MergeIfStatementWithContainedIfStatement);
+            => ImmutableArray.Create(DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,65 +32,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (ifStatement == null)
                 return;
 
-            IfStatementSyntax ifStatement2 = GetContainedIfStatement(ifStatement);
-
-            if (CheckTrivia(ifStatement, ifStatement2))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Merge if with contained if",
-                    cancellationToken =>
-                    {
-                        return MergeIfStatementWithContainedIfStatementAsync(
-                            context.Document,
-                            ifStatement,
-                            ifStatement2,
-                            cancellationToken);
-                    },
-                    DiagnosticIdentifiers.MergeIfStatementWithContainedIfStatement + EquivalenceKeySuffix);
-
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
-        }
-
-        private static bool CheckTrivia(IfStatementSyntax ifStatement, IfStatementSyntax ifStatement2)
-        {
-            TextSpan span = TextSpan.FromBounds(
-                ifStatement2.FullSpan.Start,
-                ifStatement2.CloseParenToken.FullSpan.End);
-
-            if (ifStatement2.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
-            {
-                if (ifStatement.Statement.IsKind(SyntaxKind.Block)
-                    && ifStatement2.Statement.IsKind(SyntaxKind.Block))
+            CodeAction codeAction = CodeAction.Create(
+                "Merge if with nested if",
+                cancellationToken =>
                 {
-                    var block = (BlockSyntax)ifStatement2.Statement;
+                    return MergeIfStatementWithNestedIfStatementAsync(
+                        context.Document,
+                        ifStatement,
+                        cancellationToken);
+                },
+                DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement + EquivalenceKeySuffix);
 
-                    return block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.CloseBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine());
-                }
-
-                return true;
-            }
-
-            return false;
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> MergeIfStatementWithContainedIfStatementAsync(
+        private static async Task<Document> MergeIfStatementWithNestedIfStatementAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            IfStatementSyntax ifStatement2,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+
+            IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
 
             BinaryExpressionSyntax newCondition = SyntaxFactory.BinaryExpression(
                 SyntaxKind.LogicalAndExpression,
                 AddParenthesesIfNecessary(ifStatement.Condition),
-                AddParenthesesIfNecessary(ifStatement2.Condition));
+                AddParenthesesIfNecessary(nestedIf.Condition));
 
-            IfStatementSyntax newNode = GetNewIfStatement(ifStatement, ifStatement2)
+            IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
                 .WithCondition(newCondition)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
@@ -120,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             }
         }
 
-        private static IfStatementSyntax GetContainedIfStatement(IfStatementSyntax ifStatement)
+        private static IfStatementSyntax GetNestedIfStatement(IfStatementSyntax ifStatement)
         {
             switch (ifStatement.Statement.Kind())
             {

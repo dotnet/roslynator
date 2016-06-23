@@ -22,8 +22,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AddBracesToIfElseChain,
                     DiagnosticDescriptors.RemoveBracesFromIfElseChain,
                     DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
-                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatement,
-                    DiagnosticDescriptors.MergeIfStatementWithContainedIfStatementFadeOut,
+                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
+                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
                     DiagnosticDescriptors.SimplifyIfStatementToReturnStatement,
                     DiagnosticDescriptors.SimplifyIfStatementToReturnStatementFadeOut);
             }
@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 }
             }
 
-            MergeIfStatementWithContainedIfStatementAnalyzer.Analyze(context, ifStatement);
+            MergeIfStatementWithNestedIfStatementAnalyzer.Analyze(context, ifStatement);
 
             SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
         }
