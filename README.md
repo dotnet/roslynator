@@ -78,7 +78,7 @@
 * RCS1058 - Simplify assignment expression
 * RCS1059 - Avoid locking on publicly accessible instance
 * RCS1060 - Declare each type in separate file
-* RCS1061 - Merge if statement with contained if statement
+* RCS1061 - Merge if statement with nested if statement
 * RCS1062 - Use string literal instead of interpolated string
 * RCS1063 - Avoid usage of do statement to create an infinite loop
 * RCS1064 - Use while statement to create an infinite loop
@@ -138,6 +138,7 @@
 * [Convert read-only field to constant](Refactorings.md#convert-read-only-field-to-constant)
 * [Convert read-only property to method](Refactorings.md#convert-read-only-property-to-method)
 * [Convert regular string literal to verbatim string literal](Refactorings.md#convert-regular-string-literal-to-verbatim-string-literal)
+* [Convert string literal to character literal](Refactorings.md#convert-string-literal-to-character-literal)
 * [Convert string literal to interpolated string](Refactorings.md#convert-string-literal-to-interpolated-string)
 * [Convert string.Empty to ""](Refactorings.md#convert-stringempty-to-)
 * [Convert switch to if-else chain](Refactorings.md#convert-switch-to-if-else-chain)
@@ -162,6 +163,7 @@
 * [Extract generic type](Refactorings.md#extract-generic-type)
 * [Extract statement(s)](Refactorings.md#extract-statements)
 * [Format accessor braces on multiple lines](Refactorings.md#format-accessor-braces-on-multiple-lines)
+* [Format accessor braces on single line](Refactorings.md#format-accessor-braces-on-single-line)
 * [Format all arguments on a single line](Refactorings.md#format-all-arguments-on-a-single-line)
 * [Format all parameters on a single line](Refactorings.md#format-all-parameters-on-a-single-line)
 * [Format binary expressions on multiple lines](Refactorings.md#format-binary-expressions-on-multiple-lines)
@@ -173,8 +175,11 @@
 * [Format expression chain on multiple lines](Refactorings.md#format-expression-chain-on-multiple-lines)
 * [Format initializer on a single line](Refactorings.md#format-initializer-on-a-single-line)
 * [Format initializer on multiple lines](Refactorings.md#format-initializer-on-multiple-lines)
+* [Generate switch sections](Refactorings.md#generate-switch-sections)
 * [Introduce constructor from selected member(s)](Refactorings.md#introduce-constructor-from-selected-members)
 * [Make member abstract](Refactorings.md#make-member-abstract)
+* [Mark all members as static](Refactorings.md#mark-all-members-as-static)
+* [Mark member as static](Refactorings.md#mark-member-as-static)
 * [Merge attributes](Refactorings.md#merge-attributes)
 * [Merge string literals](Refactorings.md#merge-string-literals)
 * [Merge string literals into multiline string literal](Refactorings.md#merge-string-literals-into-multiline-string-literal)
@@ -200,11 +205,9 @@
 * [Rename property according to type name](Refactorings.md#rename-property-according-to-type-name)
 * [Reverse for loop](Refactorings.md#reverse-for-loop)
 * [Split attributes](Refactorings.md#split-attributes)
-* [Swap arguments](Refactorings.md#swap-arguments)
 * [Swap expressions in binary expression](Refactorings.md#swap-expressions-in-binary-expression)
 * [Swap expressions in conditional expression](Refactorings.md#swap-expressions-in-conditional-expression)
 * [Swap members](Refactorings.md#swap-members)
-* [Swap parameters](Refactorings.md#swap-parameters)
 * [Swap statements in if-else](Refactorings.md#swap-statements-in-if-else)
 * [Uncomment](Refactorings.md#uncomment)
 * [Use expression-bodied member](Refactorings.md#use-expression-bodied-member)
