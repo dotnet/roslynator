@@ -210,9 +210,15 @@
 
 ![Convert regular string literal to verbatim string literal](/images/refactorings/ConvertRegularStringLiteralToVerbatimStringLiteral.png)
 
+#### Convert string literal to character literal
+
+* **Syntax**: string literal
+
+![Convert string literal to character literal](/images/refactorings/ConvertStringLiteralToCharacterLiteral.png)
+
 #### Convert string literal to interpolated string
 
-* **Syntax**: String literal
+* **Syntax**: string literal
 
 ![Convert string literal to interpolated string](/images/refactorings/ConvertStringLiteralToInterpolatedString.png)
 
@@ -268,7 +274,7 @@
 #### Duplicate member
 
 * **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
-* **Scope**: header or closing brace
+* **Scope**: opening or closing brace
 
 ![Duplicate member](/images/refactorings/DuplicateMember.png)
 
@@ -363,6 +369,13 @@
 
 ![Format accessor braces on multiple lines](/images/refactorings/FormatAccessorBracesOnMultipleLines.png)
 
+#### Format accessor braces on single line
+
+* **Syntax**: get accessor, set accessor, add accessor, remove accessor
+* **Scope**: block
+
+![Format accessor braces on single line](/images/refactorings/FormatAccessorBracesOnSingleLine.png)
+
 #### Format all arguments on a single line
 
 * **Syntax**: argument list
@@ -430,6 +443,12 @@
 
 ![Format initializer on multiple lines](/images/refactorings/FormatInitializerOnMultipleLines.png)
 
+#### Generate switch sections
+
+* **Syntax**: switch statement (that is empty or contains only default section)
+
+![Generate switch sections](/images/refactorings/GenerateSwitchSections.png)
+
 #### Introduce constructor from selected member(s)
 
 * **Syntax**: selected fields/properties
@@ -442,6 +461,18 @@
 * **Scope**: indexer/method/property header
 
 ![Make member abstract](/images/refactorings/MakeMemberAbstract.png)
+
+#### Mark all members as static
+
+* **Syntax**: non-static field/method/property/event in static class
+
+![Mark all members as static](/images/refactorings/MarkAllMembersAsStatic.png)
+
+#### Mark member as static
+
+* **Syntax**: non-static field/method/property/event in static class
+
+![Mark member as static](/images/refactorings/MarkMemberAsStatic.png)
 
 #### Merge attributes
 
@@ -533,7 +564,7 @@
 #### Remove member
 
 * **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
-* **Scope**: header or closing brace
+* **Scope**: opening or closing brace
 
 ![Remove member](/images/refactorings/RemoveMember.png)
 
@@ -591,6 +622,7 @@
 #### Reverse for loop
 
 * **Syntax**: for statement
+* **Scope**: for keyword
 
 ![Reverse for loop](/images/refactorings/ReverseForLoop.png)
 
@@ -600,16 +632,9 @@
 
 ![Split attributes](/images/refactorings/SplitAttributes.png)
 
-#### Swap arguments
-
-* **Syntax**: arguments
-* **Scope**: comma between parameters
-
-![Swap arguments](/images/refactorings/SwapArguments.png)
-
 #### Swap expressions in binary expression
 
-* **Syntax**: binary expression
+* **Syntax**: logical and/or expression
 * **Scope**: binary operator
 
 ![Swap expressions in binary expression](/images/refactorings/SwapExpressionsInBinaryExpression.png)
@@ -626,13 +651,6 @@
 * **Syntax**: empty line between member declarations
 
 ![Swap members](/images/refactorings/SwapMembers.png)
-
-#### Swap parameters
-
-* **Syntax**: parameters
-* **Scope**: comma between parameters
-
-![Swap parameters](/images/refactorings/SwapParameters.png)
 
 #### Swap statements in if-else
 
