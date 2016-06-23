@@ -1,3 +1,34 @@
+### 0.9.70 (2016-06-23)
+
+#### Analyzers
+
+##### Changes
+
+* analyzer "MergeIfStatementWithContainedIfStatement" renamed to "MergeIfStatementWithNestedIfStatement"
+
+#### Refactorings
+
+##### New Refactorings
+
+* MarkMemberAsStatic
+* MarkAllMembersAsStatic
+* FormatAccessorBracesOnSingleLine
+* GenerateSwitchSections
+* ConvertStringLiteralToCharacterLiteral
+
+##### Changes
+
+* refactoring "ReverseForLoop" is available within 'for' keyword.
+* refactoring "SwapExpressionsInBinaryExpression" is available only for logical and/or expression.
+* refactoring "AddCastAccordingToParameterType" can offer more than one cast.
+* refactorings "SwapParameters" and "SwapArguments" removed (these are covered by "Change signature..." dialog)
+* refactorings "RemoveMember" and "DuplicateMember" are available only at opening/closing brace
+
+##### Bug Fixes
+
+* refactoring "RemoveAllRegions" is available inside #endregion directive.
+* refactoring "RenameMethodAccordingToTypeName" handles properly async method.
+
 ### 0.9.60 (2016-06-14)
 
 #### Analyzers
