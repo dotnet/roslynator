@@ -25,17 +25,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         ExpressionSyntax expression = GetExpression(statement);
 
-                        TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
-
-                        if (lambda
-                            .DescendantTrivia(span)
-                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                        if (expression.IsSingleline())
                         {
-                            span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
+                            TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
 
-                            return lambda
+                            if (lambda
                                 .DescendantTrivia(span)
-                                .All(f => f.IsWhitespaceOrEndOfLine());
+                                .All(f => f.IsWhitespaceOrEndOfLine()))
+                            {
+                                span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
+
+                                return lambda
+                                    .DescendantTrivia(span)
+                                    .All(f => f.IsWhitespaceOrEndOfLine());
+                            }
                         }
                     }
                 }
