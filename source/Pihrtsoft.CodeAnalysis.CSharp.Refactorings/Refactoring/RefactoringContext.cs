@@ -14,7 +14,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     internal class RefactoringContext
     {
         private SemanticModel _semanticModel;
-        private CSharpParseOptions _parseOptions;
 
         public RefactoringContext(CodeRefactoringContext context, SyntaxNode root)
         {
