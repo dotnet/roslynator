@@ -21,28 +21,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static void ComputeRefactorings(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
-            context.RegisterRefactoring(
-                "Convert to interpolated string",
-                cancellationToken =>
-                {
-                    int startIndex = -1;
-                    int length = 0;
-
-                    if (context.Span.End < literalExpression.Span.End)
+            if (context.SupportsCSharp6)
+            {
+                context.RegisterRefactoring(
+                    "Convert to interpolated string",
+                    cancellationToken =>
                     {
-                        startIndex = GetInterpolationStartIndex(context.Span.Start, literalExpression);
+                        int startIndex = -1;
+                        int length = 0;
 
-                        if (startIndex != 1)
-                            length = context.Span.Length;
-                    }
+                        if (context.Span.End < literalExpression.Span.End)
+                        {
+                            startIndex = GetInterpolationStartIndex(context.Span.Start, literalExpression);
 
-                    return ConvertStringLiteralToInterpolatedStringAsync(
-                        context.Document,
-                        literalExpression,
-                        startIndex,
-                        length,
-                        cancellationToken);
-                });
+                            if (startIndex != 1)
+                                length = context.Span.Length;
+                        }
+
+                        return ConvertStringLiteralToInterpolatedStringAsync(
+                            context.Document,
+                            literalExpression,
+                            startIndex,
+                            length,
+                            cancellationToken);
+                    });
+            }
 
             if (literalExpression.Span.Equals(context.Span))
             {

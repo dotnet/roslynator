@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -13,6 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     internal class RefactoringContext
     {
         private SemanticModel _semanticModel;
+        private CSharpParseOptions _parseOptions;
 
         public RefactoringContext(CodeRefactoringContext context, SyntaxNode root)
         {
@@ -42,6 +44,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public TextSpan Span
         {
             get { return BaseContext.Span; }
+        }
+
+        public bool SupportsCSharp6
+        {
+            get
+            {
+                if (Document.Project.Language == LanguageNames.CSharp)
+                {
+                    switch (((CSharpParseOptions)Document.Project.ParseOptions).LanguageVersion)
+                    {
+                        case LanguageVersion.CSharp1:
+                        case LanguageVersion.CSharp2:
+                        case LanguageVersion.CSharp3:
+                        case LanguageVersion.CSharp4:
+                        case LanguageVersion.CSharp5:
+                            return false;
+                        default:
+                            return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         public async Task<SemanticModel> GetSemanticModelAsync()

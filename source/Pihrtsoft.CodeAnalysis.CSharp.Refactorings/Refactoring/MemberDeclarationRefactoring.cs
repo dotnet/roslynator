@@ -127,6 +127,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (methodDeclaration.Body?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
@@ -163,6 +164,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
         {
             if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
             {
                 context.RegisterRefactoring(
@@ -174,6 +176,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ComputeRefactorings(RefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
             if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
             {
                 context.RegisterRefactoring(
@@ -185,6 +188,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ComputeRefactorings(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
             if (indexerDeclaration.AccessorList?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(indexerDeclaration))
             {
                 context.RegisterRefactoring(
@@ -221,6 +225,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (propertyDeclaration.AccessorList?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
             {
                 context.RegisterRefactoring(
