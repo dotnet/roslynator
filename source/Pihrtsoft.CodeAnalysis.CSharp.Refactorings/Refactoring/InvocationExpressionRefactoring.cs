@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (context.SupportsCSharp6)
-                await ConvertToInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                await ConvertStringFormatToInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
         }
 
         private static async Task ConvertAnyToAllOrAllToAnyAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)

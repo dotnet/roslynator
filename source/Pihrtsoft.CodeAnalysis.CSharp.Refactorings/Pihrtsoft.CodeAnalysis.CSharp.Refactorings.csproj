@@ -65,7 +65,7 @@
     <Compile Include="Refactoring\IntroduceConstructorRefactoring.cs" />
     <Compile Include="Refactoring\InvocationExpressionRefactoring.cs" />
     <Compile Include="Refactoring\LocalDeclarationStatementRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertToInterpolatedStringRefactoring.cs" />
+    <Compile Include="Refactoring\ConvertStringFormatToInterpolatedStringRefactoring.cs" />
     <Compile Include="Refactoring\DoStatementRefactoring.cs" />
     <Compile Include="Refactoring\ArrowExpressionClauseRefactoring.cs" />
     <Compile Include="Refactoring\ForStatementRefactoring.cs" />
