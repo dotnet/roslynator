@@ -2,9 +2,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     if (namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
                                         && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
                                     {
-                                        CodeAction codeAction = CodeAction.Create(
+                                        context.RegisterRefactoring(
                                             AddBooleanComparisonRefactoring.Title,
                                             cancellationToken =>
                                             {
@@ -55,38 +55,97 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                                     returnStatement.Expression,
                                                     context.CancellationToken);
                                             });
-
-                                        context.RegisterRefactoring(codeAction);
                                     }
                                 }
 
-                                if (!memberTypeSymbol.Equals(typeSymbol))
+                                ISymbol memberSymbol = semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
+
+                                TypeSyntax newType = GetNewMemberType(memberSymbol, memberTypeSymbol, typeSymbol, semanticModel);
+
+                                if (newType != null)
                                 {
-                                    TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol);
+                                    string newTypeName = typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat);
 
-                                    if (newType != null)
+                                    if (memberSymbol.IsKind(SymbolKind.Method)
+                                        && ((IMethodSymbol)memberSymbol).IsAsync)
                                     {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            $"Change {GetText(declaration)} type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                                            cancellationToken =>
-                                            {
-                                                return ChangeMemberTypeRefactoring.RefactorAsync(
-                                                    context.Document,
-                                                    memberType,
-                                                    newType,
-                                                    cancellationToken);
-                                            });
-
-                                        context.RegisterRefactoring(codeAction);
+                                        newTypeName = $"Task<'{newTypeName}'>";
                                     }
 
-                                    AddCastRefactoring.RegisterRefactoring(context, returnStatement.Expression, memberTypeSymbol);
+                                    context.RegisterRefactoring(
+                                    $"Change {GetText(declaration)} type to '{newTypeName}'",
+                                    cancellationToken =>
+                                    {
+                                        return ChangeMemberTypeRefactoring.RefactorAsync(
+                                            context.Document,
+                                            memberType,
+                                            newType,
+                                            cancellationToken);
+                                    });
                                 }
+
+                                AddCastRefactoring.RegisterRefactoring(context, returnStatement.Expression, memberTypeSymbol);
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static TypeSyntax GetNewMemberType(
+            ISymbol memberSymbol,
+            ITypeSymbol memberTypeSymbol,
+            ITypeSymbol expressionSymbol,
+            SemanticModel semanticModel)
+        {
+            if (memberSymbol.IsKind(SymbolKind.Method)
+                && ((IMethodSymbol)memberSymbol).IsAsync)
+            {
+                if (ShouldRefactorAsyncMethodReturnType(memberTypeSymbol, expressionSymbol, semanticModel))
+                {
+                    return QualifiedName(
+                        ParseName("System.Threading.Tasks"),
+                        GenericName(
+                            Identifier("Task"),
+                            TypeArgumentList(
+                                SingletonSeparatedList(
+                                    TypeSyntaxRefactoring.CreateTypeSyntax(expressionSymbol)))));
+                }
+            }
+            else if (!memberTypeSymbol.Equals(expressionSymbol))
+            {
+                return TypeSyntaxRefactoring.CreateTypeSyntax(expressionSymbol);
+            }
+
+            return null;
+        }
+
+        private static bool ShouldRefactorAsyncMethodReturnType(
+            ITypeSymbol memberTypeSymbol,
+            ITypeSymbol expressionSymbol,
+            SemanticModel semanticModel)
+        {
+            INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+            INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+
+            if (memberTypeSymbol.SpecialType == SpecialType.System_Void)
+                return true;
+
+            if (memberTypeSymbol.Equals(taskSymbol))
+                return true;
+
+            if (memberTypeSymbol.IsKind(SymbolKind.NamedType))
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
+
+                if (namedTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol)
+                    && !namedTypeSymbol.TypeArguments[0].Equals(expressionSymbol))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         internal static TypeSyntax GetMemberType(MemberDeclarationSyntax declaration)
