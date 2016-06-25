@@ -84,5 +84,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     });
             }
         }
+
+        public static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
+        {
+            bool success = true;
+
+            while (success)
+            {
+                success = false;
+
+                if (binaryExpression.Parent != null
+                    && binaryExpression.Parent.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
+                {
+                    var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
+
+                    if (parent.Left?.IsMissing == false
+                        && parent.Right?.IsMissing == false)
+                    {
+                        binaryExpression = parent;
+                        success = true;
+                    }
+                }
+            }
+
+            return binaryExpression;
+        }
     }
 }

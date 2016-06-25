@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            binaryExpression = NegateBinaryExpressionRefactoring.GetTopmostExpression(binaryExpression);
+            binaryExpression = BinaryExpressionRefactoring.GetTopmostExpression(binaryExpression);
 
             switch (binaryExpression.Parent?.Kind())
             {
