@@ -106,8 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             ISymbol symbol = symbolInfo.Symbol;
 
-            if (symbol == null
-                && symbolInfo.CandidateSymbols.Length > 0)
+            if (symbol == null)
             {
                 foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
                     yield return DetermineParameter(candidateSymbol, argument, argumentList);
