@@ -24,8 +24,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else
             {
+                string title = (parameterList.Parameters.Count == 1)
+                    ? "Format parameter on a single line"
+                    : "Format all parameters on a single line";
+
                 context.RegisterRefactoring(
-                    "Format all parameters on a single line",
+                    title,
                     cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
             }
         }
