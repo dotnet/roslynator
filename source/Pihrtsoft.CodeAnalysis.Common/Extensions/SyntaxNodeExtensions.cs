@@ -310,7 +310,7 @@ namespace Pihrtsoft.CodeAnalysis
             return SyntaxFactory.TriviaList(
                 triviaList
                     .Reverse()
-                    .TakeWhile(f => !f.IsEndOfLine()));
+                    .TakeWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia)));
         }
 
         private static SyntaxNode GetNodeForLeadingTrivia(this SyntaxNode node)
