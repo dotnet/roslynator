@@ -58,7 +58,7 @@
     </Syntaxes>
     <Scope>right expression</Scope>
   </Refactoring>
-  <Refactoring Id="AddCastToReturnStatement" Title="Add cast to return statement's expression" ExtensionVersion="0.9.60">
+  <Refactoring Id="AddCastToReturnExpression" Title="Add cast to return expression" ExtensionVersion="0.9.60">
     <Syntaxes>
       <Syntax>return statement</Syntax>
     </Syntaxes>
