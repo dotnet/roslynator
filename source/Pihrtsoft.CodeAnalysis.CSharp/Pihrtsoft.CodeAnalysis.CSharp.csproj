@@ -147,7 +147,6 @@
     <Compile Include="Refactoring\RemoveBracesFromNestedUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
-    <Compile Include="Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />

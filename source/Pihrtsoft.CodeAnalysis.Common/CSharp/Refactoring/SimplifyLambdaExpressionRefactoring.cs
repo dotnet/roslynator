@@ -2,17 +2,23 @@
 
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class SimplifyLambdaExpressionRefactoring
+    public static class SimplifyLambdaExpressionRefactoring
     {
         public static bool CanRefactor(LambdaExpressionSyntax lambda)
         {
+            if (lambda == null)
+                throw new ArgumentNullException(nameof(lambda));
+
             if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
             {
                 var block = (BlockSyntax)lambda.Body;
@@ -47,11 +53,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return false;
         }
 
-        public static LambdaExpressionSyntax Refactor(LambdaExpressionSyntax lambda)
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            LambdaExpressionSyntax lambdaExpressionSyntax,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (lambda == null)
-                throw new ArgumentNullException(nameof(lambda));
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
 
+            if (lambdaExpressionSyntax == null)
+                throw new ArgumentNullException(nameof(lambdaExpressionSyntax));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+            LambdaExpressionSyntax newLambda = Refactor(lambdaExpressionSyntax)
+                .WithTriviaFrom(lambdaExpressionSyntax)
+                .WithAdditionalAnnotations(Formatter.Annotation);
+
+            root = root.ReplaceNode(lambdaExpressionSyntax, newLambda);
+
+            return document.WithSyntaxRoot(root);
+        }
+
+        private static LambdaExpressionSyntax Refactor(LambdaExpressionSyntax lambda)
+        {
             var block = (BlockSyntax)lambda.Body;
             StatementSyntax statement = block.Statements[0];
             ExpressionSyntax expression = GetExpression(statement);

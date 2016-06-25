@@ -140,7 +140,6 @@
     <Compile Include="Refactoring\RemoveBracesFromStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactoring\AddOrRenameParameterRefactoring.cs" />
-    <Compile Include="Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="Refactoring\ConvertSwitchToIfElseRefactoring.cs" />
     <Compile Include="Refactoring\CloseParenTokenRefactoring.cs" />
     <Compile Include="Refactoring\PostfixUnaryExpressionRefactoring.cs" />

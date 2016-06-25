@@ -597,6 +597,12 @@
     </Syntaxes>
     <Scope>for keyword</Scope>
   </Refactoring>
+  <Refactoring Id="SimplifyLambdaExpression" Title="Simplify lambda expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>lambda expression with block with single single-line statement</Syntax>
+    </Syntaxes>
+    <Scope>body</Scope>
+  </Refactoring>
   <Refactoring Id="SplitAttributes" Title="Split attributes" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>selected attribute list</Syntax>

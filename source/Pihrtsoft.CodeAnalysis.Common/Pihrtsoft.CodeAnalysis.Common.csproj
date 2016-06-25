@@ -73,6 +73,7 @@
     <Compile Include="CSharp\Refactoring\DuplicateMemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseChainRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ConvertStringEmptyToEmptyStringLiteralRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Removers\CommentRemover.cs" />
     <Compile Include="CSharp\Removers\RegionRemover.cs" />

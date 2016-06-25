@@ -21,6 +21,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             cancellationToken);
                     });
             }
+            else if (SimplifyLambdaExpressionRefactoring.CanRefactor(lambda))
+            {
+                context.RegisterRefactoring(
+                    "Simplify lambda expression",
+                    cancellationToken =>
+                    {
+                        return SimplifyLambdaExpressionRefactoring.RefactorAsync(
+                            context.Document,
+                            lambda,
+                            cancellationToken);
+                    });
+            }
         }
     }
 }

@@ -2,13 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -33,26 +31,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Simplify lambda expression",
-                cancellationToken => SimplifyLambdaExpressionAsync(context.Document, (LambdaExpressionSyntax)block.Parent, cancellationToken),
+                cancellationToken => SimplifyLambdaExpressionRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, cancellationToken),
                 DiagnosticIdentifiers.SimplifyLambdaExpression + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        public static async Task<Document> SimplifyLambdaExpressionAsync(
-            Document document,
-            LambdaExpressionSyntax lambda,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            LambdaExpressionSyntax newLambda = SimplifyLambdaExpressionRefactoring.Refactor(lambda)
-                .WithTriviaFrom(lambda)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(lambda, newLambda);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }
