@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (defaultSectionIndex != -1)
             {
-                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(sections[defaultSectionIndex].Statements);
+                SyntaxList<StatementSyntax> statements = GetSectionStatements(sections[defaultSectionIndex]);
 
                 elseClause = ElseClause(Block(statements));
             }
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (i == defaultSectionIndex)
                     continue;
 
-                SyntaxList<StatementSyntax> statements = RemoveBreakStatement(sections[i].Statements);
+                SyntaxList<StatementSyntax> statements = GetSectionStatements(sections[i]);
 
                 IfStatementSyntax @if = IfStatement(
                     CreateCondition(switchStatement, sections[i]),
@@ -98,12 +98,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return condition;
         }
 
-        private static SyntaxList<StatementSyntax> RemoveBreakStatement(SyntaxList<StatementSyntax> statements)
+        private static SyntaxList<StatementSyntax> GetSectionStatements(SwitchSectionSyntax switchSection)
         {
-            int index = statements.IndexOf(SyntaxKind.BreakStatement);
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
 
-            if (index != -1)
-                return statements.RemoveAt(index);
+            if (statements.Count == 1
+                && statements[0].IsKind(SyntaxKind.Block))
+            {
+                statements = ((BlockSyntax)statements[0]).Statements;
+            }
+
+            if (statements.Any())
+            {
+                StatementSyntax last = statements.Last();
+
+                if (last.IsKind(SyntaxKind.BreakStatement))
+                    return statements.Remove(last);
+            }
 
             return statements;
         }
