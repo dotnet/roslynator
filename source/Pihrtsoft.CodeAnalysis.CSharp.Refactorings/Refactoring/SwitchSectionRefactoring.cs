@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
 
-            if (RemoveBracesFromSwitchSectionRefactoring.CanRefactor(switchSection))
+            if (RemoveBracesFromSwitchSectionRefactoring.CanRefactor(context, switchSection))
             {
                 context.RegisterRefactoring(
                     "Remove braces from switch section",

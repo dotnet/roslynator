@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 
@@ -10,9 +11,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RemoveBracesFromSwitchSectionRefactoring
     {
-        public static bool CanRefactor(SwitchSectionSyntax switchSection)
+        public static bool CanRefactor(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
-            return switchSection.ContainsSingleBlock();
+            if (switchSection.Statements.Count == 1
+                && switchSection.Statements[0].IsKind(SyntaxKind.Block))
+            {
+#if DEBUG
+                var block = (BlockSyntax)switchSection.Statements[0];
+
+                return block.OpenBraceToken.Span.Contains(context.Span)
+                    || block.CloseBraceToken.Span.Contains(context.Span);
+#else
+                return true;
+#endif
+            }
+
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(

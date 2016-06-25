@@ -29,6 +29,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && (CheckContainingNode(statement.Parent)
                 && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
             {
+#if DEBUG
+                if (!statement.IsKind(SyntaxKind.Block))
+                    return;
+
+                var block = (BlockSyntax)statement;
+                if (!block.OpenBraceToken.Span.Contains(context.Span)
+                    && !block.CloseBraceToken.Span.Contains(context.Span))
+                {
+                    return;
+                }
+#endif
                 string s = (UsePlural(statement)) ? "s" : "";
 
                 context.RegisterRefactoring(

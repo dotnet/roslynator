@@ -86,6 +86,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             return false;
         }
 
+        public static bool IsEmbeddableBlock(BlockSyntax block)
+        {
+            if (block == null)
+                throw new ArgumentNullException(nameof(block));
+
+            if (block.Statements.Count == 1
+                    && block.Parent != null
+                    && SupportsEmbeddedStatement(block.Parent))
+            {
+                StatementSyntax statement = block.Statements[0];
+
+                return !statement.IsKind(SyntaxKind.LocalDeclarationStatement)
+                    && !statement.IsKind(SyntaxKind.LabeledStatement);
+            }
+
+            return false;
+        }
+
         public static bool IsEmbeddedStatement(StatementSyntax statement)
         {
             if (statement == null)
