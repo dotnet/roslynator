@@ -149,7 +149,6 @@
     <Compile Include="Refactoring\CommentTriviaRefactoring.cs" />
     <Compile Include="Refactoring\ParameterRefactoring.cs" />
     <Compile Include="Refactoring\LiteralExpressionRefactoring.cs" />
-    <Compile Include="Refactoring\SimpleLambdaExpressionRefactoring.cs" />
     <Compile Include="Refactoring\VariableDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\NegateOperatorRefactoring.cs" />
     <Compile Include="Refactoring\UsingStatementRefactoring.cs" />

@@ -53,7 +53,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fParenthesizedExpression = false;
             bool fPostfixUnaryExpression = false;
             bool fPrefixUnaryExpression = false;
-            bool fSimpleLambdaExpression = false;
 
             bool fMemberDeclaration = false;
 #if DEBUG
@@ -220,17 +219,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             fInvocationExpression = true;
                         }
 
-                        var lambdaExpression = node as LambdaExpressionSyntax;
-                        if (lambdaExpression != null)
+                        if (!fLambdaExpression)
                         {
-                            if (!fSimpleLambdaExpression
-                                && node.IsKind(SyntaxKind.SimpleLambdaExpression))
-                            {
-                                await SimpleLambdaExpressionRefactoring.ComputeRefactoringsAsync(context, (SimpleLambdaExpressionSyntax)expression);
-                                fSimpleLambdaExpression = true;
-                            }
-
-                            if (!fLambdaExpression)
+                            var lambdaExpression = node as LambdaExpressionSyntax;
+                            if (lambdaExpression != null)
                             {
                                 LambdaExpressionRefactoring.ComputeRefactorings(context, lambdaExpression);
                                 fLambdaExpression = true;
