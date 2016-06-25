@@ -11,12 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RemoveBracesFromStatementRefactoring
     {
-        public static bool CanRefactor(StatementSyntax statement)
-        {
-            return EmbeddedStatementAnalysis.IsEmbeddableStatement(statement);
-        }
-
-        public static void Refactor(RefactoringContext context, StatementSyntax statement)
+        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             if (CanRefactor(statement))
             {
@@ -24,6 +19,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     $"Remove braces from {SyntaxHelper.GetSyntaxNodeName(statement.Parent.Parent)}",
                     cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
             }
+        }
+
+        public static bool CanRefactor(StatementSyntax statement)
+        {
+            return EmbeddedStatementAnalysis.IsEmbeddableStatement(statement);
         }
 
         public static async Task<Document> RefactorAsync(

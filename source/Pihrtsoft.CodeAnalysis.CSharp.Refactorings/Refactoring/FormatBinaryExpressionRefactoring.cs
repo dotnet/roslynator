@@ -1,67 +1,58 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class FormatBinaryExpressionRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, IfStatementSyntax ifStatement)
+        public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            ComputeRefactorings(context, ifStatement, ifStatement.Condition);
-        }
+            binaryExpression = NegateBinaryExpressionRefactoring.GetTopmostExpression(binaryExpression);
 
-        public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
-        {
-            ComputeRefactorings(context, whileStatement, whileStatement.Condition);
-        }
-
-        public static void ComputeRefactorings(RefactoringContext context, DoStatementSyntax doStatement)
-        {
-            ComputeRefactorings(context, doStatement, doStatement.Condition);
-        }
-
-        private static void ComputeRefactorings(
-            RefactoringContext context,
-            StatementSyntax statement,
-            ExpressionSyntax condition)
-        {
-            if (condition != null
-                && condition.Span.Contains(context.Span)
-                && condition.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && condition.IsSingleline())
+            switch (binaryExpression.Parent?.Kind())
             {
-                string title = (((BinaryExpressionSyntax)condition).Left?.IsKind(condition.Kind()) == true)
-                    ? "Format binary expressions on multiple lines"
-                    : "Format binary expression on multiple lines";
-
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken =>
+                case SyntaxKind.IfStatement:
+                case SyntaxKind.DoStatement:
+                case SyntaxKind.WhileStatement:
                     {
-                        return RefactorAsync(
-                            context.Document,
-                            statement,
-                            condition,
-                            cancellationToken);
-                    });
+                        if (binaryExpression.Span.Contains(context.Span)
+                            && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                            && binaryExpression.IsSingleline())
+                        {
+                            string title = binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true
+                                ? "Format binary expressions on multiple lines"
+                                : "Format binary expression on multiple lines";
+
+                            context.RegisterRefactoring(
+                                title,
+                                cancellationToken =>
+                                {
+                                    return RefactorAsync(
+                                        context.Document,
+                                        binaryExpression,
+                                        cancellationToken);
+                                });
+                        }
+
+                        break;
+                    }
             }
         }
 
         private static async Task<Document> RefactorAsync(
             Document document,
-            StatementSyntax statement,
-            ExpressionSyntax condition,
-            CancellationToken cancellationToken)
+            BinaryExpressionSyntax condition,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+            var statement = (StatementSyntax)condition.Parent;
 
             SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(SyntaxHelper.NewLine)
                 .AddRange(statement.GetIndentTrivia())
@@ -71,27 +62,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             var newCondition = (ExpressionSyntax)rewriter.Visit(condition);
 
-            StatementSyntax newStatement = SetCondition(statement, newCondition)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+             root = root.ReplaceNode(condition, newCondition);
 
-            return document.WithSyntaxRoot(oldRoot.ReplaceNode(statement, newStatement));
-        }
-
-        private static StatementSyntax SetCondition(StatementSyntax statement, ExpressionSyntax condition)
-        {
-            switch (statement.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)statement).WithCondition(condition);
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)statement).WithCondition(condition);
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)statement).WithCondition(condition);
-            }
-
-            Debug.Assert(false, statement.Kind().ToString());
-
-            return statement;
+            return document.WithSyntaxRoot(root);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter

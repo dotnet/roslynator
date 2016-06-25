@@ -6,106 +6,52 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.Removers;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class MethodDeclarationRefactoring
+    internal static class MethodDeclarationRefactoring
     {
-        public static bool CanConvertToReadOnlyProperty(MethodDeclarationSyntax methodDeclaration)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return methodDeclaration.ReturnType?.IsVoid() == false
-                && methodDeclaration.ParameterList?.Parameters.Count == 0
-                && methodDeclaration.TypeParameterList == null;
-        }
-
-        public static async Task<Document> ConvertToReadOnlyPropertyAsync(
-            Document document,
-            MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken)
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            PropertyDeclarationSyntax propertyDeclaration = ConvertToReadOnlyProperty(methodDeclaration)
-                .WithTriviaFrom(methodDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(methodDeclaration, propertyDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        public static PropertyDeclarationSyntax ConvertToReadOnlyProperty(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            if (methodDeclaration.ExpressionBody != null)
+            if (MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
             {
-                return PropertyDeclaration(
-                    methodDeclaration.AttributeLists,
-                    methodDeclaration.Modifiers,
-                    methodDeclaration.ReturnType,
-                    methodDeclaration.ExplicitInterfaceSpecifier,
-                    methodDeclaration.Identifier,
-                    null,
-                    methodDeclaration.ExpressionBody,
-                    null);
-            }
-            else
-            {
-                return PropertyDeclaration(
-                    methodDeclaration.AttributeLists,
-                    methodDeclaration.Modifiers,
-                    methodDeclaration.ReturnType,
-                    methodDeclaration.ExplicitInterfaceSpecifier,
-                    methodDeclaration.Identifier,
-                    CreateAccessorList(methodDeclaration));
-            }
-        }
+                context.RegisterRefactoring(
+                    "Mark method as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
 
-        private static AccessorListSyntax CreateAccessorList(MethodDeclarationSyntax method)
-        {
-            if (method.Body != null)
-            {
-                bool singleline = method.Body.Statements.Count == 1
-                    && method.Body.Statements[0].IsSingleline();
-
-                return CreateAccessorList(Block(method.Body?.Statements), singleline)
-                    .WithOpenBraceToken(method.Body.OpenBraceToken)
-                    .WithCloseBraceToken(method.Body.CloseBraceToken);
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
             }
 
-            return CreateAccessorList(Block(), singleline: true);
+            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+                && ConvertMethodToReadOnlyPropertyRefactoring.CanRefactor(methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Convert to read-only property",
+                    cancellationToken => ConvertMethodToReadOnlyPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (methodDeclaration.Body?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+                && MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Make method abstract",
+                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (context.SupportsSemanticModel)
+                await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration);
         }
 
-        private static AccessorListSyntax CreateAccessorList(BlockSyntax block, bool singleline)
-        {
-            AccessorListSyntax accessorList =
-                AccessorList(
-                    SingletonList(
-                        AccessorDeclaration(
-                            SyntaxKind.GetAccessorDeclaration,
-                            block)));
-
-            if (singleline)
-                accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList);
-
-            return accessorList;
-        }
-
-        internal static async Task RenameAccordingToTypeNameAsync(
+        private static async Task RenameMethodAccoringToTypeNameAsync(
             RefactoringContext context,
             MethodDeclarationSyntax methodDeclaration)
         {
@@ -143,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static ITypeSymbol GetType(
             TypeSyntax returnType,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var returnTypeSymbol = semanticModel.GetTypeInfo(returnType, cancellationToken).Type as INamedTypeSymbol;
 

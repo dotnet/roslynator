@@ -10,34 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SwapMembersRefactoring
     {
-        private static int IndexOfMemberToSwap(
-            MemberDeclarationSyntax member,
-            SyntaxList<MemberDeclarationSyntax> members,
-            TextSpan span)
-        {
-            int index = members.IndexOf(member);
-
-            if (span.End < member.Span.Start)
-            {
-                if (index > 0
-                    && span.Start > members[index - 1].Span.End)
-                {
-                    return index - 1;
-                }
-            }
-            else if (span.End > member.Span.End)
-            {
-                if (index < members.Count - 1
-                    && span.End < members[index + 1].Span.Start)
-                {
-                    return index;
-                }
-            }
-
-            return -1;
-        }
-
-        public static void Refactor(RefactoringContext context, MemberDeclarationSyntax member)
+        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
             var containingMember = member.Parent as MemberDeclarationSyntax;
 
@@ -72,12 +45,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
+        private static int IndexOfMemberToSwap(
+            MemberDeclarationSyntax member,
+            SyntaxList<MemberDeclarationSyntax> members,
+            TextSpan span)
+        {
+            int index = members.IndexOf(member);
+
+            if (span.End < member.Span.Start)
+            {
+                if (index > 0
+                    && span.Start > members[index - 1].Span.End)
+                {
+                    return index - 1;
+                }
+            }
+            else if (span.End > member.Span.End)
+            {
+                if (index < members.Count - 1
+                    && span.End < members[index + 1].Span.Start)
+                {
+                    return index;
+                }
+            }
+
+            return -1;
+        }
+
         private static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax containingMember,
             SyntaxList<MemberDeclarationSyntax> members,
             int index,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 

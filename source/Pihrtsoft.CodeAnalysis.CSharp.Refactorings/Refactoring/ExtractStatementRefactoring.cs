@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class ExtractStatementRefactoring
     {
-        public static void Refactor(RefactoringContext context, StatementSyntax statement)
+        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             if (statement.IsKind(SyntaxKind.Block)
                 && ((BlockSyntax)statement).Statements.Count == 0)

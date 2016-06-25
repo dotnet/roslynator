@@ -13,11 +13,11 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConditionalExpressionToIfElseRefactoring
+    internal static class ConvertConditionalExpressionToIfElseRefactoring
     {
         private const string Title = "Convert conditional expression to if-else";
 
-        public static void Refactor(RefactoringContext context, ConditionalExpressionSyntax expression)
+        public static void ComputeRefactoring(RefactoringContext context, ConditionalExpressionSyntax expression)
         {
             SyntaxNode parent = expression.Parent;
 

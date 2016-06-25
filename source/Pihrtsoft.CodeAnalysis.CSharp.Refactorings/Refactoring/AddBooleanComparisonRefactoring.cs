@@ -13,6 +13,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public const string Title = "Add boolean comparison";
 
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
+        {
+            if (await CanRefactorAsync(context, expression))
+            {
+                context.RegisterRefactoring(
+                    Title,
+                    cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+            }
+        }
+
         private static async Task<bool> CanRefactorAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
@@ -45,16 +55,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             return false;
-        }
-
-        public static async Task RefactorAsync(RefactoringContext context, ExpressionSyntax expression)
-        {
-            if (await CanRefactorAsync(context, expression))
-            {
-                context.RegisterRefactoring(
-                    Title,
-                    cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
-            }
         }
 
         public static async Task<Document> RefactorAsync(

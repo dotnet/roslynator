@@ -33,13 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ComputeRefactoringsAsync(RefactoringContext context)
         {
-            context.ComputeRefactoringsForNodeInsideTrivia();
-
-            await context.ComputeRefactoringsForNodeAsync();
-
-            context.ComputeRefactoringsForToken();
-
-            context.ComputeRefactoringsForTrivia();
+            await context.ComputeRefactoringsAsync();
         }
     }
 }

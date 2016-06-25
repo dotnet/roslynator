@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -67,67 +68,67 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> ChangePreIncrementToPostIncrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax prefixUnaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            PostfixUnaryExpressionSyntax newNode = SyntaxFactory.PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, prefixUnaryExpression.Operand)
+            PostfixUnaryExpressionSyntax newNode = PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, prefixUnaryExpression.Operand)
                 .WithTriviaFrom(prefixUnaryExpression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(prefixUnaryExpression, newNode);
+            root = root.ReplaceNode(prefixUnaryExpression, newNode);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
         private static async Task<Document> ChangePreIncrementToPreDecrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax prefixUnaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
             PrefixUnaryExpressionSyntax newNode = prefixUnaryExpression
-                .WithOperatorToken(SyntaxFactory.Token(SyntaxKind.MinusMinusToken))
+                .WithOperatorToken(Token(SyntaxKind.MinusMinusToken))
                 .WithTriviaFrom(prefixUnaryExpression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(prefixUnaryExpression, newNode);
+            root = root.ReplaceNode(prefixUnaryExpression, newNode);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
         private static async Task<Document> ChangePreDecrementToPostDecrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax prefixUnaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            PostfixUnaryExpressionSyntax newNode = SyntaxFactory.PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, prefixUnaryExpression.Operand)
+            PostfixUnaryExpressionSyntax newNode = PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, prefixUnaryExpression.Operand)
                 .WithTriviaFrom(prefixUnaryExpression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(prefixUnaryExpression, newNode);
+            root = root.ReplaceNode(prefixUnaryExpression, newNode);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
         private static async Task<Document> ChangePreDecrementToPreIncrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax prefixUnaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
             PrefixUnaryExpressionSyntax newNode = prefixUnaryExpression
-                .WithOperatorToken(SyntaxFactory.Token(SyntaxKind.PlusPlusToken))
+                .WithOperatorToken(Token(SyntaxKind.PlusPlusToken))
                 .WithTriviaFrom(prefixUnaryExpression)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(prefixUnaryExpression, newNode);
+            root = root.ReplaceNode(prefixUnaryExpression, newNode);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
     }
 }

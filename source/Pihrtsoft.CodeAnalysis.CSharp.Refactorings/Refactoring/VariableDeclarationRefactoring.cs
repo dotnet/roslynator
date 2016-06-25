@@ -19,10 +19,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration);
 
-                await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
-
                 if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
+                {
+                    await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
                     await ChangeTypeAsync(context, variableDeclaration);
+                }
 
                 await AddCastToExpressionAsync(context, variableDeclaration);
             }
@@ -39,28 +40,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 semanticModel,
                 context.CancellationToken);
 
-            switch (result)
+            if (result == TypeAnalysisResult.Explicit || result == TypeAnalysisResult.ExplicitButShouldBeImplicit)
             {
-                case TypeAnalysisResult.Explicit:
-                case TypeAnalysisResult.ExplicitButShouldBeImplicit:
-                    {
-                        context.RegisterRefactoring(
-                            "Change type to 'var'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
+                context.RegisterRefactoring(
+                    "Change type to 'var'",
+                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
+            }
+            else if (result == TypeAnalysisResult.Implicit || result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, context.CancellationToken).Type;
 
-                        break;
-                    }
-                case TypeAnalysisResult.Implicit:
-                case TypeAnalysisResult.ImplicitButShouldBeExplicit:
-                    {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, context.CancellationToken).Type;
-
-                        context.RegisterRefactoring(
-                            $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken));
-
-                        break;
-                    }
+                context.RegisterRefactoring(
+                    $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken));
             }
         }
 
@@ -68,48 +60,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
-            if (variableDeclaration.Type == null)
-                return;
-
-            if (variableDeclaration.Parent?.IsKind(SyntaxKind.EventFieldDeclaration) == true)
-                return;
-
-            if (variableDeclaration.Variables.Count != 1)
-                return;
-
-            VariableDeclaratorSyntax declarator = variableDeclaration.Variables[0];
-
-            if (!declarator.Identifier.Span.Contains(context.Span))
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
-
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
-
-            if (symbol == null)
-                return;
-
-            string newName = NamingHelper.CreateIdentifierName(
-                variableDeclaration.Type,
-                semanticModel,
-                FirstCharToLower(symbol));
-
-            if (string.IsNullOrEmpty(newName))
-                return;
-
-            if (symbol.IsKind(SymbolKind.Field)
-                && symbol.DeclaredAccessibility == Accessibility.Private
-                && !((IFieldSymbol)symbol).IsConst)
+            if (variableDeclaration.Type != null
+                && variableDeclaration.Parent?.IsKind(SyntaxKind.EventFieldDeclaration) == false
+                && variableDeclaration.Variables.Count == 1
+                && variableDeclaration.Variables[0].Identifier.Span.Contains(context.Span))
             {
-                newName = NamingHelper.ToCamelCaseWithUnderscore(newName);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                ISymbol symbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken);
+
+                if (symbol != null)
+                {
+                    string newName = NamingHelper.CreateIdentifierName(
+                        variableDeclaration.Type,
+                        semanticModel,
+                        FirstCharToLower(symbol));
+
+                    if (!string.IsNullOrEmpty(newName))
+                    {
+                        if (symbol.IsKind(SymbolKind.Field)
+                            && symbol.DeclaredAccessibility == Accessibility.Private
+                            && !((IFieldSymbol)symbol).IsConst)
+                        {
+                            newName = NamingHelper.ToCamelCaseWithUnderscore(newName);
+                        }
+
+                        if (!string.Equals(variableDeclaration.Variables[0].Identifier.ValueText, newName, StringComparison.Ordinal))
+                        {
+                            context.RegisterRefactoring(
+                                $"Rename {GetName(symbol)} to '{newName}'",
+                                cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                        }
+                    }
+                }
             }
-
-            if (string.Equals(declarator.Identifier.ValueText, newName, StringComparison.Ordinal))
-                return;
-
-            context.RegisterRefactoring(
-                $"Rename {GetName(symbol)} to '{newName}'",
-                cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
         }
 
         private static string GetName(ISymbol symbol)
@@ -143,45 +127,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
-            if (variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) != false)
-                return;
-
-            TypeSyntax type = variableDeclaration.Type;
-
-            if (type == null)
-                return;
-
-            if (type.IsVar)
-                return;
-
-            if (!type.Span.Contains(context.Span))
-                return;
-
-            if (variableDeclaration.Variables.Count != 1)
-                return;
-
-            EqualsValueClauseSyntax initializer = variableDeclaration.Variables[0].Initializer;
-
-            if (initializer == null)
-                return;
-
-            if (initializer.Value == null)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
-
-            ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeInfo(initializer.Value).Type;
-
-            if (initializerTypeSymbol == null || initializerTypeSymbol.IsKind(SymbolKind.ErrorType))
-                return;
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).ConvertedType;
-
-            if (!initializerTypeSymbol.Equals(typeSymbol))
+            if (variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) == false
+                && variableDeclaration.Type?.IsVar == false
+                && variableDeclaration.Variables.Count == 1)
             {
-                context.RegisterRefactoring(
-                    $"Change type to '{initializerTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, initializerTypeSymbol, cancellationToken));
+                ExpressionSyntax initializerValue = variableDeclaration.Variables[0].Initializer?.Value;
+
+                if (initializerValue != null)
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                    ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeInfo(initializerValue).Type;
+
+                    if (initializerTypeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                    {
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).ConvertedType;
+
+                        if (!initializerTypeSymbol.Equals(typeSymbol))
+                        {
+                            context.RegisterRefactoring(
+                                $"Change type to '{initializerTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                                cancellationToken =>
+                                {
+                                    return TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(
+                                        context.Document,
+                                        variableDeclaration.Type,
+                                        initializerTypeSymbol,
+                                        cancellationToken);
+                                });
+                        }
+                    }
+                }
             }
         }
 
@@ -209,7 +185,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             .Type;
 
                         if (!declarationType.Equals(expressionType))
-                            AddCastRefactoring.Refactor(context, declarator.Initializer.Value, declarationType);
+                            AddCastRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType);
                     }
                 }
             }

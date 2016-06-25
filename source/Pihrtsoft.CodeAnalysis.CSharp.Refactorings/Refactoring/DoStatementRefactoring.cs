@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && doStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {
-                await AddBooleanComparisonRefactoring.RefactorAsync(context, doStatement.Condition);
+                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition);
             }
         }
     }

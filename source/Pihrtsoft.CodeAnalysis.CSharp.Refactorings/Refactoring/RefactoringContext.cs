@@ -81,7 +81,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Func<CancellationToken, Task<Document>> createChangedDocument,
             string equivalenceKey = null)
         {
-            BaseContext.RegisterRefactoring(CodeAction.Create(title, createChangedDocument, equivalenceKey));
+            BaseContext.RegisterRefactoring(
+                CodeAction.Create(title, createChangedDocument, equivalenceKey));
         }
 
         public void RegisterRefactoring(
@@ -89,7 +90,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Func<CancellationToken, Task<Solution>> createChangedSolution,
             string equivalenceKey = null)
         {
-            BaseContext.RegisterRefactoring(CodeAction.Create(title, createChangedSolution, equivalenceKey));
+            BaseContext.RegisterRefactoring(
+                CodeAction.Create(title, createChangedSolution, equivalenceKey));
         }
 
         public void RegisterRefactoring(CodeAction codeAction)

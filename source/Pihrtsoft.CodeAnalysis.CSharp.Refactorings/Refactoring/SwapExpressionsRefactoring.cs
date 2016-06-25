@@ -3,36 +3,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SwapExpressionsRefactoring
     {
-        public static void Refactor(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
-        {
-            if (binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false
-                && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && binaryExpression.OperatorToken.Span.Contains(context.Span))
-            {
-                context.RegisterRefactoring(
-                    "Swap expressions",
-                    cancellationToken =>
-                    {
-                        return RefactorAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
-            }
-        }
-
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 

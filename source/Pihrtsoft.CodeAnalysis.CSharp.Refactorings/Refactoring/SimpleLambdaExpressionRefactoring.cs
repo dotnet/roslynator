@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (lambda.Parameter != null
                 && context.SupportsSemanticModel)
             {
-                await RenameParameterAccordingToTypeNameRefactoring.RefactorAsync(context, lambda.Parameter);
+                await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, lambda.Parameter);
             }
         }
     }

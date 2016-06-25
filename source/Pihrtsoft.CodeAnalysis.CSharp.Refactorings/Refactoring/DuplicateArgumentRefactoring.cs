@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class DuplicateArgumentRefactoring
     {
-        public static void Refactor(RefactoringContext context, ArgumentListSyntax argumentList)
+        public static void ComputeRefactoring(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             ArgumentSyntax argument = GetArgument(context, argumentList);
 

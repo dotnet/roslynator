@@ -11,9 +11,9 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RenameParameterAccordingToTypeNameRefactoring
+    internal static class AddOrRenameParameterRefactoring
     {
-        public static async Task RefactorAsync(RefactoringContext context, ParameterSyntax parameter)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         context.RegisterRefactoring(
                             $"Add parameter name '{name}'",
-                            cancellationToken => AddParameterNameAccordingToTypeNameRefactorAsync(context.Document, parameter, name, cancellationToken));
+                            cancellationToken => AddParameterNameAccordingToTypeNameAsync(context.Document, parameter, name, cancellationToken));
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> AddParameterNameAccordingToTypeNameRefactorAsync(
+        private static async Task<Document> AddParameterNameAccordingToTypeNameAsync(
             Document document,
             ParameterSyntax parameter,
             string name,

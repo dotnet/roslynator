@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class AddCastRefactoring
     {
-        public static void Refactor(
+        public static void RegisterRefactoring(
             RefactoringContext context,
             ExpressionSyntax expression,
             ITypeSymbol typeSymbol)
@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             ExpressionSyntax expression,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 

@@ -10,6 +10,20 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTriviaExtensions
     {
+        public static bool IsCommentTrivia(this SyntaxTrivia trivia)
+        {
+            switch (trivia.Kind())
+            {
+                case SyntaxKind.SingleLineCommentTrivia:
+                case SyntaxKind.MultiLineCommentTrivia:
+                case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                case SyntaxKind.MultiLineDocumentationCommentTrivia:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)

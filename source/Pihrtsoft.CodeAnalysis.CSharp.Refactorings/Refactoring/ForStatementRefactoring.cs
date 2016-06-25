@@ -9,16 +9,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            if (context.SupportsSemanticModel)
+            if (context.SupportsSemanticModel
+                && (await ConvertForToForEachRefactoring.CanRefactorAsync(context, forStatement)))
             {
-                bool canRefactor = await ForToForEachRefactoring.CanRefactorAsync(context, forStatement);
-
-                if (canRefactor)
-                {
-                    context.RegisterRefactoring(
-                        "Convert for to foreach",
-                        cancellationToken => ForToForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
-                }
+                context.RegisterRefactoring(
+                    "Convert for to foreach",
+                    cancellationToken => ConvertForToForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
             }
 
             if (forStatement.ForKeyword.Span.Contains(context.Span)

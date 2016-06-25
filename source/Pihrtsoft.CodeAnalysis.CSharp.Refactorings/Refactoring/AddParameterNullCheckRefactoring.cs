@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class AddParameterNullCheckRefactoring
     {
-        public static async Task RefactorAsync(RefactoringContext context, ParameterSyntax parameter)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
             if (parameter.Identifier.Span.Contains(context.Span)
                 && await CanRefactorAsync(context, parameter))

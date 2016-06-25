@@ -10,31 +10,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RefactoringContextExtensions
     {
-        public static void ComputeRefactoringsForNodeInsideTrivia(this RefactoringContext context)
+        public static async Task ComputeRefactoringsAsync(this RefactoringContext context)
         {
-            SyntaxNode node = context.FindNode(findInsideTrivia: true);
+            ComputeRefactoringsForNodeInsideTrivia(context);
 
-            if (node == null)
-                return;
+            await ComputeRefactoringsForTokenAsync(context);
 
-            bool fRegionDirectiveTrivia = false;
+            ComputeRefactoringsForTrivia(context);
 
-            using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
-            {
-                while (en.MoveNext())
-                {
-                    node = en.Current;
-
-                    if (!fRegionDirectiveTrivia
-                        && node.IsAnyKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia)
-                        && context.Root.IsKind(SyntaxKind.CompilationUnit))
-                    {
-                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
-                        fRegionDirectiveTrivia = true;
-                        continue;
-                    }
-                }
-            }
+            await ComputeRefactoringsForNodeAsync(context);
         }
 
         public static async Task ComputeRefactoringsForNodeAsync(this RefactoringContext context)
@@ -58,7 +42,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fAssignmentExpression = false;
             bool fBinaryExpression = false;
             bool fConditionalExpression = false;
-            bool fFormatBinaryExpression = false;
             bool fGenericName = false;
             bool fIdentifierName = false;
             bool fInitializerExpression = false;
@@ -66,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fInvocationExpression = false;
             bool fLambdaExpression = false;
             bool fLiteralExpression = false;
-            bool fMemberAccessExpression = false;
+            bool fSimpleMemberAccessExpression = false;
             bool fParenthesizedExpression = false;
             bool fPostfixUnaryExpression = false;
             bool fPrefixUnaryExpression = false;
@@ -140,18 +123,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (!fParameterList
                         && node.IsKind(SyntaxKind.ParameterList))
                     {
-                        SyntaxToken token = context.FindToken();
-
-                        switch (token.Kind())
-                        {
-                            case SyntaxKind.CloseParenToken:
-                                await CloseParenTokenRefactoring.ComputeRefactoringsAsync(context, token);
-                                break;
-                            case SyntaxKind.CommaToken:
-                                await CommaTokenRefactoring.ComputeRefactoringsAsync(context, token);
-                                break;
-                        }
-
                         ParameterListRefactoring.ComputeRefactorings(context, (ParameterListSyntax)node);
                         fParameterList = true;
                         continue;
@@ -194,41 +165,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             }
                         }
 
-                        if (!fBinaryExpression || !fFormatBinaryExpression)
+                        if (!fBinaryExpression)
                         {
                             var binaryExpression = node as BinaryExpressionSyntax;
                             if (binaryExpression != null)
                             {
-                                if (!fFormatBinaryExpression)
-                                {
-                                    switch (binaryExpression.Parent?.Kind())
-                                    {
-                                        case SyntaxKind.IfStatement:
-                                            {
-                                                FormatBinaryExpressionRefactoring.ComputeRefactorings(context, (IfStatementSyntax)binaryExpression.Parent);
-                                                fFormatBinaryExpression = true;
-                                                break;
-                                            }
-                                        case SyntaxKind.DoStatement:
-                                            {
-                                                FormatBinaryExpressionRefactoring.ComputeRefactorings(context, (DoStatementSyntax)binaryExpression.Parent);
-                                                fFormatBinaryExpression = true;
-                                                break;
-                                            }
-                                        case SyntaxKind.WhileStatement:
-                                            {
-                                                FormatBinaryExpressionRefactoring.ComputeRefactorings(context, (WhileStatementSyntax)binaryExpression.Parent);
-                                                fFormatBinaryExpression = true;
-                                                break;
-                                            }
-                                    }
-                                }
-
-                                if (!fBinaryExpression)
-                                {
-                                    await BinaryExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression);
-                                    fBinaryExpression = true;
-                                }
+                                await BinaryExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression);
+                                fBinaryExpression = true;
                             }
                         }
 
@@ -300,22 +243,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             if (literalExpression != null)
                             {
                                 LiteralExpressionRefactoring.ComputeRefactorings(context, literalExpression);
-
-                                if (node.IsKind(SyntaxKind.StringLiteralExpression))
-                                    StringLiteralRefactoring.ComputeRefactorings(context, literalExpression);
-
                                 fLiteralExpression = true;
                             }
                         }
 
-                        if (!fMemberAccessExpression)
+                        if (!fSimpleMemberAccessExpression
+                            && node.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                         {
-                            var memberAccess = node as MemberAccessExpressionSyntax;
-                            if (memberAccess != null)
-                            {
-                                await MemberAccessExpressionRefactoring.ComputeRefactoringsAsync(context, memberAccess);
-                                fMemberAccessExpression = true;
-                            }
+                            await SimpleMemberAccessExpressionRefactoring.ComputeRefactoringAsync(context, (MemberAccessExpressionSyntax)node);
+                            fSimpleMemberAccessExpression = true;
                         }
 
                         if (!fParenthesizedExpression
@@ -348,7 +284,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!fExpression)
                         {
                             ExpressionRefactoring.ComputeRefactorings(context, expression);
-
                             fExpression = true;
                         }
 
@@ -369,6 +304,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!fMemberDeclaration)
                         {
                             await MemberDeclarationRefactoring.ComputeRefactoringsAsync(context, memberDeclaration);
+
                             await IntroduceConstructorRefactoring.ComputeRefactoringsAsync(context, memberDeclaration);
                             fMemberDeclaration = true;
                         }
@@ -454,7 +390,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                         if (!fStatement)
                         {
-                            StatementRefactoring.ComputeRefactorings(context, statement);
+                            AddBracesToEmbeddedStatementRefactoring.ComputeRefactoring(context, statement);
+                            RemoveBracesFromStatementRefactoring.ComputeRefactoring(context, statement);
+                            ExtractStatementRefactoring.ComputeRefactoring(context, statement);
                             fStatement = true;
                         }
 
@@ -464,32 +402,88 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static void ComputeRefactoringsForToken(this RefactoringContext context)
+        public static void ComputeRefactoringsForNodeInsideTrivia(this RefactoringContext context)
+        {
+            SyntaxNode node = context.FindNode(findInsideTrivia: true);
+
+            if (node == null)
+                return;
+
+            bool fRegionDirectiveTrivia = false;
+
+            using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
+            {
+                while (en.MoveNext())
+                {
+                    node = en.Current;
+
+                    if (!fRegionDirectiveTrivia)
+                    {
+                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context, node);
+                        fRegionDirectiveTrivia = true;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        public static async Task ComputeRefactoringsForTokenAsync(this RefactoringContext context)
         {
             SyntaxToken token = context.FindToken();
 
-            if (!token.IsKind(SyntaxKind.None))
-                NegateOperatorRefactoring.ComputeRefactorings(context, token);
+            if (token.IsKind(SyntaxKind.None))
+                return;
+
+            switch (token.Kind())
+            {
+                case SyntaxKind.AmpersandAmpersandToken:
+                case SyntaxKind.BarBarToken:
+                case SyntaxKind.EqualsEqualsToken:
+                case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.GreaterThanToken:
+                case SyntaxKind.GreaterThanEqualsToken:
+                case SyntaxKind.LessThanToken:
+                case SyntaxKind.LessThanEqualsToken:
+                    {
+                        context.RegisterRefactoring(
+                            "Negate operator",
+                            cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
+
+                        break;
+                    }
+                case SyntaxKind.CloseParenToken:
+                    {
+                        await CloseParenTokenRefactoring.ComputeRefactoringsAsync(context, token);
+                        break;
+                    }
+                case SyntaxKind.CommaToken:
+                    {
+                        await CommaTokenRefactoring.ComputeRefactoringsAsync(context, token);
+                        break;
+                    }
+            }
         }
 
         public static void ComputeRefactoringsForTrivia(this RefactoringContext context)
         {
             SyntaxTrivia trivia = context.FindTrivia();
 
-            if (!trivia.IsKind(SyntaxKind.None))
-            {
-                switch (trivia.Kind())
-                {
-                    case SyntaxKind.SingleLineCommentTrivia:
-                        {
-                            SingleLineCommentTriviaRefactoring.ComputeRefactorings(context, trivia);
-                            break;
-                        }
-                }
+            if (trivia.IsKind(SyntaxKind.None))
+                return;
 
-                if (context.Root.IsKind(SyntaxKind.CompilationUnit))
-                    RemoveCommentRefactoring.ComputeRefactorings(context, trivia);
+            switch (trivia.Kind())
+            {
+                case SyntaxKind.SingleLineCommentTrivia:
+                    {
+                        context.RegisterRefactoring(
+                            "Uncomment",
+                            cancellationToken => UncommentRefactoring.RefactorAsync(context.Document, trivia, cancellationToken));
+
+                        break;
+                    }
             }
+
+            CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
         }
     }
 }

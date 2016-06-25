@@ -1,78 +1,36 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis.CSharp.Removers;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class EventFieldDeclarationRefactoring
+    internal static class EventFieldDeclarationRefactoring
     {
-        public static bool CanExpand(
-            EventFieldDeclarationSyntax eventDeclaration,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        public static void ComputeRefactorings(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
+            if (MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Mark event as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
 
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
+            }
 
-            return eventDeclaration.Parent != null
-                && eventDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
-                && eventDeclaration.Declaration?.Variables.Count == 1;
-        }
-
-        public static async Task<Document> ExpandAsync(
-            Document document,
-            EventFieldDeclarationSyntax eventDeclaration,
-            CancellationToken cancellationToken)
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
-
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-
-            EventDeclarationSyntax newNode = Expand(eventDeclaration)
-                .WithTriviaFrom(eventDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(eventDeclaration, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static EventDeclarationSyntax Expand(EventFieldDeclarationSyntax eventDeclaration)
-        {
-            AccessorListSyntax accessorList = AccessorList(
-                List(new AccessorDeclarationSyntax[]
-                {
-                    AccessorDeclaration(SyntaxKind.AddAccessorDeclaration, Block()),
-                    AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, Block()),
-                }));
-
-            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
-
-            VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];
-
-            return EventDeclaration(
-                eventDeclaration.AttributeLists,
-                eventDeclaration.Modifiers,
-                eventDeclaration.Declaration.Type,
-                null,
-                declarator.Identifier,
-                accessorList);
+            if (eventFieldDeclaration.Span.Contains(context.Span)
+                && context.SupportsSemanticModel
+                && ExpandEventRefactoring.CanRefactor(eventFieldDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Expand event",
+                    cancellationToken =>
+                    {
+                        return ExpandEventRefactoring.RefactorAsync(
+                            context.Document,
+                            eventFieldDeclaration,
+                            cancellationToken);
+                    });
+            }
         }
     }
 }

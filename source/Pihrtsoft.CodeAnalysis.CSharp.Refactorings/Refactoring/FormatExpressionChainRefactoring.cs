@@ -14,9 +14,9 @@ using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ExpressionChainRefactoring
+    internal static class FormatExpressionChainRefactoring
     {
-        public static void FormatExpressionChain(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
+        public static void ComputeRefactorings(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
         {
             if (!memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                 return;

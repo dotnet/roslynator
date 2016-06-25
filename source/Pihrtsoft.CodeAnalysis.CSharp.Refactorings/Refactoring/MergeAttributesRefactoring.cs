@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class MergeAttributesRefactoring
     {
-        public static void Refactor(RefactoringContext context, MemberDeclarationSyntax member)
+        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 

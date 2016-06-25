@@ -6,17 +6,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class MemberAccessExpressionRefactoring
+    internal static class SimpleMemberAccessExpressionRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (memberAccess.Kind() == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                ExpressionChainRefactoring.FormatExpressionChain(context, memberAccess);
+            FormatExpressionChainRefactoring.ComputeRefactorings(context, memberAccess);
 
-                if (context.SupportsSemanticModel)
-                    await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess);
-            }
+            if (context.SupportsSemanticModel)
+                await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess);
         }
 
         private static async Task ConvertStringEmptyToEmptyStringLiteralAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)

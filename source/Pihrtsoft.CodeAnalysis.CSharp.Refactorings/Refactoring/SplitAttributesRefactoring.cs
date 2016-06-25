@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class SplitAttributesRefactoring
     {
-        public static void Refactor(RefactoringContext context, MemberDeclarationSyntax member)
+        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     context.RegisterRefactoring("Split attributes",
                         cancellationToken =>
                         {
-                            return SplitAttributesAsync(
+                            return RefactorAsync(
                                 context.Document,
                                 member,
                                 lists,
@@ -39,11 +39,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> SplitAttributesAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

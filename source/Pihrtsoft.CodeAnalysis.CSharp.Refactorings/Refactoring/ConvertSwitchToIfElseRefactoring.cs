@@ -15,11 +15,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            IfStatementSyntax newNode = ConvertSwitchToIfElse(switchStatement)
+            IfStatementSyntax newNode = Refactor(switchStatement)
                 .WithTriviaFrom(switchStatement)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static IfStatementSyntax ConvertSwitchToIfElse(SwitchStatementSyntax switchStatement)
+        private static IfStatementSyntax Refactor(SwitchStatementSyntax switchStatement)
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
             IfStatementSyntax ifStatement = null;

@@ -11,9 +11,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.SupportsSemanticModel)
             {
-                await RenameParameterAccordingToTypeNameRefactoring.RefactorAsync(context, parameter);
+                await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
 
-                await AddParameterNullCheckRefactoring.RefactorAsync(context, parameter);
+                await AddParameterNullCheckRefactoring.ComputeRefactoringAsync(context, parameter);
             }
         }
     }
