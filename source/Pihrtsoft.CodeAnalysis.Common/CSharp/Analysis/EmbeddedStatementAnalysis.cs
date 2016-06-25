@@ -195,21 +195,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             switch (node.Kind())
             {
                 case SyntaxKind.IfStatement:
-                    return true;
                 case SyntaxKind.ElseClause:
-                    return true;
                 case SyntaxKind.ForEachStatement:
-                    return true;
                 case SyntaxKind.ForStatement:
-                    return true;
                 case SyntaxKind.UsingStatement:
-                    return true;
                 case SyntaxKind.WhileStatement:
-                    return true;
                 case SyntaxKind.DoStatement:
-                    return true;
                 case SyntaxKind.LockStatement:
-                    return true;
                 case SyntaxKind.FixedStatement:
                     return true;
                 default:
