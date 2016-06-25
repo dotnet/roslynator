@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (ExpandLambdaExpressionBodyRefactoring.CanRefactor(context, lambda))
             {
                 context.RegisterRefactoring(
-                    "Expand lambda expression's body",
+                    "Expand lambda expression body",
                     cancellationToken =>
                     {
                         return ExpandLambdaExpressionBodyRefactoring.RefactorAsync(

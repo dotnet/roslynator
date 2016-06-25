@@ -248,7 +248,7 @@
       <Syntax>expression body</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExpandLambdaExpressionBody" Title="Expand lambda expression's body" ExtensionVersion="0.9.0">
+  <Refactoring Id="ExpandLambdaExpressionBody" Title="Expand lambda expression body" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>lambda expression</Syntax>
     </Syntaxes>
