@@ -99,7 +99,6 @@
     <Compile Include="CSharp\Extensions\MethodDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ParenthesizedExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\PropertyDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\SwitchSectionSyntaxExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeOrToken.cs" />
     <Compile Include="Extensions\SyntaxTokenExtensions.cs" />
