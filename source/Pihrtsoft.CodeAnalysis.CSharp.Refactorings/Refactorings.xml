@@ -92,7 +92,7 @@
     </Syntaxes>
     <Scope>selected expression</Scope>
   </Refactoring>
-  <Refactoring Id="AddUsingStatement" Title="Add using statement" ExtensionVersion="0.9.0">
+  <Refactoring Id="WrapInUsingStatement" Title="Wrap in using statement" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>

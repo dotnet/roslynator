@@ -44,7 +44,7 @@
     <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\IndexerDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
-    <Compile Include="Refactoring\AddUsingStatementRefactoring.cs" />
+    <Compile Include="Refactoring\WrapInUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactoring\MergeStringLiteralsRefactoring.cs" />

@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
             if (context.SupportsSemanticModel)
-                await AddUsingStatementRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+                await WrapInUsingStatementRefactoring.ComputeRefactoringAsync(context, localDeclaration);
         }
     }
 }
