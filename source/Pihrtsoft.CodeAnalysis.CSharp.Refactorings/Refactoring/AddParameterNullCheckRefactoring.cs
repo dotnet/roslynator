@@ -197,48 +197,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode parent = parameter.Parent;
 
-            if (parent == null)
-                return null;
-
-            if (parent.IsKind(SyntaxKind.SimpleLambdaExpression))
-            {
-                var lambda = (SimpleLambdaExpressionSyntax)parent;
-
-                if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
-                    return (BlockSyntax)lambda.Body;
-            }
-            else if (parent.IsKind(SyntaxKind.ParameterList))
+            if (parent?.IsKind(SyntaxKind.ParameterList) == true)
             {
                 parent = parent.Parent;
 
                 switch (parent?.Kind())
                 {
                     case SyntaxKind.MethodDeclaration:
-                        {
-                            return ((MethodDeclarationSyntax)parent).Body;
-                        }
+                        return ((MethodDeclarationSyntax)parent).Body;
                     case SyntaxKind.ConstructorDeclaration:
-                        {
-                            return ((ConstructorDeclarationSyntax)parent).Body;
-                        }
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                        {
-                            var lambda = (ParenthesizedLambdaExpressionSyntax)parent;
-
-                            if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
-                                return (BlockSyntax)lambda.Body;
-
-                            break;
-                        }
-                    case SyntaxKind.AnonymousMethodExpression:
-                        {
-                            var method = (AnonymousMethodExpressionSyntax)parent;
-
-                            if (method.Body?.IsKind(SyntaxKind.Block) == true)
-                                return (BlockSyntax)method.Body;
-
-                            break;
-                        }
+                        return ((ConstructorDeclarationSyntax)parent).Body;
                 }
             }
 
