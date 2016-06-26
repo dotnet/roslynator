@@ -395,7 +395,7 @@
     </Syntaxes>
     <Scope>element type</Scope>
   </Refactoring>
-  <Refactoring Id="ChangeMemberTypeAccordingToReturnStatement" Title="Change method/property/indexer type according to return statement" ExtensionVersion="0.9.40">
+  <Refactoring Id="ChangeMemberTypeAccordingToReturnExpression" Title="Change method/property/indexer type according to return expression" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>property</Syntax>
