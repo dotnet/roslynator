@@ -403,7 +403,7 @@
     </Syntaxes>
     <Scope>return statement's expression</Scope>
   </Refactoring>
-  <Refactoring Id="ChangeMemberTypeAccordingToYieldReturnStatement" Title="Change method/property/indexer type according to yield return statement" ExtensionVersion="0.9.50">
+  <Refactoring Id="ChangeMemberTypeAccordingToYieldReturnExpression" Title="Change method/property/indexer type according to yield return expression" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>property</Syntax>
