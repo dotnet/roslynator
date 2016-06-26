@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
-using static Pihrtsoft.CodeAnalysis.CSharp.DiagnosticHelper;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -58,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             DiagnosticDescriptor descriptor = DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut;
 
-            FadeOutToken(context, anonymousMethod.DelegateKeyword, descriptor);
+            context.FadeOutToken(descriptor, anonymousMethod.DelegateKeyword);
 
             BlockSyntax block = anonymousMethod.Block;
 
@@ -68,10 +67,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 if (statement.IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
-                    FadeOutBraces(context, block, descriptor);
+                    context.FadeOutBraces(descriptor, block);
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        FadeOutToken(context, ((ReturnStatementSyntax)statement).ReturnKeyword, descriptor);
+                        context.FadeOutToken(descriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
                 }
             }
         }

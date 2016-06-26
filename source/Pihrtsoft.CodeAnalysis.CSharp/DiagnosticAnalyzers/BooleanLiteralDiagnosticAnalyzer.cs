@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
-using static Pihrtsoft.CodeAnalysis.CSharp.DiagnosticHelper;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -74,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             DiagnosticDescriptor descriptor = DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut;
 
-            FadeOutToken(context, binaryExpression.OperatorToken, descriptor);
+            context.FadeOutToken(descriptor, binaryExpression.OperatorToken);
 
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
@@ -86,11 +85,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     {
                         if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            FadeOutNode(context, left, descriptor);
+                            context.FadeOutNode(descriptor, left);
                         }
                         else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            FadeOutNode(context, right, descriptor);
+                            context.FadeOutNode(descriptor, right);
                         }
 
                         break;
@@ -100,11 +99,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     {
                         if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            FadeOutNode(context, left, descriptor);
+                            context.FadeOutNode(descriptor, left);
                         }
                         else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            FadeOutNode(context, right, descriptor);
+                            context.FadeOutNode(descriptor, right);
                         }
 
                         break;
@@ -118,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             DiagnosticDescriptor descriptor = DiagnosticDescriptors.SimplifyBooleanComparisonFadeOut;
 
-            FadeOutToken(context, binaryExpression.OperatorToken, descriptor);
+            context.FadeOutToken(descriptor, binaryExpression.OperatorToken);
 
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
@@ -127,34 +126,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    FadeOutNode(context, left, descriptor);
+                    context.FadeOutNode(descriptor, left);
 
                     if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        FadeOutToken(context, ((PrefixUnaryExpressionSyntax)right).OperatorToken, descriptor);
+                        context.FadeOutToken(descriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
                 else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    FadeOutNode(context, right, descriptor);
+                    context.FadeOutNode(descriptor, right);
 
                     if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        FadeOutToken(context, ((PrefixUnaryExpressionSyntax)left).OperatorToken, descriptor);
+                        context.FadeOutToken(descriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                 }
             }
             else if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
             {
                 if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
-                    FadeOutNode(context, left, descriptor);
+                    context.FadeOutNode(descriptor, left);
 
                     if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        FadeOutToken(context, ((PrefixUnaryExpressionSyntax)right).OperatorToken, descriptor);
+                        context.FadeOutToken(descriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
                 else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
-                    FadeOutNode(context, right, descriptor);
+                    context.FadeOutNode(descriptor, right);
 
                     if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        FadeOutToken(context, ((PrefixUnaryExpressionSyntax)left).OperatorToken, descriptor);
+                        context.FadeOutToken(descriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                 }
             }
         }

@@ -81,10 +81,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                                     DiagnosticDescriptors.SimplifyElseClauseContainingIfStatement,
                                     block.GetLocation());
 
-                                DiagnosticHelper.FadeOutBraces(
-                                    context,
-                                    block,
-                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut);
+                                context.FadeOutBraces(
+                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut,
+                                    block);
                             }
                         }
                     }

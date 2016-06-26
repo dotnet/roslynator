@@ -197,7 +197,6 @@
     <Compile Include="Extensions\SymbolAnalysisContextExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
     <Compile Include="Extensions\SyntaxTreeAnalysisContextExtensions.cs" />
-    <Compile Include="DiagnosticHelper.cs" />
     <Compile Include="Refactoring\SimplifyBooleanComparisonRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">

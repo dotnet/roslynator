@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         DiagnosticDescriptors.SimplifyAssignmentExpression,
                         assignment.GetLocation());
 
-                    DiagnosticHelper.FadeOutNode(context, binaryExpression.Left, DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut);
+                    context.FadeOutNode(DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut, binaryExpression.Left);
                 }
             }
         }

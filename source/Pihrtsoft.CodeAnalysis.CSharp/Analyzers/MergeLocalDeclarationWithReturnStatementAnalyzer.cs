@@ -48,11 +48,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                         Location.Create(context.Node.SyntaxTree, span));
                 }
 
-                DiagnosticHelper.FadeOutNode(context, localDeclaration.Declaration.Type, DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
-                DiagnosticHelper.FadeOutToken(context, declarator.Identifier, DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
-                DiagnosticHelper.FadeOutToken(context, declarator.Initializer.EqualsToken, DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
-                DiagnosticHelper.FadeOutToken(context, localDeclaration.SemicolonToken, DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
-                DiagnosticHelper.FadeOutNode(context, returnStatement.Expression, DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut);
+                context.FadeOutNode(DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut, localDeclaration.Declaration.Type);
+                context.FadeOutToken(DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut, declarator.Identifier);
+                context.FadeOutToken(DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut, declarator.Initializer.EqualsToken);
+                context.FadeOutToken(DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut, localDeclaration.SemicolonToken);
+                context.FadeOutNode(DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut, returnStatement.Expression);
             }
         }
 

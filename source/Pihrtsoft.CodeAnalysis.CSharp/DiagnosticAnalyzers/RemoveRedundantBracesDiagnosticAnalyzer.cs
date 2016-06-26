@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis;
-using static Pihrtsoft.CodeAnalysis.CSharp.DiagnosticHelper;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -64,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 DiagnosticDescriptors.RemoveRedundantBraces,
                 block2.GetLocation());
 
-            FadeOutBraces(context, block2, DiagnosticDescriptors.RemoveRedundantBracesFadeOut);
+            context.FadeOutBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block2);
         }
     }
 }

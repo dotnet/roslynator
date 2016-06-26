@@ -137,8 +137,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (AnalyzeBlock(context, accessor.Body, checkTrivia: false))
             {
-                DiagnosticHelper.FadeOutToken(context, accessor.Keyword, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut);
-                DiagnosticHelper.FadeOutBraces(context, accessorList, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut);
+                context.FadeOutToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
+                context.FadeOutBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessorList);
             }
         }
 
@@ -172,8 +172,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 DiagnosticDescriptors.UseExpressionBodiedMember,
                 block.GetLocation());
 
-            DiagnosticHelper.FadeOutToken(context, returnStatement.ReturnKeyword, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut);
-            DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut);
+            context.FadeOutToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
+            context.FadeOutBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, block);
 
             return true;
         }

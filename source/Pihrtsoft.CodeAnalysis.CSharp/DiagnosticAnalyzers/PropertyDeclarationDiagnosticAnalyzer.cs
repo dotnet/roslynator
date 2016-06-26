@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using static Pihrtsoft.CodeAnalysis.CSharp.DiagnosticHelper;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -268,19 +267,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (property.ExpressionBody != null)
             {
-                FadeOutNode(context, property.ExpressionBody, descriptor);
+                context.FadeOutNode(descriptor, property.ExpressionBody);
             }
             else
             {
                 AccessorDeclarationSyntax getter = property.Getter();
 
                 if (getter != null)
-                    FadeOutNode(context, getter.Body, descriptor);
+                    context.FadeOutNode(descriptor, getter.Body);
 
                 AccessorDeclarationSyntax setter = property.Setter();
 
                 if (setter != null)
-                    FadeOutNode(context, setter.Body, descriptor);
+                    context.FadeOutNode(descriptor, setter.Body);
             }
         }
     }

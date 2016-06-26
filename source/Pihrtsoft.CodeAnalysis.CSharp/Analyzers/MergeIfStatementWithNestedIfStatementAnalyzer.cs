@@ -97,14 +97,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
             IfStatementSyntax ifStatement,
             IfStatementSyntax nestedIf)
         {
-            DiagnosticHelper.FadeOutToken(context, nestedIf.IfKeyword, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut);
-            DiagnosticHelper.FadeOutToken(context, nestedIf.OpenParenToken, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut);
-            DiagnosticHelper.FadeOutToken(context, nestedIf.CloseParenToken, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut);
+            context.FadeOutToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.IfKeyword);
+            context.FadeOutToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.OpenParenToken);
+            context.FadeOutToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                DiagnosticHelper.FadeOutBraces(context, (BlockSyntax)nestedIf.Statement, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut);
+                context.FadeOutBraces(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, (BlockSyntax)nestedIf.Statement);
             }
         }
     }

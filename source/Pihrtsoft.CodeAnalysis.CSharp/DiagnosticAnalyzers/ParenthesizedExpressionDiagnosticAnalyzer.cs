@@ -130,8 +130,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     context.ReportDiagnostic(diagnostic);
 
-                    DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.OpenParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
-                    DiagnosticHelper.FadeOutToken(context, parenthesizedExpression.CloseParenToken, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
+                    context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.OpenParenToken);
+                    context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.CloseParenToken);
                 }
             }
         }

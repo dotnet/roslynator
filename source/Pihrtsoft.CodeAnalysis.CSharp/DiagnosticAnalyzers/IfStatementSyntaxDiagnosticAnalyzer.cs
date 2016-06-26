@@ -79,10 +79,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 if (node.IsKind(SyntaxKind.Block))
                 {
-                    DiagnosticHelper.FadeOutBraces(
-                        context,
-                        (BlockSyntax)node,
-                        DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                    context.FadeOutBraces(
+                        DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
+                        (BlockSyntax)node);
                 }
             }
         }

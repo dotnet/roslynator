@@ -129,18 +129,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, ReturnStatementSyntax returnStatement)
         {
-            DiagnosticHelper.FadeOutToken(context, ifStatement.IfKeyword, _fadeOutDescriptor);
-            DiagnosticHelper.FadeOutToken(context, ifStatement.OpenParenToken, _fadeOutDescriptor);
-            DiagnosticHelper.FadeOutToken(context, ifStatement.CloseParenToken, _fadeOutDescriptor);
-            DiagnosticHelper.FadeOutNode(context, ifStatement.Statement, _fadeOutDescriptor);
+            context.FadeOutToken(_fadeOutDescriptor, ifStatement.IfKeyword);
+            context.FadeOutToken(_fadeOutDescriptor, ifStatement.OpenParenToken);
+            context.FadeOutToken(_fadeOutDescriptor, ifStatement.CloseParenToken);
+            context.FadeOutNode(_fadeOutDescriptor, ifStatement.Statement);
 
             if (ifStatement.Else != null)
             {
-                DiagnosticHelper.FadeOutNode(context, ifStatement.Else, _fadeOutDescriptor);
+                context.FadeOutNode(_fadeOutDescriptor, ifStatement.Else);
             }
             else
             {
-                DiagnosticHelper.FadeOutNode(context, returnStatement, _fadeOutDescriptor);
+                context.FadeOutNode(_fadeOutDescriptor, returnStatement);
             }
         }
 

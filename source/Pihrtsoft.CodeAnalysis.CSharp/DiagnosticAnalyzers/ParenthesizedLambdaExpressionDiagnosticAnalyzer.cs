@@ -87,13 +87,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             foreach (ParameterSyntax parameter in parameterList.Parameters)
             {
                 if (parameter.Type != null)
-                    DiagnosticHelper.FadeOutNode(context, parameter.Type, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
+                    context.FadeOutNode(DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut, parameter.Type);
             }
 
             if (parameterList.Parameters.Count == 1)
             {
-                DiagnosticHelper.FadeOutToken(context, parameterList.OpenParenToken, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
-                DiagnosticHelper.FadeOutToken(context, parameterList.CloseParenToken, DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut);
+                context.FadeOutToken(DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut, parameterList.OpenParenToken);
+                context.FadeOutToken(DiagnosticDescriptors.SimplifyLambdaExpressionParameterListFadeOut, parameterList.CloseParenToken);
             }
         }
     }

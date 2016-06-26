@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         DiagnosticDescriptors.RemoveBracesFromStatement,
                         block.GetLocation());
 
-                    DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                    context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFromStatementFadeOut, block);
                 }
             }
         }

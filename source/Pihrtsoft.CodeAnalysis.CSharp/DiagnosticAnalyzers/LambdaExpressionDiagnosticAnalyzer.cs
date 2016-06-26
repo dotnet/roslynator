@@ -52,10 +52,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
-            DiagnosticHelper.FadeOutBraces(context, block, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut);
+            context.FadeOutBraces(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
 
             if (block.Statements[0].IsKind(SyntaxKind.ReturnStatement))
-                DiagnosticHelper.FadeOutToken(context, ((ReturnStatementSyntax)block.Statements[0]).ReturnKeyword, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut);
+                context.FadeOutToken(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)block.Statements[0]).ReturnKeyword);
         }
     }
 }
