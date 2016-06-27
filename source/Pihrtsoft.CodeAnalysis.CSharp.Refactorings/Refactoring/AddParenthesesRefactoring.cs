@@ -18,6 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 case SyntaxKind.ParenthesizedExpression:
                 case SyntaxKind.Argument:
+                case SyntaxKind.AttributeArgument:
                     return false;
             }
 
@@ -25,6 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 case SyntaxKind.ParenthesizedExpression:
                 case SyntaxKind.Argument:
+                case SyntaxKind.AttributeArgument:
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.InvocationExpression:
                     return false;
