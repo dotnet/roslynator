@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class RemoveCommentRefactoring
+    internal static class RemoveCommentRefactoring
     {
         public static async Task<Document> RemoveCommentAsync(
             Document document,

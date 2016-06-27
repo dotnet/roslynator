@@ -9,7 +9,7 @@ using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class RemoveAllCommentsRefactoring
+    internal static class RemoveAllCommentsRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
