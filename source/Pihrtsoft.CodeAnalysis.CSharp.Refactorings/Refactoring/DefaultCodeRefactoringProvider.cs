@@ -25,7 +25,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.GetBaseException().ToString());
+                Debug.WriteLine(ex.ToString());
+                Debug.Assert(false, nameof(DefaultCodeRefactoringProvider));
                 throw;
             }
 #endif

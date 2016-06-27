@@ -57,10 +57,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 "Remove all statements",
                                 cancellationToken => RemoveAllStatementsRefactoring.RefactorAsync(context.Document, member, cancellationToken));
                         }
-#endif
+
                         break;
                     }
             }
+#endif
 
             if (!member.Span.IntersectsWith(context.Span))
                 SwapMembersRefactoring.ComputeRefactoring(context, member);

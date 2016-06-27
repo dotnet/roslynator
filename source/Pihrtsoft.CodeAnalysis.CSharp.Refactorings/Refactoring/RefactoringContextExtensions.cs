@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,13 +13,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(this RefactoringContext context)
         {
+            Debug.WriteLine($"START {nameof(ComputeRefactoringsForNodeInsideTrivia)}");
             ComputeRefactoringsForNodeInsideTrivia(context);
+            Debug.WriteLine($"END {nameof(ComputeRefactoringsForNodeInsideTrivia)}");
 
+            Debug.WriteLine($"START {nameof(ComputeRefactoringsForTokenAsync)}");
             await ComputeRefactoringsForTokenAsync(context);
+            Debug.WriteLine($"END {nameof(ComputeRefactoringsForTokenAsync)}");
 
+            Debug.WriteLine($"START {nameof(ComputeRefactoringsForTrivia)}");
             ComputeRefactoringsForTrivia(context);
+            Debug.WriteLine($"END {nameof(ComputeRefactoringsForTrivia)}");
 
+            Debug.WriteLine($"START {nameof(ComputeRefactoringsForNodeAsync)}");
             await ComputeRefactoringsForNodeAsync(context);
+            Debug.WriteLine($"END {nameof(ComputeRefactoringsForNodeAsync)}");
         }
 
         public static async Task ComputeRefactoringsForNodeAsync(this RefactoringContext context)
@@ -75,6 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 while (en.MoveNext())
                 {
                     node = en.Current;
+                    Debug.WriteLine(node.Kind().ToString());
 
                     if (!fAccessor)
                     {
@@ -409,9 +419,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     node = en.Current;
 
-                    if (!fRegionDirectiveTrivia)
+                    Debug.WriteLine(node.Kind().ToString());
+
+                    if (!fRegionDirectiveTrivia
+                        && (node.IsKind(SyntaxKind.RegionDirectiveTrivia) || node.IsKind(SyntaxKind.EndRegionDirectiveTrivia)))
                     {
-                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context, node);
+                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
                         fRegionDirectiveTrivia = true;
                         continue;
                     }
@@ -425,6 +438,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (token.IsKind(SyntaxKind.None))
                 return;
+
+            Debug.WriteLine(token.Kind().ToString());
 
             switch (token.Kind())
             {
@@ -462,6 +477,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (trivia.IsKind(SyntaxKind.None))
                 return;
+
+            Debug.WriteLine(trivia.Kind().ToString());
 
             switch (trivia.Kind())
             {

@@ -7,10 +7,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RegionDirectiveTriviaRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SyntaxNode node)
+        public static void ComputeRefactorings(RefactoringContext context)
         {
-            if (node.IsAnyKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia)
-                && context.Root.IsKind(SyntaxKind.CompilationUnit))
+            if (context.Root.IsKind(SyntaxKind.CompilationUnit))
             {
                 context.RegisterRefactoring(
                     "Remove all regions",

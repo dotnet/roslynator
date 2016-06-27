@@ -38,12 +38,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 return false;
             }
-#if DEBUG
             catch (Exception ex)
             {
-                Debug.Assert(false, ex.GetType().ToString());
+                Debug.WriteLine(ex.ToString());
+                Debug.Assert(false, nameof(AddParenthesesRefactoring));
+                return false;
             }
-#endif
+
             return true;
         }
 
