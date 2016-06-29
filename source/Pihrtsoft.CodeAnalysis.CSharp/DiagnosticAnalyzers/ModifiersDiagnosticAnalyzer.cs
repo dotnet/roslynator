@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (modifiers.Count <= 1)
                 return;
 
-            if (AreModifiersSorted(modifiers))
+            if (ModifierSorter.AreModifiersSorted(modifiers))
                 return;
 
             context.ReportDiagnostic(
@@ -196,25 +196,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
 
             return null;
-        }
-
-        private static bool AreModifiersSorted(SyntaxTokenList list)
-        {
-            return AreModifiersSorted(list, ModifierSorter.Instance);
-        }
-
-        private static bool AreModifiersSorted(SyntaxTokenList list, IComparer<SyntaxToken> comparer)
-        {
-            if (comparer == null)
-                throw new ArgumentNullException(nameof(comparer));
-
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                if (comparer.Compare(list[i], list[i + 1]) >= 0)
-                    return false;
-            }
-
-            return true;
         }
     }
 }
