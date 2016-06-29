@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (methodDeclaration.HeaderSpan().Contains(context.Span)
-                && MakeMemberAbstractRefactoring.CanRefactor(context, methodDeclaration))
+                && MakeMemberAbstractRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
                     "Make method abstract",

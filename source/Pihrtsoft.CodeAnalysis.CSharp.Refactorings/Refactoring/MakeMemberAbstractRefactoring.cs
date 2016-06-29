@@ -1,46 +1,32 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using Pihrtsoft.CodeAnalysis.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class MakeMemberAbstractRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
-        {
-            switch (memberDeclaration.Kind())
-            {
-                case SyntaxKind.PropertyDeclaration:
-                    return CanRefactor((PropertyDeclarationSyntax)memberDeclaration);
-                case SyntaxKind.MethodDeclaration:
-                    return CanRefactor((MethodDeclarationSyntax)memberDeclaration);
-                case SyntaxKind.IndexerDeclaration:
-                    return CanRefactor((IndexerDeclarationSyntax)memberDeclaration);
-                default:
-                    return false;
-            }
-        }
-
-        private static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
+        public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
             return !propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(propertyDeclaration.Parent);
         }
 
-        private static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
+        public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
             return !methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(methodDeclaration.Parent);
         }
 
-        private static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration)
+        public static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration)
         {
             return !indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
                 && IsAbstractClass(indexerDeclaration.Parent);
@@ -60,6 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             MemberDeclarationSyntax newMemberDeclaration = MakeAbstract(memberDeclaration)
+                .WithTriviaFrom(memberDeclaration)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(memberDeclaration, newMemberDeclaration);
@@ -77,8 +64,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return MakeAbstract((MethodDeclarationSyntax)memberDeclaration);
                 case SyntaxKind.IndexerDeclaration:
                     return MakeAbstract((IndexerDeclarationSyntax)memberDeclaration);
-                case SyntaxKind.EventFieldDeclaration:
-                    return MakeAbstract((EventFieldDeclarationSyntax)memberDeclaration);
                 default:
                     return memberDeclaration;
             }
@@ -86,9 +71,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static MemberDeclarationSyntax MakeAbstract(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
             AccessorListSyntax accessorList = AccessorList();
 
             if (propertyDeclaration.ExpressionBody != null)
@@ -117,41 +99,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
-
-            if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.AbstractKeyword));
-
             return propertyDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(Token(SyntaxKind.None))
                 .WithAccessorList(accessorList)
-                .WithModifiers(modifiers);
+                .WithModifiers(CreateModifiers(propertyDeclaration.Modifiers));
         }
 
         private static MethodDeclarationSyntax MakeAbstract(MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
-
-            if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.AbstractKeyword));
-
             return methodDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(Token(SyntaxKind.None))
                 .WithBody(null)
-                .WithModifiers(modifiers)
+                .WithModifiers(CreateModifiers(methodDeclaration.Modifiers))
                 .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
         }
 
         private static IndexerDeclarationSyntax MakeAbstract(IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (indexerDeclaration == null)
-                throw new ArgumentNullException(nameof(indexerDeclaration));
-
             AccessorListSyntax accessorList = AccessorList();
 
             if (indexerDeclaration.ExpressionBody != null)
@@ -180,30 +146,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
-
-            if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.AbstractKeyword));
-
             return indexerDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(Token(SyntaxKind.None))
                 .WithAccessorList(accessorList)
-                .WithModifiers(modifiers);
+                .WithModifiers(CreateModifiers(indexerDeclaration.Modifiers));
         }
 
-        private static EventFieldDeclarationSyntax MakeAbstract(EventFieldDeclarationSyntax eventDeclaration)
+        private static SyntaxTokenList CreateModifiers(SyntaxTokenList modifiers)
         {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
+            modifiers = RemoveVirtualKeywordIfPresent(modifiers);
 
-            SyntaxTokenList modifiers = eventDeclaration.Modifiers;
+            modifiers = AddAbstractKeywordIfNotPresent(modifiers);
 
+            if (!ModifierSorter.AreModifiersSorted(modifiers))
+                modifiers = TokenList(modifiers.OrderBy(f => f, ModifierSorter.Instance));
+
+            return modifiers;
+        }
+
+        private static SyntaxTokenList RemoveVirtualKeywordIfPresent(SyntaxTokenList modifiers)
+        {
+            int index = modifiers.IndexOf(SyntaxKind.VirtualKeyword);
+
+            if (index != -1)
+                return modifiers.RemoveAt(index);
+
+            return modifiers;
+        }
+
+        private static SyntaxTokenList AddAbstractKeywordIfNotPresent(SyntaxTokenList modifiers)
+        {
             if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(SyntaxFactory.Token(SyntaxKind.AbstractKeyword));
+                modifiers = modifiers.Add(Token(SyntaxKind.AbstractKeyword));
 
-            return eventDeclaration
-                .WithModifiers(modifiers);
+            return modifiers;
         }
     }
 }

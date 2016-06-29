@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (indexerDeclaration.HeaderSpan().Contains(context.Span)
-                && MakeMemberAbstractRefactoring.CanRefactor(context, indexerDeclaration))
+                && MakeMemberAbstractRefactoring.CanRefactor(indexerDeclaration))
             {
                 context.RegisterRefactoring(
                     "Make indexer abstract",

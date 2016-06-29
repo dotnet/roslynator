@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (propertyDeclaration.HeaderSpan().Contains(context.Span)
-                && MakeMemberAbstractRefactoring.CanRefactor(context, propertyDeclaration))
+                && MakeMemberAbstractRefactoring.CanRefactor(propertyDeclaration))
             {
                 context.RegisterRefactoring(
                     "Make property abstract",
