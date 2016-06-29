@@ -29,6 +29,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.AttributeArgument:
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.InvocationExpression:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
                     return false;
             }
 
