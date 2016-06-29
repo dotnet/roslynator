@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
             if (yieldStatement.IsYieldReturn()
-                && yieldStatement.Expression?.Span.Contains(context.Span) == true
+                && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {
                 MemberDeclarationSyntax declaration = ReturnStatementRefactoring.GetDeclaration(yieldStatement);

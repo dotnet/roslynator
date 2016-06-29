@@ -397,19 +397,13 @@
   </Refactoring>
   <Refactoring Id="ChangeMemberTypeAccordingToReturnExpression" Title="Change method/property/indexer type according to return expression" ExtensionVersion="0.9.40">
     <Syntaxes>
-      <Syntax>method</Syntax>
-      <Syntax>property</Syntax>
-      <Syntax>indexer</Syntax>
+      <Syntax>return statement in method/property/indexer</Syntax>
     </Syntaxes>
-    <Scope>return statement's expression</Scope>
   </Refactoring>
   <Refactoring Id="ChangeMemberTypeAccordingToYieldReturnExpression" Title="Change method/property/indexer type according to yield return expression" ExtensionVersion="0.9.50">
     <Syntaxes>
-      <Syntax>method</Syntax>
-      <Syntax>property</Syntax>
-      <Syntax>indexer</Syntax>
+      <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
-    <Scope>yield return statement's expression</Scope>
   </Refactoring>
   <Refactoring Id="ChangeVariableDeclarationType" Title="Change variable declaration type" ExtensionVersion="0.9.0">
     <Syntaxes>
