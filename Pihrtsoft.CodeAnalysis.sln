@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "tools\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "tools\Cleaner\Cleaner.csproj", "{44582CE6-29B1-4982-B485-C0285AA0A591}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.Metadata", "tools\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
