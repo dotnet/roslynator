@@ -41,12 +41,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             {
                 if (anyHasEmbedded)
                 {
-                    AddBracesToChain = true;
+                    ReplaceEmbeddedStatementWithBlock = true;
                 }
 
                 if (anyHasBlock && allSupportsEmbedded)
                 {
-                    RemoveBracesFromChain = true;
+                    ReplaceBlockWithEmbeddedStatement = true;
                 }
             }
         }
@@ -79,8 +79,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
         }
 
-        public bool AddBracesToChain { get; }
+        public bool ReplaceEmbeddedStatementWithBlock { get; }
 
-        public bool RemoveBracesFromChain { get; }
+        public bool ReplaceBlockWithEmbeddedStatement { get; }
     }
 }

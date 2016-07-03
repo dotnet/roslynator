@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class ConvertStringEmptyToEmptyStringLiteralRefactoring
+    public static class ReplaceStringEmptyWithEmptyStringLiteralRefactoring
     {
         public static bool CanRefactor(
             MemberAccessExpressionSyntax memberAccess,

@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
         {
-            if (arrowExpressionClause.Parent?.SupportsExpressionBody() == true)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)
+                && arrowExpressionClause.Parent?.SupportsExpressionBody() == true)
             {
                 context.RegisterRefactoring(
                     "Expand expression-bodied member",

@@ -16,6 +16,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractStatement))
+                return;
+
             if (statement.IsKind(SyntaxKind.Block)
                 && ((BlockSyntax)statement).Statements.Count == 0)
             {
@@ -29,17 +32,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && (CheckContainingNode(statement.Parent)
                 && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
             {
-#if DEBUG
-                if (!statement.IsKind(SyntaxKind.Block))
-                    return;
-
-                var block = (BlockSyntax)statement;
-                if (!block.OpenBraceToken.Span.Contains(context.Span)
-                    && !block.CloseBraceToken.Span.Contains(context.Span))
-                {
-                    return;
-                }
-#endif
                 string s = (UsePlural(statement)) ? "s" : "";
 
                 context.RegisterRefactoring(
@@ -101,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -138,7 +130,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxTriviaList leadingTrivia = statement.Parent.GetLeadingTrivia();
 
             if (statement.IsKind(SyntaxKind.ElseClause))
-                leadingTrivia.Insert(0, SyntaxHelper.NewLine);
+                leadingTrivia.Insert(0, CSharpFactory.NewLine);
 
             if (statement.IsKind(SyntaxKind.Block))
             {

@@ -13,7 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertForToForEachRefactoring
+    internal static class ReplaceForWithForeachRefactoring
     {
         private const string ElementName = "item";
 
@@ -126,7 +126,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ForStatementSyntax forStatement,
             SyntaxNode root,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
                 semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables[0]),

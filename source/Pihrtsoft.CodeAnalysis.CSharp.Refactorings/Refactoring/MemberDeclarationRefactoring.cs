@@ -30,13 +30,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         if (CanBeRemovedOrDuplicated(context, member))
                         {
-                            context.RegisterRefactoring(
-                                "Remove " + SyntaxHelper.GetSyntaxNodeName(member),
-                                cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                            {
+                                context.RegisterRefactoring(
+                                    "Remove " + SyntaxHelper.GetSyntaxNodeName(member),
+                                    cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                            }
 
-                            context.RegisterRefactoring(
-                                "Duplicate " + SyntaxHelper.GetSyntaxNodeName(member),
-                                cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                            {
+                                context.RegisterRefactoring(
+                                    "Duplicate " + SyntaxHelper.GetSyntaxNodeName(member),
+                                    cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                            }
                         }
 
                         break;
@@ -118,7 +124,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static void ComputeRefactorings(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
             {
                 context.RegisterRefactoring(
                     "Mark constructor as static",
@@ -130,7 +137,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
         {
-            if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
             {
@@ -142,7 +150,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static void ComputeRefactorings(RefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
-            if (operatorDeclaration.Body?.Span.Contains(context.Span) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
             {
@@ -154,7 +163,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static void ComputeRefactorings(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
         {
-            if (MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
             {
                 context.RegisterRefactoring(
                     "Mark event as static",
@@ -166,6 +176,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool CanBeRemovedOrDuplicated(RefactoringContext context, MemberDeclarationSyntax member)
         {
+            if (!context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.RemoveMember,
+                    RefactoringIdentifiers.DuplicateMember))
+            {
+                return false;
+            }
+
             if (member.Parent?.IsAnyKind(
                     SyntaxKind.NamespaceDeclaration,
                     SyntaxKind.ClassDeclaration,

@@ -41,24 +41,27 @@
     <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="RefactoringIdentifiers.cs" />
+    <Compile Include="RefactoringIdentifierSet.cs" />
+    <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\IndexerDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
-    <Compile Include="Refactoring\WrapInUsingStatementRefactoring.cs" />
+    <Compile Include="Refactoring\WrapDeclarationInUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactoring\MergeStringLiteralsRefactoring.cs" />
     <Compile Include="Refactoring\RemoveAllCommentsRefactoring.cs" />
     <Compile Include="Refactoring\RemoveCommentRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertStringLiteralRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactoring\RemovePropertyInitializerRefactoring.cs" />
-    <Compile Include="Refactoring\AddBracesToSwitchSectionRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceSwitchSectionStatementsWithBlockRefactoring.cs" />
     <Compile Include="Refactoring\AddOrRemoveParameterNameRefactoring.cs" />
     <Compile Include="Refactoring\ChangeMemberTypeRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertConstantToFieldRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertFieldToConstantRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertMethodToReadOnlyPropertyRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertPropertyToMethodRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceConstantWithFieldRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceFieldWithConstantRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceMethodWithPropertyRefactoring.cs" />
+    <Compile Include="Refactoring\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactoring\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="Refactoring\ExpandPropertyRefactoring.cs" />
     <Compile Include="Refactoring\ExtractDeclarationFromUsingStatementRefactoring.cs" />
@@ -69,17 +72,17 @@
     <Compile Include="Refactoring\FormatInitializerOnSingleLineRefactoring.cs" />
     <Compile Include="Refactoring\FormatParameterListRefactoring.cs" />
     <Compile Include="Refactoring\LambdaExpressionRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertAnyToAllRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceAnyWithAllOrAllWithAnyRefactoring.cs" />
     <Compile Include="Refactoring\NegateBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactoring\NegateBooleanLiteralRefactoring.cs" />
     <Compile Include="Refactoring\RemoveAllRegionsRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveBracesFromSwitchSectionRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveBracesFromSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactoring\AddBracesToSwitchSectionsRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceSwitchSectionBlockWithStatementsRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceBlockWithStatementsInEachSectionRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceStatementsWithBlockInEachSectionRefactoring.cs" />
     <Compile Include="Refactoring\SortSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactoring\AddInterpolationRefactoring.cs" />
     <Compile Include="Refactoring\DefaultCodeRefactoringProvider.cs" />
-    <Compile Include="Refactoring\AddParenthesesRefactoring.cs" />
+    <Compile Include="Refactoring\WrapExpressionInParenthesesRefactoring.cs" />
     <Compile Include="Refactoring\InterpolatedStringTextRefactoring.cs" />
     <Compile Include="Refactoring\RemoveAllStatementsRefactoring.cs" />
     <Compile Include="Refactoring\MarkAllMembersAsStaticRefactoring.cs" />
@@ -100,7 +103,7 @@
     <Compile Include="Refactoring\IntroduceConstructorRefactoring.cs" />
     <Compile Include="Refactoring\InvocationExpressionRefactoring.cs" />
     <Compile Include="Refactoring\LocalDeclarationStatementRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertStringFormatToInterpolatedStringRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceStringFormatWithInterpolatedStringRefactoring.cs" />
     <Compile Include="Refactoring\DoStatementRefactoring.cs" />
     <Compile Include="Refactoring\ArrowExpressionClauseRefactoring.cs" />
     <Compile Include="Refactoring\ForStatementRefactoring.cs" />
@@ -113,9 +116,9 @@
     <Compile Include="Refactoring\SwapStatementInIfElseRefactoring.cs" />
     <Compile Include="Refactoring\UncommentRefactoring.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
-    <Compile Include="Refactoring\AddBracesToEmbeddedStatementRefactoring.cs" />
-    <Compile Include="Refactoring\AddCastRefactoring.cs" />
-    <Compile Include="Refactoring\AddParameterNullCheckRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceEmbeddedStatementWithBlockRefactoring.cs" />
+    <Compile Include="Refactoring\AddCastExpressionRefactoring.cs" />
+    <Compile Include="Refactoring\CheckParameterForNullRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
     <Compile Include="Refactoring\AccessorDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\AssignmentExpressionRefactoring.cs" />
@@ -125,7 +128,7 @@
     <Compile Include="Refactoring\NotifyPropertyChangedRefactoring.cs" />
     <Compile Include="Refactoring\SplitAttributesRefactoring.cs" />
     <Compile Include="Refactoring\MergeAttributesRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertEnumerableMethodToElementAccessRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
     <Compile Include="Refactoring\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactoring\ExpandCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
@@ -137,10 +140,10 @@
     <Compile Include="Refactoring\ExtractStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactoring\MakeMemberAbstractRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveBracesFromStatementRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceBlockWithEmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactoring\AddOrRenameParameterRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertSwitchToIfElseRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceSwitchWithIfElseRefactoring.cs" />
     <Compile Include="Refactoring\CloseParenTokenRefactoring.cs" />
     <Compile Include="Refactoring\PostfixUnaryExpressionRefactoring.cs" />
     <Compile Include="Refactoring\PrefixUnaryExpressionRefactoring.cs" />
@@ -159,9 +162,9 @@
     <Compile Include="Refactoring\SwitchStatementRefactoring.cs" />
     <Compile Include="Refactoring\SwitchSectionRefactoring.cs" />
     <Compile Include="Refactoring\ReorderMembersRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertConditionalExpressionToIfElseRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceConditionalExpressionWithIfElseRefactoring.cs" />
     <Compile Include="Refactoring\ReverseForRefactoring.cs" />
-    <Compile Include="Refactoring\ConvertForToForEachRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceForWithForeachRefactoring.cs" />
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactoring\SwapMembersRefactoring.cs" />
     <Compile Include="StringLiteralChain.cs" />
@@ -233,7 +236,9 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Refactorings.xml" />
+    <Content Include="Refactorings.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild">

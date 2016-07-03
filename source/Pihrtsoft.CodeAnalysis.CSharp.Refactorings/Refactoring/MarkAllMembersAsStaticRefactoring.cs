@@ -12,9 +12,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void RegisterRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            context.RegisterRefactoring(
-                "Mark all members as static",
-                cancellationToken => RefactorAsync(context.Document, classDeclaration, cancellationToken));
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
+            {
+                context.RegisterRefactoring(
+                    "Mark all members as static",
+                    cancellationToken => RefactorAsync(context.Document, classDeclaration, cancellationToken));
+            }
         }
 
         public static async Task<Document> RefactorAsync(

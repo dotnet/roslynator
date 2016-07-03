@@ -9,10 +9,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertAnyToAllOrAllToAnyRefactoring
+    internal static class ReplaceAnyWithAllOrAllWithAnyRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
         {
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
+                return;
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             var methodSymbol = semanticModel.GetSymbolInfo(invocationExpression, context.CancellationToken).Symbol as IMethodSymbol;
@@ -36,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (expression != null)
                 {
                     context.RegisterRefactoring(
-                        "Change 'Any' to 'All'",
+                        "Replace 'Any' with 'All'",
                         cancellationToken =>
                         {
                             return RefactorAsync(
@@ -55,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (expression != null)
                 {
                     context.RegisterRefactoring(
-                        "Change 'All' to 'Any'",
+                        "Replace 'All' with 'Any'",
                         cancellationToken =>
                         {
                             return RefactorAsync(

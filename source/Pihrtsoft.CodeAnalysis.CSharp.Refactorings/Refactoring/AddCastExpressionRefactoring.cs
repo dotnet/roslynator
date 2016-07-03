@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Simplification;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class AddCastRefactoring
+    internal static class AddCastExpressionRefactoring
     {
         public static void RegisterRefactoring(
             RefactoringContext context,
@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 return;
 
             context.RegisterRefactoring(
-                $"Add cast to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                $"Cast to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                 cancellationToken =>
                 {
                     return RefactorAsync(

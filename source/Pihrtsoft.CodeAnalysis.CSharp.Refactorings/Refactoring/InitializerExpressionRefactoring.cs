@@ -18,7 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 initializer = (InitializerExpressionSyntax)initializer.Parent;
             }
 
-            if (initializer.Expressions.Count > 0
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
+                && initializer.Expressions.Count > 0
                 && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
                 && initializer.Parent?.IsAnyKind(
                     SyntaxKind.ArrayCreationExpression,
@@ -46,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            ExpandInitializerRefactoring.Register(context, initializer);
+            ExpandInitializerRefactoring.ComputeRefactorings(context, initializer);
         }
     }
 }

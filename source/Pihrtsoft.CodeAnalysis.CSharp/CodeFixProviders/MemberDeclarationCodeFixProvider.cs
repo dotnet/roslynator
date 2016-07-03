@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                         return classDeclaration
                             .WithOpenBraceToken(classDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(classDeclaration.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                            .WithCloseBraceToken(classDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                         return structDeclaration
                             .WithOpenBraceToken(structDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(structDeclaration.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                            .WithCloseBraceToken(structDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
@@ -80,7 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                         return interfaceDeclaration
                             .WithOpenBraceToken(interfaceDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                            .WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
                     }
             }
 

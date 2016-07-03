@@ -17,7 +17,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberDeclarationSyntax declaration)
         {
-            if (context.SupportsSemanticModel)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor)
+                && context.SupportsSemanticModel)
             {
                 List<MemberDeclarationSyntax> members = await GetAssignableMembersAsync(context, declaration);
 
@@ -230,7 +231,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             MemberDeclarationSyntax declaration,
             List<MemberDeclarationSyntax> assignableMembers,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

@@ -15,17 +15,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.SupportsSemanticModel)
             {
-                await ChangeTypeAccordingToExpressionAsync(context, forEachStatement);
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                    await ChangeTypeAccordingToExpressionAsync(context, forEachStatement);
 
-                await ChangeTypeAsync(context, forEachStatement);
+                if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                    RefactoringIdentifiers.ChangeVarToExplicitType))
+                {
+                    await ChangeTypeAsync(context, forEachStatement);
+                }
 
-                await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement);
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                    await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement);
 
-                if (ForEachToForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync(), context.CancellationToken))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForeachWithFor)
+                    && ReplaceForeachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync(), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        "Convert foreach to for",
-                        cancellationToken => ForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
+                        "Replace foreach with for",
+                        cancellationToken => ReplaceForeachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
                 }
             }
         }
@@ -46,26 +54,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 semanticModel,
                 context.CancellationToken);
 
-            switch (result)
+            if (result == TypeAnalysisResult.Explicit)
             {
-                case TypeAnalysisResult.Explicit:
-                    {
-                        context.RegisterRefactoring(
-                            "Change type to 'var'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, type, cancellationToken));
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                {
+                    context.RegisterRefactoring(
+                        "Change type to 'var'",
+                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, type, cancellationToken));
+                }
+            }
+            else if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
+            {
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                {
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
-                        break;
-                    }
-                case TypeAnalysisResult.ImplicitButShouldBeExplicit:
-                    {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
-
-                        context.RegisterRefactoring(
-                            $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                            cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, type, typeSymbol, cancellationToken));
-
-                        break;
-                    }
+                    context.RegisterRefactoring(
+                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, type, typeSymbol, cancellationToken));
+                }
             }
         }
 

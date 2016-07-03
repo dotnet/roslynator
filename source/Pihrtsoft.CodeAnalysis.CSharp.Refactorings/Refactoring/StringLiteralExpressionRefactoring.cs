@@ -9,10 +9,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
-            if (context.SupportsCSharp6)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
+                && context.SupportsCSharp6)
             {
                 context.RegisterRefactoring(
-                    "Convert to interpolated string",
+                    "Replace string literal with interpolated string",
                     cancellationToken =>
                     {
                         int startIndex = -1;
@@ -26,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 length = context.Span.Length;
                         }
 
-                        return ConvertStringLiteralRefactoring.ConvertToInterpolatedStringAsync(
+                        return ReplaceStringLiteralRefactoring.ReplaceWithInterpolatedStringAsync(
                             context.Document,
                             literalExpression,
                             startIndex,
@@ -39,36 +40,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 if (literalExpression.IsVerbatimStringLiteral())
                 {
-                    context.RegisterRefactoring(
-                        "Convert to regular string literal",
-                        cancellationToken =>
-                        {
-                            return ConvertStringLiteralRefactoring.ConvertToRegularStringLiteralAsync(
-                                context.Document,
-                                literalExpression,
-                                cancellationToken);
-                        });
-
-                    if (literalExpression.Token.ValueText.Contains("\n"))
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
                     {
                         context.RegisterRefactoring(
-                            "Convert to regular string literals",
+                            "Replace verbatim string literal with regular string literal",
                             cancellationToken =>
                             {
-                                return ConvertStringLiteralRefactoring.ConvertToRegularStringLiteralsAsync(
+                                return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralAsync(
+                                    context.Document,
+                                    literalExpression,
+                                    cancellationToken);
+                            });
+                    }
+
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
+                        && literalExpression.Token.ValueText.Contains("\n"))
+                    {
+                        context.RegisterRefactoring(
+                            "Replace verbatim string literal with regular string literals",
+                            cancellationToken =>
+                            {
+                                return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralsAsync(
                                     context.Document,
                                     literalExpression,
                                     cancellationToken);
                             });
                     }
                 }
-                else
+                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral))
                 {
                     context.RegisterRefactoring(
-                        "Convert to verbatim string literal",
+                        "Replace regular string literal with verbatim string literal",
                         cancellationToken =>
                         {
-                            return ConvertStringLiteralRefactoring.ConvertToVerbatimStringLiteralAsync(
+                            return ReplaceStringLiteralRefactoring.ReplaceWithVerbatimStringLiteralAsync(
                                 context.Document,
                                 literalExpression,
                                 cancellationToken);
@@ -76,26 +81,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            if (ConvertStringLiteralRefactoring.CanConvertToStringEmpty(literalExpression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty)
+                && ReplaceStringLiteralRefactoring.CanReplaceWithStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
-                    "Convert to string.Empty",
+                    "Replace \"\" with string.Empty",
                     cancellationToken =>
                     {
-                        return ConvertStringLiteralRefactoring.ConvertToStringEmptyAsync(
+                        return ReplaceStringLiteralRefactoring.ReplaceWithStringEmptyAsync(
                             context.Document,
                             literalExpression,
                             cancellationToken);
                     });
             }
 
-            if (ConvertStringLiteralRefactoring.CanConvertToCharacterLiteral(literalExpression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
+                && ReplaceStringLiteralRefactoring.CanReplaceWithCharacterLiteral(literalExpression))
             {
                 context.RegisterRefactoring(
-                    "Convert to character literal",
+                    "Replace string literal with character literal",
                     cancellationToken =>
                     {
-                        return ConvertStringLiteralRefactoring.ConvertToCharacterLiteralAsync(
+                        return ReplaceStringLiteralRefactoring.ReplaceWithCharacterLiteralAsync(
                             context.Document,
                             literalExpression,
                             cancellationToken);

@@ -1,15 +1,68 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class CompilationUnitSyntaxExtensions
     {
+        public static CompilationUnitSyntax WithMember(
+            this CompilationUnitSyntax compilationUnit,
+            MemberDeclarationSyntax memberDeclaration)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return compilationUnit.WithMembers(SingletonList(memberDeclaration));
+        }
+
+        public static CompilationUnitSyntax WithUsings(
+            this CompilationUnitSyntax compilationUnit,
+            params UsingDirectiveSyntax[] usingDirectives)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return compilationUnit.WithUsings(List(usingDirectives));
+        }
+
+        public static CompilationUnitSyntax WithUsings(
+            this CompilationUnitSyntax compilationUnit,
+            IEnumerable<UsingDirectiveSyntax> usingDirectives)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return compilationUnit.WithUsings(List(usingDirectives));
+        }
+
+        public static CompilationUnitSyntax WithNamespace(
+            this CompilationUnitSyntax compilationUnit,
+            NameSyntax name)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return compilationUnit.WithMember(NamespaceDeclaration(name));
+        }
+
+        public static CompilationUnitSyntax WithNamespace(
+            this CompilationUnitSyntax compilationUnit,
+            string name)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return compilationUnit.WithMember(NamespaceDeclaration(name));
+        }
+
         internal static SyntaxNode AddUsingDirective(this CompilationUnitSyntax compilationUnit, ITypeSymbol typeSymbol)
         {
             if (compilationUnit == null)
@@ -64,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (compilationUnit == null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
-            UsingDirectiveSyntax usingDirective = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(@namespace));
+            UsingDirectiveSyntax usingDirective = UsingDirective(ParseName(@namespace));
 
             int index = 0;
 

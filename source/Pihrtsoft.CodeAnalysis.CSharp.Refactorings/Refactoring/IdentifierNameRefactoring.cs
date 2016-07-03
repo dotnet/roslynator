@@ -12,8 +12,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
-            if (context.SupportsSemanticModel)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)
+                && context.SupportsSemanticModel)
+            {
                 await RenameFieldAccordingToPropertyNameAsync(context, identifierName);
+            }
         }
 
         private static async Task RenameFieldAccordingToPropertyNameAsync(
@@ -41,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
                             && object.Equals(fieldSymbol.ContainingType, propertySymbol.ContainingType))
                         {
-                            string newName = NamingHelper.ToCamelCaseWithUnderscore(propertySymbol.Name);
+                            string newName = NamingHelper.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
                             if (!string.Equals(newName, fieldSymbol.Name, StringComparison.Ordinal))
                             {

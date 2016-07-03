@@ -10,7 +10,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             BlockSyntax body = accessor.Body;
 
-            if (body?.Span.Contains(context.Span) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatAccessorBraces)
+                && body?.Span.Contains(context.Span) == true
                 && !body.OpenBraceToken.IsMissing
                 && !body.CloseBraceToken.IsMissing)
             {
@@ -24,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     && body.Statements[0].IsSingleline())
                 {
                     context.RegisterRefactoring(
-                        "Format braces on single line",
+                        "Format braces on a single line",
                         cancellationToken => FormatAccessorBraceOnSingleLineRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
                 }
             }

@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertFieldToConstantRefactoring
+    internal static class ReplaceFieldWithConstantRefactoring
     {
         public static async Task<bool> CanRefactorAsync(
             RefactoringContext context,

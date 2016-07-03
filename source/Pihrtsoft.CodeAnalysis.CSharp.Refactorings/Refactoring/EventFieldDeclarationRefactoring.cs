@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(
                     "Mark event as static",
@@ -17,7 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
             }
 
-            if (eventFieldDeclaration.Span.Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)
+                && eventFieldDeclaration.Span.Contains(context.Span)
                 && context.SupportsSemanticModel
                 && ExpandEventRefactoring.CanRefactor(eventFieldDeclaration))
             {

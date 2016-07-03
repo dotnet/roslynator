@@ -12,19 +12,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             FormatExpressionChainRefactoring.ComputeRefactorings(context, memberAccess);
 
-            if (context.SupportsSemanticModel)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral)
+                && context.SupportsSemanticModel)
+            {
                 await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess);
+            }
         }
 
         private static async Task ConvertStringEmptyToEmptyStringLiteralAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (ConvertStringEmptyToEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync(), context.CancellationToken))
+            if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync(), context.CancellationToken))
             {
                 context.RegisterRefactoring(
-                    "Convert to \"\"",
+                    "Replace string.Empty with \"\"",
                     cancellationToken =>
                     {
-                        return ConvertStringEmptyToEmptyStringLiteralRefactoring.RefactorAsync(
+                        return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
                             context.Document,
                             memberAccess,
                             cancellationToken);

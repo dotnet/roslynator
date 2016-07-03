@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
             if (trivia.IsWhitespaceOrEndOfLine()
                 && (_span == null || _span.Value.Contains(trivia.Span)))
             {
-                return SyntaxHelper.EmptyTrivia;
+                return CSharpFactory.EmptyTrivia;
             }
 
             return base.VisitTrivia(trivia);

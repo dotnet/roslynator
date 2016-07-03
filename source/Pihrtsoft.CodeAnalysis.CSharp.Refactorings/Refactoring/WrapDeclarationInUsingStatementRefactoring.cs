@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class WrapInUsingStatementRefactoring
+    internal static class WrapDeclarationInUsingStatementRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     && ((INamedTypeSymbol)type).Implements(SpecialType.System_IDisposable))
                 {
                     context.RegisterRefactoring(
-                        "Wrap in using statement",
+                        "Wrap declaration in using statement",
                         cancellationToken => RefactorAsync(context.Document, localDeclaration, cancellationToken));
                 }
             }

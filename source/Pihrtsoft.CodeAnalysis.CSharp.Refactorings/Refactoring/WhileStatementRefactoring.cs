@@ -9,7 +9,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, WhileStatementSyntax whileStatement)
         {
-            if (whileStatement.Condition != null
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+                && whileStatement.Condition != null
                 && whileStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {

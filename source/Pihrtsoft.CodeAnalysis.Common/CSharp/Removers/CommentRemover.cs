@@ -30,13 +30,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                 case SyntaxKind.SingleLineCommentTrivia:
                 case SyntaxKind.MultiLineCommentTrivia:
                     {
-                        return SyntaxHelper.EmptyTrivia;
+                        return CSharpFactory.EmptyTrivia;
                     }
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     {
                         if (!_keepXmlComment)
-                            return SyntaxHelper.EmptyTrivia;
+                            return CSharpFactory.EmptyTrivia;
 
                         break;
                     }
@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                             SyntaxTrivia trivia2 = _compilationUnit.FindTrivia(trivia.SpanStart - 1);
 
                             if (trivia2.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                                return SyntaxHelper.EmptyTrivia;
+                                return CSharpFactory.EmptyTrivia;
                         }
 
                         break;

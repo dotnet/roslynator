@@ -12,41 +12,43 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (argumentList.Arguments.Count == 0)
                 return;
 
-            if (!context.Span.IsEmpty && context.SupportsSemanticModel)
-                await AddOrRemoveParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList);
+            await AddOrRemoveParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList);
 
             DuplicateArgumentRefactoring.ComputeRefactoring(context, argumentList);
 
-            if (argumentList.IsSingleline())
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList))
             {
-                if (argumentList.Arguments.Count > 1)
+                if (argumentList.IsSingleline())
                 {
+                    if (argumentList.Arguments.Count > 1)
+                    {
+                        context.RegisterRefactoring(
+                            "Format each argument on separate line",
+                            cancellationToken =>
+                            {
+                                return FormatArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(
+                                    context.Document,
+                                    argumentList,
+                                    cancellationToken);
+                            });
+                    }
+                }
+                else
+                {
+                    string title = (argumentList.Arguments.Count == 1)
+                            ? "Format argument on a single line"
+                            : "Format all arguments on a single line";
+
                     context.RegisterRefactoring(
-                        "Format each argument on separate line",
+                        title,
                         cancellationToken =>
                         {
-                            return FormatArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(
+                            return FormatArgumentListRefactoring.FormatAllArgumentsOnSingleLineAsync(
                                 context.Document,
                                 argumentList,
                                 cancellationToken);
                         });
                 }
-            }
-            else
-            {
-                string title = (argumentList.Arguments.Count == 1)
-                        ? "Format argument on a single line"
-                        : "Format all arguments on a single line";
-
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken =>
-                    {
-                        return FormatArgumentListRefactoring.FormatAllArgumentsOnSingleLineAsync(
-                            context.Document,
-                            argumentList,
-                            cancellationToken);
-                    });
             }
         }
     }

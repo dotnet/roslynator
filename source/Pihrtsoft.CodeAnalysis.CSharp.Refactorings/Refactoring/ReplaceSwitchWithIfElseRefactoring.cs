@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertSwitchToIfElseRefactoring
+    internal static class ReplaceSwitchWithIfElseRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

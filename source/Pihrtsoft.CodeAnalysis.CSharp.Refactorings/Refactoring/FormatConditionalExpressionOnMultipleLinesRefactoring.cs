@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -26,9 +26,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static ConditionalExpressionSyntax CreateMultilineConditionalExpression(ConditionalExpressionSyntax conditionalExpression)
         {
-            SyntaxTriviaList triviaList = conditionalExpression.Parent.GetIndentTrivia().Add(SyntaxHelper.DefaultIndent);
+            SyntaxTriviaList triviaList = conditionalExpression.Parent.GetIndentTrivia().Add(CSharpFactory.IndentTrivia);
 
-            triviaList = triviaList.Insert(0, SyntaxHelper.NewLine);
+            triviaList = triviaList.Insert(0, CSharpFactory.NewLine);
 
             ParenthesizedExpressionSyntax condition = null;
             if (conditionalExpression.Condition.IsKind(SyntaxKind.ParenthesizedExpression))
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return Token(
                 TriviaList(),
                 kind,
-                TriviaList(SyntaxHelper.NewLine));
+                TriviaList(CSharpFactory.NewLine));
         }
     }
 }

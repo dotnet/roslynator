@@ -11,19 +11,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
         {
-            if (invocationExpression.Expression != null
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
+                    RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny)
+                && invocationExpression.Expression != null
                 && invocationExpression.ArgumentList != null
                 && invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                 && ((MemberAccessExpressionSyntax)invocationExpression.Expression).Name?.Span.Contains(context.Span) == true
                 && context.SupportsSemanticModel)
             {
-                await ConvertEnumerableMethodToElementAccessRefactoring.RefactorAsync(context, invocationExpression);
+                await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
 
-                await ConvertAnyToAllOrAllToAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
+                await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
             }
 
-            if (context.SupportsCSharp6)
-                await ConvertStringFormatToInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)
+                && context.SupportsCSharp6)
+            {
+                await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+            }
         }
     }
 }

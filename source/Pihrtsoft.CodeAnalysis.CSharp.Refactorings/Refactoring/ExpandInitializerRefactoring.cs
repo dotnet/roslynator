@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -15,14 +14,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class ExpandInitializerRefactoring
     {
-        private const string Title = "Expand object initializer";
+        private const string Title = "Expand initializer";
 
-        public static void Register(RefactoringContext context, InitializerExpressionSyntax initializer)
+        public static void ComputeRefactorings(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
-            if (initializer == null)
-                throw new ArgumentNullException(nameof(initializer));
-
-            if (initializer.IsAnyKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer)
+                && initializer.IsAnyKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
                 && initializer.Expressions.Count > 0
                 && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
             {

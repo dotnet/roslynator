@@ -4,43 +4,11 @@ using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.Text;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxHelper
     {
-        public static SyntaxTrivia EmptyTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
-
-        public static SyntaxTrivia NewLine { get; } = CreateNewLine();
-
-        public static SyntaxTrivia DefaultIndent => Whitespace(TextUtility.DefaultIndent);
-
-        private static SyntaxTrivia CreateNewLine()
-        {
-            switch (Environment.NewLine)
-            {
-                case "\r":
-                    return CarriageReturn;
-                case "\n":
-                    return LineFeed;
-                default:
-                    return CarriageReturnLineFeed;
-            }
-        }
-
-        public static InvocationExpressionSyntax NameOf(string identifier)
-        {
-            return InvocationExpression(
-                IdentifierName("nameof"),
-                ArgumentList(
-                    SingletonSeparatedList(
-                        Argument(
-                            IdentifierName(identifier)))));
-        }
-
         public static string GetSyntaxNodeName(SyntaxNode node)
         {
             if (node == null)

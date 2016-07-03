@@ -12,7 +12,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (yieldStatement.IsYieldReturn()
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
+                && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {

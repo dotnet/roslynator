@@ -11,26 +11,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (parameterList.Parameters.Count == 0)
                 return;
 
-            DuplicateParameterRefactoring.Refactor(context, parameterList);
+            DuplicateParameterRefactoring.ComputeRefactoring(context, parameterList);
 
-            if (parameterList.IsSingleline())
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList))
             {
-                if (parameterList.Parameters.Count > 1)
+                if (parameterList.IsSingleline())
                 {
-                    context.RegisterRefactoring(
-                        "Format each parameter on separate line",
-                        cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
+                    if (parameterList.Parameters.Count > 1)
+                    {
+                        context.RegisterRefactoring(
+                            "Format each parameter on separate line",
+                            cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
+                    }
                 }
-            }
-            else
-            {
-                string title = (parameterList.Parameters.Count == 1)
-                    ? "Format parameter on a single line"
-                    : "Format all parameters on a single line";
+                else
+                {
+                    string title = (parameterList.Parameters.Count == 1)
+                        ? "Format parameter on a single line"
+                        : "Format all parameters on a single line";
 
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
+                    context.RegisterRefactoring(
+                        title,
+                        cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
+                }
             }
         }
     }

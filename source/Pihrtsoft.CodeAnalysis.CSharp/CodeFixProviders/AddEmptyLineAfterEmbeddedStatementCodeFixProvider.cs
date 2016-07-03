@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             StatementSyntax newNode = node
-                .WithTrailingTrivia(node.GetTrailingTrivia().Add(SyntaxHelper.NewLine))
+                .WithTrailingTrivia(node.GetTrailingTrivia().Add(CSharpFactory.NewLine))
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);

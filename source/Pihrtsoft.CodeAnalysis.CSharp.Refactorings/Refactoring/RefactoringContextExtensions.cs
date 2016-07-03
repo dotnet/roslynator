@@ -78,6 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fUsingStatement = false;
             bool fWhileStatement = false;
             bool fYieldReturnStatement = false;
+            bool fBlock = false;
 
             using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
             {
@@ -390,10 +391,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             }
                         }
 
+                        if (!fBlock
+                            && node.IsKind(SyntaxKind.Block))
+                        {
+                            ReplaceBlockWithEmbeddedStatementRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
+                            fBlock = true;
+                        }
+
                         if (!fStatement)
                         {
-                            AddBracesToEmbeddedStatementRefactoring.ComputeRefactoring(context, statement);
-                            RemoveBracesFromStatementRefactoring.ComputeRefactoring(context, statement);
+                            ReplaceEmbeddedStatementWithBlockRefactoring.ComputeRefactoring(context, statement);
                             ExtractStatementRefactoring.ComputeRefactoring(context, statement);
                             fStatement = true;
                         }
@@ -452,9 +459,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.LessThanToken:
                 case SyntaxKind.LessThanEqualsToken:
                     {
-                        context.RegisterRefactoring(
-                            "Negate operator",
-                            cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
+                        {
+                            context.RegisterRefactoring(
+                                "Negate operator",
+                                cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
+                        }
 
                         break;
                     }
@@ -484,9 +494,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
-                        context.RegisterRefactoring(
-                            "Uncomment",
-                            cancellationToken => UncommentRefactoring.RefactorAsync(context.Document, trivia, cancellationToken));
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.Uncomment))
+                        {
+                            context.RegisterRefactoring(
+                                "Uncomment",
+                                cancellationToken => UncommentRefactoring.RefactorAsync(context.Document, trivia, cancellationToken));
+                        }
 
                         break;
                     }

@@ -8,12 +8,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
-            if (ConvertInterpolatedStringToStringLiteralRefactoring.CanRefactor(interpolatedString))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
+                && ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
-                context.RegisterRefactoring("Convert to string literal",
+                context.RegisterRefactoring("Replace interpolated string with string literal",
                     cancellationToken =>
                     {
-                        return ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(
+                        return ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedString,
                             cancellationToken);

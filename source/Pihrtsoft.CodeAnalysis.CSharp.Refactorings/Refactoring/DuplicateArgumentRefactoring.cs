@@ -11,13 +11,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, ArgumentListSyntax argumentList)
         {
-            ArgumentSyntax argument = GetArgument(context, argumentList);
-
-            if (argument != null)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {
-                context.RegisterRefactoring(
-                    "Duplicate argument",
-                    cancellationToken => RefactorAsync(context.Document, argument, cancellationToken));
+                ArgumentSyntax argument = GetArgument(context, argumentList);
+
+                if (argument != null)
+                {
+                    context.RegisterRefactoring(
+                        "Duplicate argument",
+                        cancellationToken => RefactorAsync(context.Document, argument, cancellationToken));
+                }
             }
         }
 
@@ -49,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ArgumentSyntax argument,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

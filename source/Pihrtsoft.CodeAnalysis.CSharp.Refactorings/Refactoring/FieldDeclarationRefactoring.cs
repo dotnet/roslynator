@@ -12,23 +12,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (node.Modifiers.Contains(SyntaxKind.ConstKeyword))
             {
-                context.RegisterRefactoring(
-                    "Convert to read-only field",
-                    cancellationToken => ConvertConstantToFieldRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField))
+                {
+                    context.RegisterRefactoring(
+                        "Replace constant with field",
+                        cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                }
             }
-            else if (node.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
+            else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
+                && node.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && node.Modifiers.Contains(SyntaxKind.StaticKeyword)
                 && context.SupportsSemanticModel)
             {
-                if (await ConvertFieldToConstantRefactoring.CanRefactorAsync(context, node))
+                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, node))
                 {
                     context.RegisterRefactoring(
-                        "Convert to constant",
-                        cancellationToken => ConvertFieldToConstantRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                        "Replace field with constant",
+                        cancellationToken => ReplaceFieldWithConstantRefactoring.RefactorAsync(context.Document, node, cancellationToken));
                 }
             }
 
-            if (MarkMemberAsStaticRefactoring.CanRefactor(node))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && MarkMemberAsStaticRefactoring.CanRefactor(node))
             {
                 context.RegisterRefactoring(
                     "Mark field as static",

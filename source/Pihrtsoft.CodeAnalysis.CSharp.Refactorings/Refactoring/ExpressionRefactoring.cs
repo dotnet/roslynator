@@ -8,12 +8,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression.Span == context.Span
-                && AddParenthesesRefactoring.CanRefactor(context, expression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapExpressionInParentheses)
+                && expression.Span == context.Span
+                && WrapExpressionInParenthesesRefactoring.CanRefactor(context, expression))
             {
                 context.RegisterRefactoring(
-                    "Add parentheses",
-                    cancellationToken => AddParenthesesRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
+                    "Wrap in parentheses",
+                    cancellationToken => WrapExpressionInParenthesesRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
             }
         }
     }

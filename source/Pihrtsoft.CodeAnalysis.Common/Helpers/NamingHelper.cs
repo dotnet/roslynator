@@ -138,7 +138,12 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static string ToCamelCase(string value)
         {
-            return CreateName(value, string.Empty);
+            return CreateName(value, "");
+        }
+
+        public static string ToCamelCase(string value, bool prefixWithUnderscore = false)
+        {
+            return CreateName(value, (prefixWithUnderscore) ? "_" : "");
         }
 
         private static string CreateName(string value, string prefix)

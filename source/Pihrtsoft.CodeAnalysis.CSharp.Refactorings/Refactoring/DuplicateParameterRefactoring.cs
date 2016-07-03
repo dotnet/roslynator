@@ -9,15 +9,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class DuplicateParameterRefactoring
     {
-        public static void Refactor(RefactoringContext context, ParameterListSyntax parameterList)
+        public static void ComputeRefactoring(RefactoringContext context, ParameterListSyntax parameterList)
         {
-            ParameterSyntax parameter = GetParameter(context, parameterList);
-
-            if (parameter != null)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
             {
-                context.RegisterRefactoring(
-                    "Duplicate parameter",
-                    cancellationToken => RefactorAsync(context.Document, parameter, cancellationToken));
+                ParameterSyntax parameter = GetParameter(context, parameterList);
+
+                if (parameter != null)
+                {
+                    context.RegisterRefactoring(
+                        "Duplicate parameter",
+                        cancellationToken => RefactorAsync(context.Document, parameter, cancellationToken));
+                }
             }
         }
 
@@ -49,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ParameterSyntax parameter,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

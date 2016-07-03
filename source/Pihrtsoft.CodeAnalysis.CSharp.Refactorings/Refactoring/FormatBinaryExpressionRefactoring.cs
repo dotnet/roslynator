@@ -13,6 +13,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
+                return;
+
             binaryExpression = BinaryExpressionRefactoring.GetTopmostExpression(binaryExpression);
 
             switch (binaryExpression.Parent?.Kind())
@@ -54,9 +57,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             var statement = (StatementSyntax)condition.Parent;
 
-            SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(SyntaxHelper.NewLine)
+            SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLine)
                 .AddRange(statement.GetIndentTrivia())
-                .Add(SyntaxHelper.DefaultIndent);
+                .Add(CSharpFactory.IndentTrivia);
 
             var rewriter = new SyntaxRewriter(triviaList);
 
@@ -83,7 +86,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (_previous == null
                     || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
                 {
-                    node = node.WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
+                    node = node
+                        .WithLeft(node.Left.TrimWhitespace())
+                        .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
 
                     _previous = node;
                 }

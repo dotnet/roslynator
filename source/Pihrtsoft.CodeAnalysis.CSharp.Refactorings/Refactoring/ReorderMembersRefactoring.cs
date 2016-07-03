@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> ReorderClassMembersAsync(
             Document document,
             ClassDeclarationSyntax classDeclaration,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -77,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> ReorderStructMembersAsync(
             Document document,
             StructDeclarationSyntax structDeclaration,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> ReorderInterfaceMembersAsync(
             Document document,
             InterfaceDeclarationSyntax interfaceDeclaration,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class ConvertInterpolatedStringToStringLiteralRefactoring
+    public static class ReplaceInterpolatedStringWithStringLiteralRefactoring
     {
         public static bool CanRefactor(InterpolatedStringExpressionSyntax interpolatedString)
         {

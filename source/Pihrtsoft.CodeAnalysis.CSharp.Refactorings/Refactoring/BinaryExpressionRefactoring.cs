@@ -18,27 +18,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false)
             {
-                if (binaryExpression.Left.Span.Contains(context.Span))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
                 {
-                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left);
-                }
-                else if (binaryExpression.Right.Span.Contains(context.Span))
-                {
-                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right);
+                    if (binaryExpression.Left.Span.Contains(context.Span))
+                    {
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left);
+                    }
+                    else if (binaryExpression.Right.Span.Contains(context.Span))
+                    {
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right);
+                    }
                 }
 
-                context.RegisterRefactoring(
-                    "Negate binary expression",
-                    cancellationToken =>
-                    {
-                        return NegateBinaryExpressionRefactoring.RefactorAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
+                {
+                    context.RegisterRefactoring(
+                        "Negate binary expression",
+                        cancellationToken =>
+                        {
+                            return NegateBinaryExpressionRefactoring.RefactorAsync(
+                                context.Document,
+                                binaryExpression,
+                                cancellationToken);
+                        });
+                }
             }
 
-            if (binaryExpression.OperatorToken.Span.Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
+                && binaryExpression.OperatorToken.Span.Contains(context.Span)
                 && ExpandCoalesceExpressionRefactoring.CanRefactor(binaryExpression))
             {
                 context.RegisterRefactoring(
@@ -52,15 +59,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     });
             }
 
-            if (MergeStringLiteralsRefactoring.CanRefactor(context, binaryExpression))
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.MergeStringLiterals,
+                    RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral)
+                && MergeStringLiteralsRefactoring.CanRefactor(context, binaryExpression))
             {
-                context.RegisterRefactoring(
-                    "Merge string literals",
-                    cancellationToken => MergeStringLiteralsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken: cancellationToken));
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringLiterals))
+                {
+                    context.RegisterRefactoring(
+                        "Merge string literals",
+                        cancellationToken => MergeStringLiteralsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken: cancellationToken));
+                }
 
-                if (binaryExpression
-                    .DescendantTrivia(binaryExpression.Span)
-                    .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral)
+                    && binaryExpression
+                        .DescendantTrivia(binaryExpression.Span)
+                        .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
                 {
                     context.RegisterRefactoring(
                         "Merge string literals into multiline string literal",
@@ -68,7 +82,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            if (binaryExpression.Left?.IsMissing == false
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
+                && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false
                 && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.OperatorToken.Span.Contains(context.Span))

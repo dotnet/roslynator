@@ -13,30 +13,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (ifStatement.IfKeyword.Span.Contains(context.Span)
                 && IfElseChainAnalysis.IsTopmostIf(ifStatement))
             {
-                if (ifStatement.Else != null)
+                if (context.Settings.IsAnyRefactoringEnabled(
+                        RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse,
+                        RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse)
+                    && ifStatement.Else != null)
                 {
                     var result = new IfElseChainAnalysisResult(ifStatement);
 
-                    if (result.AddBracesToChain)
+                    if (result.ReplaceEmbeddedStatementWithBlock
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse))
                     {
                         context.RegisterRefactoring(
-                            "Add braces to if-else chain",
+                            "Replace embedded statement with block (in if-else)",
                             cancellationToken =>
                             {
-                                return AddBracesToIfElseChainRefactoring.RefactorAsync(
+                                return ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.RefactorAsync(
                                     context.Document,
                                     ifStatement,
                                     cancellationToken);
                             });
                     }
 
-                    if (result.RemoveBracesFromChain)
+                    if (result.ReplaceBlockWithEmbeddedStatement
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse))
                     {
                         context.RegisterRefactoring(
-                            "Remove braces from if-else chain",
+                            "Replace block with embedded statement (in if-else)",
                             cancellationToken =>
                             {
-                                return RemoveBracesFromIfElseChainRefactoring.RefactorAsync(
+                                return ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(
                                     context.Document,
                                     ifStatement,
                                     cancellationToken);
@@ -44,7 +49,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 }
 
-                if (SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
+                    && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
                 {
                     context.RegisterRefactoring(
                         "Swap statements",
@@ -58,7 +64,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            if (ifStatement.Condition != null
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+                && ifStatement.Condition != null
                 && ifStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {

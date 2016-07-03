@@ -1,32 +1,21 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveBracesFromSwitchSectionRefactoring
+    internal static class ReplaceSwitchSectionStatementsWithBlockRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, SwitchSectionSyntax switchSection)
+        public static bool CanRefactor(SwitchSectionSyntax switchSection)
         {
-            if (switchSection.Statements.Count == 1
-                && switchSection.Statements[0].IsKind(SyntaxKind.Block))
-            {
-#if DEBUG
-                var block = (BlockSyntax)switchSection.Statements[0];
-
-                return block.OpenBraceToken.Span.Contains(context.Span)
-                    || block.CloseBraceToken.Span.Contains(context.Span);
-#else
-                return true;
-#endif
-            }
-
-            return false;
+            return switchSection.Statements.All(f => !f.IsKind(SyntaxKind.Block));
         }
 
         public static async Task<Document> RefactorAsync(
@@ -36,13 +25,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var block = (BlockSyntax)switchSection.Statements[0];
-
-            SwitchSectionSyntax newSwitchSection = switchSection
-                .WithStatements(block.Statements)
+            SwitchSectionSyntax newNode = switchSection
+                .WithStatements(List<StatementSyntax>(SingletonList(Block(switchSection.Statements))))
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newSwitchSection);
+            SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }

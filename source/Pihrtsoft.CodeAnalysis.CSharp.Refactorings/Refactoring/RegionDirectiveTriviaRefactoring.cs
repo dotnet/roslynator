@@ -9,7 +9,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context)
         {
-            if (context.Root.IsKind(SyntaxKind.CompilationUnit))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegions)
+                && context.Root.IsKind(SyntaxKind.CompilationUnit))
             {
                 context.RegisterRefactoring(
                     "Remove all regions",

@@ -5,11 +5,22 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class NamespaceDeclarationSyntaxExtensions
     {
+        public static NamespaceDeclarationSyntax WithMember(
+            this NamespaceDeclarationSyntax namespaceDeclaration,
+            MemberDeclarationSyntax memberDeclaration)
+        {
+            if (namespaceDeclaration == null)
+                throw new ArgumentNullException(nameof(namespaceDeclaration));
+
+            return namespaceDeclaration.WithMembers(SingletonList(memberDeclaration));
+        }
+
         public static TextSpan HeaderSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
         {
             if (namespaceDeclaration == null)

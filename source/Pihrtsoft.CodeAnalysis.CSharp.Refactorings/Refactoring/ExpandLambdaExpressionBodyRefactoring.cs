@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             LambdaExpressionSyntax lambda,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             block = block
                 .WithCloseBraceToken(
                     block.CloseBraceToken
-                        .WithLeadingTrivia(SyntaxFactory.TriviaList(SyntaxHelper.NewLine)));
+                        .WithLeadingTrivia(SyntaxFactory.TriviaList(CSharpFactory.NewLine)));
 
             switch (lambda.Kind())
             {

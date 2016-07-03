@@ -14,9 +14,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        context.RegisterRefactoring(
-                            "Negate boolean literal",
-                            cancellationToken => NegateBooleanLiteralRefactoring.RefactoringAsync(context.Document, literalExpression, cancellationToken));
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBooleanLiteral))
+                        {
+                            context.RegisterRefactoring(
+                                "Negate boolean literal",
+                                cancellationToken => NegateBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, cancellationToken));
+                        }
 
                         break;
                     }

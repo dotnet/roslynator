@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
         {
-            if (ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromParentheses)
+                && ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
             {
                 context.RegisterRefactoring(
                     "Extract expression from parentheses",

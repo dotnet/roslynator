@@ -11,6 +11,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(DefaultCodeRefactoringProvider))]
     public class DefaultCodeRefactoringProvider : CodeRefactoringProvider
     {
+        public static RefactoringSettings DefaultSettings { get; } = new RefactoringSettings();
+
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
             SyntaxNode root = await context.Document
@@ -20,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             try
             {
 #endif
-                await ComputeRefactoringsAsync(new RefactoringContext(context, root));
+                await ComputeRefactoringsAsync(new RefactoringContext(context, root, DefaultSettings));
 #if DEBUG
             }
             catch (Exception ex)

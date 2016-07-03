@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class NegateBooleanLiteralRefactoring
     {
-        public static async Task<Document> RefactoringAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))

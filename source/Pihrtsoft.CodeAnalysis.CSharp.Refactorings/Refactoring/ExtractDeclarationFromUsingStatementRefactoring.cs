@@ -16,7 +16,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             UsingStatementSyntax usingStatement)
         {
-            if (usingStatement.Declaration?.Type != null
+            if (context.SupportsSemanticModel
+                && usingStatement.Declaration?.Type != null
                 && usingStatement.Parent?.IsKind(SyntaxKind.Block) == true
                 && usingStatement.Declaration.Span.Contains(context.Span))
             {

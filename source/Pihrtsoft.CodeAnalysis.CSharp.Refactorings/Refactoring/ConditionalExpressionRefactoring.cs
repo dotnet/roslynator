@@ -8,32 +8,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (conditionalExpression.IsSingleline())
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression))
             {
-                context.RegisterRefactoring(
-                    "Format conditional expression on multiple lines",
-                    cancellationToken =>
-                    {
-                        return FormatConditionalExpressionOnMultipleLinesRefactoring.RefactorAsync(
-                            context.Document,
-                            conditionalExpression,
-                            cancellationToken);
-                    });
-            }
-            else
-            {
-                context.RegisterRefactoring(
-                    "Format conditional expression on a single line",
-                    cancellationToken =>
-                    {
-                        return FormatConditionalExpressionOnSingleLineRefactoring.RefactorAsync(
-                            context.Document,
-                            conditionalExpression,
-                            cancellationToken);
-                    });
+                if (conditionalExpression.IsSingleline())
+                {
+                    context.RegisterRefactoring(
+                        "Format conditional expression on multiple lines",
+                        cancellationToken =>
+                        {
+                            return FormatConditionalExpressionOnMultipleLinesRefactoring.RefactorAsync(
+                                context.Document,
+                                conditionalExpression,
+                                cancellationToken);
+                        });
+                }
+                else
+                {
+                    context.RegisterRefactoring(
+                        "Format conditional expression on a single line",
+                        cancellationToken =>
+                        {
+                            return FormatConditionalExpressionOnSingleLineRefactoring.RefactorAsync(
+                                context.Document,
+                                conditionalExpression,
+                                cancellationToken);
+                        });
+                }
             }
 
-            ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(context, conditionalExpression);
+            ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoring(context, conditionalExpression);
 
             if (SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
             {

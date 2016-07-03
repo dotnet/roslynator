@@ -12,15 +12,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Root.IsKind(SyntaxKind.CompilationUnit)
                 && trivia.IsCommentTrivia())
             {
-                context.RegisterRefactoring(
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveComment))
+                {
+                    context.RegisterRefactoring(
                         "Remove comment",
                         cancellationToken => RemoveCommentRefactoring.RemoveCommentAsync(context.Document, trivia, cancellationToken));
+                }
 
-                context.RegisterRefactoring(
-                    "Remove all comments",
-                    cancellationToken => RemoveAllCommentsRefactoring.RefactorAsync(context.Document, keepXmlComment: false, cancellationToken: cancellationToken));
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllComments))
+                {
+                    context.RegisterRefactoring(
+                        "Remove all comments",
+                        cancellationToken => RemoveAllCommentsRefactoring.RefactorAsync(context.Document, keepXmlComment: false, cancellationToken: cancellationToken));
+                }
 
-                if (trivia.IsAnyKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments)
+                    && trivia.IsAnyKind(SyntaxKind.SingleLineCommentTrivia, SyntaxKind.MultiLineCommentTrivia))
                 {
                     context.RegisterRefactoring(
                         "Remove all comments (except xml comments)",

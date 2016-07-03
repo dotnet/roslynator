@@ -17,15 +17,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.SupportsSemanticModel)
             {
-                await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration);
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                    await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration);
 
                 if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
                 {
-                    await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
-                    await ChangeTypeAsync(context, variableDeclaration);
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                        await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
+
+                    if (context.Settings.IsAnyRefactoringEnabled(
+                        RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                        RefactoringIdentifiers.ChangeVarToExplicitType))
+                    {
+                        await ChangeTypeAsync(context, variableDeclaration);
+                    }
                 }
 
-                await AddCastToExpressionAsync(context, variableDeclaration);
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                    await AddCastExpressionAsync(context, variableDeclaration);
             }
         }
 
@@ -42,17 +51,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (result == TypeAnalysisResult.Explicit || result == TypeAnalysisResult.ExplicitButShouldBeImplicit)
             {
-                context.RegisterRefactoring(
-                    "Change type to 'var'",
-                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken));
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                {
+                    context.RegisterRefactoring(
+                        "Change type to 'var'",
+                        cancellationToken =>
+                        {
+                            return TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(
+                                context.Document,
+                                variableDeclaration.Type,
+                                cancellationToken);
+                        });
+                }
             }
             else if (result == TypeAnalysisResult.Implicit || result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, context.CancellationToken).Type;
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                {
+                    ITypeSymbol typeSymbol = semanticModel
+                        .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
+                        .Type;
 
-                context.RegisterRefactoring(
-                    $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken));
+                    context.RegisterRefactoring(
+                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        cancellationToken =>
+                        {
+                            return TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(
+                                context.Document,
+                                variableDeclaration.Type,
+                                typeSymbol,
+                                cancellationToken);
+                        });
+                }
             }
         }
 
@@ -78,7 +108,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (!string.IsNullOrEmpty(newName))
                     {
-                        if (symbol.IsKind(SymbolKind.Field)
+                        if (context.Settings.PrefixFieldIdentifierWithUnderscore
+                            && symbol.IsKind(SymbolKind.Field)
                             && symbol.DeclaredAccessibility == Accessibility.Private
                             && !((IFieldSymbol)symbol).IsConst)
                         {
@@ -161,7 +192,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task AddCastToExpressionAsync(
+        private static async Task AddCastExpressionAsync(
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
@@ -185,7 +216,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             .Type;
 
                         if (!declarationType.Equals(expressionType))
-                            AddCastRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType);
+                            AddCastExpressionRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType);
                     }
                 }
             }

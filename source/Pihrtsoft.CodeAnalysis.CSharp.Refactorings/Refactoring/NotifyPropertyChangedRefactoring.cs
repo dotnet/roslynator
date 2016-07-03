@@ -12,22 +12,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class NotifyPropertyChangedRefactoring
     {
-        public static async Task RefactorAsync(RefactoringContext context, PropertyDeclarationSyntax property)
-        {
-            if (await CanRefactorAsync(context, property))
-            {
-                context.RegisterRefactoring(
-                    "Notify property changed",
-                    cancellationToken =>
-                    {
-                        return RefactorAsync(
-                            context.Document,
-                            property,
-                            cancellationToken);
-                    });
-            }
-        }
-
         public static async Task<bool> CanRefactorAsync(
             RefactoringContext context,
             PropertyDeclarationSyntax property)
@@ -80,10 +64,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return false;
         }
 
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax property,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

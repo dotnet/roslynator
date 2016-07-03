@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertConstantToFieldRefactoring
+    internal static class ReplaceConstantWithFieldRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
@@ -30,7 +30,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxTokenList GetModifiers(FieldDeclarationSyntax field, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static SyntaxTokenList GetModifiers(
+            FieldDeclarationSyntax field,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxToken constModifier = field.Modifiers.FirstOrDefault(f => f.IsKind(SyntaxKind.ConstKeyword));
 

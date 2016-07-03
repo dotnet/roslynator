@@ -17,14 +17,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
-            CancellationToken cancellationToken)
+            bool prefixIdentifierWithUnderscore = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             SyntaxTokenList modifiers = TokenList(Token(SyntaxKind.PrivateKeyword));
@@ -32,7 +27,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                 modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            string fieldName = NamingHelper.ToCamelCaseWithUnderscore(propertyDeclaration.Identifier.ValueText);
+            string fieldName = NamingHelper.ToCamelCase(
+                propertyDeclaration.Identifier.ValueText,
+                prefixWithUnderscore: prefixIdentifierWithUnderscore);
 
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName, modifiers)
                 .WithAdditionalAnnotations(Formatter.Annotation);
@@ -93,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             AccessorListSyntax accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration.AccessorList)
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration
                 .WithAccessorList(accessorList);

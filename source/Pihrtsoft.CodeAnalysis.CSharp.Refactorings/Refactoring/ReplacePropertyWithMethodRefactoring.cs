@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertPropertyToMethodRefactoring
+    internal static class ReplacePropertyWithMethodRefactoring
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {

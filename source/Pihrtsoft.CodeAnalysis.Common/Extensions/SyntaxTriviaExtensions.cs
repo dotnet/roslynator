@@ -56,18 +56,9 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
-        public static bool IsAnyKind(this SyntaxTrivia syntaxTrivia, params SyntaxKind[] syntaxKinds)
+        public static bool IsAnyKind(this SyntaxTrivia trivia, SyntaxKind kind, SyntaxKind kind2)
         {
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
-
-            for (int i = 0; i < syntaxKinds.Length; i++)
-            {
-                if (syntaxTrivia.IsKind(syntaxKinds[i]))
-                    return true;
-            }
-
-            return false;
+            return trivia.IsKind(kind) || trivia.IsKind(kind2);
         }
 
         public static bool IsAnyKind(this SyntaxTrivia syntaxTrivia, IEnumerable<SyntaxKind> syntaxKinds)

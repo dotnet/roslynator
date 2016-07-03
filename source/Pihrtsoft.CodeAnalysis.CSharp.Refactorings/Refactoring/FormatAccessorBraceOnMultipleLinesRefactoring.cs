@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             AccessorDeclarationSyntax accessor,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithBody(
                     accessor.Body.WithCloseBraceToken(
                         closeBrace.WithLeadingTrivia(
-                            closeBrace.LeadingTrivia.Add(SyntaxHelper.NewLine))))
+                            closeBrace.LeadingTrivia.Add(CSharpFactory.NewLine))))
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             root = root.ReplaceNode(accessor, newAccessor);

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -149,43 +148,49 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static bool IsAnyKind(this SyntaxNode syntaxNode, IEnumerable<SyntaxKind> syntaxKinds)
-        {
-            if (syntaxNode == null)
-                throw new ArgumentNullException(nameof(syntaxNode));
-
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
-
-            foreach (SyntaxKind syntaxKind in syntaxKinds)
-            {
-                if (syntaxNode.IsKind(syntaxKind))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] syntaxKinds)
+        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
-
-            while (node != null)
-            {
-                if (node.IsAnyKind(syntaxKinds))
-                    return node;
-
-                node = node.Parent;
-            }
-
-            return null;
+            return node.IsKind(kind)
+                || node.IsKind(kind2);
         }
 
-        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, IEnumerable<SyntaxKind> syntaxKinds)
+        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.IsKind(kind)
+                || node.IsKind(kind2)
+                || node.IsKind(kind3);
+        }
+
+        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.IsKind(kind)
+                || node.IsKind(kind2)
+                || node.IsKind(kind3)
+                || node.IsKind(kind4);
+        }
+
+        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.IsKind(kind)
+                || node.IsKind(kind2)
+                || node.IsKind(kind3)
+                || node.IsKind(kind4)
+                || node.IsKind(kind5);
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] syntaxKinds)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));

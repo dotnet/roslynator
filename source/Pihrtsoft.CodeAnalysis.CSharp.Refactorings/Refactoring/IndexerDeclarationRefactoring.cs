@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (indexerDeclaration.AccessorList?.Span.Contains(context.Span) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && indexerDeclaration.AccessorList?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(indexerDeclaration))
             {
@@ -17,7 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
             }
 
-            if (indexerDeclaration.HeaderSpan().Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+                && indexerDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(indexerDeclaration))
             {
                 context.RegisterRefactoring(

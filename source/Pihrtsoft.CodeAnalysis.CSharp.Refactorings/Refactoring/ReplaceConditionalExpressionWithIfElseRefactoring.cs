@@ -13,9 +13,9 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertConditionalExpressionToIfElseRefactoring
+    internal static class ReplaceConditionalExpressionWithIfElseRefactoring
     {
-        private const string Title = "Convert conditional expression to if-else";
+        private const string Title = "Replace conditional expression with if-else";
 
         public static void ComputeRefactoring(RefactoringContext context, ConditionalExpressionSyntax expression)
         {
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             ReturnStatementSyntax returnStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -73,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             YieldStatementSyntax yieldStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             ExpressionStatementSyntax expressionStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -108,7 +108,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             LocalDeclarationStatementSyntax localDeclaration,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
             SemanticModel semanticModel = await document.GetSemanticModelAsync();

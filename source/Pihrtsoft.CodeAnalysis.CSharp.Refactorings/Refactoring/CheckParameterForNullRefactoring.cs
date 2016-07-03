@@ -14,11 +14,12 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class AddParameterNullCheckRefactoring
+    internal static class CheckParameterForNullRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (parameter.Identifier.Span.Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
+                && parameter.Identifier.Span.Contains(context.Span)
                 && await CanRefactorAsync(context, parameter))
             {
                 context.RegisterRefactoring(
@@ -68,9 +69,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             IfStatementSyntax argumentNullCheck = IfNullThrowArgumentNullException(parameter.Identifier.ToString());
 
             if (index > 0)
-                argumentNullCheck = argumentNullCheck.WithLeadingTrivia(SyntaxHelper.NewLine);
+                argumentNullCheck = argumentNullCheck.WithLeadingTrivia(CSharpFactory.NewLine);
 
-            argumentNullCheck = argumentNullCheck.WithTrailingTrivia(SyntaxHelper.NewLine, SyntaxHelper.NewLine);
+            argumentNullCheck = argumentNullCheck.WithTrailingTrivia(CSharpFactory.NewLine, CSharpFactory.NewLine);
 
             BlockSyntax newBody = body
                 .WithStatements(body.Statements.Insert(index, argumentNullCheck))
@@ -99,7 +100,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ArgumentListSyntax argumentList =
                 ArgumentList(
                     SingletonSeparatedList(
-                        Argument(SyntaxHelper.NameOf(identifier))));
+                        Argument(CSharpFactory.NameOf(identifier))));
 
             return ThrowStatement(ObjectCreationExpression(
                 type: type,
@@ -107,7 +108,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 initializer: null));
         }
 
-        private static bool ContainsParameterNullCheck(BlockSyntax body, ParameterSyntax parameter, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool ContainsParameterNullCheck(
+            BlockSyntax body,
+            ParameterSyntax parameter,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             for (int i = 0; i < body.Statements.Count; i++)
             {

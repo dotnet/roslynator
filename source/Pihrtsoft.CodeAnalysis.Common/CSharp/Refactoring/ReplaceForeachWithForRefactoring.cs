@@ -13,7 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class ForEachToForRefactoring
+    public static class ReplaceForeachWithForRefactoring
     {
         private const string CounterIdentifierName = "i";
 
@@ -28,20 +28,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (forEachStatement.Expression?.IsAnyKind(
-                SyntaxKind.IdentifierName,
-                SyntaxKind.SimpleMemberAccessExpression) == true)
-            {
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(forEachStatement.Expression, cancellationToken)
-                    .Type;
+            ITypeSymbol typeSymbol = semanticModel
+                .GetTypeInfo(forEachStatement.Expression, cancellationToken)
+                .Type;
 
-                if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
-                {
-                    return typeSymbol.IsKind(SymbolKind.ArrayType)
-                       || typeSymbol.SpecialType == SpecialType.System_String
-                       || typeSymbol.HasPublicIndexer();
-                }
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+            {
+                return typeSymbol.IsKind(SymbolKind.ArrayType)
+                   || typeSymbol.SpecialType == SpecialType.System_String
+                   || typeSymbol.HasPublicIndexer();
             }
 
             return false;

@@ -10,7 +10,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (argument.Expression?.IsMissing == false
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                && argument.Expression?.IsMissing == false
                 && context.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
@@ -24,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (parameterSymbol.Type != null
                             && !typeSymbol.Equals(parameterSymbol.Type))
                         {
-                            AddCastRefactoring.RegisterRefactoring(context, argument.Expression, parameterSymbol.Type);
+                            AddCastExpressionRefactoring.RegisterRefactoring(context, argument.Expression, parameterSymbol.Type);
                         }
                     }
                 }

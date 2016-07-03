@@ -11,7 +11,7 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class RemoveBracesFromIfElseChainRefactoring
+    public static class ReplaceEmbeddedStatementWithBlockInIfElseRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
@@ -52,13 +52,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (node == null)
                     throw new ArgumentNullException(nameof(node));
 
-                if (_previousIf == null
-                    || _previousIf.Equals(IfElseChainAnalysis.GetPreviousIf(node)))
+                if (_previousIf == null || _previousIf.Equals(IfElseChainAnalysis.GetPreviousIf(node)))
                 {
                     if (node.Statement != null
-                        && node.Statement.IsKind(SyntaxKind.Block))
+                        && !node.Statement.IsKind(SyntaxKind.Block))
                     {
-                        IfStatementSyntax ifStatement = node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
+                        IfStatementSyntax ifStatement = node.WithStatement(SyntaxFactory.Block(node.Statement));
 
                         _previousIf = ifStatement;
 
@@ -80,9 +79,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (_previousIf.Equals(node.Parent)
                     && node.Statement != null
-                    && node.Statement.IsKind(SyntaxKind.Block))
+                    && !node.Statement.IsKind(SyntaxKind.Block)
+                    && !node.Statement.IsKind(SyntaxKind.IfStatement))
                 {
-                    return node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
+                    return node.WithStatement(SyntaxFactory.Block(node.Statement));
                 }
 
                 return base.VisitElseClause(node);

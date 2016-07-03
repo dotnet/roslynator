@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +13,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes))
+                return;
 
             SyntaxList<AttributeListSyntax> attributeLists = member.GetAttributeLists();
 

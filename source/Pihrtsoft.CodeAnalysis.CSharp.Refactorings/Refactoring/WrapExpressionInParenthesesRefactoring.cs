@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class AddParenthesesRefactoring
+    internal static class WrapExpressionInParenthesesRefactoring
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
@@ -34,6 +34,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return false;
             }
 
+            if (IsForeachExpression(expression)
+                || IsVariableDeclarationValue(expression))
+            {
+                return false;
+            }
+
             try
             {
                 Refactor(expression, context.Root, context.CancellationToken);
@@ -45,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
-                Debug.Assert(false, nameof(AddParenthesesRefactoring));
+                Debug.Assert(false, nameof(WrapExpressionInParenthesesRefactoring));
                 return false;
             }
 
@@ -73,6 +79,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithTriviaFrom(expression);
 
             return root.ReplaceNode(expression, newNode);
+        }
+
+        private static bool IsForeachExpression(ExpressionSyntax expression)
+        {
+            return expression.Parent?.IsKind(SyntaxKind.ForEachStatement) == true
+                && expression.Equals(((ForEachStatementSyntax)expression.Parent).Expression);
+        }
+
+        private static bool IsVariableDeclarationValue(ExpressionSyntax expression)
+        {
+            return expression.Parent?.IsKind(SyntaxKind.EqualsValueClause) == true
+                && expression.Parent.Parent?.IsKind(SyntaxKind.VariableDeclarator) == true
+                && expression.Parent.Parent.Parent?.IsKind(SyntaxKind.VariableDeclaration) == true;
         }
     }
 }

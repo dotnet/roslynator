@@ -12,11 +12,12 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertEnumerableMethodToElementAccessRefactoring
+    internal static class ReplaceMethodInvocationWithElementAccessRefactoring
     {
-        public static async Task RefactorAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess)
+                && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
                 && invocation.ArgumentList != null)
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
@@ -62,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (propertyName != null)
                     {
                         context.RegisterRefactoring(
-                            $"Access element using '[]' instead of '{methodName}' method",
+                            $"Replace '{methodName}' with '[]'",
                             cancellationToken =>
                             {
                                 return RefactorAsync(
@@ -94,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     && (typeSymbol.IsKind(SymbolKind.ArrayType) || typeSymbol.HasPublicIndexer()))
                 {
                     context.RegisterRefactoring(
-                            "Access element using '[]' instead of 'ElementAt' method",
+                            "Replace 'ElementAt' with '[]'",
                         cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                 }
             }

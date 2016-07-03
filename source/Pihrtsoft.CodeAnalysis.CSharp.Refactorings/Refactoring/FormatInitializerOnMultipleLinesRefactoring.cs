@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -38,15 +38,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 return initializer
                     .WithExpressions(
                         SeparatedList(
-                            initializer.Expressions.Select(expression => expression.WithLeadingTrivia(SyntaxHelper.NewLine))))
+                            initializer.Expressions.Select(expression => expression.WithLeadingTrivia(CSharpFactory.NewLine))))
                     .WithAdditionalAnnotations(Formatter.Annotation);
             }
 
             SyntaxTriviaList indent = initializer.GetIndentTrivia();
-            SyntaxTriviaList indent2 = indent.Add(SyntaxHelper.DefaultIndent);
+            SyntaxTriviaList indent2 = indent.Add(CSharpFactory.IndentTrivia);
 
-            indent = indent.Insert(0, SyntaxHelper.NewLine);
-            indent2 = indent2.Insert(0, SyntaxHelper.NewLine);
+            indent = indent.Insert(0, CSharpFactory.NewLine);
+            indent2 = indent2.Insert(0, CSharpFactory.NewLine);
 
             return initializer
                 .WithExpressions(

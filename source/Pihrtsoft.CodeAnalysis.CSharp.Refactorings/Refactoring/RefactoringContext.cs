@@ -16,15 +16,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         private SemanticModel _semanticModel;
 
-        public RefactoringContext(CodeRefactoringContext context, SyntaxNode root)
+        public RefactoringContext(CodeRefactoringContext context, SyntaxNode root, RefactoringSettings settings)
         {
             BaseContext = context;
             Root = root;
+            Settings = settings;
         }
+
+        public CodeRefactoringContext BaseContext { get; }
 
         public SyntaxNode Root { get; }
 
-        public CodeRefactoringContext BaseContext { get; }
+        public RefactoringSettings Settings { get; }
 
         public bool SupportsSemanticModel
         {

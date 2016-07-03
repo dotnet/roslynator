@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            InvocationExpressionSyntax newNode = SyntaxHelper.NameOf(literalExpression.Token.ValueText)
+            InvocationExpressionSyntax newNode = CSharpFactory.NameOf(literalExpression.Token.ValueText)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, newNode);

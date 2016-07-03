@@ -14,8 +14,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes))
+                return;
 
             SyntaxList<AttributeListSyntax> attributeLists = member.GetAttributeLists();
 

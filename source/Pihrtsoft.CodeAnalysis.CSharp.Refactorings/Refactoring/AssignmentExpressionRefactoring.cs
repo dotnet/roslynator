@@ -11,8 +11,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
         {
-            if (ExpandAssignmentExpressionRefactoring.CanRefactor(assignmentExpression)
-                && assignmentExpression.OperatorToken.Span.Contains(context.Span))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandAssignmentExpression)
+                && assignmentExpression.OperatorToken.Span.Contains(context.Span)
+                && ExpandAssignmentExpressionRefactoring.CanRefactor(assignmentExpression))
             {
                 context.RegisterRefactoring(
                     "Expand assignment expression",
@@ -25,7 +26,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     });
             }
 
-            if (assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
                 && assignmentExpression.Left?.IsMissing == false
                 && assignmentExpression.Right?.IsMissing == false
                 && assignmentExpression.Right.Span.Contains(context.Span)
@@ -40,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(assignmentExpression.Right).Type;
 
                     if (!leftSymbol.Equals(rightSymbol))
-                        AddCastRefactoring.RegisterRefactoring(context, assignmentExpression.Right, leftSymbol);
+                        AddCastExpressionRefactoring.RegisterRefactoring(context, assignmentExpression.Right, leftSymbol);
                 }
             }
         }

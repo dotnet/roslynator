@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Convert foreach to for",
-                cancellationToken => ForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken),
+                cancellationToken => ReplaceForeachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken),
                 DiagnosticIdentifiers.ConvertForEachToFor + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

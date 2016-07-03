@@ -15,6 +15,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
+            if (!context.Settings.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.AddParameterNameToParameter,
+                RefactoringIdentifiers.RenameParameterAccordingToTypeName))
+            {
+                return;
+            }
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
@@ -24,23 +31,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (parameter.Identifier.IsMissing)
             {
-                TextSpan span = (parameter.Type != null)
-                    ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
-                    : parameter.Span;
-
-                if (span.Contains(context.Span))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToParameter))
                 {
-                    string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                    TextSpan span = (parameter.Type != null)
+                        ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
+                        : parameter.Span;
 
-                    if (!string.IsNullOrEmpty(name))
+                    if (span.Contains(context.Span))
                     {
-                        context.RegisterRefactoring(
-                            $"Add parameter name '{name}'",
-                            cancellationToken => AddParameterNameAccordingToTypeNameAsync(context.Document, parameter, name, cancellationToken));
+                        string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+
+                        if (!string.IsNullOrEmpty(name))
+                        {
+                            context.RegisterRefactoring(
+                                $"Add parameter name '{name}'",
+                                cancellationToken => AddParameterNameToParameterAsync(context.Document, parameter, name, cancellationToken));
+                        }
                     }
                 }
             }
-            else if (parameter.Identifier.Span.Contains(context.Span))
+            else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
+                && parameter.Identifier.Span.Contains(context.Span))
             {
                 string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
@@ -56,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> AddParameterNameAccordingToTypeNameAsync(
+        private static async Task<Document> AddParameterNameToParameterAsync(
             Document document,
             ParameterSyntax parameter,
             string name,

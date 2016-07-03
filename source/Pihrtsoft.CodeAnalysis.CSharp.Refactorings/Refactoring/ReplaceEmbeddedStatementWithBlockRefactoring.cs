@@ -10,14 +10,15 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class AddBracesToEmbeddedStatementRefactoring
+    internal static class ReplaceEmbeddedStatementWithBlockRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (CanRefactor(statement))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock)
+                && CanRefactor(statement))
             {
                 context.RegisterRefactoring(
-                    $"Add braces to {SyntaxHelper.GetSyntaxNodeName(statement.Parent)}",
+                    "Replace embedded statement with block",
                     cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
             }
         }
@@ -30,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

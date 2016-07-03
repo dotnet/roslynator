@@ -22,21 +22,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
         {
-            List<ArgumentSyntax> arguments = null;
-
-            foreach (ArgumentSyntax argument in argumentList.Arguments)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.AddParameterNameToArgument,
+                    RefactoringIdentifiers.RemoveParameterNameFromArgument)
+                && !context.Span.IsEmpty
+                && context.SupportsSemanticModel)
             {
-                if (argument.Expression != null && context.Span.Contains(argument.Expression.Span))
+                List<ArgumentSyntax> arguments = null;
+
+                foreach (ArgumentSyntax argument in argumentList.Arguments)
                 {
-                    if (arguments == null)
-                        arguments = new List<ArgumentSyntax>();
+                    if (argument.Expression != null && context.Span.Contains(argument.Expression.Span))
+                    {
+                        if (arguments == null)
+                            arguments = new List<ArgumentSyntax>();
 
-                    arguments.Add(argument);
+                        arguments.Add(argument);
+                    }
                 }
-            }
 
-            if (arguments?.Count > 0)
-                await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray());
+                if (arguments?.Count > 0)
+                    await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray());
+            }
         }
 
         private static async Task AddOrRemoveParameterNameAsync(
@@ -44,7 +51,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ArgumentListSyntax argumentList,
             ArgumentSyntax[] arguments)
         {
-            if (await CanAddParameterNameAsync(context, arguments))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
+                && await CanAddParameterNameAsync(context, arguments))
             {
                 context.RegisterRefactoring(
                     "Add parameter name",
@@ -58,7 +66,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     });
             }
 
-            if (arguments.Any(f => f.NameColon != null))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)
+                && arguments.Any(f => f.NameColon != null))
             {
                 context.RegisterRefactoring(
                     "Remove parameter name",
@@ -76,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> RemoveParameterNameAsync(
             Document document,
             ArgumentSyntax argument,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

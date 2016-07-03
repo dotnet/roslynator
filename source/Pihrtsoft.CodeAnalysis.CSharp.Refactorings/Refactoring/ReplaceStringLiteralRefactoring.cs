@@ -12,13 +12,13 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertStringLiteralRefactoring
+    internal static class ReplaceStringLiteralRefactoring
     {
         private const string Quote = "\"";
         private const string AmpersandQuote = "@" + Quote;
         private const string Backslash = @"\";
 
-        public static async Task<Document> ConvertToInterpolatedStringAsync(
+        public static async Task<Document> ReplaceWithInterpolatedStringAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             int interpolationStartIndex = -1,
@@ -46,13 +46,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static bool CanConvertToStringEmpty(LiteralExpressionSyntax literalExpression)
+        public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
         {
             return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
                 && literalExpression.Token.ValueText.Length == 0;
         }
 
-        public static async Task<Document> ConvertToStringEmptyAsync(
+        public static async Task<Document> ReplaceWithStringEmptyAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static async Task<Document> ConvertToRegularStringLiteralAsync(
+        public static async Task<Document> ReplaceWithRegularStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        public static async Task<Document> ConvertToRegularStringLiteralsAsync(
+        public static async Task<Document> ReplaceWithRegularStringLiteralsAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -104,7 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        public static async Task<Document> ConvertToVerbatimStringLiteralAsync(
+        public static async Task<Document> ReplaceWithVerbatimStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -235,13 +235,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return (LiteralExpressionSyntax)ParseExpression(Quote + text + Quote);
         }
 
-        public static bool CanConvertToCharacterLiteral(LiteralExpressionSyntax literalExpression)
+        public static bool CanReplaceWithCharacterLiteral(LiteralExpressionSyntax literalExpression)
         {
             return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
                 && literalExpression.Token.ValueText.Length == 1;
         }
 
-        public static async Task<Document> ConvertToCharacterLiteralAsync(
+        public static async Task<Document> ReplaceWithCharacterLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))

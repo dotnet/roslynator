@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task<Document> RefactorAsync(
             Document document,
             ArrowExpressionClauseSyntax arrowExpressionClause,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -86,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (singleline)
             {
                 accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
-                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
             }
 
             return accessorList;

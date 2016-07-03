@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces from if-else chain",
-                cancellationToken => RemoveBracesFromIfElseChainRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
+                cancellationToken => ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
                 DiagnosticIdentifiers.RemoveBracesFromIfElseChain + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

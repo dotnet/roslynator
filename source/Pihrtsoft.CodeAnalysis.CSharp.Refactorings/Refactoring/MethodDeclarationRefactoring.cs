@@ -13,7 +13,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
                     "Mark method as static",
@@ -22,15 +23,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
             }
 
-            if (methodDeclaration.HeaderSpan().Contains(context.Span)
-                && ConvertMethodToReadOnlyPropertyRefactoring.CanRefactor(methodDeclaration))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
+                && methodDeclaration.HeaderSpan().Contains(context.Span)
+                && ReplaceMethodWithPropertyRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Convert to read-only property",
-                    cancellationToken => ConvertMethodToReadOnlyPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                    "Replace method with property",
+                    cancellationToken => ReplaceMethodWithPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            if (methodDeclaration.Body?.Span.Contains(context.Span) == true
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && methodDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
             {
@@ -39,7 +42,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            if (methodDeclaration.HeaderSpan().Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+                && methodDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
@@ -47,15 +51,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            if (context.SupportsSemanticModel)
-                await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration);
+            await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration);
         }
 
         private static async Task RenameMethodAccoringToTypeNameAsync(
             RefactoringContext context,
             MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.ReturnType?.IsVoid() == false
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)
+                && context.SupportsSemanticModel
+                && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Identifier.Span.Contains(context.Span))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();

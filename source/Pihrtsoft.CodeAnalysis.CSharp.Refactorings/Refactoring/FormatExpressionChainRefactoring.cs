@@ -18,6 +18,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
         {
+            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
+                return;
+
             if (!memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
@@ -43,13 +46,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> FormatExpressionChainOnMultipleLinesAsync(
             Document document,
             MemberAccessExpressionSyntax expression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxTriviaList triviaList = expression.GetIndentTrivia().Add(SyntaxHelper.DefaultIndent);
+            SyntaxTriviaList triviaList = expression.GetIndentTrivia().Add(CSharpFactory.IndentTrivia);
 
-            triviaList = triviaList.Insert(0, SyntaxHelper.NewLine);
+            triviaList = triviaList.Insert(0, CSharpFactory.NewLine);
 
             var rewriter = new ExpressionChainSyntaxRewriter(triviaList);
 
@@ -64,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> FormatExpressionChainOnSingleLineAsync(
             Document document,
             MemberAccessExpressionSyntax expression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

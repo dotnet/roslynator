@@ -60,6 +60,6 @@ namespace Pihrtsoft.CodeAnalysis
             => token.WithTrailingTrivia(SyntaxFactory.Space);
 
         public static SyntaxToken WithTrailingNewLine(this SyntaxToken token)
-            => token.WithTrailingTrivia(SyntaxHelper.NewLine);
+            => token.WithTrailingTrivia(CSharpFactory.NewLine);
     }
 }

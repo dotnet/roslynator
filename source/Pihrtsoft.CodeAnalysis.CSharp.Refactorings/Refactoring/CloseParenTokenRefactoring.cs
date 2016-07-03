@@ -12,7 +12,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken closeParen)
         {
-            if (closeParen.IsKind(SyntaxKind.CloseParenToken)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.AddParameterNameToParameter,
+                    RefactoringIdentifiers.RenameParameterAccordingToTypeName,
+                    RefactoringIdentifiers.CheckParameterForNull)
+                && closeParen.IsKind(SyntaxKind.CloseParenToken)
                 && closeParen.Parent?.IsKind(SyntaxKind.ParameterList) == true
                 && context.Span.Start > 0
                 && context.SupportsSemanticModel)
@@ -25,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
 
-                    await AddParameterNullCheckRefactoring.ComputeRefactoringAsync(context, parameter);
+                    await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter);
                 }
             }
         }

@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, LambdaExpressionSyntax lambda)
         {
-            if (ExpandLambdaExpressionBodyRefactoring.CanRefactor(context, lambda))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandLambdaExpressionBody)
+                && ExpandLambdaExpressionBodyRefactoring.CanRefactor(context, lambda))
             {
                 context.RegisterRefactoring(
                     "Expand lambda expression body",
@@ -21,7 +22,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             cancellationToken);
                     });
             }
-            else if (SimplifyLambdaExpressionRefactoring.CanRefactor(lambda))
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyLambdaExpression)
+                && SimplifyLambdaExpressionRefactoring.CanRefactor(lambda))
             {
                 context.RegisterRefactoring(
                     "Simplify lambda expression",

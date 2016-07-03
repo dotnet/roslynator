@@ -6,10 +6,6 @@ namespace Pihrtsoft.CodeAnalysis.Text
 {
     public static class TextUtility
     {
-        public const int DefaultIndentSize = 4;
-
-        public static readonly string DefaultIndent = Spaces(DefaultIndentSize);
-
         public static string Spaces(int count)
         {
             if (count < 0)

@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .WithSemicolonToken(Token(SyntaxKind.None)))));
 
             accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(SyntaxHelper.NewLine));
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration
                 .WithInitializer(null)

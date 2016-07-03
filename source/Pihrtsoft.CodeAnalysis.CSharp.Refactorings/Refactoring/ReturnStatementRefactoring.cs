@@ -37,7 +37,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                             if (expressionSymbol?.IsKind(SymbolKind.ErrorType) == false)
                             {
-                                if (memberTypeSymbol.SpecialType == SpecialType.System_Boolean
+                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+                                    && memberTypeSymbol.SpecialType == SpecialType.System_Boolean
                                     && expressionSymbol.IsKind(SymbolKind.NamedType))
                                 {
                                     var namedTypeSymbol = (INamedTypeSymbol)expressionSymbol;
@@ -59,34 +60,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                                 ISymbol memberSymbol = semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
-                                TypeSyntax newType = GetNewMemberType(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
-
-                                if (newType != null)
+                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                                 {
-                                    string newTypeName = expressionSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat);
+                                    TypeSyntax newType = GetNewMemberType(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
-                                    if (memberSymbol.IsKind(SymbolKind.Method)
-                                        && ((IMethodSymbol)memberSymbol).IsAsync)
+                                    if (newType != null)
                                     {
-                                        newTypeName = $"Task<'{newTypeName}'>";
+                                        string newTypeName = expressionSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat);
+
+                                        if (memberSymbol.IsKind(SymbolKind.Method)
+                                            && ((IMethodSymbol)memberSymbol).IsAsync)
+                                        {
+                                            newTypeName = $"Task<'{newTypeName}'>";
+                                        }
+
+                                        context.RegisterRefactoring(
+                                        $"Change {GetText(declaration)} type to '{newTypeName}'",
+                                        cancellationToken =>
+                                        {
+                                            return ChangeMemberTypeRefactoring.RefactorAsync(
+                                                context.Document,
+                                                memberType,
+                                                newType,
+                                                cancellationToken);
+                                        });
                                     }
-
-                                    context.RegisterRefactoring(
-                                    $"Change {GetText(declaration)} type to '{newTypeName}'",
-                                    cancellationToken =>
-                                    {
-                                        return ChangeMemberTypeRefactoring.RefactorAsync(
-                                            context.Document,
-                                            memberType,
-                                            newType,
-                                            cancellationToken);
-                                    });
                                 }
 
-                                ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
+                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                                {
+                                    ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
-                                if (castTypeSymbol != null)
-                                    AddCastRefactoring.RegisterRefactoring(context, returnStatement.Expression, castTypeSymbol);
+                                    if (castTypeSymbol != null)
+                                        AddCastExpressionRefactoring.RegisterRefactoring(context, returnStatement.Expression, castTypeSymbol);
+                                }
                             }
                         }
                     }

@@ -39,13 +39,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            if (!ForEachToForRefactoring.CanRefactor(forEachStatement, context.SemanticModel, context.CancellationToken))
-                return;
-
-            context.ReportDiagnostic(
+            if (forEachStatement != null
+                && forEachStatement.Expression.IsAnyKind(
+                    SyntaxKind.QualifiedName,
+                    SyntaxKind.IdentifierName,
+                    SyntaxKind.SimpleMemberAccessExpression)
+                && ReplaceForeachWithForRefactoring.CanRefactor(forEachStatement, context.SemanticModel, context.CancellationToken))
+            {
+                context.ReportDiagnostic(
                     DiagnosticDescriptors.ConvertForEachToFor,
                     forEachStatement.Type.GetLocation());
 
+                FadeOut(context, forEachStatement);
+            }
+        }
+
+        private static void FadeOut(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
+        {
             TextSpan span = TextSpan.FromBounds(forEachStatement.ForEachKeyword.SpanStart + 3, forEachStatement.ForEachKeyword.Span.End);
 
             Location location = Location.Create(forEachStatement.SyntaxTree, span);

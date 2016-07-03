@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveBracesFromSwitchSectionsRefactoring
+    internal static class ReplaceStatementsWithBlockInEachSectionRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
@@ -25,10 +25,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .Sections
                 .Select(section =>
                 {
-                    if (SwitchStatementAnalysis.CanRemoveBracesFromSection(section))
+                    if (SwitchStatementAnalysis.CanAddBracesToSection(section))
                     {
-                        var block = (BlockSyntax)section.Statements[0];
-                        return section.WithStatements(block.Statements);
+                        return section.WithStatements(SingletonList<StatementSyntax>(Block(section.Statements)));
                     }
                     else
                     {

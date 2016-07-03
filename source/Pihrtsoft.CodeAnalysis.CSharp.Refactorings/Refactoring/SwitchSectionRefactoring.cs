@@ -8,18 +8,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
-            if (AddBracesToSwitchSectionRefactoring.CanRefactor(switchSection))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchSectionStatementsWithBlock)
+                && ReplaceSwitchSectionStatementsWithBlockRefactoring.CanRefactor(switchSection))
             {
                 context.RegisterRefactoring(
-                    "Add braces to switch section",
-                    cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                    "Replace statements with block",
+                    cancellationToken => ReplaceSwitchSectionStatementsWithBlockRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
 
-            if (RemoveBracesFromSwitchSectionRefactoring.CanRefactor(context, switchSection))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchSectionBlockWithStatements)
+                && ReplaceSwitchSectionBlockWithStatementsRefactoring.CanRefactor(context, switchSection))
             {
                 context.RegisterRefactoring(
-                    "Remove braces from switch section",
-                    cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                    "Replace block with statements",
+                    cancellationToken => ReplaceSwitchSectionBlockWithStatementsRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
         }
     }

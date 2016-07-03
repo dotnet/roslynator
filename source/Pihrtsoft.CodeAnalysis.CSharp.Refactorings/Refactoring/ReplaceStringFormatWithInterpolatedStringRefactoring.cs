@@ -14,7 +14,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ConvertStringFormatToInterpolatedStringRefactoring
+    internal static class ReplaceStringFormatWithInterpolatedStringRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (invocation != null)
             {
                 context.RegisterRefactoring(
-                    "Convert to interpolated string",
+                    "Replace string.Format with interpolated string",
                     cancellationToken => CreateInterpolatedStringAsync(context.Document, invocation, cancellationToken));
             }
         }
