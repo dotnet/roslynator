@@ -1,0 +1,29 @@
+﻿<h3>Introduction</h3>
+<p>
+    Roslyn-based extension that offers 100+ refactorings for C#. 
+</p>
+
+<h3>Links</h3>
+<ul>
+    <li>
+        <a href="http://pihrt.net/Roslyn">C# Refactorings Website</a>
+    </li>  
+    <li>
+        <a href="http://pihrt.net/Roslyn/Refactorings">List of Refactorings</a>
+    </li>  
+    <li>
+        <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md">Release Notes</a>
+    </li>  
+</ul>
+
+<h3>Related Products</h3>
+<ul>
+    <li>
+        <a href="http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e">C# Analyzers and Refactorings</a>
+        <span> - Visual Studio extension that contains analyzers and refactorings.</span>
+    </li>  
+    <li>
+        <a href="http://www.nuget.org/packages/CSharpAnalyzers">CSharpAnalyzers</a>
+        <span> - NuGet package that contains only analyzers.</span>
+    </li>  
+</ul>
