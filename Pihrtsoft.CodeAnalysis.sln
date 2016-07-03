@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.Meta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Common", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Common\Pihrtsoft.CodeAnalysis.VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
