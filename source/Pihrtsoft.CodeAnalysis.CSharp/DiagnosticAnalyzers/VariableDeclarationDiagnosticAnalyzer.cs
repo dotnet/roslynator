@@ -18,9 +18,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.DeclareExplicitType,
-                    DiagnosticDescriptors.DeclareExplicitTypeEvenIfObvious,
-                    DiagnosticDescriptors.DeclareImplicitType);
+                    DiagnosticDescriptors.ReplaceVarWithExplicitType,
+                    DiagnosticDescriptors.ReplaceVarWithExplicitTypeEvenIfObvious,
+                    DiagnosticDescriptors.ReplaceExplicitTypeWithVar);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.ExplicitButShouldBeImplicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.DeclareImplicitType,
+                            DiagnosticDescriptors.ReplaceExplicitTypeWithVar,
                             variableDeclaration.Type.GetLocation());
 
                         break;
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.Implicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.DeclareExplicitTypeEvenIfObvious,
+                            DiagnosticDescriptors.ReplaceVarWithExplicitTypeEvenIfObvious,
                             variableDeclaration.Type.GetLocation());
 
                         break;
@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.ImplicitButShouldBeExplicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.DeclareExplicitType,
+                            DiagnosticDescriptors.ReplaceVarWithExplicitType,
                             variableDeclaration.Type.GetLocation());
 
                         break;

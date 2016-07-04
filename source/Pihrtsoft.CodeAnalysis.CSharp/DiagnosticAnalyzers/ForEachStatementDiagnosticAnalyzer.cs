@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ForEachStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.DeclareExplicitTypeInForEach);
+            => ImmutableArray.Create(DiagnosticDescriptors.ReplaceVarWithExplicitTypeInForeach);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.DeclareExplicitTypeInForEach,
+                    DiagnosticDescriptors.ReplaceVarWithExplicitTypeInForeach,
                     forEachStatement.Type.GetLocation());
             }
         }

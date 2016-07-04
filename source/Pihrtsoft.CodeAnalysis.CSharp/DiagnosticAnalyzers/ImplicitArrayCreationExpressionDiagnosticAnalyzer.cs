@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ImplicitArrayCreationExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidImplicitArrayCreation);
+            => ImmutableArray.Create(DiagnosticDescriptors.AvoidImplicitlyTypedArray);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     expression.CloseBracketToken.Span.End);
 
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidImplicitArrayCreation,
+                    DiagnosticDescriptors.AvoidImplicitlyTypedArray,
                     Location.Create(expression.SyntaxTree, span));
             }
         }

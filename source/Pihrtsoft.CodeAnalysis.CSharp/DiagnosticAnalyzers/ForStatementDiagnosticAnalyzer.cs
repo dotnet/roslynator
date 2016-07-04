@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ForStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UseWhileStatementToCreateInfiniteLoop);
+            => ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && forStatement.Initializers.Count == 0)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseWhileStatementToCreateInfiniteLoop,
+                    DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop,
                     forStatement.ForKeyword.GetLocation());
             }
         }

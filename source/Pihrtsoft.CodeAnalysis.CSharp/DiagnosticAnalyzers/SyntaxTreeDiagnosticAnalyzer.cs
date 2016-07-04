@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class SyntaxTreeDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UseSpacesInsteadOfTab);
+            => ImmutableArray.Create(DiagnosticDescriptors.ReplaceTabWithSpaces);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             } while (i < s.Length && s[i] == '\t');
 
                             context.ReportDiagnostic(
-                                DiagnosticDescriptors.UseSpacesInsteadOfTab,
+                                DiagnosticDescriptors.ReplaceTabWithSpaces,
                                 Location.Create(context.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                         }
                     }

@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UseStringLiteralInsteadOfInterpolatedString,
+                    DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteral,
                     DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteralFadeOut);
             }
         }
@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseStringLiteralInsteadOfInterpolatedString,
+                    DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteral,
                     context.Node.GetLocation());
 
                 SyntaxToken token = interpolatedString.StringStartToken;

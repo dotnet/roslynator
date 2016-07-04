@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Simplify lambda expression's parameter list",
+                "Simplify lambda expression parameter list",
                 cancellationToken => SimplifyLambdaExpressionParameterListAsync(context.Document, lambda, cancellationToken),
                 DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList + EquivalenceKeySuffix);
 

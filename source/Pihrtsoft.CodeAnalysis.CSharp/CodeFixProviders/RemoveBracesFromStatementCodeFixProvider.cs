@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class RemoveBracesFromStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromStatement);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatement);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -31,9 +31,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Remove braces from {SyntaxHelper.GetSyntaxNodeName(block.Parent)}",
+                "Replace block with embedded statement",
                 cancellationToken => RemoveBracesFromStatementAsync(context.Document, block, cancellationToken),
-                DiagnosticIdentifiers.RemoveBracesFromStatement + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

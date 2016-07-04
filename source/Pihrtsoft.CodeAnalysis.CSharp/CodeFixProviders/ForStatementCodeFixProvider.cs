@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ForStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseWhileStatementToCreateInfiniteLoop);
+            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                             forStatement,
                             cancellationToken);
                     },
-                    DiagnosticIdentifiers.UseWhileStatementToCreateInfiniteLoop);
+                    DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }

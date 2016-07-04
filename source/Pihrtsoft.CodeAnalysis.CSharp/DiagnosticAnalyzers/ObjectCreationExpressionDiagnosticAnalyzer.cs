@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddConstructorArgumentList,
-                    DiagnosticDescriptors.RemoveEmptyObjectInitializer,
+                    DiagnosticDescriptors.RemoveEmptyInitializer,
                     DiagnosticDescriptors.RemoveEmptyArgumentList);
             }
         }
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && initializer.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyObjectInitializer,
+                    DiagnosticDescriptors.RemoveEmptyInitializer,
                     initializer.GetLocation());
             }
 

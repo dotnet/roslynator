@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class WhileStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseForStatementToCreateInfiniteLoop);
+            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                             whileStatement,
                             cancellationToken);
                     },
-                    DiagnosticIdentifiers.UseForStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
+                    DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }

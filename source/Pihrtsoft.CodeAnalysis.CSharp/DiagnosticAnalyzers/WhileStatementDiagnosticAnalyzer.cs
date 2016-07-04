@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class WhileStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UseForStatementToCreateInfiniteLoop);
+            => ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (whileStatement.Condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseForStatementToCreateInfiniteLoop,
+                    DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
                     whileStatement.WhileKeyword.GetLocation());
             }
         }

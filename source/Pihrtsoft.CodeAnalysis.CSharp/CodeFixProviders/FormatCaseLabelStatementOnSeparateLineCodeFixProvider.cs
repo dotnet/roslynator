@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class FormatCaseLabelStatementOnSeparateLineCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.FormatCaseLabelStatementOnSeparateLine);
+            => ImmutableArray.Create(DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Format statement on separate line",
                 cancellationToken => FormatStatementOnNextLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                DiagnosticIdentifiers.FormatCaseLabelStatementOnSeparateLine + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

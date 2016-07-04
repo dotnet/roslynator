@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class SpecifyImplicitTypeCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.DeclareImplicitType);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceExplicitTypeWithVar);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,9 +32,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (!variableDeclaration.Type.IsVar)
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Change type to 'var'",
+                    "Replace explicit type with 'var'",
                     cancellationToken => TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(context.Document, variableDeclaration.Type, cancellationToken),
-                    DiagnosticIdentifiers.DeclareImplicitType + EquivalenceKeySuffix);
+                    DiagnosticIdentifiers.ReplaceExplicitTypeWithVar + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }

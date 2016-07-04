@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class PropertyDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseAutoImplementedProperty);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -41,11 +41,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.UseAutoImplementedProperty:
+                    case DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Use auto-property",
-                                cancellationToken => ConvertToAutoPropertyAsync(context.Document, property, cancellationToken),
+                                "Replace property with auto-property",
+                                cancellationToken => ReplacePropertyWithAutoPropertyAsync(context.Document, property, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             }
         }
 
-        private static async Task<Document> ConvertToAutoPropertyAsync(
+        private static async Task<Document> ReplacePropertyWithAutoPropertyAsync(
             Document document,
             PropertyDeclarationSyntax property,
             CancellationToken cancellationToken)

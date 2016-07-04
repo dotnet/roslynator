@@ -18,8 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveBracesFromStatement,
-                    DiagnosticDescriptors.RemoveBracesFromStatementFadeOut);
+                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatement,
+                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut);
             }
         }
 
@@ -58,10 +58,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     && block.CloseBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine())
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveBracesFromStatement,
+                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatement,
                         block.GetLocation());
 
-                    context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFromStatementFadeOut, block);
+                    context.FadeOutBraces(DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut, block);
                 }
             }
         }

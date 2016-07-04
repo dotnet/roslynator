@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ReplaceTabWithSpacesCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseSpacesInsteadOfTab);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceTabWithSpaces);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Replace tab with spaces",
                 cancellationToken => ReplaceTabWithSpacesAsync(context.Document, context.Span, cancellationToken),
-                DiagnosticIdentifiers.UseSpacesInsteadOfTab + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceTabWithSpaces + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

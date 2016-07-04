@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class RemoveEmptyObjectInitializerCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyObjectInitializer);
+            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyInitializer);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,9 +34,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             var objectCreationExpression = (ObjectCreationExpressionSyntax)node.Parent;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove object initializer",
+                "Remove empty initializer",
                 cancellationToken => RemoveEmptyObjectInitializerAsync(context.Document, objectCreationExpression, cancellationToken),
-                DiagnosticIdentifiers.RemoveEmptyObjectInitializer + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.RemoveEmptyInitializer + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

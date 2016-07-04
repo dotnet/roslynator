@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class MemberAccessExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfStringEmpty);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
 
             CodeAction codeAction = CodeAction.Create(
-                "Convert to \"\"",
+                "Replace string.Empty with \"\"",
                 cancellationToken =>
                 {
                     return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         memberAccess,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.AvoidUsageOfStringEmpty + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

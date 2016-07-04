@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveEmptyElseClause,
-                    DiagnosticIdentifiers.SimplifyElseClauseContainingIfStatement);
+                    DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement);
             }
         }
 
@@ -55,13 +55,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.SimplifyElseClauseContainingIfStatement:
+                    case DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement:
                         {
                             if (!CheckTrivia(elseClause))
                                 return;
 
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove braces from else clause",
+                                "Replace block with embedded statement",
                                 cancellationToken => RemoveBracesFromElseClauseAsync(context.Document, elseClause, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 

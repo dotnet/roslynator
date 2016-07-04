@@ -27,9 +27,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
-                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
-                    DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod);
+                    DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
+                    DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
+                    DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod);
             }
         }
 
@@ -152,7 +152,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     if (messageArg != null)
                     {
                         Diagnostic diagnostic = Diagnostic.Create(
-                            DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                            DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
                             Location.Create(context.Node.SyntaxTree, span),
                             (propertyName == "Count") ? _propertiesCount : _propertiesLength,
                             messageArg);
@@ -177,7 +177,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                          .All(f => f.IsWhitespaceOrEndOfLine()))
                     {
                         Diagnostic diagnostic = Diagnostic.Create(
-                            DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
+                            DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
                             Location.Create(context.Node.SyntaxTree, span),
                             (propertyName == "Count") ? _propertiesCount : _propertiesLength,
                             propertyName);
@@ -201,7 +201,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             .All(f => f.IsWhitespaceOrEndOfLine()))
                         {
                             context.ReportDiagnostic(
-                                DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
+                                DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,
                                 binaryExpression.GetLocation());
                         }
                     }

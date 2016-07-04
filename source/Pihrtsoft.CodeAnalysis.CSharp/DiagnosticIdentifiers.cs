@@ -6,20 +6,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public const string Prefix = "RCS";
 
-        public const string AddBracesToStatement = Prefix + "1001";
-        public const string RemoveBracesFromStatement = Prefix + "1002";
-        public const string AddBracesToIfElseChain = Prefix + "1003";
-        public const string RemoveBracesFromIfElseChain = Prefix + "1004";
+        public const string ReplaceEmbeddedStatementWithBlock = Prefix + "1001";
+        public const string ReplaceBlockWithEmbeddedStatement = Prefix + "1002";
+        public const string ReplaceEmbeddedStatementWithBlockInIfElse = Prefix + "1003";
+        public const string ReplaceBlockWithEmbeddedStatementInIfElse = Prefix + "1004";
         public const string SimplifyNestedUsingStatement = Prefix + "1005";
-        public const string SimplifyElseClauseContainingIfStatement = Prefix + "1006";
+        public const string SimplifyElseClauseContainingOnlyIfStatement = Prefix + "1006";
         public const string AvoidEmbeddedStatement = Prefix + "1007";
-        public const string DeclareExplicitType = Prefix + "1008";
-        public const string DeclareExplicitTypeInForEach = Prefix + "1009";
-        public const string DeclareImplicitType = Prefix + "1010";
-        public const string DeclareImplicitTypeInForEach = Prefix + "1011";
-        public const string DeclareExplicitTypeEvenIfObvious = Prefix + "1012";
+        public const string ReplaceVarWithExplicitType = Prefix + "1008";
+        public const string ReplaceVarWithExplicitTypeInForeach = Prefix + "1009";
+        public const string ReplaceExplicitTypeWithVar = Prefix + "1010";
+        public const string ReplaceExplicitTypeWithVarInForeach = Prefix + "1011";
+        public const string ReplaceVarWithExplicitTypeEvenIfObvious = Prefix + "1012";
         public const string UsePredefinedType = Prefix + "1013";
-        public const string AvoidImplicitArrayCreation = Prefix + "1014";
+        public const string AvoidImplicitlyTypedArray = Prefix + "1014";
         public const string UseNameOfOperator = Prefix + "1015";
         public const string UseExpressionBodiedMember = Prefix + "1016";
         public const string AvoidMultilineExpressionBody = Prefix + "1017";
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string FormatEachEnumMemberOnSeparateLine = Prefix + "1025";
         public const string FormatEachStatementOnSeparateLine = Prefix + "1026";
         public const string FormatEmbeddedStatementOnSeparateLine = Prefix + "1027";
-        public const string FormatCaseLabelStatementOnSeparateLine = Prefix + "1028";
+        public const string FormatSwitchSectionStatementOnSeparateLine = Prefix + "1028";
         public const string FormatBinaryOperatorOnNextLine = Prefix + "1029";
         public const string AddEmptyLineAfterEmbeddedStatement = Prefix + "1030";
         public const string RemoveRedundantBraces = Prefix + "1031";
@@ -46,19 +46,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveEmptyStatement = Prefix + "1038";
         public const string RemoveEmptyAttributeArgumentList = Prefix + "1039";
         public const string RemoveEmptyElseClause = Prefix + "1040";
-        public const string RemoveEmptyObjectInitializer = Prefix + "1041";
+        public const string RemoveEmptyInitializer = Prefix + "1041";
         public const string RemoveEnumDefaultUnderlyingType = Prefix + "1042";
         public const string RemovePartialModifierFromTypeWithSinglePart = Prefix + "1043";
         public const string RemoveOriginalExceptionFromThrowStatement = Prefix + "1044";
         public const string RenamePrivateFieldAccordingToCamelCaseWithUnderscore = Prefix + "1045";
-        public const string AsyncMethodShouldHaveAsyncSuffix = Prefix + "1046";
-        public const string NonAsyncMethodShouldNotHaveAsyncSuffix = Prefix + "1047";
-        public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "1048";
+        public const string AsynchronousMethodNameShouldEndWithAsync = Prefix + "1046";
+        public const string NonAsynchronousMethodNameShouldNotEndWithAsync = Prefix + "1047";
+        public const string ReplaceAnonymousMethodWithLambdaExpression = Prefix + "1048";
         public const string SimplifyBooleanComparison = Prefix + "1049";
         public const string AddConstructorArgumentList = Prefix + "1050";
-        public const string AddParenthesesToConditionalExpressionCondition = Prefix + "1051";
+        public const string WrapConditionalExpressionConditionInParentheses = Prefix + "1051";
         public const string DeclareEachAttributeSeparately = Prefix + "1052";
-        public const string ConvertForEachToFor = Prefix + "1053";
+        public const string ReplaceForeachWithFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
         public const string AvoidUsingAliasDirective = Prefix + "1056";
@@ -67,10 +67,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
         public const string DeclareEachTypeInSeparateFile = Prefix + "1060";
         public const string MergeIfStatementWithNestedIfStatement = Prefix + "1061";
-        public const string UseStringLiteralInsteadOfInterpolatedString = Prefix + "1062";
+        public const string ReplaceInterpolatedStringWithStringLiteral = Prefix + "1062";
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = Prefix + "1063";
-        public const string UseWhileStatementToCreateInfiniteLoop = Prefix + "1064";
-        public const string UseForStatementToCreateInfiniteLoop = Prefix + "1065";
+        public const string AvoidUsageOfForStatementToCreateInfiniteLoop = Prefix + "1064";
+        public const string AvoidUsageOfWhileStatementToCreateInfiniteLoop = Prefix + "1065";
         public const string RemoveEmptyFinallyClause = Prefix + "1066";
         public const string RemoveEmptyArgumentList = Prefix + "1067";
         public const string SimplifyLogicalNotExpression = Prefix + "1068";
@@ -78,24 +78,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string RemoveRedundantDefaultSwitchSection = Prefix + "1070";
         public const string RemoveRedundantBaseConstructorCall = Prefix + "1071";
         public const string RemoveEmptyNamespaceDeclaration = Prefix + "1072";
-        public const string SimplifyIfStatementToReturnStatement = Prefix + "1073";
+        public const string ReplaceIfStatementWithReturnStatement = Prefix + "1073";
         public const string RemoveRedundantConstructor = Prefix + "1074";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = Prefix + "1075";
         public const string FormatDeclarationBraces = Prefix + "1076";
         public const string SimplifyLinqMethodChain = Prefix + "1077";
-        public const string AvoidUsageOfStringEmpty = Prefix + "1078";
+        public const string ReplaceStringEmptyWithEmptyStringLiteral = Prefix + "1078";
         public const string ThrowingOfNewNotImplementedException = Prefix + "1079";
-        public const string UseCountOrLengthPropertyInsteadOfAnyMethod = Prefix + "1080";
+        public const string ReplaceAnyMethodWithCountOrLengthProperty = Prefix + "1080";
         public const string SplitDeclarationIntoMultipleDeclarations = Prefix + "1081";
-        public const string UseCountOrLengthPropertyInsteadOfCountMethod = Prefix + "1082";
-        public const string UseAnyMethodInsteadOfCountMethod = Prefix + "1083";
-        public const string UseCoalesceExpressionInsteadOfConditionalExpression = Prefix + "1084";
-        public const string UseAutoImplementedProperty = Prefix + "1085";
+        public const string ReplaceCountMethodWithCountOrLengthProperty = Prefix + "1082";
+        public const string ReplaceCountMethodWithAnyMethod = Prefix + "1083";
+        public const string ReplaceConditionalExpressionWithCoalesceExpression = Prefix + "1084";
+        public const string ReplacePropertyWithAutoImplementedProperty = Prefix + "1085";
 
 #if DEBUG
         public const string UseLinefeedAsNewLine = Prefix + "X001";
         public const string UseCarriageReturnAndLinefeedAsNewLine = Prefix + "X002";
-        public const string UseSpacesInsteadOfTab = Prefix + "X003";
+        public const string ReplaceTabWithSpaces = Prefix + "X003";
 #endif
     }
 }

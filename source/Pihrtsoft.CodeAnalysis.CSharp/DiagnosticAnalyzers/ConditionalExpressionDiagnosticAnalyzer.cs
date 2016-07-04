@@ -18,8 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition,
-                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression);
+                    DiagnosticDescriptors.WrapConditionalExpressionConditionInParentheses,
+                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (conditionalExpression.Condition?.IsKind(SyntaxKind.ParenthesizedExpression) == false)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddParenthesesToConditionalExpressionCondition,
+                    DiagnosticDescriptors.WrapConditionalExpressionConditionInParentheses,
                     conditionalExpression.Condition.GetLocation());
             }
 
@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     .All(f => f.IsWhitespaceOrEndOfLine()))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
+                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
                     conditionalExpression.GetLocation());
             }
         }

@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class AddBracesToStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToStatement);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlock);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -30,9 +30,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Add braces to {SyntaxHelper.GetSyntaxNodeName(statement.Parent)}",
-                cancellationToken => AddBracesToStatementRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                DiagnosticIdentifiers.AddBracesToStatement + EquivalenceKeySuffix);
+                "Replace embedded statement with block",
+                cancellationToken => ReplaceEmbeddedStatementWithBlockRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlock + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 {
     internal static class SimplifyIfStatementToReturnStatementAnalyzer
     {
-        private static readonly DiagnosticDescriptor _fadeOutDescriptor = DiagnosticDescriptors.SimplifyIfStatementToReturnStatementFadeOut;
+        private static readonly DiagnosticDescriptor _fadeOutDescriptor = DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut;
 
         public static void Analyze(SyntaxNodeAnalysisContext context)
         {
@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                         .All(f => f.IsWhitespaceOrEndOfLine()))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.SimplifyIfStatementToReturnStatement,
+                        DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
                         Location.Create(context.Node.SyntaxTree, span));
 
                     FadeOut(context, ifStatement, returnStatement2);

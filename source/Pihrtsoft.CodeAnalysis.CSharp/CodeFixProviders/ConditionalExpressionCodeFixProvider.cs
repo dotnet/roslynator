@@ -22,8 +22,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddParenthesesToConditionalExpressionCondition,
-                    DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression);
+                    DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses,
+                    DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression);
             }
         }
 
@@ -39,10 +39,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AddParenthesesToConditionalExpressionCondition:
+                    case DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Add parentheses to condition",
+                                "Wrap condition in parentheses",
                                 cancellationToken => AddParenthesesToConditionAsync(context.Document, node, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
@@ -50,10 +50,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                             break;
                         }
-                    case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression:
+                    case DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Simplify conditional expression",
+                                "Replace conditional expression with coalesce expression",
                                 cancellationToken =>
                                 {
                                     return UseCoalesceExpressionInsteadOfConditionalExpressionAsync(

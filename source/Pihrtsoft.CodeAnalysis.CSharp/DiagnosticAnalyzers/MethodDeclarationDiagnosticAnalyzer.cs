@@ -20,9 +20,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AsyncMethodShouldHaveAsyncSuffix,
-                    DiagnosticDescriptors.NonAsyncMethodShouldNotHaveAsyncSuffix,
-                    DiagnosticDescriptors.NonAsyncMethodShouldNotHaveAsyncSuffixFadeOut);
+                    DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
+                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AsyncMethodShouldHaveAsyncSuffix,
+                        DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
                         methodDeclaration.Identifier.GetLocation());
                 }
             }
@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (identifier.ValueText.EndsWith(AsyncSuffix, StringComparison.Ordinal))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.NonAsyncMethodShouldNotHaveAsyncSuffix,
+                        DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
                         identifier.GetLocation());
 
                     Location location = Location.Create(
@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         TextSpan.FromBounds(identifier.Span.End - AsyncSuffix.Length, identifier.Span.End));
 
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.NonAsyncMethodShouldNotHaveAsyncSuffixFadeOut,
+                        DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
                         location);
                 }
             }

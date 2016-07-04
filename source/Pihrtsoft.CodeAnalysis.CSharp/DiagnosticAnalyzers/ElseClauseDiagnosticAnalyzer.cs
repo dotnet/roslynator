@@ -20,8 +20,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemoveEmptyElseClause,
                     DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
-                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatement,
-                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut);
+                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
+                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatementFadeOut);
             }
         }
 
@@ -78,11 +78,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             if (ifStatement.Else == null)
                             {
                                 context.ReportDiagnostic(
-                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatement,
+                                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
                                     block.GetLocation());
 
                                 context.FadeOutBraces(
-                                    DiagnosticDescriptors.SimplifyElseClauseContainingIfStatementFadeOut,
+                                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatementFadeOut,
                                     block);
                             }
                         }

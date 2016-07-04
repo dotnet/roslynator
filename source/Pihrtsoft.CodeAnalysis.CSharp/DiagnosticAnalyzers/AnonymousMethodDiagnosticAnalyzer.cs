@@ -18,8 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                  DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethod,
-                  DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut);
+                  DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpression,
+                  DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpressionFadeOut);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return;
 
             Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethod,
+                DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpression,
                 context.Node.GetLocation());
 
             context.ReportDiagnostic(diagnostic);
@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut;
+            DiagnosticDescriptor descriptor = DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpressionFadeOut;
 
             context.FadeOutToken(descriptor, anonymousMethod.DelegateKeyword);
 

@@ -19,13 +19,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddBracesToIfElseChain,
-                    DiagnosticDescriptors.RemoveBracesFromIfElseChain,
-                    DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
+                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
+                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
+                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
-                    DiagnosticDescriptors.SimplifyIfStatementToReturnStatement,
-                    DiagnosticDescriptors.SimplifyIfStatementToReturnStatementFadeOut);
+                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
+                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut);
             }
         }
 
@@ -54,14 +54,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (result.AddBracesToChain)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddBracesToIfElseChain,
+                        DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
                         ifStatement.GetLocation());
                 }
 
                 if (result.RemoveBracesFromChain)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveBracesFromIfElseChain,
+                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
                         ifStatement.GetLocation());
 
                     RemoveBracesFromStatementFadeOut(context, ifStatement);
@@ -80,7 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (node.IsKind(SyntaxKind.Block))
                 {
                     context.FadeOutBraces(
-                        DiagnosticDescriptors.RemoveBracesFromStatementFadeOut,
+                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut,
                         (BlockSyntax)node);
                 }
             }

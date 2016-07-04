@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class AnonymousMethodCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,9 +34,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Use lambda expression",
+                "Replace anonymous method with lambda expression",
                 cancellationToken => ConvertAnonymousMethodToLambdaExpressionAsync(context.Document, anonymousMethod, cancellationToken),
-                DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -32,15 +32,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (usingStatement == null)
                 return;
 
-            bool isMultiple = usingStatement.Statement
+            bool fMultiple = usingStatement.Statement
                 .DescendantNodes()
                 .Any(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
+            string title = (fMultiple)
+                ? "Replace blocks with embedded statements"
+                : "Replace block with embedded statement";
+
             CodeAction codeAction = CodeAction.Create(
-                "Remove braces from nested using statement" + ((isMultiple) ? "s" : ""),
+                title,
                 cancellationToken =>
                 {
-                    return RemoveBracesFromNestedUsingStatementRefactoring.RefactorAsync(
+                    return ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring.RefactorAsync(
                         context.Document,
                         usingStatement,
                         cancellationToken);

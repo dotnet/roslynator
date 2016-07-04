@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UseAutoImplementedProperty,
+                    DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
                     DiagnosticDescriptors.UseAutoImplementedPropertyFadeOut);
             }
         }
@@ -58,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         && CheckTrivia(property, declarator, context.CancellationToken))
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.UseAutoImplementedProperty,
+                            DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
                             property.GetLocation());
 
                         FadeOut(context, property);

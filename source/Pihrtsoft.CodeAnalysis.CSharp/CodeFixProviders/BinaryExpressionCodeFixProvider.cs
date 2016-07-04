@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
-                    DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod);
+                    DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                             break;
                         }
-                    case DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod:
+                    case DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod:
                         {
                             UseAnyMethodInsteadOfCountMethodCodeFix.Register(context, diagnostic, binaryExpression);
                             break;

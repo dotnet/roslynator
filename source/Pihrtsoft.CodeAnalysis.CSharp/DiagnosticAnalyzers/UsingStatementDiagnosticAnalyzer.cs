@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var usingStatement = (UsingStatementSyntax)context.Node;
 
-            if (RemoveBracesFromNestedUsingStatementRefactoring.CanRefactor(usingStatement))
+            if (ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring.CanRefactor(usingStatement))
             {
                 var block = (BlockSyntax)usingStatement.Statement;
 

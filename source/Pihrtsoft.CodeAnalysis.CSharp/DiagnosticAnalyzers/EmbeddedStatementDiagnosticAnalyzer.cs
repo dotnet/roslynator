@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddBracesToStatement,
+                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlock,
                     DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
                     DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement);
             }
@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (statement != null)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddBracesToStatement,
+                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlock,
                     statement.GetLocation());
             }
         }

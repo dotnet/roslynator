@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ImplicitArrayCreationExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidImplicitArrayCreation);
+            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidImplicitlyTypedArray);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 $"Declare explicit type '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                 cancellationToken => SpecifyExplicitTypeAsync(context.Document, node, arrayType, cancellationToken),
-                DiagnosticIdentifiers.AvoidImplicitArrayCreation + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

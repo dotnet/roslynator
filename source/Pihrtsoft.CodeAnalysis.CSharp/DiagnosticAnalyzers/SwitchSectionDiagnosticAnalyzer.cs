@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.FormatCaseLabelStatementOnSeparateLine,
+                    DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine,
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
                     DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
                     DiagnosticDescriptors.RemoveUnnecessaryCaseLabel);
@@ -129,7 +129,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (switchSection.Labels.Last().GetSpanEndLine() == statements[0].GetSpanStartLine())
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.FormatCaseLabelStatementOnSeparateLine,
+                    DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine,
                     statements[0].GetLocation());
             }
         }

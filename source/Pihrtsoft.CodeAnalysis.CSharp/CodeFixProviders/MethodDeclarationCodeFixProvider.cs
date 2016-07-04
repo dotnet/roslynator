@@ -23,8 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                  DiagnosticIdentifiers.AsyncMethodShouldHaveAsyncSuffix,
-                  DiagnosticIdentifiers.NonAsyncMethodShouldNotHaveAsyncSuffix);
+                  DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync,
+                  DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync);
             }
         }
 
@@ -53,8 +53,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AsyncMethodShouldHaveAsyncSuffix:
-                    case DiagnosticIdentifiers.NonAsyncMethodShouldNotHaveAsyncSuffix:
+                    case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
+                    case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
                         {
                             string newName = GetNewName(methodDeclaration, diagnostic);
 
@@ -75,11 +75,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AsyncMethodShouldHaveAsyncSuffix:
+                case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
                     {
                         return methodDeclaration.Identifier + AsyncSuffix;
                     }
-                case DiagnosticIdentifiers.NonAsyncMethodShouldNotHaveAsyncSuffix:
+                case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
                     {
                         string name = methodDeclaration.Identifier.ValueText;
                         return name.Remove(name.Length - AsyncSuffix.Length);

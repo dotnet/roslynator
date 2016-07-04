@@ -11,7 +11,7 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveBracesFromNestedUsingStatementRefactoring
+    internal static class ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring
     {
         public static bool CanRefactor(UsingStatementSyntax usingStatement)
         {

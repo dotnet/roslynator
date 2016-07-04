@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UsePredefinedType,
-                    DiagnosticDescriptors.AvoidUsageOfStringEmpty);
+                    DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidUsageOfStringEmpty,
+                    DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral,
                     memberAccess.GetLocation());
             }
         }

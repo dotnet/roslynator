@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Declare each attribute separately",
+                "Split attributes",
                 c => DeclareEachAttributeSeparatelyAsync(context.Document, attributeList, c),
                 DiagnosticIdentifiers.DeclareEachAttributeSeparately + EquivalenceKeySuffix);
 

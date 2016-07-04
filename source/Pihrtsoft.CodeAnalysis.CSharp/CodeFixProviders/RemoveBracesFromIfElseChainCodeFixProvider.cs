@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class RemoveBracesFromIfElseChainCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElseChain);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -33,9 +33,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ifStatement = IfElseChainAnalysis.GetTopmostIf(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove braces from if-else chain",
+                "Replace block with embedded statement (in if-else).",
                 cancellationToken => ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
-                DiagnosticIdentifiers.RemoveBracesFromIfElseChain + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

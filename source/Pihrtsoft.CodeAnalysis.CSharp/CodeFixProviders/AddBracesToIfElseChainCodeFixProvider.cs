@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class AddBracesToIfElseChainCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElseChain);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -33,9 +33,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ifStatement = IfElseChainAnalysis.GetTopmostIf(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
-                "Add braces to if-else chain",
+                "Replace embedded statement with block (in if-else)",
                 cancellationToken => ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
-                DiagnosticIdentifiers.AddBracesToIfElseChain + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             TypeSyntax nullableType = GetNullableType(type);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Change type to '{nullableType.ToString()}?'",
+                $"Simplify name '{type.ToString()}'",
                 cancellationToken => SimplifyNullableOfTAsync(context.Document, type, nullableType, cancellationToken),
                 DiagnosticIdentifiers.SimplifyNullableOfT + EquivalenceKeySuffix);
 

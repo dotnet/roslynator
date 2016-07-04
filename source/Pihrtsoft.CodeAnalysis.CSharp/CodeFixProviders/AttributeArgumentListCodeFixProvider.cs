@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove argument list",
+                "Remove empty argument list",
                 cancellationToken => RemoveEmptyAttributeArgumentListAsync(context.Document, attributeArgumentList, cancellationToken),
                 DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList + EquivalenceKeySuffix);
 

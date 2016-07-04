@@ -23,10 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            Diagnostic diagnostic = context.Diagnostics[0];
-
             LiteralExpressionSyntax node = root
-                .FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true)?
+                .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<LiteralExpressionSyntax>();
 
             if (node == null)
@@ -37,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 cancellationToken => UseNameOfOperatorAsync(context.Document, node, cancellationToken),
                 DiagnosticIdentifiers.UseNameOfOperator + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
         private static async Task<Document> UseNameOfOperatorAsync(

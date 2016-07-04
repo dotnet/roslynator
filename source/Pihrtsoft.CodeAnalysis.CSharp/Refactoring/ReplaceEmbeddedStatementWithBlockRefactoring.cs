@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class AddBracesToStatementRefactoring
+    internal static class ReplaceEmbeddedStatementWithBlockRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

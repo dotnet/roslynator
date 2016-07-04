@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class SimplifyIfStatementToReturnStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyIfStatementToReturnStatement);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -36,9 +36,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ReturnStatementSyntax returnStatement = CreateReturnStatement(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Simplify if statement to '{returnStatement}'",
+                $"Replace if statement with '{returnStatement}'",
                 cancellationToken => RefactorAsync(context.Document, ifStatement, returnStatement, cancellationToken),
-                DiagnosticIdentifiers.SimplifyIfStatementToReturnStatement + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseStringLiteralInsteadOfInterpolatedString);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceInterpolatedStringWithStringLiteral);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -30,9 +30,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Convert to string literal",
+                "Replace interpolated string with string literal",
                 cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
-                DiagnosticIdentifiers.UseStringLiteralInsteadOfInterpolatedString + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.ReplaceInterpolatedStringWithStringLiteral + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
