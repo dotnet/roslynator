@@ -37,11 +37,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return SyntaxFactory.ParseTypeName(s);
         }
 
-        public static async Task<Document> ChangeTypeToExplicitAsync(
+        public static async Task<Document> ChangeTypeAsync(
             Document document,
             TypeSyntax type,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
-                    RefactoringIdentifiers.ChangeVarToExplicitType))
+                    RefactoringIdentifiers.ReplaceVarWithExplicitType))
                 {
                     await ChangeTypeAsync(context, forEachStatement);
                 }
@@ -65,13 +65,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType))
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, type, typeSymbol, cancellationToken));
+                        $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
         }
@@ -120,10 +120,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{info.ElementType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            $"Replace '{forEachStatement.Type}' with '{info.ElementType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                             cancellationToken =>
                             {
-                                return TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(
+                                return TypeSyntaxRefactoring.ChangeTypeAsync(
                                     context.Document,
                                     forEachStatement.Type,
                                     info.ElementType,

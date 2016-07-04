@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (context.Settings.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
-                        RefactoringIdentifiers.ChangeVarToExplicitType))
+                        RefactoringIdentifiers.ReplaceVarWithExplicitType))
                     {
                         await ChangeTypeAsync(context, variableDeclaration);
                     }
@@ -66,17 +66,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else if (result == TypeAnalysisResult.Implicit || result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType))
                 {
                     ITypeSymbol typeSymbol = semanticModel
                         .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
                         .Type;
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                         cancellationToken =>
                         {
-                            return TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(
+                            return TypeSyntaxRefactoring.ChangeTypeAsync(
                                 context.Document,
                                 variableDeclaration.Type,
                                 typeSymbol,
@@ -177,10 +177,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!initializerTypeSymbol.Equals(typeSymbol))
                         {
                             context.RegisterRefactoring(
-                                $"Change type to '{initializerTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                                $"Replace '{variableDeclaration.Type}' with '{initializerTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                                 cancellationToken =>
                                 {
-                                    return TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(
+                                    return TypeSyntaxRefactoring.ChangeTypeAsync(
                                         context.Document,
                                         variableDeclaration.Type,
                                         initializerTypeSymbol,

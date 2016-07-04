@@ -389,7 +389,7 @@
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ChangeVarToExplicitType" Title="Change 'var' to explicit type" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceVarWithExplicitType" Title="Replace 'var' with explicit type" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statetement</Syntax>

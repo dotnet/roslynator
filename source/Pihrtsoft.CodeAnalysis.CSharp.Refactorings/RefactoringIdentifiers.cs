@@ -14,7 +14,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
-        public const string ChangeVarToExplicitType = "ChangeVarToExplicitType";
         public const string CheckParameterForNull = "CheckParameterForNull";
         public const string DuplicateArgument = "DuplicateArgument";
         public const string DuplicateMember = "DuplicateMember";
@@ -90,6 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceSwitchSectionBlockWithStatements = "ReplaceSwitchSectionBlockWithStatements";
         public const string ReplaceSwitchSectionStatementsWithBlock = "ReplaceSwitchSectionStatementsWithBlock";
         public const string ReplaceSwitchWithIfElse = "ReplaceSwitchWithIfElse";
+        public const string ReplaceVarWithExplicitType = "ReplaceVarWithExplicitType";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = "ReplaceVerbatimStringLiteralWithRegularStringLiteral";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = "ReplaceVerbatimStringLiteralWithRegularStringLiterals";
         public const string ReverseForLoop = "ReverseForLoop";

@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToExplicitAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken),
+                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken),
                     DiagnosticIdentifiers.ReplaceVarWithExplicitType + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);

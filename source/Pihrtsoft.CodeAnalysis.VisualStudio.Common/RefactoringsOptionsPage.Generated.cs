@@ -20,7 +20,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeTypeAccordingToExpression = true;
-            ChangeVarToExplicitType = true;
             CheckParameterForNull = true;
             DuplicateArgument = true;
             DuplicateMember = true;
@@ -96,6 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceSwitchSectionBlockWithStatements = true;
             ReplaceSwitchSectionStatementsWithBlock = true;
             ReplaceSwitchWithIfElse = true;
+            ReplaceVarWithExplicitType = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiteral = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiterals = true;
             ReverseForLoop = true;
@@ -121,7 +121,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
-            SetIsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType, ChangeVarToExplicitType);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
@@ -197,6 +196,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchSectionBlockWithStatements, ReplaceSwitchSectionBlockWithStatements);
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchSectionStatementsWithBlock, ReplaceSwitchSectionStatementsWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse, ReplaceSwitchWithIfElse);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType, ReplaceVarWithExplicitType);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, ReplaceVerbatimStringLiteralWithRegularStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, ReplaceVerbatimStringLiteralWithRegularStringLiterals);
             SetIsEnabled(RefactoringIdentifiers.ReverseForLoop, ReverseForLoop);
@@ -287,16 +287,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeTypeAccordingToExpression
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Change 'var' to explicit type")]
-        [Description("Syntax: variable declaration, foreach statetement\r\nScope: type")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ChangeVarToExplicitType
         {
             get;
             set;
@@ -1047,6 +1037,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: switch statement\r\nScope: switch keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceSwitchWithIfElse
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace 'var' with explicit type")]
+        [Description("Syntax: variable declaration, foreach statetement\r\nScope: type")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceVarWithExplicitType
         {
             get;
             set;
