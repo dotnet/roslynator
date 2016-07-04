@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return false;
             }
 
-            if (IsForeachExpression(expression)
+            if (IsForEachExpression(expression)
                 || IsVariableDeclarationValue(expression))
             {
                 return false;
@@ -81,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return root.ReplaceNode(expression, newNode);
         }
 
-        private static bool IsForeachExpression(ExpressionSyntax expression)
+        private static bool IsForEachExpression(ExpressionSyntax expression)
         {
             return expression.Parent?.IsKind(SyntaxKind.ForEachStatement) == true
                 && expression.Equals(((ForEachStatementSyntax)expression.Parent).Expression);

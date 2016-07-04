@@ -13,7 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ReplaceForWithForeachRefactoring
+    internal static class ReplaceForWithForEachRefactoring
     {
         private const string ElementName = "item";
 

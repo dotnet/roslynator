@@ -28,12 +28,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
                     await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement);
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForeachWithFor)
-                    && ReplaceForeachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync(), context.CancellationToken))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
+                    && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync(), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
                         "Replace foreach with for",
-                        cancellationToken => ReplaceForeachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
+                        cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
                 }
             }
         }

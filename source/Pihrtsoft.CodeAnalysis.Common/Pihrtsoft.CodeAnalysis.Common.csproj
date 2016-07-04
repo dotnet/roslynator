@@ -75,7 +75,7 @@
     <Compile Include="CSharp\Refactoring\RemoveMemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SimplifyAssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AttributeRefactoring.cs" />
-    <Compile Include="CSharp\Refactoring\ReplaceForeachWithForRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\ReplaceForEachWithForRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceInterpolatedStringWithStringLiteralRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\DuplicateMemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.cs" />

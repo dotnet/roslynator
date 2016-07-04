@@ -9,13 +9,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForeach)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
                 && context.SupportsSemanticModel
-                && (await ReplaceForWithForeachRefactoring.CanRefactorAsync(context, forStatement)))
+                && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement)))
             {
                 context.RegisterRefactoring(
                     "Replace for with foreach",
-                    cancellationToken => ReplaceForWithForeachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                    cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)

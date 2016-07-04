@@ -113,12 +113,12 @@
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceForWithForeach" Title="Replace for with foreach" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceForWithForEach" Title="Replace for with foreach" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceForeachWithFor" Title="Replace foreach with for" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceForEachWithFor" Title="Replace foreach with for" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
@@ -404,7 +404,7 @@
     <Scope>type</Scope>
     <Images>
       <Image>ChangeTypeAccordingToExpression</Image>
-      <Image>ChangeForeachTypeAccordingToExpression</Image>
+      <Image>ChangeForEachTypeAccordingToExpression</Image>
     </Images>
   </Refactoring>
   <Refactoring Id="CheckParameterForNull" Title="Check parameter for null" ExtensionVersion="0.9.0">
@@ -571,7 +571,7 @@
     </Syntaxes>
     <Scope>identifier</Scope>
     <Images>
-      <Image>RenameForeachIdentifierAccordingToTypeName</Image>
+      <Image>RenameForEachIdentifierAccordingToTypeName</Image>
       <Image>RenameFieldIdentifierAccordingToTypeName</Image>
     </Images>
   </Refactoring>

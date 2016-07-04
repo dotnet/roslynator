@@ -78,8 +78,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceEmptyStringLiteralWithStringEmpty = true;
             ReplaceExplicitTypeWithVar = true;
             ReplaceFieldWithConstant = true;
-            ReplaceForeachWithFor = true;
-            ReplaceForWithForeach = true;
+            ReplaceForEachWithFor = true;
+            ReplaceForWithForEach = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
@@ -179,8 +179,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
             SetIsEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar, ReplaceExplicitTypeWithVar);
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceForeachWithFor, ReplaceForeachWithFor);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForeach, ReplaceForWithForeach);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
@@ -876,7 +876,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [DisplayName("Replace foreach with for")]
         [Description("Syntax: foreach statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceForeachWithFor
+        public bool ReplaceForEachWithFor
         {
             get;
             set;
@@ -886,7 +886,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [DisplayName("Replace for with foreach")]
         [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceForWithForeach
+        public bool ReplaceForWithForEach
         {
             get;
             set;

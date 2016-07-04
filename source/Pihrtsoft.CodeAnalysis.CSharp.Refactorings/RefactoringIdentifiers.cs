@@ -72,8 +72,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
         public const string ReplaceExplicitTypeWithVar = "ReplaceExplicitTypeWithVar";
         public const string ReplaceFieldWithConstant = "ReplaceFieldWithConstant";
-        public const string ReplaceForeachWithFor = "ReplaceForeachWithFor";
-        public const string ReplaceForWithForeach = "ReplaceForWithForeach";
+        public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";
+        public const string ReplaceForWithForEach = "ReplaceForWithForEach";
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
         public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";

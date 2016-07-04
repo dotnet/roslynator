@@ -13,7 +13,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    public static class ReplaceForeachWithForRefactoring
+    public static class ReplaceForEachWithForRefactoring
     {
         private const string CounterIdentifierName = "i";
 

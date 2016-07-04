@@ -85,8 +85,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor ReplaceVarWithExplicitTypeInForeach = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForeach,
+        public static readonly DiagnosticDescriptor ReplaceVarWithExplicitTypeInForEach = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForEach,
             title: "Replace 'var' with explicit type (in foreach).",
             messageFormat: "Consider replacing 'var' with explicit type (in foreach).",
             category: DiagnosticCategories.General,
@@ -507,8 +507,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor ReplaceForeachWithFor = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceForeachWithFor,
+        public static readonly DiagnosticDescriptor ReplaceForEachWithFor = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReplaceForEachWithFor,
             title: "Replace foreach with for.",
             messageFormat: "Consider replacing foreach with for.",
             category: DiagnosticCategories.General,
@@ -516,7 +516,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor ReplaceForeachWithForFadeOut = ReplaceForeachWithFor.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ReplaceForEachWithForFadeOut = ReplaceForEachWithFor.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement,

@@ -14,9 +14,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string SimplifyElseClauseContainingOnlyIfStatement = Prefix + "1006";
         public const string AvoidEmbeddedStatement = Prefix + "1007";
         public const string ReplaceVarWithExplicitType = Prefix + "1008";
-        public const string ReplaceVarWithExplicitTypeInForeach = Prefix + "1009";
+        public const string ReplaceVarWithExplicitTypeInForEach = Prefix + "1009";
         public const string ReplaceExplicitTypeWithVar = Prefix + "1010";
-        public const string ReplaceExplicitTypeWithVarInForeach = Prefix + "1011";
+        public const string ReplaceExplicitTypeWithVarInForEach = Prefix + "1011";
         public const string ReplaceVarWithExplicitTypeEvenIfObvious = Prefix + "1012";
         public const string UsePredefinedType = Prefix + "1013";
         public const string AvoidImplicitlyTypedArray = Prefix + "1014";
@@ -58,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AddConstructorArgumentList = Prefix + "1050";
         public const string WrapConditionalExpressionConditionInParentheses = Prefix + "1051";
         public const string DeclareEachAttributeSeparately = Prefix + "1052";
-        public const string ReplaceForeachWithFor = Prefix + "1053";
+        public const string ReplaceForEachWithFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
         public const string AvoidUsingAliasDirective = Prefix + "1056";

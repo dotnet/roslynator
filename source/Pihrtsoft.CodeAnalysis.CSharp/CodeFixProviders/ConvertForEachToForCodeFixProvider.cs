@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ConvertForEachToForCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceForeachWithFor);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceForEachWithFor);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -31,8 +31,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace foreach with for",
-                cancellationToken => ReplaceForeachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken),
-                DiagnosticIdentifiers.ReplaceForeachWithFor + EquivalenceKeySuffix);
+                cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken),
+                DiagnosticIdentifiers.ReplaceForEachWithFor + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

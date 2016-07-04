@@ -19,8 +19,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceForeachWithFor,
-                    DiagnosticDescriptors.ReplaceForeachWithForFadeOut);
+                    DiagnosticDescriptors.ReplaceForEachWithFor,
+                    DiagnosticDescriptors.ReplaceForEachWithForFadeOut);
             }
         }
 
@@ -44,10 +44,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     SyntaxKind.QualifiedName,
                     SyntaxKind.IdentifierName,
                     SyntaxKind.SimpleMemberAccessExpression)
-                && ReplaceForeachWithForRefactoring.CanRefactor(forEachStatement, context.SemanticModel, context.CancellationToken))
+                && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceForeachWithFor,
+                    DiagnosticDescriptors.ReplaceForEachWithFor,
                     forEachStatement.Type.GetLocation());
 
                 FadeOut(context, forEachStatement);
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             Location location = Location.Create(forEachStatement.SyntaxTree, span);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.ReplaceForeachWithForFadeOut, location);
+            context.ReportDiagnostic(DiagnosticDescriptors.ReplaceForEachWithForFadeOut, location);
         }
     }
 }

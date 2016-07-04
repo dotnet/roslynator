@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ChangeForEachDeclaredTypeToExplicitCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForeach);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForEach);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     CodeAction codeAction = CodeAction.Create(
                         $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                         cancellationToken => ChangeDeclaredTypeToExplicitAsync(context.Document, forEachStatement.Type, typeSymbol, cancellationToken),
-                        DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForeach + EquivalenceKeySuffix);
+                        DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForEach + EquivalenceKeySuffix);
 
                     context.RegisterCodeFix(codeAction, context.Diagnostics);
                 }
