@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio</AssemblyName>
+    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
