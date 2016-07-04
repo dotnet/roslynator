@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Shell;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters;
 
-namespace Pihrtsoft.CodeAnalysis.VisualStudio
+namespace Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings
 {
     public partial class GeneralOptionsPage : DialogPage
     {

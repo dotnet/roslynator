@@ -6,7 +6,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Pihrtsoft.CodeAnalysis.VisualStudio;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+namespace Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
