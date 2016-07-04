@@ -77,6 +77,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             MemberDeclarationSyntax member,
             int index)
         {
+            if (declaration == null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
             MemberDeclarationSyntax newMember = member.RemoveSingleLineDocumentationComment();
 
             declaration = declaration
