@@ -26,11 +26,6 @@ namespace Cleaner
             Console.ReadKey();
         }
 
-        private static string GetDirectoryPath(string directoryName)
-        {
-            return Path.Combine(_currentDirectory, directoryName);
-        }
-
         private static void CleanProjects(IEnumerable<string> projectDirectories)
         {
             foreach (string projectDirectory in projectDirectories)

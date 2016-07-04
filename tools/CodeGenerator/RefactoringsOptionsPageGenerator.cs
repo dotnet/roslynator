@@ -64,12 +64,6 @@ namespace CodeGenerator
                 yield return CreateRefactoringProperty(info);
         }
 
-        private ExpressionStatementSyntax CreateDefaultValueAssignment(RefactoringInfo info)
-        {
-            return ExpressionStatement(
-                SimpleAssignmentExpression(IdentifierName(info.Identifier), TrueLiteralExpression()));
-        }
-
         private PropertyDeclarationSyntax CreateRefactoringProperty(RefactoringInfo refactoring)
         {
             return PropertyDeclaration(BoolType(), refactoring.Identifier)
