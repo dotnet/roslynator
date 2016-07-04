@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync(), context.CancellationToken))
             {
                 context.RegisterRefactoring(
-                    "Replace string.Empty with \"\"",
+                    $"Replace '{memberAccess}' with \"\"",
                     cancellationToken =>
                     {
                         return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(

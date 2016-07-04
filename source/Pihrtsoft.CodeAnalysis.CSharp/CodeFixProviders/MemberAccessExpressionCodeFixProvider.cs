@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .FirstAncestorOrSelf<MemberAccessExpressionSyntax>();
 
             CodeAction codeAction = CodeAction.Create(
-                "Replace string.Empty with \"\"",
+                $"Replace '{memberAccess}' with \"\"",
                 cancellationToken =>
                 {
                     return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
