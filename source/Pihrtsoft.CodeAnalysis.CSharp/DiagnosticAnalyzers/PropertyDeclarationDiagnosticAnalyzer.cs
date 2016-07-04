@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     if (propertySymbol != null
                         && propertySymbol.IsStatic == fieldSymbol.IsStatic
                         && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
-                        && CheckTrivia(property, declarator, context.CancellationToken))
+                        && CheckTrivia(property, declarator))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
@@ -218,8 +218,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static bool CheckTrivia(
             PropertyDeclarationSyntax property,
-            VariableDeclaratorSyntax declarator,
-            CancellationToken cancellationToken)
+            VariableDeclaratorSyntax declarator)
         {
             if (property
                 .DescendantTrivia(TextSpan.FromBounds(property.Identifier.Span.Start, property.Span.End))

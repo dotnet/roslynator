@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             try
             {
-                Refactor(expression, context.Root, context.CancellationToken);
+                Refactor(expression, context.Root);
             }
             catch (InvalidCastException)
             {
@@ -65,15 +65,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            root = Refactor(expression, root, cancellationToken);
+            root = Refactor(expression, root);
 
             return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxNode Refactor(
-            ExpressionSyntax expression,
-            SyntaxNode root,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private static SyntaxNode Refactor(ExpressionSyntax expression, SyntaxNode root)
         {
             ParenthesizedExpressionSyntax newNode = SyntaxFactory.ParenthesizedExpression(expression.WithoutTrivia())
                 .WithTriviaFrom(expression);

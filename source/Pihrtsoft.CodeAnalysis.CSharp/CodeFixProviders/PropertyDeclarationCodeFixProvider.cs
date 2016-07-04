@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 document.Project.Solution,
                 cancellationToken);
 
-            List<IdentifierNameSyntax> identifierNames = GetIdentifierNames(document, oldRoot, referencedSymbols);
+            List<IdentifierNameSyntax> identifierNames = GetIdentifierNames(oldRoot, referencedSymbols);
 
             var rewriter = new IdentifierNameSyntaxRewriter(identifierNames, Identifier(property.Identifier.ValueText));
 
@@ -127,7 +127,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static List<IdentifierNameSyntax> GetIdentifierNames(Document document, SyntaxNode root, IEnumerable<ReferencedSymbol> referencedSymbols)
+        private static List<IdentifierNameSyntax> GetIdentifierNames(SyntaxNode root, IEnumerable<ReferencedSymbol> referencedSymbols)
         {
             var identifierNames = new List<IdentifierNameSyntax>();
 
