@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
-                    DiagnosticDescriptors.UseAutoImplementedPropertyFadeOut);
+                    DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut);
             }
         }
 
@@ -263,7 +263,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.UseAutoImplementedPropertyFadeOut;
+            DiagnosticDescriptor descriptor = DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut;
 
             if (property.ExpressionBody != null)
             {
