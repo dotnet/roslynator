@@ -21,6 +21,10 @@
     </li>  
 </ul>
 
+<h3>Options</h3>
+<p>Refactorings can be enabled/disabled in Visual Studio options</p>  
+<img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
+
 <h3>Related Products</h3>
 
 <ul>
@@ -36,19 +40,19 @@
 
     <h3>List of Analyzers</h3>
     <ul>
-        <li>RCS1001 - Add braces to a statement.</li>
-        <li>RCS1002 - Remove braces from a statement.</li>
-        <li>RCS1003 - Add braces to if-else chain.</li>
-        <li>RCS1004 - Remove braces from if-else chain.</li>
+        <li>RCS1001 - Replace embedded statement with block.</li>
+        <li>RCS1002 - Replace block with embedded statement.</li>
+        <li>RCS1003 - Replace embedded statement with block (in if-else).</li>
+        <li>RCS1004 - Replace block with embedded statement (in if-else).</li>
         <li>RCS1005 - Simplify nested using statement.</li>
         <li>RCS1006 - Simplify else clause containing only if statement.</li>
         <li>RCS1007 - Avoid embedded statement.</li>
-        <li>RCS1008 - Declare explicit type (when the type is not obvious).</li>
-        <li>RCS1009 - Declare explicit type in foreach (when the type is not obvious).</li>
-        <li>RCS1010 - Declare implicit type (when the type is obvious).</li>
-        <li>RCS1012 - Declare explicit type (even if the type is obvious).</li>
+        <li>RCS1008 - Replace 'var' with explicit type (when the type is not obvious).</li>
+        <li>RCS1009 - Replace 'var' with explicit type (in foreach).</li>
+        <li>RCS1010 - Replace explicit type with 'var' (when the type is obvious).</li>
+        <li>RCS1012 - Replace 'var' with explicit type (even if the type is obvious).</li>
         <li>RCS1013 - Use predefined type.</li>
-        <li>RCS1014 - Avoid implicit array creation.</li>
+        <li>RCS1014 - Avoid implicitly-typed array.</li>
         <li>RCS1015 - Use nameof operator.</li>
         <li>RCS1016 - Use expression-bodied member.</li>
         <li>RCS1017 - Avoid multiline expression body.</li>
@@ -56,13 +60,13 @@
         <li>RCS1019 - Reorder modifiers.</li>
         <li>RCS1020 - Simplify Nullable&lt;T&gt; to T?.</li>
         <li>RCS1021 - Simplify lambda expression.</li>
-        <li>RCS1022 - Simplify lambda expression's parameter list.</li>
+        <li>RCS1022 - Simplify lambda expression parameter list.</li>
         <li>RCS1023 - Format block.</li>
         <li>RCS1024 - Format accessor list.</li>
         <li>RCS1025 - Format each enum member on separate line.</li>
         <li>RCS1026 - Format each statement on separate line.</li>
         <li>RCS1027 - Format embedded statement on separate line.</li>
-        <li>RCS1028 - Format switch section's statement on separate line.</li>
+        <li>RCS1028 - Format switch section statement on separate line.</li>
         <li>RCS1029 - Format binary operator on next line.</li>
         <li>RCS1030 - Add empty line after embedded statement.</li>
         <li>RCS1031 - Remove redundant braces.</li>
@@ -73,21 +77,21 @@
         <li>RCS1036 - Remove redundant empty line.</li>
         <li>RCS1037 - Remove trailing white-space.</li>
         <li>RCS1038 - Remove empty statement.</li>
-        <li>RCS1039 - Remove empty attribute's argument list.</li>
+        <li>RCS1039 - Remove empty attribute argument list.</li>
         <li>RCS1040 - Remove empty else clause.</li>
-        <li>RCS1041 - Remove empty object initializer.</li>
-        <li>RCS1042 - Remove enum's default underlying type.</li>
+        <li>RCS1041 - Remove empty initializer.</li>
+        <li>RCS1042 - Remove enum default underlying type.</li>
         <li>RCS1043 - Remove 'partial' modifier from type with a single part.</li>
         <li>RCS1044 - Remove original exception from throw statement.</li>
         <li>RCS1045 - Rename private field according to camel case with underscore.</li>
-        <li>RCS1046 - Add 'Async' suffix to asynchronous method name.</li>
-        <li>RCS1047 - Remove 'Async' suffix from non-asynchronous method name.</li>
-        <li>RCS1048 - Use lambda expression instead of anonymous method.</li>
+        <li>RCS1046 - Asynchronous method name should end with 'Async'.</li>
+        <li>RCS1047 - Non-asynchronous method name should not end with 'Async'.</li>
+        <li>RCS1048 - Replace anonymous method with lambda expression.</li>
         <li>RCS1049 - Simplify boolean comparison.</li>
-        <li>RCS1050 - Add constructor's argument list.</li>
-        <li>RCS1051 - Add parentheses to conditional expression's condition.</li>
+        <li>RCS1050 - Add constructor argument list.</li>
+        <li>RCS1051 - Wrap conditional expression condition in parentheses.</li>
         <li>RCS1052 - Declare each attribute separately.</li>
-        <li>RCS1053 - Convert foreach to for.</li>
+        <li>RCS1053 - Replace foreach with for.</li>
         <li>RCS1054 - Merge local declaration with return statement.</li>
         <li>RCS1055 - Avoid semicolon at the end of declaration.</li>
         <li>RCS1056 - Avoid using alias directive.</li>
@@ -96,10 +100,10 @@
         <li>RCS1059 - Avoid locking on publicly accessible instance.</li>
         <li>RCS1060 - Declare each type in separate file.</li>
         <li>RCS1061 - Merge if statement with nested if statement.</li>
-        <li>RCS1062 - Use string literal instead of interpolated string.</li>
+        <li>RCS1062 - Replace interpolated string with string literal.</li>
         <li>RCS1063 - Avoid usage of do statement to create an infinite loop.</li>
-        <li>RCS1064 - Use while statement to create an infinite loop.</li>
-        <li>RCS1065 - Use for statement to create an infinite loop.</li>
+        <li>RCS1064 - Avoid usage of for statement to create an infinite loop.</li>
+        <li>RCS1065 - Avoid usage of while statement to create an inifinite loop.</li>
         <li>RCS1066 - Remove empty finally clause.</li>
         <li>RCS1067 - Remove empty argument list.</li>
         <li>RCS1068 - Simplify logical not expression.</li>
@@ -107,19 +111,19 @@
         <li>RCS1070 - Remove redundant default switch section.</li>
         <li>RCS1071 - Remove redundant base constructor call.</li>
         <li>RCS1072 - Remove empty namespace declaration.</li>
-        <li>RCS1073 - Simplify if statement to return statement.</li>
+        <li>RCS1073 - Replace if statement with return statement.</li>
         <li>RCS1074 - Remove redundant constructor.</li>
         <li>RCS1075 - Avoid empty catch clause that catches System.Exception.</li>
         <li>RCS1076 - Format declaration braces.</li>
         <li>RCS1077 - Simplify LINQ method chain.</li>
-        <li>RCS1078 - Avoid usage of string.Empty.</li>
+        <li>RCS1078 - Replace string.Empty with "".</li>
         <li>RCS1079 - Throwing of new NotImplementedException.</li>
-        <li>RCS1080 - Use 'Count' or 'Length' property instead of 'Any' method.</li>
+        <li>RCS1080 - Replace 'Any' method with 'Count' or 'Length' property.</li>
         <li>RCS1081 - Split declaration into multiple declarations.</li>
-        <li>RCS1082 - Use 'Count' or 'Length' property instead of 'Count' method.</li>
-        <li>RCS1083 - Use 'Any' method instead of 'Count' method.</li>
-        <li>RCS1084 - Use coalesce expression instead of conditional expression.</li>
-        <li>RCS1085 - Use auto-implemented property.</li>
+        <li>RCS1082 - Replace 'Count' method with 'Count' or 'Length' property.</li>
+        <li>RCS1083 - Replace 'Count' method with 'Any' method.</li>
+        <li>RCS1084 - Replace conditional expression with coalesce expression.</li>
+        <li>RCS1085 - Replace property with auto-implemented property.</li>
     </ul>
     <h3>List of Refactoring</h3>
     <ul>
@@ -139,9 +143,6 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-explicit-type-to-var">Change explicit type to 'var'</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression">Change method/property/indexer type according to return expression</a>
         </li>
         <li>
@@ -149,9 +150,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-type-according-to-expression">Change type according to expression</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-var-to-explicit-type">Change 'var' to explicit type</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
@@ -322,6 +320,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-embedded-statement-with-block-in-if-else">Replace embedded statement with block (in if-else)</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-explicit-type-with-var">Replace explicit type with 'var'</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
@@ -374,6 +375,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-switch-with-if-else">Replace switch with if-else</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-var-with-explicit-type">Replace 'var' with explicit type</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
