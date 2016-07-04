@@ -19,8 +19,7 @@ namespace Cleaner
         {
             CleanProjects(new string[]
             {
-                "source",
-                "vsix"
+                "source"
             });
 
             Console.WriteLine("*** FINISHED ***");
