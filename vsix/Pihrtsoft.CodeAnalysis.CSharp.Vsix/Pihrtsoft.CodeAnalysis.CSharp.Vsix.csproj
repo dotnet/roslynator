@@ -159,6 +159,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Source\Pihrtsoft.CodeAnalysis.Common\Pihrtsoft.CodeAnalysis.Common.csproj">
+      <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
+      <Name>Pihrtsoft.CodeAnalysis.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\source\Pihrtsoft.CodeAnalysis.CSharp.Refactorings\Pihrtsoft.CodeAnalysis.CSharp.Refactorings.csproj">
       <Project>{3ad7b124-7b99-440d-84a1-858be5ae268b}</Project>
       <Name>Pihrtsoft.CodeAnalysis.CSharp.Refactorings</Name>
