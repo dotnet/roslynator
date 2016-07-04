@@ -11,7 +11,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string AddInterpolation = "AddInterpolation";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
-        public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
@@ -72,6 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceEmbeddedStatementWithBlock = "ReplaceEmbeddedStatementWithBlock";
         public const string ReplaceEmbeddedStatementWithBlockInIfElse = "ReplaceEmbeddedStatementWithBlockInIfElse";
         public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
+        public const string ReplaceExplicitTypeWithVar = "ReplaceExplicitTypeWithVar";
         public const string ReplaceFieldWithConstant = "ReplaceFieldWithConstant";
         public const string ReplaceForeachWithFor = "ReplaceForeachWithFor";
         public const string ReplaceForWithForeach = "ReplaceForWithForeach";

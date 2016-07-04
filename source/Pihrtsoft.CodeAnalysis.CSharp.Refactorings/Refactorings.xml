@@ -372,7 +372,7 @@
       <Syntax>switch statement (that is empty or contains only default section)</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ChangeExplicitTypeToVar" Title="Change explicit type to 'var'" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceExplicitTypeWithVar" Title="Replace explicit type with 'var'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>

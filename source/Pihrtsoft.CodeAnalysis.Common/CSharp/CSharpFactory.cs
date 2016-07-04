@@ -182,6 +182,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.PredefinedType(Token(syntaxKind));
         }
 
+        public static IdentifierNameSyntax Var()
+        {
+            return IdentifierName("var");
+        }
+
         public static LiteralExpressionSyntax StringLiteralExpression(string value)
         {
             return LiteralExpression(

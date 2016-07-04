@@ -17,7 +17,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
-            ChangeExplicitTypeToVar = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeTypeAccordingToExpression = true;
@@ -78,6 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceEmbeddedStatementWithBlock = true;
             ReplaceEmbeddedStatementWithBlockInIfElse = true;
             ReplaceEmptyStringLiteralWithStringEmpty = true;
+            ReplaceExplicitTypeWithVar = true;
             ReplaceFieldWithConstant = true;
             ReplaceForeachWithFor = true;
             ReplaceForWithForeach = true;
@@ -118,7 +118,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
-            SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
@@ -179,6 +178,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock, ReplaceEmbeddedStatementWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse, ReplaceEmbeddedStatementWithBlockInIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar, ReplaceExplicitTypeWithVar);
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForeachWithFor, ReplaceForeachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForeach, ReplaceForWithForeach);
@@ -263,18 +263,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Change explicit type to 'var'")]
-        [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ChangeExplicitTypeToVar
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Change method/property/indexer type according to return expression")]
-        [Description("Syntax: method, property, indexer\r\nScope: return statement's expression")]
+        [Description("Syntax: return statement in method/property/indexer")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeMemberTypeAccordingToReturnExpression
         {
@@ -284,7 +274,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Change method/property/indexer type according to yield return expression")]
-        [Description("Syntax: method, property, indexer\r\nScope: yield return statement's expression")]
+        [Description("Syntax: yield return statement in method/property/indexer")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeMemberTypeAccordingToYieldReturnExpression
         {
@@ -867,6 +857,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: empty string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEmptyStringLiteralWithStringEmpty
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace explicit type with 'var'")]
+        [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceExplicitTypeWithVar
         {
             get;
             set;

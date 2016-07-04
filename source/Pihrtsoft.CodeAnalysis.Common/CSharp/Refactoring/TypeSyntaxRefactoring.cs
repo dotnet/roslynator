@@ -54,16 +54,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static async Task<Document> ChangeTypeToImplicitAsync(
+        public static async Task<Document> ChangeTypeToVarAsync(
             Document document,
             TypeSyntax type,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            IdentifierNameSyntax newType = SyntaxFactory
-                .IdentifierName("var")
-                .WithTriviaFrom(type);
+            IdentifierNameSyntax newType = CSharpFactory.Var().WithTriviaFrom(type);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
 

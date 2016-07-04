@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
 
                     if (context.Settings.IsAnyRefactoringEnabled(
-                        RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                        RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
                         RefactoringIdentifiers.ChangeVarToExplicitType))
                     {
                         await ChangeTypeAsync(context, variableDeclaration);
@@ -51,13 +51,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (result == TypeAnalysisResult.Explicit || result == TypeAnalysisResult.ExplicitButShouldBeImplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar))
                 {
                     context.RegisterRefactoring(
-                        "Change type to 'var'",
+                        $"Replace '{variableDeclaration.Type}' with 'var'",
                         cancellationToken =>
                         {
-                            return TypeSyntaxRefactoring.ChangeTypeToImplicitAsync(
+                            return TypeSyntaxRefactoring.ChangeTypeToVarAsync(
                                 context.Document,
                                 variableDeclaration.Type,
                                 cancellationToken);
