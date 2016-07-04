@@ -1,757 +1,757 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="AddBracesToStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceEmbeddedStatementWithBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1001</Id>
-    <Title>Add braces to a statement.</Title>
+    <Title>Replace embedded statement with block.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveBracesFromStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceBlockWithEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1002</Id>
-    <Title>Remove braces from a statement.</Title>
+    <Title>Replace block with embedded statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddBracesToIfElseChain" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceEmbeddedStatementWithBlockInIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1003</Id>
-    <Title>Add braces to if-else chain.</Title>
+    <Title>Replace embedded statement with block (in if-else).</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveBracesFromIfElseChain" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceBlockWithEmbeddedStatementInIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1004</Id>
-    <Title>Remove braces from if-else chain.</Title>
+    <Title>Replace block with embedded statement (in if-else).</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyNestedUsingStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyNestedUsingStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1005</Id>
     <Title>Simplify nested using statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyElseClauseContainingIfStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyElseClauseContainingOnlyIfStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1006</Id>
     <Title>Simplify else clause containing only if statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmbeddedStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1007</Id>
     <Title>Avoid embedded statement.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareExplicitType" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceVarWithExplicitType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1008</Id>
-    <Title>Declare explicit type (when the type is not obvious).</Title>
+    <Title>Replace 'var' with explicit type (when the type is not obvious).</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareExplicitTypeInForEach" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceVarWithExplicitTypeInForEach" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1009</Id>
-    <Title>Declare explicit type in foreach (when the type is not obvious).</Title>
+    <Title>Replace 'var' with explicit type (in foreach).</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareImplicitType" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceExplicitTypeWithVar" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1010</Id>
-    <Title>Declare implicit type (when the type is obvious).</Title>
+    <Title>Replace explicit type with 'var' (when the type is obvious).</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareExplicitTypeEvenIfObvious" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceVarWithExplicitTypeEvenIfObvious" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1012</Id>
-    <Title>Declare explicit type (even if the type is obvious).</Title>
+    <Title>Replace 'var' with explicit type (even if the type is obvious).</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UsePredefinedType" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="UsePredefinedType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1013</Id>
     <Title>Use predefined type.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidImplicitArrayCreation" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidImplicitlyTypedArray" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1014</Id>
-    <Title>Avoid implicit array creation.</Title>
+    <Title>Avoid implicitly-typed array.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseNameOfOperator" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="UseNameOfOperator" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1015</Id>
     <Title>Use nameof operator.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExpressionBodiedMember" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="UseExpressionBodiedMember" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1016</Id>
     <Title>Use expression-bodied member.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidMultilineExpressionBody" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidMultilineExpressionBody" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1017</Id>
     <Title>Avoid multiline expression body.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddAccessModifier" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AddAccessModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1018</Id>
     <Title>Add access modifier.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReorderModifiers" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReorderModifiers" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1019</Id>
     <Title>Reorder modifiers.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyNullableOfT" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyNullableOfT" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1020</Id>
     <Title>Simplify Nullable&lt;T&gt; to T?.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpression" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyLambdaExpression" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1021</Id>
     <Title>Simplify lambda expression.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpressionParameterList" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyLambdaExpressionParameterList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1022</Id>
-    <Title>Simplify lambda expression's parameter list.</Title>
+    <Title>Simplify lambda expression parameter list.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatBlock" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1023</Id>
     <Title>Format block.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatAccessorList" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatAccessorList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1024</Id>
     <Title>Format accessor list.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1025</Id>
     <Title>Format each enum member on separate line.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEachStatementOnSeparateLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatEachStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1026</Id>
     <Title>Format each statement on separate line.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1027</Id>
     <Title>Format embedded statement on separate line.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatCaseLabelStatementOnSeparateLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatSwitchSectionStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1028</Id>
-    <Title>Format switch section's statement on separate line.</Title>
+    <Title>Format switch section statement on separate line.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatBinaryOperatorOnNextLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatBinaryOperatorOnNextLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1029</Id>
     <Title>Format binary operator on next line.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1030</Id>
     <Title>Add empty line after embedded statement.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBraces" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1031</Id>
     <Title>Remove redundant braces.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantParentheses" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantParentheses" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1032</Id>
     <Title>Remove redundant parentheses.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBooleanLiteral" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantBooleanLiteral" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1033</Id>
     <Title>Remove redundant boolean literal.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantSealedModifier" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantSealedModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1034</Id>
     <Title>Remove redundant 'sealed' modifier.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantCommaInInitializer" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantCommaInInitializer" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1035</Id>
     <Title>Remove redundant comma in initializer.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantEmptyLine" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantEmptyLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1036</Id>
     <Title>Remove redundant empty line.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveTrailingWhitespace" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveTrailingWhitespace" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1037</Id>
     <Title>Remove trailing white-space.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1038</Id>
     <Title>Remove empty statement.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyAttributeArgumentList" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyAttributeArgumentList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1039</Id>
-    <Title>Remove empty attribute's argument list.</Title>
+    <Title>Remove empty attribute argument list.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyElseClause" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyElseClause" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1040</Id>
     <Title>Remove empty else clause.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyObjectInitializer" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyInitializer" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1041</Id>
-    <Title>Remove empty object initializer.</Title>
+    <Title>Remove empty initializer.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEnumDefaultUnderlyingType" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEnumDefaultUnderlyingType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1042</Id>
-    <Title>Remove enum's default underlying type.</Title>
+    <Title>Remove enum default underlying type.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1043</Id>
     <Title>Remove 'partial' modifier from type with a single part.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveOriginalExceptionFromThrowStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveOriginalExceptionFromThrowStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1044</Id>
     <Title>Remove original exception from throw statement.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RenamePrivateFieldAccordingToCamelCaseWithUnderscore" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RenamePrivateFieldAccordingToCamelCaseWithUnderscore" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1045</Id>
     <Title>Rename private field according to camel case with underscore.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AsyncMethodShouldHaveAsyncSuffix" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AsynchronousMethodNameShouldEndWithAsync" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1046</Id>
-    <Title>Add 'Async' suffix to asynchronous method name.</Title>
+    <Title>Asynchronous method name should end with 'Async'.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="NonAsyncMethodShouldNotHaveAsyncSuffix" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="NonAsynchronousMethodNameShouldNotEndWithAsync" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1047</Id>
-    <Title>Remove 'Async' suffix from non-asynchronous method name.</Title>
+    <Title>Non-asynchronous method name should not end with 'Async'.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseLambdaExpressionInsteadOfAnonymousMethod" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceAnonymousMethodWithLambdaExpression" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1048</Id>
-    <Title>Use lambda expression instead of anonymous method.</Title>
+    <Title>Replace anonymous method with lambda expression.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyBooleanComparison" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyBooleanComparison" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1049</Id>
     <Title>Simplify boolean comparison.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddConstructorArgumentList" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AddConstructorArgumentList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1050</Id>
-    <Title>Add constructor's argument list.</Title>
+    <Title>Add constructor argument list.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddParenthesesToConditionalExpressionCondition" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="WrapConditionalExpressionConditionInParentheses" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1051</Id>
-    <Title>Add parentheses to conditional expression's condition.</Title>
+    <Title>Wrap conditional expression condition in parentheses.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareEachAttributeSeparately" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="DeclareEachAttributeSeparately" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1052</Id>
     <Title>Declare each attribute separately.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ConvertForEachToFor" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceForEachWithFor" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1053</Id>
-    <Title>Convert foreach to for.</Title>
+    <Title>Replace foreach with for.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1054</Id>
     <Title>Merge local declaration with return statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidSemicolonAtEndOfDeclaration" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidSemicolonAtEndOfDeclaration" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1055</Id>
     <Title>Avoid semicolon at the end of declaration.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsingAliasDirective" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidUsingAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1056</Id>
     <Title>Avoid using alias directive.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarations" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AddEmptyLineBetweenDeclarations" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1057</Id>
     <Title>Add empty line between declarations.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyAssignmentExpression" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyAssignmentExpression" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1058</Id>
     <Title>Simplify assignment expression.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidLockingOnPubliclyAccessibleInstance" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidLockingOnPubliclyAccessibleInstance" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1059</Id>
     <Title>Avoid locking on publicly accessible instance.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareEachTypeInSeparateFile" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="DeclareEachTypeInSeparateFile" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1060</Id>
     <Title>Declare each type in separate file.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1061</Id>
     <Title>Merge if statement with nested if statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseStringLiteralInsteadOfInterpolatedString" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceInterpolatedStringWithStringLiteral" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1062</Id>
-    <Title>Use string literal instead of interpolated string.</Title>
+    <Title>Replace interpolated string with string literal.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1063</Id>
     <Title>Avoid usage of do statement to create an infinite loop.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseWhileStatementToCreateInfiniteLoop" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidUsageOfForStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1064</Id>
-    <Title>Use while statement to create an infinite loop.</Title>
+    <Title>Avoid usage of for statement to create an infinite loop.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseForStatementToCreateInfiniteLoop" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidUsageOfWhileStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1065</Id>
-    <Title>Use for statement to create an infinite loop.</Title>
+    <Title>Avoid usage of while statement to create an inifinite loop.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyFinallyClause" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyFinallyClause" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1066</Id>
     <Title>Remove empty finally clause.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyArgumentList" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyArgumentList" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1067</Id>
     <Title>Remove empty argument list.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLogicalNotExpression" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyLogicalNotExpression" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1068</Id>
     <Title>Simplify logical not expression.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveUnnecessaryCaseLabel" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveUnnecessaryCaseLabel" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1069</Id>
     <Title>Remove unnecessary case label.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantDefaultSwitchSection" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantDefaultSwitchSection" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1070</Id>
     <Title>Remove redundant default switch section.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBaseConstructorCall" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantBaseConstructorCall" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1071</Id>
     <Title>Remove redundant base constructor call.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyNamespaceDeclaration" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveEmptyNamespaceDeclaration" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1072</Id>
     <Title>Remove empty namespace declaration.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyIfStatementToReturnStatement" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceIfStatementWithReturnStatement" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1073</Id>
-    <Title>Simplify if statement to return statement.</Title>
+    <Title>Replace if statement with return statement.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantConstructor" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="RemoveRedundantConstructor" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1074</Id>
     <Title>Remove redundant constructor.</Title>
     <Category>General</Category>
-    <Severity>Hidden</Severity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmptyCatchClauseThatCatchesSystemException" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="AvoidEmptyCatchClauseThatCatchesSystemException" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1075</Id>
     <Title>Avoid empty catch clause that catches System.Exception.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatDeclarationBraces" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="FormatDeclarationBraces" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1076</Id>
     <Title>Format declaration braces.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLinqMethodChain" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SimplifyLinqMethodChain" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1077</Id>
     <Title>Simplify LINQ method chain.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfStringEmpty" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceStringEmptyWithEmptyStringLiteral" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1078</Id>
-    <Title>Avoid usage of string.Empty.</Title>
+    <Title>Replace string.Empty with "".</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ThrowingOfNewNotImplementedException" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ThrowingOfNewNotImplementedException" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1079</Id>
     <Title>Throwing of new NotImplementedException.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfAnyMethod" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceAnyMethodWithCountOrLengthProperty" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1080</Id>
-    <Title>Use 'Count' or 'Length' property instead of 'Any' method.</Title>
+    <Title>Replace 'Any' method with 'Count' or 'Length' property.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SplitDeclarationIntoMultipleDeclarations" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="SplitDeclarationIntoMultipleDeclarations" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1081</Id>
     <Title>Split declaration into multiple declarations.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceCountMethodWithCountOrLengthProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1082</Id>
-    <Title>Use 'Count' or 'Length' property instead of 'Count' method.</Title>
+    <Title>Replace 'Count' method with 'Count' or 'Length' property.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseAnyMethodInsteadOfCountMethod" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceCountMethodWithAnyMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1083</Id>
-    <Title>Use 'Any' method instead of 'Count' method.</Title>
+    <Title>Replace 'Count' method with 'Any' method.</Title>
     <Category>General</Category>
-    <Severity>Warning</Severity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCoalesceExpressionInsteadOfConditionalExpression" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplaceConditionalExpressionWithCoalesceExpression" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1084</Id>
-    <Title>Use coalesce expression instead of conditional expression.</Title>
+    <Title>Replace conditional expression with coalesce expression.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseAutoImplementedProperty" ExtensionVersion="0.1.0" NuGetVersion="0.1.0">
+  <Analyzer Identifier="ReplacePropertyWithAutoImplementedProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1085</Id>
-    <Title>Use auto-implemented property.</Title>
+    <Title>Replace property with auto-implemented property.</Title>
     <Category>General</Category>
-    <Severity>Info</Severity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
