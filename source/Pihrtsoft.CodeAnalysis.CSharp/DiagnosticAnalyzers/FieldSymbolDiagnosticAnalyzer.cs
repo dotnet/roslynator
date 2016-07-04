@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && !fieldSymbol.IsImplicitlyDeclared
                 && fieldSymbol.DeclaredAccessibility == Accessibility.Private
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
-                && !NamingHelper.IsValidCamelCaseWithUnderscore(fieldSymbol.Name))
+                && !IdentifierHelper.IsValidCamelCaseWithUnderscore(fieldSymbol.Name))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,

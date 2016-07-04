@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-                string newName = NamingHelper.CreateIdentifierName(
+                string newName = IdentifierHelper.CreateIdentifierName(
                     forEachStatement.Type,
                     semanticModel,
                     firstCharToLower: true);

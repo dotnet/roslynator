@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                 modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            string fieldName = NamingHelper.ToCamelCase(
+            string fieldName = IdentifierHelper.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 

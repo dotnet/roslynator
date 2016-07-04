@@ -116,7 +116,7 @@
     <Compile Include="CSharp\Analysis\EmbeddedStatementAnalysis.cs" />
     <Compile Include="GeneratedCodeAnalyzer.cs" />
     <Compile Include="IGeneratedCodeAnalyzer.cs" />
-    <Compile Include="Helpers\NamingHelper.cs" />
+    <Compile Include="IdentifierHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CSharp\Removers\TriviaRemover.cs" />
     <Compile Include="Resources.Designer.cs">

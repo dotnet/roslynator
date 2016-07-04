@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (span.Contains(context.Span))
                     {
-                        string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                        string name = IdentifierHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {
@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
-                string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                string name = IdentifierHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
                 if (!string.IsNullOrEmpty(name)
                     && !string.Equals(name, parameter.Identifier.ValueText, StringComparison.Ordinal))

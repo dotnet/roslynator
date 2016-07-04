@@ -101,7 +101,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-                string newName = NamingHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
+                string newName = IdentifierHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
 
                 if (!string.IsNullOrEmpty(newName)
                     && !string.Equals(newName, propertyDeclaration.Identifier.ValueText, StringComparison.Ordinal))
