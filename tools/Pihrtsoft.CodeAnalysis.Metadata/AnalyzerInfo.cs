@@ -7,12 +7,12 @@ namespace Pihrtsoft.CodeAnalysis.Metadata
 {
     public class AnalyzerInfo
     {
-        private AnalyzerInfo(
+        public AnalyzerInfo(
             string identifier,
             string title,
             string id,
             string category,
-            string severity,
+            string defaultSeverity,
             string extensionVersion,
             string nuGetVersion,
             bool isEnabledByDefault,
@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.Metadata
             Title = title;
             Id = id;
             Category = category;
-            Severity = severity;
+            DefaultSeverity = defaultSeverity;
             ExtensionVersion = extensionVersion;
             NuGetVersion = nuGetVersion;
             IsEnabledByDefault = isEnabledByDefault;
@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.Metadata
                     element.Element("Title").Value,
                     element.Element("Id").Value,
                     element.Element("Category").Value,
-                    element.Element("Severity").Value,
+                    element.Element("DefaultSeverity").Value,
                     element.Attribute("ExtensionVersion").Value,
                     element.Attribute("NuGetVersion").Value,
                     bool.Parse(element.Element("IsEnabledByDefault").Value),
@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.Metadata
 
         public string Category { get; }
 
-        public string Severity { get; }
+        public string DefaultSeverity { get; }
 
         public bool IsEnabledByDefault { get; }
 

@@ -37,11 +37,11 @@ namespace MetadataGenerator
                 generator.CreateAnalyzersXml());
 
             writer.SaveCode(
-                @"..\vsix\Pihrtsoft.CodeAnalysis.CSharp.Vsix\description.txt",
+                @"..\source\Pihrtsoft.CodeAnalysis.VisualStudio\description.txt",
                 generator.CreateAnalyzersExtensionDescription());
 
             writer.SaveCode(
-                @"..\vsix\Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Vsix\description.txt",
+                @"..\source\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings\description.txt",
                 generator.CreateRefactoringsExtensionDescription());
 
             writer.SaveCode(

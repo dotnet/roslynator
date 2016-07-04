@@ -170,18 +170,41 @@ namespace MetadataGenerator
 
                 var descriptor = (DiagnosticDescriptor)fieldInfo.GetValue(null);
 
+                AnalyzerInfo analyzer = Analyzers.FirstOrDefault(f => string.Equals(f.Id, descriptor.Id, StringComparison.CurrentCulture));
+
+                string extensionVersion = "0.0.0";
+                string nugetVersion = "0.0.0";
+
+                if (analyzer != null)
+                {
+                    extensionVersion = analyzer.ExtensionVersion;
+                    nugetVersion = analyzer.NuGetVersion;
+                }
+
+                analyzer = new AnalyzerInfo(
+                    fieldInfo.Name,
+                    descriptor.Title.ToString(),
+                    descriptor.Id,
+                    descriptor.Category,
+                    descriptor.DefaultSeverity.ToString(),
+                    extensionVersion,
+                    nugetVersion,
+                    descriptor.IsEnabledByDefault,
+                    descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Unnecessary),
+                    fieldInfos.Any(f => f.Name == fieldInfo.Name + "FadeOut"));
+
                 root.Add(new XElement(
                     "Analyzer",
-                    new XAttribute("Identifier", fieldInfo.Name),
-                    new XAttribute("ExtensionVersion", "0.1.0"),
-                    new XAttribute("NuGetVersion", "0.1.0"),
-                    new XElement("Id", descriptor.Id),
-                    new XElement("Title", descriptor.Title),
-                    new XElement("Category", descriptor.Category),
-                    new XElement("Severity", descriptor.DefaultSeverity),
-                    new XElement("IsEnabledByDefault", descriptor.IsEnabledByDefault),
-                    new XElement("SupportsFadeOut", descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Unnecessary)),
-                    new XElement("SupportsFadeOutAnalyzer", fieldInfos.Any(f => f.Name == fieldInfo.Name + "FadeOut"))
+                    new XAttribute("Identifier", analyzer.Identifier),
+                    new XAttribute("ExtensionVersion", analyzer.ExtensionVersion),
+                    new XAttribute("NuGetVersion", analyzer.NuGetVersion),
+                    new XElement("Id", analyzer.Id),
+                    new XElement("Title", analyzer.Title),
+                    new XElement("Category", analyzer.Category),
+                    new XElement("DefaultSeverity", analyzer.DefaultSeverity), //TODO: DefaultSeverity
+                    new XElement("IsEnabledByDefault", analyzer.IsEnabledByDefault),
+                    new XElement("SupportsFadeOut", analyzer.SupportsFadeOut),
+                    new XElement("SupportsFadeOutAnalyzer", analyzer.SupportsFadeOutAnalyzer)
                 ));
             }
 
