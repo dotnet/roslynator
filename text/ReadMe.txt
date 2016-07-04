@@ -6,6 +6,12 @@
 
 * [Refactorings](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md)
 
+### Options
+
+* Refactorings can be enabled/disabled in Visual Studio options
+
+![Refactorings Options](/images/RefactoringsOptions.png)
+
 ### Distribution
 
 ##### C# Analyzers and Refactorings

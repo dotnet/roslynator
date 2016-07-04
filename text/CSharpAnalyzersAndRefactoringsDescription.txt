@@ -21,6 +21,10 @@
     </li>  
 </ul>
 
+<h3>Options</h3>
+<p>Refactorings can be enabled/disabled in Visual Studio options</p>  
+<img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
+
 <h3>Related Products</h3>
 
 <ul>
