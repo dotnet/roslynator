@@ -14,8 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static bool CanRefactor(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
         {
-            return !context.Span.IsEmpty
-                && interpolatedStringText.Parent?.IsKind(SyntaxKind.InterpolatedStringExpression) == true;
+            return interpolatedStringText.Parent?.IsKind(SyntaxKind.InterpolatedStringExpression) == true;
         }
 
         public static async Task<Document> RefactorAsync(
