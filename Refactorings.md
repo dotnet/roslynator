@@ -1,11 +1,4 @@
-## C# Refactorings
-
-#### Access element using '[]' instead of 'First/Last/ElementAt' method
-
-* **Syntax**: First/Last/ElementAt method invocation
-* **Scope**: method name
-
-![Access element using '[]' instead of 'First/Last/ElementAt' method](/images/refactorings/UseElementAccessInsteadOfMethod.png)
+﻿## C# Refactorings
 
 #### Add boolean comparison
 
@@ -13,65 +6,20 @@
 
 ![Add boolean comparison](/images/refactorings/AddBooleanComparison.png)
 
-#### Add braces to embedded statement
+#### Add cast expression
 
-* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+* **Syntax**: argument, assignment expression, return statement, variable declaration
 
-![Add braces to embedded statement](/images/refactorings/AddBracesToEmbeddedStatement.png)
+![Add cast expression](/images/refactorings/AddCastExpressionToArgument.png)
+![Add cast expression](/images/refactorings/AddCastExpressionToAssignmentExpression.png)
+![Add cast expression](/images/refactorings/AddCastExpressionToReturnStatement.png)
+![Add cast expression](/images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
-#### Add braces to if-else chain
+#### Add interpolation
 
-* **Syntax**: if-else chain
-* **Scope**: topmost if keyword
+* **Syntax**: selected text inside interpolated string text
 
-![Add braces to if-else chain](/images/refactorings/AddBracesToIfElseChain.png)
-
-#### Add braces to switch section
-
-* **Syntax**: switch section
-
-![Add braces to switch section](/images/refactorings/AddBracesToSwitchSection.png)
-
-#### Add braces to switch sections
-
-* **Syntax**: switch statement
-* **Scope**: switch keyword
-
-![Add braces to switch sections](/images/refactorings/AddBracesToSwitchSections.png)
-
-#### Add cast according to parameter type
-
-* **Syntax**: argument
-
-![Add cast according to parameter type](/images/refactorings/AddCastAccordingToParameterType.png)
-
-#### Add cast to assignment expression
-
-* **Syntax**: assignment expression
-* **Scope**: right expression
-
-![Add cast to assignment expression](/images/refactorings/AddCastToAssignmentExpression.png)
-
-#### Add cast to return statement's expression
-
-* **Syntax**: return statement
-* **Scope**: expression
-
-![Add cast to return statement's expression](/images/refactorings/AddCastToReturnStatement.png)
-
-#### Add cast to variable declaration
-
-* **Syntax**: variable declaration
-* **Scope**: initializer value
-
-![Add cast to variable declaration](/images/refactorings/AddCastToVariableDeclaration.png)
-
-#### Add parameter name according to its type name
-
-* **Syntax**: parameter
-* **Scope**: missing identifier
-
-![Add parameter name according to its type name](/images/refactorings/AddParameterNameAccordingToTypeName.png)
+![Add interpolation](/images/refactorings/AddInterpolation.png)
 
 #### Add parameter name to argument
 
@@ -79,67 +27,32 @@
 
 ![Add parameter name to argument](/images/refactorings/AddParameterNameToArgument.png)
 
-#### Add parentheses
+#### Add parameter name to parameter
 
-* **Syntax**: expression
-* **Scope**: selected expression
+* **Syntax**: parameter
+* **Scope**: missing identifier
 
-![Add parentheses](/images/refactorings/AddParentheses.png)
+![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
 
-#### Add using statement
+#### Change method/property/indexer type according to return expression
 
-* **Syntax**: local declaration of type that implements IDisposable
+* **Syntax**: return statement in method/property/indexer
 
-![Add using statement](/images/refactorings/AddUsingStatement.png)
+![Change method/property/indexer type according to return expression](/images/refactorings/ChangeMemberTypeAccordingToReturnExpression.png)
 
-#### Change 'Any/All' to 'All/Any'
+#### Change method/property/indexer type according to yield return expression
 
-* **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
-* **Scope**: Any/All name
+* **Syntax**: yield return statement in method/property/indexer
 
-![Change 'Any/All' to 'All/Any'](/images/refactorings/ChangeAnyToAllOrAllToAny.png)
-
-#### Change foreach variable's declared type according to expression
-
-* **Syntax**: foreach statement
-* **Scope**: element type
-
-![Change foreach variable's declared type according to expression](/images/refactorings/ChangeForeachTypeAccordingToExpression.png)
-
-#### Change foreach variable's declared type to 'var'
-
-* **Syntax**: foreach statement
-* **Scope**: element type
-
-![Change foreach variable's declared type to 'var'](/images/refactorings/ChangeForeachTypeToVar.png)
-
-#### Change method/property/indexer type according to return statement
-
-* **Syntax**: method, property, indexer
-* **Scope**: return statement's expression
-
-![Change method/property/indexer type according to return statement](/images/refactorings/ChangeMemberTypeAccordingToReturnStatement.png)
-
-#### Change method/property/indexer type according to yield return statement
-
-* **Syntax**: method, property, indexer
-* **Scope**: yield return statement's expression
-
-![Change method/property/indexer type according to yield return statement](/images/refactorings/ChangeMemberTypeAccordingToYieldReturnStatement.png)
+![Change method/property/indexer type according to yield return expression](/images/refactorings/ChangeMemberTypeAccordingToYieldReturnExpression.png)
 
 #### Change type according to expression
 
-* **Syntax**: variable declaration
+* **Syntax**: variable declaration, foreach statement
 * **Scope**: type
 
 ![Change type according to expression](/images/refactorings/ChangeTypeAccordingToExpression.png)
-
-#### Change variable declaration type
-
-* **Syntax**: variable declaration
-* **Scope**: type
-
-![Change variable declaration type](/images/refactorings/ChangeVariableDeclarationType.png)
+![Change type according to expression](/images/refactorings/ChangeForEachTypeAccordingToExpression.png)
 
 #### Check parameter for null
 
@@ -147,123 +60,6 @@
 * **Scope**: parameter identifier
 
 ![Check parameter for null](/images/refactorings/CheckParameterForNull.png)
-
-#### Convert "" to string.Empty
-
-* **Syntax**: empty string literal
-
-![Convert "" to string.Empty](/images/refactorings/ConvertEmptyStringLiteralToStringEmpty.png)
-
-#### Convert conditional expression to if-else
-
-* **Syntax**: conditional expression
-
-![Convert conditional expression to if-else](/images/refactorings/ConvertConditionalExpressionToIfElse.png)
-
-#### Convert constant to read-only field
-
-* **Syntax**: constant declaration
-
-![Convert constant to read-only field](/images/refactorings/ConvertConstantToReadOnlyField.png)
-
-#### Convert for to foreach
-
-* **Syntax**: for statement
-
-![Convert for to foreach](/images/refactorings/ConvertForToForeach.png)
-
-#### Convert foreach to for
-
-* **Syntax**: foreach statement
-
-![Convert foreach to for](/images/refactorings/ConvertForeachToFor.png)
-
-#### Convert interpolated string to string literal
-
-* **Syntax**: Interpolated string without any expression
-
-![Convert interpolated string to string literal](/images/refactorings/ConvertInterpolatedStringToStringLiteral.png)
-
-#### Convert method to read-only property
-
-* **Syntax**: method
-* **Scope**: method header
-
-![Convert method to read-only property](/images/refactorings/ConvertMethodToReadOnlyProperty.png)
-
-#### Convert read-only field to constant
-
-* **Syntax**: read-only field
-
-![Convert read-only field to constant](/images/refactorings/ConvertReadOnlyFieldToConstant.png)
-
-#### Convert read-only property to method
-
-* **Syntax**: read-only property
-* **Scope**: property header
-
-![Convert read-only property to method](/images/refactorings/ConvertReadOnlyPropertyToMethod.png)
-
-#### Convert regular string literal to verbatim string literal
-
-* **Syntax**: regular string literal
-
-![Convert regular string literal to verbatim string literal](/images/refactorings/ConvertRegularStringLiteralToVerbatimStringLiteral.png)
-
-#### Convert string literal to character literal
-
-* **Syntax**: string literal
-
-![Convert string literal to character literal](/images/refactorings/ConvertStringLiteralToCharacterLiteral.png)
-
-#### Convert string literal to interpolated string
-
-* **Syntax**: string literal
-
-![Convert string literal to interpolated string](/images/refactorings/ConvertStringLiteralToInterpolatedString.png)
-
-#### Convert string.Empty to ""
-
-* **Syntax**: string.Empty
-
-![Convert string.Empty to ""](/images/refactorings/ConvertStringEmptyToEmptyStringLiteral.png)
-
-#### Convert switch to if-else chain
-
-* **Syntax**: switch statement
-* **Scope**: switch keyword
-
-![Convert switch to if-else chain](/images/refactorings/ConvertSwitchToIfElseChain.png)
-
-#### Convert to increment/decrement operator
-
-* **Syntax**: prefix/postfix unary expression
-
-![Convert to increment/decrement operator](/images/refactorings/ConvertIncrementOperatorToDecrementOperator.png)
-
-#### Convert to interpolated string
-
-* **Syntax**: string.Format method
-
-![Convert to interpolated string](/images/refactorings/ConvertStringFormatToInterpolatedString.png)
-
-#### Convert to prefix/postfix operator
-
-* **Syntax**: prefix/postfix unary expression
-
-![Convert to prefix/postfix operator](/images/refactorings/ConvertPrefixOperatorToPostfixOperator.png)
-
-#### Convert verbatim string literal to regular string literal
-
-* **Syntax**: verbatim string literal
-
-![Convert verbatim string literal to regular string literal](/images/refactorings/ConvertVerbatimStringLiteralToRegularStringLiteral.png)
-
-#### Convert verbatim string literal to regular string literals
-
-* **Syntax**: multiline verbatim string literal
-
-![Convert verbatim string literal to regular string literals](/images/refactorings/ConvertVerbatimStringLiteralToRegularStringLiterals.png)
 
 #### Duplicate argument
 
@@ -310,18 +106,18 @@
 
 ![Expand expression-bodied member](/images/refactorings/ExpandExpressionBodiedMember.png)
 
-#### Expand lambda expression's body
+#### Expand initializer
+
+* **Syntax**: initializer
+
+![Expand initializer](/images/refactorings/ExpandInitializer.png)
+
+#### Expand lambda expression body
 
 * **Syntax**: lambda expression
 * **Scope**: body
 
-![Expand lambda expression's body](/images/refactorings/ExpandLambdaExpressionBody.png)
-
-#### Expand object initializer
-
-* **Syntax**: object initializer
-
-![Expand object initializer](/images/refactorings/ExpandObjectInitializer.png)
+![Expand lambda expression body](/images/refactorings/ExpandLambdaExpressionBody.png)
 
 #### Expand property
 
@@ -362,86 +158,55 @@
 
 ![Extract statement(s)](/images/refactorings/ExtractStatement.png)
 
-#### Format accessor braces on multiple lines
+#### Format accessor braces
 
 * **Syntax**: get accessor, set accessor, add accessor, remove accessor
 * **Scope**: block
 
-![Format accessor braces on multiple lines](/images/refactorings/FormatAccessorBracesOnMultipleLines.png)
+![Format accessor braces](/images/refactorings/FormatAccessorBracesOnMultipleLines.png)
+![Format accessor braces](/images/refactorings/FormatAccessorBracesOnSingleLine.png)
 
-#### Format accessor braces on single line
-
-* **Syntax**: get accessor, set accessor, add accessor, remove accessor
-* **Scope**: block
-
-![Format accessor braces on single line](/images/refactorings/FormatAccessorBracesOnSingleLine.png)
-
-#### Format all arguments on a single line
+#### Format argument list
 
 * **Syntax**: argument list
 
-![Format all arguments on a single line](/images/refactorings/FormatAllArgumentsOnSingleLine.png)
+![Format argument list](/images/refactorings/FormatEachArgumentOnSeparateLine.png)
+![Format argument list](/images/refactorings/FormatAllArgumentsOnSingleLine.png)
 
-#### Format all parameters on a single line
-
-* **Syntax**: parameter list
-
-![Format all parameters on a single line](/images/refactorings/FormatAllParametersOnSingleLine.png)
-
-#### Format binary expressions on multiple lines
+#### Format binary expression
 
 * **Syntax**: do statement, if statement, while statement
 * **Scope**: condition
 
-![Format binary expressions on multiple lines](/images/refactorings/FormatBinaryExpressionsOnMultipleLines.png)
+![Format binary expression](/images/refactorings/FormatBinaryExpressionOnMultipleLines.png)
 
-#### Format conditional expression on multiple lines
-
-* **Syntax**: conditional expression
-
-![Format conditional expression on multiple lines](/images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
-
-#### Format conditional expression to a single line
+#### Format conditional expression
 
 * **Syntax**: conditional expression
 
-![Format conditional expression to a single line](/images/refactorings/FormatConditionalExpressionToSingleLine.png)
+![Format conditional expression](/images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
+![Format conditional expression](/images/refactorings/FormatConditionalExpressionOnSingleLine.png)
 
-#### Format each argument on separate line
+#### Format expression chain
 
-* **Syntax**: argument list
+* **Syntax**: expression chain
 
-![Format each argument on separate line](/images/refactorings/FormatEachArgumentOnSeparateLine.png)
+![Format expression chain](/images/refactorings/FormatExpressionChainOnMultipleLines.png)
+![Format expression chain](/images/refactorings/FormatExpressionChainOnSingleLine.png)
 
-#### Format each parameter on separate line
+#### Format initializer
+
+* **Syntax**: initializer
+
+![Format initializer](/images/refactorings/FormatInitializerOnMultipleLines.png)
+![Format initializer](/images/refactorings/FormatInitializerOnSingleLine.png)
+
+#### Format parameter list
 
 * **Syntax**: parameter list
 
-![Format each parameter on separate line](/images/refactorings/FormatEachParameterOnSeparateLine.png)
-
-#### Format expression chain on a single line
-
-* **Syntax**: expression chain
-
-![Format expression chain on a single line](/images/refactorings/FormatExpressionChainOnSingleLine.png)
-
-#### Format expression chain on multiple lines
-
-* **Syntax**: expression chain
-
-![Format expression chain on multiple lines](/images/refactorings/FormatExpressionChainOnMultipleLines.png)
-
-#### Format initializer on a single line
-
-* **Syntax**: initializer
-
-![Format initializer on a single line](/images/refactorings/FormatInitializerOnSingleLine.png)
-
-#### Format initializer on multiple lines
-
-* **Syntax**: initializer
-
-![Format initializer on multiple lines](/images/refactorings/FormatInitializerOnMultipleLines.png)
+![Format parameter list](/images/refactorings/FormatEachParameterOnSeparateLine.png)
+![Format parameter list](/images/refactorings/FormatAllParametersOnSingleLine.png)
 
 #### Generate switch sections
 
@@ -451,9 +216,9 @@
 
 #### Introduce constructor from selected member(s)
 
-* **Syntax**: selected fields/properties
+* **Syntax**: field, property
 
-![Introduce constructor from selected member(s)](/images/refactorings/IntroduceConstructorFromSelectedMembers.png)
+![Introduce constructor from selected member(s)](/images/refactorings/IntroduceConstructor.png)
 
 #### Make member abstract
 
@@ -535,26 +300,6 @@
 
 ![Remove all regions](/images/refactorings/RemoveAllRegions.png)
 
-#### Remove braces from if-else chain
-
-* **Syntax**: if-else chain
-* **Scope**: topmost if keyword
-
-![Remove braces from if-else chain](/images/refactorings/RemoveBracesFromIfElseChain.png)
-
-#### Remove braces from switch section
-
-* **Syntax**: switch section
-
-![Remove braces from switch section](/images/refactorings/RemoveBracesFromSwitchSection.png)
-
-#### Remove braces from switch sections
-
-* **Syntax**: switch statement
-* **Scope**: switch keyword
-
-![Remove braces from switch sections](/images/refactorings/RemoveBracesFromSwitchSections.png)
-
 #### Remove comment
 
 * **Syntax**: singleline/multiline comment, singleline/multiline xml documentation comment
@@ -587,18 +332,13 @@
 
 ![Rename backing field according to property name](/images/refactorings/RenameBackingFieldAccordingToPropertyName.png)
 
-#### Rename foreach variable according to its type name
+#### Rename identifier according to type name
 
-* **Syntax**: foreach statement
-* **Scope**: foreach statement identifier
+* **Syntax**: foreach statement, local/field/constant declaration
+* **Scope**: identifier
 
-![Rename foreach variable according to its type name](/images/refactorings/RenameForeachVariableAccordingToTypeName.png)
-
-#### Rename local/field/const according to type name
-
-* **Syntax**: local/field/constant declaration
-
-![Rename local/field/const according to type name](/images/refactorings/RenameLocalOrFieldOrConstantAccordingToTypeName.png)
+![Rename identifier according to type name](/images/refactorings/RenameForEachIdentifierAccordingToTypeName.png)
+![Rename identifier according to type name](/images/refactorings/RenameFieldIdentifierAccordingToTypeName.png)
 
 #### Rename method according to type name
 
@@ -619,12 +359,220 @@
 
 ![Rename property according to type name](/images/refactorings/RenamePropertyAccordingToTypeName.png)
 
+#### Replace "" with string.Empty
+
+* **Syntax**: empty string literal
+
+![Replace "" with string.Empty](/images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
+
+#### Replace 'Any/All' with 'All/Any'
+
+* **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
+* **Scope**: method name
+
+![Replace 'Any/All' with 'All/Any'](/images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
+
+#### Replace block with embedded statement
+
+* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+* **Scope**: block with a single statement
+
+![Replace block with embedded statement](/images/refactorings/ReplaceBlockWithEmbeddedStatement.png)
+
+#### Replace block with embedded statement (in if-else)
+
+* **Syntax**: if-else chain
+* **Scope**: topmost if keyword
+
+![Replace block with embedded statement (in if-else)](/images/refactorings/ReplaceBlockWithEmbeddedStatementInIfElse.png)
+
+#### Replace block with statements (in each section)
+
+* **Syntax**: switch statement
+* **Scope**: switch keyword
+
+![Replace block with statements (in each section)](/images/refactorings/ReplaceBlockWithStatementsInEachSection.png)
+
+#### Replace conditional expression with if-else
+
+* **Syntax**: conditional expression
+
+![Replace conditional expression with if-else](/images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
+
+#### Replace constant with field
+
+* **Syntax**: constant declaration
+
+![Replace constant with field](/images/refactorings/ReplaceConstantWithField.png)
+
+#### Replace embedded statement with block
+
+* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+* **Scope**: embedded statement
+
+![Replace embedded statement with block](/images/refactorings/ReplaceEmbeddedStatementWithBlock.png)
+
+#### Replace embedded statement with block (in if-else)
+
+* **Syntax**: if-else chain
+* **Scope**: topmost if keyword
+
+![Replace embedded statement with block (in if-else)](/images/refactorings/ReplaceEmbeddedStatementWithBlockInIfElse.png)
+
+#### Replace explicit type with 'var'
+
+* **Syntax**: variable declaration, foreach statement
+* **Scope**: type
+
+![Replace explicit type with 'var'](/images/refactorings/ReplaceExplicitTypeWithVar.png)
+
+#### Replace field with constant
+
+* **Syntax**: read-only field
+
+![Replace field with constant](/images/refactorings/ReplaceFieldWithConstant.png)
+
+#### Replace for with foreach
+
+* **Syntax**: for statement
+
+![Replace for with foreach](/images/refactorings/ReplaceForWithForEach.png)
+
+#### Replace foreach with for
+
+* **Syntax**: foreach statement
+
+![Replace foreach with for](/images/refactorings/ReplaceForEachWithFor.png)
+
+#### Replace increment operator with decrement operator
+
+* **Syntax**: prefix/postfix unary expression
+
+![Replace increment operator with decrement operator](/images/refactorings/ReplaceIncrementOperatorWithDecrementOperator.png)
+
+#### Replace interpolated string with string literal
+
+* **Syntax**: Interpolated string without any interpolation
+
+![Replace interpolated string with string literal](/images/refactorings/ReplaceInterpolatedStringWithStringLiteral.png)
+
+#### Replace method invocation with '[]'
+
+* **Syntax**: First/Last/ElementAt method invocation
+* **Scope**: method name
+
+![Replace method invocation with '[]'](/images/refactorings/ReplaceMethodInvocationWithElementAccess.png)
+
+#### Replace method with property
+
+* **Syntax**: method
+* **Scope**: method header
+
+![Replace method with property](/images/refactorings/ReplaceMethodWithProperty.png)
+
+#### Replace prefix operator to postfix operator
+
+* **Syntax**: prefix/postfix unary expression
+
+![Replace prefix operator to postfix operator](/images/refactorings/ReplacePrefixOperatorWithPostfixOperator.png)
+
+#### Replace property with method
+
+* **Syntax**: read-only property
+* **Scope**: property header
+
+![Replace property with method](/images/refactorings/ReplacePropertyWithMethod.png)
+
+#### Replace regular string literal with verbatim string literal
+
+* **Syntax**: regular string literal
+
+![Replace regular string literal with verbatim string literal](/images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
+
+#### Replace statements with block (in each section)
+
+* **Syntax**: switch statement
+* **Scope**: switch keyword
+
+![Replace statements with block (in each section)](/images/refactorings/ReplaceStatementsWithBlockInEachSection.png)
+
+#### Replace string literal with character literal
+
+* **Syntax**: string literal
+
+![Replace string literal with character literal](/images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
+
+#### Replace string literal with interpolated string
+
+* **Syntax**: string literal
+
+![Replace string literal with interpolated string](/images/refactorings/ReplaceStringLiteralWithInterpolatedString.png)
+
+#### Replace string.Empty with ""
+
+* **Syntax**: string.Empty
+
+![Replace string.Empty with ""](/images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
+
+#### Replace string.Format with interpolated string
+
+* **Syntax**: string.Format method
+
+![Replace string.Format with interpolated string](/images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+
+#### Replace switch section block with statements
+
+* **Syntax**: switch section
+* **Scope**: block
+
+![Replace switch section block with statements](/images/refactorings/ReplaceSwitchSectionBlockWithStatements.png)
+
+#### Replace switch section statements with block
+
+* **Syntax**: switch section
+* **Scope**: statements
+
+![Replace switch section statements with block](/images/refactorings/ReplaceSwitchSectionStatementsWithBlock.png)
+
+#### Replace switch with if-else
+
+* **Syntax**: switch statement
+* **Scope**: switch keyword
+
+![Replace switch with if-else](/images/refactorings/ReplaceSwitchWithIfElse.png)
+
+#### Replace 'var' with explicit type
+
+* **Syntax**: variable declaration, foreach statetement
+* **Scope**: type
+
+![Replace 'var' with explicit type](/images/refactorings/ReplaceVarWithExplicitType.png)
+
+#### Replace verbatim string literal with regular string literal
+
+* **Syntax**: verbatim string literal
+
+![Replace verbatim string literal with regular string literal](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiteral.png)
+
+#### Replace verbatim string literal with regular string literals
+
+* **Syntax**: multiline verbatim string literal
+
+![Replace verbatim string literal with regular string literals](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
+
 #### Reverse for loop
 
 * **Syntax**: for statement
 * **Scope**: for keyword
 
 ![Reverse for loop](/images/refactorings/ReverseForLoop.png)
+
+#### Simplify lambda expression
+
+* **Syntax**: lambda expression with block with single single-line statement
+* **Scope**: body
+
+![Simplify lambda expression](/images/refactorings/SimplifyLambdaExpression.png)
 
 #### Split attributes
 
@@ -671,3 +619,15 @@
 * **Scope**: body or accessor list
 
 ![Use expression-bodied member](/images/refactorings/UseExpressionBodiedMember.png)
+
+#### Wrap declaration in using statement
+
+* **Syntax**: local declaration of type that implements IDisposable
+
+![Wrap declaration in using statement](/images/refactorings/WrapDeclarationInUsingStatement.png)
+
+#### Wrap expression in parentheses
+
+* **Syntax**: selected expression
+
+![Wrap expression in parentheses](/images/refactorings/WrapExpressionInParentheses.png)
