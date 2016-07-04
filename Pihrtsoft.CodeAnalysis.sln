@@ -10,8 +10,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSharp", "source\Pihrtsoft.CodeAnalysis.CSharp\Pihrtsoft.CodeAnalysis.CSharp.csproj", "{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Vsix", "vsix\Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Vsix\Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Vsix.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "tools\MetadataGenerator\MetadataGenerator.csproj", "{DD303EB5-1C57-4588-980C-C55A401DB125}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "tools\Cleaner\Cleaner.csproj", "{44582CE6-29B1-4982-B485-C0285AA0A591}"
@@ -23,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Common", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Common\Pihrtsoft.CodeAnalysis.VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio", "source\Pihrtsoft.CodeAnalysis.VisualStudio\Pihrtsoft.CodeAnalysis.VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +45,6 @@ Global
 		{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD303EB5-1C57-4588-980C-C55A401DB125}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD303EB5-1C57-4588-980C-C55A401DB125}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD303EB5-1C57-4588-980C-C55A401DB125}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,6 +69,10 @@ Global
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
