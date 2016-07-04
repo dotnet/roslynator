@@ -13,6 +13,7 @@
     <summary>Roslyn-based library that offers 80+ analyzers for C#.</summary>
     <copyright>Copyright (c) 2016 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
+    <developmentDependency>true</developmentDependency>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
