@@ -211,7 +211,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             var initializer = node as InitializerExpressionSyntax;
                             if (initializer != null)
                             {
-                                InitializerExpressionRefactoring.ComputeRefactorings(context, initializer);
+                                await InitializerExpressionRefactoring.ComputeRefactoringsAsync(context, initializer);
                                 fInitializerExpression = true;
                             }
                         }

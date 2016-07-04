@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -16,12 +17,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         private const string Title = "Expand initializer";
 
-        public static void ComputeRefactorings(RefactoringContext context, InitializerExpressionSyntax initializer)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer)
                 && initializer.IsAnyKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
-                && initializer.Expressions.Count > 0
-                && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
+                && initializer.Expressions.Any()
+                && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true
+                && await CanExpandAsync(context, initializer))
             {
                 switch (initializer.Parent.Parent?.Kind())
                 {
@@ -35,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             {
                                 context.RegisterRefactoring(
                                     Title,
-                                    cancellationToken => ExpandObjectInitializerAsync(
+                                    cancellationToken => RefactorAsync(
                                         context.Document,
                                         initializer,
                                         (ExpressionStatementSyntax)assignmentExpression.Parent,
@@ -56,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             {
                                 context.RegisterRefactoring(
                                     Title,
-                                    cancellationToken => ExpandObjectInitializerAsync(
+                                    cancellationToken => RefactorAsync(
                                         context.Document,
                                         initializer,
                                         (LocalDeclarationStatementSyntax)equalsValueClause.Parent.Parent.Parent,
@@ -70,12 +72,150 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> ExpandObjectInitializerAsync(
+        private static async Task<bool> CanExpandAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
+        {
+            var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
+
+            if (objectCreationExpression.Type != null)
+            {
+                ExpressionSyntax expression = initializer.Expressions[0];
+
+                if (expression.IsKind(SyntaxKind.SimpleAssignmentExpression))
+                {
+                    var assignment = (AssignmentExpressionSyntax)expression;
+
+                    if (assignment.Left.IsKind(SyntaxKind.ImplicitElementAccess))
+                    {
+                        var implicitElementAccess = (ImplicitElementAccessSyntax)assignment.Left;
+
+                        if (implicitElementAccess.ArgumentList?.Arguments.Count > 0
+                            && context.SupportsSemanticModel)
+                        {
+                            return await HasPublicWritableIndexerAsync(
+                                context,
+                                implicitElementAccess.ArgumentList.Arguments[0].Expression,
+                                objectCreationExpression);
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else if (expression.IsKind(SyntaxKind.ComplexElementInitializerExpression))
+                {
+                    var initializerExpression = (InitializerExpressionSyntax)expression;
+
+                    if (initializerExpression.Expressions.Count > 0
+                        && context.SupportsSemanticModel)
+                    {
+                        return await HasPublicWritableIndexerAsync(
+                            context,
+                            initializerExpression.Expressions[0],
+                            objectCreationExpression);
+                    }
+                }
+                else if (context.SupportsSemanticModel)
+                {
+                    return await HasPublicAddMethodAsync(
+                        context,
+                        expression,
+                        objectCreationExpression);
+                }
+            }
+
+            return false;
+        }
+
+        private static async Task<bool> HasPublicAddMethodAsync(
+            RefactoringContext context,
+            ExpressionSyntax expression,
+            ObjectCreationExpressionSyntax objectCreationExpression)
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+            ISymbol symbol = semanticModel
+                .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
+                .Symbol;
+
+            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            {
+                foreach (ISymbol member in ((INamedTypeSymbol)symbol).GetMembers("Add"))
+                {
+                    if (member.IsKind(SymbolKind.Method)
+                        && !member.IsStatic
+                        && member.DeclaredAccessibility == Accessibility.Public)
+                    {
+                        var methodSymbol = (IMethodSymbol)member;
+
+                        if (methodSymbol.Parameters.Length == 1)
+                        {
+                            ITypeSymbol expressionSymbol = semanticModel
+                                .GetTypeInfo(expression, context.CancellationToken)
+                                .ConvertedType;
+
+                            if (expressionSymbol != null
+                                && expressionSymbol.Equals(methodSymbol.Parameters[0].Type))
+                            {
+                                return true;
+                            }
+                        }
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static async Task<bool> HasPublicWritableIndexerAsync(
+            RefactoringContext context,
+            ExpressionSyntax expression,
+            ObjectCreationExpressionSyntax objectCreationExpression)
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+            ISymbol symbol = semanticModel
+                .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
+                .Symbol;
+
+            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            {
+                foreach (ISymbol member in ((INamedTypeSymbol)symbol).GetMembers("this[]"))
+                {
+                    if (member.IsKind(SymbolKind.Property)
+                        && !member.IsStatic
+                        && member.DeclaredAccessibility == Accessibility.Public)
+                    {
+                        var propertySymbol = (IPropertySymbol)member;
+
+                        if (!propertySymbol.IsReadOnly
+                            && propertySymbol.Parameters.Length == 1)
+                        {
+                            ITypeSymbol expressionSymbol = semanticModel
+                                .GetTypeInfo(expression, context.CancellationToken)
+                                .ConvertedType;
+
+                            if (expressionSymbol != null
+                                && expressionSymbol.Equals(propertySymbol.Parameters[0].Type))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static async Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             StatementSyntax statement,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
@@ -129,8 +269,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (assignment.Left.IsKind(SyntaxKind.ImplicitElementAccess))
                     {
                         yield return ExpressionStatement(
-                            AssignmentExpression(
-                                SyntaxKind.SimpleAssignmentExpression,
+                            SimpleAssignmentExpression(
                                 ElementAccessExpression(
                                     initializedExpression,
                                     ((ImplicitElementAccessSyntax)assignment.Left).ArgumentList),
@@ -139,10 +278,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     else
                     {
                         yield return ExpressionStatement(
-                            AssignmentExpression(
-                                SyntaxKind.SimpleAssignmentExpression,
-                                MemberAccessExpression(
-                                    SyntaxKind.SimpleMemberAccessExpression,
+                            SimpleAssignmentExpression(
+                                SimpleMemberAccessExpression(
                                     initializedExpression,
                                     (IdentifierNameSyntax)assignment.Left),
                                 assignment.Right));
@@ -153,12 +290,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     var elementInitializer = (InitializerExpressionSyntax)expression;
 
                     yield return ExpressionStatement(
-                        AssignmentExpression(
-                            SyntaxKind.SimpleAssignmentExpression,
+                        SimpleAssignmentExpression(
                             ElementAccessExpression(
                                 initializedExpression,
                                 BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
                             elementInitializer.Expressions[1]));
+                }
+                else
+                {
+                    yield return ExpressionStatement(
+                        InvocationExpression(
+                            SimpleMemberAccessExpression(
+                                initializedExpression,
+                                IdentifierName("Add")),
+                            ArgumentList(Argument(expression))
+                        )
+                    );
                 }
             }
         }
