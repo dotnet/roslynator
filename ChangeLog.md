@@ -1,3 +1,32 @@
+### 0.9.80 (2016-07-05)
+
+#### Analyzers
+
+##### Changes
+
+* many analyzers renamed
+* **developmentDependency** element added to CSharpAnalyzers.nuspec
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddInterpolation
+* SimplifyLambdaExpression
+
+##### Changes
+
+* refactorings can be enabled/disabled in Visual Studio UI (Tools - Options)
+* some refactorings are available only when C# 6.0 is available.
+* many refactorings renamed
+* refactoring "ChangeMemberTypeAccordingToReturnExpression" improved for async method
+* refactoring "AddCastToReturnExpression" improved for async method
+* refactoring "CheckParameterForNull" is not available for lambda and anonymous method
+
+##### Bug Fixes
+
+* refactoring "MarkMemberAsStatic" should not be available for a constant.
+
 ### 0.9.70 (2016-06-23)
 
 #### Analyzers
