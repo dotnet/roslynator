@@ -23,6 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.IfStatement:
                 case SyntaxKind.DoStatement:
                 case SyntaxKind.WhileStatement:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
                     {
                         if (binaryExpression.Span.Contains(context.Span)
                             && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
