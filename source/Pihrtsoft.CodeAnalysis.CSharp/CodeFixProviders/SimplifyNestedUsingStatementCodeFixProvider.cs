@@ -14,9 +14,9 @@ using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromUsingStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyNestedUsingStatementCodeFixProvider))]
     [Shared]
-    public class RemoveBracesFromUsingStatementCodeFixProvider : BaseCodeFixProvider
+    public class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement);

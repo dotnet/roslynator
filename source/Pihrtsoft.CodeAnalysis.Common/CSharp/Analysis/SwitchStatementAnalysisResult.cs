@@ -14,18 +14,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
             foreach (SwitchSectionSyntax section in switchStatement.Sections)
             {
-                if (CanAddBraces && CanRemoveBraces)
+                if (CanReplaceStatementsWithBlock && CanReplaceBlockWithStatements)
                     break;
 
-                if (!CanAddBraces)
-                    CanAddBraces = SwitchStatementAnalysis.CanAddBracesToSection(section);
+                if (!CanReplaceStatementsWithBlock)
+                    CanReplaceStatementsWithBlock = SwitchStatementAnalysis.CanReplaceStatementsWithBlock(section);
 
-                if (!CanRemoveBraces)
-                    CanRemoveBraces = SwitchStatementAnalysis.CanRemoveBracesFromSection(section);
+                if (!CanReplaceBlockWithStatements)
+                    CanReplaceBlockWithStatements = SwitchStatementAnalysis.CanReplaceBlockWithStatements(section);
             }
         }
 
-        public bool CanAddBraces { get; }
-        public bool CanRemoveBraces { get; }
+        public bool CanReplaceStatementsWithBlock { get; }
+        public bool CanReplaceBlockWithStatements { get; }
     }
 }

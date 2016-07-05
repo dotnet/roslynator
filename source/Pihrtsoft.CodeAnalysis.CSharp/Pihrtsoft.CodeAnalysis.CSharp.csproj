@@ -80,7 +80,7 @@
     <Compile Include="CodeFixProviders\NamespaceDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\PropertyDeclarationCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveBracesFromUsingStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
@@ -205,16 +205,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="DiagnosticAnalyzers\BlockThatCanBeEmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\RemoveBracesFromStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceBlockWithEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\VariableDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\AddBracesToStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveBracesFromIfElseChainCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceEmbeddedStatementWithBlockCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceBlockWithEmbeddedStatementInIfElseCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\FieldSymbolDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\AddBracesToIfElseChainCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceEmbeddedStatementWithBlockInIfElseCodeFixProvider.cs" />
     <Compile Include="TokenPair.cs" />
   </ItemGroup>
   <ItemGroup>

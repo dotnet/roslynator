@@ -7,32 +7,35 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesToStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceBlockWithEmbeddedStatementInIfElseCodeFixProvider))]
     [Shared]
-    public class AddBracesToStatementCodeFixProvider : BaseCodeFixProvider
+    public class ReplaceBlockWithEmbeddedStatementInIfElseCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlock);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            StatementSyntax statement = root
+            IfStatementSyntax ifStatement = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<StatementSyntax>();
+                .FirstAncestorOrSelf<IfStatementSyntax>();
 
-            if (statement == null)
+            if (ifStatement == null)
                 return;
 
+            ifStatement = IfElseChainAnalysis.GetTopmostIf(ifStatement);
+
             CodeAction codeAction = CodeAction.Create(
-                "Replace embedded statement with block",
-                cancellationToken => ReplaceEmbeddedStatementWithBlockRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlock + EquivalenceKeySuffix);
+                "Replace block with embedded statement (in if-else).",
+                cancellationToken => ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
+                DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

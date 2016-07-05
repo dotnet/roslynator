@@ -12,9 +12,9 @@ using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceBlockWithEmbeddedStatementCodeFixProvider))]
     [Shared]
-    public class RemoveBracesFromStatementCodeFixProvider : BaseCodeFixProvider
+    public class ReplaceBlockWithEmbeddedStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatement);
@@ -32,13 +32,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace block with embedded statement",
-                cancellationToken => RemoveBracesFromStatementAsync(context.Document, block, cancellationToken),
+                cancellationToken => ReplaceBlockWithEmbeddedStatementAsync(context.Document, block, cancellationToken),
                 DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> RemoveBracesFromStatementAsync(
+        private static async Task<Document> ReplaceBlockWithEmbeddedStatementAsync(
             Document document,
             BlockSyntax block,
             CancellationToken cancellationToken)

@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .Sections
                 .Select(section =>
                 {
-                    if (SwitchStatementAnalysis.CanRemoveBracesFromSection(section))
+                    if (SwitchStatementAnalysis.CanReplaceBlockWithStatements(section))
                     {
                         var block = (BlockSyntax)section.Statements[0];
                         return section.WithStatements(block.Statements);

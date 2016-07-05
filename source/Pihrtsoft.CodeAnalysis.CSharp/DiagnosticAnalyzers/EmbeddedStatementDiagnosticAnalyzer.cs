@@ -12,7 +12,7 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddBracesToStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class EmbeddedStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {

@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
                 if (cnt > 1 && anyHasEmbedded && !allSupportsEmbedded)
                 {
-                    AddBracesToChain = true;
+                    ReplaceEmbeddedStatementWithBlock = true;
                     return;
                 }
             }
@@ -48,10 +48,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 && allSupportsEmbedded
                 && anyHasBlock)
             {
-                RemoveBracesFromChain = true;
+                ReplaceBlockWithEmbeddedStatement = true;
 
                 if (anyHasEmbedded)
-                    AddBracesToChain = true;
+                    ReplaceEmbeddedStatementWithBlock = true;
             }
         }
 
@@ -90,8 +90,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
         }
 
-        public bool AddBracesToChain { get; }
+        public bool ReplaceEmbeddedStatementWithBlock { get; }
 
-        public bool RemoveBracesFromChain { get; }
+        public bool ReplaceBlockWithEmbeddedStatement { get; }
     }
 }

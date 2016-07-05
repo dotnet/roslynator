@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     SwitchStatementAnalysisResult result = SwitchStatementAnalysis.Analyze(switchStatement);
 
-                    if (result.CanAddBraces
+                    if (result.CanReplaceStatementsWithBlock
                         && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSection))
                     {
                         context.RegisterRefactoring(
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             cancellationToken => ReplaceStatementsWithBlockInEachSectionRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                     }
 
-                    if (result.CanRemoveBraces
+                    if (result.CanReplaceBlockWithStatements
                         && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection))
                     {
                         context.RegisterRefactoring(

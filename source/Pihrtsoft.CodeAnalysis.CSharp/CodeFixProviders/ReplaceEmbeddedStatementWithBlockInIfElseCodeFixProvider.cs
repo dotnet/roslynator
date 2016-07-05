@@ -12,12 +12,12 @@ using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromIfElseChainCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceEmbeddedStatementWithBlockInIfElseCodeFixProvider))]
     [Shared]
-    public class RemoveBracesFromIfElseChainCodeFixProvider : BaseCodeFixProvider
+    public class ReplaceEmbeddedStatementWithBlockInIfElseCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse);
+            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -33,9 +33,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ifStatement = IfElseChainAnalysis.GetTopmostIf(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
-                "Replace block with embedded statement (in if-else).",
-                cancellationToken => ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
-                DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse + EquivalenceKeySuffix);
+                "Replace embedded statement with block (in if-else)",
+                cancellationToken => ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
+                DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

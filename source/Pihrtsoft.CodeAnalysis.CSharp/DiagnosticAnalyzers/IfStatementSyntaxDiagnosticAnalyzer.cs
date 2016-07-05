@@ -51,20 +51,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 var result = new IfElseChainAnalysisResult(ifStatement);
 
-                if (result.AddBracesToChain)
+                if (result.ReplaceEmbeddedStatementWithBlock)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
                         ifStatement.GetLocation());
                 }
 
-                if (result.RemoveBracesFromChain)
+                if (result.ReplaceBlockWithEmbeddedStatement)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
                         ifStatement.GetLocation());
 
-                    RemoveBracesFromStatementFadeOut(context, ifStatement);
+                    ReplaceBlockWithEmbeddedStatementFadeOut(context, ifStatement);
                 }
             }
 
@@ -73,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
         }
 
-        private static void RemoveBracesFromStatementFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        private static void ReplaceBlockWithEmbeddedStatementFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
             foreach (SyntaxNode node in ifStatement.DescendantNodes())
             {
