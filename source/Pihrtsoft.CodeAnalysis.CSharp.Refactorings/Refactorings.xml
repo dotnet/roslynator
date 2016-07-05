@@ -66,7 +66,7 @@
       <Image>AddCastExpressionToVariableDeclaration</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.9.80">
     <Syntaxes>
       <Syntax>selected text inside interpolated string text</Syntax>
     </Syntaxes>
@@ -597,7 +597,7 @@
     </Syntaxes>
     <Scope>for keyword</Scope>
   </Refactoring>
-  <Refactoring Id="SimplifyLambdaExpression" Title="Simplify lambda expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="SimplifyLambdaExpression" Title="Simplify lambda expression" ExtensionVersion="0.9.80">
     <Syntaxes>
       <Syntax>lambda expression with block with single single-line statement</Syntax>
     </Syntaxes>
