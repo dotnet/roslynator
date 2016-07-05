@@ -106,7 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             AccessorListSyntax accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration.AccessorList)
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine)); //TODO: AddCastExpressionToArgument
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration
                 .WithAccessorList(accessorList);

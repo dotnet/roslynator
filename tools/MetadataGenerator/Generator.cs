@@ -201,7 +201,7 @@ namespace MetadataGenerator
                     new XElement("Id", analyzer.Id),
                     new XElement("Title", analyzer.Title),
                     new XElement("Category", analyzer.Category),
-                    new XElement("DefaultSeverity", analyzer.DefaultSeverity), //TODO: DefaultSeverity
+                    new XElement("DefaultSeverity", analyzer.DefaultSeverity),
                     new XElement("IsEnabledByDefault", analyzer.IsEnabledByDefault),
                     new XElement("SupportsFadeOut", analyzer.SupportsFadeOut),
                     new XElement("SupportsFadeOutAnalyzer", analyzer.SupportsFadeOutAnalyzer)
