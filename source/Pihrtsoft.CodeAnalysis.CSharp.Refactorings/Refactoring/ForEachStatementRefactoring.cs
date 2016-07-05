@@ -85,18 +85,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
+                string oldName = forEachStatement.Identifier.ValueText;
+
                 string newName = IdentifierHelper.CreateIdentifierName(
                     forEachStatement.Type,
                     semanticModel,
                     firstCharToLower: true);
 
                 if (!string.IsNullOrEmpty(newName)
-                    && !string.Equals(newName, forEachStatement.Identifier.ValueText, StringComparison.Ordinal))
+                    && !string.Equals(newName, oldName, StringComparison.Ordinal))
                 {
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                     context.RegisterRefactoring(
-                        $"Rename foreach variable to '{newName}'",
+                        $"Rename '{oldName}' to '{newName}'",
                         cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
                 }
             }
