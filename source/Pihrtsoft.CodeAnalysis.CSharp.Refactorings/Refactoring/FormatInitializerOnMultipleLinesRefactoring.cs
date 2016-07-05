@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .WithAdditionalAnnotations(Formatter.Annotation);
             }
 
-            SyntaxTriviaList indent = initializer.GetIndentTrivia();
+            SyntaxTriviaList indent = SyntaxHelper.GetIndentTrivia(initializer);
             SyntaxTriviaList indent2 = indent.Add(CSharpFactory.IndentTrivia);
 
             indent = indent.Insert(0, CSharpFactory.NewLine);

@@ -305,40 +305,6 @@ namespace Pihrtsoft.CodeAnalysis
             }
         }
 
-        public static SyntaxTriviaList GetIndentTrivia(this SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            SyntaxTriviaList triviaList = GetNodeForLeadingTrivia(node).GetLeadingTrivia();
-
-            return SyntaxFactory.TriviaList(
-                triviaList
-                    .Reverse()
-                    .TakeWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia)));
-        }
-
-        private static SyntaxNode GetNodeForLeadingTrivia(this SyntaxNode node)
-        {
-            foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
-            {
-                if (ancestor.IsKind(SyntaxKind.IfStatement))
-                {
-                    return ((IfStatementSyntax)ancestor).ParentElse() ?? ancestor;
-                }
-                else if (ancestor.IsMemberDeclaration())
-                {
-                    return ancestor;
-                }
-                else if (ancestor.IsStatement())
-                {
-                    return ancestor;
-                }
-            }
-
-            return node;
-        }
-
         public static TNode FirstAncestor<TNode>(
             this SyntaxNode node,
             Func<TNode, bool> predicate = null,

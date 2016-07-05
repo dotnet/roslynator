@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static IEnumerable<SyntaxNodeOrToken> CreateMultilineNodesAndTokens(ArgumentListSyntax argumentList)
         {
-            SyntaxTriviaList trivia = argumentList.Parent.GetIndentTrivia().Add(CSharpFactory.IndentTrivia);
+            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(argumentList.Parent).Add(CSharpFactory.IndentTrivia);
 
             SeparatedSyntaxList<ArgumentSyntax>.Enumerator en = argumentList.Arguments.GetEnumerator();
 
