@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,9 +16,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
             return propertyDeclaration.Parent != null
                 && propertyDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && propertyDeclaration.AccessorList != null
@@ -33,12 +29,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandProperty(propertyDeclaration)
@@ -57,13 +47,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .AccessorList
                     .Accessors.Select(accessor => accessor
                         .WithBody(Block())
-                        .WithSemicolonToken(Token(SyntaxKind.None)))));
+                        .WithoutSemicolonToken())));
 
             accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration
-                .WithInitializer(null)
+                .WithoutInitializer()
+                .WithoutSemicolonToken()
                 .WithAccessorList(accessorList);
         }
     }
