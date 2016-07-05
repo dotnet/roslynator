@@ -15,6 +15,7 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -84,7 +85,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 document.Project.Solution,
                 cancellationToken);
 
-            List<IdentifierNameSyntax> identifierNames = GetIdentifierNames(oldRoot, referencedSymbols);
+            ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxHelper
+                .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)
+                .ToImmutableArray();
 
             var rewriter = new IdentifierNameSyntaxRewriter(identifierNames, Identifier(property.Identifier.ValueText));
 
@@ -125,29 +128,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxNode newRoot = oldRoot.ReplaceNode(parentMember, newParentMember);
 
             return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static List<IdentifierNameSyntax> GetIdentifierNames(SyntaxNode root, IEnumerable<ReferencedSymbol> referencedSymbols)
-        {
-            var identifierNames = new List<IdentifierNameSyntax>();
-
-            foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
-            {
-                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
-                {
-                    if (referenceLocation.IsCandidateLocation)
-                        continue;
-
-                    IdentifierNameSyntax identifierName = root
-                        .FindNode(referenceLocation.Location.SourceSpan, getInnermostNodeForTie: true)
-                        .FirstAncestorOrSelf<IdentifierNameSyntax>();
-
-                    if (identifierName != null)
-                        identifierNames.Add(identifierName);
-                }
-            }
-
-            return identifierNames;
         }
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -224,30 +204,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                                     .WithBody(null)
                                     .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
                             })));
-            }
-        }
-
-        private class IdentifierNameSyntaxRewriter : CSharpSyntaxRewriter
-        {
-            private readonly IList<IdentifierNameSyntax> _identifierNames;
-            private readonly SyntaxToken _newIdentifier;
-
-            public IdentifierNameSyntaxRewriter(IList<IdentifierNameSyntax> identifierNames, SyntaxToken newIdentifier)
-            {
-                _identifierNames = identifierNames;
-                _newIdentifier = newIdentifier;
-            }
-
-            public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
-            {
-                if (_identifierNames.Contains(node))
-                {
-                    return node
-                        .WithIdentifier(_newIdentifier)
-                        .WithTriviaFrom(node);
-                }
-
-                return base.VisitIdentifierName(node);
             }
         }
     }
