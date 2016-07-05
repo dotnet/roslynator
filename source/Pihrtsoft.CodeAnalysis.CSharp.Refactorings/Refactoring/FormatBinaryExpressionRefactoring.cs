@@ -13,40 +13,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
-                return;
-
-            binaryExpression = BinaryExpressionRefactoring.GetTopmostExpression(binaryExpression);
-
-            switch (binaryExpression.Parent?.Kind())
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
             {
-                case SyntaxKind.IfStatement:
-                case SyntaxKind.DoStatement:
-                case SyntaxKind.WhileStatement:
-                case SyntaxKind.ReturnStatement:
-                case SyntaxKind.YieldReturnStatement:
-                    {
-                        if (binaryExpression.Span.Contains(context.Span)
-                            && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                            && binaryExpression.IsSingleline())
+                binaryExpression = GetTopmostBinaryExpression(binaryExpression);
+
+                if (binaryExpression.Span.Contains(context.Span)
+                    && IsAllowedBinaryExpression(binaryExpression)
+                    && binaryExpression.IsSingleline())
+                {
+                    string title = binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true
+                        ? "Format binary expressions on multiple lines"
+                        : "Format binary expression on multiple lines";
+
+                    context.RegisterRefactoring(
+                        title,
+                        cancellationToken =>
                         {
-                            string title = binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true
-                                ? "Format binary expressions on multiple lines"
-                                : "Format binary expression on multiple lines";
-
-                            context.RegisterRefactoring(
-                                title,
-                                cancellationToken =>
-                                {
-                                    return RefactorAsync(
-                                        context.Document,
-                                        binaryExpression,
-                                        cancellationToken);
-                                });
-                        }
-
-                        break;
-                    }
+                            return RefactorAsync(
+                                context.Document,
+                                binaryExpression,
+                                cancellationToken);
+                        });
+                }
             }
         }
 
@@ -57,10 +45,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var statement = (StatementSyntax)condition.Parent;
-
             SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLine)
-                .AddRange(statement.GetIndentTrivia())
+                .AddRange(condition.GetIndentTrivia())
                 .Add(CSharpFactory.IndentTrivia);
 
             var rewriter = new SyntaxRewriter(triviaList);
@@ -70,6 +56,45 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
              root = root.ReplaceNode(condition, newCondition);
 
             return document.WithSyntaxRoot(root);
+        }
+
+        private static bool IsAllowedBinaryExpression(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.LogicalAndExpression:
+                case SyntaxKind.LogicalOrExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static BinaryExpressionSyntax GetTopmostBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        {
+            bool success = true;
+
+            while (success)
+            {
+                success = false;
+
+                if (binaryExpression.Parent != null
+                    && IsAllowedBinaryExpression(binaryExpression.Parent))
+                {
+                    var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
+
+                    if (parent.Left?.IsMissing == false
+                        && parent.Right?.IsMissing == false)
+                    {
+                        binaryExpression = parent;
+                        success = true;
+                    }
+                }
+            }
+
+            return binaryExpression;
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter

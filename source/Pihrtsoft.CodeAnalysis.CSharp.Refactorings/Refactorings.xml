@@ -318,11 +318,9 @@
   </Refactoring>
   <Refactoring Id="FormatBinaryExpression" Title="Format binary expression" ExtensionVersion="0.9.0">
     <Syntaxes>
-      <Syntax>do statement</Syntax>
-      <Syntax>if statement</Syntax>
-      <Syntax>while statement</Syntax>
+      <Syntax>logical and/or expression</Syntax>
+      <Syntax>bitwise and/or expression</Syntax>
     </Syntaxes>
-    <Scope>condition</Scope>
     <Images>
       <Image>FormatBinaryExpressionOnMultipleLines</Image>
     </Images>
