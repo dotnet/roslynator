@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
@@ -34,12 +35,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            StatementSyntax newNode = block.Statements[0].TrimLeadingWhitespace()
-                .WithAdditionalAnnotations(Formatter.Annotation);
+            StatementSyntax statement = block.Statements[0];
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(block, newNode);
+            if (block.Parent?.IsKind(SyntaxKind.ElseClause) == true
+                && statement.IsKind(SyntaxKind.IfStatement))
+            {
+                var elseClause = (ElseClauseSyntax)block.Parent;
 
-            return document.WithSyntaxRoot(newRoot);
+                ElseClauseSyntax newElseClause = elseClause
+                    .WithStatement(statement)
+                    .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
+                    .WithAdditionalAnnotations(Formatter.Annotation);
+
+                SyntaxNode newRoot = oldRoot.ReplaceNode(elseClause, newElseClause);
+
+                return document.WithSyntaxRoot(newRoot);
+            }
+            else
+            {
+                StatementSyntax newNode = statement.TrimLeadingWhitespace()
+                    .WithAdditionalAnnotations(Formatter.Annotation);
+
+                SyntaxNode newRoot = oldRoot.ReplaceNode(block, newNode);
+
+                return document.WithSyntaxRoot(newRoot);
+            }
         }
     }
 }
