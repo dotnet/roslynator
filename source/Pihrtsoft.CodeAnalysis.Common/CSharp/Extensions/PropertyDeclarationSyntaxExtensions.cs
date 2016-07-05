@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -11,6 +13,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class PropertyDeclarationExtensions
     {
+        public static bool IsReadOnlyAutoProperty(this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
+
+            return getter != null
+                && getter.Body == null
+                && getter.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
+                && !propertyDeclaration.HasSetter();
+        }
+
         public static PropertyDeclarationSyntax WithModifiers(
             this PropertyDeclarationSyntax propertyDeclaration,
             params SyntaxKind[] tokenKinds)
@@ -89,6 +104,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return propertyDeclaration.WithSemicolonToken(SemicolonToken());
         }
 
+        public static PropertyDeclarationSyntax WithoutSemicolonToken(
+            this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            return propertyDeclaration.WithSemicolonToken(Token(SyntaxKind.None));
+        }
+
+        public static PropertyDeclarationSyntax WithoutInitializer(
+            this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            return propertyDeclaration.WithInitializer(null);
+        }
+
         public static TextSpan HeaderSpan(this PropertyDeclarationSyntax propertyDeclaration)
         {
             if (propertyDeclaration == null)
@@ -121,10 +154,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return propertyDeclaration.AccessorList.Setter();
         }
 
-        public static bool ContainsGetter(this PropertyDeclarationSyntax propertyDeclaration)
-            => Getter(propertyDeclaration) != null;
+        public static bool HasGetter(this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
 
-        public static bool ContainsSetter(this PropertyDeclarationSyntax propertyDeclaration)
-            => Setter(propertyDeclaration) != null;
+            return propertyDeclaration
+                .AccessorList?
+                .Accessors
+                .Any(f => f.IsKind(SyntaxKind.GetAccessorDeclaration)) == true;
+        }
+
+        public static bool HasSetter(this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            return propertyDeclaration
+                .AccessorList?
+                .Accessors
+                .Any(f => f.IsKind(SyntaxKind.SetAccessorDeclaration)) == true;
+        }
     }
 }

@@ -1,14 +1,43 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.FindSymbols;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxHelper
     {
+        public static IEnumerable<TNode> FindNodes<TNode>(
+            SyntaxNode root,
+            IEnumerable<ReferencedSymbol> referencedSymbols) where TNode : SyntaxNode
+        {
+            if (root == null)
+                throw new ArgumentNullException(nameof(root));
+
+            if (referencedSymbols == null)
+                throw new ArgumentNullException(nameof(referencedSymbols));
+
+            foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
+            {
+                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
+                {
+                    if (referenceLocation.IsCandidateLocation)
+                        continue;
+
+                    TNode identifierName = root
+                        .FindNode(referenceLocation.Location.SourceSpan, getInnermostNodeForTie: true)
+                        .FirstAncestorOrSelf<TNode>();
+
+                    if (identifierName != null)
+                        yield return identifierName;
+                }
+            }
+        }
+
         public static string GetSyntaxNodeName(SyntaxNode node)
         {
             if (node == null)

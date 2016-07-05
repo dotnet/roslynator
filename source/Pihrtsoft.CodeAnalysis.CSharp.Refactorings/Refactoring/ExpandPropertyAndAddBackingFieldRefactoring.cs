@@ -1,14 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -22,30 +26,49 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxTokenList modifiers = TokenList(Token(SyntaxKind.PrivateKeyword));
-
-            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
-
             string fieldName = IdentifierHelper.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 
-            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName, modifiers)
+            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName)
                 .WithTriviaFrom(propertyDeclaration)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
-            var declaration = (MemberDeclarationSyntax)propertyDeclaration.Parent;
-            SyntaxList<MemberDeclarationSyntax> members = declaration.GetMembers();
+            var parentMember = (MemberDeclarationSyntax)propertyDeclaration.Parent;
+            SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
+
+            int propertyIndex = members.IndexOf(propertyDeclaration);
+
+            if (propertyDeclaration.IsReadOnlyAutoProperty())
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+
+                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
+                    semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken),
+                    document.Project.Solution,
+                    cancellationToken);
+
+                ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxHelper
+                    .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)
+                    .ToImmutableArray();
+
+                var rewriter = new IdentifierNameSyntaxRewriter(identifierNames, Identifier(fieldName));
+
+                var newParentMember = (MemberDeclarationSyntax)rewriter.Visit(parentMember);
+
+                members = newParentMember.GetMembers();
+            }
+
+            int indexOfLastField = members.LastIndexOf(f => f.IsKind(SyntaxKind.FieldDeclaration));
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members
-                .Replace(propertyDeclaration, newPropertyDeclaration)
-                .Insert(IndexOfLastField(members) + 1, fieldDeclaration);
+                .Replace(members[propertyIndex], newPropertyDeclaration)
+                .Insert(indexOfLastField + 1, fieldDeclaration);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, declaration.SetMembers(newMembers));
+            SyntaxNode newRoot = oldRoot.ReplaceNode(parentMember, parentMember.SetMembers(newMembers));
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -57,16 +80,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (getter != null)
             {
                 AccessorDeclarationSyntax newGetter = getter
-                    .WithBody(
-                        Block(
-                            SingletonList<StatementSyntax>(
-                                ReturnStatement(IdentifierName(name)))))
-                    .WithSemicolonToken(Token(SyntaxKind.None));
+                    .WithStatement(
+                        ReturnStatement(IdentifierName(name)))
+                    .WithoutSemicolonToken();
 
                 propertyDeclaration = propertyDeclaration
-                    .WithInitializer(null)
-                    .WithAccessorList(
-                        propertyDeclaration.AccessorList.ReplaceNode(getter, newGetter));
+                    .ReplaceNode(getter, newGetter)
+                    .WithoutInitializer()
+                    .WithoutSemicolonToken();
             }
 
             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
@@ -74,49 +95,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (setter != null)
             {
                 AccessorDeclarationSyntax newSetter = setter
-                    .WithBody(
-                        Block(
-                            SingletonList<StatementSyntax>(
-                                ExpressionStatement(
-                                    AssignmentExpression(
-                                        SyntaxKind.SimpleAssignmentExpression,
-                                        IdentifierName(name),
-                                        IdentifierName("value"))))))
-                    .WithSemicolonToken(Token(SyntaxKind.None));
+                    .WithStatement(
+                        ExpressionStatement(
+                            SimpleAssignmentExpression(
+                                IdentifierName(name),
+                                IdentifierName("value"))))
+                    .WithoutSemicolonToken();
 
-                propertyDeclaration = propertyDeclaration
-                    .WithAccessorList(
-                        propertyDeclaration.AccessorList.ReplaceNode(setter, newSetter));
+                propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
             AccessorListSyntax accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration.AccessorList)
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine)); //TODO: AddCastExpressionToArgument
 
             return propertyDeclaration
                 .WithAccessorList(accessorList);
         }
 
-        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name, SyntaxTokenList modifiers)
+        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            return FieldDeclaration(
-                List<AttributeListSyntax>(),
-                modifiers,
-                VariableDeclaration(
-                    propertyDeclaration.Type,
-                    SingletonSeparatedList(
-                        VariableDeclarator(name)
-                            .WithInitializer(propertyDeclaration.Initializer))));
-        }
+            SyntaxTokenList modifiers = TokenList(Token(SyntaxKind.PrivateKeyword));
 
-        private static int IndexOfLastField(SyntaxList<MemberDeclarationSyntax> members)
-        {
-            for (int i = members.Count - 1; i >= 0; i--)
-            {
-                if (members[i].IsKind(SyntaxKind.FieldDeclaration))
-                    return i;
-            }
+            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            return -1;
+            return FieldDeclaration(propertyDeclaration.Type, name, propertyDeclaration.Initializer)
+                .WithModifiers(modifiers);
         }
     }
 }

@@ -34,14 +34,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, ExpressionSyntax initializerValue = null)
         {
+            return FieldDeclaration(
+                type,
+                identifier,
+                (initializerValue != null) ? EqualsValueClause(initializerValue) : null);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer = null)
+        {
             return SyntaxFactory.FieldDeclaration(
                 VariableDeclaration(
                     type,
                     VariableDeclarator(
                         Identifier(identifier),
                         null,
-                        EqualsValueClause(
-                            initializerValue))));
+                        initializer)));
         }
 
         public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
@@ -150,6 +157,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static SyntaxToken CommaToken()
         {
             return Token(SyntaxKind.CommaToken);
+        }
+
+        public static SyntaxToken NoneToken()
+        {
+            return Token(SyntaxKind.None);
         }
 
         private static SyntaxToken Token(SyntaxKind syntaxKind)
