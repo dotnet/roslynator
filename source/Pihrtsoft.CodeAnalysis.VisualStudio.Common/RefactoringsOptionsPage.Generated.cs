@@ -474,7 +474,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Format binary expression")]
-        [Description("Syntax: do statement, if statement, while statement\r\nScope: condition")]
+        [Description("Syntax: logical and/or expression, bitwise and/or expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool FormatBinaryExpression
         {
