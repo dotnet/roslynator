@@ -175,8 +175,7 @@
 
 #### Format binary expression
 
-* **Syntax**: do statement, if statement, while statement
-* **Scope**: condition
+* **Syntax**: logical and/or expression, bitwise and/or expression
 
 ![Format binary expression](/images/refactorings/FormatBinaryExpressionOnMultipleLines.png)
 
