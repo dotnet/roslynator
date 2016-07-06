@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
-                && methodDeclaration.ReturnType?.IsKind(SyntaxKind.VoidKeyword) == false
+                && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Body?.IsMissing == false
                 && context.SupportsSemanticModel)
             {
