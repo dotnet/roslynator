@@ -45,6 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             FormatParameterList = true;
             GenerateSwitchSections = true;
             IntroduceConstructor = false;
+            IntroduceUsingStaticDirective = true;
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
@@ -148,6 +149,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective, IntroduceUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
@@ -541,6 +543,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: field, property")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceConstructor
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Introduce using static directive")]
+        [Description("Syntax: member access expression (public or internal static class)")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool IntroduceUsingStaticDirective
         {
             get;
             set;

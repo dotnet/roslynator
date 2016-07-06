@@ -134,6 +134,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#introduce-using-static-directive">Introduce using static directive</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#make-member-abstract">Make member abstract</a>
         </li>
         <li>

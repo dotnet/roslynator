@@ -39,6 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string FormatParameterList = "FormatParameterList";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
         public const string IntroduceConstructor = "IntroduceConstructor";
+        public const string IntroduceUsingStaticDirective = "IntroduceUsingStaticDirective";
         public const string MakeMemberAbstract = "MakeMemberAbstract";
         public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";

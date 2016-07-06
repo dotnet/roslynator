@@ -418,6 +418,11 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
+  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>member access expression (public or internal static class)</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="MakeMemberAbstract" Title="Make member abstract" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>non-abstract indexer/method/property in abstract class</Syntax>

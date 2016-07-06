@@ -164,6 +164,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return Token(SyntaxKind.None);
         }
 
+        public static SyntaxToken DoToken()
+        {
+            return Token(SyntaxKind.DoKeyword);
+        }
+
+        public static SyntaxToken WhileToken()
+        {
+            return Token(SyntaxKind.WhileKeyword);
+        }
+
+        public static SyntaxToken UsingToken()
+        {
+            return Token(SyntaxKind.UsingKeyword);
+        }
+
+        public static SyntaxToken StaticToken()
+        {
+            return Token(SyntaxKind.StaticKeyword);
+        }
+
         private static SyntaxToken Token(SyntaxKind syntaxKind)
         {
             return SyntaxFactory.Token(syntaxKind);
@@ -247,6 +267,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return InvocationExpression(
                 "nameof",
                 Argument(identifier));
+        }
+
+        public static UsingDirectiveSyntax UsingStaticDirective(string name)
+        {
+            return SyntaxFactory.UsingDirective(StaticToken(), null, ParseName(name));
         }
     }
 }
