@@ -19,6 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddParameterNameToParameter = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
+            ChangeMethodReturnTypeToVoid = true;
             ChangeTypeAccordingToExpression = true;
             CheckParameterForNull = true;
             DuplicateArgument = true;
@@ -123,6 +124,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
+            SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
@@ -283,6 +285,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: yield return statement in method/property/indexer")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeMemberTypeAccordingToYieldReturnExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Change method return type to void")]
+        [Description("Syntax: method")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ChangeMethodReturnTypeToVoid
         {
             get;
             set;

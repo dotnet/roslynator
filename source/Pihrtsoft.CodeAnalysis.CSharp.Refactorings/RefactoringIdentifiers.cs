@@ -13,6 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
+        public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
         public const string CheckParameterForNull = "CheckParameterForNull";
         public const string DuplicateArgument = "DuplicateArgument";

@@ -387,6 +387,11 @@
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceVarWithExplicitType" Title="Replace 'var' with explicit type" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
