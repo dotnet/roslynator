@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.CSharp;
 
 namespace Pihrtsoft.CodeAnalysis
 {
@@ -26,13 +25,29 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
-        public static int GetFullSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public static int GetFullSpanStartLine(
+            this SyntaxNode node,
+            bool trimWhitespace = false,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLinePosition.Line;
+            {
+                if (trimWhitespace)
+                {
+                    TextSpan span = TextSpan.FromBounds(
+                        GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
+                        GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
+
+                    return node.SyntaxTree.GetLineSpan(span).StartLinePosition.Line;
+                }
+                else
+                {
+                    return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLinePosition.Line;
+                }
+            }
 
             return -1;
         }
@@ -48,13 +63,29 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
-        public static int GetFullSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        public static int GetFullSpanEndLine(
+            this SyntaxNode node,
+            bool trimWhitespace = false,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLinePosition.Line;
+            {
+                if (trimWhitespace)
+                {
+                    TextSpan span = TextSpan.FromBounds(
+                        GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
+                        GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
+
+                    return node.SyntaxTree.GetLineSpan(span).EndLinePosition.Line;
+                }
+                else
+                {
+                    return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLinePosition.Line;
+                }
+            }
 
             return -1;
         }

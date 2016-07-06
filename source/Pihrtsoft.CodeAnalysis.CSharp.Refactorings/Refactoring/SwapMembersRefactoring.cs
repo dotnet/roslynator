@@ -25,8 +25,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (index != -1)
                     {
                         FileLinePositionSpan fileLinePositionSpan = member.SyntaxTree.GetLineSpan(context.Span, context.CancellationToken);
-                        if (fileLinePositionSpan.StartLinePosition.Line > members[index].GetSpanEndLine()
-                            && fileLinePositionSpan.EndLinePosition.Line < members[index + 1].GetSpanStartLine())
+                        if (fileLinePositionSpan.StartLinePosition.Line > members[index].GetFullSpanEndLine(trimWhitespace: true)
+                            && fileLinePositionSpan.EndLinePosition.Line < members[index + 1].GetFullSpanStartLine(trimWhitespace: true))
                         {
                             context.RegisterRefactoring(
                                 "Swap members",
