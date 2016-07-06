@@ -30,6 +30,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
             }
+
+            await ReplaceEnumHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
         }
     }
 }

@@ -233,6 +233,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 Literal(value));
         }
 
+        public static LiteralExpressionSyntax ZeroLiteralExpression()
+        {
+            return NumericLiteralExpression(0);
+        }
+
         public static LiteralExpressionSyntax TrueLiteralExpression()
         {
             return LiteralExpression(SyntaxKind.TrueLiteralExpression);
@@ -241,6 +246,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static LiteralExpressionSyntax FalseLiteralExpression()
         {
             return LiteralExpression(SyntaxKind.FalseLiteralExpression);
+        }
+
+        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.EqualsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
         }
 
         public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");

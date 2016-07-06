@@ -9,6 +9,11 @@
       <Image></Image>
     </Images>
   </Refactoring>-->
+  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>Enum.HasFlag method invocation</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceMethodInvocationWithElementAccess" Title="Replace method invocation with '[]'" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>First/Last/ElementAt method invocation</Syntax>

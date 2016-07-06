@@ -73,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceEmbeddedStatementWithBlock = "ReplaceEmbeddedStatementWithBlock";
         public const string ReplaceEmbeddedStatementWithBlockInIfElse = "ReplaceEmbeddedStatementWithBlockInIfElse";
         public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
+        public const string ReplaceEnumHasFlagWithBitwiseOperation = "ReplaceEnumHasFlagWithBitwiseOperation";
         public const string ReplaceExplicitTypeWithVar = "ReplaceExplicitTypeWithVar";
         public const string ReplaceFieldWithConstant = "ReplaceFieldWithConstant";
         public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";

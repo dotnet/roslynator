@@ -79,6 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceEmbeddedStatementWithBlock = true;
             ReplaceEmbeddedStatementWithBlockInIfElse = true;
             ReplaceEmptyStringLiteralWithStringEmpty = true;
+            ReplaceEnumHasFlagWithBitwiseOperation = true;
             ReplaceExplicitTypeWithVar = true;
             ReplaceFieldWithConstant = true;
             ReplaceForEachWithFor = true;
@@ -184,6 +185,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock, ReplaceEmbeddedStatementWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse, ReplaceEmbeddedStatementWithBlockInIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceEnumHasFlagWithBitwiseOperation, ReplaceEnumHasFlagWithBitwiseOperation);
             SetIsEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar, ReplaceExplicitTypeWithVar);
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
@@ -885,6 +887,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: empty string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEmptyStringLiteralWithStringEmpty
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace Enum.HasFlag method with bitwise operation")]
+        [Description("Syntax: Enum.HasFlag method invocation")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceEnumHasFlagWithBitwiseOperation
         {
             get;
             set;

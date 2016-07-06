@@ -329,6 +329,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-embedded-statement-with-block-in-if-else">Replace embedded statement with block (in if-else)</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-enumhasflag-method-with-bitwise-operation">Replace Enum.HasFlag method with bitwise operation</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-explicit-type-with-var">Replace explicit type with 'var'</a>
         </li>
         <li>
