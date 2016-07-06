@@ -125,6 +125,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ComputeRefactorings(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && constructorDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
             {
                 context.RegisterRefactoring(
@@ -164,6 +165,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ComputeRefactorings(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && eventDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
             {
                 context.RegisterRefactoring(

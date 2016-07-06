@@ -8,38 +8,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class FieldDeclarationRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, FieldDeclarationSyntax node)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, FieldDeclarationSyntax fieldDeclaration)
         {
-            if (node.Modifiers.Contains(SyntaxKind.ConstKeyword))
+            if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField)
+                    && fieldDeclaration.Span.Contains(context.Span))
                 {
                     context.RegisterRefactoring(
                         "Replace constant with field",
-                        cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                        cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
             else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
-                && node.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
-                && node.Modifiers.Contains(SyntaxKind.StaticKeyword)
+                && fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
+                && fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)
+                && fieldDeclaration.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {
-                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, node))
+                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, fieldDeclaration))
                 {
                     context.RegisterRefactoring(
                         "Replace field with constant",
-                        cancellationToken => ReplaceFieldWithConstantRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                        cancellationToken => ReplaceFieldWithConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && MarkMemberAsStaticRefactoring.CanRefactor(node))
+                && fieldDeclaration.Span.Contains(context.Span)
+                && MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
             {
                 context.RegisterRefactoring(
                     "Mark field as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, node, cancellationToken));
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
 
-                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)node.Parent);
+                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)fieldDeclaration.Parent);
             }
         }
     }

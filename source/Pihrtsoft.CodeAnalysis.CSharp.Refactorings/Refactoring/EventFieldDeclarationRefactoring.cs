@@ -9,6 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static void ComputeRefactorings(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && eventFieldDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(

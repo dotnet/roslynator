@@ -14,6 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                && methodDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
