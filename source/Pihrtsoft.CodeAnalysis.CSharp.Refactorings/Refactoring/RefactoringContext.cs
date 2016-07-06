@@ -119,5 +119,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             return Root.FindTrivia(Span.Start);
         }
+
+        public SyntaxTrivia FindTriviaInsideTrivia()
+        {
+            return Root.FindTrivia(Span.Start, findInsideTrivia: true);
+        }
     }
 }

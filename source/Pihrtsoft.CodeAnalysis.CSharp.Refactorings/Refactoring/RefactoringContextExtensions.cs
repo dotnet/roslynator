@@ -492,7 +492,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static void ComputeRefactoringsForTrivia(this RefactoringContext context)
         {
-            SyntaxTrivia trivia = context.FindTrivia();
+            bool fComment = false;
+
+            SyntaxTrivia trivia = context.FindTriviaInsideTrivia();
+
+            Debug.WriteLine(trivia.Kind().ToString());
+
+            if (trivia.IsCommentTrivia())
+            {
+                CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
+                fComment = true;
+            }
+
+            trivia = context.FindTrivia();
 
             if (trivia.IsKind(SyntaxKind.None))
                 return;
@@ -514,7 +526,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
             }
 
-            CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
+            if (!fComment)
+                CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
         }
     }
 }
