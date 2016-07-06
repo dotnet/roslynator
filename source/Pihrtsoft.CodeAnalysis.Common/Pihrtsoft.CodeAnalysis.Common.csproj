@@ -126,7 +126,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="CSharp\SyntaxHelper.cs" />
+    <Compile Include="CSharp\SyntaxUtility.cs" />
     <Compile Include="Text\Extensions\TextSpanExtensions.cs" />
     <Compile Include="Text\TextUtility.cs" />
   </ItemGroup>

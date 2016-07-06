@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     document.Project.Solution,
                     cancellationToken);
 
-                ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxHelper
+                ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxUtility
                     .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)
                     .ToImmutableArray();
 

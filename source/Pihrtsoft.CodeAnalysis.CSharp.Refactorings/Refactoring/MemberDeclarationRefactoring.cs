@@ -33,14 +33,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                             {
                                 context.RegisterRefactoring(
-                                    "Remove " + SyntaxHelper.GetSyntaxNodeName(member),
+                                    "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
                                     cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
                             }
 
                             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                             {
                                 context.RegisterRefactoring(
-                                    "Duplicate " + SyntaxHelper.GetSyntaxNodeName(member),
+                                    "Duplicate " + SyntaxHelper.GetSyntaxNodeTitle(member),
                                     cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
                             }
                         }

@@ -172,6 +172,7 @@
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactoring\SwapMembersRefactoring.cs" />
     <Compile Include="StringLiteralChain.cs" />
+    <Compile Include="SyntaxHelper.cs" />
     <Compile Include="SyntaxRewriters\InterpolatedStringSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactoring\MemberDeclarationRefactoring.cs" />

@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxTriviaList triviaList = SyntaxHelper.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia);
+            SyntaxTriviaList triviaList = SyntaxUtility.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia);
 
             triviaList = triviaList.Insert(0, CSharpFactory.NewLine);
 

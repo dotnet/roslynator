@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
             SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLine)
-                .AddRange(SyntaxHelper.GetIndentTrivia(condition))
+                .AddRange(SyntaxUtility.GetIndentTrivia(condition))
                 .Add(CSharpFactory.IndentTrivia);
 
             var rewriter = new SyntaxRewriter(triviaList);
