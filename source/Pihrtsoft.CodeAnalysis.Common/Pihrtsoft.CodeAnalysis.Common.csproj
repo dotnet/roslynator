@@ -47,6 +47,7 @@
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Extensions\AccessorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AccessorListSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\AttributeArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AttributeSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\FieldDeclarationSyntaxExtensions.cs" />

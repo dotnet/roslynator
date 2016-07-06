@@ -40,6 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fAccessor = false;
             bool fArgument = false;
             bool fArgumentList = false;
+            bool fAttributeArgumentList = false;
             bool fArrowExpressionClause = false;
             bool fParameter = false;
             bool fParameterList = false;
@@ -111,6 +112,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         await ArgumentListRefactoring.ComputeRefactoringsAsync(context, (ArgumentListSyntax)node);
                         fArgumentList = true;
+                        continue;
+                    }
+
+                    if (!fAttributeArgumentList
+                        && node.IsKind(SyntaxKind.AttributeArgumentList))
+                    {
+                        await AttributeArgumentListRefactoring.ComputeRefactoringsAsync(context, (AttributeArgumentListSyntax)node);
+                        fAttributeArgumentList = true;
                         continue;
                     }
 

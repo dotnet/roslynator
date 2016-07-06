@@ -10,10 +10,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
-    public static class ArgumentSyntaxExtensions
+    public static class AttributeArgumentSyntaxExtensions
     {
         public static IParameterSymbol DetermineParameter(
-            this ArgumentSyntax argument,
+            this AttributeArgumentSyntax argument,
             SemanticModel semanticModel,
             bool allowParams = false,
             bool allowCandidate = false,
@@ -25,17 +25,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            var argumentList = argument.Parent as BaseArgumentListSyntax;
-
-            if (argumentList == null)
+            if (argument.NameEquals != null)
                 return null;
 
-            var invocableExpression = argumentList.Parent as ExpressionSyntax;
-
-            if (invocableExpression == null)
+            if (argument.Parent?.IsKind(SyntaxKind.AttributeArgumentList) != true)
                 return null;
 
-            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(invocableExpression, cancellationToken);
+            var argumentList = (AttributeArgumentListSyntax)argument.Parent;
+
+            if (argumentList.Parent?.IsKind(SyntaxKind.Attribute) != true)
+                return null;
+
+            var attribute = (AttributeSyntax)argument.Parent.Parent;
+
+            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(attribute, cancellationToken);
 
             ISymbol symbol = symbolInfo.Symbol;
 
@@ -80,12 +83,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return null;
         }
 
-        public static ArgumentSyntax WithoutNameColon(this ArgumentSyntax argument)
+        public static AttributeArgumentSyntax WithoutNameColon(this AttributeArgumentSyntax attributeArgument)
         {
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
+            if (attributeArgument == null)
+                throw new ArgumentNullException(nameof(attributeArgument));
 
-            return argument.WithNameColon(null);
+            return attributeArgument.WithNameColon(null);
         }
     }
 }

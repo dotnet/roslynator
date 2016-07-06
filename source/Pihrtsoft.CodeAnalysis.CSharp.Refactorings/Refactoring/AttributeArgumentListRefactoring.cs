@@ -5,16 +5,16 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ArgumentListRefactoring
+    internal static class AttributeArgumentListRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {
             if (argumentList.Arguments.Count == 0)
                 return;
 
-            await ArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList);
+            await AttributeArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList);
 
-            DuplicateArgumentRefactoring.ComputeRefactoring(context, argumentList);
+            DuplicateAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList))
             {
@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             "Format each argument on separate line",
                             cancellationToken =>
                             {
-                                return FormatArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(
+                                return FormatAttributeArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(
                                     context.Document,
                                     argumentList,
                                     cancellationToken);
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         title,
                         cancellationToken =>
                         {
-                            return FormatArgumentListRefactoring.FormatAllArgumentsOnSingleLineAsync(
+                            return FormatAttributeArgumentListRefactoring.FormatAllArgumentsOnSingleLineAsync(
                                 context.Document,
                                 argumentList,
                                 cancellationToken);
