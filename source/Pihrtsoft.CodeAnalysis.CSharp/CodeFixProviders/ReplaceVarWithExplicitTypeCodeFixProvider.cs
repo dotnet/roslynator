@@ -12,9 +12,9 @@ using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SpecifyExplicitTypeCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceVarWithExplicitTypeCodeFixProvider))]
     [Shared]
-    public class SpecifyExplicitTypeCodeFixProvider : BaseCodeFixProvider
+    public class ReplaceVarWithExplicitTypeCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
