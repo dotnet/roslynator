@@ -1,3 +1,18 @@
+### 0.9.81 (2016-07-06)
+
+#### Refactorings
+
+##### Changes
+
+* refactoring "FormatBinaryExpression" is available for bitwise and/or expressions.
+* refactorings for argument and argument list are also available for attribute argument and attribute argument list.
+
+##### Bug Fixes
+
+* refactorings "RemoveComment" and "RemoveAllComments" are available at comment inside trivia.
+* refactoring "AddCastExpressionToArgument" handles properly params parameter.
+* refactoring "ExpandPropertyAndAddBackingField" handles properly read-only auto-property.
+
 ### 0.9.80 (2016-07-05)
 
 #### Analyzers
