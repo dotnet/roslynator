@@ -16,6 +16,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition);
             }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement)
+                && (doStatement.DoKeyword.Span.Contains(context.Span)))
+            {
+                context.RegisterRefactoring(
+                    "Replace do statement with while statement",
+                    cancellationToken =>
+                    {
+                        return ReplaceDoStatementWithWhileStatementRefactoring.RefactorAsync(
+                            context.Document,
+                            doStatement,
+                            cancellationToken);
+                    });
+            }
         }
     }
 }

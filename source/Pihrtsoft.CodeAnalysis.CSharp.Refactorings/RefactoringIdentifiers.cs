@@ -67,6 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceBlockWithStatementsInEachSection = "ReplaceBlockWithStatementsInEachSection";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
+        public const string ReplaceDoStatementWithWhileStatement = "ReplaceDoStatementWithWhileStatement";
         public const string ReplaceEmbeddedStatementWithBlock = "ReplaceEmbeddedStatementWithBlock";
         public const string ReplaceEmbeddedStatementWithBlockInIfElse = "ReplaceEmbeddedStatementWithBlockInIfElse";
         public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
@@ -92,6 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceVarWithExplicitType = "ReplaceVarWithExplicitType";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = "ReplaceVerbatimStringLiteralWithRegularStringLiteral";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = "ReplaceVerbatimStringLiteralWithRegularStringLiterals";
+        public const string ReplaceWhileStatementWithDoStatement = "ReplaceWhileStatementWithDoStatement";
         public const string ReverseForLoop = "ReverseForLoop";
         public const string SimplifyLambdaExpression = "SimplifyLambdaExpression";
         public const string SplitAttributes = "SplitAttributes";

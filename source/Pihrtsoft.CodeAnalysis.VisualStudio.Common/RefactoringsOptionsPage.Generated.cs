@@ -73,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceBlockWithStatementsInEachSection = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
+            ReplaceDoStatementWithWhileStatement = true;
             ReplaceEmbeddedStatementWithBlock = true;
             ReplaceEmbeddedStatementWithBlockInIfElse = true;
             ReplaceEmptyStringLiteralWithStringEmpty = true;
@@ -98,6 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceVarWithExplicitType = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiteral = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiterals = true;
+            ReplaceWhileStatementWithDoStatement = true;
             ReverseForLoop = true;
             SimplifyLambdaExpression = true;
             SplitAttributes = true;
@@ -174,6 +176,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection, ReplaceBlockWithStatementsInEachSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement, ReplaceDoStatementWithWhileStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock, ReplaceEmbeddedStatementWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse, ReplaceEmbeddedStatementWithBlockInIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
@@ -199,6 +202,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType, ReplaceVarWithExplicitType);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, ReplaceVerbatimStringLiteralWithRegularStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, ReplaceVerbatimStringLiteralWithRegularStringLiterals);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement, ReplaceWhileStatementWithDoStatement);
             SetIsEnabled(RefactoringIdentifiers.ReverseForLoop, ReverseForLoop);
             SetIsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression, SimplifyLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.SplitAttributes, SplitAttributes);
@@ -823,6 +827,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Replace do statement with while statement")]
+        [Description("Syntax: do statement\r\nScope: do keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceDoStatementWithWhileStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Replace embedded statement with block")]
         [Description("Syntax: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement\r\nScope: embedded statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1067,6 +1081,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: multiline verbatim string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceVerbatimStringLiteralWithRegularStringLiterals
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace while statement with do statement")]
+        [Description("Syntax: while statement\r\nScope: while keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceWhileStatementWithDoStatement
         {
             get;
             set;

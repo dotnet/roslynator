@@ -314,6 +314,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-constant-with-field">Replace constant with field</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-embedded-statement-with-block">Replace embedded statement with block</a>
         </li>
         <li>
@@ -384,6 +387,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#reverse-for-loop">Reverse for loop</a>

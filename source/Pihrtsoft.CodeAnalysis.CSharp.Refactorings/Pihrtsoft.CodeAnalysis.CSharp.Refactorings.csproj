@@ -51,6 +51,8 @@
     <Compile Include="Refactoring\FormatAttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactoring\IndexerDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceWhileStatementWithDoStatementRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactoring\WrapDeclarationInUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />

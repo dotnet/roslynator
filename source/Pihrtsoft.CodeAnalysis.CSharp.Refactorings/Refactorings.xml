@@ -589,6 +589,18 @@
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+    </Syntaxes>
+    <Scope>do keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>while keyword</Scope>
+  </Refactoring>
   <Refactoring Id="ReverseForLoop" Title="Reverse for loop" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>for statement</Syntax>
