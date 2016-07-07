@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (!fieldSymbol.IsConst
                 && !fieldSymbol.IsImplicitlyDeclared
-                && fieldSymbol.DeclaredAccessibility == Accessibility.Private
+                && fieldSymbol.IsPrivate()
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
                 && !IdentifierHelper.IsValidCamelCaseWithUnderscore(fieldSymbol.Name))
             {

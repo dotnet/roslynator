@@ -236,7 +236,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .GetTypeInfo(expression, context.CancellationToken)
                 .Type;
 
-            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
+            if (typeSymbol?.IsErrorType() == false
                 && !IsGenericIEnumerable(typeSymbol))
             {
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
@@ -254,8 +254,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     {
                         foreach (ISymbol members in typeSymbol.GetMembers("Count"))
                         {
-                            if (members.IsKind(SymbolKind.Property)
-                                && members.DeclaredAccessibility == Accessibility.Public)
+                            if (members.IsProperty()
+                                && members.IsPublic())
                             {
                                 return "Count";
                             }
@@ -330,13 +330,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static bool IsGenericIEnumerable(ITypeSymbol typeSymbol)
         {
-            return typeSymbol?.Kind == SymbolKind.NamedType
+            return typeSymbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
         }
 
         private static bool IsPredicate(ISymbol symbol, SemanticModel semanticModel)
         {
-            return symbol?.IsKind(SymbolKind.NamedType) == true
+            return symbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)symbol)
                     .ConstructedFrom
                     .Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Func`2"));
@@ -344,7 +344,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static bool IsGenericImmutableArray(ISymbol symbol, SemanticModel semanticModel)
         {
-            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            if (symbol?.IsNamedType() == true)
             {
                 INamedTypeSymbol namedTypeSymbol = semanticModel
                     .Compilation

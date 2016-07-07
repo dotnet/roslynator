@@ -8,15 +8,6 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class ITypeSymbolExtensions
     {
-        [DebuggerStepThrough]
-        public static bool IsKind(this ITypeSymbol typeSymbol, SymbolKind symbolKind)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            return typeSymbol.Kind == symbolKind;
-        }
-
         public static bool IsPredefinedType(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
@@ -66,9 +57,9 @@ namespace Pihrtsoft.CodeAnalysis
 
             foreach (ISymbol symbol in typeSymbol.GetMembers("get_Item"))
             {
-                if (symbol.IsKind(SymbolKind.Method)
+                if (symbol.IsMethod()
                     && !symbol.IsStatic
-                    && symbol.DeclaredAccessibility == Accessibility.Public)
+                    && symbol.IsPublic())
                 {
                     var methodSymbol = (IMethodSymbol)symbol;
 

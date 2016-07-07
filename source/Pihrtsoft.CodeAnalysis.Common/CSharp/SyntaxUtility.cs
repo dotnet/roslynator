@@ -65,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                         .GetSymbolInfo(usingDirective.Name, cancellationToken)
                         .Symbol;
 
-                    if (symbol?.IsKind(SymbolKind.ErrorType) == false
+                    if (symbol?.IsErrorType() == false
                         && namedTypeSymbol.Equals(symbol))
                     {
                         return true;

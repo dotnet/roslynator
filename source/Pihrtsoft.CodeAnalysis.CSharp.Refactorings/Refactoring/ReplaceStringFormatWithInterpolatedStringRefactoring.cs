@@ -145,7 +145,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool IsValidFormatMethod(ISymbol symbol)
         {
-            if (symbol.Kind != SymbolKind.Method)
+            if (!symbol.IsMethod())
                 return false;
 
             if (!symbol.IsStatic)

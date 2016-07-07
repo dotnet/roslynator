@@ -32,9 +32,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .GetTypeInfo(forEachStatement.Expression, cancellationToken)
                 .Type;
 
-            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+            if (typeSymbol?.IsErrorType() == false)
             {
-                return typeSymbol.IsKind(SymbolKind.ArrayType)
+                return typeSymbol.IsArrayType()
                    || typeSymbol.SpecialType == SpecialType.System_String
                    || typeSymbol.HasPublicIndexer();
             }
@@ -121,7 +121,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).Type;
 
-            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+            if (typeSymbol?.IsErrorType() == false)
             {
                 if (typeSymbol.SpecialType == SpecialType.System_String)
                     return "Length";
@@ -129,7 +129,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
 
-                if (typeSymbol.IsKind(SymbolKind.NamedType))
+                if (typeSymbol.IsNamedType())
                 {
                     INamedTypeSymbol immutableArraySymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Collections.Immutable.ImmutableArray`1");
 

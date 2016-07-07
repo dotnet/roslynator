@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (symbol == null)
                 return;
 
-            if (!symbol.IsKind(SymbolKind.NamedType))
+            if (!symbol.IsNamedType())
                 return;
 
             var namedTypeSymbol = (INamedTypeSymbol)symbol;

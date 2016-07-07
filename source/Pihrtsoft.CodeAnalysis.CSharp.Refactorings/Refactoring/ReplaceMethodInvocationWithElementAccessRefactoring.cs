@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .Type;
 
                 if (typeSymbol != null
-                    && (typeSymbol.IsKind(SymbolKind.ArrayType) || typeSymbol.HasPublicIndexer()))
+                    && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
                 {
                     string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .Type;
 
                 if (typeSymbol != null
-                    && (typeSymbol.IsKind(SymbolKind.ArrayType) || typeSymbol.HasPublicIndexer()))
+                    && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
                 {
                     context.RegisterRefactoring(
                             "Replace 'ElementAt' with '[]'",
@@ -110,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .GetTypeInfo(expression, cancellationToken)
                 .Type;
 
-            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
+            if (typeSymbol?.IsErrorType() == false
                 && !typeSymbol.IsGenericIEnumerable())
             {
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
@@ -125,8 +125,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         foreach (ISymbol members in typeSymbol.GetMembers("Count"))
                         {
-                            if (members.IsKind(SymbolKind.Property)
-                                && members.DeclaredAccessibility == Accessibility.Public)
+                            if (members.IsProperty()
+                                && members.IsPublic())
                             {
                                 return "Count";
                             }

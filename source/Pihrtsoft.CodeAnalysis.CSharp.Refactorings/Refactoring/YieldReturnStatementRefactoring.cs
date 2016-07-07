@@ -37,9 +37,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
                                 .Type;
 
-                            if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
+                            if (typeSymbol?.IsErrorType() == false
                                 && (memberTypeSymbol == null
-                                    || memberTypeSymbol.IsKind(SymbolKind.ErrorType)
+                                    || memberTypeSymbol.IsErrorType()
                                     || !memberTypeSymbol.IsGenericIEnumerable()
                                     || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
                             {

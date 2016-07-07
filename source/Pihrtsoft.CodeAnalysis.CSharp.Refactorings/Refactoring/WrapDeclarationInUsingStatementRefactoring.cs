@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .GetTypeInfo(localDeclaration.Declaration.Type)
                     .Type;
 
-                if (type?.Kind == SymbolKind.NamedType
+                if (type?.IsNamedType() == true
                     && ((INamedTypeSymbol)type).Implements(SpecialType.System_IDisposable))
                 {
                     context.RegisterRefactoring(

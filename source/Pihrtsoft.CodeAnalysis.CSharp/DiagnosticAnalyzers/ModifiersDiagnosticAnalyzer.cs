@@ -110,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
-            if (symbol == null || symbol.IsKind(SymbolKind.ErrorType))
+            if (symbol == null || symbol.IsErrorType())
                 return false;
 
             if (context.Node.Kind() == SyntaxKind.ConstructorDeclaration && symbol.IsStatic)

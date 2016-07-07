@@ -49,8 +49,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (!string.IsNullOrEmpty(newName))
                     {
                         if (context.Settings.PrefixFieldIdentifierWithUnderscore
-                            && symbol.IsKind(SymbolKind.Field)
-                            && symbol.DeclaredAccessibility == Accessibility.Private
+                            && symbol.IsField()
+                            && symbol.IsPrivate()
                             && !((IFieldSymbol)symbol).IsConst)
                         {
                             newName = IdentifierHelper.ToCamelCaseWithUnderscore(newName);
@@ -69,7 +69,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static string GetName(ISymbol symbol)
         {
-            if (symbol.IsKind(SymbolKind.Field))
+            if (symbol.IsField())
             {
                 if (((IFieldSymbol)symbol).IsConst)
                     return "constant";
@@ -82,12 +82,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool FirstCharToLower(ISymbol symbol)
         {
-            if (symbol.IsKind(SymbolKind.Field))
+            if (symbol.IsField())
             {
                 if (((IFieldSymbol)symbol).IsConst)
                     return false;
 
-                if (symbol.DeclaredAccessibility != Accessibility.Private)
+                if (!symbol.IsPrivate())
                     return false;
             }
 

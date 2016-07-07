@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            if (typeSymbol.IsKind(SymbolKind.NamedType))
+            if (typeSymbol.IsNamedType())
             {
                 foreach (ITypeSymbol typeSymbol2 in ((INamedTypeSymbol)typeSymbol).GetAllTypeArgumentsAndSelf())
                     compilationUnit = AddUsingDirectivePrivate(compilationUnit, typeSymbol2);

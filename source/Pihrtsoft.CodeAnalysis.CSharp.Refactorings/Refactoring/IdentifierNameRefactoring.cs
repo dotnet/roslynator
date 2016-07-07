@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .GetSymbolInfo(identifierName, context.CancellationToken)
                         .Symbol as IFieldSymbol;
 
-                    if (fieldSymbol?.DeclaredAccessibility == Accessibility.Private)
+                    if (fieldSymbol?.IsPrivate() == true)
                     {
                         IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 

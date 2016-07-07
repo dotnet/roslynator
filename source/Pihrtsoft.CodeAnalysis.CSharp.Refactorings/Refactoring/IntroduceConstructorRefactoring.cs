@@ -219,7 +219,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (symbol != null
                 && !symbol.IsStatic
-                && symbol.Kind == SymbolKind.Field)
+                && symbol.IsField())
             {
                 return symbol;
             }

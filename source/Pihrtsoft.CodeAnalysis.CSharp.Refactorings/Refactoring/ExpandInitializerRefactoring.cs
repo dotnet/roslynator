@@ -138,13 +138,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
                 .Symbol;
 
-            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            if (symbol?.IsNamedType() == true)
             {
                 foreach (ISymbol member in ((INamedTypeSymbol)symbol).GetMembers("Add"))
                 {
-                    if (member.IsKind(SymbolKind.Method)
+                    if (member.IsMethod()
                         && !member.IsStatic
-                        && member.DeclaredAccessibility == Accessibility.Public)
+                        && member.IsPublic())
                     {
                         var methodSymbol = (IMethodSymbol)member;
 
@@ -180,13 +180,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
                 .Symbol;
 
-            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            if (symbol?.IsNamedType() == true)
             {
                 foreach (ISymbol member in ((INamedTypeSymbol)symbol).GetMembers("this[]"))
                 {
-                    if (member.IsKind(SymbolKind.Property)
+                    if (member.IsProperty()
                         && !member.IsStatic
-                        && member.DeclaredAccessibility == Accessibility.Public)
+                        && member.IsPublic())
                     {
                         var propertySymbol = (IPropertySymbol)member;
 

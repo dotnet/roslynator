@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeInfo(initializerValue).Type;
 
-                    if (initializerTypeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                    if (initializerTypeSymbol?.IsErrorType() == false)
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).ConvertedType;
 
@@ -106,7 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (variableDeclaration.Variables.Count == 1
                 && variableDeclaration.Variables[0].Initializer?.Value != null
-                && type.IsKind(SymbolKind.NamedType))
+                && type.IsNamedType())
             {
                 INamedTypeSymbol taskOfT = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 

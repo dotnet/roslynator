@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static StatementSyntax GetStatement(ExpressionSyntax expression, ISymbol symbol)
         {
-            if (symbol?.Kind == SymbolKind.Method)
+            if (symbol?.IsMethod() == true)
             {
                 var methodSymbol = (IMethodSymbol)symbol;
 

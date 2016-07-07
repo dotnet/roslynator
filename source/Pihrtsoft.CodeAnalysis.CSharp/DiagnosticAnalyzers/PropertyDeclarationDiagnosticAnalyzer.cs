@@ -110,8 +110,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .GetSymbolInfo(identifier, context.CancellationToken)
                 .Symbol;
 
-            if (symbol?.Kind == SymbolKind.Field
-                && symbol.DeclaredAccessibility == Accessibility.Private
+            if (symbol?.IsField() == true
+                && symbol.IsPrivate()
                 && ((IFieldSymbol)symbol).IsReadOnly)
             {
                 return symbol;
@@ -138,8 +138,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     .GetSymbolInfo(getterIdentifier, context.CancellationToken)
                     .Symbol;
 
-                    if (symbol?.Kind == SymbolKind.Field
-                        && symbol.DeclaredAccessibility == Accessibility.Private)
+                    if (symbol?.IsField() == true
+                        && symbol.IsPrivate())
                     {
                         ISymbol symbol2 = context
                         .SemanticModel

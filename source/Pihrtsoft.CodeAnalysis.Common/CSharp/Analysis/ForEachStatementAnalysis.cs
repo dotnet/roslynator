@@ -36,18 +36,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
         private static bool ShouldBeExplicit(ITypeSymbol typeSymbol)
         {
-            if (typeSymbol == null || typeSymbol.IsKind(SymbolKind.ErrorType))
+            if (typeSymbol == null || typeSymbol.IsErrorType())
                 return false;
 
             if (typeSymbol.IsAnonymousType)
                 return false;
 
-            if (typeSymbol.IsKind(SymbolKind.NamedType))
+            if (typeSymbol.IsNamedType())
             {
                 if (((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType())
                     return false;
             }
-            else if (!typeSymbol.IsKind(SymbolKind.ArrayType))
+            else if (!typeSymbol.IsArrayType())
             {
                 return false;
             }

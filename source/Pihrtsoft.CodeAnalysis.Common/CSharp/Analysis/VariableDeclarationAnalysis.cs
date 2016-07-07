@@ -37,18 +37,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken).Type;
 
-            if (typeSymbol == null || typeSymbol.IsKind(SymbolKind.ErrorType))
+            if (typeSymbol == null || typeSymbol.IsErrorType())
                 return TypeAnalysisResult.None;
 
             if (typeSymbol.IsAnonymousType)
                 return TypeAnalysisResult.None;
 
-            if (typeSymbol.IsKind(SymbolKind.NamedType))
+            if (typeSymbol.IsNamedType())
             {
                 if (((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType())
                     return TypeAnalysisResult.None;
             }
-            else if (!typeSymbol.IsKind(SymbolKind.ArrayType))
+            else if (!typeSymbol.IsArrayType())
             {
                 return TypeAnalysisResult.None;
             }

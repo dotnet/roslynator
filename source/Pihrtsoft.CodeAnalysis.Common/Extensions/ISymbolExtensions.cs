@@ -50,21 +50,12 @@ namespace Pihrtsoft.CodeAnalysis
             }
         }
 
-        [DebuggerStepThrough]
-        public static bool IsKind(this ISymbol symbol, SymbolKind kind)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == kind;
-        }
-
         public static bool IsGenericIEnumerable(this ISymbol symbol)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
-            return symbol?.Kind == SymbolKind.NamedType
+            return symbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)symbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
         }
 
@@ -76,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (symbol?.IsKind(SymbolKind.NamedType) == true)
+            if (symbol?.IsNamedType() == true)
             {
                 INamedTypeSymbol namedTypeSymbol = semanticModel
                     .Compilation
@@ -94,8 +85,116 @@ namespace Pihrtsoft.CodeAnalysis
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
-            return symbol.IsKind(SymbolKind.NamedType)
+            return symbol.IsNamedType()
                 && ((INamedTypeSymbol)symbol).SpecialType == SpecialType.System_Int32;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsErrorType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.ErrorType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNamedType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.NamedType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsArrayType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.ArrayType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsMethod(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Method;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsProperty(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Property;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsField(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Field;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsTypeParameter(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.TypeParameter;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsLocal(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Local;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsPublic(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.DeclaredAccessibility == Accessibility.Public;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsInternal(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.DeclaredAccessibility == Accessibility.Internal;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsProtected(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.DeclaredAccessibility == Accessibility.Protected;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsPrivate(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.DeclaredAccessibility == Accessibility.Private;
         }
     }
 }

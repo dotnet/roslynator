@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     foreach (ISymbol memberSymbol in namedTypeSymbol.GetMembers())
                     {
-                        if (memberSymbol.Kind == SymbolKind.Field)
+                        if (memberSymbol.IsField())
                             return true;
                     }
                 }
@@ -97,7 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             foreach (ISymbol memberSymbol in members)
             {
-                if (memberSymbol.Kind == SymbolKind.Field)
+                if (memberSymbol.IsField())
                 {
                     sections.Add(
                         SwitchSection(

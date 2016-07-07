@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .GetSymbolInfo(memberAccess, context.CancellationToken)
                         .Symbol;
 
-                    if (symbol?.IsKind(SymbolKind.Method) == true)
+                    if (symbol?.IsMethod() == true)
                     {
                         var methodSymbol = (IMethodSymbol)symbol;
 

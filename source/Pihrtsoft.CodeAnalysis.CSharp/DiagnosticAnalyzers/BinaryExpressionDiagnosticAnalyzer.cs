@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .GetTypeInfo(expression, context.CancellationToken)
                 .ConvertedType;
 
-            return typeSymbol?.Kind == SymbolKind.NamedType
+            return typeSymbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)typeSymbol).SpecialType == SpecialType.System_String;
         }
 

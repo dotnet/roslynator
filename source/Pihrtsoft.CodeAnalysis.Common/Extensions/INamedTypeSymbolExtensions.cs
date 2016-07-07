@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis
                     if (type.IsAnonymousType)
                         return true;
 
-                    if (type.IsKind(SymbolKind.NamedType))
+                    if (type.IsNamedType())
                     {
                         ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)type).TypeArguments;
 
@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis
 
                     yield return type;
 
-                    if (type.IsKind(SymbolKind.NamedType))
+                    if (type.IsNamedType())
                     {
                         ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)type).TypeArguments;
 

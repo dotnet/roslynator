@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .Symbol as IFieldSymbol;
 
                 return fieldSymbol != null
-                    && fieldSymbol.DeclaredAccessibility == Accessibility.Public
+                    && fieldSymbol.IsPublic()
                     && fieldSymbol.IsReadOnly
                     && fieldSymbol.IsStatic
                     && fieldSymbol.ContainingType?.SpecialType == SpecialType.System_String;

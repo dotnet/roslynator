@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
             ISymbol symbol = context.SemanticModel.GetSymbolInfo(returnStatement.Expression, context.CancellationToken).Symbol;
 
-            if (symbol?.Kind != SymbolKind.Local)
+            if (symbol?.IsLocal() != true)
                 return;
 
             ISymbol symbol2 = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);

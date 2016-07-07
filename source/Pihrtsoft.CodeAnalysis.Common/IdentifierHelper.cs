@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         private static ITypeSymbol ExtractFromNullableType(ITypeSymbol typeSymbol)
         {
-            if (typeSymbol.IsKind(SymbolKind.NamedType))
+            if (typeSymbol.IsNamedType())
             {
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
@@ -115,7 +115,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         private static string GetName(ITypeSymbol typeSymbol)
         {
-            if (typeSymbol.IsKind(SymbolKind.TypeParameter))
+            if (typeSymbol.IsTypeParameter())
             {
                 if (typeSymbol.Name.Length > 1
                     && typeSymbol.Name[0] == 'T')

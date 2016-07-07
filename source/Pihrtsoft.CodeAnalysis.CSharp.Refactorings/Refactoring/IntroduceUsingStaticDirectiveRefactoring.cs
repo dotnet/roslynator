@@ -26,13 +26,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     ISymbol symbol = semanticModel.GetSymbolInfo(memberAccess.Expression, context.CancellationToken).Symbol;
 
-                    if (symbol?.IsKind(SymbolKind.NamedType) == true)
+                    if (symbol?.IsNamedType() == true)
                     {
                         var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
                         if (namedTypeSymbol.TypeKind == TypeKind.Class
                             && namedTypeSymbol.IsStatic
-                            && (namedTypeSymbol.DeclaredAccessibility == Accessibility.Public || namedTypeSymbol.DeclaredAccessibility == Accessibility.Internal)
+                            && (namedTypeSymbol.IsPublic() || namedTypeSymbol.IsInternal())
                             && !SyntaxUtility.IsUsingStaticInScope(memberAccess, namedTypeSymbol, semanticModel, context.CancellationToken))
                         {
                             context.RegisterRefactoring($"Introduce 'using static {namedTypeSymbol.ToDisplayString()}'",

@@ -149,7 +149,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(conditionalExpression).Type;
 
-                if (typeSymbol != null && typeSymbol.Kind != SymbolKind.ErrorType)
+                if (typeSymbol?.IsErrorType() == false)
                 {
                     localDeclaration = localDeclaration.ReplaceNode(
                         localDeclaration.Declaration.Type,

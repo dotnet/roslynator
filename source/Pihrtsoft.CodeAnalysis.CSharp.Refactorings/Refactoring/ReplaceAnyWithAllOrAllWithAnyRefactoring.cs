@@ -76,7 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             return enumerable
                 .GetMembers(methodName)
-                .Where(f => f.Kind == SymbolKind.Method)
+                .Where(f => f.IsMethod())
                 .FirstOrDefault(f => ((IMethodSymbol)f).Parameters.Length == 2);
         }
 

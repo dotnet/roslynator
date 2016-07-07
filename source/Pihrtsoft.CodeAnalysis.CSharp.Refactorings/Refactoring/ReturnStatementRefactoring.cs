@@ -29,17 +29,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
 
-                        if (memberTypeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                        if (memberTypeSymbol?.IsErrorType() == false)
                         {
                             ITypeSymbol expressionSymbol = semanticModel
                                 .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
                                 .Type;
 
-                            if (expressionSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                            if (expressionSymbol?.IsErrorType() == false)
                             {
                                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                                     && memberTypeSymbol.SpecialType == SpecialType.System_Boolean
-                                    && expressionSymbol.IsKind(SymbolKind.NamedType))
+                                    && expressionSymbol.IsNamedType())
                                 {
                                     var namedTypeSymbol = (INamedTypeSymbol)expressionSymbol;
 
@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     {
                                         string newTypeName = expressionSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat);
 
-                                        if (memberSymbol.IsKind(SymbolKind.Method)
+                                        if (memberSymbol.IsMethod()
                                             && ((IMethodSymbol)memberSymbol).IsAsync)
                                         {
                                             newTypeName = $"Task<'{newTypeName}'>";
@@ -107,7 +107,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol expressionSymbol,
             SemanticModel semanticModel)
         {
-            if (memberSymbol.IsKind(SymbolKind.Method)
+            if (memberSymbol.IsMethod()
                 && ((IMethodSymbol)memberSymbol).IsAsync)
             {
                 if (ShouldRefactorAsyncMethodReturnType(memberTypeSymbol, expressionSymbol, semanticModel))
@@ -135,10 +135,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol expressionSymbol,
             SemanticModel semanticModel)
         {
-            if (memberSymbol.IsKind(SymbolKind.Method)
+            if (memberSymbol.IsMethod()
                 && ((IMethodSymbol)memberSymbol).IsAsync)
             {
-                if (memberTypeSymbol.IsKind(SymbolKind.NamedType))
+                if (memberTypeSymbol.IsNamedType())
                 {
                     var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
 
@@ -174,7 +174,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (memberTypeSymbol.Equals(taskSymbol))
                 return true;
 
-            if (memberTypeSymbol.IsKind(SymbolKind.NamedType))
+            if (memberTypeSymbol.IsNamedType())
             {
                 var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
 

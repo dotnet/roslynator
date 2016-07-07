@@ -22,11 +22,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(argument.Expression).ConvertedType;
 
-                if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                if (typeSymbol?.IsErrorType() == false)
                 {
                     foreach (ITypeSymbol parameterTypeSymbol in DetermineParameters(argument, semanticModel, context.CancellationToken).Distinct())
                     {
-                        if (parameterTypeSymbol?.IsKind(SymbolKind.ErrorType) == false
+                        if (parameterTypeSymbol?.IsErrorType() == false
                             && !typeSymbol.Equals(parameterTypeSymbol))
                         {
                             AddCastExpressionRefactoring.RegisterRefactoring(context, argument.Expression, parameterTypeSymbol);
