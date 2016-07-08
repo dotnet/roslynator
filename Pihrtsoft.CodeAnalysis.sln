@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.Visu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,5 +78,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{28B7D00B-A1EA-491D-873D-235406A77C3C} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{DD303EB5-1C57-4588-980C-C55A401DB125} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{44582CE6-29B1-4982-B485-C0285AA0A591} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 	EndGlobalSection
 EndGlobal
