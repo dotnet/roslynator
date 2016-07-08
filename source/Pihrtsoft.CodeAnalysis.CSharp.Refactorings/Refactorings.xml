@@ -9,7 +9,7 @@
       <Image></Image>
     </Images>
   </Refactoring>-->
-  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
@@ -392,7 +392,7 @@
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.0.0">
+  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>method</Syntax>
     </Syntaxes>
@@ -428,7 +428,7 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
-  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.0.0">
+  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>member access expression (public or internal static class)</Syntax>
     </Syntaxes>
@@ -604,13 +604,13 @@
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
