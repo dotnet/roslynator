@@ -37,12 +37,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(assignmentExpression.Left).Type;
 
-                if (leftSymbol != null)
+                if (leftSymbol?.IsErrorType() == false)
                 {
                     ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(assignmentExpression.Right).Type;
 
-                    if (!leftSymbol.Equals(rightSymbol))
-                        AddCastExpressionRefactoring.RegisterRefactoring(context, assignmentExpression.Right, leftSymbol);
+                    if (rightSymbol?.IsErrorType() == false
+                        && !leftSymbol.Equals(rightSymbol))
+                    {
+                        AddCastExpressionRefactoring.RegisterRefactoring(context, assignmentExpression.Right, leftSymbol, semanticModel);
+                    }
                 }
             }
         }

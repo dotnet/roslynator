@@ -24,19 +24,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
-                    foreach (ITypeSymbol parameterTypeSymbol in DetermineParameters(argument, semanticModel, context.CancellationToken).Distinct())
+                    foreach (ITypeSymbol parameterTypeSymbol in DetermineTypes(argument, semanticModel, context.CancellationToken).Distinct())
                     {
                         if (parameterTypeSymbol?.IsErrorType() == false
                             && !typeSymbol.Equals(parameterTypeSymbol))
                         {
-                            AddCastExpressionRefactoring.RegisterRefactoring(context, argument.Expression, parameterTypeSymbol);
+                            AddCastExpressionRefactoring.RegisterRefactoring(
+                                context,
+                                argument.Expression,
+                                parameterTypeSymbol,
+                                semanticModel);
                         }
                     }
                 }
             }
         }
 
-        private static IEnumerable<ITypeSymbol> DetermineParameters(
+        private static IEnumerable<ITypeSymbol> DetermineTypes(
             ArgumentSyntax argument,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -56,17 +60,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (symbol == null)
                     {
                         foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
-                            yield return DetermineParameter(candidateSymbol, argument, argumentList);
+                            yield return DetermineType(candidateSymbol, argument, argumentList);
                     }
                     else
                     {
-                        yield return DetermineParameter(symbol, argument, argumentList);
+                        yield return DetermineType(symbol, argument, argumentList);
                     }
                 }
             }
         }
 
-        private static ITypeSymbol DetermineParameter(
+        private static ITypeSymbol DetermineType(
             ISymbol symbol,
             ArgumentSyntax argument,
             BaseArgumentListSyntax argumentList)

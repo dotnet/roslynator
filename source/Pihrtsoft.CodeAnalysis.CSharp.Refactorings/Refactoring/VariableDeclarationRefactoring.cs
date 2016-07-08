@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -111,14 +110,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
                         .Type;
 
-                    if (declarationType != null)
+                    if (declarationType?.IsErrorType() == false)
                     {
                         ITypeSymbol expressionType = semanticModel
                             .GetTypeInfo(declarator.Initializer.Value, context.CancellationToken)
                             .Type;
 
-                        if (!declarationType.Equals(expressionType))
-                            AddCastExpressionRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType);
+                        if (expressionType?.IsErrorType() == false
+                            && !declarationType.Equals(expressionType))
+                        {
+                            AddCastExpressionRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
+                        }
                     }
                 }
             }

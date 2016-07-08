@@ -92,7 +92,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
                                     if (castTypeSymbol != null)
-                                        AddCastExpressionRefactoring.RegisterRefactoring(context, returnStatement.Expression, castTypeSymbol);
+                                    {
+                                        AddCastExpressionRefactoring.RegisterRefactoring(
+                                           context,
+                                           returnStatement.Expression,
+                                           castTypeSymbol,
+                                           semanticModel);
+                                    }
                                 }
                             }
                         }
@@ -135,8 +141,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol expressionSymbol,
             SemanticModel semanticModel)
         {
-            if (memberSymbol.IsMethod()
-                && ((IMethodSymbol)memberSymbol).IsAsync)
+            if (memberSymbol.IsAsyncMethod())
             {
                 if (memberTypeSymbol.IsNamedType())
                 {
