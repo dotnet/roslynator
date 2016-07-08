@@ -9,18 +9,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
     public sealed class CommentRemover : CSharpSyntaxRewriter
     {
         private readonly CompilationUnitSyntax _compilationUnit;
-        private readonly bool _keepXmlComment;
+        private readonly CommentRemoveOptions _removeOptions;
 
-        private CommentRemover(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
+        private CommentRemover(CompilationUnitSyntax compilationUnit, CommentRemoveOptions removeOptions)
             : base(visitIntoStructuredTrivia: true)
         {
             _compilationUnit = compilationUnit;
-            _keepXmlComment = keepXmlComment;
+            _removeOptions = removeOptions;
         }
 
-        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit, bool keepXmlComment = false)
+        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit, CommentRemoveOptions removeOptions)
         {
-            return (CompilationUnitSyntax)new CommentRemover(compilationUnit, keepXmlComment).Visit(compilationUnit);
+            return (CompilationUnitSyntax)new CommentRemover(compilationUnit, removeOptions).Visit(compilationUnit);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
@@ -30,19 +30,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                 case SyntaxKind.SingleLineCommentTrivia:
                 case SyntaxKind.MultiLineCommentTrivia:
                     {
-                        return CSharpFactory.EmptyTrivia;
+                        if (_removeOptions != CommentRemoveOptions.Documentation)
+                            return CSharpFactory.EmptyTrivia;
+
+                        break;
                     }
                 case SyntaxKind.SingleLineDocumentationCommentTrivia:
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     {
-                        if (!_keepXmlComment)
+                        if (_removeOptions != CommentRemoveOptions.AllExceptDocumentation)
                             return CSharpFactory.EmptyTrivia;
 
                         break;
                     }
                 case SyntaxKind.EndOfLineTrivia:
                     {
-                        if (trivia.SpanStart > 0)
+                        if (_removeOptions != CommentRemoveOptions.Documentation
+                            && trivia.SpanStart > 0)
                         {
                             SyntaxTrivia trivia2 = _compilationUnit.FindTrivia(trivia.SpanStart - 1);
 

@@ -272,6 +272,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-regions">Remove all regions</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-xml-comments">Remove all xml comments</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-comment">Remove comment</a>
         </li>
         <li>

@@ -62,7 +62,7 @@
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactoring\MergeStringLiteralsRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveAllCommentsRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveCommentsRefactoring.cs" />
     <Compile Include="Refactoring\RemoveCommentRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactoring\RemovePropertyInitializerRefactoring.cs" />

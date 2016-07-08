@@ -60,6 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllComments = true;
             RemoveAllCommentsExceptXmlComments = true;
             RemoveAllRegions = true;
+            RemoveAllXmlComments = false;
             RemoveComment = true;
             RemoveConditionFromLastElseIf = true;
             RemoveMember = true;
@@ -167,6 +168,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegions, RemoveAllRegions);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
@@ -699,6 +701,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: region directive")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllRegions
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove all xml comments")]
+        [Description("Syntax: singleline/multiline xml documentation comment")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllXmlComments
         {
             get;
             set;

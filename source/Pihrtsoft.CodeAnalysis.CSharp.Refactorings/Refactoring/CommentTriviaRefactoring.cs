@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments",
-                        cancellationToken => RemoveAllCommentsRefactoring.RefactorAsync(context.Document, keepXmlComment: false, cancellationToken: cancellationToken));
+                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.All, cancellationToken: cancellationToken));
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments)
@@ -31,7 +31,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments (except xml comments)",
-                        cancellationToken => RemoveAllCommentsRefactoring.RefactorAsync(context.Document, keepXmlComment: true, cancellationToken: cancellationToken));
+                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, cancellationToken: cancellationToken));
+                }
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllXmlComments)
+                    && trivia.IsAnyKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+                {
+                    context.RegisterRefactoring(
+                        "Remove all xml comments",
+                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.Documentation, cancellationToken: cancellationToken));
                 }
             }
         }

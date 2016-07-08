@@ -9,16 +9,16 @@ using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveAllCommentsRefactoring
+    internal static class RemoveCommentsRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
-            bool keepXmlComment = false,
+            CommentRemoveOptions removeOptions,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            CompilationUnitSyntax newRoot = CommentRemover.RemoveFrom((CompilationUnitSyntax)oldRoot, keepXmlComment)
+            CompilationUnitSyntax newRoot = CommentRemover.RemoveFrom((CompilationUnitSyntax)oldRoot, removeOptions)
                 .WithAdditionalAnnotations(Formatter.Annotation);
 
             return document.WithSyntaxRoot(newRoot);
