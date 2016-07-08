@@ -1,13 +1,49 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis
 {
     public static class ITypeSymbolExtensions
     {
+        public static bool IsVoid(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return typeSymbol.SpecialType == SpecialType.System_Void;
+        }
+
+        public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            INamedTypeSymbol current = typeSymbol.BaseType;
+
+            while (current != null)
+            {
+                yield return current;
+                current = current.BaseType;
+            }
+        }
+
+        public static IEnumerable<ITypeSymbol> BaseTypesAndSelf(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            ITypeSymbol current = typeSymbol;
+
+            while (current != null)
+            {
+                yield return current;
+                current = current.BaseType;
+            }
+        }
+
         public static bool IsPredefinedType(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)

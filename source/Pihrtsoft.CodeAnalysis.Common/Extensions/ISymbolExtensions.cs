@@ -126,6 +126,16 @@ namespace Pihrtsoft.CodeAnalysis
         }
 
         [DebuggerStepThrough]
+        public static bool IsAsyncMethod(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Method
+                && ((IMethodSymbol)symbol).IsAsync;
+        }
+
+        [DebuggerStepThrough]
         public static bool IsProperty(this ISymbol symbol)
         {
             if (symbol == null)
