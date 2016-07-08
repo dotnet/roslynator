@@ -61,6 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllCommentsExceptXmlComments = true;
             RemoveAllRegions = true;
             RemoveComment = true;
+            RemoveConditionFromLastElseIf = true;
             RemoveMember = true;
             RemoveParameterNameFromArgument = true;
             RemovePropertyInitializer = true;
@@ -167,6 +168,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegions, RemoveAllRegions);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
+            SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
@@ -707,6 +709,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: singleline/multiline comment, singleline/multiline xml documentation comment")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveComment
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove condition from last else-if")]
+        [Description("Syntax: else clause\r\nScope: else keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveConditionFromLastElseIf
         {
             get;
             set;

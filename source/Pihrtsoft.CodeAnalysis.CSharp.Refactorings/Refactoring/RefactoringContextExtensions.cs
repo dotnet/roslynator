@@ -47,6 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fSwitchSection = false;
             bool fVariableDeclaration = false;
             bool fInterpolatedStringText = false;
+            bool fElseClause = false;
 
             bool fExpression = false;
             bool fAssignmentExpression = false;
@@ -168,6 +169,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         InterpolatedStringTextRefactoring.ComputeRefactorings(context, (InterpolatedStringTextSyntax)node);
                         fInterpolatedStringText = true;
+                        continue;
+                    }
+
+                    if (!fElseClause
+                        && node.IsKind(SyntaxKind.ElseClause))
+                    {
+                        ElseClauseRefactoring.ComputeRefactorings(context, (ElseClauseSyntax)node);
+                        fElseClause = true;
                         continue;
                     }
 

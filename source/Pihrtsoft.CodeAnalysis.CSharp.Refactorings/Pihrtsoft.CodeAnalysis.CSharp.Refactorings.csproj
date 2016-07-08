@@ -49,6 +49,7 @@
     <Compile Include="Refactoring\DuplicateAttributeArgumentRefactoring.cs" />
     <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\FormatAttributeArgumentListRefactoring.cs" />
+    <Compile Include="Refactoring\ElseClauseRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceEnumHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceUsingStaticDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\IndexerDeclarationRefactoring.cs" />

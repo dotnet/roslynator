@@ -55,6 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveAllCommentsExceptXmlComments = "RemoveAllCommentsExceptXmlComments";
         public const string RemoveAllRegions = "RemoveAllRegions";
         public const string RemoveComment = "RemoveComment";
+        public const string RemoveConditionFromLastElseIf = "RemoveConditionFromLastElseIf";
         public const string RemoveMember = "RemoveMember";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";

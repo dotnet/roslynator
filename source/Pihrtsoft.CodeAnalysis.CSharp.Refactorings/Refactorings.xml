@@ -508,6 +508,12 @@
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveConditionFromLastElseIf" Title="Remove condition from last else-if" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>else clause</Syntax>
+    </Syntaxes>
+    <Scope>else keyword</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceBlockWithEmbeddedStatementInIfElse" Title="Replace block with embedded statement (in if-else)" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
