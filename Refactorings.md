@@ -34,6 +34,12 @@
 
 ![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
 
+#### Change method return type to void
+
+* **Syntax**: method
+
+![Change method return type to void](/images/refactorings/ChangeMethodReturnTypeToVoid.png)
+
 #### Change method/property/indexer type according to return expression
 
 * **Syntax**: return statement in method/property/indexer
@@ -218,6 +224,12 @@
 * **Syntax**: field, property
 
 ![Introduce constructor from selected member(s)](/images/refactorings/IntroduceConstructor.png)
+
+#### Introduce using static directive
+
+* **Syntax**: member access expression (public or internal static class)
+
+![Introduce using static directive](/images/refactorings/IntroduceUsingStaticDirective.png)
 
 #### Make member abstract
 
@@ -404,6 +416,13 @@
 
 ![Replace constant with field](/images/refactorings/ReplaceConstantWithField.png)
 
+#### Replace do statement with while statement
+
+* **Syntax**: do statement
+* **Scope**: do keyword
+
+![Replace do statement with while statement](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
+
 #### Replace embedded statement with block
 
 * **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
@@ -417,6 +436,12 @@
 * **Scope**: topmost if keyword
 
 ![Replace embedded statement with block (in if-else)](/images/refactorings/ReplaceEmbeddedStatementWithBlockInIfElse.png)
+
+#### Replace Enum.HasFlag method with bitwise operation
+
+* **Syntax**: Enum.HasFlag method invocation
+
+![Replace Enum.HasFlag method with bitwise operation](/images/refactorings/ReplaceEnumHasFlagWithBitwiseOperation.png)
 
 #### Replace explicit type with 'var'
 
@@ -558,6 +583,13 @@
 * **Syntax**: multiline verbatim string literal
 
 ![Replace verbatim string literal with regular string literals](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
+
+#### Replace while statement with do statement
+
+* **Syntax**: while statement
+* **Scope**: while keyword
+
+![Replace while statement with do statement](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
 
 #### Reverse for loop
 
