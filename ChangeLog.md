@@ -1,3 +1,15 @@
+### 0.9.90 (2016-07-08)
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceDoStatementWithWhileStatement
+* ReplaceWhileStatementWithDoStatement
+* IntroduceUsingStaticDirective
+* ChangeMethodReturnTypeToVoid
+* ReplaceEnumHasFlagWithBitwiseOperation
+
 ### 0.9.81 (2016-07-06)
 
 #### Refactorings
