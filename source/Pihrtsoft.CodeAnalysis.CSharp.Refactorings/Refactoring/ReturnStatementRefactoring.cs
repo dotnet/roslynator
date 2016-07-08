@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -62,23 +62,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                                 {
-                                    TypeSyntax newType = GetNewMemberType(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
+                                    ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, returnStatement.Expression, expressionSymbol, semanticModel, context.CancellationToken);
 
-                                    if (newType != null)
+                                    if (newType != null
+                                        && !memberTypeSymbol.Equals(newType))
                                     {
-                                        string newTypeName = expressionSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat);
-
-                                        if (memberSymbol.IsMethod()
-                                            && ((IMethodSymbol)memberSymbol).IsAsync)
-                                        {
-                                            newTypeName = $"Task<'{newTypeName}'>";
-                                        }
-
                                         context.RegisterRefactoring(
-                                        $"Change {GetText(declaration)} type to '{newTypeName}'",
+                                        $"Change {GetText(declaration)} type to '{newType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                                         cancellationToken =>
                                         {
-                                            return ChangeMemberTypeRefactoring.RefactorAsync(
+                                            return TypeSyntaxRefactoring.ChangeTypeAsync(
                                                 context.Document,
                                                 memberType,
                                                 newType,
@@ -107,29 +100,65 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static TypeSyntax GetNewMemberType(
+        private static ITypeSymbol GetMemberNewType(
             ISymbol memberSymbol,
             ITypeSymbol memberTypeSymbol,
+            ExpressionSyntax expression,
             ITypeSymbol expressionSymbol,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            if (memberSymbol.IsMethod()
-                && ((IMethodSymbol)memberSymbol).IsAsync)
+            if (memberSymbol.IsAsyncMethod())
             {
-                if (ShouldRefactorAsyncMethodReturnType(memberTypeSymbol, expressionSymbol, semanticModel))
+                if (expression.IsKind(SyntaxKind.AwaitExpression))
                 {
-                    return QualifiedName(
-                        ParseName("System.Threading.Tasks"),
-                        GenericName(
-                            Identifier("Task"),
-                            TypeArgumentList(
-                                SingletonSeparatedList(
-                                    TypeSyntaxRefactoring.CreateTypeSyntax(expressionSymbol)))));
+                    var awaitExpression = (AwaitExpressionSyntax)expression;
+
+                    if (awaitExpression.Expression != null)
+                    {
+                        var awaitableSymbol = semanticModel
+                            .GetTypeInfo(awaitExpression.Expression, cancellationToken)
+                            .Type as INamedTypeSymbol;
+
+                        if (awaitableSymbol != null)
+                        {
+                            INamedTypeSymbol taskOfTSymbol = semanticModel
+                                .Compilation
+                                .GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+
+                            if (awaitableSymbol.ConstructedFrom.Equals(taskOfTSymbol))
+                                return awaitableSymbol;
+                        }
+                    }
+                }
+                else if (memberTypeSymbol.IsNamedType())
+                {
+                    INamedTypeSymbol taskOfTSymbol = semanticModel
+                        .Compilation
+                        .GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+
+                    if (((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom.Equals(taskOfTSymbol))
+                    {
+                        if (expressionSymbol.IsNamedType()
+                            && ((INamedTypeSymbol)expressionSymbol).ConstructedFrom.Equals(taskOfTSymbol))
+                        {
+                            return null;
+                        }
+
+                        INamedTypeSymbol taskSymbol = semanticModel
+                            .Compilation
+                            .GetTypeByMetadataName("System.Threading.Tasks.Task");
+
+                        if (expressionSymbol.Equals(taskSymbol))
+                            return null;
+
+                        return taskOfTSymbol.Construct(expressionSymbol);
+                    }
                 }
             }
-            else if (!memberTypeSymbol.Equals(expressionSymbol))
+            else
             {
-                return TypeSyntaxRefactoring.CreateTypeSyntax(expressionSymbol);
+                return expressionSymbol;
             }
 
             return null;
@@ -163,34 +192,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             return null;
-        }
-
-        private static bool ShouldRefactorAsyncMethodReturnType(
-            ITypeSymbol memberTypeSymbol,
-            ITypeSymbol expressionSymbol,
-            SemanticModel semanticModel)
-        {
-            INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-            INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
-
-            if (memberTypeSymbol.SpecialType == SpecialType.System_Void)
-                return true;
-
-            if (memberTypeSymbol.Equals(taskSymbol))
-                return true;
-
-            if (memberTypeSymbol.IsNamedType())
-            {
-                var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
-
-                if (namedTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol)
-                    && !namedTypeSymbol.TypeArguments[0].Equals(expressionSymbol))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         internal static TypeSyntax GetMemberType(MemberDeclarationSyntax declaration)

@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     $"Change {ReturnStatementRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
                                     cancellationToken =>
                                     {
-                                        return ChangeMemberTypeRefactoring.RefactorAsync(
+                                        return TypeSyntaxRefactoring.ChangeTypeAsync(
                                             context.Document,
                                             memberType,
                                             newType,

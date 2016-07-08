@@ -67,7 +67,6 @@
     <Compile Include="Refactoring\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceSwitchSectionStatementsWithBlockRefactoring.cs" />
     <Compile Include="Refactoring\ArgumentParameterNameRefactoring.cs" />
-    <Compile Include="Refactoring\ChangeMemberTypeRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceFieldWithConstantRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceMethodWithPropertyRefactoring.cs" />
