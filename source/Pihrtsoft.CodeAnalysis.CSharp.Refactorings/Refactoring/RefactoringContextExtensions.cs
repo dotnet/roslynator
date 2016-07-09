@@ -81,6 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fWhileStatement = false;
             bool fYieldReturnStatement = false;
             bool fBlock = false;
+            bool fRemoveOrDuplicateStatement = false;
 
             using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
             {
@@ -421,6 +422,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             ReplaceEmbeddedStatementWithBlockRefactoring.ComputeRefactoring(context, statement);
                             ExtractStatementRefactoring.ComputeRefactoring(context, statement);
                             fStatement = true;
+                        }
+
+                        if (!fRemoveOrDuplicateStatement)
+                        {
+                            if (node.IsKind(SyntaxKind.Block))
+                            {
+                                RemoveOrDuplicateStatementRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
+                                fRemoveOrDuplicateStatement = true;
+                            }
+                            else if (node.IsKind(SyntaxKind.SwitchStatement))
+                            {
+                                RemoveOrDuplicateStatementRefactoring.ComputeRefactoring(context, (SwitchStatementSyntax)node);
+                                fRemoveOrDuplicateStatement = true;
+                            }
                         }
 
                         continue;

@@ -11,9 +11,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     public static class DuplicateMemberDeclarationRefactoring
     {
-        public static SyntaxRemoveOptions DefaultRemoveOptions { get; }
-            = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
-
         public static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,

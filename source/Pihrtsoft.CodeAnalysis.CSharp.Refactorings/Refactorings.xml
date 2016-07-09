@@ -226,6 +226,24 @@
       <Syntax>missing parameter</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="DuplicateStatement" Title="Duplicate statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>checked statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>switch statement</Syntax>
+      <Syntax>try statement</Syntax>
+      <Syntax>unchecked statement</Syntax>
+      <Syntax>unsafe statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>open/close brace</Scope>
+  </Refactoring>
   <Refactoring Id="ExpandAssignmentExpression" Title="Expand assignment expression" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>assignment expression</Syntax>
@@ -518,6 +536,24 @@
       <Syntax>else clause</Syntax>
     </Syntaxes>
     <Scope>else keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="RemoveStatement" Title="Remove statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>checked statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>switch statement</Syntax>
+      <Syntax>try statement</Syntax>
+      <Syntax>unchecked statement</Syntax>
+      <Syntax>unsafe statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>open/close brace</Scope>
   </Refactoring>
   <Refactoring Id="ReplaceBlockWithEmbeddedStatementInIfElse" Title="Replace block with embedded statement (in if-else)" ExtensionVersion="0.9.0">
     <Syntaxes>

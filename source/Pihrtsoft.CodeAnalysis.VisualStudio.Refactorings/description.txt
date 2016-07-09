@@ -74,6 +74,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-parameter">Duplicate parameter</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-statement">Duplicate statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-assignment-expression">Expand assignment expression</a>
         </li>
         <li>
@@ -195,6 +198,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-property-initializer">Remove property initializer</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-statement">Remove statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>

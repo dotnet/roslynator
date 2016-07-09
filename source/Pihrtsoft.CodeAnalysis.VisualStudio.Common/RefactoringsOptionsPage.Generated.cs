@@ -25,6 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             DuplicateArgument = true;
             DuplicateMember = true;
             DuplicateParameter = true;
+            DuplicateStatement = true;
             ExpandAssignmentExpression = true;
             ExpandCoalesceExpression = true;
             ExpandEvent = true;
@@ -66,6 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveMember = true;
             RemoveParameterNameFromArgument = true;
             RemovePropertyInitializer = true;
+            RemoveStatement = true;
             RenameBackingFieldAccordingToPropertyName = true;
             RenameIdentifierAccordingToTypeName = true;
             RenameMethodAccordingToTypeName = true;
@@ -133,6 +135,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
             SetIsEnabled(RefactoringIdentifiers.DuplicateParameter, DuplicateParameter);
+            SetIsEnabled(RefactoringIdentifiers.DuplicateStatement, DuplicateStatement);
             SetIsEnabled(RefactoringIdentifiers.ExpandAssignmentExpression, ExpandAssignmentExpression);
             SetIsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression, ExpandCoalesceExpression);
             SetIsEnabled(RefactoringIdentifiers.ExpandEvent, ExpandEvent);
@@ -174,6 +177,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
+            SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName, RenameBackingFieldAccordingToPropertyName);
             SetIsEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName, RenameIdentifierAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName, RenameMethodAccordingToTypeName);
@@ -351,6 +355,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: missing parameter")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool DuplicateParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Duplicate statement")]
+        [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: open/close brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool DuplicateStatement
         {
             get;
             set;
@@ -761,6 +775,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: property initializer")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemovePropertyInitializer
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove statement")]
+        [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: open/close brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveStatement
         {
             get;
             set;

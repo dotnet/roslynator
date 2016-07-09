@@ -19,6 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string DuplicateArgument = "DuplicateArgument";
         public const string DuplicateMember = "DuplicateMember";
         public const string DuplicateParameter = "DuplicateParameter";
+        public const string DuplicateStatement = "DuplicateStatement";
         public const string ExpandAssignmentExpression = "ExpandAssignmentExpression";
         public const string ExpandCoalesceExpression = "ExpandCoalesceExpression";
         public const string ExpandEvent = "ExpandEvent";
@@ -60,6 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveMember = "RemoveMember";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
+        public const string RemoveStatement = "RemoveStatement";
         public const string RenameBackingFieldAccordingToPropertyName = "RenameBackingFieldAccordingToPropertyName";
         public const string RenameIdentifierAccordingToTypeName = "RenameIdentifierAccordingToTypeName";
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";
