@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.SplitVariableDeclaration,
-                        Location.Create(context.Node.SyntaxTree, span));
+                        variableDeclaration.GetLocation());
                 }
             }
         }
