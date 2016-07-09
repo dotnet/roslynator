@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Pihrtsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -38,19 +38,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
-            if (anonymousMethod.ParameterList == null)
-                return;
+            if (ReplaceAnonymousMethodWithLambdaExpressionRefactoring.CanRefactor(anonymousMethod))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpression,
+                    context.Node.GetLocation());
 
-            if (anonymousMethod.ParameterList.IsMissing)
-                return;
-
-            Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpression,
-                context.Node.GetLocation());
-
-            context.ReportDiagnostic(diagnostic);
-
-            FadeOut(context, anonymousMethod);
+                FadeOut(context, anonymousMethod);
+            }
         }
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)

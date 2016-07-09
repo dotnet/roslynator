@@ -221,6 +221,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace--with-stringempty">Replace "" with string.Empty</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
         </li>
         <li>

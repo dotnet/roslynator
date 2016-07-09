@@ -50,6 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fElseClause = false;
 
             bool fExpression = false;
+            bool fAnonymousMethod = false;
             bool fAssignmentExpression = false;
             bool fBinaryExpression = false;
             bool fConditionalExpression = false;
@@ -192,6 +193,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 await AssignmentExpressionRefactoring.ComputeRefactoringsAsync(context, assignmentExpression);
                                 fAssignmentExpression = true;
                             }
+                        }
+
+                        if (!fAnonymousMethod
+                            && node.IsKind(SyntaxKind.AnonymousMethodExpression))
+                        {
+                            AnonymousMethodExpressionRefactoring.ComputeRefactorings(context, (AnonymousMethodExpressionSyntax)node);
+                            fAnonymousMethod = true;
                         }
 
                         if (!fBinaryExpression)

@@ -44,6 +44,7 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\AnonymousMethodExpressionRefactoring.cs" />
     <Compile Include="Refactoring\AttributeArgumentParameterNameRefactoring.cs" />
     <Compile Include="Refactoring\AttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactoring\DuplicateAttributeArgumentRefactoring.cs" />

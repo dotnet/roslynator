@@ -67,6 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";
         public const string RenameParameterAccordingToTypeName = "RenameParameterAccordingToTypeName";
         public const string RenamePropertyAccordingToTypeName = "RenamePropertyAccordingToTypeName";
+        public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
         public const string ReplaceBlockWithEmbeddedStatement = "ReplaceBlockWithEmbeddedStatement";
         public const string ReplaceBlockWithEmbeddedStatementInIfElse = "ReplaceBlockWithEmbeddedStatementInIfElse";

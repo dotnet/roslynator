@@ -73,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RenameMethodAccordingToTypeName = true;
             RenameParameterAccordingToTypeName = true;
             RenamePropertyAccordingToTypeName = true;
+            ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
             ReplaceBlockWithEmbeddedStatement = true;
             ReplaceBlockWithEmbeddedStatementInIfElse = true;
@@ -183,6 +184,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName, RenameMethodAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName, RenameParameterAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, RenamePropertyAccordingToTypeName);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatement, ReplaceBlockWithEmbeddedStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse, ReplaceBlockWithEmbeddedStatementInIfElse);
@@ -835,6 +837,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: property identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RenamePropertyAccordingToTypeName
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace anonymous method with lambda expression")]
+        [Description("Syntax: anonymous method\r\nScope: delegate keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceAnonymousMethodWithLambdaExpression
         {
             get;
             set;

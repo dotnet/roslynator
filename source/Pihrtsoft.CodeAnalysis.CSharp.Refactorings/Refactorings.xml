@@ -555,6 +555,12 @@
     </Syntaxes>
     <Scope>open/close brace</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceAnonymousMethodWithLambdaExpression" Title="Replace anonymous method with lambda expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>anonymous method</Syntax>
+    </Syntaxes>
+    <Scope>delegate keyword</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceBlockWithEmbeddedStatementInIfElse" Title="Replace block with embedded statement (in if-else)" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>if-else chain</Syntax>

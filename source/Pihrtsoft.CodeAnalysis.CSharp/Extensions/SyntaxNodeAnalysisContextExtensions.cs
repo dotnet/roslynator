@@ -16,9 +16,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             Location location,
             params object[] messageArgs)
         {
-            Diagnostic diagnostic = Diagnostic.Create(descriptor, location, messageArgs);
-
-            context.ReportDiagnostic(diagnostic);
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptor, location, messageArgs));
         }
 
         [DebuggerStepThrough]
