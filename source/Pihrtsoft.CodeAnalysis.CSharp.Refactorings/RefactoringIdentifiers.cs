@@ -74,6 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceBlockWithStatementsInEachSection = "ReplaceBlockWithStatementsInEachSection";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
+        public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";
         public const string ReplaceDoStatementWithWhileStatement = "ReplaceDoStatementWithWhileStatement";
         public const string ReplaceEmbeddedStatementWithBlock = "ReplaceEmbeddedStatementWithBlock";
         public const string ReplaceEmbeddedStatementWithBlockInIfElse = "ReplaceEmbeddedStatementWithBlockInIfElse";

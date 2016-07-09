@@ -80,6 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceBlockWithStatementsInEachSection = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
+            ReplaceCountWithLengthOrLengthWithCount = true;
             ReplaceDoStatementWithWhileStatement = true;
             ReplaceEmbeddedStatementWithBlock = true;
             ReplaceEmbeddedStatementWithBlockInIfElse = true;
@@ -192,6 +193,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection, ReplaceBlockWithStatementsInEachSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
             SetIsEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement, ReplaceDoStatementWithWhileStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock, ReplaceEmbeddedStatementWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse, ReplaceEmbeddedStatementWithBlockInIfElse);
@@ -909,6 +911,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: constant declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceConstantWithField
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace 'Count/Length' with 'Length/Count'")]
+        [Description("Syntax: member access expression\r\nScope: name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceCountWithLengthOrLengthWithCount
         {
             get;
             set;

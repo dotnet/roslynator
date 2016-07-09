@@ -657,6 +657,12 @@
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceCountWithLengthOrLengthWithCount" Title="Replace 'Count/Length' with 'Length/Count'" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>member access expression</Syntax>
+    </Syntaxes>
+    <Scope>name</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.9.90">
     <Syntaxes>
       <Syntax>do statement</Syntax>

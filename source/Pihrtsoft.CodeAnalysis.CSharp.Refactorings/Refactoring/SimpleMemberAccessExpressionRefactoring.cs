@@ -10,6 +10,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
+            await ReplaceCountWithLengthOrLengthWithCountRefactoring.ComputeRefactoringsAsync(context, memberAccess);
+
             FormatExpressionChainRefactoring.ComputeRefactorings(context, memberAccess);
 
             await IntroduceUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess);

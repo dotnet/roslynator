@@ -242,6 +242,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-constant-with-field">Replace constant with field</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-countlength-with-lengthcount">Replace 'Count/Length' with 'Length/Count'</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
         </li>
         <li>
