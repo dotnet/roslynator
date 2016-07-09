@@ -97,7 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (variableDeclaration.Variables.Count == 1)
             {
-                newParentMember = newParentMember.RemoveMember(fieldIndex);
+                newParentMember = newParentMember.RemoveMemberAt(fieldIndex);
 
                 if (propertyIndex > fieldIndex)
                     propertyIndex--;

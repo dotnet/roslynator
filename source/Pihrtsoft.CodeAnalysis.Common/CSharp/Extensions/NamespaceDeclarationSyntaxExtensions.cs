@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 namespaceDeclaration.Name?.Span.End ?? namespaceDeclaration.NamespaceKeyword.Span.End);
         }
 
-        public static MemberDeclarationSyntax RemoveMember(this NamespaceDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this NamespaceDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -50,17 +50,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return RemoveMember(declaration, member, declaration.Members.IndexOf(member));
         }
 
-        public static MemberDeclarationSyntax RemoveMember(
-            this NamespaceDeclarationSyntax declaration,
+        private static MemberDeclarationSyntax RemoveMember(
+            NamespaceDeclarationSyntax declaration,
             MemberDeclarationSyntax member,
             int index)
         {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-
             MemberDeclarationSyntax newMember = member.RemoveSingleLineDocumentationComment();
 
             declaration = declaration

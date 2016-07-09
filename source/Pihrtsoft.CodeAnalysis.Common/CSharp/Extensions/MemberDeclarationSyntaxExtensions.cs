@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return member;
         }
 
-        public static MemberDeclarationSyntax RemoveMember(this MemberDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this MemberDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -47,13 +47,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             switch (declaration.Kind())
             {
                 case SyntaxKind.NamespaceDeclaration:
-                    return ((NamespaceDeclarationSyntax)declaration).RemoveMember(index);
+                    return ((NamespaceDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).RemoveMember(index);
+                    return ((ClassDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).RemoveMember(index);
+                    return ((StructDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)declaration).RemoveMember(index);
+                    return ((InterfaceDeclarationSyntax)declaration).RemoveMemberAt(index);
             }
 
             return declaration;

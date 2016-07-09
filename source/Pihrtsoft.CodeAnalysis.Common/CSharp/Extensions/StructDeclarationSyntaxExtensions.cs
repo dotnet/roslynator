@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 structDeclaration.Identifier.Span.End);
         }
 
-        public static MemberDeclarationSyntax RemoveMember(this StructDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this StructDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -39,17 +39,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return RemoveMember(declaration, member, declaration.Members.IndexOf(member));
         }
 
-        public static MemberDeclarationSyntax RemoveMember(
-            this StructDeclarationSyntax declaration,
+        private static MemberDeclarationSyntax RemoveMember(
+            StructDeclarationSyntax declaration,
             MemberDeclarationSyntax member,
             int index)
         {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-
             MemberDeclarationSyntax newMember = member.RemoveSingleLineDocumentationComment();
 
             declaration = declaration
