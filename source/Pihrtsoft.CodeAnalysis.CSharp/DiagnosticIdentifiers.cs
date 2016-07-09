@@ -86,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string ReplaceStringEmptyWithEmptyStringLiteral = Prefix + "1078";
         public const string ThrowingOfNewNotImplementedException = Prefix + "1079";
         public const string ReplaceAnyMethodWithCountOrLengthProperty = Prefix + "1080";
-        public const string SplitDeclarationIntoMultipleDeclarations = Prefix + "1081";
+        public const string SplitVariableDeclaration = Prefix + "1081";
         public const string ReplaceCountMethodWithCountOrLengthProperty = Prefix + "1082";
         public const string ReplaceCountMethodWithAnyMethod = Prefix + "1083";
         public const string ReplaceConditionalExpressionWithCoalesceExpression = Prefix + "1084";

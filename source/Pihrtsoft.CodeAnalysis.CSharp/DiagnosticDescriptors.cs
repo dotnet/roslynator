@@ -782,10 +782,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor SplitDeclarationIntoMultipleDeclarations = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.SplitDeclarationIntoMultipleDeclarations,
-            title: "Split declaration into multiple declarations.",
-            messageFormat: "Consider splitting declaration into multiple declarations.",
+        public static readonly DiagnosticDescriptor SplitVariableDeclaration = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SplitVariableDeclaration,
+            title: "Split variable declaration.",
+            messageFormat: "Consider splitting variable declaration.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false

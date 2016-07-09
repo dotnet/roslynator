@@ -84,6 +84,7 @@
     <Compile Include="CSharp\Refactoring\ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceStringEmptyWithEmptyStringLiteralRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Removers\CommentRemover.cs" />
     <Compile Include="CSharp\Removers\RegionRemover.cs" />

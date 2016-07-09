@@ -64,9 +64,7 @@
     <Compile Include="CodeFixProviders\CodeFixes\UseCountOrLengthPropertyInsteadOfCountMethodCodeFix.cs" />
     <Compile Include="CodeFixProviders\ConstructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\EventFieldDeclarationCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\FieldDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\VariableDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FinallyClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ForStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InvocationExpressionCodeFixProvider.cs" />
@@ -118,7 +116,7 @@
     <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\PropertyDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LambdaExpressionDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\SplitDeclarationIntoMultipleDeclarationsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\SplitVariableDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompilationUnitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ConstructorDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationDiagnosticAnalyzer.cs" />

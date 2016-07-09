@@ -23,6 +23,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
                     await AddCastExpressionAsync(context, variableDeclaration);
             }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
+                && SplitVariableDeclarationRefactoring.CanRefactor(variableDeclaration))
+            {
+                context.RegisterRefactoring(
+                    SplitVariableDeclarationRefactoring.GetTitle(variableDeclaration),
+                    cancellationToken => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, cancellationToken));
+            }
         }
 
         private static async Task RenameVariableAccordingToTypeNameAsync(

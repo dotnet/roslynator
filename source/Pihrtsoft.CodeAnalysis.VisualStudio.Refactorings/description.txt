@@ -332,6 +332,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#split-attributes">Split attributes</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#split-variable-declaration-">Split variable declaration </a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>
         </li>
         <li>

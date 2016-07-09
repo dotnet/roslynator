@@ -111,6 +111,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReverseForLoop = true;
             SimplifyLambdaExpression = true;
             SplitAttributes = true;
+            SplitVariableDeclaration = true;
             SwapExpressionsInBinaryExpression = true;
             SwapExpressionsInConditionalExpression = true;
             SwapMembers = true;
@@ -222,6 +223,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReverseForLoop, ReverseForLoop);
             SetIsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression, SimplifyLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.SplitAttributes, SplitAttributes);
+            SetIsEnabled(RefactoringIdentifiers.SplitVariableDeclaration, SplitVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, SwapExpressionsInBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, SwapExpressionsInConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapMembers, SwapMembers);
@@ -1217,6 +1219,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected attribute list")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool SplitAttributes
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Split variable declaration ")]
+        [Description("Syntax: local declaration, field declaration, event field declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool SplitVariableDeclaration
         {
             get;
             set;
