@@ -9,7 +9,7 @@
       <Image></Image>
     </Images>
   </Refactoring>-->
-  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.9.90">
+  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
@@ -226,7 +226,7 @@
       <Syntax>missing parameter</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="DuplicateStatement" Title="Duplicate statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="DuplicateStatement" Title="Duplicate statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -410,7 +410,7 @@
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.9.90">
+  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>method</Syntax>
     </Syntaxes>
@@ -446,7 +446,7 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
-  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.9.90">
+  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>member access expression (public or internal static class)</Syntax>
     </Syntaxes>
@@ -517,7 +517,7 @@
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllXmlComments" Title="Remove all xml comments" IsEnabledByDefault="false" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveAllXmlComments" Title="Remove all xml comments" IsEnabledByDefault="false" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
@@ -532,13 +532,13 @@
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveConditionFromLastElseIf" Title="Remove condition from last else-if" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveConditionFromLastElseIf" Title="Remove condition from last else-if" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>else clause</Syntax>
     </Syntaxes>
     <Scope>else keyword</Scope>
   </Refactoring>
-  <Refactoring Id="RemoveStatement" Title="Remove statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveStatement" Title="Remove statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -556,7 +556,7 @@
     </Syntaxes>
     <Scope>open/close brace</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceAnonymousMethodWithLambdaExpression" Title="Replace anonymous method with lambda expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceAnonymousMethodWithLambdaExpression" Title="Replace anonymous method with lambda expression" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>anonymous method</Syntax>
     </Syntaxes>
@@ -658,19 +658,19 @@
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceCountWithLengthOrLengthWithCount" Title="Replace 'Count/Length' with 'Length/Count'" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceCountWithLengthOrLengthWithCount" Title="Replace 'Count/Length' with 'Length/Count'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>member access expression</Syntax>
     </Syntaxes>
     <Scope>name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.9.90">
+  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.9.90">
+  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -693,7 +693,7 @@
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="SplitVariableDeclaration" Title="Split variable declaration " ExtensionVersion="0.0.0">
+  <Refactoring Id="SplitVariableDeclaration" Title="Split variable declaration " ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>local declaration</Syntax>
       <Syntax>field declaration</Syntax>
