@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -19,23 +20,47 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-                ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(methodDeclaration.Body);
-
-                if (analysis.Succeeded
-                    && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
+                if (!IsAsyncMethodThatReturnsTask(methodDeclaration, semanticModel, context.CancellationToken))
                 {
-                    context.RegisterRefactoring(
-                        "Change method's return type to 'void'",
-                        cancellationToken =>
-                        {
-                            return TypeSyntaxRefactoring.ChangeTypeAsync(
-                                context.Document,
-                                methodDeclaration.ReturnType,
-                                CSharpFactory.VoidType(),
-                                cancellationToken);
-                        });
+                    ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(methodDeclaration.Body);
+
+                    if (analysis.Succeeded
+                        && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
+                    {
+                        context.RegisterRefactoring(
+                            "Change method's return type to 'void'",
+                            cancellationToken =>
+                            {
+                                return TypeSyntaxRefactoring.ChangeTypeAsync(
+                                    context.Document,
+                                    methodDeclaration.ReturnType,
+                                    CSharpFactory.VoidType(),
+                                    cancellationToken);
+                            });
+                    }
                 }
             }
+        }
+
+        private static bool IsAsyncMethodThatReturnsTask(
+            MethodDeclarationSyntax methodDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            IMethodSymbol methodSymbol = semanticModel
+                .GetDeclaredSymbol(methodDeclaration, cancellationToken);
+
+            if (methodSymbol?.IsAsync == true
+                && methodSymbol.ReturnType?.IsErrorType() == false)
+            {
+                INamedTypeSymbol taskSymbol = semanticModel
+                    .Compilation
+                    .GetTypeByMetadataName("System.Threading.Tasks.Task");
+
+                return methodSymbol.ReturnType.Equals(taskSymbol);
+            }
+
+            return false;
         }
 
         private static bool IsReturnStatementWithoutExpression(SyntaxNode node)
