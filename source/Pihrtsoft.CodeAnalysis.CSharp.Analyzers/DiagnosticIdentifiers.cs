@@ -8,5 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
         public const string AddCodeFileHeader = Prefix + "9001";
         public const string ReplaceIsKindMethodInvocation = Prefix + "9002";
+        public const string AddDiagnosticAnalyzerSuffix = Prefix + "9003";
+        public const string AddCodeFixProviderSuffix = Prefix + "9004";
+        public const string AddCodeRefactoringProviderSuffix = Prefix + "9005";
     }
 }

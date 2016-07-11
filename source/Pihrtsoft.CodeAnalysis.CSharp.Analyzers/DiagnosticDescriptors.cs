@@ -23,5 +23,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: true
          );
+
+        public static readonly DiagnosticDescriptor AddDiagnosticAnalyzerSuffix = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddDiagnosticAnalyzerSuffix,
+             title: "Add suffix 'DiagnosticAnalyzer' to class name.",
+             messageFormat: "Consider adding suffix 'DiagnosticAnalyzer' to class name.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: true
+         );
+
+        public static readonly DiagnosticDescriptor AddCodeFixProviderSuffix = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddCodeFixProviderSuffix,
+             title: "Add suffix 'CodeFixProvider' to class name.",
+             messageFormat: "Consider adding suffix 'CodeFixProvider' to class name.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: true
+         );
+
+        public static readonly DiagnosticDescriptor AddCodeRefactoringProviderSuffix = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddCodeRefactoringProviderSuffix,
+             title: "Add suffix 'CodeRefactoringProvider' to class name.",
+             messageFormat: "Consider adding suffix 'CodeRefactoringProvider' to class name.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: true
+         );
     }
 }
