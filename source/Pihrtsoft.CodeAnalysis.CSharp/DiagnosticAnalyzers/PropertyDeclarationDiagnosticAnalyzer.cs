@@ -222,7 +222,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             if (property
                 .DescendantTrivia(TextSpan.FromBounds(property.Identifier.Span.Start, property.Span.End))
-                .Any(f => !f.IsWhitespaceOrEndOfLine()))
+                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return false;
             }
@@ -234,14 +234,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (variableDeclaration
                     .Parent
                     .DescendantTrivia(variableDeclaration.Span)
-                    .Any(f => !f.IsWhitespaceOrEndOfLine()))
+                    .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     return false;
                 }
             }
             else if (declarator
                 .DescendantTrivia(declarator.Span)
-                .Any(f => !f.IsWhitespaceOrEndOfLine()))
+                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return false;
             }

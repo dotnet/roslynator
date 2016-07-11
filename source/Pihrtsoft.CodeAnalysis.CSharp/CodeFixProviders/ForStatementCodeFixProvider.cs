@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (forStatement
                 .DescendantTrivia(span)
-                .All(f => f.IsWhitespaceOrEndOfLine()))
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Use while statement to create an infinite loop",

@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         {
             if (parameterList
                 .DescendantTrivia(parameterList.Span)
-                .All(f => f.IsWhitespaceOrEndOfLine()))
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.SimplifyLambdaExpressionParameterList,

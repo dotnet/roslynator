@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 if (context.Node
                     .DescendantTrivia(span)
-                    .All(f => f.IsWhitespaceOrEndOfLine()))
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.SplitVariableDeclaration,

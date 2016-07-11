@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (assignmentExpression
                 .DescendantTrivia(assignmentExpression.Span)
-                .All(f => f.IsWhitespaceOrEndOfLine()))
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Simplify assignment expression",

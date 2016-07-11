@@ -104,8 +104,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SyntaxTriviaList GetNewTrailingTrivia(SyntaxToken closeBrace, SyntaxToken semicolon)
         {
-            if (closeBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && semicolon.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
+            if (closeBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && semicolon.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return semicolon.TrailingTrivia;
             }

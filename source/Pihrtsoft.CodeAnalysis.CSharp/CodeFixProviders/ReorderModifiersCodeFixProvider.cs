@@ -66,13 +66,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             for (int i = 0; i < modifiers.Count; i++)
             {
                 if (i > 0
-                    && modifiers[i].LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+                    && modifiers[i].LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     return false;
                 }
 
                 if (i < (modifiers.Count - 1)
-                    && modifiers[i].TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+                    && modifiers[i].TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     return false;
                 }

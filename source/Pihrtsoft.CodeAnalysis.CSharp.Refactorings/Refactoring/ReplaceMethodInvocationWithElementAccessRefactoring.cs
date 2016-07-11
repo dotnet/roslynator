@@ -283,7 +283,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (expression
                 .DescendantTrivia(expression.Span)
-                .All(f => f.IsWhitespaceOrEndOfLine()))
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 expression = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
                     .WithAdditionalAnnotations(Formatter.Annotation);

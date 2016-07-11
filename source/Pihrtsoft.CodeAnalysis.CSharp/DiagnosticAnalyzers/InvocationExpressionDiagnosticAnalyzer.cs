@@ -107,7 +107,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                         if (invocation
                             .DescendantTrivia(span)
-                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.SimplifyLinqMethodChain,
@@ -131,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
 
-                    if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
+                    if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
                         {
@@ -174,7 +174,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
                     if (invocation
                          .DescendantTrivia(span)
-                         .All(f => f.IsWhitespaceOrEndOfLine()))
+                         .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         Diagnostic diagnostic = Diagnostic.Create(
                             DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
@@ -198,7 +198,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                         if (binaryExpression
                             .DescendantTrivia(span)
-                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,

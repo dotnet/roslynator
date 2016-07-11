@@ -130,7 +130,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (accessor.Body
                 .DescendantTrivia(descendIntoTrivia: true)
-                .Any(f => !f.IsWhitespaceOrEndOfLine()))
+                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return;
             }
@@ -160,7 +160,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (checkTrivia && block
                 .DescendantTrivia(descendIntoTrivia: true)
-                .Any(f => !f.IsWhitespaceOrEndOfLine()))
+                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return false;
             }

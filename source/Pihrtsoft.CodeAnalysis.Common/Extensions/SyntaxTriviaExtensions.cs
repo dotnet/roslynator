@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static bool IsWhitespaceOrEndOfLine(this SyntaxTrivia syntaxTrivia)
+        public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia syntaxTrivia)
         {
             if (syntaxTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
                 return true;
@@ -86,10 +86,10 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static bool IsWhitespace(this SyntaxTrivia syntaxTrivia)
+        public static bool IsWhitespaceTrivia(this SyntaxTrivia syntaxTrivia)
             => syntaxTrivia.IsKind(SyntaxKind.WhitespaceTrivia);
 
-        public static bool IsEndOfLine(this SyntaxTrivia syntaxTrivia)
+        public static bool IsEndOfLineTrivia(this SyntaxTrivia syntaxTrivia)
             => syntaxTrivia.IsKind(SyntaxKind.EndOfLineTrivia);
     }
 }

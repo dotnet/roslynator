@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                     && IsNegation(booleanLiteral, booleanLiteral2)
                     && ((BlockSyntax)ifStatement.Parent)
                         .DescendantTrivia(span)
-                        .All(f => f.IsWhitespaceOrEndOfLine()))
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,

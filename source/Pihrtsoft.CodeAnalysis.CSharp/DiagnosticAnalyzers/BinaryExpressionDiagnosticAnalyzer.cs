@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && !IsStringConcatenation(context, binaryExpression)
                 && binaryExpression.Left.GetTrailingTrivia().All(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
                 && CheckOperatorTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia)
-                && binaryExpression.Right.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine()))
+                && binaryExpression.Right.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,

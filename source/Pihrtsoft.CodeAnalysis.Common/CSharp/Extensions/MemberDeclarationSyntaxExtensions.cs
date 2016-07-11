@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             int i = 0;
             while (en.MoveNext())
             {
-                if (en.Current.IsWhitespaceOrEndOfLine())
+                if (en.Current.IsWhitespaceOrEndOfLineTrivia())
                 {
                     i++;
                 }

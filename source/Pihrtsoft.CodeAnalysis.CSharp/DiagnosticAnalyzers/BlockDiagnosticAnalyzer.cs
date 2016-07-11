@@ -50,8 +50,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 int endLineIndex = block.CloseBraceToken.GetSpanEndLine();
 
                 if ((endLineIndex - startLineIndex) != 1
-                    && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                    && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
+                    && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.FormatBlock,

@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                         return logicalNot
                             .DescendantTrivia(span)
-                            .All(f => f.IsWhitespaceOrEndOfLine());
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                     }
             }
 

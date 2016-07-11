@@ -25,10 +25,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
         private static bool CheckTrivia(BlockSyntax block, UsingStatementSyntax usingStatement)
         {
-            return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && usingStatement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLine())
-                && usingStatement.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLine());
+            return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && usingStatement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && usingStatement.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
     }
 }

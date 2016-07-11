@@ -69,7 +69,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (propertyDeclaration
                         .DescendantTrivia(span)
-                        .All(f => f.IsWhitespaceOrEndOfLine()))
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.FormatAccessorList,
@@ -90,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return accessor
                     .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                    .All(f => f.IsWhitespaceOrEndOfLine());
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia());
             }
 
             return false;

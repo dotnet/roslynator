@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (initializer.ArgumentList?.Arguments.Count == 0
                     && initializer
                         .DescendantTrivia(initializer.Span)
-                        .All(f => f.IsWhitespaceOrEndOfLine()))
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveRedundantBaseConstructorCall,
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && IsSingleInstanceConstructor(constructor)
                 && constructor
                     .DescendantTrivia(constructor.Span)
-                    .All(f => f.IsWhitespaceOrEndOfLine()))
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantConstructor,

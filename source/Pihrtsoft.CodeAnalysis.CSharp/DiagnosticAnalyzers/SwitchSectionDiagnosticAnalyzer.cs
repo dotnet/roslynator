@@ -58,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && ContainsOnlyBreakStatement(switchSection)
                 && switchSection
                     .DescendantTrivia(switchSection.Span)
-                    .All(f => f.IsWhitespaceOrEndOfLine()))
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
@@ -106,7 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     if (!label.IsKind(SyntaxKind.DefaultSwitchLabel)
                         && label
                             .DescendantTrivia(label.Span)
-                            .All(f => f.IsWhitespaceOrEndOfLine()))
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,

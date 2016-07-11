@@ -47,16 +47,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var block2 = (BlockSyntax)block.Statements[0];
 
-            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
-            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
-            if (block2.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block2.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
-            if (block2.CloseBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block2.CloseBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
             context.ReportDiagnostic(

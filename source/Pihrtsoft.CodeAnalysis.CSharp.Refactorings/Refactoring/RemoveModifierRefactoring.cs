@@ -102,16 +102,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxTriviaList trailing = modifier.TrailingTrivia;
 
             if (i > 0
-                && modifiers[i].LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && modifiers[i - 1].TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
+                && modifiers[i].LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && modifiers[i - 1].TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 modifiers = modifiers.Replace(modifiers[i - 1], modifiers[i - 1].WithoutTrailingTrivia());
                 leading = TriviaList();
             }
 
             if (i < (modifiers.Count - 1)
-                && modifiers[i].TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                && modifiers[i + 1].LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine()))
+                && modifiers[i].TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && modifiers[i + 1].LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 modifiers = modifiers.Replace(modifiers[i + 1], modifiers[i + 1].WithoutLeadingTrivia());
                 trailing = TriviaList();

@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
                 if (returnStatement.Parent
                     .DescendantTrivia(span, descendIntoTrivia: false)
-                    .All(f => f.IsWhitespaceOrEndOfLine()))
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatement,

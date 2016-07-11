@@ -74,26 +74,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static bool CheckTrivia(ElseClauseSyntax elseClause)
         {
-            if (elseClause.ElseKeyword.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (elseClause.ElseKeyword.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
             var block = (BlockSyntax)elseClause.Statement;
 
-            if (block.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
-            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
             var ifStatement = (IfStatementSyntax)block.Statements[0];
 
-            if (ifStatement.IfKeyword.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (ifStatement.IfKeyword.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
-            if (ifStatement.GetTrailingTrivia().Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (ifStatement.GetTrailingTrivia().Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
-            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLine()))
+            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
                 return false;
 
             return true;

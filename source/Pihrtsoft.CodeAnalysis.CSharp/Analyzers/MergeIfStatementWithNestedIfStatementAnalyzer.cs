@@ -46,17 +46,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                 nestedIf.FullSpan.Start,
                 nestedIf.CloseParenToken.FullSpan.End);
 
-            if (nestedIf.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLine()))
+            if (nestedIf.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                     && nestedIf.Statement.IsKind(SyntaxKind.Block))
                 {
                     var block = (BlockSyntax)nestedIf.Statement;
 
-                    return block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLine())
-                        && block.CloseBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLine());
+                    return block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.CloseBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
 
                 return true;

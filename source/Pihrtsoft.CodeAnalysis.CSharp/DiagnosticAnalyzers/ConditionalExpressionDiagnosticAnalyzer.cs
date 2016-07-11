@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && CanBeConvertedToCoalesceExpression(conditionalExpression)
                 && conditionalExpression
                     .DescendantTrivia(conditionalExpression.Span)
-                    .All(f => f.IsWhitespaceOrEndOfLine()))
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,

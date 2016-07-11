@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
                     {
                         for (int j = i + 1; j < triviaList.Count; j++)
                         {
-                            if (!triviaList[j].IsWhitespaceOrEndOfLine())
+                            if (!triviaList[j].IsWhitespaceOrEndOfLineTrivia())
                                 return;
                         }
                     }

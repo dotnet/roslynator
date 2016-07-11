@@ -37,13 +37,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                             if (lambda
                                 .DescendantTrivia(span)
-                                .All(f => f.IsWhitespaceOrEndOfLine()))
+                                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                             {
                                 span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
 
                                 return lambda
                                     .DescendantTrivia(span)
-                                    .All(f => f.IsWhitespaceOrEndOfLine());
+                                    .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                             }
                         }
                     }
