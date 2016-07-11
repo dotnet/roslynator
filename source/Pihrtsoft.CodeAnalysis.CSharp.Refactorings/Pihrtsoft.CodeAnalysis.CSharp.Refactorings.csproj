@@ -56,7 +56,7 @@
     <Compile Include="Refactoring\ReplaceEnumHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceUsingStaticDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\IndexerDeclarationRefactoring.cs" />
-    <Compile Include="Refactoring\ChangeMethodReturnTypeToVoidRefactoringCopy.cs" />
+    <Compile Include="Refactoring\ChangeMethodReturnTypeToVoidRefactoring.cs" />
     <Compile Include="Refactoring\MethodDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceWhileStatementWithDoStatementRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />

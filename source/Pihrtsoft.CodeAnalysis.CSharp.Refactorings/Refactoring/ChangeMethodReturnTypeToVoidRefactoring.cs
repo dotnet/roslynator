@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
                 && methodDeclaration.ReturnType?.IsVoid() == false
-                && methodDeclaration.Body?.IsMissing == false
+                && methodDeclaration.Body?.Statements.Count > 0
                 && context.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync();
