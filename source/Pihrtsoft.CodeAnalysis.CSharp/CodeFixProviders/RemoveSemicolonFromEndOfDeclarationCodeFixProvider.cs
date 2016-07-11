@@ -24,16 +24,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            SyntaxNode declaration = root
+            MemberDeclarationSyntax memberDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
-            if (declaration == null)
+            if (memberDeclaration == null)
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove unnecessary semicolon",
-                cancellationToken => RemoveSemicolonAsync(context.Document, declaration, cancellationToken),
+                cancellationToken => RemoveSemicolonAsync(context.Document, memberDeclaration, cancellationToken),
                 DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
@@ -41,59 +41,59 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static async Task<Document> RemoveSemicolonAsync(
             Document document,
-            SyntaxNode node,
+            MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            SyntaxNode newNode = GetNewNode(node);
+            MemberDeclarationSyntax newMemberDeclaration = GetNewMemberDeclaration(memberDeclaration);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
+            root = root.ReplaceNode(memberDeclaration, newMemberDeclaration);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxNode GetNewNode(SyntaxNode node)
+        private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax memberDeclaration)
         {
-            switch (node.Kind())
+            switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.NamespaceDeclaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)node;
+                        var declaration = (NamespaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None))
+                            .WithoutSemicolonToken()
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
-                        var declaration = (ClassDeclarationSyntax)node;
+                        var declaration = (ClassDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None))
+                            .WithoutSemicolonToken()
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
-                        var declaration = (InterfaceDeclarationSyntax)node;
+                        var declaration = (InterfaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None))
+                            .WithoutSemicolonToken()
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
-                        var declaration = (StructDeclarationSyntax)node;
+                        var declaration = (StructDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None))
+                            .WithoutSemicolonToken()
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
                 case SyntaxKind.EnumDeclaration:
                     {
-                        var declaration = (EnumDeclarationSyntax)node;
+                        var declaration = (EnumDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.None))
+                            .WithoutSemicolonToken()
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -111,11 +111,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             }
             else
             {
-                SyntaxTriviaList list = SyntaxFactory.TriviaList(closeBrace.TrailingTrivia);
-                list = list.AddRange(semicolon.LeadingTrivia);
-                list = list.AddRange(semicolon.TrailingTrivia);
-
-                return list;
+                return SyntaxFactory.TriviaList(closeBrace.TrailingTrivia)
+                    .AddRange(semicolon.LeadingTrivia)
+                    .AddRange(semicolon.TrailingTrivia);
             }
         }
     }
