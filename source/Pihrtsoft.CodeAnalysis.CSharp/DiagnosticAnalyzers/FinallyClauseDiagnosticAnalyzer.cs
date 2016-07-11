@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -40,10 +41,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (block != null
                         && block.Statements.Count == 0
-                        && finallyClause.FinallyKeyword.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                        && block.OpenBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
-                        && block.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                        && block.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+                        && finallyClause.FinallyKeyword.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.RemoveEmptyFinallyClause,

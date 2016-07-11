@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -53,9 +54,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SyntaxRemoveOptions GetRemoveOptions(NamespaceDeclarationSyntax declaration)
         {
-            if (declaration.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (declaration.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                if (declaration.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+                if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     return SyntaxRemoveOptions.KeepNoTrivia;
                 }
@@ -64,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     return SyntaxRemoveOptions.KeepTrailingTrivia;
                 }
             }
-            else if (declaration.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+            else if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return SyntaxRemoveOptions.KeepLeadingTrivia;
             }

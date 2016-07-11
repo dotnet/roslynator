@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -53,13 +54,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SyntaxNode GetNewRoot(SyntaxNode oldRoot, FinallyClauseSyntax finallyClause)
         {
-            if (finallyClause.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (finallyClause.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 
                 CatchClauseSyntax lastCatch = tryStatement.Catches[tryStatement.Catches.Count - 1];
 
-                if (lastCatch.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+                if (lastCatch.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     TryStatementSyntax newTryStatement = tryStatement
                         .WithCatches(tryStatement.Catches.Replace(lastCatch, lastCatch.WithTrailingTrivia(finallyClause.GetTrailingTrivia())))

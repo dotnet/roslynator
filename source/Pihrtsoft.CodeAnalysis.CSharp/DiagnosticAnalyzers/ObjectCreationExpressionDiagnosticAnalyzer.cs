@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,8 +46,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
             if (initializer.Expressions.Count == 0
-                && initializer.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                && initializer.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+                && initializer.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && initializer.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyInitializer,
@@ -68,8 +69,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             else if (argumentList.Arguments.Count == 0
                 && !argumentList.OpenParenToken.IsMissing
                 && !argumentList.CloseParenToken.IsMissing
-                && argumentList.OpenParenToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                && argumentList.CloseParenToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+                && argumentList.OpenParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && argumentList.CloseParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyArgumentList,

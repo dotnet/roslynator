@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -63,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
         {
-            if (switchSection.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (switchSection.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 int index = switchStatement.Sections.IndexOf(switchSection);
 
@@ -71,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 {
                     SwitchSectionSyntax previousSection = switchStatement.Sections[index - 1];
 
-                    if (previousSection.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+                    if (previousSection.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         SwitchStatementSyntax newSwitchStatement = switchStatement.RemoveNode(
                             switchSection,
@@ -89,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     SyntaxToken openBrace = switchStatement.OpenBraceToken;
 
                     if (!openBrace.IsMissing
-                        && openBrace.TrailingTrivia.IsWhitespaceOrEndOfLine())
+                        && openBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         return switchStatement
                             .RemoveNode(switchSection, SyntaxRemoveOptions.KeepNoTrivia)

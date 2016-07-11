@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -44,10 +45,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
 
-            if (newMember.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (newMember.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (newMember.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+            if (newMember.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
             return removeOptions;

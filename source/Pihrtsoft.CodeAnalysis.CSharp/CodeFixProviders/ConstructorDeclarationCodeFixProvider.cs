@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -74,8 +75,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            if (constructor.ParameterList.GetTrailingTrivia().IsWhitespaceOrEndOfLine()
-                && constructor.Initializer.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+            if (constructor.ParameterList.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && constructor.Initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 ConstructorDeclarationSyntax newConstructor = constructor
                     .WithParameterList(constructor.ParameterList.WithTrailingTrivia(constructor.Initializer.GetTrailingTrivia()))

@@ -137,8 +137,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         {
                             var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
 
-                            if (logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                                && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine())
+                            if (logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                                && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                             {
                                 messageArg = $"{propertyName} == 0";
                             }

@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -65,8 +66,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)
         {
-            if (label.GetLeadingTrivia().IsWhitespaceOrEndOfLine()
-                && label.GetTrailingTrivia().IsWhitespaceOrEndOfLine())
+            if (label.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && label.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 return SyntaxRemoveOptions.KeepNoTrivia;
             }

@@ -138,7 +138,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 var ifStatement = (IfStatementSyntax)elseClause.Parent;
 
-                if (ifStatement.Statement?.GetTrailingTrivia().IsWhitespaceOrEndOfLine() == true)
+                if (ifStatement.Statement?.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()) == true)
                 {
                     IfStatementSyntax newIfStatement = ifStatement
                         .WithStatement(ifStatement.Statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))

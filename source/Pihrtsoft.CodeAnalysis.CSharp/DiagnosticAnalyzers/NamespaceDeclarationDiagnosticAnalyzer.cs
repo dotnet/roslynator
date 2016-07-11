@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -33,8 +34,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (declaration.Members.Count == 0
                 && !declaration.OpenBraceToken.IsMissing
                 && !declaration.CloseBraceToken.IsMissing
-                && declaration.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                && declaration.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine())
+                && declaration.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && declaration.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,

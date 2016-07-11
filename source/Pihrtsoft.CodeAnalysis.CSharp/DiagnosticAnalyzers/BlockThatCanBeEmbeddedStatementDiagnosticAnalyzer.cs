@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -52,10 +53,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (block != null
                     && !block.OpenBraceToken.IsMissing
                     && !block.CloseBraceToken.IsMissing
-                    && block.OpenBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
-                    && block.OpenBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                    && block.CloseBraceToken.LeadingTrivia.IsWhitespaceOrEndOfLine()
-                    && block.CloseBraceToken.TrailingTrivia.IsWhitespaceOrEndOfLine())
+                    && block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && block.CloseBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatement,

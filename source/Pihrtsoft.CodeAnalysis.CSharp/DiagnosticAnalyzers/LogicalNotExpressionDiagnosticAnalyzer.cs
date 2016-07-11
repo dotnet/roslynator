@@ -47,8 +47,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        return logicalNot.OperatorToken.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                            && logicalNot.Operand.GetLeadingTrivia().IsWhitespaceOrEndOfLine();
+                        return logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                            && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
                     }
                 case SyntaxKind.LogicalNotExpression:
                     {

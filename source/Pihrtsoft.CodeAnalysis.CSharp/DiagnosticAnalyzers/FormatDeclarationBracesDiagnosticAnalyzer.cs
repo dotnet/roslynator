@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -91,8 +92,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             return !openBrace.IsMissing
                 && !closeBrace.IsMissing
                 && closeBrace.GetSpanStartLine() - openBrace.GetSpanEndLine() != 1
-                && openBrace.TrailingTrivia.IsWhitespaceOrEndOfLine()
-                && closeBrace.LeadingTrivia.IsWhitespaceOrEndOfLine();
+                && openBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && closeBrace.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
     }
 }
