@@ -58,10 +58,10 @@
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\CodeFixes\SimplifyLinqMethodChainCodeFix.cs" />
-    <Compile Include="CodeFixProviders\CodeFixes\UseCountOrLengthPropertyInsteadOfAnyMethodCodeFix.cs" />
-    <Compile Include="CodeFixProviders\CodeFixes\UseAnyMethodInsteadOfCountMethodCodeFix.cs" />
-    <Compile Include="CodeFixProviders\CodeFixes\UseCountOrLengthPropertyInsteadOfCountMethodCodeFix.cs" />
+    <Compile Include="Refactoring\SimplifyLinqMethodChainRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceCountMethodWithAnyMethodRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceCountMethodWithCountOrLengthPropertyRefactoring.cs" />
     <Compile Include="CodeFixProviders\ConstructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclarationCodeFixProvider.cs" />

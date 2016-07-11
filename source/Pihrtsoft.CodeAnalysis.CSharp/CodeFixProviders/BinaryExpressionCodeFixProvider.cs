@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -66,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         }
                     case DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod:
                         {
-                            UseAnyMethodInsteadOfCountMethodCodeFix.Register(context, diagnostic, binaryExpression);
+                            ReplaceCountMethodWithAnyMethodRefactoring.RegisterCodeFix(context, diagnostic, binaryExpression);
                             break;
                         }
                 }

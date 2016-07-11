@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -41,17 +41,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 {
                     case DiagnosticIdentifiers.SimplifyLinqMethodChain:
                         {
-                            SimplifyLinqMethodChainCodeFix.Register(context, diagnostic, invocation);
+                            SimplifyLinqMethodChainRefactoring.RegisterCodeFix(context, diagnostic, invocation);
                             break;
                         }
                     case DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty:
                         {
-                            UseCountOrLengthPropertyInsteadOfAnyMethodCodeFix.Register(context, diagnostic, invocation);
+                            ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.RegisterCodeFix(context, diagnostic, invocation);
                             break;
                         }
                     case DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty:
                         {
-                            UseCountOrLengthPropertyInsteadOfCountMethodCodeFix.Register(context, diagnostic, invocation);
+                            ReplaceCountMethodWithCountOrLengthPropertyRefactoring.RegisterCodeFix(context, diagnostic, invocation);
                             break;
                         }
                 }

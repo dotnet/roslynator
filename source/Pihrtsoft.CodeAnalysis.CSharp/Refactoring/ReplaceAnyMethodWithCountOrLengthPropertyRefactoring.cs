@@ -7,13 +7,14 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class UseCountOrLengthPropertyInsteadOfAnyMethodCodeFix
+    internal static class ReplaceAnyMethodWithCountOrLengthPropertyRefactoring
     {
-        public static void Register(
+        public static void RegisterCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             InvocationExpressionSyntax invocation)
@@ -40,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

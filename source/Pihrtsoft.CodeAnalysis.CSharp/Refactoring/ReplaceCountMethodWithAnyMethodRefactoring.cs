@@ -7,13 +7,14 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class UseAnyMethodInsteadOfCountMethodCodeFix
+    internal static class ReplaceCountMethodWithAnyMethodRefactoring
     {
-        public static void Register(
+        public static void RegisterCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             BinaryExpressionSyntax binaryExpression)
@@ -35,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
         private static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 

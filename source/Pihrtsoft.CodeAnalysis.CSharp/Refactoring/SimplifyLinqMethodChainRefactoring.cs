@@ -6,12 +6,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class SimplifyLinqMethodChainCodeFix
+    internal static class SimplifyLinqMethodChainRefactoring
     {
-        public static void Register(
+        public static void RegisterCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             InvocationExpressionSyntax invocation)
@@ -33,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders.CodeFixes
         private static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
