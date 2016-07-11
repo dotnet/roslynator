@@ -109,5 +109,30 @@ namespace Pihrtsoft.CodeAnalysis
 
             return false;
         }
+
+        public static bool IsClass(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.TypeKind == TypeKind.Class;
+        }
+
+        public static bool IsStaticClass(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol.IsStatic && typeSymbol.IsClass();
+        }
+
+        public static bool IsInterface(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.TypeKind == TypeKind.Interface;
+        }
+
+        public static bool IsStruct(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.TypeKind == TypeKind.Struct;
+        }
+
+        public static bool IsEnum(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.TypeKind == TypeKind.Enum;
+        }
     }
 }
