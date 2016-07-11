@@ -75,21 +75,24 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia syntaxTrivia)
+        public static bool IsWhitespaceTrivia(this SyntaxTrivia trivia)
         {
-            if (syntaxTrivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                return true;
-
-            if (syntaxTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                return true;
-
-            return false;
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.WhitespaceTrivia);
         }
 
-        public static bool IsWhitespaceTrivia(this SyntaxTrivia syntaxTrivia)
-            => syntaxTrivia.IsKind(SyntaxKind.WhitespaceTrivia);
+        public static bool IsEndOfLineTrivia(this SyntaxTrivia trivia)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.EndOfLineTrivia);
+        }
 
-        public static bool IsEndOfLineTrivia(this SyntaxTrivia syntaxTrivia)
-            => syntaxTrivia.IsKind(SyntaxKind.EndOfLineTrivia);
+        public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia trivia)
+        {
+            return trivia.IsWhitespaceTrivia() || trivia.IsEndOfLineTrivia();
+        }
+
+        public static bool IsSingleLineCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineCommentTrivia);
+        }
     }
 }

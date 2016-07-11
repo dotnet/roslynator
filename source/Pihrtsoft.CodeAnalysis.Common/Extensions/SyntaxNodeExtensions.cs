@@ -473,5 +473,170 @@ namespace Pihrtsoft.CodeAnalysis
                     return false;
             }
         }
+
+        public static bool IsCompilationUnit(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.CompilationUnit);
+        }
+
+        public static bool IsNamespaceDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.NamespaceDeclaration);
+        }
+
+        public static bool IsClassDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ClassDeclaration);
+        }
+
+        public static bool IsStructDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.StructDeclaration);
+        }
+
+        public static bool IsInterfaceDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.InterfaceDeclaration);
+        }
+
+        public static bool IsFieldDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.FieldDeclaration);
+        }
+
+        public static bool IsPropertyDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.PropertyDeclaration);
+        }
+
+        public static bool IsMethodDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.MethodDeclaration);
+        }
+
+        public static bool IsGetAccessorDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.GetAccessorDeclaration);
+        }
+
+        public static bool IsSetAccessorDeclaration(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.SetAccessorDeclaration);
+        }
+
+        public static bool IsBlock(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.Block);
+        }
+
+        public static bool IsUsingStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.UsingStatement);
+        }
+
+        public static bool IsIfStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.IfStatement);
+        }
+
+        public static bool IsElseClause(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ElseClause);
+        }
+
+        public static bool IsReturnStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ReturnStatement);
+        }
+
+        public static bool IsLocalDeclarationStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.LocalDeclarationStatement);
+        }
+
+        public static bool IsExpressionStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ExpressionStatement);
+        }
+
+        public static bool IsSwitchStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.SwitchStatement);
+        }
+
+        public static bool IsEmptyStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.EmptyStatement);
+        }
+
+        public static bool IsLabeledStatement(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.LabeledStatement);
+        }
+
+        public static bool IsTrueLiteralExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.TrueLiteralExpression);
+        }
+
+        public static bool IsFalseLiteralExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.FalseLiteralExpression);
+        }
+
+        public static bool IsStringLiteralExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.StringLiteralExpression);
+        }
+
+        public static bool IsNumericLiteralExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.NumericLiteralExpression);
+        }
+
+        public static bool IsParenthesizedExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ParenthesizedExpression);
+        }
+
+        public static bool IsSimpleMemberAccessExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.SimpleMemberAccessExpression);
+        }
+
+        public static bool IsInvocationExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.InvocationExpression);
+        }
+
+        public static bool IsEqualsExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.EqualsExpression);
+        }
+
+        public static bool IsLogicalNotExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.LogicalNotExpression);
+        }
+
+        public static bool IsSimpleAssignmentExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.SimpleAssignmentExpression);
+        }
+
+        public static bool IsObjectCreationExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ObjectCreationExpression);
+        }
+
+        public static bool IsArgumentList(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ArgumentList);
+        }
+
+        public static bool IsParameterList(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.ParameterList);
+        }
     }
 }
