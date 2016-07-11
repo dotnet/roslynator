@@ -1,3 +1,25 @@
+### 0.91.0 (2016-07-11)
+
+#### Refactorings
+
+##### New Refactorings
+
+* RemoveConditionFromLastElseIf
+* RemoveAllXmlComments
+* RemoveStatement
+* DuplicateStatement
+* ReplaceAnonymousMethodWithLambdaExpression
+* SplitVariableDeclaration
+* ReplaceCountWithLengthOrLengthWithCount
+
+##### Changes
+
+* ChangeMethodReturnTypeToVoid
+  * refactoring is available only when method body contains at least one statement
+  * refactoring is not available for async method that returns Task
+* IntroduceUsingStaticDirective
+  * refactoring is available only when class name is selected
+
 ### 0.9.90 (2016-07-08)
 
 #### Refactorings
