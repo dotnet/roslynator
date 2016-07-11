@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -20,31 +19,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 memberAccess = GetTopmostMemberAccessExpression(memberAccess);
 
-                if (memberAccess.Expression.Span.Contains(context.Span))
+                if (memberAccess.Expression.Span.Equals(context.Span))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
-                    ISymbol symbol = semanticModel.GetSymbolInfo(memberAccess.Expression, context.CancellationToken).Symbol;
+                    var typeSymbol = semanticModel
+                        .GetSymbolInfo(memberAccess.Expression, context.CancellationToken)
+                        .Symbol as INamedTypeSymbol;
 
-                    if (symbol?.IsNamedType() == true)
+                    if (typeSymbol.IsStaticClass()
+                        && (typeSymbol.IsPublic() || typeSymbol.IsInternal())
+                        && !SyntaxUtility.IsUsingStaticInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
-                        var namedTypeSymbol = (INamedTypeSymbol)symbol;
-
-                        if (namedTypeSymbol.TypeKind == TypeKind.Class
-                            && namedTypeSymbol.IsStatic
-                            && (namedTypeSymbol.IsPublic() || namedTypeSymbol.IsInternal())
-                            && !SyntaxUtility.IsUsingStaticInScope(memberAccess, namedTypeSymbol, semanticModel, context.CancellationToken))
-                        {
-                            context.RegisterRefactoring($"Introduce 'using static {namedTypeSymbol.ToDisplayString()}'",
-                                cancellationToken =>
-                                {
-                                    return RefactorAsync(
-                                        context.Document,
-                                        namedTypeSymbol.ToString(),
-                                        memberAccess,
-                                        cancellationToken);
-                                });
-                        }
+                        context.RegisterRefactoring($"Introduce 'using static' for '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            cancellationToken =>
+                            {
+                                return RefactorAsync(
+                                    context.Document,
+                                    typeSymbol.ToString(),
+                                    memberAccess,
+                                    cancellationToken);
+                            });
                     }
                 }
             }

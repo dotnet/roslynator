@@ -588,7 +588,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Introduce using static directive")]
-        [Description("Syntax: member access expression (public or internal static class)")]
+        [Description("Syntax: member access expression (public or internal static class)\r\nScope: selected class name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceUsingStaticDirective
         {

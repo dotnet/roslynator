@@ -12,9 +12,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             await ReplaceCountWithLengthOrLengthWithCountRefactoring.ComputeRefactoringsAsync(context, memberAccess);
 
-            FormatExpressionChainRefactoring.ComputeRefactorings(context, memberAccess);
-
             await IntroduceUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess);
+
+            FormatExpressionChainRefactoring.ComputeRefactorings(context, memberAccess);
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral)
                 && context.SupportsSemanticModel)
