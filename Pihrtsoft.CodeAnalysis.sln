@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSharp.Analyzers", "source\Pihrtsoft.CodeAnalysis.CSharp.Analyzers\Pihrtsoft.CodeAnalysis.CSharp.Analyzers.csproj", "{1DB4A125-FBF8-4728-ABF5-37B9DF355753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Analyzers", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Analyzers\Pihrtsoft.CodeAnalysis.VisualStudio.Analyzers.csproj", "{63A791CC-BD7C-4608-A4D9-9379B0C42F38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,8 @@ Global
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63A791CC-BD7C-4608-A4D9-9379B0C42F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63A791CC-BD7C-4608-A4D9-9379B0C42F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,5 +86,6 @@ Global
 		{4AD2A192-847E-4942-8A72-D99C5602D5A7} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
+		{63A791CC-BD7C-4608-A4D9-9379B0C42F38} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 	EndGlobalSection
 EndGlobal
