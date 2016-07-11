@@ -63,5 +63,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return declaration
                 .RemoveNode(declaration.Members[index], RemoveMemberDeclarationRefactoring.GetRemoveOptions(newMember));
         }
+
+        public static NamespaceDeclarationSyntax WithoutSemicolonToken(this NamespaceDeclarationSyntax namespaceDeclaration)
+        {
+            if (namespaceDeclaration == null)
+                throw new ArgumentNullException(nameof(namespaceDeclaration));
+
+            return namespaceDeclaration.WithSemicolonToken(CSharpFactory.NoneToken());
+        }
     }
 }

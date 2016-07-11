@@ -18,5 +18,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             return invocationExpression.WithArgumentList(ArgumentList(arguments));
         }
+
+        public static InvocationExpressionSyntax WithArgumentList(this InvocationExpressionSyntax invocationExpression)
+        {
+            if (invocationExpression == null)
+                throw new ArgumentNullException(nameof(invocationExpression));
+
+            return invocationExpression.WithArgumentList(ArgumentList());
+        }
     }
 }

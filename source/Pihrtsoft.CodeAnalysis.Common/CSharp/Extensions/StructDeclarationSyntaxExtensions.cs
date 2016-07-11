@@ -52,5 +52,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return declaration
                 .RemoveNode(declaration.Members[index], RemoveMemberDeclarationRefactoring.GetRemoveOptions(newMember));
         }
+
+        public static StructDeclarationSyntax WithoutSemicolonToken(this StructDeclarationSyntax structDeclaration)
+        {
+            if (structDeclaration == null)
+                throw new ArgumentNullException(nameof(structDeclaration));
+
+            return structDeclaration.WithSemicolonToken(CSharpFactory.NoneToken());
+        }
     }
 }
