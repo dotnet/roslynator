@@ -86,6 +86,13 @@
 
 ![Duplicate parameter](/images/refactorings/DuplicateParameter.png)
 
+#### Duplicate statement
+
+* **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
+* **Scope**: open/close brace
+
+![Duplicate statement](/images/refactorings/DuplicateStatement.png)
+
 #### Expand assignment expression
 
 * **Syntax**: assignment expression
@@ -228,6 +235,7 @@
 #### Introduce using static directive
 
 * **Syntax**: member access expression (public or internal static class)
+* **Scope**: selected class name
 
 ![Introduce using static directive](/images/refactorings/IntroduceUsingStaticDirective.png)
 
@@ -311,11 +319,24 @@
 
 ![Remove all regions](/images/refactorings/RemoveAllRegions.png)
 
+#### Remove all xml comments
+
+* **Syntax**: singleline/multiline xml documentation comment
+
+![Remove all xml comments](/images/refactorings/RemoveAllXmlComments.png)
+
 #### Remove comment
 
 * **Syntax**: singleline/multiline comment, singleline/multiline xml documentation comment
 
 ![Remove comment](/images/refactorings/RemoveComment.png)
+
+#### Remove condition from last else-if
+
+* **Syntax**: else clause
+* **Scope**: else keyword
+
+![Remove condition from last else-if](/images/refactorings/RemoveConditionFromLastElseIf.png)
 
 #### Remove member
 
@@ -335,6 +356,13 @@
 * **Syntax**: property initializer
 
 ![Remove property initializer](/images/refactorings/RemovePropertyInitializer.png)
+
+#### Remove statement
+
+* **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
+* **Scope**: open/close brace
+
+![Remove statement](/images/refactorings/RemoveStatement.png)
 
 #### Rename backing field according to property name
 
@@ -376,6 +404,13 @@
 
 ![Replace "" with string.Empty](/images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
 
+#### Replace anonymous method with lambda expression
+
+* **Syntax**: anonymous method
+* **Scope**: delegate keyword
+
+![Replace anonymous method with lambda expression](/images/refactorings/ReplaceAnonymousMethodWithLambdaExpression.png)
+
 #### Replace 'Any/All' with 'All/Any'
 
 * **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
@@ -415,6 +450,13 @@
 * **Syntax**: constant declaration
 
 ![Replace constant with field](/images/refactorings/ReplaceConstantWithField.png)
+
+#### Replace 'Count/Length' with 'Length/Count'
+
+* **Syntax**: member access expression
+* **Scope**: name
+
+![Replace 'Count/Length' with 'Length/Count'](/images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
 #### Replace do statement with while statement
 
@@ -610,6 +652,12 @@
 * **Syntax**: selected attribute list
 
 ![Split attributes](/images/refactorings/SplitAttributes.png)
+
+#### Split variable declaration 
+
+* **Syntax**: local declaration, field declaration, event field declaration
+
+![Split variable declaration ](/images/refactorings/SplitVariableDeclaration.png)
 
 #### Swap expressions in binary expression
 
