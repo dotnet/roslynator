@@ -57,12 +57,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.DiagnosticAnalyzers
                                     invocation.SyntaxTree,
                                     TextSpan.FromBounds(methodName.Span.Start, invocation.Span.End));
 
-                                Diagnostic diagnostic = Diagnostic.Create(
+                                context.ReportDiagnostic(
                                     DiagnosticDescriptors.ReplaceIsKindMethodInvocation,
                                     location,
                                     CreateProperties(argumentSymbol.Name));
-
-                                context.ReportDiagnostic(diagnostic);
                             }
                         }
                     }

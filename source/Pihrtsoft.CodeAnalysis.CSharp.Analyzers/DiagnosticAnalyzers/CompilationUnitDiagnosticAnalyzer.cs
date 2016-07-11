@@ -35,11 +35,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.DiagnosticAnalyzers
                     compilationUnit.SyntaxTree,
                     new TextSpan(compilationUnit.FullSpan.Start, 0));
 
-                Diagnostic diagnostic = Diagnostic.Create(
+                context.ReportDiagnostic(
                     DiagnosticDescriptors.AddCodeFileHeader,
                     location);
-
-                context.ReportDiagnostic(diagnostic);
             }
         }
     }
