@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             TypeSyntax enumType = TypeSyntaxRefactoring.CreateTypeSyntax(enumTypeSymbol);
 
-            if (members.Length < 32)
+            if (members.Length <= 128)
                 enumType = enumType.WithAdditionalAnnotations(Simplifier.Annotation);
 
             foreach (ISymbol memberSymbol in members)
