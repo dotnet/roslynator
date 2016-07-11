@@ -66,25 +66,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.Attribute(IdentifierName(identifierName));
         }
 
-        public static UsingDirectiveSyntax UsingDirective(params string[] names)
-        {
-            if (names == null)
-                throw new ArgumentNullException(nameof(names));
-
-            if (names.Length == 0)
-                throw new ArgumentException($"'{names}' cannot be empty.", nameof(names));
-
-            if (names.Length == 1)
-                return SyntaxFactory.UsingDirective(IdentifierName(names[0]));
-
-            NameSyntax name = QualifiedName(IdentifierName(names[0]), IdentifierName(names[1]));
-
-            for (int i = 2; i < names.Length; i++)
-                name = QualifiedName(name, IdentifierName(names[i]));
-
-            return SyntaxFactory.UsingDirective(name);
-        }
-
         public static NamespaceDeclarationSyntax NamespaceDeclaration(string identifierName)
         {
             return SyntaxFactory.NamespaceDeclaration(IdentifierName(identifierName));
