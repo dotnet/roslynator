@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .GetSymbolInfo(memberAccess.Expression, context.CancellationToken)
                         .Symbol as INamedTypeSymbol;
 
-                    if (typeSymbol.IsStaticClass()
+                    if (typeSymbol?.IsStaticClass() == true
                         && (typeSymbol.IsPublic() || typeSymbol.IsInternal())
                         && !SyntaxUtility.IsUsingStaticInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
