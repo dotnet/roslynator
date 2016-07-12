@@ -69,8 +69,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 #endif
 
-            if (!member.Span.IntersectsWith(context.Span))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMembers)
+                && !member.Span.IntersectsWith(context.Span))
+            {
                 SwapMembersRefactoring.ComputeRefactoring(context, member);
+            }
 
             switch (member.Kind())
             {
