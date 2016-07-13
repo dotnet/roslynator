@@ -392,7 +392,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Duplicate statement")]
-        [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: open/close brace")]
+        [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool DuplicateStatement
         {
@@ -492,7 +492,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Extract expression from parentheses")]
-        [Description("Syntax: parenthesized expression\r\nScope: opening/closing parenthesis")]
+        [Description("Syntax: parenthesized expression\r\nScope: opening or closing parenthesis")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExtractExpressionFromParentheses
         {
