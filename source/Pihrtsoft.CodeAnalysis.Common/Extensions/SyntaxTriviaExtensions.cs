@@ -94,5 +94,20 @@ namespace Pihrtsoft.CodeAnalysis
         {
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineCommentTrivia);
         }
+
+        public static bool IsSingleLineDocumentationCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineDocumentationCommentTrivia);
+        }
+
+        public static bool IsMultiLineDocumentationCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.MultiLineDocumentationCommentTrivia);
+        }
+
+        public static bool IsDocumentationCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return trivia.IsSingleLineDocumentationCommentTrivia() || trivia.IsMultiLineDocumentationCommentTrivia();
+        }
     }
 }
