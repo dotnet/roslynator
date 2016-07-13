@@ -126,10 +126,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static IEnumerable<StatementSyntax> GetNewNodes(StatementSyntax statement)
         {
-            SyntaxTriviaList leadingTrivia = statement.Parent.GetLeadingTrivia();
-
-            if (statement.IsKind(SyntaxKind.ElseClause))
-                leadingTrivia.Insert(0, CSharpFactory.NewLine);
+            SyntaxTriviaList leadingTrivia = (statement.Parent.IsKind(SyntaxKind.ElseClause))
+                ? SyntaxFactory.TriviaList(CSharpFactory.NewLine)
+                : statement.Parent.GetLeadingTrivia();
 
             if (statement.IsKind(SyntaxKind.Block))
             {
@@ -137,6 +136,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (en.MoveNext())
                 {
+                    leadingTrivia = leadingTrivia.AddRange(en.Current.GetLeadingTrivia());
+
                     yield return en.Current.WithLeadingTrivia(leadingTrivia);
 
                     while (en.MoveNext())
@@ -145,6 +146,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else
             {
+                leadingTrivia = leadingTrivia.AddRange(statement.GetLeadingTrivia());
+
                 yield return statement.WithLeadingTrivia(leadingTrivia);
             }
         }
