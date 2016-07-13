@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -36,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             ExpressionSyntax newExpression = expression.Expression
                 .WithTriviaFrom(expression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newExpression);
 

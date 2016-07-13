@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -21,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             InitializerExpressionSyntax newInitializer = GetMultilineInitializer(initializer)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(initializer, newInitializer);
 
@@ -39,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .WithExpressions(
                         SeparatedList(
                             initializer.Expressions.Select(expression => expression.WithLeadingTrivia(CSharpFactory.NewLine))))
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
             }
 
             SyntaxTriviaList indent = SyntaxUtility.GetIndentTrivia(initializer);
@@ -54,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         initializer.Expressions.Select(expression => expression.WithLeadingTrivia(indent2))))
                 .WithOpenBraceToken(initializer.OpenBraceToken.WithLeadingTrivia(indent))
                 .WithCloseBraceToken(initializer.CloseBraceToken.WithLeadingTrivia(indent))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
         }
     }
 }

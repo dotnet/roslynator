@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -29,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithInitializer(null)
                 .WithSemicolonToken(Token(SyntaxKind.None))
                 .WithTriviaFrom(propertyDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, newNode);
 

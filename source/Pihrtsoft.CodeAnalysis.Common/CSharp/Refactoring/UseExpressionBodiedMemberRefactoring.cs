@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -28,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             SyntaxNode newDeclaration = GetNewDeclaration(declaration)
                 .WithTrailingTrivia(declaration.GetTrailingTrivia())
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, newDeclaration);
 

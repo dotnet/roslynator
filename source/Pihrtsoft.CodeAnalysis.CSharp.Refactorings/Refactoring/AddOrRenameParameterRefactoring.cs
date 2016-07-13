@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -78,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ParameterSyntax newParameter = parameter
                 .WithType(parameter.Type.WithoutTrailingTrivia())
                 .WithIdentifier(SyntaxFactory.Identifier(name).WithTrailingTrivia(parameter.Type.GetTrailingTrivia()))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(parameter, newParameter);
 

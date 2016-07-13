@@ -6,6 +6,8 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.CodeAnalysis.Simplification;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis
@@ -472,6 +474,22 @@ namespace Pihrtsoft.CodeAnalysis
                 default:
                     return false;
             }
+        }
+
+        public static TNode WithFormatterAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithAdditionalAnnotations(Formatter.Annotation);
+        }
+
+        public static TNode WithSimplifierAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithAdditionalAnnotations(Simplifier.Annotation);
         }
 
         public static bool IsCompilationUnit(this SyntaxNode node)

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Simplification;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -75,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             SwitchStatementSyntax newNode = switchStatement
                 .WithSections(List(CreateSwitchSections(enumTypeSymbol)))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(switchStatement, newNode);
 
@@ -93,7 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TypeSyntax enumType = TypeSyntaxRefactoring.CreateTypeSyntax(enumTypeSymbol);
 
             if (members.Length <= 128)
-                enumType = enumType.WithAdditionalAnnotations(Simplifier.Annotation);
+                enumType = enumType.WithSimplifierAnnotation();
 
             foreach (ISymbol memberSymbol in members)
             {

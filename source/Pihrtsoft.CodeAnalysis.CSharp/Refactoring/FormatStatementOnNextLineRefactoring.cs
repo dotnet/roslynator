@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -21,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             StatementSyntax newStatement = statement
                 .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             if (statement.Parent.IsKind(SyntaxKind.Block))
             {
@@ -35,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     BlockSyntax newBlock = block
                         .WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(triviaList))
                         .WithStatements(block.Statements.Replace(statement, newStatement))
-                        .WithAdditionalAnnotations(Formatter.Annotation);
+                        .WithFormatterAnnotation();
 
                     root = root.ReplaceNode(block, newBlock);
                 }

@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -75,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         .ReplaceNode(lockStatement, newLockStatement);
 
                     FieldDeclarationSyntax field = CreateField()
-                        .WithAdditionalAnnotations(Formatter.Annotation);
+                        .WithFormatterAnnotation();
 
                     SyntaxList<MemberDeclarationSyntax> newMembers = members
                         .Replace(members[index], newContainingMember)

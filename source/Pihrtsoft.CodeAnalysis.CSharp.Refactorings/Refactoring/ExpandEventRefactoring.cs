@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -29,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
                 .WithTriviaFrom(eventDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(eventDeclaration, newNode);
 

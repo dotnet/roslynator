@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -50,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxNode newRoot = oldRoot.ReplaceNode(
                 attributeList,
                 AttributeRefactoring.SplitAttributes(attributeList)
-                    .Select(f => f.WithAdditionalAnnotations(Formatter.Annotation)));
+                    .Select(f => f.WithFormatterAnnotation()));
 
             return document.WithSyntaxRoot(newRoot);
         }

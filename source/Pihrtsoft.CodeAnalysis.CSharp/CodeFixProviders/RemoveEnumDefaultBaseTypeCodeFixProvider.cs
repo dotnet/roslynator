@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -50,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration
                 .RemoveNode(GetNodeToRemove(baseType, baseList), SyntaxRemoveOptions.KeepExteriorTrivia)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = root.ReplaceNode(enumDeclaration, newEnumDeclaration);
 

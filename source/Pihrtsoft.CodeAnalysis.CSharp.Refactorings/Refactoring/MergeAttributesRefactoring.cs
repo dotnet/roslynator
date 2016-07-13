@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -54,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 lists = lists.RemoveAt(index);
 
             AttributeListSyntax list = AttributeRefactoring.MergeAttributes(attributeLists)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             lists = lists.Replace(lists[index], list);
 

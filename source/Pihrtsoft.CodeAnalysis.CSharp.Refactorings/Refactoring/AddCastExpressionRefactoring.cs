@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -126,7 +125,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             TypeSyntax type = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
 
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, expression)
                 .WithTriviaFrom(expression);

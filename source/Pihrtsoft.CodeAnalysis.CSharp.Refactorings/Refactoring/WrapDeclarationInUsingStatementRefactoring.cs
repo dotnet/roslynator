@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -43,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             UsingStatementSyntax usingStatement = SyntaxFactory
                 .UsingStatement(localDeclaration.Declaration.WithoutTrivia(), null, SyntaxFactory.Block())
                 .WithTriviaFrom(localDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(localDeclaration, usingStatement);
 

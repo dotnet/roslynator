@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -47,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             ThrowStatementSyntax newThrowStatement = throwStatement
                 .RemoveNode(throwStatement.Expression, SyntaxRemoveOptions.KeepExteriorTrivia)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(throwStatement, newThrowStatement);
 

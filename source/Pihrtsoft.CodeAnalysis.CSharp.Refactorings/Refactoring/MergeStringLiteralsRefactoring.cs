@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -34,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             root = root.ReplaceNode(
                 binaryExpression,
-                newNode.WithAdditionalAnnotations(Formatter.Annotation));
+                newNode.WithFormatterAnnotation());
 
             return document.WithSyntaxRoot(root);
         }

@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -47,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             StatementSyntax newNode = node
                 .WithTrailingTrivia(node.GetTrailingTrivia().Add(CSharpFactory.NewLine))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
 

@@ -12,7 +12,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
@@ -110,7 +109,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     field.Declaration.Variables[variableDeclaration.Variables.IndexOf(declarator)],
                     RemoveMemberDeclarationRefactoring.DefaultRemoveOptions);
 
-                members = members.Replace(field, newField.WithAdditionalAnnotations(Formatter.Annotation));
+                members = members.Replace(field, newField.WithFormatterAnnotation());
 
                 newParentMember = newParentMember.SetMembers(members);
             }
@@ -179,7 +178,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             return newProperty
                 .WithTriviaFrom(property)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
         }
 
         private static AccessorListSyntax CreateAccessorList(PropertyDeclarationSyntax property)

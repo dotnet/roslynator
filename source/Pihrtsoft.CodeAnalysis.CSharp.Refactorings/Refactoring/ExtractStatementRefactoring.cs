@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -98,7 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             IEnumerable<StatementSyntax> newNodes = GetNewNodes(statement)
-                .Select(f => f.WithAdditionalAnnotations(Formatter.Annotation));
+                .Select(f => f.WithFormatterAnnotation());
 
             SyntaxNode newRoot = GetNewRoot(statement, oldRoot, newNodes);
 

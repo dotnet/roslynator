@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -43,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithCondition(ifStatement.Condition.Negate())
                 .WithStatement(falseStatement.WithTriviaFrom(trueStatement))
                 .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(ifStatement, newIfStatement);
 

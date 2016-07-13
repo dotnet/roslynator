@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
-using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -158,7 +156,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .WithType(
                     TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
                         .WithTriviaFrom(variableDeclaration.Type)
-                        .WithAdditionalAnnotations(Simplifier.Annotation));
+                        .WithSimplifierAnnotation());
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(variableDeclaration, newNode);
 

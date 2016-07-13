@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -92,7 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
             AttributeArgumentListSyntax newArgumentList = AddParameterNameSyntaxRewriter.VisitNode(argumentList, arguments, semanticModel)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
 
@@ -108,7 +107,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             AttributeArgumentListSyntax newArgumentList = RemoveParameterNameSyntaxRewriter.VisitNode(argumentList, arguments)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
 

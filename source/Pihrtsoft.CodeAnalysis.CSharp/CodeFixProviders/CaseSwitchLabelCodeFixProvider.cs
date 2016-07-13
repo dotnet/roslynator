@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -57,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             var switchSection = (SwitchSectionSyntax)label.Parent;
 
             SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newNode);
 

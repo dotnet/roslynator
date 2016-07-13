@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
-using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -129,7 +127,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     Token(SyntaxTriviaList.Empty, SyntaxKind.OpenParenToken, SyntaxTriviaList.Empty),
                     expression,
                     Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty))
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
         }
 
         private static ExpressionSyntax Cast(ExpressionSyntax expression, ITypeSymbol targetType)
@@ -140,7 +138,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TypeSyntax type = ParseTypeName(targetType.ToDisplayString());
 
             return CastExpression(type, Parenthesize(expression))
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
         }
 
         private static bool IsValidFormatMethod(ISymbol symbol)

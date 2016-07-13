@@ -4,7 +4,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp

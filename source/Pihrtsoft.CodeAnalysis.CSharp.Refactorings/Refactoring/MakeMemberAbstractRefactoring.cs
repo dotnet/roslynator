@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -47,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             MemberDeclarationSyntax newMemberDeclaration = MakeAbstract(memberDeclaration)
                 .WithTriviaFrom(memberDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(memberDeclaration, newMemberDeclaration);
 

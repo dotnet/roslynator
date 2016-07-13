@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -82,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             PrefixUnaryExpressionSyntax newNode = PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, postfixUnaryExpression.Operand)
                 .WithTriviaFrom(postfixUnaryExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(postfixUnaryExpression, newNode);
 
@@ -99,7 +98,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax newNode = postfixUnaryExpression
                 .WithOperatorToken(Token(SyntaxKind.MinusMinusToken))
                 .WithTriviaFrom(postfixUnaryExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(postfixUnaryExpression, newNode);
 
@@ -115,7 +114,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             PrefixUnaryExpressionSyntax newNode = PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, postfixUnaryExpression.Operand)
                 .WithTriviaFrom(postfixUnaryExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(postfixUnaryExpression, newNode);
 
@@ -132,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax newNode = postfixUnaryExpression
                 .WithOperatorToken(Token(SyntaxKind.PlusPlusToken))
                 .WithTriviaFrom(postfixUnaryExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(postfixUnaryExpression, newNode);
 

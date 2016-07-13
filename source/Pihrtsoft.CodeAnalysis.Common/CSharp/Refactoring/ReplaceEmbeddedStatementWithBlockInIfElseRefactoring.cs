@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -27,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(ifStatement, newNode);
 

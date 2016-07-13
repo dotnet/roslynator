@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
@@ -72,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 ExpressionSyntax newNode = EqualsExpression(bitwiseAnd, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation.Parent)
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
 
                 SyntaxNode newRoot = oldRoot.ReplaceNode(invocation.Parent, newNode);
 
@@ -82,7 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 ExpressionSyntax newNode = NotEqualsExpression(bitwiseAnd, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation)
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
 
                 SyntaxNode newRoot = oldRoot.ReplaceNode(invocation, newNode);
 

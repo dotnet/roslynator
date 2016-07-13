@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Simplification;
-using Pihrtsoft.CodeAnalysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -62,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithReturn(conditionalExpression, returnStatement)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(returnStatement, ifStatement);
 
@@ -78,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithYieldReturn(conditionalExpression, yieldStatement)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(yieldStatement, ifStatement);
 
@@ -97,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithAssignment(conditionalExpression, assignmentExpression.Left.WithoutTrivia())
                 .WithTriviaFrom(expressionStatement)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(expressionStatement, ifStatement);
 
@@ -117,13 +114,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             LocalDeclarationStatementSyntax newLocalDeclaration = GetNewLocalDeclaration(conditionalExpression, localDeclaration, semanticModel)
                 .WithLeadingTrivia(localDeclaration.GetLeadingTrivia())
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             var variableDeclarator = (VariableDeclaratorSyntax)conditionalExpression.Parent.Parent;
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithAssignment(conditionalExpression, IdentifierName(variableDeclarator.Identifier.ToString()))
                 .WithTrailingTrivia(localDeclaration.GetTrailingTrivia())
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxList<StatementSyntax> statements = block.Statements
                 .Replace(localDeclaration, newLocalDeclaration)
@@ -153,7 +150,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     localDeclaration = localDeclaration.ReplaceNode(
                         localDeclaration.Declaration.Type,
-                        TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol).WithAdditionalAnnotations(Simplifier.Annotation));
+                        TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol).WithSimplifierAnnotation());
                 }
             }
 

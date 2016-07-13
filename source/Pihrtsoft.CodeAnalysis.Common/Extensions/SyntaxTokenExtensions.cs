@@ -3,6 +3,8 @@
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.CodeAnalysis.Simplification;
 using Pihrtsoft.CodeAnalysis.CSharp;
 
 namespace Pihrtsoft.CodeAnalysis
@@ -39,6 +41,16 @@ namespace Pihrtsoft.CodeAnalysis
                 return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLinePosition.Line;
 
             return -1;
+        }
+
+        public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)
+        {
+            return token.WithAdditionalAnnotations(Formatter.Annotation);
+        }
+
+        public static SyntaxToken WithSimplifierAnnotation(this SyntaxToken token)
+        {
+            return token.WithAdditionalAnnotations(Simplifier.Annotation);
         }
 
         public static SyntaxToken TrimLeadingWhitespace(this SyntaxToken token)

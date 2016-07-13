@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -97,7 +96,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             forStatement = forStatement
                  .WithTriviaFrom(forEachStatement)
-                 .WithAdditionalAnnotations(Formatter.Annotation);
+                 .WithFormatterAnnotation();
 
             root = root.ReplaceNode(forEachStatement, forStatement);
 

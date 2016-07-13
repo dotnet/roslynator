@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -155,7 +154,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (i == variables.Count - 1)
                     newStatement = newStatement.WithTrailingTrivia(statement.GetTrailingTrivia());
 
-                yield return newStatement.WithAdditionalAnnotations(Formatter.Annotation);
+                yield return newStatement.WithFormatterAnnotation();
             }
         }
 
@@ -180,7 +179,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (i == variables.Count - 1)
                     newDeclaration = newDeclaration.WithTrailingTrivia(declaration.GetTrailingTrivia());
 
-                yield return newDeclaration.WithAdditionalAnnotations(Formatter.Annotation);
+                yield return newDeclaration.WithFormatterAnnotation();
             }
         }
 
@@ -205,7 +204,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (i == variables.Count - 1)
                     newDeclaration = newDeclaration.WithTrailingTrivia(fieldDeclaration.GetTrailingTrivia());
 
-                yield return newDeclaration.WithAdditionalAnnotations(Formatter.Annotation);
+                yield return newDeclaration.WithFormatterAnnotation();
             }
         }
     }

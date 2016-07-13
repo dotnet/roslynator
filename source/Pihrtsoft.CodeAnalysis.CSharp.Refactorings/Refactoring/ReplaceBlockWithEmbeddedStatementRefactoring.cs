@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -45,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 ElseClauseSyntax newElseClause = elseClause
                     .WithStatement(statement)
                     .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
 
                 SyntaxNode newRoot = oldRoot.ReplaceNode(elseClause, newElseClause);
 
@@ -54,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             else
             {
                 StatementSyntax newNode = statement.TrimLeadingWhitespace()
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
 
                 SyntaxNode newRoot = oldRoot.ReplaceNode(block, newNode);
 

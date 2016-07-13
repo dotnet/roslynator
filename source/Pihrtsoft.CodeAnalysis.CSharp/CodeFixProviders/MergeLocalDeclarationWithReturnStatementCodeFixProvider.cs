@@ -10,8 +10,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -67,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .WithExpression(localDeclaration.Declaration.Variables[0].Initializer.Value.WithoutTrivia())
                 .WithLeadingTrivia(localDeclaration.GetLeadingTrivia())
                 .WithTrailingTrivia(returnStatement.GetTrailingTrivia())
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             int index = block.Statements.IndexOf(localDeclaration);
 

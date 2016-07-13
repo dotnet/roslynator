@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -24,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     accessor.Body.WithCloseBraceToken(
                         closeBrace.WithLeadingTrivia(
                             closeBrace.LeadingTrivia.Add(CSharpFactory.NewLine))))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(accessor, newAccessor);
 

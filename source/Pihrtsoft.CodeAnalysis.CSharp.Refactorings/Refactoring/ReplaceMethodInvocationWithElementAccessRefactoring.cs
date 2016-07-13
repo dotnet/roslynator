@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -286,7 +285,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 expression = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
-                    .WithAdditionalAnnotations(Formatter.Annotation);
+                    .WithFormatterAnnotation();
             }
 
             return expression;

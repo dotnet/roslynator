@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Microsoft.CodeAnalysis.Simplification;
-using Pihrtsoft.CodeAnalysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -75,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             BlockSyntax newBody = body
                 .WithStatements(body.Statements.Insert(index, argumentNullCheck))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(body, newBody);
 
@@ -95,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static ThrowStatementSyntax ThrowArgumentNullException(string identifier)
         {
             NameSyntax type = ParseName("System.ArgumentNullException")
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
 
             ArgumentListSyntax argumentList =
                 ArgumentList(

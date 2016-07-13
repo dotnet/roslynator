@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -52,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             var parent = (BlockSyntax)block.Parent;
 
             BlockSyntax newNode = parent.ReplaceNode(block, block.Statements)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(parent, newNode);
 

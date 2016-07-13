@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -57,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             var rewriter = new ExpressionChainSyntaxRewriter(triviaList);
 
             SyntaxNode newNode = rewriter.Visit(expression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
 
@@ -72,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             SyntaxNode newNode = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
 

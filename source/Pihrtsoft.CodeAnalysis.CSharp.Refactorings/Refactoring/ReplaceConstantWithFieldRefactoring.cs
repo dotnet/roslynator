@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -23,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             FieldDeclarationSyntax newField = field
                 .WithModifiers(GetModifiers(field, semanticModel, cancellationToken))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(field, newField);
 

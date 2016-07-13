@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -244,7 +243,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 CreateConstructor(GetConstructorIdentifierText(parentDeclaration), assignableMembers));
 
             MemberDeclarationSyntax newNode = parentDeclaration.SetMembers(newMembers)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(parentDeclaration, newNode);
 

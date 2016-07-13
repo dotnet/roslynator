@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -47,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             TypeSyntax newType = CreateTypeSyntax(typeSymbol)
                 .WithTriviaFrom(type)
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
 
@@ -64,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             newType = newType
                 .WithTriviaFrom(type)
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
 

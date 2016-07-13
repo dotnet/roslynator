@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Simplification;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -60,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
                 .WithTriviaFrom(type)
-                .WithAdditionalAnnotations(Simplifier.Annotation);
+                .WithSimplifierAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
 

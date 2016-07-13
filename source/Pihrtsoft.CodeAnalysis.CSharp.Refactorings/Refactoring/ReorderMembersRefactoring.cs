@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -67,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             ClassDeclarationSyntax newDeclaration = classDeclaration
                 .WithMembers(ProcessMemberDeclarations(classDeclaration.Members))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(classDeclaration, newDeclaration);
 
@@ -83,7 +82,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             StructDeclarationSyntax newDeclaration = structDeclaration
                 .WithMembers(ProcessMemberDeclarations(structDeclaration.Members))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(structDeclaration, newDeclaration);
 
@@ -99,7 +98,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             InterfaceDeclarationSyntax newDeclaration = interfaceDeclaration
                 .WithMembers(ProcessMemberDeclarations(interfaceDeclaration.Members))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(interfaceDeclaration, newDeclaration);
 

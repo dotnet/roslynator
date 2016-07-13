@@ -10,9 +10,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
-using Pihrtsoft.CodeAnalysis;
-using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -125,7 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ElseClauseSyntax newElseClause = elseClause
                 .WithStatement(ifStatement)
                 .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(elseClause, newElseClause);
 

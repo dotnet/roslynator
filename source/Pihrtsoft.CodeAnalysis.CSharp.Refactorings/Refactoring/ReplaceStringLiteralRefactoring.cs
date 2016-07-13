@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -64,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     PredefinedType(Token(SyntaxKind.StringKeyword)),
                     IdentifierName("Empty"))
                 .WithTriviaFrom(literalExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, newNode);
 
@@ -97,7 +96,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             BinaryExpressionSyntax newNode = CreateAddExpression(literalExpression.Token.ValueText)
                 .WithTriviaFrom(literalExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(literalExpression, newNode);
 

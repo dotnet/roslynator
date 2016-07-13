@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -61,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             newObjectCreationExpression = newObjectCreationExpression
                 .WithTriviaFrom(objectCreationExpression)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(objectCreationExpression, newObjectCreationExpression);
 

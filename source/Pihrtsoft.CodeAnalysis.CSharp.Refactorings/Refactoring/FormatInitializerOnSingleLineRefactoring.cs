@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -26,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         initializer.Expressions.Select(expression => expression.WithoutTrivia())))
                 .WithOpenBraceToken(Token(SyntaxKind.OpenBraceToken))
                 .WithCloseBraceToken(Token(SyntaxKind.CloseBraceToken))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(initializer.Parent, GetNewExpression(newInitializer, (ExpressionSyntax)initializer.Parent));
 

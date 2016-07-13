@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -20,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             AccessorDeclarationSyntax newAccessor = WhitespaceOrEndOfLineRemover.RemoveFrom(accessor)
                 .WithTriviaFrom(accessor)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             root = root.ReplaceNode(accessor, newAccessor);
 

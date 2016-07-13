@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -51,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (lambda.ParameterList.Parameters.Count == 1)
                 newLambda = ConvertParenthesizedLambdaToSimpleLambda((ParenthesizedLambdaExpressionSyntax)newLambda);
 
-            newLambda = newLambda.WithAdditionalAnnotations(Formatter.Annotation);
+            newLambda = newLambda.WithFormatterAnnotation();
 
             root = root.ReplaceNode(lambda, newLambda);
 

@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -37,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             SwitchStatementSyntax newSwitchStatement = switchStatement
                 .WithSections(List(newSections))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(switchStatement, newSwitchStatement);
 

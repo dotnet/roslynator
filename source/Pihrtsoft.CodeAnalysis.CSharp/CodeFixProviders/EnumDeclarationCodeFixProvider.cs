@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -51,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             var rewriter = new EnumDeclarationSyntaxRewriter(enumDeclaration);
 
             SyntaxNode newNode = rewriter.Visit(enumDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(enumDeclaration, newNode);
 

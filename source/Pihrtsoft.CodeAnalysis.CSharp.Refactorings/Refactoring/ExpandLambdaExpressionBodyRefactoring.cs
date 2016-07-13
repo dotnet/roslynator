@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -33,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ISymbol symbol = semanticModel.GetSymbolInfo(lambda, cancellationToken).Symbol;
 
             LambdaExpressionSyntax newNode = GetNewNode(lambda, expression, symbol)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(lambda, newNode);
 

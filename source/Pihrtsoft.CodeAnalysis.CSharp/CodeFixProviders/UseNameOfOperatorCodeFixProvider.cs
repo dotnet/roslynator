@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -46,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
             InvocationExpressionSyntax newNode = CSharpFactory.NameOf(literalExpression.Token.ValueText)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, newNode);
 

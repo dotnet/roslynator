@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -33,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandProperty(propertyDeclaration)
                 .WithTriviaFrom(propertyDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, newPropertyDeclaration);
 

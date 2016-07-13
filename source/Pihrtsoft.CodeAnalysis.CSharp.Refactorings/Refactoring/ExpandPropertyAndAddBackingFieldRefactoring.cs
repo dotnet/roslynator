@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Formatting;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -31,11 +30,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName)
                 .WithTriviaFrom(propertyDeclaration)
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             var parentMember = (MemberDeclarationSyntax)propertyDeclaration.Parent;
             SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();

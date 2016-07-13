@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Formatting;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
@@ -249,7 +248,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             BlockSyntax newBlock = block
                 .WithStatements(newStatements.InsertRange(index + 1, expressions))
-                .WithAdditionalAnnotations(Formatter.Annotation);
+                .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(block, newBlock);
 
