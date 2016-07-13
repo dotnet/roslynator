@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     SyntaxKind.ObjectCreationExpression,
                     SyntaxKind.CollectionInitializerExpression) == true)
             {
-                if (initializer.IsSingleline(includeExteriorTrivia: false))
+                if (initializer.IsSingleLine(includeExteriorTrivia: false))
                 {
                     context.RegisterRefactoring(
                         "Format initializer on multiple lines",
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             initializer,
                             cancellationToken));
                 }
-                else if (initializer.Expressions.All(expression => expression.IsSingleline()))
+                else if (initializer.Expressions.All(expression => expression.IsSingleLine()))
                 {
                     context.RegisterRefactoring(
                         "Format initializer on a single line",

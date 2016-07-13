@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             BlockSyntax block = anonymousMethod.Block;
 
-            if (block.Statements.Count == 1 && block.IsSingleline())
+            if (block.Statements.Count == 1 && block.IsSingleLine())
             {
                 StatementSyntax statement = block.Statements[0];
 

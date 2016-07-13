@@ -82,14 +82,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return declaration;
         }
 
-        public static MemberDeclarationSyntax GetMember(this MemberDeclarationSyntax declaration, int index)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            return GetMembers(declaration)[index];
-        }
-
         public static SyntaxList<MemberDeclarationSyntax> GetMembers(this MemberDeclarationSyntax declaration)
         {
             if (declaration == null)

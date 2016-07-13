@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (statement.IsKind(SyntaxKind.Block))
                 return null;
 
-            if (statement.IsSingleline() && AllowsEmbeddedStatement(node))
+            if (statement.IsSingleLine() && AllowsEmbeddedStatement(node))
                 return null;
 
             return statement;
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
                 if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement)
                     && !statement.IsKind(SyntaxKind.LabeledStatement)
-                    && statement.IsSingleline()
+                    && statement.IsSingleLine()
                     && AllowsEmbeddedStatement(node))
                 {
                     return block;
@@ -255,7 +255,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             {
                 case SyntaxKind.IfStatement:
                     {
-                        return ((IfStatementSyntax)node).Condition?.IsMultiline() != true;
+                        return ((IfStatementSyntax)node).Condition?.IsMultiLine() != true;
                     }
                 case SyntaxKind.ElseClause:
                     {
@@ -263,7 +263,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     }
                 case SyntaxKind.DoStatement:
                     {
-                        return ((DoStatementSyntax)node).Condition?.IsMultiline() != true;
+                        return ((DoStatementSyntax)node).Condition?.IsMultiLine() != true;
                     }
                 case SyntaxKind.ForEachStatement:
                     {
@@ -278,22 +278,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     }
                 case SyntaxKind.UsingStatement:
                     {
-                        return ((UsingStatementSyntax)node).DeclarationOrExpression()?.IsMultiline() != true;
+                        return ((UsingStatementSyntax)node).DeclarationOrExpression()?.IsMultiLine() != true;
                     }
                 case SyntaxKind.WhileStatement:
                     {
                         var whileStatement = (WhileStatementSyntax)node;
 
-                        return whileStatement.Condition?.IsMultiline() != true
+                        return whileStatement.Condition?.IsMultiLine() != true
                             || whileStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true;
                     }
                 case SyntaxKind.LockStatement:
                     {
-                        return ((LockStatementSyntax)node).Expression?.IsMultiline() != true;
+                        return ((LockStatementSyntax)node).Expression?.IsMultiLine() != true;
                     }
                 case SyntaxKind.FixedStatement:
                     {
-                        return ((FixedStatementSyntax)node).Declaration?.IsMultiline() != true;
+                        return ((FixedStatementSyntax)node).Declaration?.IsMultiLine() != true;
                     }
                 default:
                     {

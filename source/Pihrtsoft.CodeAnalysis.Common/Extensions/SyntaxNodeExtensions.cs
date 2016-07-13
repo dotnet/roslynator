@@ -14,7 +14,15 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
-        private static readonly SyntaxTokenList _emptySyntaxTokenList = SyntaxFactory.TokenList();
+        public static TextSpan TrimmedSpan(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return TextSpan.FromBounds(
+                GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
+                GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
+        }
 
         public static int GetSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -22,34 +30,20 @@ namespace Pihrtsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).StartLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).StartLine();
 
             return -1;
         }
 
         public static int GetFullSpanStartLine(
             this SyntaxNode node,
-            bool trimWhitespace = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-            {
-                if (trimWhitespace)
-                {
-                    TextSpan span = TextSpan.FromBounds(
-                        GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
-                        GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
-
-                    return node.SyntaxTree.GetLineSpan(span).StartLinePosition.Line;
-                }
-                else
-                {
-                    return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLinePosition.Line;
-                }
-            }
+                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLine();
 
             return -1;
         }
@@ -60,34 +54,20 @@ namespace Pihrtsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).EndLinePosition.Line;
+                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).EndLine();
 
             return -1;
         }
 
         public static int GetFullSpanEndLine(
             this SyntaxNode node,
-            bool trimWhitespace = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
-            {
-                if (trimWhitespace)
-                {
-                    TextSpan span = TextSpan.FromBounds(
-                        GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
-                        GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
-
-                    return node.SyntaxTree.GetLineSpan(span).EndLinePosition.Line;
-                }
-                else
-                {
-                    return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLinePosition.Line;
-                }
-            }
+                return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLine();
 
             return -1;
         }
@@ -160,7 +140,7 @@ namespace Pihrtsoft.CodeAnalysis
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Modifiers;
                 default:
-                    return _emptySyntaxTokenList;
+                    return SyntaxFactory.TokenList();
             }
         }
 
@@ -242,7 +222,7 @@ namespace Pihrtsoft.CodeAnalysis
             return null;
         }
 
-        public static bool IsSingleline(
+        public static bool IsSingleLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
             bool trimWhitespace = true)
@@ -256,15 +236,15 @@ namespace Pihrtsoft.CodeAnalysis
 
             FileLinePositionSpan positionSpan = node.SyntaxTree.GetLineSpan(span);
 
-            return positionSpan.StartLinePosition.Line == positionSpan.EndLinePosition.Line;
+            return positionSpan.StartLine() == positionSpan.EndLine();
         }
 
-        public static bool IsMultiline(
+        public static bool IsMultiLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
             bool trimWhitespace = true)
         {
-            return !IsSingleline(node, includeExteriorTrivia, trimWhitespace);
+            return !IsSingleLine(node, includeExteriorTrivia, trimWhitespace);
         }
 
         private static int GetStartIndex(SyntaxNode node, bool includeExteriorTrivia, bool trimWhitespace)
@@ -280,7 +260,7 @@ namespace Pihrtsoft.CodeAnalysis
 
                 for (int i = 0; i < leading.Count; i++)
                 {
-                    if (!leading[i].IsKind(SyntaxKind.WhitespaceTrivia) && !leading[i].IsKind(SyntaxKind.EndOfLineTrivia))
+                    if (!leading[i].IsWhitespaceOrEndOfLineTrivia())
                         break;
 
                     start = leading[i].Span.End;
@@ -303,7 +283,7 @@ namespace Pihrtsoft.CodeAnalysis
 
                 for (int i = trailing.Count - 1; i >= 0; i--)
                 {
-                    if (!trailing[i].IsKind(SyntaxKind.WhitespaceTrivia) && !trailing[i].IsKind(SyntaxKind.EndOfLineTrivia))
+                    if (!trailing[i].IsWhitespaceOrEndOfLineTrivia())
                         break;
 
                     end = trailing[i].SpanStart;
@@ -362,30 +342,30 @@ namespace Pihrtsoft.CodeAnalysis
                 .FirstOrDefault(f => f.IsKind(kind));
         }
 
-        public static TNode TrimLeadingWhitespace<TNode>(this TNode node) where TNode : SyntaxNode
+        public static TNode TrimLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.WithLeadingTrivia(node.GetLeadingTrivia().TrimLeadingWhitespace());
+            return node.WithLeadingTrivia(node.GetLeadingTrivia().TrimStart());
         }
 
-        public static TNode TrimTrailingWhitespace<TNode>(this TNode node) where TNode : SyntaxNode
+        public static TNode TrimTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.WithTrailingTrivia(node.GetTrailingTrivia().TrimTrailingWhitespace());
+            return node.WithTrailingTrivia(node.GetTrailingTrivia().TrimEnd());
         }
 
-        public static TNode TrimWhitespace<TNode>(this TNode node) where TNode : SyntaxNode
+        public static TNode TrimTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             return node
-                .TrimLeadingWhitespace()
-                .TrimTrailingWhitespace();
+                .TrimLeadingTrivia()
+                .TrimTrailingTrivia();
         }
 
         public static bool IsMemberDeclaration(this SyntaxNode node)

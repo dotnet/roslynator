@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression))
             {
-                if (conditionalExpression.IsSingleline())
+                if (conditionalExpression.IsSingleLine())
                 {
                     context.RegisterRefactoring(
                         "Format conditional expression on multiple lines",

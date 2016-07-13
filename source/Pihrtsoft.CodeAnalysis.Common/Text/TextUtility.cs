@@ -58,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.Text
             return char.ToUpperInvariant(value[0]) + value.Substring(1);
         }
 
-        public static bool StartsWithLowercaseLetter(string value)
+        public static bool StartsWithLowerLetter(string value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));

@@ -79,7 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static AccessorListSyntax GetNewAccessorList(AccessorListSyntax accessorList)
         {
-            if (accessorList.IsSingleline(includeExteriorTrivia: false))
+            if (accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
                 SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
                     .Add(CSharpFactory.NewLine);

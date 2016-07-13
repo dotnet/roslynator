@@ -15,14 +15,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && !body.OpenBraceToken.IsMissing
                 && !body.CloseBraceToken.IsMissing)
             {
-                if (body.IsSingleline())
+                if (body.IsSingleLine())
                 {
                     context.RegisterRefactoring(
                         "Format braces on multiple lines",
                         cancellationToken => FormatAccessorBraceOnMultipleLinesRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
                 }
                 else if (body.Statements.Count == 1
-                    && body.Statements[0].IsSingleline())
+                    && body.Statements[0].IsSingleLine())
                 {
                     context.RegisterRefactoring(
                         "Format braces on a single line",

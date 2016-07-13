@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (method.Body != null)
             {
                 bool singleline = method.Body.Statements.Count == 1
-                    && method.Body.Statements[0].IsSingleline();
+                    && method.Body.Statements[0].IsSingleLine();
 
                 return CreateAccessorList(Block(method.Body?.Statements), singleline)
                     .WithOpenBraceToken(method.Body.OpenBraceToken)

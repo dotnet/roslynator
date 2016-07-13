@@ -116,6 +116,7 @@
     <Compile Include="Extensions\SyntaxNodeOrToken.cs" />
     <Compile Include="Extensions\SyntaxTokenExtensions.cs" />
     <Compile Include="Extensions\SyntaxTokenListExtensions.cs" />
+    <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingDirectiveSyntaxExtensions.cs" />
@@ -131,7 +132,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="CSharp\SyntaxUtility.cs" />
-    <Compile Include="Text\Extensions\TextSpanExtensions.cs" />
     <Compile Include="Text\TextUtility.cs" />
   </ItemGroup>
   <ItemGroup>

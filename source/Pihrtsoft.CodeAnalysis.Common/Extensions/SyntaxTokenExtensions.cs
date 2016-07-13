@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLine();
 
             return -1;
         }
@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLine();
 
             return -1;
         }
@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLine();
 
             return -1;
         }
@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
-                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLinePosition.Line;
+                return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLine();
 
             return -1;
         }
@@ -53,11 +53,11 @@ namespace Pihrtsoft.CodeAnalysis
             return token.WithAdditionalAnnotations(Simplifier.Annotation);
         }
 
-        public static SyntaxToken TrimLeadingWhitespace(this SyntaxToken token)
-            => token.WithLeadingTrivia(token.LeadingTrivia.TrimLeadingWhitespace());
+        public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
+            => token.WithLeadingTrivia(token.LeadingTrivia.TrimStart());
 
-        public static SyntaxToken TrimTrailingWhitespace(this SyntaxToken token)
-            => token.WithTrailingTrivia(token.TrailingTrivia.TrimTrailingWhitespace());
+        public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
+            => token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
 
         public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxToken token)
             => token.LeadingTrivia.AddRange(token.TrailingTrivia);

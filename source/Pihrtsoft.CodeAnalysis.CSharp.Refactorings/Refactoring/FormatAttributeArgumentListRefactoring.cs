@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (en.MoveNext())
             {
                 yield return en.Current
-                    .TrimTrailingWhitespace()
+                    .TrimTrailingTrivia()
                     .WithLeadingTrivia(trivia);
 
                 while (en.MoveNext())
@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .WithTrailingNewLine();
 
                     yield return en.Current
-                        .TrimTrailingWhitespace()
+                        .TrimTrailingTrivia()
                         .WithLeadingTrivia(trivia);
                 }
             }

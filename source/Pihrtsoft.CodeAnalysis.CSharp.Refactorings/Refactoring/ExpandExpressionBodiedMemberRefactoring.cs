@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.PropertyDeclaration:
                     {
                         return ((PropertyDeclarationSyntax)member)
-                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleline()))
+                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleLine()))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.IndexerDeclaration:
                     {
                         return ((IndexerDeclarationSyntax)member)
-                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleline()))
+                            .WithAccessorList(CreateAccessorList(block, expression.IsSingleLine()))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }

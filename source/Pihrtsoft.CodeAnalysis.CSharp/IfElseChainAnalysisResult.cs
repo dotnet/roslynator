@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         private static bool SupportsEmbedded(StatementSyntax statement)
         {
             if (statement.Parent.IsKind(SyntaxKind.IfStatement)
-                && ((IfStatementSyntax)statement.Parent).Condition?.IsMultiline() == true)
+                && ((IfStatementSyntax)statement.Parent).Condition?.IsMultiLine() == true)
             {
                 return false;
             }
@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             return !statement.IsKind(SyntaxKind.LocalDeclarationStatement)
                 && !statement.IsKind(SyntaxKind.LabeledStatement)
-                && statement.IsSingleline();
+                && statement.IsSingleLine();
         }
 
         private static StatementSyntax GetStatement(SyntaxNode node)

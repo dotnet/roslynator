@@ -165,7 +165,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax whenTrue = conditionalExpression.WhenTrue.WithoutTrivia();
             ExpressionSyntax whenFalse = conditionalExpression.WhenFalse.WithoutTrivia();
 
-            bool addBlock = whenTrue.IsMultiline() || whenFalse.IsMultiline();
+            bool addBlock = whenTrue.IsMultiLine() || whenFalse.IsMultiLine();
 
             return IfStatement(
                     GetCondition(conditionalExpression),
@@ -245,7 +245,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static IfStatementSyntax CreateIfStatement(ExpressionSyntax condition, StatementSyntax trueStatement, StatementSyntax falseStatement)
         {
-            bool addBlock = trueStatement.IsMultiline() || falseStatement.IsMultiline();
+            bool addBlock = trueStatement.IsMultiLine() || falseStatement.IsMultiLine();
 
             StatementSyntax ifContent = trueStatement;
 

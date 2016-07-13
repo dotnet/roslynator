@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool ContainsEndOfLine(this SyntaxTriviaList list)
             => Contains(list, SyntaxKind.EndOfLineTrivia);
 
-        public static SyntaxTriviaList TrimLeadingWhitespace(this SyntaxTriviaList list)
+        public static SyntaxTriviaList TrimStart(this SyntaxTriviaList list)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis
             return SyntaxTriviaList.Empty;
         }
 
-        public static SyntaxTriviaList TrimTrailingWhitespace(this SyntaxTriviaList list)
+        public static SyntaxTriviaList TrimEnd(this SyntaxTriviaList list)
         {
             for (int i = list.Count - 1; i >= 0; i--)
             {
@@ -49,13 +49,12 @@ namespace Pihrtsoft.CodeAnalysis
             return SyntaxTriviaList.Empty;
         }
 
-        public static SyntaxTriviaList TrimWhitespace(this SyntaxTriviaList list)
+        public static SyntaxTriviaList Trim(this SyntaxTriviaList list)
         {
             int startIndex = 0;
             for (int i = 0; i < list.Count; i++)
             {
-                if (!list[i].IsKind(SyntaxKind.WhitespaceTrivia)
-                    && !list[i].IsKind(SyntaxKind.EndOfLineTrivia))
+                if (!list[i].IsWhitespaceOrEndOfLineTrivia())
                 {
                     startIndex = i;
                 }
@@ -64,8 +63,7 @@ namespace Pihrtsoft.CodeAnalysis
             int endIndex = list.Count;
             for (int i = list.Count - 1; i >= 0; i--)
             {
-                if (!list[i].IsKind(SyntaxKind.WhitespaceTrivia)
-                    && !list[i].IsKind(SyntaxKind.EndOfLineTrivia))
+                if (!list[i].IsWhitespaceOrEndOfLineTrivia())
                 {
                     endIndex = i;
                 }

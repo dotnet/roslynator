@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (expressions.Length <= 1)
                 return;
 
-            if (expressions[0].IsSingleline(includeExteriorTrivia: false))
+            if (expressions[0].IsSingleLine(includeExteriorTrivia: false))
             {
                 context.RegisterRefactoring(
                     "Format expression chain on multiple lines",

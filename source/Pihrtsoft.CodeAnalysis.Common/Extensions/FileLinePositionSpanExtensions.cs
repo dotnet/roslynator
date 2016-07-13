@@ -15,5 +15,15 @@ namespace Pihrtsoft.CodeAnalysis
         {
             return fileLinePositionSpan.EndLinePosition.Line;
         }
+
+        public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
+        {
+            return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
+        }
+
+        public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
+        {
+            return !fileLinePositionSpan.IsMultiLine();
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxListExtensions
     {
-        public static bool Contains<T>(this SyntaxList<T> list, SyntaxKind kind) where T : SyntaxNode
+        public static bool Contains<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
         {
             return list.IndexOf(kind) != -1;
         }

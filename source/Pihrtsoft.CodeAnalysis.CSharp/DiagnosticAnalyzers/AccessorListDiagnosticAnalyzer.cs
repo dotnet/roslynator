@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -35,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (accessorList.Accessors.Any(f => f.Body != null))
             {
-                if (accessorList.IsSingleline(includeExteriorTrivia: false))
+                if (accessorList.IsSingleLine(includeExteriorTrivia: false))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.FormatAccessorList,
@@ -56,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
             else if (accessorList.Parent?.IsKind(SyntaxKind.PropertyDeclaration) == true
                 && accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
-                && !accessorList.IsSingleline(includeExteriorTrivia: false))
+                && !accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
                 var propertyDeclaration = (PropertyDeclarationSyntax)accessorList.Parent;
 
@@ -85,8 +84,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (body != null
                 && body.Statements.Count <= 1
-                && TextSpan.FromBounds(accessor.Keyword.Span.Start, accessor.Span.End).IsMultiline(accessor.SyntaxTree)
-                && (body.Statements.Count == 0 || body.Statements[0].IsSingleline()))
+                && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.Span.Start, accessor.Span.End))
+                && (body.Statements.Count == 0 || body.Statements[0].IsSingleLine()))
             {
                 return accessor
                     .DescendantTrivia(accessor.Span, descendIntoTrivia: true)

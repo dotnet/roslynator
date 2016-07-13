@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (expression == null)
                 return;
 
-            if (expression.IsMultiline())
+            if (expression.IsMultiLine())
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidMultilineExpressionBody,

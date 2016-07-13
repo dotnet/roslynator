@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else
             {
-                StatementSyntax newNode = statement.TrimLeadingWhitespace()
+                StatementSyntax newNode = statement.TrimLeadingTrivia()
                     .WithFormatterAnnotation();
 
                 SyntaxNode newRoot = oldRoot.ReplaceNode(block, newNode);

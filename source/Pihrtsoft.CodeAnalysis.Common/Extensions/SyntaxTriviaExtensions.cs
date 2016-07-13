@@ -10,24 +10,10 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTriviaExtensions
     {
-        public static bool IsCommentTrivia(this SyntaxTrivia trivia)
-        {
-            switch (trivia.Kind())
-            {
-                case SyntaxKind.SingleLineCommentTrivia:
-                case SyntaxKind.MultiLineCommentTrivia:
-                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         public static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
-                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLinePosition.Line;
+                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLine();
 
             return -1;
         }
@@ -35,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetFullSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
-                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLinePosition.Line;
+                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLine();
 
             return -1;
         }
@@ -43,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
-                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLinePosition.Line;
+                return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLine();
 
             return -1;
         }
@@ -51,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static int GetFullSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
-                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLinePosition.Line;
+                return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLine();
 
             return -1;
         }
@@ -95,6 +81,11 @@ namespace Pihrtsoft.CodeAnalysis
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineCommentTrivia);
         }
 
+        public static bool IsMultiLineCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.MultiLineCommentTrivia);
+        }
+
         public static bool IsSingleLineDocumentationCommentTrivia(this SyntaxTrivia trivia)
         {
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineDocumentationCommentTrivia);
@@ -108,6 +99,14 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool IsDocumentationCommentTrivia(this SyntaxTrivia trivia)
         {
             return trivia.IsSingleLineDocumentationCommentTrivia() || trivia.IsMultiLineDocumentationCommentTrivia();
+        }
+
+        public static bool IsCommentTrivia(this SyntaxTrivia trivia)
+        {
+            return trivia.IsSingleLineCommentTrivia()
+                || trivia.IsSingleLineDocumentationCommentTrivia()
+                || trivia.IsMultiLineCommentTrivia()
+                || trivia.IsMultiLineDocumentationCommentTrivia();
         }
     }
 }

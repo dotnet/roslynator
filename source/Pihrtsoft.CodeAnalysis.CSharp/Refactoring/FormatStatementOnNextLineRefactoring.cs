@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 var block = (BlockSyntax)statement.Parent;
 
-                if (block.IsSingleline(includeExteriorTrivia: false))
+                if (block.IsSingleLine(includeExteriorTrivia: false))
                 {
                     SyntaxTriviaList triviaList = block.CloseBraceToken.LeadingTrivia
                         .Add(CSharpFactory.NewLine);

@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
 
-            StatementSyntax statement = block.Statements[0].TrimLeadingWhitespace();
+            StatementSyntax statement = block.Statements[0].TrimLeadingTrivia();
 
             statement = statement.WithFormatterAnnotation();
 

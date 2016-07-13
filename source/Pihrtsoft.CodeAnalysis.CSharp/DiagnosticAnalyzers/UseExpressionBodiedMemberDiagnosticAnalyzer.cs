@@ -164,7 +164,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return false;
             }
 
-            if (!returnStatement.IsSingleline())
+            if (!returnStatement.IsSingleLine())
                 return false;
 
             context.ReportDiagnostic(

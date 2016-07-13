@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList))
             {
-                if (parameterList.IsSingleline())
+                if (parameterList.IsSingleLine())
                 {
                     if (parameterList.Parameters.Count > 1)
                     {

@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (binaryExpression.Span.Contains(context.Span)
                     && IsAllowedBinaryExpression(binaryExpression)
-                    && binaryExpression.IsSingleline())
+                    && binaryExpression.IsSingleLine())
                 {
                     string title = binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true
                         ? "Format binary expressions on multiple lines"
@@ -113,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
                 {
                     node = node
-                        .WithLeft(node.Left.TrimWhitespace())
+                        .WithLeft(node.Left.TrimTrivia())
                         .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
 
                     _previous = node;

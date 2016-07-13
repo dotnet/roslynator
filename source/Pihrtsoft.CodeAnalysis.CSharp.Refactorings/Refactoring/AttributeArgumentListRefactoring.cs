@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList))
             {
-                if (argumentList.IsSingleline())
+                if (argumentList.IsSingleLine())
                 {
                     if (argumentList.Arguments.Count > 1)
                     {
