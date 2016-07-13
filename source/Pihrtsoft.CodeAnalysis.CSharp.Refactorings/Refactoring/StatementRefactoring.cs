@@ -10,43 +10,66 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveOrDuplicateStatementRefactoring
+    internal static class StatementRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement))
+            if (context.Settings.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.RemoveStatement,
+                RefactoringIdentifiers.DuplicateStatement,
+                RefactoringIdentifiers.CommentOutStatement))
             {
                 StatementSyntax statement = GetStatement(context, block, block.Parent);
 
-                if (statement != null
-                    && !EmbeddedStatementAnalysis.IsEmbeddedStatement(statement)
-                    && statement.Parent?.IsKind(SyntaxKind.Block) == true)
+                if (statement != null)
                 {
-                    RegisterRefactoring(context, statement);
+                    if (!EmbeddedStatementAnalysis.IsEmbeddedStatement(statement)
+                        && statement.Parent?.IsKind(SyntaxKind.Block) == true)
+                    {
+                        RegisterRefactoring(context, statement);
+                    }
+
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
+                        CommentOutRefactoring.RegisterRefactoring(context, statement);
                 }
             }
         }
 
         public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.RemoveStatement,
+                    RefactoringIdentifiers.DuplicateStatement)
                 && switchStatement.Parent?.IsKind(SyntaxKind.Block) == true
                 && (switchStatement.OpenBraceToken.Span.Contains(context.Span)
                     || switchStatement.CloseBraceToken.Span.Contains(context.Span)))
             {
                 RegisterRefactoring(context, switchStatement);
             }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement)
+                && (switchStatement.OpenBraceToken.Span.Contains(context.Span)
+                    || switchStatement.CloseBraceToken.Span.Contains(context.Span)))
+            {
+                CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
+            }
         }
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            context.RegisterRefactoring(
-                "Remove statement",
-                cancellationToken => RemoveStatementAsync(context.Document, statement, cancellationToken));
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement))
+            {
+                context.RegisterRefactoring(
+                    "Remove statement",
+                    cancellationToken => RemoveStatementAsync(context.Document, statement, cancellationToken));
+            }
 
-            context.RegisterRefactoring(
-                "Duplicate statement",
-                cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken));
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
+            {
+                context.RegisterRefactoring(
+                    "Duplicate statement",
+                    cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken));
+            }
         }
 
         private static StatementSyntax GetStatement(

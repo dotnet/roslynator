@@ -25,6 +25,39 @@
       <Syntax>boolean? expression in place where must be boolean expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="CommentOutMember" Title="Comment out member" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>constructor</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+      <Syntax>operator</Syntax>
+      <Syntax>event</Syntax>
+      <Syntax>namespace</Syntax>
+      <Syntax>class</Syntax>
+      <Syntax>struct</Syntax>
+      <Syntax>interface</Syntax>
+    </Syntaxes>
+    <Scope>opening or closing brace</Scope>
+  </Refactoring>
+  <Refactoring Id="CommentOutStatement" Title="Comment out statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>checked statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>switch statement</Syntax>
+      <Syntax>try statement</Syntax>
+      <Syntax>unchecked statement</Syntax>
+      <Syntax>unsafe statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>opening or closing brace</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceEmbeddedStatementWithBlock" Title="Replace embedded statement with block" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>

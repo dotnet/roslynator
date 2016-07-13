@@ -22,6 +22,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ChangeMethodReturnTypeToVoid = true;
             ChangeTypeAccordingToExpression = true;
             CheckParameterForNull = true;
+            CommentOutMember = true;
+            CommentOutStatement = true;
             DuplicateArgument = true;
             DuplicateMember = true;
             DuplicateParameter = true;
@@ -135,6 +137,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
+            SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
+            SetIsEnabled(RefactoringIdentifiers.CommentOutStatement, CommentOutStatement);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
             SetIsEnabled(RefactoringIdentifiers.DuplicateParameter, DuplicateParameter);
@@ -331,6 +335,26 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter\r\nScope: parameter identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CheckParameterForNull
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Comment out member")]
+        [Description("Syntax: method, constructor, property, indexer, operator, event, namespace, class, struct, interface\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CommentOutMember
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Comment out statement")]
+        [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CommentOutStatement
         {
             get;
             set;
