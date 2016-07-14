@@ -203,7 +203,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             int index = block.Statements.IndexOf(statement);
 
-            BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index, statement));
+            if (index == 0
+                && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+            {
+                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+            }
+
+            BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));
 
             root = root.ReplaceNode(block, newBlock);
 

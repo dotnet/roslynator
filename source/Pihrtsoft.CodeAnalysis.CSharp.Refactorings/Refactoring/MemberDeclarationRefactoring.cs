@@ -28,7 +28,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
-                        if (CanBeRemovedOrDuplicated(context, member))
+                        if (context.Settings.IsAnyRefactoringEnabled(
+                                RefactoringIdentifiers.RemoveMember,
+                                RefactoringIdentifiers.DuplicateMember,
+                                RefactoringIdentifiers.CommentOutMember)
+                            && CanBeRemovedOrDuplicated(context, member))
                         {
                             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                             {
@@ -184,13 +188,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool CanBeRemovedOrDuplicated(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            if (!context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.RemoveMember,
-                    RefactoringIdentifiers.DuplicateMember))
-            {
-                return false;
-            }
-
             if (member.Parent?.IsAnyKind(
                     SyntaxKind.NamespaceDeclaration,
                     SyntaxKind.ClassDeclaration,

@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        private static SyntaxNode Refactor(MemberDeclarationSyntax member)
+        private static MemberDeclarationSyntax Refactor(MemberDeclarationSyntax member)
         {
             switch (member.Parent.Kind())
             {
@@ -37,25 +37,53 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         var parent = (NamespaceDeclarationSyntax)member.Parent;
                         int index = parent.Members.IndexOf(member);
-                        return parent.WithMembers(parent.Members.Insert(index, member));
+
+                        if (index == 0
+                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                        {
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                        }
+
+                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var parent = (ClassDeclarationSyntax)member.Parent;
                         int index = parent.Members.IndexOf(member);
-                        return parent.WithMembers(parent.Members.Insert(index, member));
+
+                        if (index == 0
+                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                        {
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                        }
+
+                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var parent = (StructDeclarationSyntax)member.Parent;
                         int index = parent.Members.IndexOf(member);
-                        return parent.WithMembers(parent.Members.Insert(index, member));
+
+                        if (index == 0
+                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                        {
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                        }
+
+                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var parent = (InterfaceDeclarationSyntax)member.Parent;
                         int index = parent.Members.IndexOf(member);
-                        return parent.WithMembers(parent.Members.Insert(index, member));
+
+                        if (index == 0
+                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                        {
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                        }
+
+                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
                     }
             }
 
