@@ -55,6 +55,7 @@
     <Compile Include="CSharp\Extensions\ConversionOperatorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ConstructorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\InvocationExpressionSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\LocalDeclarationStatementSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\OperatorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\EventDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\StructDeclarationSyntaxExtensions.cs" />

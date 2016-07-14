@@ -14,6 +14,16 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static TSyntax WithTriviaFrom<TSyntax>(this TSyntax syntax, SyntaxToken token) where TSyntax : SyntaxNode
+        {
+            if (syntax == null)
+                throw new ArgumentNullException(nameof(syntax));
+
+            return syntax
+                .WithLeadingTrivia(token.LeadingTrivia)
+                .WithTrailingTrivia(token.TrailingTrivia);
+        }
+
         public static TextSpan TrimmedSpan(this SyntaxNode node)
         {
             if (node == null)

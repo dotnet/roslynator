@@ -207,6 +207,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 Literal(value));
         }
 
+        public static LiteralExpressionSyntax CharacterLiteralExpression(char value)
+        {
+            return LiteralExpression(
+                SyntaxKind.CharacterLiteralExpression,
+                Literal(value));
+        }
+
         public static LiteralExpressionSyntax NumericLiteralExpression(int value)
         {
             return LiteralExpression(
@@ -227,6 +234,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static LiteralExpressionSyntax FalseLiteralExpression()
         {
             return LiteralExpression(SyntaxKind.FalseLiteralExpression);
+        }
+
+        public static LiteralExpressionSyntax NullLiteralExpression()
+        {
+            return LiteralExpression(SyntaxKind.NullLiteralExpression);
         }
 
         public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, ExpressionSyntax right)

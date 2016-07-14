@@ -11,6 +11,16 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
+        public static bool IsNoneKind(this SyntaxToken token)
+        {
+            return token.IsKind(SyntaxKind.None);
+        }
+
+        public static bool IsCommaToken(this SyntaxToken token)
+        {
+            return token.IsKind(SyntaxKind.CommaToken);
+        }
+
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
