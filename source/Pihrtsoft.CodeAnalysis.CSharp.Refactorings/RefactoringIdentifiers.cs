@@ -8,6 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public const string  AddCastExpression = " AddCastExpression";
         public const string AddBooleanComparison = "AddBooleanComparison";
+        public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddInterpolation = "AddInterpolation";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
@@ -42,6 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string FormatInitializer = "FormatInitializer";
         public const string FormatParameterList = "FormatParameterList";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
+        public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
         public const string IntroduceConstructor = "IntroduceConstructor";
         public const string IntroduceUsingStaticDirective = "IntroduceUsingStaticDirective";
         public const string MakeMemberAbstract = "MakeMemberAbstract";

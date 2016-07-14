@@ -25,6 +25,18 @@
       <Syntax>boolean? expression in place where must be boolean expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="InitializeLocalWithDefaultValue" Title="Initialize local with default value" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>local declaration without initializer</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
+  <Refactoring Id="AddDefaultValueToParameter" Title="Add default value to parameter" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>parameter without default value</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
   <Refactoring Id="CommentOutMember" Title="Comment out member" ExtensionVersion="0.0.0">
     <Syntaxes>
       <Syntax>method</Syntax>

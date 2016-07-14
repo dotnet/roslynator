@@ -44,6 +44,7 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\AddDefaultValueToParameterRefactoring.cs" />
     <Compile Include="Refactoring\AnonymousMethodExpressionRefactoring.cs" />
     <Compile Include="Refactoring\AttributeArgumentParameterNameRefactoring.cs" />
     <Compile Include="Refactoring\AttributeArgumentListRefactoring.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Refactoring\DuplicateAttributeArgumentRefactoring.cs" />
     <Compile Include="Refactoring\CaseSwitchLabelRefactoring.cs" />
     <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
+    <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="Refactoring\StatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatAttributeArgumentListRefactoring.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Refactoring\ReplaceWhileStatementWithDoStatementRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactoring\ChangeVariableDeclarationTypeRefactoring.cs" />
+    <Compile Include="Refactoring\InitializeLocalWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactoring\WrapDeclarationInUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />

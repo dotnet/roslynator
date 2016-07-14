@@ -21,19 +21,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     RefactoringIdentifiers.RenameParameterAccordingToTypeName,
                     RefactoringIdentifiers.CheckParameterForNull)
                 && closeParen.Parent?.IsKind(SyntaxKind.ParameterList) == true
-                && context.Span.Start > 0
-                && context.SupportsSemanticModel)
+                && context.Span.Start > 0)
             {
                 ParameterSyntax parameter = context.Root
                     .FindNode(new TextSpan(context.Span.Start - 1, 1))?
                     .FirstAncestorOrSelf<ParameterSyntax>();
 
                 if (parameter != null)
-                {
-                    await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
-
-                    await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter);
-                }
+                    await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
             }
 
             if (closeParen.Parent?.IsKind(SyntaxKind.ArgumentList) == true)

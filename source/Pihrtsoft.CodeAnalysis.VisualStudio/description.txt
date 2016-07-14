@@ -134,6 +134,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-cast-expression">Add cast expression</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-default-value-to-parameter">Add default value to parameter</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-interpolation">Add interpolation</a>
         </li>
         <li>
@@ -234,6 +237,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#generate-switch-sections">Generate switch sections</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>

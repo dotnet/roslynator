@@ -14,6 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         {
              AddCastExpression = true;
             AddBooleanComparison = true;
+            AddDefaultValueToParameter = true;
             AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
@@ -48,6 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             FormatInitializer = true;
             FormatParameterList = true;
             GenerateSwitchSections = true;
+            InitializeLocalWithDefaultValue = true;
             IntroduceConstructor = false;
             IntroduceUsingStaticDirective = true;
             MakeMemberAbstract = true;
@@ -129,6 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         {
             SetIsEnabled(RefactoringIdentifiers. AddCastExpression,  AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
+            SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
@@ -163,6 +166,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatInitializer, FormatInitializer);
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
+            SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
             SetIsEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective, IntroduceUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
@@ -255,6 +259,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: boolean? expression in place where must be boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddBooleanComparison
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add default value to parameter")]
+        [Description("Syntax: parameter without default value\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddDefaultValueToParameter
         {
             get;
             set;
@@ -595,6 +609,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: switch statement (that is empty or contains only default section)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool GenerateSwitchSections
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Initialize local with default value")]
+        [Description("Syntax: local declaration without initializer\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool InitializeLocalWithDefaultValue
         {
             get;
             set;
