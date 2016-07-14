@@ -32,8 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
-            if (variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) == false
-                && variableDeclaration.Type?.IsVar == false
+            if (variableDeclaration.Type?.IsVar == false
                 && variableDeclaration.Variables.Count == 1)
             {
                 ExpressionSyntax initializerValue = variableDeclaration.Variables[0].Initializer?.Value;
