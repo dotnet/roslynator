@@ -49,6 +49,7 @@
     <Compile Include="Refactoring\AttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactoring\CommentOutRefactoring.cs" />
     <Compile Include="Refactoring\DuplicateAttributeArgumentRefactoring.cs" />
+    <Compile Include="Refactoring\CaseSwitchLabelRefactoring.cs" />
     <Compile Include="Refactoring\EventFieldDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="Refactoring\StatementRefactoring.cs" />

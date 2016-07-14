@@ -48,6 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fVariableDeclaration = false;
             bool fInterpolatedStringText = false;
             bool fElseClause = false;
+            bool fCaseSwitchLabel = false;
 
             bool fExpression = false;
             bool fAnonymousMethod = false;
@@ -179,6 +180,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         ElseClauseRefactoring.ComputeRefactorings(context, (ElseClauseSyntax)node);
                         fElseClause = true;
+                        continue;
+                    }
+
+                    if (!fCaseSwitchLabel
+                        && node.IsKind(SyntaxKind.CaseSwitchLabel))
+                    {
+                        await CaseSwitchLabelRefactoring.ComputeRefactoringsAsync(context, (CaseSwitchLabelSyntax)node);
+                        fCaseSwitchLabel = true;
                         continue;
                     }
 
