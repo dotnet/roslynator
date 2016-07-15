@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
@@ -66,9 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Analyzers.nuspec" />
+    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.nuspec" />
     <None Include="packages.config" />
-    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Analyzers.snk" />
+    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.snk" />
     <None Include="tools\install.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

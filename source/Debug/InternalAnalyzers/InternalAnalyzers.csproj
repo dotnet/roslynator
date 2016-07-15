@@ -69,11 +69,9 @@
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Pihrtsoft.CodeAnalysis.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Pihrtsoft.CodeAnalysis.CSharp.Analyzers\Pihrtsoft.CodeAnalysis.CSharp.Analyzers.csproj">
+    <ProjectReference Include="..\..\Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers\Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.csproj">
       <Project>{1db4a125-fbf8-4728-abf5-37b9df355753}</Project>
-      <Name>Pihrtsoft.CodeAnalysis.CSharp.Analyzers</Name>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Name>Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
