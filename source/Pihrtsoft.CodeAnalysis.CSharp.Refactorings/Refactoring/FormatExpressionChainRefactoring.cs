@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -14,45 +13,59 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class FormatExpressionChainRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
         {
-            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
-                return;
-
-            if (!memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
-                return;
-
-            MemberAccessExpressionSyntax[] expressions = GetChain(memberAccessExpression).ToArray();
-
-            if (expressions.Length <= 1)
-                return;
-
-            if (expressions[0].IsSingleLine(includeExteriorTrivia: false))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain)
+                && memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
-                context.RegisterRefactoring(
-                    "Format expression chain on multiple lines",
-                    cancellationToken => FormatExpressionChainOnMultipleLinesAsync(context.Document, expressions[0], cancellationToken));
-            }
-            else
-            {
-                context.RegisterRefactoring(
-                    "Format expression chain on a single line",
-                    cancellationToken => FormatExpressionChainOnSingleLineAsync(context.Document, expressions[0], cancellationToken));
+                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                List<MemberAccessExpressionSyntax> expressions = GetChain(memberAccessExpression, semanticModel, context.CancellationToken);
+
+                if (expressions.Count > 1)
+                {
+                    if (expressions[0].IsSingleLine(includeExteriorTrivia: false))
+                    {
+                        context.RegisterRefactoring(
+                            "Format expression chain on multiple lines",
+                            cancellationToken =>
+                            {
+                                return FormatExpressionChainOnMultipleLinesAsync(
+                                    context.Document,
+                                    expressions.ToImmutableArray(),
+                                    cancellationToken);
+                            });
+                    }
+                    else
+                    {
+                        context.RegisterRefactoring(
+                            "Format expression chain on a single line",
+                            cancellationToken =>
+                            {
+                                return FormatExpressionChainOnSingleLineAsync(
+                                    context.Document,
+                                    expressions[0],
+                                    cancellationToken);
+                            });
+                    }
+                }
             }
         }
 
         private static async Task<Document> FormatExpressionChainOnMultipleLinesAsync(
             Document document,
-            MemberAccessExpressionSyntax expression,
+            ImmutableArray<MemberAccessExpressionSyntax> expressions,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+
+            MemberAccessExpressionSyntax expression = expressions[0];
 
             SyntaxTriviaList triviaList = SyntaxUtility.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia);
 
             triviaList = triviaList.Insert(0, CSharpFactory.NewLine);
 
-            var rewriter = new ExpressionChainSyntaxRewriter(triviaList);
+            var rewriter = new ExpressionChainSyntaxRewriter(expressions, triviaList);
 
             SyntaxNode newNode = rewriter.Visit(expression)
                 .WithFormatterAnnotation();
@@ -77,25 +90,48 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static IEnumerable<MemberAccessExpressionSyntax> GetChain(MemberAccessExpressionSyntax expression)
+        private static List<MemberAccessExpressionSyntax> GetChain(
+            MemberAccessExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
+            var expressions = new List<MemberAccessExpressionSyntax>();
+
             expression = GetTopExpression(expression);
 
             while (expression != null)
             {
-                yield return expression;
+                expressions.Add(expression);
 
-                expression = GetExpression(expression);
+                expression = GetExpression(expression, semanticModel, cancellationToken);
             }
+
+            return expressions;
         }
 
-        private static MemberAccessExpressionSyntax GetExpression(MemberAccessExpressionSyntax expression)
+        private static MemberAccessExpressionSyntax GetExpression(
+            MemberAccessExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            switch (expression.Expression.Kind())
+                switch (expression.Expression.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
-                        return (MemberAccessExpressionSyntax)expression.Expression;
+                        var memberAccess = (MemberAccessExpressionSyntax)expression.Expression;
+
+                        if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+                            && memberAccess.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                        {
+                            ISymbol symbol = semanticModel
+                                .GetSymbolInfo(memberAccess.Expression, cancellationToken)
+                                .Symbol;
+
+                            if (symbol?.IsNamespace() == true)
+                                return null;
+                        }
+
+                        return memberAccess;
                     }
                 case SyntaxKind.ElementAccessExpression:
                     {
@@ -181,28 +217,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private class ExpressionChainSyntaxRewriter : CSharpSyntaxRewriter
         {
-            private MemberAccessExpressionSyntax _previous;
+            private readonly ImmutableArray<MemberAccessExpressionSyntax> _expressions;
             private readonly SyntaxTriviaList _triviaList;
 
-            public ExpressionChainSyntaxRewriter(SyntaxTriviaList triviaList)
+            public ExpressionChainSyntaxRewriter(ImmutableArray<MemberAccessExpressionSyntax> expressions, SyntaxTriviaList triviaList)
             {
+                _expressions = expressions;
                 _triviaList = triviaList;
             }
 
             public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
             {
-                if (node == null)
-                    throw new ArgumentNullException(nameof(node));
+                var newNode = (MemberAccessExpressionSyntax)base.VisitMemberAccessExpression(node);
 
-                if (_previous == null || _previous.Equals(GetAncestor(node)))
+                if (_expressions.Contains(node)
+                    && !node.OperatorToken.HasLeadingTrivia)
                 {
-                    if (!node.OperatorToken.HasLeadingTrivia)
-                        node = node.WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
-
-                    _previous = node;
+                    return newNode.WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
                 }
-
-                return base.VisitMemberAccessExpression(node);
+                else
+                {
+                    return newNode;
+                }
             }
         }
     }
