@@ -29,10 +29,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return document.WithSyntaxRoot(root);
         }
 
-        private static MemberDeclarationSyntax Refactor(MemberDeclarationSyntax member)
+        private static SyntaxNode Refactor(MemberDeclarationSyntax member)
         {
             switch (member.Parent.Kind())
             {
+                case SyntaxKind.CompilationUnit:
+                    {
+                        var parent = (CompilationUnitSyntax)member.Parent;
+                        int index = parent.Members.IndexOf(member);
+
+                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                    }
                 case SyntaxKind.NamespaceDeclaration:
                     {
                         var parent = (NamespaceDeclarationSyntax)member.Parent;

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -32,20 +33,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 RefactoringIdentifiers.RemoveMember,
                                 RefactoringIdentifiers.DuplicateMember,
                                 RefactoringIdentifiers.CommentOutMember)
-                            && CanBeRemovedOrDuplicated(context, member))
+                            && BraceContainsSpan(context, member))
                         {
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                            if (member.Parent?.IsAnyKind(
+                                SyntaxKind.NamespaceDeclaration,
+                                SyntaxKind.ClassDeclaration,
+                                SyntaxKind.StructDeclaration,
+                                SyntaxKind.InterfaceDeclaration,
+                                SyntaxKind.CompilationUnit) == true)
                             {
-                                context.RegisterRefactoring(
-                                    "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
-                                    cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
-                            }
+                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                                {
+                                    context.RegisterRefactoring(
+                                        "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
+                                        cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                                }
 
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
-                            {
-                                context.RegisterRefactoring(
-                                    "Duplicate " + SyntaxHelper.GetSyntaxNodeTitle(member),
-                                    cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                                {
+                                    context.RegisterRefactoring(
+                                        "Duplicate " + SyntaxHelper.GetSyntaxNodeTitle(member),
+                                        cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                                }
                             }
 
                             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
@@ -202,100 +211,71 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static bool CanBeRemovedOrDuplicated(RefactoringContext context, MemberDeclarationSyntax member)
+        private static bool BraceContainsSpan(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            if (member.Parent?.IsAnyKind(
-                    SyntaxKind.NamespaceDeclaration,
-                    SyntaxKind.ClassDeclaration,
-                    SyntaxKind.StructDeclaration,
-                    SyntaxKind.InterfaceDeclaration) != true)
-            {
-                return false;
-            }
-
             switch (member.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                    {
-                        return ((MethodDeclarationSyntax)member).Body?.BraceContains(context.Span) == true;
-                    }
+                    return ((MethodDeclarationSyntax)member).Body?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.IndexerDeclaration:
-                    {
-                        return ((IndexerDeclarationSyntax)member).AccessorList?.BraceContains(context.Span) == true;
-                    }
+                    return ((IndexerDeclarationSyntax)member).AccessorList?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.OperatorDeclaration:
-                    {
-                        return ((OperatorDeclarationSyntax)member).Body?.BraceContains(context.Span) == true;
-                    }
+                    return ((OperatorDeclarationSyntax)member).Body?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    {
-                        return ((ConversionOperatorDeclarationSyntax)member).Body?.BraceContains(context.Span) == true;
-                    }
+                    return ((ConversionOperatorDeclarationSyntax)member).Body?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.ConstructorDeclaration:
-                    {
-                        return ((ConstructorDeclarationSyntax)member).Body?.BraceContains(context.Span) == true;
-                    }
+                    return ((ConstructorDeclarationSyntax)member).Body?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.PropertyDeclaration:
-                    {
-                        return ((PropertyDeclarationSyntax)member).AccessorList?.BraceContains(context.Span) == true;
-                    }
+                    return ((PropertyDeclarationSyntax)member).AccessorList?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.EventDeclaration:
-                    {
-                        return ((EventDeclarationSyntax)member).AccessorList?.BraceContains(context.Span) == true;
-                    }
+                    return ((EventDeclarationSyntax)member).AccessorList?.BraceContainsSpan(context.Span) == true;
                 case SyntaxKind.NamespaceDeclaration:
-                    {
-                        var declaration = (NamespaceDeclarationSyntax)member;
-
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
-                    }
+                    return ((NamespaceDeclarationSyntax)member).BraceContainsSpan(context.Span);
                 case SyntaxKind.ClassDeclaration:
-                    {
-                        var declaration = (ClassDeclarationSyntax)member;
-
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
-                    }
+                    return ((ClassDeclarationSyntax)member).BraceContainsSpan(context.Span);
                 case SyntaxKind.StructDeclaration:
-                    {
-                        var declaration = (StructDeclarationSyntax)member;
-
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
-                    }
+                    return ((StructDeclarationSyntax)member).BraceContainsSpan(context.Span);
                 case SyntaxKind.InterfaceDeclaration:
-                    {
-                        var declaration = (InterfaceDeclarationSyntax)member;
-
-                        return declaration.OpenBraceToken.Span.Contains(context.Span)
-                            || declaration.CloseBraceToken.Span.Contains(context.Span);
-                    }
+                    return ((InterfaceDeclarationSyntax)member).BraceContainsSpan(context.Span);
             }
 
             return false;
         }
 
-        private static bool BraceContains(this BlockSyntax body, TextSpan span)
+        private static bool BraceContainsSpan(this NamespaceDeclarationSyntax declaration, TextSpan span)
         {
-            if (body != null)
-            {
-                return body.OpenBraceToken.Span.Contains(span)
-                    || body.CloseBraceToken.Span.Contains(span);
-            }
-
-            return false;
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
         }
 
-        private static bool BraceContains(this AccessorListSyntax accessorList, TextSpan span)
+        private static bool BraceContainsSpan(this ClassDeclarationSyntax declaration, TextSpan span)
         {
-            if (accessorList != null)
-            {
-                return accessorList.OpenBraceToken.Span.Contains(span)
-                    || accessorList.CloseBraceToken.Span.Contains(span);
-            }
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
+        }
 
-            return false;
+        private static bool BraceContainsSpan(this StructDeclarationSyntax declaration, TextSpan span)
+        {
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
+        }
+
+        private static bool BraceContainsSpan(this InterfaceDeclarationSyntax declaration, TextSpan span)
+        {
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
+        }
+
+        private static bool BraceContainsSpan(this BlockSyntax body, TextSpan span)
+        {
+            return body.OpenBraceToken.Span.Contains(span)
+                || body.CloseBraceToken.Span.Contains(span);
+        }
+
+        private static bool BraceContainsSpan(this AccessorListSyntax accessorList, TextSpan span)
+        {
+            return accessorList.OpenBraceToken.Span.Contains(span)
+                || accessorList.CloseBraceToken.Span.Contains(span);
         }
     }
 }

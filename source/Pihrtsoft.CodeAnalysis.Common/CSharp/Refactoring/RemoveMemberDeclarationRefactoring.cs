@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -27,15 +28,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            var parentMember = (MemberDeclarationSyntax)member.Parent;
-
-            if (parentMember != null)
+            if (member.Parent.IsKind(SyntaxKind.CompilationUnit))
             {
-                root = root.ReplaceNode(parentMember, parentMember.RemoveMember(member));
+                var compilationUnit = (CompilationUnitSyntax)member.Parent;
+
+                root = root.ReplaceNode(compilationUnit, compilationUnit.RemoveMember(member));
             }
             else
             {
-                root = root.RemoveNode(member, DefaultRemoveOptions);
+                var parentMember = (MemberDeclarationSyntax)member.Parent;
+
+                if (parentMember != null)
+                {
+                    root = root.ReplaceNode(parentMember, parentMember.RemoveMember(member));
+                }
+                else
+                {
+                    root = root.RemoveNode(member, DefaultRemoveOptions);
+                }
             }
 
             return document.WithSyntaxRoot(root);

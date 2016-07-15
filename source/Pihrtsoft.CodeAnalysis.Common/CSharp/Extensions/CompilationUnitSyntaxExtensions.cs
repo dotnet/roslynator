@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
@@ -176,6 +177,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
 
             return false;
+        }
+
+        public static CompilationUnitSyntax RemoveMemberAt(this CompilationUnitSyntax compilationUnit, int index)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            return RemoveMember(compilationUnit, compilationUnit.Members[index], index);
+        }
+
+        public static CompilationUnitSyntax RemoveMember(this CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            return RemoveMember(compilationUnit, member, compilationUnit.Members.IndexOf(member));
+        }
+
+        private static CompilationUnitSyntax RemoveMember(
+            CompilationUnitSyntax compilationUnit,
+            MemberDeclarationSyntax member,
+            int index)
+        {
+            MemberDeclarationSyntax newMember = member.RemoveSingleLineDocumentationComment();
+
+            compilationUnit = compilationUnit
+                .WithMembers(compilationUnit.Members.Replace(member, newMember));
+
+            return compilationUnit
+                .RemoveNode(compilationUnit.Members[index], RemoveMemberDeclarationRefactoring.GetRemoveOptions(newMember));
         }
     }
 }
