@@ -37,21 +37,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.RemoveStatement,
-                    RefactoringIdentifiers.DuplicateStatement)
-                && switchStatement.Parent?.IsKind(SyntaxKind.Block) == true
-                && (switchStatement.OpenBraceToken.Span.Contains(context.Span)
-                    || switchStatement.CloseBraceToken.Span.Contains(context.Span)))
+            if (switchStatement.OpenBraceToken.Span.Contains(context.Span)
+                || switchStatement.CloseBraceToken.Span.Contains(context.Span))
             {
-                RegisterRefactoring(context, switchStatement);
-            }
+                if (switchStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+                    RegisterRefactoring(context, switchStatement);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement)
-                && (switchStatement.OpenBraceToken.Span.Contains(context.Span)
-                    || switchStatement.CloseBraceToken.Span.Contains(context.Span)))
-            {
-                CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
+                    CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
+#if DEBUG
+                if (switchStatement.Sections.Any())
+                {
+                    context.RegisterRefactoring(
+                        "Remove all sections",
+                        cancellationToken => RemoveAllSectionsAsync(context.Document, switchStatement, cancellationToken));
+                }
+#endif
             }
         }
 
@@ -228,5 +229,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             return removeOptions;
         }
+#if DEBUG
+        private static async Task<Document> RemoveAllSectionsAsync(
+            Document document,
+            SwitchStatementSyntax switchStatement,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+            SwitchStatementSyntax newSwitchStatement = switchStatement
+                .WithSections(SyntaxFactory.List<SwitchSectionSyntax>())
+                .WithFormatterAnnotation();
+
+            root = root.ReplaceNode(switchStatement, newSwitchStatement);
+
+            return document.WithSyntaxRoot(root);
+        }
+#endif
     }
 }

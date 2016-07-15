@@ -55,7 +55,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         break;
                     }
             }
-
 #if DEBUG
             switch (member.Kind())
             {
@@ -74,8 +73,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         break;
                     }
             }
-#endif
 
+            switch (member.Kind())
+            {
+                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        if (RemoveAllMembersRefactoring.CanRefactor(context, member))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove all members",
+                                cancellationToken => RemoveAllMembersRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                        }
+
+                        break;
+                    }
+            }
+#endif
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMembers)
                 && !member.Span.IntersectsWith(context.Span))
             {
