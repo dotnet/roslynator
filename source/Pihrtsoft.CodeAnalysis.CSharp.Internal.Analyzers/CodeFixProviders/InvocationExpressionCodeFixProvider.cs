@@ -9,10 +9,10 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.Analyzers.DiagnosticAnalyzers;
+using Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.CodeFixProviders
+namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InvocationExpressionCodeFixProvider))]
     [Shared]

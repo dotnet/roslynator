@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
+namespace Pihrtsoft.CodeAnalysis.CSharp.Internal
 {
     public static class DiagnosticDescriptors
     {

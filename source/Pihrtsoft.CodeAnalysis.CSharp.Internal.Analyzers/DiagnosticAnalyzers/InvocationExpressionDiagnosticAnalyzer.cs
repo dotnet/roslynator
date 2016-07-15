@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.DiagnosticAnalyzers
+namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InvocationExpressionDiagnosticAnalyzer : DiagnosticAnalyzer

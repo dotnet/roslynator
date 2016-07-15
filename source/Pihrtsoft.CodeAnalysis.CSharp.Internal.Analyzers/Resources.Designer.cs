@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers {
+namespace Pihrtsoft.CodeAnalysis.CSharp.Internal {
     using System;
     using System.Reflection;
     
@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Resources", typeof(Resources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Pihrtsoft.CodeAnalysis.CSharp.Internal.Resources", typeof(Resources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

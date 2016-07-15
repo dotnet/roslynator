@@ -8,8 +8,8 @@
     <ProjectGuid>{1DB4A125-FBF8-4728-ABF5-37B9DF355753}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.CSharp.Analyzers</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.CSharp.Analyzers</AssemblyName>
+    <RootNamespace>Pihrtsoft.CodeAnalysis.CSharp.Internal</RootNamespace>
+    <AssemblyName>Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers</AssemblyName>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -135,14 +135,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
-  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'">
-    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
-      <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
-    </GetAssemblyIdentity>
-    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.4.3\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\Pihrtsoft.CodeAnalysis.CSharp.Analyzers.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Version %(AnalyzerAssemblyInfo.Version) -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
