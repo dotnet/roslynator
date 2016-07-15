@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && await CanRefactorAsync(context, parameter))
             {
                 context.RegisterRefactoring(
-                    "Check parameter for null",
+                    $"Check '{parameter.Identifier.ValueText}' for null",
                     cancellationToken => RefactorAsync(
                         context.Document,
                         parameter,
