@@ -80,97 +80,6 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static bool IsInt32(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.IsNamedType()
-                && ((INamedTypeSymbol)symbol).SpecialType == SpecialType.System_Int32;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsErrorType(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.ErrorType;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsNamedType(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.NamedType;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsArrayType(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.ArrayType;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsMethod(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.Method;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsAsyncMethod(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.Method
-                && ((IMethodSymbol)symbol).IsAsync;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsProperty(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.Property;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsField(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.Field;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsTypeParameter(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.TypeParameter;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsLocal(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol.Kind == SymbolKind.Local;
-        }
-
         [DebuggerStepThrough]
         public static bool IsPublic(this ISymbol symbol)
         {
@@ -205,6 +114,187 @@ namespace Pihrtsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(symbol));
 
             return symbol.DeclaredAccessibility == Accessibility.Private;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsAlias(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Alias;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsArrayType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.ArrayType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsAssembly(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Assembly;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsDynamicType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.DynamicType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsErrorType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.ErrorType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsEvent(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Event;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsField(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Field;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsLabel(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Label;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsLocal(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Local;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsMethod(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Method;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsAsyncMethod(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Method
+                && ((IMethodSymbol)symbol).IsAsync;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNetModule(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.NetModule;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNamedType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.NamedType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNamespace(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Namespace;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsParameter(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Parameter;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsPointerType(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.PointerType;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsProperty(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Property;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsRangeVariable(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.RangeVariable;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsTypeParameter(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.TypeParameter;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsPreprocessing(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return symbol.Kind == SymbolKind.Preprocessing;
         }
     }
 }

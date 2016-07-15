@@ -8,6 +8,14 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class ITypeSymbolExtensions
     {
+        public static bool IsInt32(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return typeSymbol.SpecialType == SpecialType.System_Int32;
+        }
+
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
