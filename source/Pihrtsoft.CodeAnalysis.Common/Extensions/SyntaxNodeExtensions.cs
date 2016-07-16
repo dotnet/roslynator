@@ -14,6 +14,22 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.IsKind(SyntaxKind.NumericLiteralExpression))
+            {
+                object tokenValue = ((LiteralExpressionSyntax)node).Token.Value;
+
+                return tokenValue is int
+                    && (int)tokenValue == value;
+            }
+
+            return false;
+        }
+
         public static TSyntax WithTriviaFrom<TSyntax>(this TSyntax syntax, SyntaxToken token) where TSyntax : SyntaxNode
         {
             if (syntax == null)

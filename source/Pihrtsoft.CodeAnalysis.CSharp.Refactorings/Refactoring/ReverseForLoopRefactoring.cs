@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,35 +9,27 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class ReverseForRefactoring
+    internal static class ReverseForLoopRefactoring
     {
         public static bool CanRefactor(ForStatementSyntax forStatement)
         {
-            //check declaration
-
-            ExpressionSyntax value = forStatement
+            if (forStatement
                 .Declaration?
-                .Variables.SingleOrDefault()?
-                .Initializer?
-                .Value;
+                .Variables.Count == 1)
+            {
+                ExpressionSyntax value = forStatement
+                    .Declaration
+                    .Variables[0]
+                    .Initializer?
+                    .Value;
 
-            if (value?.IsKind(SyntaxKind.NumericLiteralExpression) != true)
-                return false;
+                return value?.IsNumericLiteralExpression(0) == true
+                    && forStatement.Condition?.IsKind(SyntaxKind.LessThanExpression) == true
+                    && forStatement.Incrementors.Count == 1
+                    && forStatement.Incrementors[0].IsKind(SyntaxKind.PostIncrementExpression);
+            }
 
-            if (((LiteralExpressionSyntax)value).Token.ValueText != "0")
-                return false;
-
-            // check condition
-
-            if (forStatement.Condition?.IsKind(SyntaxKind.LessThanExpression) != true)
-                return false;
-
-            // check incrementor
-
-            if (forStatement.Incrementors.SingleOrDefault()?.IsKind(SyntaxKind.PostIncrementExpression) != true)
-                return false;
-
-            return true;
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(

@@ -19,12 +19,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
-                && forStatement.ForKeyword.Span.Contains(context.Span)
-                && ReverseForRefactoring.CanRefactor(forStatement))
+                && forStatement.ForKeyword.Span.Contains(context.Span))
             {
-                context.RegisterRefactoring(
-                    "Reverse for loop",
-                    cancellationToken => ReverseForRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                if (ReverseForLoopRefactoring.CanRefactor(forStatement))
+                {
+                    context.RegisterRefactoring(
+                        "Reverse for loop",
+                        cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                }
+                else if (ReverseReversedForLoopRefactoring.CanRefactor(forStatement))
+                {
+                    context.RegisterRefactoring(
+                        "Reverse for loop",
+                        cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                }
             }
         }
     }

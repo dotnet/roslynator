@@ -55,6 +55,7 @@
     <Compile Include="Refactoring\RefactoringHelper.cs" />
     <Compile Include="Refactoring\RemoveAllMembersRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
+    <Compile Include="Refactoring\ReverseReversedForLoopRefactoringy.cs" />
     <Compile Include="Refactoring\StatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatAttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactoring\ElseClauseRefactoring.cs" />
@@ -182,7 +183,7 @@
     <Compile Include="Refactoring\SwitchSectionRefactoring.cs" />
     <Compile Include="Refactoring\ReorderMembersRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceConditionalExpressionWithIfElseRefactoring.cs" />
-    <Compile Include="Refactoring\ReverseForRefactoring.cs" />
+    <Compile Include="Refactoring\ReverseForLoopRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceForWithForEachRefactoring.cs" />
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactoring\SwapMembersRefactoring.cs" />
