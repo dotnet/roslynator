@@ -9,16 +9,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class CSharpSyntaxNodeExtensions
     {
-        public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this CSharpSyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node
-                .GetLeadingTrivia()
-                .AddRange(node.GetTrailingTrivia());
-        }
-
         public static SyntaxList<AttributeListSyntax> GetAttributeLists(this CSharpSyntaxNode node)
         {
             if (node == null)

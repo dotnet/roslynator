@@ -69,9 +69,6 @@ namespace Pihrtsoft.CodeAnalysis
         public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
             => token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
 
-        public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxToken token)
-            => token.LeadingTrivia.AddRange(token.TrailingTrivia);
-
         public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
             => token.WithLeadingTrivia(SyntaxTriviaList.Empty);
 

@@ -49,7 +49,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxToken lastComma = initializer.Expressions.GetSeparators().Last();
 
             SyntaxTriviaList newTrailingTrivia = initializer.Expressions.Last().GetTrailingTrivia()
-                .AddRange(lastComma.GetLeadingAndTrailingTrivia());
+                .AddRange(lastComma.LeadingTrivia)
+                .AddRange(lastComma.TrailingTrivia);
 
             SeparatedSyntaxList<ExpressionSyntax> newExpressions = initializer
                 .Expressions
