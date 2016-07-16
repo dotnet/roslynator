@@ -14,7 +14,7 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Analyzers|" />
+    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers|" />
   </Assets>
 </PackageManifest>
