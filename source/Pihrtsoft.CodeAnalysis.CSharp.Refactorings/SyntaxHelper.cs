@@ -63,6 +63,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                     return "struct";
                 case SyntaxKind.InterfaceDeclaration:
                     return "interface";
+                case SyntaxKind.EnumDeclaration:
+                    return "enum";
                 default:
                     Debug.Assert(false, node.Kind().ToString());
                     return string.Empty;

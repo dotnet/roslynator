@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -28,6 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.EnumDeclaration:
                     {
                         if (context.Settings.IsAnyRefactoringEnabled(
                                 RefactoringIdentifiers.RemoveMember,
@@ -237,6 +237,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return ((StructDeclarationSyntax)member).BraceContainsSpan(context.Span);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)member).BraceContainsSpan(context.Span);
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)member).BraceContainsSpan(context.Span);
             }
 
             return false;
@@ -261,6 +263,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         }
 
         private static bool BraceContainsSpan(this InterfaceDeclarationSyntax declaration, TextSpan span)
+        {
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
+        }
+
+        private static bool BraceContainsSpan(this EnumDeclarationSyntax declaration, TextSpan span)
         {
             return declaration.OpenBraceToken.Span.Contains(span)
                 || declaration.CloseBraceToken.Span.Contains(span);
