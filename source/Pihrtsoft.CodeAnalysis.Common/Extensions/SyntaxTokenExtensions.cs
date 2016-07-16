@@ -11,6 +11,14 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
+        public static bool IsAccessModifier(this SyntaxToken token)
+        {
+            return token.IsKind(SyntaxKind.PublicKeyword)
+                || token.IsKind(SyntaxKind.InternalKeyword)
+                || token.IsKind(SyntaxKind.ProtectedKeyword)
+                || token.IsKind(SyntaxKind.PrivateKeyword);
+        }
+
         public static bool IsNoneKind(this SyntaxToken token)
         {
             return token.IsKind(SyntaxKind.None);

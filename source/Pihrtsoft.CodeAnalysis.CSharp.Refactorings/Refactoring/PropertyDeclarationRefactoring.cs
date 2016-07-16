@@ -27,8 +27,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplacePropertyWithMethodRefactoring.CanRefactor(propertyDeclaration))
             {
+                string title = "Replace property with method";
+
+                if (propertyDeclaration.AccessorList.Accessors.Count > 1)
+                    title += "s";
+
                 context.RegisterRefactoring(
-                    "Replace property with method",
+                    title,
                     cancellationToken => ReplacePropertyWithMethodRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 

@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -13,43 +15,91 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration.AccessorList?.Accessors.Count == 1)
-            {
-                AccessorDeclarationSyntax accessor = propertyDeclaration.AccessorList.Accessors[0];
-
-                return accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
-                    && accessor.Body != null;
-            }
-
-            return false;
+            return propertyDeclaration.AccessorList?.Accessors.Count > 0
+                && propertyDeclaration.AccessorList.Accessors.All(f => f.Body != null);
         }
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            PropertyDeclarationSyntax propertyDeclaration,
+            PropertyDeclarationSyntax property,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
-            MethodDeclarationSyntax methodDeclaration = MethodDeclaration(
-                propertyDeclaration.AttributeLists,
-                propertyDeclaration.Modifiers,
-                propertyDeclaration.Type,
-                propertyDeclaration.ExplicitInterfaceSpecifier,
-                propertyDeclaration.Identifier.WithTrailingTrivia(),
+            MethodDeclarationSyntax method = MethodDeclaration(
+                property.AttributeLists,
+                property.Modifiers,
+                property.Type,
+                property.ExplicitInterfaceSpecifier,
+                property.Identifier.WithTrailingTrivia(),
                 null,
-                ParameterList(SeparatedList<ParameterSyntax>()),
+                ParameterList(),
                 List<TypeParameterConstraintClauseSyntax>(),
-                Block(propertyDeclaration.Getter().Body?.Statements),
-                null);
+                body: null,
+                expressionBody: null);
 
-            methodDeclaration = methodDeclaration
-                .WithTriviaFrom(propertyDeclaration)
-                .WithFormatterAnnotation();
+            var methods = new List<MethodDeclarationSyntax>();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, methodDeclaration);
+            AccessorDeclarationSyntax getter = property.Getter();
+            AccessorDeclarationSyntax setter = property.Setter();
 
-            return document.WithSyntaxRoot(newRoot);
+            if (getter != null)
+            {
+                MethodDeclarationSyntax getMethod = method
+                    .WithIdentifier(Identifier("Get" + method.Identifier))
+                    .WithBody(Block(getter.Body.Statements))
+                    .WithLeadingTrivia(property.GetLeadingTrivia())
+                    .WithFormatterAnnotation();
+
+                getMethod = SetAccessModifiers(getter, getMethod);
+
+                if (setter == null)
+                    getMethod = getMethod.WithTrailingTrivia(property.GetTrailingTrivia());
+
+                methods.Add(getMethod);
+            }
+
+            if (setter != null)
+            {
+                ParameterSyntax parameter = Parameter(Identifier("value"))
+                    .WithType(property.Type);
+
+                MethodDeclarationSyntax setMethod = method
+                    .WithReturnType(VoidType())
+                    .WithIdentifier(Identifier("Set" + method.Identifier))
+                    .WithParameterList(method.ParameterList.AddParameters(parameter))
+                    .WithBody(Block(setter.Body.Statements))
+                    .WithTrailingTrivia(property.GetTrailingTrivia())
+                    .WithFormatterAnnotation();
+
+                setMethod = SetAccessModifiers(setter, setMethod);
+
+                if (getter == null)
+                    setMethod = setMethod.WithLeadingTrivia(property.GetLeadingTrivia());
+
+                if (getter != null)
+                    setMethod = setMethod.WithLeadingTrivia(setMethod.GetLeadingTrivia().Insert(0, NewLine));
+
+                methods.Add(setMethod);
+            }
+
+            root = root.ReplaceNode(property, methods);
+
+            return document.WithSyntaxRoot(root);
+        }
+
+        private static MethodDeclarationSyntax SetAccessModifiers(AccessorDeclarationSyntax accessor, MethodDeclarationSyntax method)
+        {
+            if (accessor.Modifiers.Any())
+            {
+                SyntaxTokenList modifiers = method.Modifiers
+                    .RemoveAccessModifiers()
+                    .InsertRange(0, accessor.Modifiers);
+
+                return method.WithModifiers(modifiers);
+            }
+
+            return method;
         }
     }
 }
