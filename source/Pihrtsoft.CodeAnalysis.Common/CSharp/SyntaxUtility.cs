@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,69 +12,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxUtility
     {
-        public static bool IsUsingStaticInScope(
-            SyntaxNode node,
-            INamedTypeSymbol namedTypeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (namedTypeSymbol == null)
-                throw new ArgumentNullException(nameof(namedTypeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            while (node != null)
-            {
-                if (node.IsKind(SyntaxKind.NamespaceDeclaration))
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
-
-                    if (ContainsUsingStatic(namespaceDeclaration.Usings, namedTypeSymbol, semanticModel, cancellationToken))
-                        return true;
-                }
-                else if (node.IsKind(SyntaxKind.CompilationUnit))
-                {
-                    var compilationUnit = (CompilationUnitSyntax)node;
-
-                    if (ContainsUsingStatic(compilationUnit.Usings, namedTypeSymbol, semanticModel, cancellationToken))
-                        return true;
-                }
-
-                node = node.Parent;
-            }
-
-            return false;
-        }
-
-        private static bool ContainsUsingStatic(
-            SyntaxList<UsingDirectiveSyntax> usingDirectives,
-            INamedTypeSymbol namedTypeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            foreach (UsingDirectiveSyntax usingDirective in usingDirectives)
-            {
-                if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
-                {
-                    ISymbol symbol = semanticModel
-                        .GetSymbolInfo(usingDirective.Name, cancellationToken)
-                        .Symbol;
-
-                    if (symbol?.IsErrorType() == false
-                        && namedTypeSymbol.Equals(symbol))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public static SyntaxTriviaList GetIndentTrivia(SyntaxNode node)
         {
             if (node == null)
