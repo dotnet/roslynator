@@ -15,6 +15,13 @@
 ![Add cast expression](/images/refactorings/AddCastExpressionToReturnStatement.png)
 ![Add cast expression](/images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
+#### Add default value to parameter
+
+* **Syntax**: parameter without default value
+* **Scope**: identifier
+
+![Add default value to parameter](/images/refactorings/AddDefaultValueToParameter.png)
+
 #### Add interpolation
 
 * **Syntax**: selected text inside interpolated string text
@@ -67,6 +74,20 @@
 
 ![Check parameter for null](/images/refactorings/CheckParameterForNull.png)
 
+#### Comment out member
+
+* **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
+* **Scope**: opening or closing brace
+
+![Comment out member](/images/refactorings/CommentOutMember.png)
+
+#### Comment out statement
+
+* **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
+* **Scope**: opening or closing brace
+
+![Comment out statement](/images/refactorings/CommentOutStatement.png)
+
 #### Duplicate argument
 
 * **Syntax**: missing argument
@@ -89,7 +110,7 @@
 #### Duplicate statement
 
 * **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
-* **Scope**: open/close brace
+* **Scope**: opening or closing brace
 
 ![Duplicate statement](/images/refactorings/DuplicateStatement.png)
 
@@ -154,7 +175,7 @@
 #### Extract expression from parentheses
 
 * **Syntax**: parenthesized expression
-* **Scope**: opening/closing parenthesis
+* **Scope**: opening or closing parenthesis
 
 ![Extract expression from parentheses](/images/refactorings/ExtractExpressionFromParentheses.png)
 
@@ -225,6 +246,13 @@
 * **Syntax**: switch statement (that is empty or contains only default section)
 
 ![Generate switch sections](/images/refactorings/GenerateSwitchSections.png)
+
+#### Initialize local with default value
+
+* **Syntax**: local declaration without initializer
+* **Scope**: identifier
+
+![Initialize local with default value](/images/refactorings/InitializeLocalWithDefaultValue.png)
 
 #### Introduce constructor from selected member(s)
 
