@@ -1,3 +1,22 @@
+### 0.92.0 (2016-07-18)
+
+#### Refactorings
+
+##### New Refactorings
+
+* CommentOutMember
+* CommentOutStatement
+* IntializerLocalWithDefaultValue
+* AddDefaultValueToParameter
+
+### Improvements
+
+* refactoring "ChangeTypeAccordingToExpression" works for field declaration
+* refactoring "AddCastExpression" works for case label expression
+* refactoring "FormatExpressionChain" does not format namespace
+* refactoring "ReplacePropertyWithMethod" works for property with setter
+* refactoring "ReverseForLoop" works for reversed for loop
+
 ### 0.91.0 (2016-07-11)
 
 #### Refactorings
