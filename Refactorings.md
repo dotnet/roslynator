@@ -11,8 +11,11 @@
 * **Syntax**: argument, assignment expression, return statement, variable declaration
 
 ![Add cast expression](/images/refactorings/AddCastExpressionToArgument.png)
+
 ![Add cast expression](/images/refactorings/AddCastExpressionToAssignmentExpression.png)
+
 ![Add cast expression](/images/refactorings/AddCastExpressionToReturnStatement.png)
+
 ![Add cast expression](/images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
 #### Add default value to parameter
@@ -65,6 +68,7 @@
 * **Scope**: type
 
 ![Change type according to expression](/images/refactorings/ChangeTypeAccordingToExpression.png)
+
 ![Change type according to expression](/images/refactorings/ChangeForEachTypeAccordingToExpression.png)
 
 #### Check parameter for null
@@ -198,6 +202,7 @@
 * **Scope**: block
 
 ![Format accessor braces](/images/refactorings/FormatAccessorBracesOnMultipleLines.png)
+
 ![Format accessor braces](/images/refactorings/FormatAccessorBracesOnSingleLine.png)
 
 #### Format argument list
@@ -205,6 +210,7 @@
 * **Syntax**: argument list
 
 ![Format argument list](/images/refactorings/FormatEachArgumentOnSeparateLine.png)
+
 ![Format argument list](/images/refactorings/FormatAllArgumentsOnSingleLine.png)
 
 #### Format binary expression
@@ -218,6 +224,7 @@
 * **Syntax**: conditional expression
 
 ![Format conditional expression](/images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
+
 ![Format conditional expression](/images/refactorings/FormatConditionalExpressionOnSingleLine.png)
 
 #### Format expression chain
@@ -225,6 +232,7 @@
 * **Syntax**: expression chain
 
 ![Format expression chain](/images/refactorings/FormatExpressionChainOnMultipleLines.png)
+
 ![Format expression chain](/images/refactorings/FormatExpressionChainOnSingleLine.png)
 
 #### Format initializer
@@ -232,6 +240,7 @@
 * **Syntax**: initializer
 
 ![Format initializer](/images/refactorings/FormatInitializerOnMultipleLines.png)
+
 ![Format initializer](/images/refactorings/FormatInitializerOnSingleLine.png)
 
 #### Format parameter list
@@ -239,6 +248,7 @@
 * **Syntax**: parameter list
 
 ![Format parameter list](/images/refactorings/FormatEachParameterOnSeparateLine.png)
+
 ![Format parameter list](/images/refactorings/FormatAllParametersOnSingleLine.png)
 
 #### Generate switch sections
@@ -405,6 +415,7 @@
 * **Scope**: identifier
 
 ![Rename identifier according to type name](/images/refactorings/RenameForEachIdentifierAccordingToTypeName.png)
+
 ![Rename identifier according to type name](/images/refactorings/RenameFieldIdentifierAccordingToTypeName.png)
 
 #### Rename method according to type name
