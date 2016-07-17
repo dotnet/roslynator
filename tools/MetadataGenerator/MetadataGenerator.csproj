@@ -79,8 +79,8 @@
       <Project>{2f2b32b2-31d8-4d52-a05f-0d909bd07ebe}</Project>
       <Name>Pihrtsoft.CodeAnalysis.CSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj">
-      <Project>{7F6F6533-E406-4225-A435-DEE22C717F48}</Project>
+    <ProjectReference Include="..\..\source\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj">
+      <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>
       <Name>Pihrtsoft.CodeAnalysis.Metadata</Name>
     </ProjectReference>
   </ItemGroup>

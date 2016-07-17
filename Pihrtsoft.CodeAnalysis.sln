@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "tools\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "tools\Cleaner\Cleaner.csproj", "{44582CE6-29B1-4982-B485-C0285AA0A591}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.Metadata", "tools\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.VisualStudio.Common", "source\Pihrtsoft.CodeAnalysis.VisualStudio.Common\Pihrtsoft.CodeAnalysis.VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
@@ -35,6 +33,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers", "source\Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers\Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.csproj", "{1DB4A125-FBF8-4728-ABF5-37B9DF355753}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalAnalyzers", "source\Debug\InternalAnalyzers\InternalAnalyzers.csproj", "{63A791CC-BD7C-4608-A4D9-9379B0C42F38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pihrtsoft.CodeAnalysis.Metadata", "source\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,10 +77,6 @@ Global
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.RefactoringsDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44582CE6-29B1-4982-B485-C0285AA0A591}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F6F6533-E406-4225-A435-DEE22C717F48}.AnalyzersDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F6F6533-E406-4225-A435-DEE22C717F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F6F6533-E406-4225-A435-DEE22C717F48}.RefactoringsDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F6F6533-E406-4225-A435-DEE22C717F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.AnalyzersDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.RefactoringsDebug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -125,6 +121,10 @@ Global
 		{63A791CC-BD7C-4608-A4D9-9379B0C42F38}.RefactoringsDebug|Any CPU.Build.0 = Debug|Any CPU
 		{63A791CC-BD7C-4608-A4D9-9379B0C42F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A791CC-BD7C-4608-A4D9-9379B0C42F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.AnalyzersDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.RefactoringsDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6F6533-E406-4225-A435-DEE22C717F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
