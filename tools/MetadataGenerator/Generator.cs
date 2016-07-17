@@ -133,8 +133,16 @@ namespace MetadataGenerator
 
                     if (info.Images.Count > 0)
                     {
+                        bool isFirst = true;
+
                         foreach (ImageInfo image in info.Images)
+                        {
+                            if (!isFirst)
+                                sw.WriteLine();
+
                             sw.WriteLine(CreateImageMarkDown(info, image.Name));
+                            isFirst = false;
+                        }
                     }
                     else
                     {
