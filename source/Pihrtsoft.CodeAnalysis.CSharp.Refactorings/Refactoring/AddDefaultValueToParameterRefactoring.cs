@@ -13,7 +13,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (!parameter.Identifier.IsMissing
+            if (parameter.Type != null
+                && !parameter.Identifier.IsMissing
                 && context.Span.Start >= parameter.Identifier.Span.Start
                 && (parameter.Default == null
                     || parameter.Default.IsMissing
