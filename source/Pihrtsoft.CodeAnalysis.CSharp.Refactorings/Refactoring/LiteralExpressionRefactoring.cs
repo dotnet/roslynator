@@ -14,7 +14,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBooleanLiteral))
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBooleanLiteral)
+                            && literalExpression.Span.Contains(context.Span))
                         {
                             context.RegisterRefactoring(
                                 "Negate boolean literal",

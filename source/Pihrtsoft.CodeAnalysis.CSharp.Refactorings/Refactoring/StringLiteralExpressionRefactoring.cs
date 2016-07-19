@@ -9,6 +9,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
+            if (!literalExpression.Span.Contains(context.Span))
+                return;
+
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
                 && context.SupportsCSharp6)
             {

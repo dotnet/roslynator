@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock)
-                && CanRefactor(statement))
+                && CanRefactor(context, statement))
             {
                 context.RegisterRefactoring(
                     "Replace embedded statement with block",
@@ -22,9 +22,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        public static bool CanRefactor(StatementSyntax statement)
+        private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
         {
-            return EmbeddedStatementAnalysis.IsEmbeddedStatement(statement);
+            return context.Span.IsEmpty
+                && EmbeddedStatementAnalysis.IsEmbeddedStatement(statement);
         }
 
         public static async Task<Document> RefactorAsync(

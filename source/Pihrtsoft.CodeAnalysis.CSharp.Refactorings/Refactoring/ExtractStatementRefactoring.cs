@@ -15,27 +15,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractStatement))
-                return;
-
-            if (statement.IsKind(SyntaxKind.Block)
-                && ((BlockSyntax)statement).Statements.Count == 0)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractStatement)
+                && context.Span.IsEmpty)
             {
-                return;
-            }
+                if (!statement.IsKind(SyntaxKind.Block)
+                    || ((BlockSyntax)statement).Statements.Count > 0)
+                {
+                    if (statement.Parent?.IsKind(SyntaxKind.Block) == true)
+                        statement = (BlockSyntax)statement.Parent;
 
-            if (statement.Parent?.IsKind(SyntaxKind.Block) == true)
-                statement = (BlockSyntax)statement.Parent;
+                    if (statement.Parent != null
+                        && (CheckContainingNode(statement.Parent)
+                        && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
+                    {
+                        string s = (UsePlural(statement)) ? "s" : "";
 
-            if (statement.Parent != null
-                && (CheckContainingNode(statement.Parent)
-                && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
-            {
-                string s = (UsePlural(statement)) ? "s" : "";
-
-                context.RegisterRefactoring(
-                    $"Extract statement{s} from {SyntaxHelper.GetSyntaxNodeTitle(statement.Parent)}",
-                    cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
+                        context.RegisterRefactoring(
+                            $"Extract statement{s} from {SyntaxHelper.GetSyntaxNodeTitle(statement.Parent)}",
+                            cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
+                    }
+                }
             }
         }
 

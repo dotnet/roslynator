@@ -501,41 +501,42 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxToken token = context.FindToken();
 
-            if (token.IsKind(SyntaxKind.None))
-                return;
-
-            Debug.WriteLine(token.Kind().ToString());
-
-            switch (token.Kind())
+            if (!token.IsKind(SyntaxKind.None)
+                && token.Span.Contains(context.Span))
             {
-                case SyntaxKind.AmpersandAmpersandToken:
-                case SyntaxKind.BarBarToken:
-                case SyntaxKind.EqualsEqualsToken:
-                case SyntaxKind.ExclamationEqualsToken:
-                case SyntaxKind.GreaterThanToken:
-                case SyntaxKind.GreaterThanEqualsToken:
-                case SyntaxKind.LessThanToken:
-                case SyntaxKind.LessThanEqualsToken:
-                    {
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
-                        {
-                            context.RegisterRefactoring(
-                                "Negate operator",
-                                cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
-                        }
+                Debug.WriteLine(token.Kind().ToString());
 
-                        break;
-                    }
-                case SyntaxKind.CloseParenToken:
-                    {
-                        await CloseParenTokenRefactoring.ComputeRefactoringsAsync(context, token);
-                        break;
-                    }
-                case SyntaxKind.CommaToken:
-                    {
-                        await CommaTokenRefactoring.ComputeRefactoringsAsync(context, token);
-                        break;
-                    }
+                switch (token.Kind())
+                {
+                    case SyntaxKind.AmpersandAmpersandToken:
+                    case SyntaxKind.BarBarToken:
+                    case SyntaxKind.EqualsEqualsToken:
+                    case SyntaxKind.ExclamationEqualsToken:
+                    case SyntaxKind.GreaterThanToken:
+                    case SyntaxKind.GreaterThanEqualsToken:
+                    case SyntaxKind.LessThanToken:
+                    case SyntaxKind.LessThanEqualsToken:
+                        {
+                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
+                            {
+                                context.RegisterRefactoring(
+                                    "Negate operator",
+                                    cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.CloseParenToken:
+                        {
+                            await CloseParenTokenRefactoring.ComputeRefactoringsAsync(context, token);
+                            break;
+                        }
+                    case SyntaxKind.CommaToken:
+                        {
+                            await CommaTokenRefactoring.ComputeRefactoringsAsync(context, token);
+                            break;
+                        }
+                }
             }
         }
 
