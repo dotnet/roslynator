@@ -52,16 +52,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
-                string name = IdentifierHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                string name = parameter.Identifier.ValueText;
+                string newName = IdentifierHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
 
-                if (!string.IsNullOrEmpty(name)
-                    && !string.Equals(name, parameter.Identifier.ValueText, StringComparison.Ordinal))
+                if (!string.IsNullOrEmpty(newName)
+                    && !string.Equals(name, newName, StringComparison.Ordinal))
                 {
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
                     context.RegisterRefactoring(
-                        $"Rename parameter to '{name}'",
-                        cancellationToken => symbol.RenameAsync(name, context.Document, cancellationToken));
+                        $"Rename '{name}' to '{newName}'",
+                        cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
                 }
             }
         }
