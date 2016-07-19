@@ -9,6 +9,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
+                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue)
                 && context.SupportsSemanticModel)
             {

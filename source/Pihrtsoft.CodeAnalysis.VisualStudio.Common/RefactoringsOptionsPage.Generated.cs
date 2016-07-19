@@ -15,6 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
              AddCastExpression = true;
             AddBooleanComparison = true;
             AddDefaultValueToParameter = true;
+            AddIdentifierToVariableDeclaration = true;
             AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
@@ -132,6 +133,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers. AddCastExpression,  AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
+            SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
@@ -269,6 +271,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter without default value\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddDefaultValueToParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add identifier to variable declaration")]
+        [Description("Syntax: variable declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddIdentifierToVariableDeclaration
         {
             get;
             set;

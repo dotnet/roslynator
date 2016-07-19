@@ -73,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 #endif
             bool fStatement = false;
             bool fDoStatement = false;
+            bool fExpressionStatement = false;
             bool fForEachStatement = false;
             bool fForStatement = false;
             bool fIfStatement = false;
@@ -359,6 +360,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         {
                             await DoStatementRefactoring.ComputeRefactoringsAsync(context, (DoStatementSyntax)statement);
                             fDoStatement = true;
+                        }
+
+                        if (!fExpressionStatement
+                            && node.IsKind(SyntaxKind.ExpressionStatement))
+                        {
+                            await ExpressionStatementRefactoring.ComputeRefactoringsAsync(context, (ExpressionStatementSyntax)statement);
+                            fExpressionStatement = true;
                         }
 
                         if (!fForEachStatement

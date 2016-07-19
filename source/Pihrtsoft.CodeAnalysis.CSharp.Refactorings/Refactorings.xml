@@ -121,6 +121,11 @@
       <Syntax>selected text inside interpolated string text</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>variable declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="AddParameterNameToArgument" Title="Add parameter name to argument" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>argument list</Syntax>
