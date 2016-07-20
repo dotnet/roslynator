@@ -125,9 +125,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static IEnumerable<StatementSyntax> GetNewNodes(StatementSyntax statement)
         {
-            SyntaxTriviaList leadingTrivia = (statement.Parent.IsKind(SyntaxKind.ElseClause))
-                ? SyntaxFactory.TriviaList(CSharpFactory.NewLine)
-                : statement.Parent.GetLeadingTrivia();
+            List<SyntaxTrivia> list = null;
+
+            if (statement.Parent.IsKind(SyntaxKind.ElseClause))
+            {
+                list = new List<SyntaxTrivia>();
+                list.Add(CSharpFactory.NewLine);
+            }
+            else
+            {
+                list = statement.Parent.GetLeadingTrivia()
+                    .Reverse()
+                    .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                    .Reverse()
+                    .ToList();
+            }
 
             if (statement.IsKind(SyntaxKind.Block))
             {
@@ -135,9 +147,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (en.MoveNext())
                 {
-                    leadingTrivia = leadingTrivia.AddRange(en.Current.GetLeadingTrivia());
+                    list.AddRange(en.Current.GetLeadingTrivia());
 
-                    yield return en.Current.WithLeadingTrivia(leadingTrivia);
+                    yield return en.Current.WithLeadingTrivia(list);
 
                     while (en.MoveNext())
                         yield return en.Current;
@@ -145,9 +157,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else
             {
-                leadingTrivia = leadingTrivia.AddRange(statement.GetLeadingTrivia());
+                list.AddRange(statement.GetLeadingTrivia());
 
-                yield return statement.WithLeadingTrivia(leadingTrivia);
+                yield return statement.WithLeadingTrivia(list);
             }
         }
     }
