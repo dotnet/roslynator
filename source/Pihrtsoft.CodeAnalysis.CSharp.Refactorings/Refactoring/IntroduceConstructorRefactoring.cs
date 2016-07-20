@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             MemberDeclarationSyntax declaration)
         {
-            if (declaration.IsAnyKind(SyntaxKind.PropertyDeclaration, SyntaxKind.FieldDeclaration))
+            if (declaration.IsKind(SyntaxKind.PropertyDeclaration, SyntaxKind.FieldDeclaration))
             {
                 if (await CanBeAssignedFromConstructorAsync(context, declaration))
                 {
@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return list;
                 }
             }
-            else if (declaration.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            else if (declaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
             {
                 List<MemberDeclarationSyntax> list = null;
 
@@ -105,7 +105,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (symbol != null
                 && !symbol.IsStatic
                 && propertyDeclaration.Parent != null
-                && propertyDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                && propertyDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
             {
                 if (propertyDeclaration.ExpressionBody != null)
                 {

@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
                 && initializer.Expressions.Count > 0
                 && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                && initializer.Parent?.IsAnyKind(
+                && initializer.Parent?.IsKind(
                     SyntaxKind.ArrayCreationExpression,
                     SyntaxKind.ImplicitArrayCreationExpression,
                     SyntaxKind.ObjectCreationExpression,

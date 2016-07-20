@@ -185,7 +185,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         context.ReportDiagnostic(diagnostic);
                     }
                 }
-                else if (invocation.Parent?.IsAnyKind(
+                else if (invocation.Parent?.IsKind(
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.GreaterThanExpression,
                     SyntaxKind.LessThanExpression) == true)
@@ -214,14 +214,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (binaryExpression.Left?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
             {
                 return ((LiteralExpressionSyntax)binaryExpression.Left).Token.ValueText == "0"
-                    && binaryExpression.IsAnyKind(
+                    && binaryExpression.IsKind(
                         SyntaxKind.EqualsExpression,
                         SyntaxKind.LessThanExpression);
             }
             else if (binaryExpression.Right?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
             {
                 return ((LiteralExpressionSyntax)binaryExpression.Right).Token.ValueText == "0"
-                    && binaryExpression.IsAnyKind(
+                    && binaryExpression.IsKind(
                         SyntaxKind.EqualsExpression,
                         SyntaxKind.GreaterThanExpression);
             }

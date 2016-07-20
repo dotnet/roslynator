@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 success = false;
 
                 if (binaryExpression.Parent != null
-                    && binaryExpression.Parent.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
+                    && binaryExpression.Parent.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
                 {
                     var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
 

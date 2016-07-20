@@ -42,23 +42,15 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
-        public static bool IsAnyKind(this SyntaxTrivia trivia, SyntaxKind kind, SyntaxKind kind2)
+        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2)
         {
-            return trivia.IsKind(kind) || trivia.IsKind(kind2);
-        }
+            if (trivia == null)
+                return false;
 
-        public static bool IsAnyKind(this SyntaxTrivia syntaxTrivia, IEnumerable<SyntaxKind> syntaxKinds)
-        {
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
+            SyntaxKind kind = trivia.Kind();
 
-            foreach (SyntaxKind syntaxKind in syntaxKinds)
-            {
-                if (syntaxTrivia.IsKind(syntaxKind))
-                    return true;
-            }
-
-            return false;
+            return kind == kind1
+                || kind == kind2;
         }
 
         public static bool IsWhitespaceTrivia(this SyntaxTrivia trivia)

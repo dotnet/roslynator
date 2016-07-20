@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 RefactoringIdentifiers.CommentOutMember)
                             && BraceContainsSpan(context, member))
                         {
-                            if (member.Parent?.IsAnyKind(
+                            if (member.Parent?.IsKind(
                                 SyntaxKind.NamespaceDeclaration,
                                 SyntaxKind.ClassDeclaration,
                                 SyntaxKind.StructDeclaration,

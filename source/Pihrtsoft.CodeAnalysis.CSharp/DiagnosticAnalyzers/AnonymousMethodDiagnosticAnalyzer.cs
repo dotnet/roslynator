@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 StatementSyntax statement = block.Statements[0];
 
-                if (statement.IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
+                if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
                     context.FadeOutBraces(descriptor, block);
 

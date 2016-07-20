@@ -83,7 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!expression.IsAnyKind(
+            if (!expression.IsKind(
                 SyntaxKind.ObjectCreationExpression,
                 SyntaxKind.ArrayCreationExpression,
                 SyntaxKind.CastExpression,

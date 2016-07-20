@@ -337,7 +337,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
 #if DEBUG
                         if (!fReorderMembers
-                            && node.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
+                            && node.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
                         {
                             ReorderMembersRefactoring.ComputeRefactorings(context, memberDeclaration);
                             fReorderMembers = true;

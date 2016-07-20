@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             ExpressionSyntax expression = memberAccess.Expression;
 
             if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true
-                && expression?.IsAnyKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.IdentifierName) == true)
+                && expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.IdentifierName) == true)
             {
                 var namedTypeSymbol = context
                     .SemanticModel

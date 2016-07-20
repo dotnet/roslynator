@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
         {
             return eventDeclaration.Parent != null
-                && eventDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+                && eventDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && eventDeclaration.Declaration?.Variables.Count == 1;
         }
 

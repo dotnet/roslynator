@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
-            if (binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+            if (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false)
             {
@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false
-                && binaryExpression.IsAnyKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.OperatorToken.Span.Contains(context.Span))
             {
                 context.RegisterRefactoring(

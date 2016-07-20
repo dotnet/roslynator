@@ -170,80 +170,81 @@ namespace Pihrtsoft.CodeAnalysis
             }
         }
 
-        public static bool IsAnyKind(this SyntaxNode syntaxNode, params SyntaxKind[] syntaxKinds)
+        public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
-            if (syntaxNode == null)
-                throw new ArgumentNullException(nameof(syntaxNode));
+            if (node == null)
+                return false;
 
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
+            SyntaxKind kind = node.Kind();
 
-            for (int i = 0; i < syntaxKinds.Length; i++)
+            return kind == kind1
+                || kind == kind2;
+        }
+
+        public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            if (node == null)
+                return false;
+
+            SyntaxKind kind = node.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3;
+        }
+
+        public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        {
+            if (node == null)
+                return false;
+
+            SyntaxKind kind = node.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4;
+        }
+
+        public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        {
+            if (node == null)
+                return false;
+
+            SyntaxKind kind = node.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4
+                || kind == kind5;
+        }
+
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
+        {
+            return node != null
+                && Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node.Parent, kind);
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] kinds)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (kinds == null)
+                throw new ArgumentNullException(nameof(kinds));
+
+            do
             {
-                if (syntaxNode.IsKind(syntaxKinds[i]))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.IsKind(kind)
-                || node.IsKind(kind2);
-        }
-
-        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.IsKind(kind)
-                || node.IsKind(kind2)
-                || node.IsKind(kind3);
-        }
-
-        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.IsKind(kind)
-                || node.IsKind(kind2)
-                || node.IsKind(kind3)
-                || node.IsKind(kind4);
-        }
-
-        public static bool IsAnyKind(this SyntaxNode node, SyntaxKind kind, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.IsKind(kind)
-                || node.IsKind(kind2)
-                || node.IsKind(kind3)
-                || node.IsKind(kind4)
-                || node.IsKind(kind5);
-        }
-
-        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] syntaxKinds)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (syntaxKinds == null)
-                throw new ArgumentNullException(nameof(syntaxKinds));
-
-            while (node != null)
-            {
-                if (node.IsAnyKind(syntaxKinds))
-                    return node;
+                for (int i = 0; i < kinds.Length; i++)
+                {
+                    if (Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, kinds[i]))
+                        return node;
+                }
 
                 node = node.Parent;
             }
+            while (node != null);
 
             return null;
         }

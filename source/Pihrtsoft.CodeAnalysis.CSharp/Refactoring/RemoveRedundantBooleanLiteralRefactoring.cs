@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static SyntaxNode Refactor(BinaryExpressionSyntax binaryExpression)
         {
-            if (binaryExpression.Left.IsAnyKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
+            if (binaryExpression.Left.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
             {
                 SyntaxTriviaList triviaList = SyntaxFactory.TriviaList()
                     .AddRange(binaryExpression.Left.GetLeadingTrivia())

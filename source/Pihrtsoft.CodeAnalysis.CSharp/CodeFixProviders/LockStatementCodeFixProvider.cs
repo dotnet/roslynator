@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 var containingDeclaration = (MemberDeclarationSyntax)containingMember
                     .Ancestors()
-                    .FirstOrDefault(f => f.IsAnyKind(
+                    .FirstOrDefault(f => f.IsKind(
                         SyntaxKind.ClassDeclaration,
                         SyntaxKind.InterfaceDeclaration,
                         SyntaxKind.StructDeclaration));

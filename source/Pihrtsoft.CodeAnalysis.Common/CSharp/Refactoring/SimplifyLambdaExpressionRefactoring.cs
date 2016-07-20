@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     StatementSyntax statement = block.Statements[0];
 
-                    if (statement.IsAnyKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
+                    if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                     {
                         ExpressionSyntax expression = GetExpression(statement);
 

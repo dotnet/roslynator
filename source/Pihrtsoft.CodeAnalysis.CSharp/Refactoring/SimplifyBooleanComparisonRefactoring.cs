@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static ExpressionSyntax Refactor(BinaryExpressionSyntax binaryExpression)
         {
-            if (binaryExpression.Left.IsAnyKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
+            if (binaryExpression.Left.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
             {
                 ExpressionSyntax expression = binaryExpression.Right.Negate();
 

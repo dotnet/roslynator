@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             var lockStatement = (LockStatementSyntax)context.Node;
 
             if (lockStatement.Expression != null
-                && lockStatement.Expression.IsAnyKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression))
+                && lockStatement.Expression.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression))
             {
                 ITypeSymbol typeSymbol = context.SemanticModel
                     .GetTypeInfo(lockStatement.Expression, context.CancellationToken).Type;

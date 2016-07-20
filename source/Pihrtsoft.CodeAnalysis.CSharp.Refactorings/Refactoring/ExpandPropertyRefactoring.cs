@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
             return propertyDeclaration.Parent != null
-                && propertyDeclaration.Parent.IsAnyKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+                && propertyDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && propertyDeclaration.AccessorList != null
                 && propertyDeclaration
                     .AccessorList

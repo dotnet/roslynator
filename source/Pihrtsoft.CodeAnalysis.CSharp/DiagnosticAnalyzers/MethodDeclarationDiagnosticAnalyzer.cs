@@ -96,7 +96,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
         private static bool ContainsAwait(MethodDeclarationSyntax methodDeclaration)
         {
             return methodDeclaration
-                .DescendantNodes(node => !node.IsAnyKind(
+                .DescendantNodes(node => !node.IsKind(
                     SyntaxKind.SimpleLambdaExpression,
                     SyntaxKind.ParenthesizedLambdaExpression,
                     SyntaxKind.AnonymousMethodExpression))

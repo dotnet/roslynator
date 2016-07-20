@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (node == null)
                 return;
 
-            if (!node.IsAnyKind(
+            if (!node.IsKind(
                 SyntaxKind.QualifiedName,
                 SyntaxKind.IdentifierName,
                 SyntaxKind.SimpleMemberAccessExpression))

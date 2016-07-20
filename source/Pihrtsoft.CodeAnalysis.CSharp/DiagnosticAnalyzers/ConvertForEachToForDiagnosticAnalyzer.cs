@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
             if (forEachStatement != null
-                && forEachStatement.Expression.IsAnyKind(
+                && forEachStatement.Expression.IsKind(
                     SyntaxKind.QualifiedName,
                     SyntaxKind.IdentifierName,
                     SyntaxKind.SimpleMemberAccessExpression)
