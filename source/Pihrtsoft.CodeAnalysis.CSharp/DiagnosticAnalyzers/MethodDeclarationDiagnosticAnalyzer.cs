@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -43,38 +44,63 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-            if (methodSymbol == null || methodSymbol.IsImplicitlyDeclared)
-                return;
-
-            if (methodSymbol.IsAsync)
-            {
-                if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
-                        methodDeclaration.Identifier.GetLocation());
-                }
-            }
-            else if (!methodSymbol.IsAbstract
-                && methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
+            if (methodSymbol != null)
             {
                 SyntaxToken identifier = methodDeclaration.Identifier;
 
-                if (identifier.ValueText.EndsWith(AsyncSuffix, StringComparison.Ordinal))
+                if (methodSymbol.IsAsync)
+                {
+                    if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
+                        && ContainsAwait(methodDeclaration))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
+                            identifier.GetLocation());
+                    }
+                }
+                else if (!methodSymbol.IsAbstract
+                    && methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
+                    && ShouldRemoveSuffix(methodSymbol, context.SemanticModel))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
                         identifier.GetLocation());
 
-                    Location location = Location.Create(
-                        identifier.SyntaxTree,
-                        TextSpan.FromBounds(identifier.Span.End - AsyncSuffix.Length, identifier.Span.End));
-
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
-                        location);
+                        Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - AsyncSuffix.Length, identifier.Span.End)));
                 }
             }
+        }
+
+        private static bool ShouldRemoveSuffix(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            var returnTypeSymbol = methodSymbol.ReturnType as INamedTypeSymbol;
+
+            if (returnTypeSymbol != null)
+            {
+                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+
+                if (taskSymbol?.Equals(returnTypeSymbol) == false)
+                {
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+
+                    if (taskOfTSymbol?.Equals(returnTypeSymbol.ConstructedFrom) == false)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool ContainsAwait(MethodDeclarationSyntax methodDeclaration)
+        {
+            return methodDeclaration
+                .DescendantNodes(node => !node.IsAnyKind(
+                    SyntaxKind.SimpleLambdaExpression,
+                    SyntaxKind.ParenthesizedLambdaExpression,
+                    SyntaxKind.AnonymousMethodExpression))
+                .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
     }
 }
