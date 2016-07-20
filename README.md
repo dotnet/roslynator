@@ -104,7 +104,7 @@
 * RCS1078 - Replace string.Empty with ""
 * RCS1079 - Throwing of new NotImplementedException
 * RCS1080 - Replace 'Any' method with 'Count' or 'Length' property
-* RCS1081 - Split declaration into multiple declarations
+* RCS1081 - Split variable declaration
 * RCS1082 - Replace 'Count' method with 'Count' or 'Length' property
 * RCS1083 - Replace 'Count' method with 'Any' method
 * RCS1084 - Replace conditional expression with coalesce expression
@@ -115,6 +115,7 @@
 * [Add boolean comparison](Refactorings.md#add-boolean-comparison)
 * [Add cast expression](Refactorings.md#add-cast-expression)
 * [Add default value to parameter](Refactorings.md#add-default-value-to-parameter)
+* [Add identifier to variable declaration](Refactorings.md#add-identifier-to-variable-declaration)
 * [Add interpolation](Refactorings.md#add-interpolation)
 * [Add parameter name to argument](Refactorings.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](Refactorings.md#add-parameter-name-to-parameter)
@@ -168,6 +169,7 @@
 * [Remove all xml comments](Refactorings.md#remove-all-xml-comments)
 * [Remove comment](Refactorings.md#remove-comment)
 * [Remove condition from last else-if](Refactorings.md#remove-condition-from-last-else-if)
+* [Remove empty lines](Refactorings.md#remove-empty-lines)
 * [Remove member](Refactorings.md#remove-member)
 * [Remove parameter name from argument](Refactorings.md#remove-parameter-name-from-argument)
 * [Remove property initializer](Refactorings.md#remove-property-initializer)
