@@ -1,3 +1,12 @@
+### 0.93.0 (2016-07-21)
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddIdentifierToVariableDeclaration
+* RemoveEmptyLines
+
 ### 0.92.0 (2016-07-18)
 
 #### Refactorings
