@@ -121,7 +121,7 @@
       <Syntax>selected text inside interpolated string text</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" ExtensionVersion="0.93.0">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
@@ -650,7 +650,7 @@
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveEmptyLines" Title="Remove empty lines" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveEmptyLines" Title="Remove empty lines" ExtensionVersion="0.93.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
