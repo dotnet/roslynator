@@ -25,6 +25,12 @@
 
 ![Add default value to parameter](/images/refactorings/AddDefaultValueToParameter.png)
 
+#### Add identifier to variable declaration
+
+* **Syntax**: variable declaration
+
+![Add identifier to variable declaration](/images/refactorings/AddIdentifierToVariableDeclaration.png)
+
 #### Add interpolation
 
 * **Syntax**: selected text inside interpolated string text
@@ -375,6 +381,12 @@
 * **Scope**: else keyword
 
 ![Remove condition from last else-if](/images/refactorings/RemoveConditionFromLastElseIf.png)
+
+#### Remove empty lines
+
+* **Syntax**: selected lines
+
+![Remove empty lines](/images/refactorings/RemoveEmptyLines.png)
 
 #### Remove member
 
