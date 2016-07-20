@@ -86,6 +86,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fBlock = false;
             bool fStatementRefactoring = false;
 
+            await SyntaxNodeRefactoring.ComputeRefactoringsAsync(context, node);
+
             using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
             {
                 while (en.MoveNext())

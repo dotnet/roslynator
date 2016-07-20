@@ -44,6 +44,8 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\RemoveEmptyLinesRefactoring.cs" />
+    <Compile Include="Refactoring\SyntaxNodeRefactoring.cs" />
     <Compile Include="Refactoring\AddDefaultValueToParameterRefactoring.cs" />
     <Compile Include="Refactoring\AnonymousMethodExpressionRefactoring.cs" />
     <Compile Include="Refactoring\AttributeArgumentParameterNameRefactoring.cs" />

@@ -69,6 +69,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllXmlComments = false;
             RemoveComment = true;
             RemoveConditionFromLastElseIf = true;
+            RemoveEmptyLines = true;
             RemoveMember = true;
             RemoveParameterNameFromArgument = true;
             RemovePropertyInitializer = true;
@@ -187,6 +188,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
+            SetIsEnabled(RefactoringIdentifiers.RemoveEmptyLines, RemoveEmptyLines);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
@@ -811,6 +813,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: else clause\r\nScope: else keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveConditionFromLastElseIf
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove empty lines")]
+        [Description("Syntax: selected lines")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveEmptyLines
         {
             get;
             set;

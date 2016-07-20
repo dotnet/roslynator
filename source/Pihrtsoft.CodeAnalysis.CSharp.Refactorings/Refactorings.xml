@@ -650,6 +650,11 @@
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveEmptyLines" Title="Remove empty lines" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>selected lines</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveMember" Title="Remove member" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>method</Syntax>

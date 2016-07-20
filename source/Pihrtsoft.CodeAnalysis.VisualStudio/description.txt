@@ -120,6 +120,7 @@
         <li>RCS1079 - Throwing of new NotImplementedException.</li>
         <li>RCS1080 - Replace 'Any' method with 'Count' or 'Length' property.</li>
         <li>RCS1081 - Split variable declaration.</li>
+
         <li>RCS1082 - Replace 'Count' method with 'Count' or 'Length' property.</li>
         <li>RCS1083 - Replace 'Count' method with 'Any' method.</li>
         <li>RCS1084 - Replace conditional expression with coalesce expression.</li>
@@ -297,6 +298,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-condition-from-last-else-if">Remove condition from last else-if</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-empty-lines">Remove empty lines</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-member">Remove member</a>
