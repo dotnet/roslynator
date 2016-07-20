@@ -711,9 +711,9 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SplitDeclarationIntoMultipleDeclarations" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="SplitVariableDeclaration" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1081</Id>
-    <Title>Split declaration into multiple declarations.</Title>
+    <Title>Split variable declaration.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
