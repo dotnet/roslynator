@@ -30,12 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (argumentList == null)
                 return null;
 
-            var invocableExpression = argumentList.Parent as ExpressionSyntax;
-
-            if (invocableExpression == null)
-                return null;
-
-            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(invocableExpression, cancellationToken);
+            SymbolInfo symbolInfo = GetSymbolInfo(argumentList.Parent, semanticModel, cancellationToken);
 
             ISymbol symbol = symbolInfo.Symbol;
 
@@ -78,6 +73,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
 
             return null;
+        }
+
+        private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            var expression = node as ExpressionSyntax;
+
+            if (expression != null)
+                return semanticModel.GetSymbolInfo(expression, cancellationToken);
+
+            var constructorInitializer = node as ConstructorInitializerSyntax;
+
+            if (constructorInitializer != null)
+                return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
+
+            return default(SymbolInfo);
         }
 
         public static ArgumentSyntax WithoutNameColon(this ArgumentSyntax argument)
