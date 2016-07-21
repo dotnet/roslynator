@@ -632,6 +632,11 @@
     </Syntaxes>
     <Scope>block with a single statement</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceReturnStatementWithIfStatement" Title="Replace return statement with if statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>return statement with boolean expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceSwitchSectionBlockWithStatements" Title="Replace switch section block with statements" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>switch section</Syntax>

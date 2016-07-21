@@ -401,6 +401,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-return-statement-with-if-statement">Replace return statement with if statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-statements-with-block-in-each-section">Replace statements with block (in each section)</a>
         </li>
         <li>

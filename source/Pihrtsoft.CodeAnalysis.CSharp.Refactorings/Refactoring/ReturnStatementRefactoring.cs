@@ -97,6 +97,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         }
                     }
                 }
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement))
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                    ITypeSymbol expressionSymbol = semanticModel
+                        .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
+                        .ConvertedType;
+
+                    if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
+                    {
+                        context.RegisterRefactoring(
+                            "Replace return statement with if statement",
+                            cancellationToken =>
+                            {
+                                return ReplaceReturnStatementWithIfStatementRefactoring.RefactorAsync(
+                                    context.Document,
+                                    returnStatement,
+                                    cancellationToken);
+                            });
+                    }
+                }
             }
         }
 

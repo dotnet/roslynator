@@ -103,6 +103,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
+            ReplaceReturnStatementWithIfStatement = true;
             ReplaceStatementsWithBlockInEachSection = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
@@ -222,6 +223,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement, ReplaceReturnStatementWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSection, ReplaceStatementsWithBlockInEachSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
@@ -1153,6 +1155,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: regular string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceRegularStringLiteralWithVerbatimStringLiteral
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace return statement with if statement")]
+        [Description("Syntax: return statement with boolean expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceReturnStatementWithIfStatement
         {
             get;
             set;
