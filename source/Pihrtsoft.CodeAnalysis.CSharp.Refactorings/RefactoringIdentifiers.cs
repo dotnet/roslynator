@@ -122,6 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
         public const string WrapDeclarationInUsingStatement = "WrapDeclarationInUsingStatement";
         public const string WrapExpressionInParentheses = "WrapExpressionInParentheses";
+        public const string WrapStatementsInIfStatement = "WrapStatementsInIfStatement";
         public const string WrapStatementsInTryCatch = "WrapStatementsInTryCatch";
     }
 }

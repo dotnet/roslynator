@@ -10,6 +10,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             ReplaceBlockWithEmbeddedStatementRefactoring.ComputeRefactoring(context, block);
 
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInIfStatement)
+                && WrapStatementsInIfStatementRefactoring.CanRefactor(context, block))
+            {
+                context.RegisterRefactoring(
+                    "Wrap in if statement",
+                    cancellationToken =>
+                    {
+                        var refactoring = new WrapStatementsInIfStatementRefactoring();
+
+                        return refactoring.RefactorAsync(
+                            context.Document,
+                            block,
+                            context.Span,
+                            cancellationToken);
+                    });
+            }
+
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInTryCatch)
                 && WrapStatementsInTryCatchRefactoring.CanRefactor(context, block))
             {
@@ -17,7 +34,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     "Wrap in try-catch",
                     cancellationToken =>
                     {
-                        return WrapStatementsInTryCatchRefactoring.RefactorAsync(
+                        var refactoring = new WrapStatementsInTryCatchRefactoring();
+
+                        return refactoring.RefactorAsync(
                             context.Document,
                             block,
                             context.Span,

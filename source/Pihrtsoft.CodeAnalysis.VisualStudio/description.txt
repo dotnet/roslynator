@@ -476,6 +476,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-statements-in-if-statement">Wrap statements in if statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-statements-in-try-catch">Wrap statements in try-catch</a>
         </li>
     </ul>

@@ -147,6 +147,11 @@
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="WrapStatementsInIfStatement" Title="Wrap statements in if statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>selected statements</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="WrapStatementsInTryCatch" Title="Wrap statements in try-catch" ExtensionVersion="0.0.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>

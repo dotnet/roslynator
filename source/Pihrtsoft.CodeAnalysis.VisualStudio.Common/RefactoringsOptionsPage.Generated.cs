@@ -128,6 +128,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             UseExpressionBodiedMember = true;
             WrapDeclarationInUsingStatement = true;
             WrapExpressionInParentheses = true;
+            WrapStatementsInIfStatement = true;
             WrapStatementsInTryCatch = true;
         }
 
@@ -249,6 +250,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
             SetIsEnabled(RefactoringIdentifiers.WrapDeclarationInUsingStatement, WrapDeclarationInUsingStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapExpressionInParentheses, WrapExpressionInParentheses);
+            SetIsEnabled(RefactoringIdentifiers.WrapStatementsInIfStatement, WrapStatementsInIfStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapStatementsInTryCatch, WrapStatementsInTryCatch);
         }
 
@@ -1407,6 +1409,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapExpressionInParentheses
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Wrap statements in if statement")]
+        [Description("Syntax: selected statements")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool WrapStatementsInIfStatement
         {
             get;
             set;
