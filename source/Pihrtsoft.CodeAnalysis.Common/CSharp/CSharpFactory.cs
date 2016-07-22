@@ -291,5 +291,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             return SyntaxFactory.UsingDirective(StaticToken(), null, ParseName(name));
         }
+
+        public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
+        {
+            return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
+        }
     }
 }

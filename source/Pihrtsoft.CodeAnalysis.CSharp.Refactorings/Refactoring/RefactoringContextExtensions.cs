@@ -440,7 +440,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!fBlock
                             && node.IsKind(SyntaxKind.Block))
                         {
-                            ReplaceBlockWithEmbeddedStatementRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
+                            BlockRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
                             fBlock = true;
                         }
 

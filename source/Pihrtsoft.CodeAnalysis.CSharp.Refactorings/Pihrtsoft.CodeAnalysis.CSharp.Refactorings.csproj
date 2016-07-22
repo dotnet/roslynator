@@ -44,6 +44,8 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\BlockRefactoring.cs" />
+    <Compile Include="Refactoring\WrapStatementsInTryCatchRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="Refactoring\SyntaxNodeRefactoring.cs" />

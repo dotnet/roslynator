@@ -147,6 +147,11 @@
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="WrapStatementsInTryCatch" Title="Wrap statements in try-catch" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>selected statements</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceAnyWithAllOrAllWithAny" Title="Replace 'Any/All' with 'All/Any'" ExtensionVersion="0.9.2">
     <Syntaxes>
       <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
