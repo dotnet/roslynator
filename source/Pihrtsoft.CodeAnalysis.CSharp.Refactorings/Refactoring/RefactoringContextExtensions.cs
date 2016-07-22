@@ -86,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fBlock = false;
             bool fStatementRefactoring = false;
 
-            await SyntaxNodeRefactoring.ComputeRefactoringsAsync(context, node);
+            SyntaxNode firstNode = node;
 
             using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
             {
@@ -469,6 +469,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 }
             }
+
+            await SyntaxNodeRefactoring.ComputeRefactoringsAsync(context, firstNode);
         }
 
         public static void ComputeRefactoringsForNodeInsideTrivia(this RefactoringContext context)
