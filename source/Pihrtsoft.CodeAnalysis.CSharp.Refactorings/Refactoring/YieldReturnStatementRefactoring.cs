@@ -17,11 +17,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {
-                MemberDeclarationSyntax declaration = ReturnStatementRefactoring.GetDeclaration(yieldStatement);
+                MemberDeclarationSyntax declaration = ReturnExpressionRefactoring.GetDeclaration(yieldStatement.Expression);
 
                 if (declaration != null)
                 {
-                    TypeSyntax memberType = ReturnStatementRefactoring.GetMemberType(declaration);
+                    TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(declaration);
 
                     if (memberType != null)
                     {
@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                                 TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
 
                                 context.RegisterRefactoring(
-                                    $"Change {ReturnStatementRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                    $"Change {ReturnExpressionRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
                                     cancellationToken =>
                                     {
                                         return TypeSyntaxRefactoring.ChangeTypeAsync(

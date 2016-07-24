@@ -45,6 +45,7 @@
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactoring\BlockRefactoring.cs" />
+    <Compile Include="Refactoring\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsInIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsInTryCatchRefactoring.cs" />

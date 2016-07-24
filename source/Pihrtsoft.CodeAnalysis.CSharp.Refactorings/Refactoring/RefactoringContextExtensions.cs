@@ -133,7 +133,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (!fArrowExpressionClause
                         && node.IsKind(SyntaxKind.ArrowExpressionClause))
                     {
-                        ArrowExpressionClauseRefactoring.ComputeRefactorings(context, (ArrowExpressionClauseSyntax)node);
+                        await ArrowExpressionClauseRefactoring.ComputeRefactoringsAsync(context, (ArrowExpressionClauseSyntax)node);
                         fArrowExpressionClause = true;
                         continue;
                     }
