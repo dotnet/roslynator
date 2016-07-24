@@ -685,6 +685,11 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
+  <Refactoring Id="RemoveMemberDeclarations" Title="Remove member declarations above/below" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>empty line between member declarations</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveParameterNameFromArgument" Title="Remove parameter name from argument" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>selected argument(s)</Syntax>

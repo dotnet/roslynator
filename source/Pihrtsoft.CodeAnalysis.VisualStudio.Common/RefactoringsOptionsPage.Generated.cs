@@ -71,6 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveConditionFromLastElseIf = true;
             RemoveEmptyLines = true;
             RemoveMember = true;
+            RemoveMemberDeclarations = true;
             RemoveParameterNameFromArgument = true;
             RemovePropertyInitializer = true;
             RemoveStatement = true;
@@ -193,6 +194,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
             SetIsEnabled(RefactoringIdentifiers.RemoveEmptyLines, RemoveEmptyLines);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
+            SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
@@ -839,6 +841,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: method, constructor, property, indexer, operator, event, namespace, class, struct, interface\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveMember
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove member declarations above/below")]
+        [Description("Syntax: empty line between member declarations")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveMemberDeclarations
         {
             get;
             set;

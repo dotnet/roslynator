@@ -65,6 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveConditionFromLastElseIf = "RemoveConditionFromLastElseIf";
         public const string RemoveEmptyLines = "RemoveEmptyLines";
         public const string RemoveMember = "RemoveMember";
+        public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";

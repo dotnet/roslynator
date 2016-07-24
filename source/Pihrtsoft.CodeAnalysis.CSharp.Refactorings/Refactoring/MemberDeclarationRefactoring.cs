@@ -101,10 +101,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
             }
 #endif
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMembers)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.SwapMembers,
+                    RefactoringIdentifiers.RemoveMemberDeclarations)
                 && !member.Span.IntersectsWith(context.Span))
             {
-                SwapMembersRefactoring.ComputeRefactoring(context, member);
+                MemberDeclarationsRefactoring.ComputeRefactoring(context, member);
             }
 
             switch (member.Kind())

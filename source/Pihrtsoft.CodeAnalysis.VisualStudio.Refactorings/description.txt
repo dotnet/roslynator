@@ -212,6 +212,9 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-member">Remove member</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-member-declarations-abovebelow">Remove member declarations above/below</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
         </li>
         <li>
