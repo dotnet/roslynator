@@ -24,8 +24,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
-            return context.Span.IsEmpty
-                && EmbeddedStatementAnalysis.IsEmbeddableBlock(block);
+            if (context.Span.IsEmpty
+                && EmbeddedStatementAnalysis.IsEmbeddableBlock(block))
+            {
+                StatementSyntax statement = EmbeddedStatementAnalysis.GetEmbeddedStatement(block.Statements[0]);
+
+                return statement == null
+                    || !statement.FullSpan.Contains(context.Span);
+            }
+
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
