@@ -123,7 +123,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SplitVariableDeclaration = true;
             SwapExpressionsInBinaryExpression = true;
             SwapExpressionsInConditionalExpression = true;
-            SwapMembers = true;
+            SwapMemberDeclarations = true;
             SwapStatementsInIfElse = true;
             Uncomment = true;
             UseExpressionBodiedMember = true;
@@ -246,7 +246,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SplitVariableDeclaration, SplitVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, SwapExpressionsInBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, SwapExpressionsInConditionalExpression);
-            SetIsEnabled(RefactoringIdentifiers.SwapMembers, SwapMembers);
+            SetIsEnabled(RefactoringIdentifiers.SwapMemberDeclarations, SwapMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
             SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
@@ -1367,10 +1367,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Swap members")]
+        [DisplayName("Swap member declarations")]
         [Description("Syntax: empty line between member declarations")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool SwapMembers
+        public bool SwapMemberDeclarations
         {
             get;
             set;

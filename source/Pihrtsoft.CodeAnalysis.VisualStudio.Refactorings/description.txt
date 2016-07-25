@@ -368,7 +368,7 @@
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-expressions-in-conditional-expression">Swap expressions in conditional expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-members">Swap members</a>
+            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-member-declarations">Swap member declarations</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-statements-in-if-else">Swap statements in if-else</a>

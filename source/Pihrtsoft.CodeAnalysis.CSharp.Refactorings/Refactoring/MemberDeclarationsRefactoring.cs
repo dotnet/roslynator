@@ -57,10 +57,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     });
                             }
 
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMembers))
+                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
                             {
                                 context.RegisterRefactoring(
-                                    "Swap members",
+                                    "Swap declarations",
                                     cancellationToken =>
                                     {
                                         return RefactorAsync(

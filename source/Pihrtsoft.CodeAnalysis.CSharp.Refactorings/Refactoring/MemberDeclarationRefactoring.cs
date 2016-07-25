@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (RemoveAllMembersRefactoring.CanRefactor(context, member))
                         {
                             context.RegisterRefactoring(
-                                "Remove all members",
+                                "Remove all declarations",
                                 cancellationToken => RemoveAllMembersRefactoring.RefactorAsync(context.Document, member, cancellationToken));
                         }
 
@@ -102,7 +102,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 #endif
             if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.SwapMembers,
+                    RefactoringIdentifiers.SwapMemberDeclarations,
                     RefactoringIdentifiers.RemoveMemberDeclarations)
                 && !member.Span.IntersectsWith(context.Span))
             {

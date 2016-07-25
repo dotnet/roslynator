@@ -793,7 +793,7 @@
     </Syntaxes>
     <Scope>if keyword</Scope>
   </Refactoring>
-  <Refactoring Id="SwapMembers" Title="Swap members" ExtensionVersion="0.9.50">
+  <Refactoring Id="SwapMemberDeclarations" Title="Swap member declarations" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>

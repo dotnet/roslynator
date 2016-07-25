@@ -117,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string SplitVariableDeclaration = "SplitVariableDeclaration";
         public const string SwapExpressionsInBinaryExpression = "SwapExpressionsInBinaryExpression";
         public const string SwapExpressionsInConditionalExpression = "SwapExpressionsInConditionalExpression";
-        public const string SwapMembers = "SwapMembers";
+        public const string SwapMemberDeclarations = "SwapMemberDeclarations";
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
