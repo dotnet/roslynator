@@ -1308,7 +1308,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Reverse for loop")]
-        [Description("Syntax: for statement\r\nScope: for keyword")]
+        [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReverseForLoop
         {
