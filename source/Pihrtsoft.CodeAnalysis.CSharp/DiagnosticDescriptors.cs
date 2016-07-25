@@ -44,6 +44,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor ReplaceBlockWithEmbeddedStatementInIfElseFadeOut = ReplaceBlockWithEmbeddedStatementInIfElse.CreateFadeOut();
+
         public static readonly DiagnosticDescriptor SimplifyNestedUsingStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.SimplifyNestedUsingStatement,
             title: "Simplify nested using statement.",

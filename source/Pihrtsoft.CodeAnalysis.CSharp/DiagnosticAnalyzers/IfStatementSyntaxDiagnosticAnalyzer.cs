@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
                     DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
-                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut,
+                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElseFadeOut,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
                     DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
                         ifStatement.GetLocation());
 
-                    ReplaceBlockWithEmbeddedStatementFadeOut(context, ifStatement);
+                    ReplaceBlockWithEmbeddedStatementInIfElseFadeOut(context, ifStatement);
                 }
             }
 
@@ -72,14 +72,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
         }
 
-        private static void ReplaceBlockWithEmbeddedStatementFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        private static void ReplaceBlockWithEmbeddedStatementInIfElseFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
             foreach (SyntaxNode node in ifStatement.DescendantNodes())
             {
                 if (node.IsKind(SyntaxKind.Block))
                 {
                     context.FadeOutBraces(
-                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementFadeOut,
+                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElseFadeOut,
                         (BlockSyntax)node);
                 }
             }
