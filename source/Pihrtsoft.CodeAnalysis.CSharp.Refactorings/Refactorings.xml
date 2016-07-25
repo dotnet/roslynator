@@ -755,7 +755,6 @@
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
-    <Scope>for keyword</Scope>
   </Refactoring>
   <Refactoring Id="SimplifyLambdaExpression" Title="Simplify lambda expression" ExtensionVersion="0.9.80">
     <Syntaxes>

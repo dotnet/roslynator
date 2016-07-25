@@ -11,6 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
                 && context.SupportsSemanticModel
+                && forStatement.Span.Contains(context.Span)
                 && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement)))
             {
                 context.RegisterRefactoring(
@@ -19,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
-                && forStatement.ForKeyword.Span.Contains(context.Span))
+                && forStatement.Span.Contains(context.Span))
             {
                 if (ReverseForLoopRefactoring.CanRefactor(forStatement))
                 {
