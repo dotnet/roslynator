@@ -14,6 +14,12 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool IsBooleanLiteralExpression(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.TrueLiteralExpression)
+                || Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.FalseLiteralExpression);
+        }
+
         public static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
         {
             if (node == null)

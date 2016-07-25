@@ -22,7 +22,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression);
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement)
+                    && !returnStatement.Expression.IsBooleanLiteralExpression())
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
