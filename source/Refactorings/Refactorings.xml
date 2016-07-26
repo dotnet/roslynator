@@ -147,12 +147,12 @@
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapStatementsInIfStatement" Title="Wrap statements in if statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="WrapStatementsInIfStatement" Title="Wrap statements in if statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapStatementsInTryCatch" Title="Wrap statements in try-catch" ExtensionVersion="0.0.0">
+  <Refactoring Id="WrapStatementsInTryCatch" Title="Wrap statements in try-catch" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
@@ -642,7 +642,7 @@
     </Syntaxes>
     <Scope>block with a single statement</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceReturnStatementWithIfStatement" Title="Replace return statement with if statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceReturnStatementWithIfStatement" Title="Replace return statement with if statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>return statement with boolean expression</Syntax>
     </Syntaxes>
@@ -685,7 +685,7 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
-  <Refactoring Id="RemoveMemberDeclarations" Title="Remove member declarations above/below" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveMemberDeclarations" Title="Remove member declarations above/below" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
