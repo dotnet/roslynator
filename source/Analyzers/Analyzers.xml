@@ -34,7 +34,7 @@
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="SimplifyNestedUsingStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1005</Id>
