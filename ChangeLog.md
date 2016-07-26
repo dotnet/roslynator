@@ -1,3 +1,14 @@
+### 0.94.0 (2016-07-26)
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceReturnStatementWithIfStatement
+* WrapStatementsInTryCatch
+* WrapStatementsInIfStatement
+* RemoveMemberDeclarations
+
 ### 0.93.0 (2016-07-21)
 
 #### Refactorings
