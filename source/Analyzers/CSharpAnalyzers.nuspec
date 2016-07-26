@@ -6,8 +6,8 @@
     <title>C# Analyzers</title>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
-    <licenseUrl>https://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>https://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis</projectUrl>
+    <licenseUrl>https://github.com/JosefPihrt/RoslynTools/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/JosefPihrt/RoslynTools</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Roslyn-based library that offers 80+ analyzers for C#.</description>
     <summary>Roslyn-based library that offers 80+ analyzers for C#.</summary>

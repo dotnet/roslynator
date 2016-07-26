@@ -35,360 +35,360 @@
     <h3>List of Refactoring</h3>
     <ul>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-cast-expression">Add cast expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-cast-expression">Add cast expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-default-value-to-parameter">Add default value to parameter</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-default-value-to-parameter">Add default value to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-interpolation">Add interpolation</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-interpolation">Add interpolation</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-parameter-name-to-argument">Add parameter name to argument</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-parameter-name-to-argument">Add parameter name to argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-method-return-type-to-void">Change method return type to void</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-method-return-type-to-void">Change method return type to void</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression">Change method/property/indexer type according to return expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression">Change method/property/indexer type according to return expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-methodpropertyindexer-type-according-to-yield-return-expression">Change method/property/indexer type according to yield return expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-methodpropertyindexer-type-according-to-yield-return-expression">Change method/property/indexer type according to yield return expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#change-type-according-to-expression">Change type according to expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-type-according-to-expression">Change type according to expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#comment-out-member">Comment out member</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#comment-out-member">Comment out member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#comment-out-statement">Comment out statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#comment-out-statement">Comment out statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-argument">Duplicate argument</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#duplicate-argument">Duplicate argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-member">Duplicate member</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#duplicate-member">Duplicate member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-parameter">Duplicate parameter</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#duplicate-parameter">Duplicate parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#duplicate-statement">Duplicate statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#duplicate-statement">Duplicate statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-assignment-expression">Expand assignment expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-assignment-expression">Expand assignment expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-coalesce-expression">Expand coalesce expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-coalesce-expression">Expand coalesce expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-event">Expand event</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-event">Expand event</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-expression-bodied-member">Expand expression-bodied member</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-expression-bodied-member">Expand expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-initializer">Expand initializer</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-initializer">Expand initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-lambda-expression-body">Expand lambda expression body</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-lambda-expression-body">Expand lambda expression body</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-property">Expand property</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-property">Expand property</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#expand-property-and-add-backing-field">Expand property and add backing field</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#expand-property-and-add-backing-field">Expand property and add backing field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#extract-expression-from-parentheses">Extract expression from parentheses</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-parentheses">Extract expression from parentheses</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#extract-generic-type">Extract generic type</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-generic-type">Extract generic type</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#extract-statements">Extract statement(s)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-statements">Extract statement(s)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-accessor-braces">Format accessor braces</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-accessor-braces">Format accessor braces</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-argument-list">Format argument list</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-argument-list">Format argument list</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-binary-expression">Format binary expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-binary-expression">Format binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-conditional-expression">Format conditional expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-conditional-expression">Format conditional expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-expression-chain">Format expression chain</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-expression-chain">Format expression chain</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-initializer">Format initializer</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-initializer">Format initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#format-parameter-list">Format parameter list</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#format-parameter-list">Format parameter list</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#generate-switch-sections">Generate switch sections</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#generate-switch-sections">Generate switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#introduce-using-static-directive">Introduce using static directive</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-using-static-directive">Introduce using static directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#make-member-abstract">Make member abstract</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#make-member-abstract">Make member abstract</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#mark-all-members-as-static">Mark all members as static</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#mark-all-members-as-static">Mark all members as static</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#mark-member-as-static">Mark member as static</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#mark-member-as-static">Mark member as static</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#merge-attributes">Merge attributes</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-attributes">Merge attributes</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#merge-string-literals">Merge string literals</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-string-literals">Merge string literals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#merge-string-literals-into-multiline-string-literal">Merge string literals into multiline string literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-string-literals-into-multiline-string-literal">Merge string literals into multiline string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#negate-binary-expression">Negate binary expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#negate-binary-expression">Negate binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#negate-boolean-literal">Negate boolean literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#negate-boolean-literal">Negate boolean literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#negate-operator">Negate operator</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#negate-operator">Negate operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#notify-property-changed">Notify property changed</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#notify-property-changed">Notify property changed</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-comments">Remove all comments</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments">Remove all comments</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-comments-except-xml-comments">Remove all comments (except xml comments)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments-except-xml-comments">Remove all comments (except xml comments)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-regions">Remove all regions</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-regions">Remove all regions</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-all-xml-comments">Remove all xml comments</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-xml-comments">Remove all xml comments</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-comment">Remove comment</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-comment">Remove comment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-condition-from-last-else-if">Remove condition from last else-if</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-condition-from-last-else-if">Remove condition from last else-if</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-empty-lines">Remove empty lines</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-empty-lines">Remove empty lines</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-member">Remove member</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-member">Remove member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-member-declarations-abovebelow">Remove member declarations above/below</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-member-declarations-abovebelow">Remove member declarations above/below</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-property-initializer">Remove property initializer</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-property-initializer">Remove property initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#remove-statement">Remove statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-statement">Remove statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-identifier-according-to-type-name">Rename identifier according to type name</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-identifier-according-to-type-name">Rename identifier according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-method-according-to-type-name">Rename method according to type name</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-method-according-to-type-name">Rename method according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-parameter-according-to-its-type-name">Rename parameter according to its type name</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-parameter-according-to-its-type-name">Rename parameter according to its type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#rename-property-according-to-type-name">Rename property according to type name</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-property-according-to-type-name">Rename property according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace--with-stringempty">Replace "" with string.Empty</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace--with-stringempty">Replace "" with string.Empty</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-block-with-embedded-statement">Replace block with embedded statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-embedded-statement">Replace block with embedded statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-block-with-embedded-statement-in-if-else">Replace block with embedded statement (in if-else)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-embedded-statement-in-if-else">Replace block with embedded statement (in if-else)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-block-with-statements-in-each-section">Replace block with statements (in each section)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-statements-in-each-section">Replace block with statements (in each section)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-constant-with-field">Replace constant with field</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-constant-with-field">Replace constant with field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-countlength-with-lengthcount">Replace 'Count/Length' with 'Length/Count'</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-countlength-with-lengthcount">Replace 'Count/Length' with 'Length/Count'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-embedded-statement-with-block">Replace embedded statement with block</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-embedded-statement-with-block">Replace embedded statement with block</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-embedded-statement-with-block-in-if-else">Replace embedded statement with block (in if-else)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-embedded-statement-with-block-in-if-else">Replace embedded statement with block (in if-else)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-enumhasflag-method-with-bitwise-operation">Replace Enum.HasFlag method with bitwise operation</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-enumhasflag-method-with-bitwise-operation">Replace Enum.HasFlag method with bitwise operation</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-explicit-type-with-var">Replace explicit type with 'var'</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-explicit-type-with-var">Replace explicit type with 'var'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-for-with-foreach">Replace for with foreach</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-for-with-foreach">Replace for with foreach</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-foreach-with-for">Replace foreach with for</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-foreach-with-for">Replace foreach with for</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-interpolated-string-with-string-literal">Replace interpolated string with string literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-interpolated-string-with-string-literal">Replace interpolated string with string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-method-invocation-with-">Replace method invocation with '[]'</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-method-invocation-with-">Replace method invocation with '[]'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-method-with-property">Replace method with property</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-method-with-property">Replace method with property</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-prefix-operator-to-postfix-operator">Replace prefix operator to postfix operator</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-prefix-operator-to-postfix-operator">Replace prefix operator to postfix operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-property-with-method">Replace property with method</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-property-with-method">Replace property with method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-return-statement-with-if-statement">Replace return statement with if statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-return-statement-with-if-statement">Replace return statement with if statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-statements-with-block-in-each-section">Replace statements with block (in each section)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-statements-with-block-in-each-section">Replace statements with block (in each section)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-string-literal-with-interpolated-string">Replace string literal with interpolated string</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-interpolated-string">Replace string literal with interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-stringempty-with-">Replace string.Empty with ""</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringempty-with-">Replace string.Empty with ""</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-stringformat-with-interpolated-string">Replace string.Format with interpolated string</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringformat-with-interpolated-string">Replace string.Format with interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-switch-section-block-with-statements">Replace switch section block with statements</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-section-block-with-statements">Replace switch section block with statements</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-switch-section-statements-with-block">Replace switch section statements with block</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-section-statements-with-block">Replace switch section statements with block</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-switch-with-if-else">Replace switch with if-else</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-with-if-else">Replace switch with if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-var-with-explicit-type">Replace 'var' with explicit type</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-var-with-explicit-type">Replace 'var' with explicit type</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#reverse-for-loop">Reverse for loop</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#reverse-for-loop">Reverse for loop</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#split-attributes">Split attributes</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#split-attributes">Split attributes</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#split-variable-declaration-">Split variable declaration </a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#split-variable-declaration-">Split variable declaration </a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-expressions-in-conditional-expression">Swap expressions in conditional expression</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#swap-expressions-in-conditional-expression">Swap expressions in conditional expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-member-declarations">Swap member declarations</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#swap-member-declarations">Swap member declarations</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#swap-statements-in-if-else">Swap statements in if-else</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#swap-statements-in-if-else">Swap statements in if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#uncomment">Uncomment</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#uncomment">Uncomment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-declaration-in-using-statement">Wrap declaration in using statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-declaration-in-using-statement">Wrap declaration in using statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-statements-in-if-statement">Wrap statements in if statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-statements-in-if-statement">Wrap statements in if statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/Refactorings.md#wrap-statements-in-try-catch">Wrap statements in try-catch</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-statements-in-try-catch">Wrap statements in try-catch</a>
         </li>
     </ul>
