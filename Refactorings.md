@@ -395,6 +395,12 @@
 
 ![Remove member](/images/refactorings/RemoveMember.png)
 
+#### Remove member declarations above/below
+
+* **Syntax**: empty line between member declarations
+
+![Remove member declarations above/below](/images/refactorings/RemoveMemberDeclarations.png)
+
 #### Remove parameter name from argument
 
 * **Syntax**: selected argument(s)
@@ -606,6 +612,12 @@
 
 ![Replace regular string literal with verbatim string literal](/images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
 
+#### Replace return statement with if statement
+
+* **Syntax**: return statement with boolean expression
+
+![Replace return statement with if statement](/images/refactorings/ReplaceReturnStatementWithIfStatement.png)
+
 #### Replace statements with block (in each section)
 
 * **Syntax**: switch statement
@@ -687,7 +699,6 @@
 #### Reverse for loop
 
 * **Syntax**: for statement
-* **Scope**: for keyword
 
 ![Reverse for loop](/images/refactorings/ReverseForLoop.png)
 
@@ -724,11 +735,11 @@
 
 ![Swap expressions in conditional expression](/images/refactorings/SwapExpressionsInConditionalExpression.png)
 
-#### Swap members
+#### Swap member declarations
 
 * **Syntax**: empty line between member declarations
 
-![Swap members](/images/refactorings/SwapMembers.png)
+![Swap member declarations](/images/refactorings/SwapMemberDeclarations.png)
 
 #### Swap statements in if-else
 
@@ -761,3 +772,15 @@
 * **Syntax**: selected expression
 
 ![Wrap expression in parentheses](/images/refactorings/WrapExpressionInParentheses.png)
+
+#### Wrap statements in if statement
+
+* **Syntax**: selected statements
+
+![Wrap statements in if statement](/images/refactorings/WrapStatementsInIfStatement.png)
+
+#### Wrap statements in try-catch
+
+* **Syntax**: selected statements
+
+![Wrap statements in try-catch](/images/refactorings/WrapStatementsInTryCatch.png)
