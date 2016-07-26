@@ -13,7 +13,7 @@ namespace MetadataGenerator
             var generator = new Generator();
 
             foreach (RefactoringInfo refactoring in RefactoringInfo
-                .LoadFromFile(@"..\source\Pihrtsoft.CodeAnalysis.CSharp.Refactorings\Refactorings.xml")
+                .LoadFromFile(@"..\source\Refactorings\Refactorings.xml")
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture))
             {
                 generator.Refactorings.Add(refactoring);
@@ -22,7 +22,7 @@ namespace MetadataGenerator
             Console.WriteLine($"number of refactorings: {generator.Refactorings.Count}");
 
             foreach (AnalyzerInfo analyzer in AnalyzerInfo
-                .LoadFromFile(@"..\source\Pihrtsoft.CodeAnalysis.CSharp\Analyzers.xml")
+                .LoadFromFile(@"..\source\Analyzers\Analyzers.xml")
                 .OrderBy(f => f.Id, StringComparer.InvariantCulture))
             {
                 generator.Analyzers.Add(analyzer);
@@ -33,15 +33,15 @@ namespace MetadataGenerator
             var writer = new CodeFileWriter();
 
             writer.SaveCode(
-                @"..\source\Pihrtsoft.CodeAnalysis.CSharp\Analyzers.xml",
+                @"..\source\Analyzers\Analyzers.xml",
                 generator.CreateAnalyzersXml());
 
             writer.SaveCode(
-                @"..\source\Pihrtsoft.CodeAnalysis.VisualStudio\description.txt",
+                @"..\source\VisualStudio.AnalyzersAndRefactorings\description.txt",
                 generator.CreateAnalyzersExtensionDescription());
 
             writer.SaveCode(
-                @"..\source\Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings\description.txt",
+                @"..\source\VisualStudio.Refactorings\description.txt",
                 generator.CreateRefactoringsExtensionDescription());
 
             writer.SaveCode(

@@ -11,7 +11,7 @@ namespace CodeGenerator
         private static void Main(string[] args)
         {
             RefactoringInfo[] refactorings = RefactoringInfo
-                .LoadFromFile(@"..\source\Pihrtsoft.CodeAnalysis.CSharp.Refactorings\Refactorings.xml")
+                .LoadFromFile(@"..\source\Refactorings\Refactorings.xml")
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
                 .ToArray();
 
@@ -19,12 +19,12 @@ namespace CodeGenerator
 
             var refactoringIdentifiersGenerator = new RefactoringIdentifiersGenerator();
             writer.SaveCode(
-                @"..\source\Pihrtsoft.CodeAnalysis.CSharp.Refactorings\RefactoringIdentifiers.cs",
+                @"..\source\Refactorings\RefactoringIdentifiers.cs",
                 refactoringIdentifiersGenerator.Generate(refactorings));
 
             var optionsPagePropertiesGenerator = new OptionsPagePropertiesGenerator();
             writer.SaveCode(
-                @"..\source\Pihrtsoft.CodeAnalysis.VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
+                @"..\source\VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
                 optionsPagePropertiesGenerator.Generate(refactorings));
 
             Console.WriteLine("*** FINISHED ***");
