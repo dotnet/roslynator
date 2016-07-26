@@ -1,4 +1,4 @@
-﻿## C# Analyzers and Refactorings
+﻿## Roslyn Tools
 * Roslyn-based library that offers 80+ analyzers and 100+ refactorings for C#.
 * [Release Notes](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
 
