@@ -75,13 +75,13 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\source\Pihrtsoft.CodeAnalysis.CSharp\Pihrtsoft.CodeAnalysis.CSharp.csproj">
+    <ProjectReference Include="..\..\source\Analyzers\Analyzers.csproj">
       <Project>{2f2b32b2-31d8-4d52-a05f-0d909bd07ebe}</Project>
-      <Name>Pihrtsoft.CodeAnalysis.CSharp</Name>
+      <Name>Analyzers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\source\Pihrtsoft.CodeAnalysis.Metadata\Pihrtsoft.CodeAnalysis.Metadata.csproj">
+    <ProjectReference Include="..\..\source\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>
-      <Name>Pihrtsoft.CodeAnalysis.Metadata</Name>
+      <Name>Metadata</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

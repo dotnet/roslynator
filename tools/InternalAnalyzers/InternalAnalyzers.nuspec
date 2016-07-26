@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers</id>
+    <id>Pihrtsoft.CodeAnalysis.CSharp.InternalAnalyzers</id>
     <version>0.1.0.0</version>
-    <description>Analyzers for Pihrtsoft.CodeAnalysis.</description>
+    <description>Analyzers for RoslynTools.</description>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

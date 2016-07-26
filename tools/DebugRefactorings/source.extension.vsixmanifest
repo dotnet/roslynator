@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="d34b4f71-c775-43d6-ab85-19c6f344747a" Version="0.0.1" Language="en-US" Publisher="Josef Pihrt"/>
-    <DisplayName>Analyzers</DisplayName>
+    <Identity Id="8c1816de-dfe4-4d69-a3dc-efe0b6c6bc19" Version="0.0.1" Language="en-US" Publisher="Josef Pihrt"/>
+    <DisplayName>Refactorings</DisplayName>
     <Description xml:space="preserve"></Description>
   </Metadata>
   <Installation>
@@ -14,7 +14,6 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" Path="|Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Refactorings" Path="|Refactorings|" />
   </Assets>
 </PackageManifest>

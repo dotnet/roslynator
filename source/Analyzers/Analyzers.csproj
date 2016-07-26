@@ -284,9 +284,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pihrtsoft.CodeAnalysis.Common\Pihrtsoft.CodeAnalysis.Common.csproj">
+    <ProjectReference Include="..\Common\Common.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
-      <Name>Pihrtsoft.CodeAnalysis.Common</Name>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>InternalAnalyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
@@ -66,9 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.nuspec" />
+    <None Include="InternalAnalyzers.nuspec" />
     <None Include="packages.config" />
-    <None Include="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers.snk" />
+    <None Include="InternalAnalyzers.snk" />
     <None Include="tools\install.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -129,9 +129,9 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pihrtsoft.CodeAnalysis.Common\Pihrtsoft.CodeAnalysis.Common.csproj">
+    <ProjectReference Include="..\..\source\Common\Common.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
-      <Name>Pihrtsoft.CodeAnalysis.Common</Name>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />

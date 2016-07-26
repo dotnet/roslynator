@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="0.93.0" Language="en-US" Publisher="Josef Pihrt"/>
-    <DisplayName>C# Analyzers and Refactorings</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 100+ refactorings for C#.</Description>
+    <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.93.0" Language="en-US" Publisher="Josef Pihrt" />
+    <DisplayName>C# Refactorings</DisplayName>
+    <Description xml:space="preserve">Roslyn-based extension that offers 100+ refactorings for C#.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md</ReleaseNotes>
-    <Tags>Roslyn,Refactoring,Analyzer,CodeAnalysis,C#,CSharp,Productivity,Diagnostic</Tags>
+    <Tags>Roslyn,Refactoring,CodeAnalysis,C#,CSharp,Productivity</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Community"/>
+    <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Community" />
     <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
     <InstallationTarget Version="[14.0,15.0)" Id="Microsoft.VisualStudio.Enterprise" />
   </Installation>
@@ -19,9 +19,7 @@
     <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp.Refactorings" Path="|Pihrtsoft.CodeAnalysis.CSharp.Refactorings|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp" Path="|Pihrtsoft.CodeAnalysis.CSharp|" />
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Pihrtsoft.CodeAnalysis.CSharp" Path="|Pihrtsoft.CodeAnalysis.CSharp|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Refactorings" Path="|Refactorings|" />
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
   </Assets>
 </PackageManifest>
