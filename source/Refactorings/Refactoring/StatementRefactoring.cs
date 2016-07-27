@@ -45,14 +45,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
                     CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
-#if DEBUG
-                if (switchStatement.Sections.Any())
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllSwitchSections)
+                    && switchStatement.Sections.Any())
                 {
                     context.RegisterRefactoring(
                         "Remove all sections",
-                        cancellationToken => RemoveAllSectionsAsync(context.Document, switchStatement, cancellationToken));
+                        cancellationToken => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, cancellationToken));
                 }
-#endif
             }
         }
 
@@ -229,13 +229,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             return removeOptions;
         }
-#if DEBUG
-        private static async Task<Document> RemoveAllSectionsAsync(
+
+        private static async Task<Document> RemoveAllSwitchSectionsAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SwitchStatementSyntax newSwitchStatement = switchStatement
                 .WithSections(SyntaxFactory.List<SwitchSectionSyntax>())
@@ -245,6 +245,5 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             return document.WithSyntaxRoot(root);
         }
-#endif
     }
 }

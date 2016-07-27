@@ -67,6 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllComments = true;
             RemoveAllCommentsExceptXmlComments = true;
             RemoveAllRegions = true;
+            RemoveAllSwitchSections = true;
             RemoveAllXmlComments = false;
             RemoveComment = true;
             RemoveConditionFromLastElseIf = true;
@@ -191,6 +192,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegions, RemoveAllRegions);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
@@ -803,6 +805,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: region directive")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllRegions
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove all switch sections")]
+        [Description("Syntax: switch statement\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllSwitchSections
         {
             get;
             set;

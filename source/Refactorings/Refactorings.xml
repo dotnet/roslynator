@@ -592,6 +592,12 @@
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveAllSwitchSections" Title="Remove all switch sections" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>opening or closing brace</Scope>
+  </Refactoring>
   <Refactoring Id="RemoveConditionFromLastElseIf" Title="Remove condition from last else-if" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>else clause</Syntax>
