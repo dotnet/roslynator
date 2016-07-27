@@ -116,6 +116,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-if-statement">Extract expression from if statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-parentheses">Extract expression from parentheses</a>
         </li>
         <li>
@@ -359,7 +362,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#split-attributes">Split attributes</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#split-variable-declaration-">Split variable declaration </a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#split-variable-declaration">Split variable declaration</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>

@@ -767,12 +767,18 @@
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="SplitVariableDeclaration" Title="Split variable declaration " ExtensionVersion="0.91.0">
+  <Refactoring Id="SplitVariableDeclaration" Title="Split variable declaration" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>local declaration</Syntax>
       <Syntax>field declaration</Syntax>
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="ExtractExpressionFromIfStatement" Title="Extract expression from if statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+    <Scope>condition</Scope>
   </Refactoring>
   <Refactoring Id="SwapExpressionsInBinaryExpression" Title="Swap expressions in binary expression" ExtensionVersion="0.9.40">
     <Syntaxes>

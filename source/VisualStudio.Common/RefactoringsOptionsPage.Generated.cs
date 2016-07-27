@@ -39,6 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ExpandProperty = true;
             ExpandPropertyAndAddBackingField = true;
             ExtractDeclarationFromUsingStatement = true;
+            ExtractExpressionFromIfStatement = true;
             ExtractExpressionFromParentheses = true;
             ExtractGenericType = true;
             ExtractStatement = true;
@@ -162,6 +163,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ExpandProperty, ExpandProperty);
             SetIsEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField, ExpandPropertyAndAddBackingField);
             SetIsEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement, ExtractDeclarationFromUsingStatement);
+            SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromIfStatement, ExtractExpressionFromIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromParentheses, ExtractExpressionFromParentheses);
             SetIsEnabled(RefactoringIdentifiers.ExtractGenericType, ExtractGenericType);
             SetIsEnabled(RefactoringIdentifiers.ExtractStatement, ExtractStatement);
@@ -521,6 +523,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: using statement\r\nScope: declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExtractDeclarationFromUsingStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Extract expression from if statement")]
+        [Description("Syntax: if statement\r\nScope: condition")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ExtractExpressionFromIfStatement
         {
             get;
             set;
@@ -1337,7 +1349,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Split variable declaration ")]
+        [DisplayName("Split variable declaration")]
         [Description("Syntax: local declaration, field declaration, event field declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool SplitVariableDeclaration

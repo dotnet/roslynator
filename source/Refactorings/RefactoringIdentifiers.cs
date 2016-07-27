@@ -33,6 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ExpandProperty = "ExpandProperty";
         public const string ExpandPropertyAndAddBackingField = "ExpandPropertyAndAddBackingField";
         public const string ExtractDeclarationFromUsingStatement = "ExtractDeclarationFromUsingStatement";
+        public const string ExtractExpressionFromIfStatement = "ExtractExpressionFromIfStatement";
         public const string ExtractExpressionFromParentheses = "ExtractExpressionFromParentheses";
         public const string ExtractGenericType = "ExtractGenericType";
         public const string ExtractStatement = "ExtractStatement";
