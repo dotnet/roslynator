@@ -77,6 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveParameterNameFromArgument = true;
             RemovePropertyInitializer = true;
             RemoveStatement = true;
+            RemoveStatementsFromSwitchSections = true;
             RenameBackingFieldAccordingToPropertyName = true;
             RenameIdentifierAccordingToTypeName = true;
             RenameMethodAccordingToTypeName = true;
@@ -202,6 +203,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
+            SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName, RenameBackingFieldAccordingToPropertyName);
             SetIsEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName, RenameIdentifierAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName, RenameMethodAccordingToTypeName);
@@ -905,6 +907,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: open/close brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove statements from switch sections")]
+        [Description("Syntax: switch statement\r\nScope: selected sections")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveStatementsFromSwitchSections
         {
             get;
             set;

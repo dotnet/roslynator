@@ -71,6 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";
+        public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";
         public const string RenameBackingFieldAccordingToPropertyName = "RenameBackingFieldAccordingToPropertyName";
         public const string RenameIdentifierAccordingToTypeName = "RenameIdentifierAccordingToTypeName";
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";

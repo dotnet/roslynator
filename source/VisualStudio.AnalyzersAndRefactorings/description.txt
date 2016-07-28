@@ -323,6 +323,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-statement">Remove statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-statements-from-switch-sections">Remove statements from switch sections</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
         </li>
         <li>

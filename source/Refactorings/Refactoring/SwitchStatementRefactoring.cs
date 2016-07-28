@@ -27,6 +27,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     });
             }
 
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections))
+                RemoveStatementsFromSwitchSectionsRefactoring.ComputeRefactoring(context, switchStatement);
+
             if (switchStatement.Sections.Count > 0
                 && switchStatement.SwitchKeyword.Span.Contains(context.Span))
             {
