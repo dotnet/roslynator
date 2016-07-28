@@ -13,9 +13,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
         {
-            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
-                return;
-
             SemanticModel semanticModel = await context.GetSemanticModelAsync();
 
             var methodSymbol = semanticModel.GetSymbolInfo(invocationExpression, context.CancellationToken).Symbol as IMethodSymbol;

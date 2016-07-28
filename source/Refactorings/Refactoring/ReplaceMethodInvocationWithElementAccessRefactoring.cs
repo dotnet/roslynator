@@ -15,8 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess)
-                && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+            if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
                 && invocation.ArgumentList != null)
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;

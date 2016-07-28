@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -13,16 +14,43 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
-                    RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny)
+                    RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
+                    RefactoringIdentifiers.AddConfigureAwait)
                 && invocationExpression.Expression != null
                 && invocationExpression.ArgumentList != null
-                && invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                && ((MemberAccessExpressionSyntax)invocationExpression.Expression).Name?.Span.Contains(context.Span) == true
                 && context.SupportsSemanticModel)
             {
-                await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                ExpressionSyntax expression = invocationExpression.Expression;
 
-                await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
+                if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                    && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
+                {
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
+                        await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
+                        await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
+                }
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddConfigureAwait))
+                {
+                    TextSpan? span = null;
+
+                    if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                    {
+                        SimpleNameSyntax name = ((MemberAccessExpressionSyntax)expression).Name;
+
+                        if (name != null)
+                            span = TextSpan.FromBounds(name.Span.Start, invocationExpression.Span.End);
+                    }
+                    else
+                    {
+                        span = invocationExpression.Span;
+                    }
+
+                    if (span?.Contains(context.Span) == true)
+                        await AddConfigureAwaitRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                }
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)

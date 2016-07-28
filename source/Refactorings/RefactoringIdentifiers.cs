@@ -8,6 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public const string  AddCastExpression = " AddCastExpression";
         public const string AddBooleanComparison = "AddBooleanComparison";
+        public const string AddConfigureAwait = "AddConfigureAwait";
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
         public const string AddInterpolation = "AddInterpolation";

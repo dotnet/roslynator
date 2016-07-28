@@ -25,6 +25,12 @@
       <Syntax>boolean? expression in place where must be boolean expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="AddConfigureAwait" Title="Add ConfigureAwait" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>awaitable method invocation</Syntax>
+    </Syntaxes>
+    <Scope>method name</Scope>
+  </Refactoring>
   <Refactoring Id="InitializeLocalWithDefaultValue" Title="Initialize local with default value" ExtensionVersion="0.92.0">
     <Syntaxes>
       <Syntax>local declaration without initializer</Syntax>

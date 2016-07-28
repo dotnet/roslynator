@@ -14,6 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         {
              AddCastExpression = true;
             AddBooleanComparison = true;
+            AddConfigureAwait = true;
             AddDefaultValueToParameter = true;
             AddIdentifierToVariableDeclaration = true;
             AddInterpolation = true;
@@ -140,6 +141,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         {
             SetIsEnabled(RefactoringIdentifiers. AddCastExpression,  AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
+            SetIsEnabled(RefactoringIdentifiers.AddConfigureAwait, AddConfigureAwait);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
@@ -277,6 +279,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: boolean? expression in place where must be boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddBooleanComparison
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add ConfigureAwait")]
+        [Description("Syntax: awaitable method invocation\r\nScope: method name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddConfigureAwait
         {
             get;
             set;

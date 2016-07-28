@@ -46,6 +46,7 @@
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactoring\BlockRefactoring.cs" />
     <Compile Include="Refactoring\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
+    <Compile Include="Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="Refactoring\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactoring\SplitIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsRefactoring.cs" />
