@@ -25,7 +25,7 @@
       <Syntax>boolean? expression in place where must be boolean expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddConfigureAwait" Title="Add ConfigureAwait" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddConfigureAwait" Title="Add ConfigureAwait" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>awaitable method invocation</Syntax>
     </Syntaxes>
@@ -598,7 +598,7 @@
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllSwitchSections" Title="Remove all switch sections" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveAllSwitchSections" Title="Remove all switch sections" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
@@ -610,7 +610,7 @@
     </Syntaxes>
     <Scope>else keyword</Scope>
   </Refactoring>
-  <Refactoring Id="RemovePreprocessorDirectiveAndRelatedDirectives" Title="Remove preprocessor directive and related directives" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemovePreprocessorDirectiveAndRelatedDirectives" Title="Remove preprocessor directive and related directives" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>preprocessor directive</Syntax>
     </Syntaxes>
@@ -717,7 +717,7 @@
       <Syntax>property initializer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
@@ -797,7 +797,7 @@
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExtractExpressionFromIfStatement" Title="Extract expression from if statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ExtractExpressionFromIfStatement" Title="Extract expression from if statement" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
