@@ -18,6 +18,13 @@
 
 ![Add cast expression](/images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
+#### Add ConfigureAwait
+
+* **Syntax**: awaitable method invocation
+* **Scope**: method name
+
+![Add ConfigureAwait](/images/refactorings/AddConfigureAwait.png)
+
 #### Add default value to parameter
 
 * **Syntax**: parameter without default value
@@ -181,6 +188,13 @@
 * **Scope**: declaration
 
 ![Extract declaration from using statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
+
+#### Extract expression from if statement
+
+* **Syntax**: if statement
+* **Scope**: condition
+
+![Extract expression from if statement](/images/refactorings/ExtractExpressionFromIfStatement.png)
 
 #### Extract expression from parentheses
 
@@ -357,11 +371,18 @@
 
 ![Remove all comments (except xml comments)](/images/refactorings/RemoveAllCommentsExceptXmlComments.png)
 
-#### Remove all regions
+#### Remove all region directives
 
 * **Syntax**: region directive
 
-![Remove all regions](/images/refactorings/RemoveAllRegions.png)
+![Remove all region directives](/images/refactorings/RemoveAllRegionDirectives.png)
+
+#### Remove all switch sections
+
+* **Syntax**: switch statement
+* **Scope**: opening or closing brace
+
+![Remove all switch sections](/images/refactorings/RemoveAllSwitchSections.png)
 
 #### Remove all xml comments
 
@@ -407,6 +428,12 @@
 
 ![Remove parameter name from argument](/images/refactorings/RemoveParameterNameFromArgument.png)
 
+#### Remove preprocessor directive and related directives
+
+* **Syntax**: preprocessor directive
+
+![Remove preprocessor directive and related directives](/images/refactorings/RemovePreprocessorDirectiveAndRelatedDirectives.png)
+
 #### Remove property initializer
 
 * **Syntax**: property initializer
@@ -419,6 +446,13 @@
 * **Scope**: open/close brace
 
 ![Remove statement](/images/refactorings/RemoveStatement.png)
+
+#### Remove statements from switch sections
+
+* **Syntax**: switch statement
+* **Scope**: selected sections
+
+![Remove statements from switch sections](/images/refactorings/RemoveStatementsFromSwitchSections.png)
 
 #### Rename backing field according to property name
 
@@ -715,11 +749,11 @@
 
 ![Split attributes](/images/refactorings/SplitAttributes.png)
 
-#### Split variable declaration 
+#### Split variable declaration
 
 * **Syntax**: local declaration, field declaration, event field declaration
 
-![Split variable declaration ](/images/refactorings/SplitVariableDeclaration.png)
+![Split variable declaration](/images/refactorings/SplitVariableDeclaration.png)
 
 #### Swap expressions in binary expression
 
