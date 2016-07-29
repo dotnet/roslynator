@@ -1,3 +1,15 @@
+### 0.95.0 (2016-07-30)
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddExpressionFromIfStatement
+* RemoveAllSwitchSections
+* RemoveStatementsFromSwitchSections
+* AddConfigureAwait
+* RemovePreprocessorDirectiveAndRelatedDirectives
+
 ### 0.94.0 (2016-07-26)
 
 #### Refactorings
