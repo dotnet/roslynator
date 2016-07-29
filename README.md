@@ -1,5 +1,5 @@
 ﻿## Roslyn Tools
-* Roslyn-based library that offers 80+ analyzers and 100+ refactorings for C#.
+* Roslyn-based library that offers 80+ analyzers and 120+ refactorings for C#.
 * [Release Notes](http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md)
 
 ### Documentation
@@ -114,6 +114,7 @@
 
 * [Add boolean comparison](Refactorings.md#add-boolean-comparison)
 * [Add cast expression](Refactorings.md#add-cast-expression)
+* [Add ConfigureAwait](Refactorings.md#add-configureawait)
 * [Add default value to parameter](Refactorings.md#add-default-value-to-parameter)
 * [Add identifier to variable declaration](Refactorings.md#add-identifier-to-variable-declaration)
 * [Add interpolation](Refactorings.md#add-interpolation)
@@ -139,6 +140,7 @@
 * [Expand property](Refactorings.md#expand-property)
 * [Expand property and add backing field](Refactorings.md#expand-property-and-add-backing-field)
 * [Extract declaration from using statement](Refactorings.md#extract-declaration-from-using-statement)
+* [Extract expression from if statement](Refactorings.md#extract-expression-from-if-statement)
 * [Extract expression from parentheses](Refactorings.md#extract-expression-from-parentheses)
 * [Extract generic type](Refactorings.md#extract-generic-type)
 * [Extract statement(s)](Refactorings.md#extract-statements)
@@ -165,7 +167,8 @@
 * [Notify property changed](Refactorings.md#notify-property-changed)
 * [Remove all comments](Refactorings.md#remove-all-comments)
 * [Remove all comments (except xml comments)](Refactorings.md#remove-all-comments-except-xml-comments)
-* [Remove all regions](Refactorings.md#remove-all-regions)
+* [Remove all region directives](Refactorings.md#remove-all-region-directives)
+* [Remove all switch sections](Refactorings.md#remove-all-switch-sections)
 * [Remove all xml comments](Refactorings.md#remove-all-xml-comments)
 * [Remove comment](Refactorings.md#remove-comment)
 * [Remove condition from last else-if](Refactorings.md#remove-condition-from-last-else-if)
@@ -173,8 +176,10 @@
 * [Remove member](Refactorings.md#remove-member)
 * [Remove member declarations above/below](Refactorings.md#remove-member-declarations-abovebelow)
 * [Remove parameter name from argument](Refactorings.md#remove-parameter-name-from-argument)
+* [Remove preprocessor directive and related directives](Refactorings.md#remove-preprocessor-directive-and-related-directives)
 * [Remove property initializer](Refactorings.md#remove-property-initializer)
 * [Remove statement](Refactorings.md#remove-statement)
+* [Remove statements from switch sections](Refactorings.md#remove-statements-from-switch-sections)
 * [Rename backing field according to property name](Refactorings.md#rename-backing-field-according-to-property-name)
 * [Rename identifier according to type name](Refactorings.md#rename-identifier-according-to-type-name)
 * [Rename method according to type name](Refactorings.md#rename-method-according-to-type-name)
@@ -220,7 +225,7 @@
 * [Reverse for loop](Refactorings.md#reverse-for-loop)
 * [Simplify lambda expression](Refactorings.md#simplify-lambda-expression)
 * [Split attributes](Refactorings.md#split-attributes)
-* [Split variable declaration ](Refactorings.md#split-variable-declaration-)
+* [Split variable declaration](Refactorings.md#split-variable-declaration)
 * [Swap expressions in binary expression](Refactorings.md#swap-expressions-in-binary-expression)
 * [Swap expressions in conditional expression](Refactorings.md#swap-expressions-in-conditional-expression)
 * [Swap member declarations](Refactorings.md#swap-member-declarations)
