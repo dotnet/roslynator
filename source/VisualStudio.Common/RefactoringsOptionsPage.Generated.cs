@@ -76,6 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveMember = true;
             RemoveMemberDeclarations = true;
             RemoveParameterNameFromArgument = true;
+            RemovePreprocessorDirectiveAndRelatedDirectives = true;
             RemovePropertyInitializer = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
@@ -203,6 +204,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
+            SetIsEnabled(RefactoringIdentifiers.RemovePreprocessorDirectiveAndRelatedDirectives, RemovePreprocessorDirectiveAndRelatedDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
@@ -899,6 +901,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected argument(s)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveParameterNameFromArgument
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove preprocessor directive and related directives")]
+        [Description("Syntax: preprocessor directive")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemovePreprocessorDirectiveAndRelatedDirectives
         {
             get;
             set;

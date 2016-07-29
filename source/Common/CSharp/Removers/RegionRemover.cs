@@ -16,12 +16,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
         }
 
         public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit)
-            => (CompilationUnitSyntax)_instance.Visit(compilationUnit);
+        {
+            return (CompilationUnitSyntax)_instance.Visit(compilationUnit);
+        }
 
-        public override SyntaxNode VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
-            => null;
+        public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
+        {
+            if (trivia.IsKind(
+                SyntaxKind.RegionDirectiveTrivia,
+                SyntaxKind.EndRegionDirectiveTrivia))
+            {
+                return CSharpFactory.NewLine;
+            }
 
-        public override SyntaxNode VisitEndRegionDirectiveTrivia(EndRegionDirectiveTriviaSyntax node)
-            => null;
+            return base.VisitTrivia(trivia);
+        }
     }
 }

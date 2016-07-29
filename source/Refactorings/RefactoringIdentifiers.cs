@@ -70,6 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveMember = "RemoveMember";
         public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
+        public const string RemovePreprocessorDirectiveAndRelatedDirectives = "RemovePreprocessorDirectiveAndRelatedDirectives";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";

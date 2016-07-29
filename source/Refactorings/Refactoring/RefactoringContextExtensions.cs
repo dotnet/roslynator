@@ -480,7 +480,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (node == null)
                 return;
 
-            bool fRegionDirectiveTrivia = false;
+            bool fDirectiveTrivia = false;
 
             using (IEnumerator<SyntaxNode> en = node.AncestorsAndSelf().GetEnumerator())
             {
@@ -490,12 +490,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     Debug.WriteLine(node.Kind().ToString());
 
-                    if (!fRegionDirectiveTrivia
-                        && (node.IsKind(SyntaxKind.RegionDirectiveTrivia) || node.IsKind(SyntaxKind.EndRegionDirectiveTrivia)))
+                   if (!fDirectiveTrivia)
                     {
-                        RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
-                        fRegionDirectiveTrivia = true;
-                        continue;
+                        var directiveTrivia = node as DirectiveTriviaSyntax;
+                        if (directiveTrivia != null)
+                        {
+                            DirectiveTriviaRefactoring.ComputeRefactorings(context, directiveTrivia);
+
+                            if (node.IsKind(
+                                SyntaxKind.RegionDirectiveTrivia,
+                                SyntaxKind.EndRegionDirectiveTrivia))
+                            {
+                                RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
+                            }
+
+                            fDirectiveTrivia = true;
+                        }
                     }
                 }
             }

@@ -260,6 +260,21 @@ namespace Pihrtsoft.CodeAnalysis
                 || kind == kind5;
         }
 
+        public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+        {
+            if (node == null)
+                return false;
+
+            SyntaxKind kind = node.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4
+                || kind == kind5
+                || kind == kind6;
+        }
+
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
         {
             return node != null

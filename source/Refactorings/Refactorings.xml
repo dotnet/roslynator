@@ -610,6 +610,11 @@
     </Syntaxes>
     <Scope>else keyword</Scope>
   </Refactoring>
+  <Refactoring Id="RemovePreprocessorDirectiveAndRelatedDirectives" Title="Remove preprocessor directive and related directives" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>preprocessor directive</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveStatement" Title="Remove statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>

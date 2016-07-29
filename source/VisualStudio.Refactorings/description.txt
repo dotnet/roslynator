@@ -227,6 +227,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-preprocessor-directive-and-related-directives">Remove preprocessor directive and related directives</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-property-initializer">Remove property initializer</a>
         </li>
         <li>
