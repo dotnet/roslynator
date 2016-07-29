@@ -593,7 +593,7 @@
       <Syntax>singleline/multiline comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllRegions" Title="Remove all regions" ExtensionVersion="0.9.0">
+  <Refactoring Id="RemoveAllRegionDirectives" Title="Remove all region directives" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>region directive</Syntax>
     </Syntaxes>

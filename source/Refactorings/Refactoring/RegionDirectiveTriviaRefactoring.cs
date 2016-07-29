@@ -9,11 +9,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegions)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives)
                 && context.Root.IsKind(SyntaxKind.CompilationUnit))
             {
                 context.RegisterRefactoring(
-                    "Remove all regions",
+                    "Remove all region directives",
                     cancellationToken => RemoveAllRegionsRefactoring.RefactorAsync(context.Document, cancellationToken));
             }
         }

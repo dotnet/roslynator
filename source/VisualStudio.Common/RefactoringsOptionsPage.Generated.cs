@@ -67,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             NotifyPropertyChanged = true;
             RemoveAllComments = true;
             RemoveAllCommentsExceptXmlComments = true;
-            RemoveAllRegions = true;
+            RemoveAllRegionDirectives = true;
             RemoveAllSwitchSections = true;
             RemoveAllXmlComments = false;
             RemoveComment = true;
@@ -195,7 +195,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
-            SetIsEnabled(RefactoringIdentifiers.RemoveAllRegions, RemoveAllRegions);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives, RemoveAllRegionDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
@@ -817,10 +817,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove all regions")]
+        [DisplayName("Remove all region directives")]
         [Description("Syntax: region directive")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemoveAllRegions
+        public bool RemoveAllRegionDirectives
         {
             get;
             set;
