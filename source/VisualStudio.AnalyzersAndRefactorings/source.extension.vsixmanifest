@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="0.94.0" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>C# Analyzers and Refactorings</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 100+ refactorings for C#.</Description>
+    <Description xml:space="preserve">Roslyn-based extension that offers 80+ analyzers and 120+ refactorings for C#.</Description>
     <MoreInfo>http://github.com/JosefPihrt/RoslynTools</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://github.com/JosefPihrt/RoslynTools/blob/master/ChangeLog.md</ReleaseNotes>
