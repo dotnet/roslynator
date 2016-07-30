@@ -137,7 +137,7 @@ public class $name$CodeFixProvider : $baseCodeFixProvider$
 
     private static async Task<Document> $createChangedDocument$Async(Document document, $node$ $identifier$, CancellationToken cancellationToken)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
         $node$ newNode = $identifier$
             .WithAdditionalAnnotations(Formatter.Annotation);

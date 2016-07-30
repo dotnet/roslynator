@@ -86,7 +86,7 @@ public class $name$CodeRefactoringProvider : CodeRefactoringProvider
 
     private static async Task<Document> $createChangedDocument$Async(Document document, $node$ node, CancellationToken cancellationToken)
     {
-        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
         $node$ newNode = node
             .WithAdditionalAnnotations(Formatter.Annotation);
