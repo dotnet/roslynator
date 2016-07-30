@@ -35,9 +35,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<StatementSyntax> statements = GetSelectedStatements(block, span).ToImmutableArray();
+            StatementSyntax[] statements = GetSelectedStatements(block, span).ToArray();
 
             int index = block.Statements.IndexOf(statements[0]);
+
+            SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
+            SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();
+
+            statements[0] = statements[0].WithLeadingTrivia();
+            statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
 
             SyntaxList<StatementSyntax> newStatements = block.Statements;
 
@@ -49,11 +55,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 cnt--;
             }
 
-            TStatement tryStatement = CreateStatement(statements);
+            TStatement statement = CreateStatement(statements.ToImmutableArray());
 
-            tryStatement = tryStatement.WithFormatterAnnotation();
+            statement = statement
+                .WithLeadingTrivia(leadingTrivia)
+                .WithTrailingTrivia(trailingTrivia)
+                .WithFormatterAnnotation();
 
-            newStatements = newStatements.Insert(index, tryStatement);
+            newStatements = newStatements.Insert(index, statement);
 
             root = root.ReplaceNode(block, block.WithStatements(newStatements));
 
