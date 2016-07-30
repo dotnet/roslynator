@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -30,26 +29,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
                         await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
-                }
-
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddConfigureAwait))
-                {
-                    TextSpan? span = null;
-
-                    if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
-                    {
-                        SimpleNameSyntax name = ((MemberAccessExpressionSyntax)expression).Name;
-
-                        if (name != null)
-                            span = TextSpan.FromBounds(name.Span.Start, invocationExpression.Span.End);
-                    }
-                    else
-                    {
-                        span = invocationExpression.Span;
-                    }
-
-                    if (span?.Contains(context.Span) == true)
-                        await AddConfigureAwaitRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
                 }
             }
 

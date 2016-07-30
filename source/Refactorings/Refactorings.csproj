@@ -44,6 +44,7 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\AwaitExpressionRefactoring.cs" />
     <Compile Include="Refactoring\BlockRefactoring.cs" />
     <Compile Include="Refactoring\DirectiveTriviaRefactoring.cs" />
     <Compile Include="Refactoring\RemoveStatementsFromSwitchSectionsRefactoring.cs" />

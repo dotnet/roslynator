@@ -66,6 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fParenthesizedExpression = false;
             bool fPostfixUnaryExpression = false;
             bool fPrefixUnaryExpression = false;
+            bool fAwaitExpression = false;
 
             bool fMemberDeclaration = false;
 #if DEBUG
@@ -321,6 +322,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 PrefixUnaryExpressionRefactoring.ComputeRefactorings(context, prefixUnaryExpression);
                                 fPrefixUnaryExpression = true;
                             }
+                        }
+
+                        if (!fAwaitExpression
+                            && node.IsKind(SyntaxKind.AwaitExpression))
+                        {
+                            await AwaitExpressionRefactoring.ComputeRefactoringsAsync(context, (AwaitExpressionSyntax)node);
+                            fAwaitExpression = true;
                         }
 
                         if (!fExpression)
