@@ -34,13 +34,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && switchStatement.SwitchKeyword.Span.Contains(context.Span))
             {
                 if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSection,
-                    RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection))
+                    RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection,
+                    RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection))
                 {
                     SwitchStatementAnalysisResult result = SwitchStatementAnalysis.Analyze(switchStatement);
 
                     if (result.CanReplaceStatementsWithBlock
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSection))
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection))
                     {
                         context.RegisterRefactoring(
                             "Replace statements with block (in each section)",
@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
 
                     if (result.CanReplaceBlockWithStatements
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection))
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection))
                     {
                         context.RegisterRefactoring(
                             "Replace block with statements (in each section)",

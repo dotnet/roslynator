@@ -83,7 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
         public const string ReplaceBlockWithEmbeddedStatement = "ReplaceBlockWithEmbeddedStatement";
         public const string ReplaceBlockWithEmbeddedStatementInIfElse = "ReplaceBlockWithEmbeddedStatementInIfElse";
-        public const string ReplaceBlockWithStatementsInEachSection = "ReplaceBlockWithStatementsInEachSection";
+        public const string ReplaceBlockWithStatementsInEachSwitchSection = "ReplaceBlockWithStatementsInEachSwitchSection";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
         public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";
@@ -104,7 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplacePropertyWithMethod = "ReplacePropertyWithMethod";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
         public const string ReplaceReturnStatementWithIfStatement = "ReplaceReturnStatementWithIfStatement";
-        public const string ReplaceStatementsWithBlockInEachSection = "ReplaceStatementsWithBlockInEachSection";
+        public const string ReplaceStatementsWithBlockInEachSwitchSection = "ReplaceStatementsWithBlockInEachSwitchSection";
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";

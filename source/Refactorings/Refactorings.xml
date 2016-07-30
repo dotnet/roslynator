@@ -102,7 +102,7 @@
     </Syntaxes>
     <Scope>statements</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceStatementsWithBlockInEachSection" Title="Replace statements with block (in each section)" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceStatementsWithBlockInEachSwitchSection" Title="Replace statements with block in each switch section" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
@@ -670,7 +670,7 @@
     </Syntaxes>
     <Scope>block</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceBlockWithStatementsInEachSection" Title="Replace block with statements (in each section)" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceBlockWithStatementsInEachSwitchSection" Title="Replace block with statements in each switch section" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>

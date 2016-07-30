@@ -362,7 +362,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-embedded-statement-in-if-else">Replace block with embedded statement (in if-else)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-statements-in-each-section">Replace block with statements (in each section)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-statements-in-each-switch-section">Replace block with statements in each switch section</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
@@ -422,7 +422,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-return-statement-with-if-statement">Replace return statement with if statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-statements-with-block-in-each-section">Replace statements with block (in each section)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-statements-with-block-in-each-switch-section">Replace statements with block in each switch section</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>

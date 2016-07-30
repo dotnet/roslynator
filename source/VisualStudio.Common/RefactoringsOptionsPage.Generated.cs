@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceAnyWithAllOrAllWithAny = true;
             ReplaceBlockWithEmbeddedStatement = true;
             ReplaceBlockWithEmbeddedStatementInIfElse = true;
-            ReplaceBlockWithStatementsInEachSection = true;
+            ReplaceBlockWithStatementsInEachSwitchSection = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
             ReplaceCountWithLengthOrLengthWithCount = true;
@@ -110,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
             ReplaceReturnStatementWithIfStatement = true;
-            ReplaceStatementsWithBlockInEachSection = true;
+            ReplaceStatementsWithBlockInEachSwitchSection = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceStringLiteralWithCharacterLiteral = true;
@@ -217,7 +217,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatement, ReplaceBlockWithEmbeddedStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse, ReplaceBlockWithEmbeddedStatementInIfElse);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSection, ReplaceBlockWithStatementsInEachSection);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection, ReplaceBlockWithStatementsInEachSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
             SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
@@ -238,7 +238,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement, ReplaceReturnStatementWithIfStatement);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSection, ReplaceStatementsWithBlockInEachSection);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection, ReplaceStatementsWithBlockInEachSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, ReplaceStringLiteralWithCharacterLiteral);
@@ -1037,10 +1037,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace block with statements (in each section)")]
+        [DisplayName("Replace block with statements in each switch section")]
         [Description("Syntax: switch statement\r\nScope: switch keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceBlockWithStatementsInEachSection
+        public bool ReplaceBlockWithStatementsInEachSwitchSection
         {
             get;
             set;
@@ -1247,10 +1247,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace statements with block (in each section)")]
+        [DisplayName("Replace statements with block in each switch section")]
         [Description("Syntax: switch statement\r\nScope: switch keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceStatementsWithBlockInEachSection
+        public bool ReplaceStatementsWithBlockInEachSwitchSection
         {
             get;
             set;
