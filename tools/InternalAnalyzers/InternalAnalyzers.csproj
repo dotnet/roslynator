@@ -41,11 +41,13 @@
     <AssemblyOriginatorKeyFile>InternalAnalyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixProviders\AwaitExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CompilationUnitCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InvocationExpressionCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\CompilationUnitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ClassDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AwaitExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactoring\AddCodeFileHeaderRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\InvocationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticCategories.cs" />
