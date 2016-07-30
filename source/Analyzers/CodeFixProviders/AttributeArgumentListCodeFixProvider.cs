@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             AttributeArgumentListSyntax attributeArgumentList,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = oldRoot.RemoveNode(
                 attributeArgumentList,

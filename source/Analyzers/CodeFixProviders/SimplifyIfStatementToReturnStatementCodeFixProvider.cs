@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ReturnStatementSyntax newReturnStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = GetNewRoot(oldRoot, ifStatement, newReturnStatement);
 

@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             EmptyStatementSyntax emptyStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = oldRoot.RemoveNode(emptyStatement, SyntaxRemoveOptions.KeepExteriorTrivia);
 

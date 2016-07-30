@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer);
+            await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
         }
     }
 }

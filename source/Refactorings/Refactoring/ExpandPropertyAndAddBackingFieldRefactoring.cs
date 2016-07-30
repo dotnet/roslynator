@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             string fieldName = IdentifierHelper.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
@@ -43,12 +43,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (propertyDeclaration.IsReadOnlyAutoProperty())
             {
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
                 IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
                     semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken),
                     document.Project.Solution,
-                    cancellationToken);
+                    cancellationToken).ConfigureAwait(false);
 
                 ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxUtility
                     .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)

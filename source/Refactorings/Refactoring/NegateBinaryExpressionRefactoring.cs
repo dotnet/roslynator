@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             binaryExpression = GetTopmostExpression(binaryExpression);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax newNode = binaryExpression.Negate()
                 .WithFormatterAnnotation();

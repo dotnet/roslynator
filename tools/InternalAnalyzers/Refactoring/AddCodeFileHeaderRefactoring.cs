@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.Refactoring
             CompilationUnitSyntax compilationUnit,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             CompilationUnitSyntax newNode = compilationUnit
                 .WithLeadingTrivia(

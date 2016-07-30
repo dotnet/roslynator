@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             EventFieldDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
                 .WithTriviaFrom(eventDeclaration)

@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .DescendantTrivia(context.Span, descendIntoTrivia: true)
                 .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
             {
-                SourceText sourceText = await context.Document.GetTextAsync(context.CancellationToken);
+                SourceText sourceText = await context.Document.GetTextAsync(context.CancellationToken).ConfigureAwait(false);
 
                 if (GetEmptyLines(sourceText, context.Root, context.Span).Any())
                     return true;
@@ -34,9 +34,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             IEnumerable<TextChange> textChanges = GetEmptyLines(sourceText, root, span)
                 .Select(line => new TextChange(line.SpanIncludingLineBreak, string.Empty));

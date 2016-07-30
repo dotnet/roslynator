@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AccessorDeclarationSyntax accessor,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AccessorDeclarationSyntax newAccessor = WhitespaceOrEndOfLineRemover.RemoveFrom(accessor)
                 .WithTriviaFrom(accessor)

@@ -186,7 +186,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             root = root.RemoveNode(statement, GetRemoveOptions(statement));
 
@@ -198,7 +198,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)statement.Parent;
 

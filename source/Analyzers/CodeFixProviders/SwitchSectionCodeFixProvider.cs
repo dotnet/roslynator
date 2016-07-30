@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
 

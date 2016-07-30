@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && methodDeclaration.Body?.Statements.Count > 0
                 && context.SupportsSemanticModel)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 if (!IsAsyncMethodThatReturnsTask(methodDeclaration, semanticModel, context.CancellationToken))
                 {

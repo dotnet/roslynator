@@ -11,11 +11,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.SupportsSemanticModel)
             {
-                await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
+                await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
 
-                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter);
+                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
 
-                await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter);
+                await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
             }
         }
     }

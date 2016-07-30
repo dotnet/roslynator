@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (await CanRefactorAsync(context, expression))
+            if (await CanRefactorAsync(context, expression).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
                     Title,
@@ -29,11 +29,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 var logicalNot = (PrefixUnaryExpressionSyntax)expression;
 
                 if (logicalNot.Operand != null)
-                    return await IsNullableBooleanAsync(context, logicalNot.Operand);
+                    return await IsNullableBooleanAsync(context, logicalNot.Operand).ConfigureAwait(false);
             }
             else
             {
-                return await IsNullableBooleanAsync(context, expression);
+                return await IsNullableBooleanAsync(context, expression).ConfigureAwait(false);
             }
 
             return false;
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.SupportsSemanticModel)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 var namedTypeSymbol = semanticModel
                     .GetTypeInfo(expression, context.CancellationToken)
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             BinaryExpressionSyntax newNode = CreateNewExpression(expression)
                 .WithTriviaFrom(expression)

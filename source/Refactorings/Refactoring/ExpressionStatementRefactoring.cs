@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
-                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, expressionStatement);
+                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
         }
     }
 }

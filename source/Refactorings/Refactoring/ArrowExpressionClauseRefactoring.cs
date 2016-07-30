@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     RefactoringIdentifiers.AddCastExpression)
                 && context.SupportsSemanticModel)
             {
-                await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression);
+                await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression).ConfigureAwait(false);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)

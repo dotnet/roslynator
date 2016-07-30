@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
 

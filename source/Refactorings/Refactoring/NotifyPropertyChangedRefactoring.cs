@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             var identifierName = (IdentifierNameSyntax)assignment.Right;
 
                             if (identifierName.Identifier.ValueText == "value")
-                                return await ImplementsINotifyPropertyChangedAsync(context, property);
+                                return await ImplementsINotifyPropertyChangedAsync(context, property).ConfigureAwait(false);
                         }
                     }
                 }
@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             PropertyDeclarationSyntax property)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, context.CancellationToken);
             if (propertySymbol != null
@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PropertyDeclarationSyntax property,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AccessorDeclarationSyntax setter = property.Setter();
 

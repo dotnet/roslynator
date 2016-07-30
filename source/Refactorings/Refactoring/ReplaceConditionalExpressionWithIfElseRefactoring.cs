@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithReturn(conditionalExpression, returnStatement)
                 .WithFormatterAnnotation();
@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             YieldStatementSyntax yieldStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IfStatementSyntax ifStatement = ConvertToIfElseWithYieldReturn(conditionalExpression, yieldStatement)
                 .WithFormatterAnnotation();
@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionStatementSyntax expressionStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var assignmentExpression = (AssignmentExpressionSyntax)conditionalExpression.Parent;
 
@@ -107,8 +107,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
-            SemanticModel semanticModel = await document.GetSemanticModelAsync();
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
             var block = (BlockSyntax)localDeclaration.Parent;
 

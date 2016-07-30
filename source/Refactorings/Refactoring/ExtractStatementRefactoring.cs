@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IEnumerable<StatementSyntax> newNodes = GetNewNodes(statement)
                 .Select(f => f.WithFormatterAnnotation());

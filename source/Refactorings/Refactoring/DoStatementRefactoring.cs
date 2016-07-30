@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && doStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {
-                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition);
+                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition).ConfigureAwait(false);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement)

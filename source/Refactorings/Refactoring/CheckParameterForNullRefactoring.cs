@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
                 && parameter.Identifier.Span.Contains(context.Span)
-                && await CanRefactorAsync(context, parameter))
+                && await CanRefactorAsync(context, parameter).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
                     $"Check '{parameter.Identifier.ValueText}' for null",
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (body != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
 
@@ -53,11 +53,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ParameterSyntax parameter,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             BlockSyntax body = GetBody(parameter);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             int index = body.Statements
                 .TakeWhile(f => IsParameterNullCheck(f, null, semanticModel, cancellationToken))

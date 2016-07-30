@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (!context.Document.SupportsSemanticModel)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol;
 
@@ -69,7 +69,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
                 .WithTriviaFrom(node)

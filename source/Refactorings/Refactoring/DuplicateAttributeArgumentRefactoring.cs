@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentSyntax argument,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var argumentList = (AttributeArgumentListSyntax)argument.Parent;
 

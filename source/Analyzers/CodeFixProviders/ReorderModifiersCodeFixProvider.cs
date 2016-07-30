@@ -87,7 +87,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             SyntaxTokenList modifiers,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxTokenList newModifiers = SyntaxFactory.TokenList(
                 modifiers.OrderBy(f => f, ModifierSorter.Instance));

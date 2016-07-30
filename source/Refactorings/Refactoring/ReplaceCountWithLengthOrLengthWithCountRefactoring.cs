@@ -24,14 +24,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (string.Equals(name, "Count", StringComparison.Ordinal))
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         if (CanRefactor(memberAccess, "Length", semanticModel, context.CancellationToken))
                             RegisterRefactoring(context, memberAccess, "Count", "Length");
                     }
                     else if (string.Equals(name, "Length", StringComparison.Ordinal))
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         if (CanRefactor(memberAccess, "Count", semanticModel, context.CancellationToken))
                             RegisterRefactoring(context, memberAccess, "Length", "Count");
@@ -94,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             string newName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberAccessExpressionSyntax newNode = memberAccess
                 .WithName(SyntaxFactory.IdentifierName(newName))

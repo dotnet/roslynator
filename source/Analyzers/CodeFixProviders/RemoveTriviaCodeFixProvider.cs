@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             TextSpan span,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var rewriter = new RemoveTriviaSyntaxRewriter(span);
 

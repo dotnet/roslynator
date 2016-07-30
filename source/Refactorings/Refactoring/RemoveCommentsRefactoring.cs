@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             CommentRemoveOptions removeOptions,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             CompilationUnitSyntax newRoot = CommentRemover.RemoveFrom((CompilationUnitSyntax)oldRoot, removeOptions)
                 .WithFormatterAnnotation();

@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ParenthesizedExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax newExpression = expression.Expression
                 .WithTriviaFrom(expression)

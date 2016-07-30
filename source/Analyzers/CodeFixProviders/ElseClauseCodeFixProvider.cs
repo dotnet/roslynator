@@ -101,7 +101,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = GetNewRoot(oldRoot, elseClause);
 
@@ -113,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)elseClause.Statement;
 

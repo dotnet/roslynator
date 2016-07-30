@@ -10,22 +10,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            await ReplaceCountWithLengthOrLengthWithCountRefactoring.ComputeRefactoringsAsync(context, memberAccess);
+            await ReplaceCountWithLengthOrLengthWithCountRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            await IntroduceUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess);
+            await IntroduceUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess);
+            await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral)
                 && context.SupportsSemanticModel)
             {
-                await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess);
+                await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);
             }
         }
 
         private static async Task ConvertStringEmptyToEmptyStringLiteralAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync(), context.CancellationToken))
+            if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
             {
                 context.RegisterRefactoring(
                     $"Replace '{memberAccess}' with \"\"",
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .FirstAncestor(SyntaxKind.SimpleMemberAccessExpression);
 
                 if (memberAccess != null)
-                    await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess);
+                    await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);
             }
         }
     }

@@ -10,18 +10,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
-                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue)
                 && context.SupportsSemanticModel)
             {
-                await InitializeLocalWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+                await InitializeLocalWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapDeclarationInUsingStatement)
                 && context.SupportsSemanticModel)
             {
-                await WrapDeclarationInUsingStatementRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+                await WrapDeclarationInUsingStatementRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
             }
         }
     }

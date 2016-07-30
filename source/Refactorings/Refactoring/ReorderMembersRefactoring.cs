@@ -62,7 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ClassDeclarationSyntax newDeclaration = classDeclaration
                 .WithMembers(ProcessMemberDeclarations(classDeclaration.Members))
@@ -78,7 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             StructDeclarationSyntax structDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             StructDeclarationSyntax newDeclaration = structDeclaration
                 .WithMembers(ProcessMemberDeclarations(structDeclaration.Members))
@@ -94,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             InterfaceDeclarationSyntax interfaceDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             InterfaceDeclarationSyntax newDeclaration = interfaceDeclaration
                 .WithMembers(ProcessMemberDeclarations(interfaceDeclaration.Members))

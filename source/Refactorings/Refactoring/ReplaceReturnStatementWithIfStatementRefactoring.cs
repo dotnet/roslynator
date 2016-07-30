@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IfStatementSyntax newNode = IfStatement(returnStatement.Expression, Block())
                 .WithTriviaFrom(returnStatement)

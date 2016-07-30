@@ -61,15 +61,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             PropertyDeclarationSyntax property,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var parentMember = (MemberDeclarationSyntax)property.Parent;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ISymbol fieldSymbol = GetFieldSymbol(property, semanticModel, cancellationToken);
 
-            var declarator = (VariableDeclaratorSyntax)await fieldSymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken);
+            var declarator = (VariableDeclaratorSyntax)await fieldSymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
             var variableDeclaration = (VariableDeclarationSyntax)declarator.Parent;
 
@@ -82,7 +82,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
                 fieldSymbol,
                 document.Project.Solution,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxUtility
                 .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)

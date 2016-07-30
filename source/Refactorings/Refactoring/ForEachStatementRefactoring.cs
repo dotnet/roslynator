@@ -16,20 +16,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.SupportsSemanticModel)
             {
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
-                    await ChangeTypeAccordingToExpressionAsync(context, forEachStatement);
+                    await ChangeTypeAccordingToExpressionAsync(context, forEachStatement).ConfigureAwait(false);
 
                 if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
                     RefactoringIdentifiers.ReplaceVarWithExplicitType))
                 {
-                    await ChangeTypeAsync(context, forEachStatement);
+                    await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
-                    await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement);
+                    await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
-                    && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync(), context.CancellationToken))
+                    && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
                         "Replace foreach with for",
@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (type?.Span.Contains(context.Span) != true)
                 return;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             TypeAnalysisResult result = ForEachStatementAnalysis.AnalyzeType(
                 forEachStatement,
@@ -83,7 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forEachStatement.Type != null
                 && forEachStatement.Identifier.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 string oldName = forEachStatement.Identifier.ValueText;
 
@@ -111,7 +111,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forEachStatement.Type?.IsVar == false
                 && forEachStatement.Type.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 

@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && usingStatement.Parent?.IsKind(SyntaxKind.Block) == true
                 && usingStatement.Declaration.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ITypeSymbol typeSymbol = semanticModel
                     .GetTypeInfo(usingStatement.Declaration.Type, context.CancellationToken)
@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)usingStatement.Parent;
 

@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newDeclaration = GetNewDeclaration(declaration)
                 .WithTrailingTrivia(declaration.GetTrailingTrivia())

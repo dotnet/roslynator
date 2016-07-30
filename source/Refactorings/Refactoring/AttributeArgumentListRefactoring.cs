@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (argumentList.Arguments.Count == 0)
                 return;
 
-            await AttributeArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList);
+            await AttributeArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
             DuplicateAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
 

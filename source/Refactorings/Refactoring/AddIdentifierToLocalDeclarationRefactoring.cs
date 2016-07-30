@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             if (trivia.IsKind(SyntaxKind.EndOfLineTrivia)
                                 && context.Span.End <= trivia.Span.Start)
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (expression != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol typeSymbol = semanticModel
                         .GetTypeInfo(expression, context.CancellationToken).Type;
@@ -95,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             string name,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxTrivia endOfLine = type.GetTrailingTrivia()
                 .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
@@ -116,7 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             string name,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             LocalDeclarationStatementSyntax newNode = LocalDeclarationStatement(
                 VariableDeclaration(

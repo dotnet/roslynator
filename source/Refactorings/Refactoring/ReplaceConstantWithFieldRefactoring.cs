@@ -16,9 +16,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             FieldDeclarationSyntax field,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             FieldDeclarationSyntax newField = field
                 .WithModifiers(GetModifiers(field, semanticModel, cancellationToken))

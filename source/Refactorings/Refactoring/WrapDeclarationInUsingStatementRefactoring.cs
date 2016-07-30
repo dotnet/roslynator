@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && localDeclaration.Declaration.Variables[0].Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
                 && localDeclaration.Declaration.Type != null)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ITypeSymbol type = semanticModel
                     .GetTypeInfo(localDeclaration.Declaration.Type)
@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             UsingStatementSyntax usingStatement = SyntaxFactory
                 .UsingStatement(localDeclaration.Declaration.WithoutTrivia(), null, SyntaxFactory.Block())

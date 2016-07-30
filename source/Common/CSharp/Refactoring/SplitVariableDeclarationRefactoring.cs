@@ -60,11 +60,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             switch (variableDeclaration.Parent?.Kind())
             {
                 case SyntaxKind.LocalDeclarationStatement:
-                    return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)variableDeclaration.Parent, cancellationToken);
+                    return await SplitLocalDeclarationAsync(document, (LocalDeclarationStatementSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
                 case SyntaxKind.FieldDeclaration:
-                    return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken);
+                    return await SplitFieldDeclarationAsync(document, (FieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
                 case SyntaxKind.EventFieldDeclaration:
-                    return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken);
+                    return await SplitEventFieldDeclarationAsync(document, (EventFieldDeclarationSyntax)variableDeclaration.Parent, cancellationToken).ConfigureAwait(false);
                 default:
                     return document;
             }
@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LocalDeclarationStatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)statement.Parent;
 
@@ -95,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             FieldDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var containingMember = (MemberDeclarationSyntax)declaration.Parent;
 
@@ -117,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             EventFieldDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var containingMember = (MemberDeclarationSyntax)declaration.Parent;
 

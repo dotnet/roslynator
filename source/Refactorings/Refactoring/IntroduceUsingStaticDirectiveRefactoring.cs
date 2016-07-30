@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (memberAccess.Expression.Span.Equals(context.Span))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     var typeSymbol = semanticModel
                         .GetSymbolInfo(memberAccess.Expression, context.CancellationToken)
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MemberAccessExpressionSyntax memberAccess,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SimpleNameSyntax newNode = memberAccess.Name.WithTriviaFrom(memberAccess);
 

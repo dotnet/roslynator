@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ConditionalExpressionSyntax newNode = conditionalExpression
                 .WithCondition(
@@ -94,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.UnwrapParentheses();
 

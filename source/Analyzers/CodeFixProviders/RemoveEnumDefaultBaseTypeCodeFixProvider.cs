@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             BaseTypeSyntax baseType,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var baseList = (BaseListSyntax)baseType.Parent;
             var enumDeclaration = (EnumDeclarationSyntax)baseList.Parent;

@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(
                 argumentList,
@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AttributeArgumentListSyntax newArgumentList = WhitespaceOrEndOfLineRemover.RemoveFrom(argumentList)
                 .WithFormatterAnnotation();

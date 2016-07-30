@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             AccessorListSyntax accessorList,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             if (accessorList.Accessors.All(f => f.Body == null))
             {

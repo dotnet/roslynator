@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines)
-                && await RemoveEmptyLinesRefactoring.CanRefactorAsync(context, node))
+                && await RemoveEmptyLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
                    "Remove empty lines",

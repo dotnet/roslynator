@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement)
                 .WithFormatterAnnotation();

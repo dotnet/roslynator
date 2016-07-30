@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ParameterSyntax parameter,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var parameterList = (ParameterListSyntax)parameter.Parent;
 

@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MethodDeclarationSyntax methodDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PropertyDeclarationSyntax propertyDeclaration = Refactor(methodDeclaration)
                 .WithTriviaFrom(methodDeclaration)

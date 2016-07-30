@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (!context.Document.SupportsSemanticModel)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(node, context.CancellationToken).Type;
 
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ArrayTypeSyntax arrayType,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ArrayCreationExpressionSyntax newNode = CreateArrayCreationExpression(node, arrayType)
                 .WithFormatterAnnotation();

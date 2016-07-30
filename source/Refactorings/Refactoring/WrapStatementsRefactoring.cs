@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<StatementSyntax> statements = GetSelectedStatements(block, span).ToImmutableArray();
 

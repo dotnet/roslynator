@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ParenthesizedExpressionSyntax parenthesizedExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax newNode = parenthesizedExpression.Expression
                 .WithTriviaFrom(parenthesizedExpression);

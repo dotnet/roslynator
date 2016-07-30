@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (memberType != null)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         ITypeSymbol memberTypeSymbol = semanticModel
                             .GetTypeInfo(memberType, context.CancellationToken)

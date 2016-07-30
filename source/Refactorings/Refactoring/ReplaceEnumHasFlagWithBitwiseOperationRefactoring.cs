@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (memberAccess.Name.Identifier.ValueText == "HasFlag")
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ISymbol symbol = semanticModel
                         .GetSymbolInfo(memberAccess, context.CancellationToken)
@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ParenthesizedExpressionSyntax bitwiseAnd = ParenthesizedExpression(
                 BitwiseAndExpression(

@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             MemberDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax newNode = GetNewDeclaration(declaration)
                 .WithFormatterAnnotation();

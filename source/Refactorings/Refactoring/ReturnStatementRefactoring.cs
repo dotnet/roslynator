@@ -19,13 +19,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression))
                 {
-                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression);
+                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement)
                     && !returnStatement.Expression.IsBooleanLiteralExpression())
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol expressionSymbol = semanticModel
                         .GetTypeInfo(returnStatement.Expression, context.CancellationToken)

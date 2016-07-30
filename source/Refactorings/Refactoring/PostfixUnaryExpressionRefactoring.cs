@@ -77,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax postfixUnaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PrefixUnaryExpressionSyntax newNode = PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, postfixUnaryExpression.Operand)
                 .WithTriviaFrom(postfixUnaryExpression)
@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax postfixUnaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PostfixUnaryExpressionSyntax newNode = postfixUnaryExpression
                 .WithOperatorToken(Token(SyntaxKind.MinusMinusToken))
@@ -110,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax postfixUnaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PrefixUnaryExpressionSyntax newNode = PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, postfixUnaryExpression.Operand)
                 .WithTriviaFrom(postfixUnaryExpression)
@@ -126,7 +126,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PostfixUnaryExpressionSyntax postfixUnaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PostfixUnaryExpressionSyntax newNode = postfixUnaryExpression
                 .WithOperatorToken(Token(SyntaxKind.PlusPlusToken))

@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     || parameter.Default.Value == null
                     || parameter.Default.Value.IsMissing))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ITypeSymbol typeSymbol = semanticModel
                     .GetTypeInfo(parameter.Type, context.CancellationToken)
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ParameterSyntax newParameter = GetNewParameter(parameter, typeSymbol);
 

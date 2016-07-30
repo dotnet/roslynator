@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ObjectCreationExpressionSyntax objectCreationExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ObjectCreationExpressionSyntax newNode = objectCreationExpression
                 .WithType(objectCreationExpression.Type.WithoutTrailingTrivia())

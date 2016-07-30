@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ArrowExpressionClauseSyntax arrowExpressionClause,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax newNode = ExpandExpressionBodiedMember(arrowExpressionClause.Parent, arrowExpressionClause.Expression)
                 .WithFormatterAnnotation();

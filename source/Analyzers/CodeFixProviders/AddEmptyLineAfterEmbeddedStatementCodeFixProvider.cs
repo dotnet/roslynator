@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             StatementSyntax node,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             StatementSyntax newNode = node
                 .WithTrailingTrivia(node.GetTrailingTrivia().Add(CSharpFactory.NewLine))

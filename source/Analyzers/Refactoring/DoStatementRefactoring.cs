@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (doStatement == null)
                 throw new ArgumentNullException(nameof(doStatement));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             WhileStatementSyntax newNode = WhileStatement(
                 Token(SyntaxKind.WhileKeyword),

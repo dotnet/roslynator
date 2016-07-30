@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             int interpolationLength = 0,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             string s = literalExpression.Token.Text.ToString();
 
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberAccessExpressionSyntax newNode = MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             string s = CreateRegularStringLiteral(literalExpression.Token.ValueText);
 
@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             BinaryExpressionSyntax newNode = CreateAddExpression(literalExpression.Token.ValueText)
                 .WithTriviaFrom(literalExpression)
@@ -108,7 +108,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             string s = literalExpression.Token.ValueText;
 
@@ -245,7 +245,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var charLiteralExpression = (LiteralExpressionSyntax)ParseExpression($"'{GetCharLiteralText(literalExpression)}'")
                 .WithTriviaFrom(literalExpression);

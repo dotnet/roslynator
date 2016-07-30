@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             string newLine,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             switch (trivia.Kind())
             {

@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ParenthesizedLambdaExpressionSyntax lambda,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             LambdaExpressionSyntax newLambda = SyntaxRewriter.VisitNode(lambda);
 

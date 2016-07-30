@@ -79,7 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NotifyPropertyChanged)
-                    && await NotifyPropertyChangedRefactoring.CanRefactorAsync(context, propertyDeclaration))
+                    && await NotifyPropertyChangedRefactoring.CanRefactorAsync(context, propertyDeclaration).ConfigureAwait(false))
                 {
                     context.RegisterRefactoring(
                         "Notify property changed",
@@ -105,7 +105,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && propertyDeclaration.Type != null
                 && propertyDeclaration.Identifier.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 string newName = IdentifierHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
 

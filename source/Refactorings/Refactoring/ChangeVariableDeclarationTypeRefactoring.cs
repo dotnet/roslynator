@@ -17,13 +17,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && variableDeclaration.Type?.Span.Contains(context.Span) == true)
             {
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
-                    await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration);
+                    await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
 
                 if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
                     RefactoringIdentifiers.ReplaceVarWithExplicitType))
                 {
-                    await ChangeTypeAsync(context, variableDeclaration);
+                    await ChangeTypeAsync(context, variableDeclaration).ConfigureAwait(false);
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (initializerValue != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeInfo(initializerValue).Type;
 
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             TypeAnalysisResult result = VariableDeclarationAnalysis.AnalyzeType(
                 variableDeclaration,
@@ -142,7 +142,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax initializerValue = variableDeclaration.Variables[0].Initializer.Value;
 

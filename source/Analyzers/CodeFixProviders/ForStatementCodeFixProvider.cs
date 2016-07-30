@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             WhileStatementSyntax newNode = WhileStatement(
                 Token(SyntaxKind.WhileKeyword)

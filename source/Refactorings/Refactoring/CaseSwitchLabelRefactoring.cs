@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (switchStatement?.Expression?.IsMissing == false)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol typeSymbol = semanticModel
                         .GetTypeInfo(switchStatement.Expression, context.CancellationToken)

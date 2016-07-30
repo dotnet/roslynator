@@ -113,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 case SyntaxKind.MethodDeclaration:
                     {
-                        await MethodDeclarationRefactoring.ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)member);
+                        await MethodDeclarationRefactoring.ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.ConstructorDeclaration:
@@ -128,7 +128,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        await PropertyDeclarationRefactoring.ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)member);
+                        await PropertyDeclarationRefactoring.ComputeRefactoringsAsync(context, (PropertyDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.OperatorDeclaration:
@@ -143,7 +143,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     }
                 case SyntaxKind.FieldDeclaration:
                     {
-                        await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)member);
+                        await FieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (FieldDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.EventDeclaration:

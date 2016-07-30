@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
                 }
 
-                await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration);
+                await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration);
+            await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration).ConfigureAwait(false);
         }
 
         private static async Task RenameMethodAccoringToTypeNameAsync(
@@ -68,7 +68,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Identifier.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 

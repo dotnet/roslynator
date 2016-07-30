@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             try
             {
 #endif
-                await ComputeRefactoringsAsync(new RefactoringContext(context, root, DefaultSettings));
+                await ComputeRefactoringsAsync(new RefactoringContext(context, root, DefaultSettings)).ConfigureAwait(false);
 #if DEBUG
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ComputeRefactoringsAsync(RefactoringContext context)
         {
-            await context.ComputeRefactoringsAsync();
+            await context.ComputeRefactoringsAsync().ConfigureAwait(false);
         }
     }
 }

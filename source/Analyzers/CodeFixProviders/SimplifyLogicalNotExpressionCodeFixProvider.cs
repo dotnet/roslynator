@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             PrefixUnaryExpressionSyntax logicalNot,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxKind booleanLiteralKind = (logicalNot.Operand.IsKind(SyntaxKind.TrueLiteralExpression))
                 ? SyntaxKind.FalseLiteralExpression

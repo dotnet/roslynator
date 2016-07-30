@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             BlockSyntax block,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             StatementSyntax statement = block.Statements[0];
 

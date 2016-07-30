@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
 
                 if (arguments?.Count > 0)
-                    await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray());
+                    await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray()).ConfigureAwait(false);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentSyntax[] arguments)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
-                && await CanAddParameterNameAsync(context, arguments))
+                && await CanAddParameterNameAsync(context, arguments).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
                     "Add parameter name",
@@ -86,9 +86,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentSyntax[] arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             AttributeArgumentListSyntax newArgumentList = AddParameterNameSyntaxRewriter.VisitNode(argumentList, arguments, semanticModel)
                 .WithFormatterAnnotation();
@@ -104,7 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AttributeArgumentSyntax[] arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AttributeArgumentListSyntax newArgumentList = RemoveParameterNameSyntaxRewriter.VisitNode(argumentList, arguments)
                 .WithFormatterAnnotation();
@@ -148,7 +148,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (argument.NameColon == null || argument.NameColon.IsMissing)
                 {
                     IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                        await context.GetSemanticModelAsync(),
+                        await context.GetSemanticModelAsync().ConfigureAwait(false),
                         allowParams: false,
                         cancellationToken: context.CancellationToken);
 

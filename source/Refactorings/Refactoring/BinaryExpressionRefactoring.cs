@@ -22,11 +22,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     if (binaryExpression.Left.Span.Contains(context.Span))
                     {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left);
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left).ConfigureAwait(false);
                     }
                     else if (binaryExpression.Right.Span.Contains(context.Span))
                     {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right);
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right).ConfigureAwait(false);
                     }
                 }
 

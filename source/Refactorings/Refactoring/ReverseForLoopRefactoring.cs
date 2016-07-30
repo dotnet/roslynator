@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             VariableDeclarationSyntax declaration = forStatement.Declaration;
 

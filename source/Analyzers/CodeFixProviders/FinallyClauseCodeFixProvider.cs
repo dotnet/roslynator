@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             FinallyClauseSyntax finallyClause,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = GetNewRoot(oldRoot, finallyClause);
 

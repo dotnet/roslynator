@@ -25,9 +25,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetSymbolInfo(lambda, cancellationToken).Symbol;
 

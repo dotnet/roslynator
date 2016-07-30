@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (lambdaExpressionSyntax == null)
                 throw new ArgumentNullException(nameof(lambdaExpressionSyntax));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             LambdaExpressionSyntax newLambda = Refactor(lambdaExpressionSyntax)
                 .WithTriviaFrom(lambdaExpressionSyntax)

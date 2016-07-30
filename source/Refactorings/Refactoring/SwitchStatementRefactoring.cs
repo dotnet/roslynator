@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.GenerateSwitchSections)
-                && await GenerateSwitchSectionsRefactoring.CanRefactorAsync(context, switchStatement))
+                && await GenerateSwitchSectionsRefactoring.CanRefactorAsync(context, switchStatement).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
                     "Generate switch sections",

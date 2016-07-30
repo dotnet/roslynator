@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             BlockSyntax block,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ReturnStatementSyntax newReturnStatement = returnStatement
                 .WithExpression(localDeclaration.Declaration.Variables[0].Initializer.Value.WithoutTrivia())

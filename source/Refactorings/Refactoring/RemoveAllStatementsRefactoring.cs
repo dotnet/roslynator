@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax newNode = RemoveAllStatements(member);
 

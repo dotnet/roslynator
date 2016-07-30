@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .FirstAncestorOrSelf<ParameterSyntax>();
 
                 if (parameter != null)
-                    await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter);
+                    await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
             }
 
             if (closeParen.Parent?.IsKind(SyntaxKind.ArgumentList) == true)
@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     .FirstOrDefault(f => f.FullSpan.End == closeParen.FullSpan.Start);
 
                 if (argument != null)
-                    await ArgumentRefactoring.ComputeRefactoringsAsync(context, argument);
+                    await ArgumentRefactoring.ComputeRefactoringsAsync(context, argument).ConfigureAwait(false);
             }
         }
     }

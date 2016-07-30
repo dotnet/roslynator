@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MemberAccessExpressionSyntax node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             LiteralExpressionSyntax newNode = LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(string.Empty))
                 .WithTriviaFrom(node);

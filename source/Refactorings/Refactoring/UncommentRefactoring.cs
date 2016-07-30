@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxTrivia comment,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxToken token = comment.Token;
 
@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 triviaList = token.TrailingTrivia;
             }
 
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             SourceText newSourceText = sourceText.WithChanges(GetTextChanges(triviaList, index));
 

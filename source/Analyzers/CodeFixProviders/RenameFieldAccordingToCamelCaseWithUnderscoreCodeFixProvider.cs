@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (context.Document.SupportsSemanticModel)
             {
-                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
                 ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 

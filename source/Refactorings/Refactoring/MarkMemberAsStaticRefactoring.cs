@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             FieldDeclarationSyntax fieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             FieldDeclarationSyntax newNode = AddStaticModifier(fieldDeclaration);
 
@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MethodDeclarationSyntax methodDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MethodDeclarationSyntax newNode = AddStaticModifier(methodDeclaration);
 
@@ -86,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             PropertyDeclarationSyntax newNode = AddStaticModifier(propertyDeclaration);
 
@@ -113,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             EventDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             EventDeclarationSyntax newNode = AddStaticModifier(eventDeclaration);
 
@@ -140,7 +140,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             EventFieldDeclarationSyntax eventFieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             EventFieldDeclarationSyntax newNode = AddStaticModifier(eventFieldDeclaration);
 
@@ -167,7 +167,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ConstructorDeclarationSyntax newNode = AddStaticModifier(constructorDeclaration);
 

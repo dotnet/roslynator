@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (switchStatement.Expression != null
                 && IsEmptyOrContainsOnlyDefaultSection(switchStatement))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 var namedTypeSymbol = semanticModel
                     .GetTypeInfo(switchStatement.Expression, context.CancellationToken)
@@ -63,9 +63,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var enumTypeSymbol = semanticModel
                 .GetTypeInfo(switchStatement.Expression, cancellationToken)

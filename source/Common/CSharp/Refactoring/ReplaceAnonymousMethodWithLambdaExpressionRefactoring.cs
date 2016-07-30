@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (anonymousMethod == null)
                 throw new ArgumentNullException(nameof(anonymousMethod));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,

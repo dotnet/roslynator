@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             UsingStatementSyntax newNode = SyntaxRewriter.VisitNode(usingStatement)
                 .WithFormatterAnnotation();

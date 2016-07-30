@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain)
                 && memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 List<MemberAccessExpressionSyntax> expressions = GetChain(memberAccessExpression, semanticModel, context.CancellationToken);
 
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ImmutableArray<MemberAccessExpressionSyntax> expressions,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberAccessExpressionSyntax expression = expressions[0];
 
@@ -80,7 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             MemberAccessExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newNode = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
                 .WithFormatterAnnotation();

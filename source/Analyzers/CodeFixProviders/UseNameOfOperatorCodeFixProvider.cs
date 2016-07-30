@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             InvocationExpressionSyntax newNode = CSharpFactory.NameOf(literalExpression.Token.ValueText)
                 .WithFormatterAnnotation();

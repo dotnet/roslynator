@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)
                 && context.SupportsSemanticModel)
             {
-                await RenameFieldAccordingToPropertyNameAsync(context, identifierName);
+                await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (propertyDeclaration != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     var fieldSymbol = semanticModel
                         .GetSymbolInfo(identifierName, context.CancellationToken)

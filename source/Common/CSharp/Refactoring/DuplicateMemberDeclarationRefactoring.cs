@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             root = root.ReplaceNode(member.Parent, Refactor(member));
 

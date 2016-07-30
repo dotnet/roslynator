@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             TypeSyntax nullableType,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             TypeSyntax newType = SyntaxFactory.NullableType(nullableType.WithoutTrivia(), SyntaxFactory.Token(SyntaxKind.QuestionToken))
                 .WithTriviaFrom(type)

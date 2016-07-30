@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxToken lastComma = initializer.Expressions.GetSeparators().Last();
 

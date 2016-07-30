@@ -73,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ConstructorDeclarationSyntax constructor,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             if (constructor.ParameterList.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
                 && constructor.Initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))

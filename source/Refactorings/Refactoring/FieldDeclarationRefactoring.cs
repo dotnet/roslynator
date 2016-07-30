@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && fieldDeclaration.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {
-                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, fieldDeclaration))
+                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, fieldDeclaration).ConfigureAwait(false))
                 {
                     context.RegisterRefactoring(
                         "Replace field with constant",

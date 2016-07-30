@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             BinaryExpressionSyntax newBinaryExpression = GetNewBinaryExpression(binaryExpression)
                 .WithTriviaFrom(binaryExpression)

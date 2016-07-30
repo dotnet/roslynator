@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
                 && context.SupportsSemanticModel
                 && forStatement.Span.Contains(context.Span)
-                && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement)))
+                && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(
                     "Replace for with foreach",

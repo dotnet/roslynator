@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor)
                 && context.SupportsSemanticModel)
             {
-                List<MemberDeclarationSyntax> members = await GetAssignableMembersAsync(context, declaration);
+                List<MemberDeclarationSyntax> members = await GetAssignableMembersAsync(context, declaration).ConfigureAwait(false);
 
                 if (members?.Count > 0)
                 {
@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (declaration.IsKind(SyntaxKind.PropertyDeclaration, SyntaxKind.FieldDeclaration))
             {
-                if (await CanBeAssignedFromConstructorAsync(context, declaration))
+                if (await CanBeAssignedFromConstructorAsync(context, declaration).ConfigureAwait(false))
                 {
                     var list = new List<MemberDeclarationSyntax>();
                     list.Add(declaration);
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 foreach (MemberDeclarationSyntax member in declaration.GetMembers())
                 {
-                    if (await CanBeAssignedFromConstructorAsync(context, member))
+                    if (await CanBeAssignedFromConstructorAsync(context, member).ConfigureAwait(false))
                     {
                         if (list == null)
                             list = new List<MemberDeclarationSyntax>();
@@ -85,9 +85,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 switch (declaration.Kind())
                 {
                     case SyntaxKind.PropertyDeclaration:
-                        return await CanPropertyBeAssignedFromConstructorAsync(context, (PropertyDeclarationSyntax)declaration);
+                        return await CanPropertyBeAssignedFromConstructorAsync(context, (PropertyDeclarationSyntax)declaration).ConfigureAwait(false);
                     case SyntaxKind.FieldDeclaration:
-                        return await CanFieldBeAssignedFromConstructorAsync(context, (FieldDeclarationSyntax)declaration);
+                        return await CanFieldBeAssignedFromConstructorAsync(context, (FieldDeclarationSyntax)declaration).ConfigureAwait(false);
                 }
             }
 
@@ -98,7 +98,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             PropertyDeclarationSyntax propertyDeclaration)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
@@ -143,7 +143,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (parentDeclaration != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(fieldDeclaration.Declaration.Variables[0], context.CancellationToken);
 
@@ -232,7 +232,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             List<MemberDeclarationSyntax> assignableMembers,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax parentDeclaration = GetContainingDeclaration(declaration);
 

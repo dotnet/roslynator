@@ -16,12 +16,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.SupportsSemanticModel)
             {
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
-                    await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration);
+                    await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration);
+                await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
-                    await AddCastExpressionAsync(context, variableDeclaration);
+                    await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && variableDeclaration.Variables.Count == 1
                 && variableDeclaration.Variables[0].Identifier.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ISymbol symbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken);
 
@@ -112,7 +112,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (declarator != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol declarationType = semanticModel
                         .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)

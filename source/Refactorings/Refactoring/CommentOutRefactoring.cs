@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             int endLine,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             int minIndentLength = GetMinIndentLength(sourceText, startLine, endLine);
 

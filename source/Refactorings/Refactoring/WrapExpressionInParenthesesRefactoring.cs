@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             root = Refactor(expression, root);
 

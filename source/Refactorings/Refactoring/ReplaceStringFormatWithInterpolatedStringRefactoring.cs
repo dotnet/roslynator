@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            invocation = await FindOutermostFormatMethodAsync(context, invocation);
+            invocation = await FindOutermostFormatMethodAsync(context, invocation).ConfigureAwait(false);
 
             if (invocation != null)
             {
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                         if (firstArgument?.Token.IsKind(SyntaxKind.StringLiteralToken) == true)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             ISymbol invocationSymbol = semanticModel.GetSymbolInfo(invocation, context.CancellationToken).Symbol;
 
@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SeparatedSyntaxList<ArgumentSyntax> arguments = invocation.ArgumentList.Arguments;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<ExpressionSyntax> expandedArguments = ImmutableArray.CreateRange(GetExpandedArguments(arguments, semanticModel));
 
@@ -99,7 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             InterpolatedStringExpressionSyntax newInterpolatedString = InterpolatedStringSyntaxRewriter.VisitNode(interpolatedString, expandedArguments);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = root.ReplaceNode(invocation, newInterpolatedString);
 

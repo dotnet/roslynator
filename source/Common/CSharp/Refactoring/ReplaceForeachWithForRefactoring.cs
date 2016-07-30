@@ -52,14 +52,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forEachStatement == null)
                 throw new ArgumentNullException(nameof(forEachStatement));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
                 semanticModel.GetDeclaredSymbol(forEachStatement),
                 document.Project.Solution,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(

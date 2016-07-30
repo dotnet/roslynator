@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && assignmentExpression.Right.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(assignmentExpression.Left).Type;
 

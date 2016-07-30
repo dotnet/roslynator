@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis
                 symbol,
                 newName,
                 solution.Workspace.Options,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
         }
 
         public static ImmutableArray<IParameterSymbol> GetParameters(this ISymbol symbol)

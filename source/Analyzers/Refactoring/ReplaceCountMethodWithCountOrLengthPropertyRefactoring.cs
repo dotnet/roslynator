@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             string propertyName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 

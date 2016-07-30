@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         || declarator.Initializer.Value == null
                         || declarator.Initializer.Value.IsMissing))
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     ITypeSymbol typeSymbol = semanticModel
                         .GetTypeInfo(localDeclaration.Declaration.Type, context.CancellationToken)
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(
                 declarator,

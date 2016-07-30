@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLine)
                 .AddRange(SyntaxUtility.GetIndentTrivia(condition))

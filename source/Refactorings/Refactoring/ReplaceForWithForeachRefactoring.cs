@@ -21,11 +21,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, oldRoot, semanticModel, cancellationToken);
+            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, oldRoot, semanticModel, cancellationToken).ConfigureAwait(false);
 
             List<ElementAccessExpressionSyntax> expressions = identifierNames
                 .Select(f => f.Parent.Parent.Parent)
@@ -82,21 +82,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (forStatement.Incrementors.SingleOrDefault()?.IsKind(SyntaxKind.PostIncrementExpression) != true)
                 return false;
 
-            return await CheckIndexReferencesAsync(context, forStatement);
+            return await CheckIndexReferencesAsync(context, forStatement).ConfigureAwait(false);
         }
 
         private static async Task<bool> CheckIndexReferencesAsync(
             RefactoringContext context,
             ForStatementSyntax forStatement)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ISymbol collectionSymbol = semanticModel.GetSymbolInfo(GetCollectionExpression(forStatement)).Symbol;
 
             if (collectionSymbol == null)
                 return false;
 
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(context.Document, forStatement, context.Root, semanticModel, context.CancellationToken);
+            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(context.Document, forStatement, context.Root, semanticModel, context.CancellationToken).ConfigureAwait(false);
 
             foreach (IdentifierNameSyntax identifierName in identifierNames)
             {
@@ -130,7 +130,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
                 semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables[0]),
                 document.Project.Solution,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             return GetIdentifierNames(referencedSymbols, forStatement, root);
         }

@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CaseSwitchLabelSyntax label,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var switchSection = (SwitchSectionSyntax)label.Parent;
 

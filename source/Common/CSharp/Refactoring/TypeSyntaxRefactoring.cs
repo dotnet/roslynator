@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             TypeSyntax newType = CreateTypeSyntax(typeSymbol)
                 .WithTriviaFrom(type)
@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TypeSyntax newType,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             newType = newType
                 .WithTriviaFrom(type)
@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TypeSyntax type,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IdentifierNameSyntax newType = CSharpFactory.Var().WithTriviaFrom(type);
 

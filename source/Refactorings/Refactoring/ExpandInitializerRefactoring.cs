@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
                 && initializer.Expressions.Any()
                 && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true
-                && await CanExpandAsync(context, initializer))
+                && await CanExpandAsync(context, initializer).ConfigureAwait(false))
             {
                 switch (initializer.Parent.Parent?.Kind())
                 {
@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             return await HasPublicWritableIndexerAsync(
                                 context,
                                 implicitElementAccess.ArgumentList.Arguments[0].Expression,
-                                objectCreationExpression);
+                                objectCreationExpression).ConfigureAwait(false);
                         }
                     }
                     else
@@ -111,7 +111,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         return await HasPublicWritableIndexerAsync(
                             context,
                             initializerExpression.Expressions[0],
-                            objectCreationExpression);
+                            objectCreationExpression).ConfigureAwait(false);
                     }
                 }
                 else if (context.SupportsSemanticModel)
@@ -119,7 +119,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return await HasPublicAddMethodAsync(
                         context,
                         expression,
-                        objectCreationExpression);
+                        objectCreationExpression).ConfigureAwait(false);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             ObjectCreationExpressionSyntax objectCreationExpression)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ISymbol symbol = semanticModel
                 .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
@@ -173,7 +173,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             ObjectCreationExpressionSyntax objectCreationExpression)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ISymbol symbol = semanticModel
                 .GetSymbolInfo(objectCreationExpression.Type, context.CancellationToken)
@@ -216,7 +216,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionStatementSyntax[] expressions = ExpandObjectInitializer(initializer, expression).ToArray();
 

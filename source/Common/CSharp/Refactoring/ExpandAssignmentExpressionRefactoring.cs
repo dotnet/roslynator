@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (assignmentExpression == null)
                 throw new ArgumentNullException(nameof(assignmentExpression));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AssignmentExpressionSyntax newAssignmentExpression = Expand(assignmentExpression)
                 .WithTriviaFrom(assignmentExpression)

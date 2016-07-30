@@ -70,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
             string newName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             InvocationExpressionSyntax newNode = GetNewNode(invocation, newName)
                 .WithTriviaFrom(invocation);

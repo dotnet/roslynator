@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
                     case DiagnosticIdentifiers.AddCodeFixProviderSuffix:
                     case DiagnosticIdentifiers.AddCodeRefactoringProviderSuffix:
                         {
-                            await RegisterCodeFixAsync(context, classDeclaration, diagnostic);
+                            await RegisterCodeFixAsync(context, classDeclaration, diagnostic).ConfigureAwait(false);
                             break;
                         }
                 }
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
             ClassDeclarationSyntax classDeclaration,
             Diagnostic diagnostic)
         {
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 

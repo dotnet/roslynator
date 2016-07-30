@@ -27,12 +27,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     case "First":
                     case "Last":
                         {
-                            await ProcessFirstOrLastAsync(context, invocation, methodName);
+                            await ProcessFirstOrLastAsync(context, invocation, methodName).ConfigureAwait(false);
                             break;
                         }
                     case "ElementAt":
                         {
-                            await ProcessElementAtAsync(context, invocation);
+                            await ProcessElementAtAsync(context, invocation).ConfigureAwait(false);
                             break;
                         }
                 }
@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ProcessFirstOrLastAsync(RefactoringContext context, InvocationExpressionSyntax invocation, string methodName)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             if (invocation.ArgumentList.Arguments.Count == 0
                 && (IsEnumerableExtensionMethod(invocation, methodName, semanticModel)
@@ -77,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task ProcessElementAtAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             if (invocation.ArgumentList?.Arguments.Count == 1
                 && (IsEnumerableElementAtMethod(invocation, semanticModel)
@@ -228,7 +228,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             string propertyName = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 

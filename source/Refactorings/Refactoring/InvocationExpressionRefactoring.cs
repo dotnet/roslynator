@@ -25,20 +25,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
                 {
                     if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
-                        await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                        await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
                     if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
-                        await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression);
+                        await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
                 }
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)
                 && context.SupportsCSharp6)
             {
-                await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
             }
 
-            await ReplaceEnumHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+            await ReplaceEnumHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
         }
     }
 }

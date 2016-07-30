@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (interpolatedString == null)
                 throw new ArgumentNullException(nameof(interpolatedString));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(interpolatedString.ToString().Substring(1))
                 .WithTriviaFrom(interpolatedString);
