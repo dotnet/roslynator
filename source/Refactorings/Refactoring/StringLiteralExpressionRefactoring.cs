@@ -13,64 +13,65 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 return;
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
-                && context.SupportsCSharp6)
+                && context.SupportsCSharp6
+                && context.Span.End < literalExpression.Span.End)
             {
-                context.RegisterRefactoring(
-                    "Replace string literal with interpolated string",
-                    cancellationToken =>
-                    {
-                        int startIndex = -1;
-                        int length = 0;
+                int startIndex = GetStartIndex(context, literalExpression);
 
-                        if (context.Span.End < literalExpression.Span.End)
+                if (startIndex != -1)
+                {
+                    context.RegisterRefactoring(
+                        "Replace string literal with interpolated string",
+                        cancellationToken =>
                         {
-                            startIndex = GetInterpolationStartIndex(context.Span.Start, literalExpression);
-
-                            if (startIndex != 1)
-                                length = context.Span.Length;
-                        }
-
-                        return ReplaceStringLiteralRefactoring.ReplaceWithInterpolatedStringAsync(
-                            context.Document,
-                            literalExpression,
-                            startIndex,
-                            length,
-                            cancellationToken);
-                    });
+                            return ReplaceStringLiteralRefactoring.ReplaceWithInterpolatedStringAsync(
+                                context.Document,
+                                literalExpression,
+                                startIndex,
+                                context.Span.Length,
+                                cancellationToken);
+                        });
+                }
             }
 
             if (literalExpression.Span.Equals(context.Span))
             {
+                string text = GetTextWithoutEnclosingChars(literalExpression);
+
                 if (literalExpression.IsVerbatimStringLiteral())
                 {
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
+                    if (text.Contains("\"\""))
                     {
-                        context.RegisterRefactoring(
-                            "Replace verbatim string literal with regular string literal",
-                            cancellationToken =>
-                            {
-                                return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralAsync(
-                                    context.Document,
-                                    literalExpression,
-                                    cancellationToken);
-                            });
-                    }
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
+                        {
+                            context.RegisterRefactoring(
+                                "Replace verbatim string literal with regular string literal",
+                                cancellationToken =>
+                                {
+                                    return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralAsync(
+                                        context.Document,
+                                        literalExpression,
+                                        cancellationToken);
+                                });
+                        }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
-                        && literalExpression.Token.ValueText.Contains("\n"))
-                    {
-                        context.RegisterRefactoring(
-                            "Replace verbatim string literal with regular string literals",
-                            cancellationToken =>
-                            {
-                                return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralsAsync(
-                                    context.Document,
-                                    literalExpression,
-                                    cancellationToken);
-                            });
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
+                            && text.Contains("\n"))
+                        {
+                            context.RegisterRefactoring(
+                                "Replace verbatim string literal with regular string literals",
+                                cancellationToken =>
+                                {
+                                    return ReplaceStringLiteralRefactoring.ReplaceWithRegularStringLiteralsAsync(
+                                        context.Document,
+                                        literalExpression,
+                                        cancellationToken);
+                                });
+                        }
                     }
                 }
-                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral))
+                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)
+                    && text.Contains(@"\"))
                 {
                     context.RegisterRefactoring(
                         "Replace regular string literal with verbatim string literal",
@@ -113,13 +114,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static int GetInterpolationStartIndex(int spanStartIndex, LiteralExpressionSyntax literalExpression)
+        private static int GetStartIndex(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
-            string s = literalExpression.Token.Text;
+            int index = context.Span.Start - literalExpression.Span.Start;
 
-            int index = spanStartIndex - literalExpression.Span.Start;
-
-            if (s.StartsWith("@", StringComparison.Ordinal))
+            if (literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal))
             {
                 if (index > 1)
                     return index;
@@ -130,6 +129,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             return -1;
+        }
+
+        private static string GetTextWithoutEnclosingChars(LiteralExpressionSyntax literalExpression)
+        {
+            string s = literalExpression.Token.Text;
+
+            if (s.StartsWith("@", StringComparison.Ordinal))
+            {
+                if (s.StartsWith("@\"", StringComparison.Ordinal))
+                    s = s.Substring(2);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+            else
+            {
+                if (s.StartsWith("\"", StringComparison.Ordinal))
+                    s = s.Substring(1);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+
+            return s;
         }
     }
 }
