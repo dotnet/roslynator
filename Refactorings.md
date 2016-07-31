@@ -523,12 +523,12 @@
 
 ![Replace block with embedded statement (in if-else)](/images/refactorings/ReplaceBlockWithEmbeddedStatementInIfElse.png)
 
-#### Replace block with statements (in each section)
+#### Replace block with statements in each switch section
 
 * **Syntax**: switch statement
 * **Scope**: switch keyword
 
-![Replace block with statements (in each section)](/images/refactorings/ReplaceBlockWithStatementsInEachSection.png)
+![Replace block with statements in each switch section](/images/refactorings/ReplaceBlockWithStatementsInEachSwitchSection.png)
 
 #### Replace conditional expression with if-else
 
@@ -652,12 +652,12 @@
 
 ![Replace return statement with if statement](/images/refactorings/ReplaceReturnStatementWithIfStatement.png)
 
-#### Replace statements with block (in each section)
+#### Replace statements with block in each switch section
 
 * **Syntax**: switch statement
 * **Scope**: switch keyword
 
-![Replace statements with block (in each section)](/images/refactorings/ReplaceStatementsWithBlockInEachSection.png)
+![Replace statements with block in each switch section](/images/refactorings/ReplaceStatementsWithBlockInEachSwitchSection.png)
 
 #### Replace string literal with character literal
 
