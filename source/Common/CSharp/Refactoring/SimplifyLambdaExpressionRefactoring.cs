@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     {
                         ExpressionSyntax expression = GetExpression(statement);
 
-                        if (expression.IsSingleLine())
+                        if (expression?.IsSingleLine() == true)
                         {
                             TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
 
