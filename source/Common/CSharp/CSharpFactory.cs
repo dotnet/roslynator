@@ -251,6 +251,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);
+        }
+
         public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.EqualsExpression, left, right);

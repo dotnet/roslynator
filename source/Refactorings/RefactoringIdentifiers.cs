@@ -53,6 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";
         public const string MergeAttributes = "MergeAttributes";
+        public const string MergeIfStatements = "MergeIfStatements";
         public const string MergeStringLiterals = "MergeStringLiterals";
         public const string MergeStringLiteralsIntoMultilineStringLiteral = "MergeStringLiteralsIntoMultilineStringLiteral";
         public const string NegateBinaryExpression = "NegateBinaryExpression";

@@ -13,18 +13,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal abstract class WrapStatementsRefactoring<TStatement> where TStatement : StatementSyntax
     {
-        public static bool CanRefactor(RefactoringContext context, BlockSyntax block)
-        {
-            return GetSelectedStatements(block, context.Span).Any();
-        }
-
-        public static IEnumerable<StatementSyntax> GetSelectedStatements(BlockSyntax block, TextSpan span)
-        {
-            return block.Statements
-                .SkipWhile(f => span.Start > f.Span.Start)
-                .TakeWhile(f => span.End >= f.Span.End);
-        }
-
         public abstract TStatement CreateStatement(ImmutableArray<StatementSyntax> statements);
 
         public async Task<Document> RefactorAsync(
@@ -35,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            StatementSyntax[] statements = GetSelectedStatements(block, span).ToArray();
+            StatementSyntax[] statements = BlockRefactoring.GetSelectedStatements(block, span).ToArray();
 
             int index = block.Statements.IndexOf(statements[0]);
 

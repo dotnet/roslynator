@@ -47,6 +47,7 @@
     <Compile Include="Refactoring\AwaitExpressionRefactoring.cs" />
     <Compile Include="Refactoring\BlockRefactoring.cs" />
     <Compile Include="Refactoring\DirectiveTriviaRefactoring.cs" />
+    <Compile Include="Refactoring\MergeIfStatementsRefactoring.cs" />
     <Compile Include="Refactoring\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="Refactoring\ReturnExpressionRefactoring.cs" />

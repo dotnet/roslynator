@@ -59,6 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
             MergeAttributes = true;
+            MergeIfStatements = true;
             MergeStringLiterals = true;
             MergeStringLiteralsIntoMultilineStringLiteral = true;
             NegateBinaryExpression = true;
@@ -187,6 +188,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
+            SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiterals, MergeStringLiterals);
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral, MergeStringLiteralsIntoMultilineStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
@@ -731,6 +733,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected attribute lists")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MergeAttributes
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Merge if statements")]
+        [Description("Syntax: selected if statements")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool MergeIfStatements
         {
             get;
             set;

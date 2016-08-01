@@ -176,6 +176,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-attributes">Merge attributes</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-if-statements">Merge if statements</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-string-literals">Merge string literals</a>
         </li>
         <li>
