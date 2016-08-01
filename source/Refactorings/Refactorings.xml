@@ -122,6 +122,11 @@
       <Image>AddCastExpressionToVariableDeclaration</Image>
     </Images>
   </Refactoring>
+  <Refactoring Id="AddDefaultValueToReturnStatement" Title="Add default value to return statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>return statement without expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.9.80">
     <Syntaxes>
       <Syntax>selected text inside interpolated string text</Syntax>

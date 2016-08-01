@@ -11,38 +11,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ReturnStatementSyntax returnStatement)
         {
-            if (returnStatement.Expression != null
-                && context.SupportsSemanticModel)
+            if (context.SupportsSemanticModel)
             {
-                if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddBooleanComparison,
-                    RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression))
+                if (returnStatement.Expression != null)
                 {
-                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
-                }
-
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement)
-                    && !returnStatement.Expression.IsBooleanLiteralExpression())
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    ITypeSymbol expressionSymbol = semanticModel
-                        .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
-                        .ConvertedType;
-
-                    if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
+                    if (context.Settings.IsAnyRefactoringEnabled(
+                        RefactoringIdentifiers.AddBooleanComparison,
+                        RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
+                        RefactoringIdentifiers.AddCastExpression))
                     {
-                        context.RegisterRefactoring(
-                            "Replace return statement with if statement",
-                            cancellationToken =>
-                            {
-                                return ReplaceReturnStatementWithIfStatementRefactoring.RefactorAsync(
-                                    context.Document,
-                                    returnStatement,
-                                    cancellationToken);
-                            });
+                        await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }
+
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement)
+                        && !returnStatement.Expression.IsBooleanLiteralExpression())
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ITypeSymbol expressionSymbol = semanticModel
+                            .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
+                            .ConvertedType;
+
+                        if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
+                        {
+                            context.RegisterRefactoring(
+                                "Replace return statement with if statement",
+                                cancellationToken =>
+                                {
+                                    return ReplaceReturnStatementWithIfStatementRefactoring.RefactorAsync(
+                                        context.Document,
+                                        returnStatement,
+                                        cancellationToken);
+                                });
+                        }
+                    }
+                }
+                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
+                {
+                    await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement);
                 }
             }
         }

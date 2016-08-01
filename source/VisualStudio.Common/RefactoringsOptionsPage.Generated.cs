@@ -16,6 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddBooleanComparison = true;
             AddConfigureAwait = true;
             AddDefaultValueToParameter = true;
+            AddDefaultValueToReturnStatement = true;
             AddIdentifierToVariableDeclaration = true;
             AddInterpolation = true;
             AddParameterNameToArgument = true;
@@ -145,6 +146,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
             SetIsEnabled(RefactoringIdentifiers.AddConfigureAwait, AddConfigureAwait);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
+            SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
@@ -303,6 +305,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter without default value\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddDefaultValueToParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add default value to return statement")]
+        [Description("Syntax: return statement without expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddDefaultValueToReturnStatement
         {
             get;
             set;

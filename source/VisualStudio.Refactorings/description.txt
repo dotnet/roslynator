@@ -47,6 +47,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-default-value-to-parameter">Add default value to parameter</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-default-value-to-return-statement">Add default value to return statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
         </li>
         <li>
