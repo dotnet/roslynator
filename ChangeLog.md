@@ -1,3 +1,13 @@
+### 0.96.0 (2016-08-05)
+
+#### Refactorings
+
+##### New Refactorings
+
+* MergeIfStatements
+* AddDefaultValueToReturnStatement
+* InlineMethod
+
 ### 0.95.0 (2016-07-30)
 
 #### Refactorings
