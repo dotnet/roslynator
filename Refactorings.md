@@ -32,6 +32,12 @@
 
 ![Add default value to parameter](/images/refactorings/AddDefaultValueToParameter.png)
 
+#### Add default value to return statement
+
+* **Syntax**: return statement without expression
+
+![Add default value to return statement](/images/refactorings/AddDefaultValueToReturnStatement.png)
+
 #### Add identifier to variable declaration
 
 * **Syntax**: variable declaration
@@ -284,6 +290,12 @@
 
 ![Initialize local with default value](/images/refactorings/InitializeLocalWithDefaultValue.png)
 
+#### Inline method
+
+* **Syntax**: method invocation
+
+![Inline method](/images/refactorings/InlineMethod.png)
+
 #### Introduce constructor from selected member(s)
 
 * **Syntax**: field, property
@@ -321,6 +333,12 @@
 * **Syntax**: selected attribute lists
 
 ![Merge attributes](/images/refactorings/MergeAttributes.png)
+
+#### Merge if statements
+
+* **Syntax**: selected if statements
+
+![Merge if statements](/images/refactorings/MergeIfStatements.png)
 
 #### Merge string literals
 
