@@ -39,6 +39,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             await ReplaceEnumHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod))
+                await InlineMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
         }
     }
 }

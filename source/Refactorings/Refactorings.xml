@@ -510,6 +510,11 @@
     </Syntaxes>
     <Scope>parameter identifier</Scope>
   </Refactoring>
+  <Refactoring Id="InlineMethod" Title="Inline method" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method invocation</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="IntroduceConstructor" Title="Introduce constructor from selected member(s)" IsEnabledByDefault="false" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>field</Syntax>

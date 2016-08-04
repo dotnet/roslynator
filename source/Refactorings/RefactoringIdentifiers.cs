@@ -48,6 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string FormatParameterList = "FormatParameterList";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
         public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
+        public const string InlineMethod = "InlineMethod";
         public const string IntroduceConstructor = "IntroduceConstructor";
         public const string IntroduceUsingStaticDirective = "IntroduceUsingStaticDirective";
         public const string MakeMemberAbstract = "MakeMemberAbstract";

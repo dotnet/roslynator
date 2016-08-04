@@ -161,6 +161,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#inline-method">Inline method</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>
         </li>
         <li>

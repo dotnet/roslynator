@@ -54,6 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             FormatParameterList = true;
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
+            InlineMethod = true;
             IntroduceConstructor = false;
             IntroduceUsingStaticDirective = true;
             MakeMemberAbstract = true;
@@ -184,6 +185,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
+            SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
             SetIsEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective, IntroduceUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
@@ -685,6 +687,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: local declaration without initializer\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool InitializeLocalWithDefaultValue
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Inline method")]
+        [Description("Syntax: method invocation")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool InlineMethod
         {
             get;
             set;

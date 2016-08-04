@@ -51,6 +51,7 @@
     <Compile Include="Refactoring\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="Refactoring\AddDefaultValueToReturnStatementRefactoring.cs" />
+    <Compile Include="Refactoring\InlineMethodRefactoring.cs" />
     <Compile Include="Refactoring\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactoring\SplitIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsRefactoring.cs" />
