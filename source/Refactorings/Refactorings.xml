@@ -122,7 +122,7 @@
       <Image>AddCastExpressionToVariableDeclaration</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="AddDefaultValueToReturnStatement" Title="Add default value to return statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddDefaultValueToReturnStatement" Title="Add default value to return statement" ExtensionVersion="0.96.0">
     <Syntaxes>
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
@@ -510,7 +510,7 @@
     </Syntaxes>
     <Scope>parameter identifier</Scope>
   </Refactoring>
-  <Refactoring Id="InlineMethod" Title="Inline method" ExtensionVersion="0.0.0">
+  <Refactoring Id="InlineMethod" Title="Inline method" ExtensionVersion="0.96.0">
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
@@ -549,7 +549,7 @@
       <Syntax>selected attribute lists</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeIfStatements" Title="Merge if statements" ExtensionVersion="0.0.0">
+  <Refactoring Id="MergeIfStatements" Title="Merge if statements" ExtensionVersion="0.96.0">
     <Syntaxes>
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
