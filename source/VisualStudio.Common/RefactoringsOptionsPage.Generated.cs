@@ -18,9 +18,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
             AddIdentifierToVariableDeclaration = true;
+            AddIfDirective = true;
             AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
+            AddRegion = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeMethodReturnTypeToVoid = true;
@@ -149,9 +151,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
+            SetIsEnabled(RefactoringIdentifiers.AddIfDirective, AddIfDirective);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
+            SetIsEnabled(RefactoringIdentifiers.AddRegion, AddRegion);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
@@ -333,6 +337,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Add #if directive")]
+        [Description("Syntax: selected lines")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddIfDirective
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Add interpolation")]
         [Description("Syntax: selected text inside interpolated string text")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -357,6 +371,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter\r\nScope: missing identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddParameterNameToParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add region")]
+        [Description("Syntax: selected lines")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddRegion
         {
             get;
             set;

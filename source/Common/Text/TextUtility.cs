@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Text;
 
 namespace Pihrtsoft.CodeAnalysis.Text
 {
@@ -80,6 +81,31 @@ namespace Pihrtsoft.CodeAnalysis.Text
             }
 
             return true;
+        }
+
+        public static string GetIndent(string value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (value.Length == 0)
+                return string.Empty;
+
+            var sb = new StringBuilder();
+
+            foreach (char ch in value)
+            {
+                if (ch == '\n'
+                    || ch == '\r'
+                    || !char.IsWhiteSpace(ch))
+                {
+                    break;
+                }
+
+                sb.Append(ch);
+            }
+
+            return sb.ToString();
         }
     }
 }

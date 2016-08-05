@@ -44,6 +44,10 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\AddIfDirectiveRefactoring.cs" />
+    <Compile Include="Refactoring\WrapSelectedLinesRefactoring.cs" />
+    <Compile Include="Refactoring\SelectedLinesRefactoring.cs" />
+    <Compile Include="Refactoring\AddRegionRefactoring.cs" />
     <Compile Include="Refactoring\AwaitExpressionRefactoring.cs" />
     <Compile Include="Refactoring\BlockRefactoring.cs" />
     <Compile Include="Refactoring\DirectiveTriviaRefactoring.cs" />

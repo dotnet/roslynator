@@ -9,6 +9,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddRegion)
+                && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
+            {
+                context.RegisterRefactoring(
+                   "Add region",
+                   cancellationToken =>
+                   {
+                       var refactoring = new AddRegionRefactoring();
+
+                       return refactoring.RefactorAsync(
+                           context.Document,
+                           node,
+                           context.Span,
+                           cancellationToken);
+                   });
+            }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddIfDirective)
+                && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
+            {
+                context.RegisterRefactoring(
+                   "Add #if",
+                   cancellationToken =>
+                   {
+                       var refactoring = new AddIfDirectiveRefactoring();
+
+                       return refactoring.RefactorAsync(
+                           context.Document,
+                           node,
+                           context.Span,
+                           cancellationToken);
+                   });
+            }
+
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines)
                 && await RemoveEmptyLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {

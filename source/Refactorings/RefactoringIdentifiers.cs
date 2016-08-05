@@ -12,9 +12,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddDefaultValueToReturnStatement = "AddDefaultValueToReturnStatement";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
+        public const string AddIfDirective = "AddIfDirective";
         public const string AddInterpolation = "AddInterpolation";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
+        public const string AddRegion = "AddRegion";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
         public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";

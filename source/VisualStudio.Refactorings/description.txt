@@ -35,6 +35,9 @@
     <h3>List of Refactoring</h3>
     <ul>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-if-directive">Add #if directive</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
         </li>
         <li>
@@ -60,6 +63,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-region">Add region</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-method-return-type-to-void">Change method return type to void</a>
