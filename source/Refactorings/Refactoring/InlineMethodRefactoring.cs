@@ -77,17 +77,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             if (methodDeclaration.Body != null)
             {
-                StatementSyntax statement = methodDeclaration.Body.Statements.SingleOrDefault();
+                SyntaxList<StatementSyntax> statements = methodDeclaration.Body.Statements;
 
-                if (statement?.IsKind(SyntaxKind.ReturnStatement) == true)
-                    return ((ReturnStatementSyntax)statement).Expression;
-            }
-            else if (methodDeclaration.ExpressionBody != null)
-            {
-                return methodDeclaration.ExpressionBody.Expression;
+                if (statements.Count == 1)
+                {
+                    StatementSyntax statement = statements[0];
+
+                    if (statement.IsKind(SyntaxKind.ReturnStatement))
+                        return ((ReturnStatementSyntax)statement).Expression;
+                }
             }
 
-            return null;
+            return methodDeclaration.ExpressionBody?.Expression;
         }
 
         private static async Task<Document> InlineAsync(
