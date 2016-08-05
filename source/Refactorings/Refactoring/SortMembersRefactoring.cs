@@ -11,101 +11,43 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-#if DEBUG
-    internal static class ReorderMembersRefactoring
+    internal static class SortMembersRefactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration.Kind())
             {
+                case SyntaxKind.NamespaceDeclaration:
                 case SyntaxKind.ClassDeclaration:
-                    {
-                        var classDeclaration = (ClassDeclarationSyntax)memberDeclaration;
-                        if (classDeclaration.Identifier.Span.Contains(context.Span))
-                        {
-                            context.RegisterRefactoring(
-                                "Reorder class members",
-                                cancellationToken => ReorderClassMembersAsync(context.Document, classDeclaration, cancellationToken));
-                        }
-
-                        break;
-                    }
                 case SyntaxKind.StructDeclaration:
-                    {
-                        var structDeclaration = (StructDeclarationSyntax)memberDeclaration;
-                        if (structDeclaration.Identifier.Span.Contains(context.Span))
-                        {
-                            context.RegisterRefactoring(
-                                "Reorder struct members",
-                                cancellationToken => ReorderStructMembersAsync(context.Document, structDeclaration, cancellationToken));
-                        }
-
-                        break;
-                    }
                 case SyntaxKind.InterfaceDeclaration:
                     {
-                        var interfaceDeclaration = (InterfaceDeclarationSyntax)memberDeclaration;
-                        if (interfaceDeclaration.Identifier.Span.Contains(context.Span))
-                        {
-                            context.RegisterRefactoring(
-                                "Reorder interface members",
-                                cancellationToken => ReorderInterfaceMembersAsync(context.Document, interfaceDeclaration, cancellationToken));
-                        }
+                        context.RegisterRefactoring(
+                            "Sort members",
+                            cancellationToken => SortMembersAsync(context.Document, memberDeclaration, cancellationToken));
 
                         break;
                     }
             }
         }
 
-        private static async Task<Document> ReorderClassMembersAsync(
+        private static async Task<Document> SortMembersAsync(
             Document document,
-            ClassDeclarationSyntax classDeclaration,
+            MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ClassDeclarationSyntax newDeclaration = classDeclaration
-                .WithMembers(ProcessMemberDeclarations(classDeclaration.Members))
+            MemberDeclarationSyntax newNode = memberDeclaration
+                .SetMembers(SortMembers(memberDeclaration.GetMembers()))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(classDeclaration, newDeclaration);
+            root = root.ReplaceNode(memberDeclaration, newNode);
 
-            return document.WithSyntaxRoot(newRoot);
+            return document.WithSyntaxRoot(root);
         }
 
-        private static async Task<Document> ReorderStructMembersAsync(
-            Document document,
-            StructDeclarationSyntax structDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            StructDeclarationSyntax newDeclaration = structDeclaration
-                .WithMembers(ProcessMemberDeclarations(structDeclaration.Members))
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(structDeclaration, newDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static async Task<Document> ReorderInterfaceMembersAsync(
-            Document document,
-            InterfaceDeclarationSyntax interfaceDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            InterfaceDeclarationSyntax newDeclaration = interfaceDeclaration
-                .WithMembers(ProcessMemberDeclarations(interfaceDeclaration.Members))
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(interfaceDeclaration, newDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SyntaxList<MemberDeclarationSyntax> ProcessMemberDeclarations(IEnumerable<MemberDeclarationSyntax> memberDeclarations)
+        private static SyntaxList<MemberDeclarationSyntax> SortMembers(IEnumerable<MemberDeclarationSyntax> memberDeclarations)
         {
             IEnumerable<MemberDeclarationSyntax> newMembers = memberDeclarations
                 .OrderBy(f => f, MemberDeclarationSorter.Instance);
@@ -130,8 +72,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 return GetOrderIndex(x).CompareTo(GetOrderIndex(y));
             }
-
-            private const string ConstantName = "";
 
             private static int GetOrderIndex(SyntaxNode syntaxNode)
             {
@@ -186,5 +126,4 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
     }
-#endif
 }

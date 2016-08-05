@@ -70,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             bool fMemberDeclaration = false;
 #if DEBUG
-            bool fReorderMembers = false;
+            bool fSortMembers = false;
 #endif
             bool fStatement = false;
             bool fDoStatement = false;
@@ -344,11 +344,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (memberDeclaration != null)
                     {
 #if DEBUG
-                        if (!fReorderMembers
-                            && node.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
+                        if (!fSortMembers
+                            && node.IsKind(
+                                SyntaxKind.NamespaceDeclaration,
+                                SyntaxKind.ClassDeclaration,
+                                SyntaxKind.StructDeclaration,
+                                SyntaxKind.InterfaceDeclaration))
                         {
-                            ReorderMembersRefactoring.ComputeRefactorings(context, memberDeclaration);
-                            fReorderMembers = true;
+                            SortMembersRefactoring.ComputeRefactorings(context, memberDeclaration);
+                            fSortMembers = true;
                         }
 #endif
                         if (!fMemberDeclaration)
