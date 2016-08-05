@@ -64,15 +64,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         "Replace switch with if-else",
                         cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                 }
-#if DEBUG
-                if (switchStatement.Sections.Count > 1
-                    && switchStatement.SwitchKeyword.Span.Contains(context.Span))
-                {
-                    context.RegisterRefactoring(
-                        "Sort switch sections",
-                        cancellationToken => SortSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
-                }
-#endif
             }
         }
     }

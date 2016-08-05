@@ -121,7 +121,6 @@
     <Compile Include="Refactoring\ReplaceSwitchSectionBlockWithStatementsRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceBlockWithStatementsInEachSectionRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceStatementsWithBlockInEachSectionRefactoring.cs" />
-    <Compile Include="Refactoring\SortSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactoring\AddInterpolationRefactoring.cs" />
     <Compile Include="Refactoring\DefaultCodeRefactoringProvider.cs" />
     <Compile Include="Refactoring\WrapExpressionInParenthesesRefactoring.cs" />
