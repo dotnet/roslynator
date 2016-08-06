@@ -273,7 +273,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");
 
-        public static SyntaxTrivia EmptyTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
+        public static SyntaxTrivia EmptyWhitespaceTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
 
         public static SyntaxTrivia NewLine { get; } = CreateNewLine();
 

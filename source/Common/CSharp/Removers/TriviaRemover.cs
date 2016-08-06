@@ -17,6 +17,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
             => _instance.Visit(node);
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-            => CSharpFactory.EmptyTrivia;
+            => CSharpFactory.EmptyWhitespaceTrivia;
     }
 }

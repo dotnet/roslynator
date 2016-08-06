@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                 case SyntaxKind.MultiLineCommentTrivia:
                     {
                         if (_removeOptions != CommentRemoveOptions.Documentation)
-                            return CSharpFactory.EmptyTrivia;
+                            return CSharpFactory.EmptyWhitespaceTrivia;
 
                         break;
                     }
@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                 case SyntaxKind.MultiLineDocumentationCommentTrivia:
                     {
                         if (_removeOptions != CommentRemoveOptions.AllExceptDocumentation)
-                            return CSharpFactory.EmptyTrivia;
+                            return CSharpFactory.EmptyWhitespaceTrivia;
 
                         break;
                     }
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                             SyntaxTrivia trivia2 = _compilationUnit.FindTrivia(trivia.SpanStart - 1);
 
                             if (trivia2.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                                return CSharpFactory.EmptyTrivia;
+                                return CSharpFactory.EmptyWhitespaceTrivia;
                         }
 
                         break;
