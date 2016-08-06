@@ -91,6 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplaceBlockWithEmbeddedStatement = "ReplaceBlockWithEmbeddedStatement";
         public const string ReplaceBlockWithEmbeddedStatementInIfElse = "ReplaceBlockWithEmbeddedStatementInIfElse";
         public const string ReplaceBlockWithStatementsInEachSwitchSection = "ReplaceBlockWithStatementsInEachSwitchSection";
+        public const string ReplaceBooleanExpressionWithIfStatement = "ReplaceBooleanExpressionWithIfStatement";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
         public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";
@@ -110,7 +111,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplacePrefixOperatorWithPostfixOperator = "ReplacePrefixOperatorWithPostfixOperator";
         public const string ReplacePropertyWithMethod = "ReplacePropertyWithMethod";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
-        public const string ReplaceReturnStatementWithIfStatement = "ReplaceReturnStatementWithIfStatement";
         public const string ReplaceStatementsWithBlockInEachSwitchSection = "ReplaceStatementsWithBlockInEachSwitchSection";
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";

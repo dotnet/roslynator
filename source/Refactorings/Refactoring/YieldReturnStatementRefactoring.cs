@@ -12,57 +12,85 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
+                    RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {
-                MemberDeclarationSyntax declaration = ReturnExpressionRefactoring.GetDeclaration(yieldStatement.Expression);
-
-                if (declaration != null)
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression))
                 {
-                    TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(declaration);
+                    MemberDeclarationSyntax declaration = ReturnExpressionRefactoring.GetDeclaration(yieldStatement.Expression);
 
-                    if (memberType != null)
+                    if (declaration != null)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(declaration);
 
-                        ITypeSymbol memberTypeSymbol = semanticModel
-                            .GetTypeInfo(memberType, context.CancellationToken)
-                            .Type;
-
-                        if (memberTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable)
+                        if (memberType != null)
                         {
-                            ITypeSymbol typeSymbol = semanticModel
-                                .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ITypeSymbol memberTypeSymbol = semanticModel
+                                .GetTypeInfo(memberType, context.CancellationToken)
                                 .Type;
 
-                            if (typeSymbol?.IsErrorType() == false
-                                && (memberTypeSymbol == null
-                                    || memberTypeSymbol.IsErrorType()
-                                    || !memberTypeSymbol.IsGenericIEnumerable()
-                                    || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
+                            if (memberTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable)
                             {
-                                TypeSyntax newType = QualifiedName(
-                                    ParseName("System.Collections.Generic"),
-                                    GenericName(
-                                        Identifier("IEnumerable"),
-                                        TypeArgumentList(
-                                            SingletonSeparatedList(
-                                                TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
+                                ITypeSymbol typeSymbol = semanticModel
+                                    .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
+                                    .Type;
 
-                                context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
-                                    cancellationToken =>
-                                    {
-                                        return TypeSyntaxRefactoring.ChangeTypeAsync(
-                                            context.Document,
-                                            memberType,
-                                            newType,
-                                            cancellationToken);
-                                    });
+                                if (typeSymbol?.IsErrorType() == false
+                                    && (memberTypeSymbol == null
+                                        || memberTypeSymbol.IsErrorType()
+                                        || !memberTypeSymbol.IsGenericIEnumerable()
+                                        || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
+                                {
+                                    TypeSyntax newType = QualifiedName(
+                                        ParseName("System.Collections.Generic"),
+                                        GenericName(
+                                            Identifier("IEnumerable"),
+                                            TypeArgumentList(
+                                                SingletonSeparatedList(
+                                                    TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
+
+                                    context.RegisterRefactoring(
+                                        $"Change {ReturnExpressionRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                        cancellationToken =>
+                                        {
+                                            return TypeSyntaxRefactoring.ChangeTypeAsync(
+                                                context.Document,
+                                                memberType,
+                                                newType,
+                                                cancellationToken);
+                                        });
+                                }
                             }
                         }
+                    }
+                }
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
+                    && !yieldStatement.Expression.IsBooleanLiteralExpression())
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ITypeSymbol expressionSymbol = semanticModel
+                        .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
+                        .ConvertedType;
+
+                    if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
+                    {
+                        context.RegisterRefactoring(
+                            "Replace expression with if statement",
+                            cancellationToken =>
+                            {
+                                return ReplaceBooleanExpressionWithIfStatementRefactoring.RefactorAsync(
+                                    context.Document,
+                                    yieldStatement,
+                                    cancellationToken);
+                            });
                     }
                 }
             }

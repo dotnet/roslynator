@@ -61,7 +61,7 @@
     <Compile Include="Refactoring\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsInIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\WrapStatementsInTryCatchRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceBooleanExpressionWithIfStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="Refactoring\SyntaxNodeRefactoring.cs" />
     <Compile Include="Refactoring\AddDefaultValueToParameterRefactoring.cs" />

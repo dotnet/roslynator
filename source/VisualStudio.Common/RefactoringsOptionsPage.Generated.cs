@@ -97,6 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceBlockWithEmbeddedStatement = true;
             ReplaceBlockWithEmbeddedStatementInIfElse = true;
             ReplaceBlockWithStatementsInEachSwitchSection = true;
+            ReplaceBooleanExpressionWithIfStatement = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
             ReplaceCountWithLengthOrLengthWithCount = true;
@@ -116,7 +117,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
-            ReplaceReturnStatementWithIfStatement = true;
             ReplaceStatementsWithBlockInEachSwitchSection = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
@@ -232,6 +232,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatement, ReplaceBlockWithEmbeddedStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse, ReplaceBlockWithEmbeddedStatementInIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection, ReplaceBlockWithStatementsInEachSwitchSection);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement, ReplaceBooleanExpressionWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
             SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
@@ -251,7 +252,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement, ReplaceReturnStatementWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection, ReplaceStatementsWithBlockInEachSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
@@ -1131,6 +1131,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Replace return statement with if statement")]
+        [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceBooleanExpressionWithIfStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Replace conditional expression with if-else")]
         [Description("Syntax: conditional expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1315,16 +1325,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: regular string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceRegularStringLiteralWithVerbatimStringLiteral
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace return statement with if statement")]
-        [Description("Syntax: return statement with boolean expression")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceReturnStatementWithIfStatement
         {
             get;
             set;

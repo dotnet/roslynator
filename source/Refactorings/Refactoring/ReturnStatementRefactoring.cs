@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceReturnStatementWithIfStatement)
+                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
                         && !returnStatement.Expression.IsBooleanLiteralExpression())
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -35,10 +35,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
                         {
                             context.RegisterRefactoring(
-                                "Replace return statement with if statement",
+                                "Replace expression with if statement",
                                 cancellationToken =>
                                 {
-                                    return ReplaceReturnStatementWithIfStatementRefactoring.RefactorAsync(
+                                    return ReplaceBooleanExpressionWithIfStatementRefactoring.RefactorAsync(
                                         context.Document,
                                         returnStatement,
                                         cancellationToken);
