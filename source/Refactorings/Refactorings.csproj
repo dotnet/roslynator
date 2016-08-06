@@ -202,7 +202,7 @@
     <Compile Include="Refactoring\ConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactoring\SwitchStatementRefactoring.cs" />
     <Compile Include="Refactoring\SwitchSectionRefactoring.cs" />
-    <Compile Include="Refactoring\SortMembersRefactoring.cs" />
+    <Compile Include="Refactoring\SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceConditionalExpressionWithIfElseRefactoring.cs" />
     <Compile Include="Refactoring\ReverseForLoopRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceForWithForEachRefactoring.cs" />

@@ -351,7 +351,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 SyntaxKind.StructDeclaration,
                                 SyntaxKind.InterfaceDeclaration))
                         {
-                            SortMembersRefactoring.ComputeRefactorings(context, memberDeclaration);
+                            SortMemberDeclarationsRefactoring.ComputeRefactorings(context, memberDeclaration);
                             fSortMembers = true;
                         }
 #endif

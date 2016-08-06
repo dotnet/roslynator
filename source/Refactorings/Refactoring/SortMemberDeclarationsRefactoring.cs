@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class SortMembersRefactoring
+    internal static class SortMemberDeclarationsRefactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         context.RegisterRefactoring(
-                            "Sort members",
+                            "Sort declarations",
                             cancellationToken => SortMembersAsync(context.Document, memberDeclaration, cancellationToken));
 
                         break;
