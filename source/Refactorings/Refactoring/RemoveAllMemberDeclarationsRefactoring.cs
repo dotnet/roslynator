@@ -9,8 +9,29 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
-    internal static class RemoveAllMembersRefactoring
+    internal static class RemoveAllMemberDeclarationsRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
+        {
+            switch (member.Kind())
+            {
+                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        if (CanRefactor(context, member))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove all declarations",
+                                cancellationToken => RefactorAsync(context.Document, member, cancellationToken));
+                        }
+
+                        break;
+                    }
+            }
+        }
+
         public static bool CanRefactor(RefactoringContext context, MemberDeclarationSyntax member)
         {
             switch (member.Kind())

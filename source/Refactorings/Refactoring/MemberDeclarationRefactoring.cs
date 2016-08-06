@@ -64,43 +64,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         break;
                     }
             }
-#if DEBUG
-            switch (member.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                case SyntaxKind.ConstructorDeclaration:
-                    {
-                        if (RemoveAllStatementsRefactoring.CanRefactor(context, member))
-                        {
-                            context.RegisterRefactoring(
-                                "Remove all statements",
-                                cancellationToken => RemoveAllStatementsRefactoring.RefactorAsync(context.Document, member, cancellationToken));
-                        }
 
-                        break;
-                    }
-            }
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllStatements))
+                RemoveAllStatementsRefactoring.ComputeRefactoring(context, member);
 
-            switch (member.Kind())
-            {
-                case SyntaxKind.NamespaceDeclaration:
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                    {
-                        if (RemoveAllMembersRefactoring.CanRefactor(context, member))
-                        {
-                            context.RegisterRefactoring(
-                                "Remove all declarations",
-                                cancellationToken => RemoveAllMembersRefactoring.RefactorAsync(context.Document, member, cancellationToken));
-                        }
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations))
+                RemoveAllMemberDeclarationsRefactoring.ComputeRefactoring(context, member);
 
-                        break;
-                    }
-            }
-#endif
             if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.SwapMemberDeclarations,
                     RefactoringIdentifiers.RemoveMemberDeclarations)

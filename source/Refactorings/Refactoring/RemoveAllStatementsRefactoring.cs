@@ -11,6 +11,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RemoveAllStatementsRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
+        {
+            switch (member.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        if (CanRefactor(context, member))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove all statements",
+                                cancellationToken => RefactorAsync(context.Document, member, cancellationToken));
+                        }
+
+                        break;
+                    }
+            }
+        }
+
         public static bool CanRefactor(RefactoringContext context, MemberDeclarationSyntax member)
         {
             switch (member.Kind())

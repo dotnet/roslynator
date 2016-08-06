@@ -215,7 +215,13 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments-except-xml-comments">Remove all comments (except xml comments)</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-member-declarations">Remove all member declarations</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-region-directives">Remove all region directives</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-statements">Remove all statements</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-switch-sections">Remove all switch sections</a>

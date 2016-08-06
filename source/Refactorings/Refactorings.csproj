@@ -75,7 +75,7 @@
     <Compile Include="Refactoring\AddIdentifierToLocalDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\ExpressionStatementRefactoring.cs" />
     <Compile Include="Refactoring\RefactoringHelper.cs" />
-    <Compile Include="Refactoring\RemoveAllMembersRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveAllMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="Refactoring\ReverseReversedForLoopRefactoringy.cs" />
     <Compile Include="Refactoring\StatementRefactoring.cs" />

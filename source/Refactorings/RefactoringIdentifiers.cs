@@ -66,7 +66,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string NotifyPropertyChanged = "NotifyPropertyChanged";
         public const string RemoveAllComments = "RemoveAllComments";
         public const string RemoveAllCommentsExceptXmlComments = "RemoveAllCommentsExceptXmlComments";
+        public const string RemoveAllMemberDeclarations = "RemoveAllMemberDeclarations";
         public const string RemoveAllRegionDirectives = "RemoveAllRegionDirectives";
+        public const string RemoveAllStatements = "RemoveAllStatements";
         public const string RemoveAllSwitchSections = "RemoveAllSwitchSections";
         public const string RemoveAllXmlComments = "RemoveAllXmlComments";
         public const string RemoveComment = "RemoveComment";

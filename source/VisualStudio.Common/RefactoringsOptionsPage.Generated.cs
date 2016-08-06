@@ -72,7 +72,9 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             NotifyPropertyChanged = true;
             RemoveAllComments = true;
             RemoveAllCommentsExceptXmlComments = true;
+            RemoveAllMemberDeclarations = true;
             RemoveAllRegionDirectives = true;
+            RemoveAllStatements = true;
             RemoveAllSwitchSections = true;
             RemoveAllXmlComments = false;
             RemoveComment = true;
@@ -205,7 +207,9 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations, RemoveAllMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives, RemoveAllRegionDirectives);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllStatements, RemoveAllStatements);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
@@ -877,10 +881,30 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Remove all member declarations")]
+        [Description("Syntax: namespace, class, struct, interface\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllMemberDeclarations
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Remove all region directives")]
         [Description("Syntax: region directive")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllRegionDirectives
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove all statements")]
+        [Description("Syntax: method, constructor, operator\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllStatements
         {
             get;
             set;
