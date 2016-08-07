@@ -15,20 +15,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
         {
-            switch (memberDeclaration.Kind())
+            if (memberDeclaration.IsKind(SyntaxKind.NamespaceDeclaration))
             {
-                case SyntaxKind.NamespaceDeclaration:
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                    {
-                        context.RegisterRefactoring(
-                            "Sort declarations",
-                            cancellationToken => SortMembersAsync(context.Document, memberDeclaration, cancellationToken));
-
-                        break;
-                    }
+                if (((NamespaceDeclarationSyntax)memberDeclaration).Name.Span.Contains(context.Span))
+                    RegisterRefactoring(context, memberDeclaration);
             }
+            else if (memberDeclaration.IsKind(SyntaxKind.ClassDeclaration))
+            {
+                if (((ClassDeclarationSyntax)memberDeclaration).Identifier.Span.Contains(context.Span))
+                    RegisterRefactoring(context, memberDeclaration);
+            }
+            else if (memberDeclaration.IsKind(SyntaxKind.StructDeclaration))
+            {
+                if (((StructDeclarationSyntax)memberDeclaration).Identifier.Span.Contains(context.Span))
+                    RegisterRefactoring(context, memberDeclaration);
+            }
+            else if (memberDeclaration.IsKind(SyntaxKind.InterfaceDeclaration))
+            {
+                if (((InterfaceDeclarationSyntax)memberDeclaration).Identifier.Span.Contains(context.Span))
+                    RegisterRefactoring(context, memberDeclaration);
+            }
+        }
+
+        private static void RegisterRefactoring(RefactoringContext context, MemberDeclarationSyntax memberDeclaration)
+        {
+            context.RegisterRefactoring(
+                "Sort declarations",
+                cancellationToken => SortMembersAsync(context.Document, memberDeclaration, cancellationToken));
         }
 
         private static async Task<Document> SortMembersAsync(
