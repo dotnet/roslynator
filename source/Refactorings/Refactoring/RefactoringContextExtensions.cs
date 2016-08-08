@@ -55,6 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             bool fAssignmentExpression = false;
             bool fBinaryExpression = false;
             bool fConditionalExpression = false;
+            bool fQualifiedName = false;
             bool fGenericName = false;
             bool fIdentifierName = false;
             bool fInitializerExpression = false;
@@ -230,6 +231,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         {
                             ConditionalExpressionRefactoring.ComputeRefactorings(context, (ConditionalExpressionSyntax)expression);
                             fConditionalExpression = true;
+                        }
+
+                        if (!fQualifiedName
+                            && node.IsKind(SyntaxKind.QualifiedName))
+                        {
+                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression);
+                            fQualifiedName = true;
                         }
 
                         if (!fGenericName

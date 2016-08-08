@@ -23,6 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
             AddRegion = true;
+            AddUsingDirective = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeMethodReturnTypeToVoid = true;
@@ -158,6 +159,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddRegion, AddRegion);
+            SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
@@ -385,6 +387,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddRegion
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add using directive")]
+        [Description("Syntax: qualified name\r\nScope: selected namespace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddUsingDirective
         {
             get;
             set;

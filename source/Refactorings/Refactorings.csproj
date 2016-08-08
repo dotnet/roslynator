@@ -45,6 +45,8 @@
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactoring\AddIfDirectiveRefactoring.cs" />
+    <Compile Include="Refactoring\AddUsingDirectiveRefactoring.cs" />
+    <Compile Include="Refactoring\QualifiedNameRefactoring.cs" />
     <Compile Include="Refactoring\WrapSelectedLinesRefactoring.cs" />
     <Compile Include="Refactoring\SelectedLinesRefactoring.cs" />
     <Compile Include="Refactoring\AddRegionRefactoring.cs" />

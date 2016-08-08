@@ -53,6 +53,12 @@
     </Syntaxes>
     <Scope>identifier</Scope>
   </Refactoring>
+  <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>qualified name</Syntax>
+    </Syntaxes>
+    <Scope>selected namespace</Scope>
+  </Refactoring>
   <Refactoring Id="CommentOutMember" Title="Comment out member" ExtensionVersion="0.92.0">
     <Syntaxes>
       <Syntax>method</Syntax>

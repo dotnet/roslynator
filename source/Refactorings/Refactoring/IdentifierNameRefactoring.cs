@@ -17,6 +17,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
             }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+                && context.SupportsSemanticModel)
+            {
+                await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName);
+            }
         }
 
         private static async Task RenameFieldAccordingToPropertyNameAsync(

@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (typeSymbol?.IsStaticClass() == true
                         && (typeSymbol.IsPublic() || typeSymbol.IsInternal())
-                        && !IsUsingStaticInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
+                        && !SyntaxUtility.IsUsingStaticDirectiveInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
                         context.RegisterRefactoring($"Introduce 'using static' for '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                             cancellationToken =>
@@ -61,60 +61,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 .AddUsings(CSharpFactory.UsingStaticDirective(name));
 
             return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static bool IsUsingStaticInScope(
-            SyntaxNode node,
-            INamedTypeSymbol namedTypeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            while (node != null)
-            {
-                if (node.IsKind(SyntaxKind.NamespaceDeclaration))
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
-
-                    if (ContainsUsingStatic(namespaceDeclaration.Usings, namedTypeSymbol, semanticModel, cancellationToken))
-                        return true;
-                }
-                else if (node.IsKind(SyntaxKind.CompilationUnit))
-                {
-                    var compilationUnit = (CompilationUnitSyntax)node;
-
-                    if (ContainsUsingStatic(compilationUnit.Usings, namedTypeSymbol, semanticModel, cancellationToken))
-                        return true;
-                }
-
-                node = node.Parent;
-            }
-
-            return false;
-        }
-
-        private static bool ContainsUsingStatic(
-            SyntaxList<UsingDirectiveSyntax> usingDirectives,
-            INamedTypeSymbol namedTypeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            foreach (UsingDirectiveSyntax usingDirective in usingDirectives)
-            {
-                if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
-                {
-                    ISymbol symbol = semanticModel
-                        .GetSymbolInfo(usingDirective.Name, cancellationToken)
-                        .Symbol;
-
-                    if (symbol?.IsErrorType() == false
-                        && namedTypeSymbol.Equals(symbol))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

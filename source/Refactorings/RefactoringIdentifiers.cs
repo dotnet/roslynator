@@ -17,6 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
         public const string AddRegion = "AddRegion";
+        public const string AddUsingDirective = "AddUsingDirective";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
         public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";
