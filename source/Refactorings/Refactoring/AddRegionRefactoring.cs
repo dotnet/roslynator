@@ -4,6 +4,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal class AddRegionRefactoring : WrapSelectedLinesRefactoring
     {
+        public override bool Indent
+        {
+            get { return true; }
+        }
+
         public override string GetFirstLineText()
         {
             return "#region ";

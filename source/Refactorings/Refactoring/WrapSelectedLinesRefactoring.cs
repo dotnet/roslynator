@@ -10,6 +10,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal abstract class WrapSelectedLinesRefactoring : SelectedLinesRefactoring
     {
+        public virtual bool Indent
+        {
+            get { return false; }
+        }
+
         public abstract string GetFirstLineText();
 
         public abstract string GetLastLineText();
@@ -25,7 +30,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 TextLine firstLine = en.Current;
 
                 string text = firstLine.ToString();
-                string indent = TextUtility.GetIndent(text);
+
+                string indent = (Indent)
+                    ? TextUtility.GetIndent(text)
+                    : string.Empty;
 
                 string newText = indent + GetFirstLineText() + Environment.NewLine + text + Environment.NewLine;
 
@@ -38,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     while (en.MoveNext())
                         lastLine = en.Current;
 
-                    textChanges.Add(new TextChange(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + "#endregion" + Environment.NewLine));
+                    textChanges.Add(new TextChange(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + GetLastLineText() + Environment.NewLine));
                 }
                 else
                 {
