@@ -59,6 +59,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             }
                         }
 
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement)
+                            && en.Current.IsKind(SyntaxKind.ExpressionStatement))
+                        {
+                            var statement = (ExpressionStatementSyntax)en.Current;
+
+                            if (statement.Expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true
+                                && en.MoveNext()
+                                && en.Current.IsKind(SyntaxKind.ReturnStatement))
+                            {
+                                var returnStatement = (ReturnStatementSyntax)en.Current;
+
+                                if (returnStatement.Expression?.IsMissing == false
+                                    && !en.MoveNext())
+                                {
+                                    var assignment = (AssignmentExpressionSyntax)statement.Expression;
+
+                                    if (assignment.Left?.IsMissing == false
+                                        && assignment.Right?.IsMissing == false
+                                        && assignment.Left.IsEquivalentTo(returnStatement.Expression, topLevel: false))
+                                    {
+                                        context.RegisterRefactoring(
+                                            "Merge statements",
+                                            cancellationToken =>
+                                            {
+                                                return MergeAssignmentExpressionWithReturnStatementRefactoring.RefactorAsync(
+                                                    context.Document,
+                                                    statement,
+                                                    returnStatement,
+                                                    cancellationToken);
+                                            });
+                                    }
+                                }
+                            }
+                        }
+
                         if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInIfStatement))
                         {
                             context.RegisterRefactoring(

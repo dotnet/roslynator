@@ -560,6 +560,11 @@
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>assignment expression followed with return statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="MergeAttributes" Title="Merge attributes" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>selected attribute lists</Syntax>

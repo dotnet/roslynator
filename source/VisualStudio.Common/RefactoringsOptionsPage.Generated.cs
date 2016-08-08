@@ -63,6 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
+            MergeAssignmentExpressionWithReturnStatement = true;
             MergeAttributes = true;
             MergeIfStatements = true;
             MergeStringLiterals = true;
@@ -199,6 +200,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
+            SetIsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, MergeAssignmentExpressionWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiterals, MergeStringLiterals);
@@ -787,6 +789,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: non-static field/method/property/event in static class")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MarkMemberAsStatic
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Merge assignment expression with return statement")]
+        [Description("Syntax: assignment expression followed with return statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool MergeAssignmentExpressionWithReturnStatement
         {
             get;
             set;

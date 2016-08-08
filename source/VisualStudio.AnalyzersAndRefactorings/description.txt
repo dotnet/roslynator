@@ -281,6 +281,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#mark-member-as-static">Mark member as static</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-assignment-expression-with-return-statement">Merge assignment expression with return statement</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#merge-attributes">Merge attributes</a>
         </li>
         <li>

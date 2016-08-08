@@ -57,6 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string MakeMemberAbstract = "MakeMemberAbstract";
         public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";
+        public const string MergeAssignmentExpressionWithReturnStatement = "MergeAssignmentExpressionWithReturnStatement";
         public const string MergeAttributes = "MergeAttributes";
         public const string MergeIfStatements = "MergeIfStatements";
         public const string MergeStringLiterals = "MergeStringLiterals";
