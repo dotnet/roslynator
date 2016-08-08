@@ -31,12 +31,12 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="AddRegion" Title="Add region" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddRegion" Title="Add region" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddIfDirective" Title="Add #if directive" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddIfDirective" Title="Add #if directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
@@ -53,7 +53,7 @@
     </Syntaxes>
     <Scope>identifier</Scope>
   </Refactoring>
-  <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>qualified name</Syntax>
     </Syntaxes>
@@ -624,7 +624,7 @@
       <Syntax>singleline/multiline comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllMemberDeclarations" Title="Remove all member declarations" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveAllMemberDeclarations" Title="Remove all member declarations" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>namespace</Syntax>
       <Syntax>class</Syntax>
@@ -638,7 +638,7 @@
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllStatements" Title="Remove all statements" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveAllStatements" Title="Remove all statements" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
