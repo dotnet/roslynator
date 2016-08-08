@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var doStatement = (DoStatementSyntax)context.Node;
 
-            if (DoStatementRefactoring.CanConvertToWhileStatement(doStatement))
+            if (ReplaceDoStatementWithWhileStatementRefactoring.CanRefactor(doStatement))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfDoStatementToCreateInfiniteLoop,

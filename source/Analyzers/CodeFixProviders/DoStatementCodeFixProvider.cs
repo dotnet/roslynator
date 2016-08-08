@@ -2,13 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
@@ -31,27 +29,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (doStatement == null)
                 return;
 
-            TextSpan span = TextSpan.FromBounds(
-                doStatement.Statement.Span.End,
-                doStatement.Span.End);
+            CodeAction codeAction = CodeAction.Create(
+                "Use while statement to create an infinite loop",
+                cancellationToken =>
+                {
+                    return ReplaceDoStatementWithWhileStatementRefactoring.RefactorAsync(
+                        context.Document,
+                        doStatement,
+                        cancellationToken);
+                },
+                DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
 
-            if (root
-                .DescendantTrivia(span)
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Use while statement to create an infinite loop",
-                    cancellationToken =>
-                    {
-                        return DoStatementRefactoring.ConvertToWhileStatementAsync(
-                            context.Document,
-                            doStatement,
-                            cancellationToken);
-                    },
-                    DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
-
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
     }
 }

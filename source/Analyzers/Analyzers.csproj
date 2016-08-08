@@ -139,7 +139,7 @@
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactoring\ReplaceEmbeddedStatementWithBlockRefactoring.cs" />
-    <Compile Include="Refactoring\DoStatementRefactoring.cs" />
+    <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatStatementOnNextLineRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring.cs" />
