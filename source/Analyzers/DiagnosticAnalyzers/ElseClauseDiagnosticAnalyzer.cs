@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -75,7 +76,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         {
                             var ifStatement = (IfStatementSyntax)block.Statements[0];
 
-                            if (ifStatement.Else == null)
+                            if (ifStatement.Else == null
+                                && CheckTrivia(ifStatement.Else, block, ifStatement))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
@@ -89,6 +91,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     }
                 }
             }
+        }
+
+        private static bool CheckTrivia(ElseClauseSyntax elseClause, BlockSyntax block, IfStatementSyntax ifStatement)
+        {
+            TextSpan span = TextSpan.FromBounds(elseClause.Span.Start, ifStatement.Span.Start);
+
+            TextSpan span2 = TextSpan.FromBounds(ifStatement.Span.End, elseClause.Span.End);
+
+            foreach (SyntaxTrivia trivia in elseClause.DescendantTrivia())
+            {
+                if (span.Contains(trivia.Span))
+                {
+                    if (!trivia.IsWhitespaceOrEndOfLineTrivia())
+                        return false;
+                }
+                else if (span2.Contains(trivia.Span))
+                {
+                    if (!trivia.IsWhitespaceOrEndOfLineTrivia())
+                        return false;
+                }
+            }
+
+            return true;
         }
     }
 }

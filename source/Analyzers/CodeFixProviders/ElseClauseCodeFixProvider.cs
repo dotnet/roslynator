@@ -54,9 +54,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         }
                     case DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement:
                         {
-                            if (!CheckTrivia(elseClause))
-                                return;
-
                             CodeAction codeAction = CodeAction.Create(
                                 "Replace block with embedded statement",
                                 cancellationToken => ReplaceBlockWithEmbeddedStatementInElseClauseAsync(context.Document, elseClause, cancellationToken),
@@ -67,33 +64,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private static bool CheckTrivia(ElseClauseSyntax elseClause)
-        {
-            if (elseClause.ElseKeyword.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            var block = (BlockSyntax)elseClause.Statement;
-
-            if (block.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            var ifStatement = (IfStatementSyntax)block.Statements[0];
-
-            if (ifStatement.IfKeyword.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            if (ifStatement.GetTrailingTrivia().Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return false;
-
-            return true;
         }
 
         private static async Task<Document> RemoveEmptyElseClauseAsync(
