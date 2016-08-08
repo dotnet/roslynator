@@ -12,36 +12,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
-
-            if (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
+                if (binaryExpression.Left.Span.Contains(context.Span))
                 {
-                    if (binaryExpression.Left.Span.Contains(context.Span))
-                    {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left).ConfigureAwait(false);
-                    }
-                    else if (binaryExpression.Right.Span.Contains(context.Span))
-                    {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right).ConfigureAwait(false);
-                    }
+                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left).ConfigureAwait(false);
                 }
+                else if (binaryExpression.Right.Span.Contains(context.Span))
+                {
+                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right).ConfigureAwait(false);
+                }
+            }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
-                {
-                    context.RegisterRefactoring(
-                        "Negate binary expression",
-                        cancellationToken =>
-                        {
-                            return NegateBinaryExpressionRefactoring.RefactorAsync(
-                                context.Document,
-                                binaryExpression,
-                                cancellationToken);
-                        });
-                }
+            FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression)
+                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && binaryExpression.Left?.IsMissing == false
+                && binaryExpression.Right?.IsMissing == false)
+            {
+                context.RegisterRefactoring(
+                    "Negate binary expression",
+                    cancellationToken =>
+                    {
+                        return NegateBinaryExpressionRefactoring.RefactorAsync(
+                            context.Document,
+                            binaryExpression,
+                            cancellationToken);
+                    });
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
