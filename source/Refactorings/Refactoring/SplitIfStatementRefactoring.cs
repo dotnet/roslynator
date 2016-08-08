@@ -38,13 +38,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var ifStatement = (IfStatementSyntax)condition.Parent;
-            var binaryExpression = (BinaryExpressionSyntax)expression.Parent;
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 expression.Parent,
-                (expression.Equals(binaryExpression.Left))
-                    ? binaryExpression.Right
-                    : binaryExpression.Left);
+                GetNewExpression(condition, expression));
 
             newIfStatement = newIfStatement.WithFormatterAnnotation();
 
@@ -62,6 +59,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             return document.WithSyntaxRoot(root);
+        }
+
+        private static ExpressionSyntax GetNewExpression(
+            ExpressionSyntax condition,
+            ExpressionSyntax expression)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)expression.Parent;
+
+            if (expression.Equals(binaryExpression.Left))
+            {
+                return binaryExpression.Right;
+            }
+            else
+            {
+                if (binaryExpression.Equals(condition))
+                {
+                    return binaryExpression.Left.TrimTrailingTrivia();
+                }
+                else
+                {
+                    return binaryExpression.Left;
+                }
+            }
         }
 
         private static IfStatementSyntax ExtractExpressionToNestedIf(
