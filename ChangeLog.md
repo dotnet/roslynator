@@ -1,3 +1,15 @@
+### 0.97.0 (2016-08-08)
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddRegion
+* AddIfDirective
+* RemoveAllStatements
+* RemoveAllMembers
+* AddUsingDirective
+
 ### 0.96.0 (2016-08-05)
 
 #### Refactorings
