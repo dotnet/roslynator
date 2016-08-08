@@ -112,6 +112,7 @@
 
 ### List of Refactorings
 
+* [Add #if directive](Refactorings.md#add-if-directive)
 * [Add boolean comparison](Refactorings.md#add-boolean-comparison)
 * [Add cast expression](Refactorings.md#add-cast-expression)
 * [Add ConfigureAwait](Refactorings.md#add-configureawait)
@@ -121,6 +122,8 @@
 * [Add interpolation](Refactorings.md#add-interpolation)
 * [Add parameter name to argument](Refactorings.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](Refactorings.md#add-parameter-name-to-parameter)
+* [Add region](Refactorings.md#add-region)
+* [Add using directive](Refactorings.md#add-using-directive)
 * [Change method return type to void](Refactorings.md#change-method-return-type-to-void)
 * [Change method/property/indexer type according to return expression](Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression)
 * [Change method/property/indexer type according to yield return expression](Refactorings.md#change-methodpropertyindexer-type-according-to-yield-return-expression)
@@ -170,7 +173,9 @@
 * [Notify property changed](Refactorings.md#notify-property-changed)
 * [Remove all comments](Refactorings.md#remove-all-comments)
 * [Remove all comments (except xml comments)](Refactorings.md#remove-all-comments-except-xml-comments)
+* [Remove all member declarations](Refactorings.md#remove-all-member-declarations)
 * [Remove all region directives](Refactorings.md#remove-all-region-directives)
+* [Remove all statements](Refactorings.md#remove-all-statements)
 * [Remove all switch sections](Refactorings.md#remove-all-switch-sections)
 * [Remove all xml comments](Refactorings.md#remove-all-xml-comments)
 * [Remove comment](Refactorings.md#remove-comment)
