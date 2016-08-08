@@ -48,94 +48,36 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (declaration == null)
                 return;
 
-            SyntaxTokenList modifiers = declaration.GetDeclarationModifiers();
-
-            if (!CheckTriviaBetweenModifiers(modifiers))
-                return;
-
             CodeAction codeAction = CodeAction.Create(
                 "Reorder modifiers",
-                cancellationToken => ReorderModifiersAsync(context.Document, declaration, modifiers, cancellationToken),
+                cancellationToken => RefactorAsync(context.Document, declaration, cancellationToken),
                 DiagnosticIdentifiers.ReorderModifiers + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static bool CheckTriviaBetweenModifiers(SyntaxTokenList modifiers)
-        {
-            for (int i = 0; i < modifiers.Count; i++)
-            {
-                if (i > 0
-                    && modifiers[i].LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    return false;
-                }
-
-                if (i < (modifiers.Count - 1)
-                    && modifiers[i].TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        internal static async Task<Document> ReorderModifiersAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             SyntaxNode declaration,
-            SyntaxTokenList modifiers,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxTokenList newModifiers = SyntaxFactory.TokenList(
-                modifiers.OrderBy(f => f, ModifierSorter.Instance));
+            SyntaxTokenList modifiers = declaration.GetDeclarationModifiers();
 
-            newModifiers = SetModifiersTrivia(newModifiers, modifiers);
+            SyntaxToken[] newModifiers = modifiers.OrderBy(f => f, ModifierSorter.Instance).ToArray();
 
-            SyntaxNode newDeclaration = GetNewNode(declaration, newModifiers);
+            for (int i = 0; i < modifiers.Count; i++)
+                newModifiers[i] = newModifiers[i].WithTriviaFrom(modifiers[i]);
+
+            SyntaxNode newDeclaration = SetModifiers(declaration, SyntaxFactory.TokenList(newModifiers));
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, newDeclaration);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static SyntaxTokenList SetModifiersTrivia(SyntaxTokenList modifiers, SyntaxTokenList oldModifiers)
-        {
-            for (int i = 0; i < modifiers.Count; i++)
-            {
-                if (i == 0)
-                {
-                    modifiers = modifiers.Replace(
-                        modifiers[i],
-                        modifiers[i].WithLeadingTrivia(oldModifiers[i].LeadingTrivia));
-                }
-                else
-                {
-                    modifiers = modifiers.Replace(
-                        modifiers[i],
-                        modifiers[i].WithoutLeadingTrivia());
-                }
-
-                if (i == (modifiers.Count - 1))
-                {
-                    modifiers = modifiers.Replace(
-                        modifiers[i],
-                        modifiers[i].WithTrailingTrivia(oldModifiers[i].TrailingTrivia));
-                }
-                else
-                {
-                    modifiers = modifiers.Replace(
-                        modifiers[i],
-                        modifiers[i].WithTrailingTrivia(SyntaxFactory.Space));
-                }
-            }
-
-            return modifiers;
-        }
-
-        private static SyntaxNode GetNewNode(SyntaxNode declaration, SyntaxTokenList modifiers)
+        private static SyntaxNode SetModifiers(SyntaxNode declaration, SyntaxTokenList modifiers)
         {
             switch (declaration.Kind())
             {
