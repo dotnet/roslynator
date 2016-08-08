@@ -1,5 +1,11 @@
 ﻿## C# Refactorings
 
+#### Add #if directive
+
+* **Syntax**: selected lines
+
+![Add #if directive](/images/refactorings/AddIfDirective.png)
+
 #### Add boolean comparison
 
 * **Syntax**: boolean? expression in place where must be boolean expression
@@ -62,6 +68,19 @@
 * **Scope**: missing identifier
 
 ![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
+
+#### Add region
+
+* **Syntax**: selected lines
+
+![Add region](/images/refactorings/AddRegion.png)
+
+#### Add using directive
+
+* **Syntax**: qualified name
+* **Scope**: selected namespace
+
+![Add using directive](/images/refactorings/AddUsingDirective.png)
 
 #### Change method return type to void
 
@@ -389,11 +408,25 @@
 
 ![Remove all comments (except xml comments)](/images/refactorings/RemoveAllCommentsExceptXmlComments.png)
 
+#### Remove all member declarations
+
+* **Syntax**: namespace, class, struct, interface
+* **Scope**: opening or closing brace
+
+![Remove all member declarations](/images/refactorings/RemoveAllMemberDeclarations.png)
+
 #### Remove all region directives
 
 * **Syntax**: region directive
 
 ![Remove all region directives](/images/refactorings/RemoveAllRegionDirectives.png)
+
+#### Remove all statements
+
+* **Syntax**: method, constructor, operator
+* **Scope**: opening or closing brace
+
+![Remove all statements](/images/refactorings/RemoveAllStatements.png)
 
 #### Remove all switch sections
 
@@ -666,9 +699,10 @@
 
 #### Replace return statement with if statement
 
-* **Syntax**: return statement with boolean expression
+* **Syntax**: return statement, yield return statement, expression statement
+* **Scope**: boolean expression
 
-![Replace return statement with if statement](/images/refactorings/ReplaceReturnStatementWithIfStatement.png)
+![Replace return statement with if statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
 
 #### Replace statements with block in each switch section
 
