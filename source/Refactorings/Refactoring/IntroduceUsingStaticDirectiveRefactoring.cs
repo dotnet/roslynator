@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         && (typeSymbol.IsPublic() || typeSymbol.IsInternal())
                         && !SyntaxUtility.IsUsingStaticDirectiveInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
-                        context.RegisterRefactoring($"Introduce 'using static' for '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        context.RegisterRefactoring($"using static {typeSymbol.ToString()};",
                             cancellationToken =>
                             {
                                 return RefactorAsync(
