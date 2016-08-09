@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,15 +13,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class BlockRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
         {
             ReplaceBlockWithEmbeddedStatementRefactoring.ComputeRefactoring(context, block);
 
             if (context.Settings.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.MergeIfStatements,
+                RefactoringIdentifiers.CollapseToInitializer,
                 RefactoringIdentifiers.WrapStatementsInIfStatement,
                 RefactoringIdentifiers.WrapStatementsInTryCatch))
             {
+                var blockSpan = new BlockSpan(block, context.Span);
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
+                    && blockSpan.HasSelectedStatement)
+                {
+                    await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, blockSpan);
+                }
+
                 using (IEnumerator<StatementSyntax> en = GetSelectedStatements(block, context.Span).GetEnumerator())
                 {
                     if (en.MoveNext())

@@ -23,6 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
         public const string CheckParameterForNull = "CheckParameterForNull";
+        public const string CollapseToInitializer = "CollapseToInitializer";
         public const string CommentOutMember = "CommentOutMember";
         public const string CommentOutStatement = "CommentOutStatement";
         public const string DuplicateArgument = "DuplicateArgument";

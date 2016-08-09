@@ -29,6 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ChangeMethodReturnTypeToVoid = true;
             ChangeTypeAccordingToExpression = true;
             CheckParameterForNull = true;
+            CollapseToInitializer = true;
             CommentOutMember = true;
             CommentOutStatement = true;
             DuplicateArgument = true;
@@ -166,6 +167,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
+            SetIsEnabled(RefactoringIdentifiers.CollapseToInitializer, CollapseToInitializer);
             SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
             SetIsEnabled(RefactoringIdentifiers.CommentOutStatement, CommentOutStatement);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
@@ -449,6 +451,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter\r\nScope: parameter identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CheckParameterForNull
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Collapse to initalizer")]
+        [Description("Syntax: object creation followed with assignment(s)")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CollapseToInitializer
         {
             get;
             set;

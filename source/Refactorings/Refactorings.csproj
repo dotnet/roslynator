@@ -46,6 +46,7 @@
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactoring\AddIfDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\AddUsingDirectiveRefactoring.cs" />
+    <Compile Include="Refactoring\CollapseToInitializerRefactoring.cs" />
     <Compile Include="Refactoring\MergeAssignmentExpressionWithReturnStatementRefactoring.cs" />
     <Compile Include="Refactoring\QualifiedNameRefactoring.cs" />
     <Compile Include="Refactoring\WrapSelectedLinesRefactoring.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Refactoring\ReplaceForWithForEachRefactoring.cs" />
     <Compile Include="Refactoring\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactoring\MemberDeclarationsRefactoring.cs" />
+    <Compile Include="BlockSpan.cs" />
     <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxHelper.cs" />
     <Compile Include="SyntaxRewriters\InterpolatedStringSyntaxRewriter.cs" />

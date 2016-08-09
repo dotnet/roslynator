@@ -460,7 +460,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         if (!fBlock
                             && node.IsKind(SyntaxKind.Block))
                         {
-                            BlockRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
+                            await BlockRefactoring.ComputeRefactoringAsync(context, (BlockSyntax)node);
                             fBlock = true;
                         }
 

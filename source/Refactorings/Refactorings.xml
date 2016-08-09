@@ -164,6 +164,11 @@
     </Syntaxes>
     <Scope>missing identifier</Scope>
   </Refactoring>
+  <Refactoring Id="CollapseToInitializer" Title="Collapse to initalizer" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>object creation followed with assignment(s)</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="WrapExpressionInParentheses" Title="Wrap expression in parentheses" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>selected expression</Syntax>

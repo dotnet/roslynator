@@ -179,6 +179,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#collapse-to-initalizer">Collapse to initalizer</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#comment-out-member">Comment out member</a>
         </li>
         <li>
