@@ -100,7 +100,7 @@
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
-    <Compile Include="Comparers\ModifierSorter.cs" />
+    <Compile Include="ModifierSorter.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\CompilationUnitSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ForEachStatementSyntaxExtensions.cs" />
