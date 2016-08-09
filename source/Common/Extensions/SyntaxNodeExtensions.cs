@@ -86,8 +86,8 @@ namespace Pihrtsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(node));
 
             return TextSpan.FromBounds(
-                GetStartIndex(node, includeExteriorTrivia: true, trimWhitespace: true),
-                GetEndIndex(node, includeExteriorTrivia: true, trimWhitespace: true));
+                GetStartIndex(node, includeExteriorTrivia: true, trim: true),
+                GetEndIndex(node, includeExteriorTrivia: true, trim: true));
         }
 
         public static int GetSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
@@ -307,14 +307,14 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool IsSingleLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
-            bool trimWhitespace = true)
+            bool trim = true)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             TextSpan span = TextSpan.FromBounds(
-                GetStartIndex(node, includeExteriorTrivia, trimWhitespace),
-                GetEndIndex(node, includeExteriorTrivia, trimWhitespace));
+                GetStartIndex(node, includeExteriorTrivia, trim),
+                GetEndIndex(node, includeExteriorTrivia, trim));
 
             FileLinePositionSpan positionSpan = node.SyntaxTree.GetLineSpan(span);
 
@@ -324,19 +324,19 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool IsMultiLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
-            bool trimWhitespace = true)
+            bool trim = true)
         {
-            return !IsSingleLine(node, includeExteriorTrivia, trimWhitespace);
+            return !IsSingleLine(node, includeExteriorTrivia, trim);
         }
 
-        private static int GetStartIndex(SyntaxNode node, bool includeExteriorTrivia, bool trimWhitespace)
+        private static int GetStartIndex(SyntaxNode node, bool includeExteriorTrivia, bool trim)
         {
             if (!includeExteriorTrivia)
                 return node.Span.Start;
 
             int start = node.FullSpan.Start;
 
-            if (trimWhitespace)
+            if (trim)
             {
                 SyntaxTriviaList leading = node.GetLeadingTrivia();
 
@@ -352,14 +352,14 @@ namespace Pihrtsoft.CodeAnalysis
             return start;
         }
 
-        private static int GetEndIndex(SyntaxNode node, bool includeExteriorTrivia, bool trimWhitespace)
+        private static int GetEndIndex(SyntaxNode node, bool includeExteriorTrivia, bool trim)
         {
             if (!includeExteriorTrivia)
                 return node.Span.End;
 
             int end = node.FullSpan.End;
 
-            if (trimWhitespace)
+            if (trim)
             {
                 SyntaxTriviaList trailing = node.GetTrailingTrivia();
 
