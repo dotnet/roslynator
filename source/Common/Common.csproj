@@ -116,7 +116,7 @@
     <Compile Include="CSharp\Extensions\PropertyDeclarationSyntaxExtensions.cs" />
     <Compile Include="Extensions\SymbolInfoExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
-    <Compile Include="Extensions\SyntaxNodeOrToken.cs" />
+    <Compile Include="Extensions\SyntaxNodeOrTokenExtensions.cs" />
     <Compile Include="Extensions\SyntaxTokenExtensions.cs" />
     <Compile Include="Extensions\SyntaxTokenListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
