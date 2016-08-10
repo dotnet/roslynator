@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers;
-using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
