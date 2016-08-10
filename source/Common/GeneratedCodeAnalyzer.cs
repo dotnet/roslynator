@@ -16,16 +16,24 @@ namespace Pihrtsoft.CodeAnalysis
         private static readonly StringComparison _comparison = StringComparison.OrdinalIgnoreCase;
 
         public bool IsGeneratedCode(CodeBlockAnalysisContext context)
-            => IsGeneratedCode(context.CodeBlock.SyntaxTree);
+        {
+            return IsGeneratedCode(context.CodeBlock.SyntaxTree);
+        }
 
         public bool IsGeneratedCode(SyntaxNodeAnalysisContext context)
-            => IsGeneratedCode(context.Node.SyntaxTree);
+        {
+            return IsGeneratedCode(context.Node.SyntaxTree);
+        }
 
         public bool IsGeneratedCode(SyntaxTreeAnalysisContext context)
-            => IsGeneratedCode(context.Tree);
+        {
+            return IsGeneratedCode(context.Tree);
+        }
 
         public bool IsGeneratedCode(SymbolAnalysisContext context)
-            => IsGeneratedCode(context.Symbol);
+        {
+            return IsGeneratedCode(context.Symbol);
+        }
 
         private static bool IsGeneratedCode(SyntaxTree tree)
         {
