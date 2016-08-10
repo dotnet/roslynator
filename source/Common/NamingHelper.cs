@@ -9,7 +9,7 @@ using Pihrtsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis
 {
-    public static class IdentifierHelper
+    public static class NamingHelper
     {
         public static string CreateIdentifierName(TypeSyntax type, SemanticModel semanticModel, bool firstCharToLower = false)
         {

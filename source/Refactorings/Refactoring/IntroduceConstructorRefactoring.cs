@@ -284,7 +284,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 string name = GetIdentifier(member).ValueText;
 
-                string parameterName = IdentifierHelper.RemoveUnderscoreFromIdentifier(name);
+                string parameterName = NamingHelper.RemoveUnderscoreFromIdentifier(name);
                 parameterName = TextUtility.FirstCharToLower(parameterName);
 
                 statements.Add(ExpressionStatement(

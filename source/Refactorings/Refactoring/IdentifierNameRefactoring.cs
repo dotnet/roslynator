@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
                             && object.Equals(fieldSymbol.ContainingType, propertySymbol.ContainingType))
                         {
-                            string newName = IdentifierHelper.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                            string newName = NamingHelper.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
                             if (!string.Equals(newName, fieldSymbol.Name, StringComparison.Ordinal))
                             {

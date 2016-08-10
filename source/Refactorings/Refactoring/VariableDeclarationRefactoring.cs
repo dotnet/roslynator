@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (symbol != null)
                 {
-                    string newName = IdentifierHelper.CreateIdentifierName(
+                    string newName = NamingHelper.CreateIdentifierName(
                         variableDeclaration.Type,
                         semanticModel,
                         FirstCharToLower(symbol));
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             && symbol.IsPrivate()
                             && !((IFieldSymbol)symbol).IsConst)
                         {
-                            newName = IdentifierHelper.ToCamelCaseWithUnderscore(newName);
+                            newName = NamingHelper.ToCamelCaseWithUnderscore(newName);
                         }
 
                         if (!string.Equals(variableDeclaration.Variables[0].Identifier.ValueText, newName, StringComparison.Ordinal))

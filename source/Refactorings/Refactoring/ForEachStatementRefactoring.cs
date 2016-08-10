@@ -87,7 +87,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 string oldName = forEachStatement.Identifier.ValueText;
 
-                string newName = IdentifierHelper.CreateIdentifierName(
+                string newName = NamingHelper.CreateIdentifierName(
                     forEachStatement.Type,
                     semanticModel,
                     firstCharToLower: true);
