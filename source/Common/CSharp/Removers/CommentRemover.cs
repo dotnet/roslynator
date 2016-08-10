@@ -1,26 +1,40 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
     public sealed class CommentRemover : CSharpSyntaxRewriter
     {
-        private readonly CompilationUnitSyntax _compilationUnit;
+        private readonly SyntaxNode _node;
         private readonly CommentRemoveOptions _removeOptions;
 
-        private CommentRemover(CompilationUnitSyntax compilationUnit, CommentRemoveOptions removeOptions)
+        private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions)
             : base(visitIntoStructuredTrivia: true)
         {
-            _compilationUnit = compilationUnit;
+            _node = node;
             _removeOptions = removeOptions;
         }
 
-        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit, CommentRemoveOptions removeOptions)
+        public static async Task<Document> RemoveAsync(
+            Document document,
+            CommentRemoveOptions removeOptions,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return (CompilationUnitSyntax)new CommentRemover(compilationUnit, removeOptions).Visit(compilationUnit);
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            root = new CommentRemover(root, removeOptions)
+                .Visit(root)
+                .WithFormatterAnnotation();
+
+            return document.WithSyntaxRoot(root);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
@@ -48,7 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
                         if (_removeOptions != CommentRemoveOptions.Documentation
                             && trivia.SpanStart > 0)
                         {
-                            SyntaxTrivia trivia2 = _compilationUnit.FindTrivia(trivia.SpanStart - 1);
+                            SyntaxTrivia trivia2 = _node.FindTrivia(trivia.SpanStart - 1);
 
                             if (trivia2.IsKind(SyntaxKind.SingleLineCommentTrivia))
                                 return CSharpFactory.EmptyWhitespaceTrivia;

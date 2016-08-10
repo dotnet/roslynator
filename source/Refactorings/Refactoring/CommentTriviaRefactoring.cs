@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Pihrtsoft.CodeAnalysis.CSharp.Removers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -23,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments",
-                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.All, cancellationToken: cancellationToken));
+                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.All, cancellationToken: cancellationToken));
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments)
@@ -31,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments (except xml comments)",
-                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, cancellationToken: cancellationToken));
+                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, cancellationToken: cancellationToken));
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllXmlComments)
@@ -39,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all xml comments",
-                        cancellationToken => RemoveCommentsRefactoring.RefactorAsync(context.Document, CommentRemoveOptions.Documentation, cancellationToken: cancellationToken));
+                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.Documentation, cancellationToken: cancellationToken));
                 }
             }
         }
