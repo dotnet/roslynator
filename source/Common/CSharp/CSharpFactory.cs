@@ -26,6 +26,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.TokenList(tokens);
         }
 
+        internal static SyntaxTokenList TokenList(SyntaxKind kind)
+        {
+            return SyntaxFactory.TokenList(Token(kind));
+        }
+
         public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right);
@@ -116,7 +121,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static AccessorDeclarationSyntax AutoGetter()
         {
-            return Getter().WithSemicolonToken();
+            return Getter().WithSemicolonToken(SemicolonToken());
         }
 
         public static AccessorDeclarationSyntax Setter()
@@ -126,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static AccessorDeclarationSyntax AutoSetter()
         {
-            return Setter().WithSemicolonToken();
+            return Setter().WithSemicolonToken(SemicolonToken());
         }
 
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
@@ -333,6 +338,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
+        }
+
+        public static AttributeSyntax Attribute(string name, AttributeArgumentSyntax argument)
+        {
+            return Attribute(IdentifierName(name), argument);
+        }
+
+        public static AttributeSyntax Attribute(NameSyntax name, AttributeArgumentSyntax argument)
+        {
+            return SyntaxFactory.Attribute(
+                name,
+                AttributeArgumentList(
+                    SingletonSeparatedList(argument)));
+        }
+
+        public static AttributeSyntax Attribute(string name, ExpressionSyntax expression)
+        {
+            return Attribute(IdentifierName(name), expression);
+        }
+
+        public static AttributeSyntax Attribute(NameSyntax name, ExpressionSyntax expression)
+        {
+            return SyntaxFactory.Attribute(
+                name,
+                AttributeArgumentList(
+                    SingletonSeparatedList(AttributeArgument(expression))));
         }
 
         public static InvocationExpressionSyntax NameOf(string identifier)

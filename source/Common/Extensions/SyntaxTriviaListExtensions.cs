@@ -3,19 +3,21 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTriviaListExtensions
     {
         public static bool IsEmpty(this SyntaxTriviaList list)
-            => list.Count == 0;
+        {
+            return list.Count == 0;
+        }
 
         public static bool Contains(this SyntaxTriviaList list, SyntaxKind kind)
-            => list.IndexOf(kind) != -1;
-
-        public static bool ContainsEndOfLine(this SyntaxTriviaList list)
-            => Contains(list, SyntaxKind.EndOfLineTrivia);
+        {
+            return list.IndexOf(kind) != -1;
+        }
 
         public static SyntaxTriviaList TrimStart(this SyntaxTriviaList list)
         {
@@ -27,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis
                 if (list[i].IsKind(SyntaxKind.EndOfLineTrivia))
                     continue;
 
-                return SyntaxFactory.TriviaList(list.Skip(i));
+                return TriviaList(list.Skip(i));
             }
 
             return SyntaxTriviaList.Empty;
@@ -43,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis
                 if (list[i].IsKind(SyntaxKind.EndOfLineTrivia))
                     continue;
 
-                return SyntaxFactory.TriviaList(list.Take(i + 1));
+                return TriviaList(list.Take(i + 1));
             }
 
             return SyntaxTriviaList.Empty;
@@ -69,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis
                 }
             }
 
-            return SyntaxFactory.TriviaList(list.Skip(startIndex).Take(endIndex + 1 - startIndex));
+            return TriviaList(list.Skip(startIndex).Take(endIndex + 1 - startIndex));
         }
     }
 }

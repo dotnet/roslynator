@@ -95,7 +95,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (variableDeclaration.Variables.Count == 1)
             {
-                newParentMember = newParentMember.RemoveMemberAt(fieldIndex);
+                newParentMember = newParentMember.RemoveAt(fieldIndex);
 
                 if (propertyIndex > fieldIndex)
                     propertyIndex--;
@@ -106,7 +106,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 FieldDeclarationSyntax newField = field.RemoveNode(
                     field.Declaration.Variables[variableDeclaration.Variables.IndexOf(declarator)],
-                    RemoveMemberDeclarationRefactoring.DefaultRemoveOptions);
+                    MemberRemover.DefaultRemoveOptions);
 
                 members = members.Replace(field, newField.WithFormatterAnnotation());
 

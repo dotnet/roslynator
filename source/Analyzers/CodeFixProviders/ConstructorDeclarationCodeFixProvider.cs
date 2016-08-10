@@ -58,7 +58,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant constructor",
-                                cancellationToken => RemoveMemberDeclarationRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
+                                cancellationToken => MemberRemover.RemoveAsync(context.Document, constructor, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

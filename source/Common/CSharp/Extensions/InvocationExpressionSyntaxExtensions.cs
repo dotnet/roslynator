@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class InvocationExpressionSyntaxExtensions
     {
-        public static InvocationExpressionSyntax WithArguments(
+        public static InvocationExpressionSyntax WithArgumentList(
             this InvocationExpressionSyntax invocationExpression,
             params ArgumentSyntax[] arguments)
         {
@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return invocationExpression.WithArgumentList(ArgumentList(arguments));
         }
 
-        public static InvocationExpressionSyntax WithArgumentList(this InvocationExpressionSyntax invocationExpression)
+        public static InvocationExpressionSyntax WithEmptyArgumentList(this InvocationExpressionSyntax invocationExpression)
         {
             if (invocationExpression == null)
                 throw new ArgumentNullException(nameof(invocationExpression));

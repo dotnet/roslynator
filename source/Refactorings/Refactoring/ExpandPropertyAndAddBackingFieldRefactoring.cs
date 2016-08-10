@@ -78,8 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (getter != null)
             {
                 AccessorDeclarationSyntax newGetter = getter
-                    .WithStatement(
-                        ReturnStatement(IdentifierName(name)))
+                    .WithBody(Block(ReturnStatement(IdentifierName(name))))
                     .WithoutSemicolonToken();
 
                 propertyDeclaration = propertyDeclaration
@@ -93,11 +92,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (setter != null)
             {
                 AccessorDeclarationSyntax newSetter = setter
-                    .WithStatement(
+                    .WithBody(Block(
                         ExpressionStatement(
                             SimpleAssignmentExpression(
                                 IdentifierName(name),
-                                IdentifierName("value"))))
+                                IdentifierName("value")))))
                     .WithoutSemicolonToken();
 
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);

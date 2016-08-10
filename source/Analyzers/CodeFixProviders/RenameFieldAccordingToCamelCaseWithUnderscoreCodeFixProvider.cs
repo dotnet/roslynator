@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Rename field to '{newName}'",
-                    cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken),
+                    cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),
                     DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);

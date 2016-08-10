@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class AttributeSyntaxExtensions
     {
-        public static AttributeSyntax WithArguments(
+        public static AttributeSyntax WithArgumentList(
             this AttributeSyntax attribute,
             params AttributeArgumentSyntax[] arguments)
         {
@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                         SeparatedList(arguments)));
         }
 
-        public static AttributeSyntax WithArgument(
+        public static AttributeSyntax WithArgumentList(
             this AttributeSyntax attribute,
             AttributeArgumentSyntax argument)
         {
@@ -32,13 +32,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .WithArgumentList(
                     AttributeArgumentList(
                         SingletonSeparatedList(argument)));
-        }
-
-        public static AttributeSyntax WithArgument(
-            this AttributeSyntax attribute,
-            ExpressionSyntax expression)
-        {
-            return WithArgument(attribute, AttributeArgument(expression));
         }
     }
 }

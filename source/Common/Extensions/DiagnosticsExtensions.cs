@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Pihrtsoft.CodeAnalysis
 {
+    [DebuggerStepThrough]
     public static class DiagnosticsExtensions
     {
-        [DebuggerStepThrough]
         public static void ReportDiagnostic(
             this SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
@@ -20,7 +20,6 @@ namespace Pihrtsoft.CodeAnalysis
                 Diagnostic.Create(descriptor, location, messageArgs));
         }
 
-        [DebuggerStepThrough]
         public static void ReportDiagnostic(
             this SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
@@ -52,7 +51,6 @@ namespace Pihrtsoft.CodeAnalysis
                 Diagnostic.Create(descriptor, location, messageArgs));
         }
 
-        [DebuggerStepThrough]
         public static INamedTypeSymbol GetTypeByMetadataName(
             this SyntaxNodeAnalysisContext context,
             string fullyQualifiedMetadataName)

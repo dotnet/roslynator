@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
-        public static bool IsBinaryExpression(this SyntaxNode node)
+        internal static bool IsBinaryExpression(this SyntaxNode node)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -50,8 +50,8 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool IsBooleanLiteralExpression(this SyntaxNode node)
         {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.TrueLiteralExpression)
-                || Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.FalseLiteralExpression);
+            return node.IsKind(SyntaxKind.TrueLiteralExpression)
+                || node.IsKind(SyntaxKind.FalseLiteralExpression);
         }
 
         public static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
@@ -70,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis
             return false;
         }
 
-        public static TSyntax WithTriviaFrom<TSyntax>(this TSyntax syntax, SyntaxToken token) where TSyntax : SyntaxNode
+        public static TNode WithTriviaFrom<TNode>(this TNode syntax, SyntaxToken token) where TNode : SyntaxNode
         {
             if (syntax == null)
                 throw new ArgumentNullException(nameof(syntax));
@@ -158,14 +158,6 @@ namespace Pihrtsoft.CodeAnalysis
                 default:
                     return null;
             }
-        }
-
-        public static bool HasTrivia(this SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.HasLeadingTrivia || node.HasTrailingTrivia;
         }
 
         public static SyntaxTokenList GetDeclarationModifiers(this SyntaxNode declaration)
@@ -278,7 +270,7 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
         {
             return node != null
-                && Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node.Parent, kind);
+                && node.Parent.IsKind(kind);
         }
 
         public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] kinds)
@@ -293,7 +285,7 @@ namespace Pihrtsoft.CodeAnalysis
             {
                 for (int i = 0; i < kinds.Length; i++)
                 {
-                    if (Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, kinds[i]))
+                    if (node.IsKind(kinds[i]))
                         return node;
                 }
 
@@ -408,7 +400,7 @@ namespace Pihrtsoft.CodeAnalysis
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.Parent?.FirstAncestorOrSelf<TNode>(predicate, ascendOutOfTrivia);
+            return node.Parent?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia);
         }
 
         public static SyntaxNode FirstAncestor(

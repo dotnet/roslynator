@@ -219,7 +219,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         internal static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
         {
-            SyntaxRemoveOptions removeOptions = RemoveMemberDeclarationRefactoring.DefaultRemoveOptions;
+            SyntaxRemoveOptions removeOptions = MemberRemover.DefaultRemoveOptions;
 
             if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;

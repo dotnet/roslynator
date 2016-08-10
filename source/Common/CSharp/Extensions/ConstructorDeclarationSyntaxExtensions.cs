@@ -13,12 +13,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static ConstructorDeclarationSyntax WithModifiers(
             this ConstructorDeclarationSyntax constructorDeclaration,
-            params SyntaxKind[] tokenKinds)
+            params SyntaxKind[] kinds)
         {
             if (constructorDeclaration == null)
                 throw new ArgumentNullException(nameof(constructorDeclaration));
 
-            return constructorDeclaration.WithModifiers(CSharpFactory.TokenList(tokenKinds));
+            return constructorDeclaration.WithModifiers(CSharpFactory.TokenList(kinds));
         }
 
         public static ConstructorDeclarationSyntax WithBody(

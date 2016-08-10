@@ -25,15 +25,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static ExpressionSyntax Negate(this ExpressionSyntax expression)
         {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
             return NegateInternal(expression)
                 .WithTriviaFrom(expression);
         }
 
         private static ExpressionSyntax NegateInternal(this ExpressionSyntax expression)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
             switch (expression.Kind())
             {
                 case SyntaxKind.ParenthesizedExpression:

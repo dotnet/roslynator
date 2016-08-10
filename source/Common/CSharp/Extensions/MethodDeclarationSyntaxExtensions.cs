@@ -13,15 +13,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static MethodDeclarationSyntax WithModifiers(
             this MethodDeclarationSyntax methodDeclaration,
-            params SyntaxKind[] tokenKinds)
+            params SyntaxKind[] kinds)
         {
             if (methodDeclaration == null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
-            return methodDeclaration.WithModifiers(CSharpFactory.TokenList(tokenKinds));
+            return methodDeclaration.WithModifiers(CSharpFactory.TokenList(kinds));
         }
 
-        public static MethodDeclarationSyntax WithStatements(
+        public static MethodDeclarationSyntax WithBody(
             this MethodDeclarationSyntax methodDeclaration,
             IEnumerable<StatementSyntax> statements)
         {
@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return methodDeclaration.WithBody(Block(statements));
         }
 
-        public static MethodDeclarationSyntax WithStatements(
+        public static MethodDeclarationSyntax WithBody(
             this MethodDeclarationSyntax methodDeclaration,
             params StatementSyntax[] statements)
         {

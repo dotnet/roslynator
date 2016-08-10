@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -61,7 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     {
                         var declaration = (NamespaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithoutSemicolonToken()
+                            .WithSemicolonToken(NoneToken())
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -69,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     {
                         var declaration = (ClassDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithoutSemicolonToken()
+                            .WithSemicolonToken(NoneToken())
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -77,7 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     {
                         var declaration = (InterfaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithoutSemicolonToken()
+                            .WithSemicolonToken(NoneToken())
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -85,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     {
                         var declaration = (StructDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithoutSemicolonToken()
+                            .WithSemicolonToken(NoneToken())
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -93,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     {
                         var declaration = (EnumDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithoutSemicolonToken()
+                            .WithSemicolonToken(NoneToken())
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }

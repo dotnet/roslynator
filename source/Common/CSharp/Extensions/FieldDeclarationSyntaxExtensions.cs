@@ -3,7 +3,7 @@
 using System;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
@@ -11,22 +11,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static FieldDeclarationSyntax WithModifiers(
             this FieldDeclarationSyntax fieldDeclaration,
-            params SyntaxKind[] tokenKinds)
+            params SyntaxKind[] kinds)
         {
             if (fieldDeclaration == null)
                 throw new ArgumentNullException(nameof(fieldDeclaration));
 
-            return fieldDeclaration.WithModifiers(CSharpFactory.TokenList(tokenKinds));
+            return fieldDeclaration.WithModifiers(TokenList(kinds));
         }
 
         public static FieldDeclarationSyntax WithModifier(
             this FieldDeclarationSyntax fieldDeclaration,
-            SyntaxKind tokenKind)
+            SyntaxKind kind)
         {
             if (fieldDeclaration == null)
                 throw new ArgumentNullException(nameof(fieldDeclaration));
 
-            return fieldDeclaration.WithModifiers(TokenList(Token(tokenKind)));
+            return fieldDeclaration.WithModifiers(TokenList(kind));
         }
     }
 }

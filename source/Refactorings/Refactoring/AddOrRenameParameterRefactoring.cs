@@ -62,7 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     context.RegisterRefactoring(
                         $"Rename '{name}' to '{newName}'",
-                        cancellationToken => symbol.RenameAsync(newName, context.Document, cancellationToken));
+                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
                 }
             }
         }

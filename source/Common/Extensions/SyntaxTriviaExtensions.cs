@@ -42,9 +42,6 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2)
         {
-            if (trivia == null)
-                return false;
-
             SyntaxKind kind = trivia.Kind();
 
             return kind == kind1
@@ -88,7 +85,8 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool IsDocumentationCommentTrivia(this SyntaxTrivia trivia)
         {
-            return trivia.IsSingleLineDocumentationCommentTrivia() || trivia.IsMultiLineDocumentationCommentTrivia();
+            return trivia.IsSingleLineDocumentationCommentTrivia() 
+                || trivia.IsMultiLineDocumentationCommentTrivia();
         }
 
         public static bool IsCommentTrivia(this SyntaxTrivia trivia)

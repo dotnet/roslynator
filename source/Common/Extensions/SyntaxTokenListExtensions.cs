@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -14,13 +15,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool ContainsAccessModifier(this SyntaxTokenList tokenList)
         {
-            for (int i = 0; i < tokenList.Count; i++)
-            {
-                if (tokenList[i].IsAccessModifier())
-                    return true;
-            }
-
-            return false;
+            return tokenList.Any(token => token.IsAccessModifier());
         }
 
         public static SyntaxTokenList RemoveAccessModifiers(this SyntaxTokenList tokenList)

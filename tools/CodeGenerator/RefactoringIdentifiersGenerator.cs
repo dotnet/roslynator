@@ -18,9 +18,9 @@ namespace CodeGenerator
                 //.WithUsings(
                 //    UsingDirective(
                 //        ParseName("")))
-                .WithMember(
+                .WithMembers(
                     NamespaceDeclaration(DefaultNamespace)
-                        .WithMember(
+                        .WithMembers(
                             ClassDeclaration("RefactoringIdentifiers")
                                 .WithModifiers(
                                     SyntaxKind.PublicKeyword,

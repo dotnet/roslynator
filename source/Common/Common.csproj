@@ -40,22 +40,22 @@
     <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\Analysis\ForStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
+    <Compile Include="CSharp\MemberRemover.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Extensions\AccessorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AccessorListSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AttributeArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AttributeSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\EnumDeclarationExtensions.cs" />
     <Compile Include="CSharp\Extensions\FieldDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\InterfaceDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ConversionOperatorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ConstructorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\InvocationExpressionSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\LocalDeclarationStatementSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\OperatorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\EventDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\StructDeclarationSyntaxExtensions.cs" />
@@ -69,14 +69,11 @@
     <Compile Include="CSharp\Extensions\TypeSyntaxExtensions.cs" />
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
-    <Compile Include="CSharp\Extensions\VariableDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\VariableDeclaratorSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\YieldStatementSyntaxExtensions.cs" />
     <Compile Include="CSharp\Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ExpandAssignmentExpressionRefactoring.cs" />
-    <Compile Include="CSharp\Refactoring\RemoveMemberDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SimplifyAssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AttributeRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceForEachWithForRefactoring.cs" />
@@ -101,19 +98,16 @@
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
+    <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierSorter.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\CompilationUnitSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ForEachStatementSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ForStatementSyntaxExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="CSharp\Extensions\IfStatementSyntaxExtensions.cs" />
     <Compile Include="Extensions\INamespaceSymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\IndexerDeclarationSyntaxExtensions.cs" />
     <Compile Include="Extensions\ITypeSymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\LiteralExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\MethodDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ParenthesizedExpressionSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\PropertyDeclarationSyntaxExtensions.cs" />
     <Compile Include="Extensions\SymbolInfoExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />

@@ -10,16 +10,16 @@ namespace Pihrtsoft.CodeAnalysis
         {
             if (nodeOrToken.IsNode)
                 return nodeOrToken.AsNode().WithoutLeadingTrivia();
-            else
-                return nodeOrToken.AsToken().WithoutLeadingTrivia();
+
+            return nodeOrToken.AsToken().WithoutLeadingTrivia();
         }
 
         public static SyntaxNodeOrToken WithoutTrailingTrivia(this SyntaxNodeOrToken nodeOrToken)
         {
             if (nodeOrToken.IsNode)
                 return nodeOrToken.AsNode().WithoutTrailingTrivia();
-            else
-                return nodeOrToken.AsToken().WithoutTrailingTrivia();
+
+            return nodeOrToken.AsToken().WithoutTrailingTrivia();
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 {
@@ -53,6 +54,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             }
 
             return true;
+        }
+
+        public static bool HasParenthesesOnSameLine(ForEachStatementSyntax forEachStatement)
+        {
+            if (forEachStatement == null)
+                throw new ArgumentNullException(nameof(forEachStatement));
+
+            TextSpan textSpan = TextSpan.FromBounds(
+                forEachStatement.OpenParenToken.Span.Start,
+                forEachStatement.CloseParenToken.Span.End);
+
+            return !forEachStatement
+                .DescendantTrivia(textSpan)
+                .ContainsEndOfLine();
         }
     }
 }

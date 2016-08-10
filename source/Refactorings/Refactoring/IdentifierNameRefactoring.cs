@@ -58,9 +58,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                     $"Rename field to '{newName}'",
                                     cancellationToken =>
                                     {
-                                        return fieldSymbol.RenameAsync(
-                                            newName,
+                                        return SymbolRenamer.RenameAsync(
                                             context.Document,
+                                            fieldSymbol,
+                                            newName,
                                             cancellationToken);
                                     });
                             }

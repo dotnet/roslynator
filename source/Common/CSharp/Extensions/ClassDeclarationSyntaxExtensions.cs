@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
@@ -15,12 +14,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static ClassDeclarationSyntax WithModifiers(
             this ClassDeclarationSyntax classDeclaration,
-            params SyntaxKind[] tokenKinds)
+            params SyntaxKind[] kinds)
         {
             if (classDeclaration == null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
-            return classDeclaration.WithModifiers(CSharpFactory.TokenList(tokenKinds));
+            return classDeclaration.WithModifiers(TokenList(kinds));
         }
 
         public static ClassDeclarationSyntax WithMembers(
@@ -33,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return classDeclaration.WithMembers(List(memberDeclarations));
         }
 
-        public static ClassDeclarationSyntax WithMember(
+        public static ClassDeclarationSyntax WithMembers(
             this ClassDeclarationSyntax classDeclaration,
             MemberDeclarationSyntax memberDeclaration)
         {
@@ -51,47 +50,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return TextSpan.FromBounds(
                 classDeclaration.Span.Start,
                 classDeclaration.Identifier.Span.End);
-        }
-
-        public static MemberDeclarationSyntax RemoveMemberAt(this ClassDeclarationSyntax declaration, int index)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            return RemoveMember(declaration, declaration.Members[index], index);
-        }
-
-        public static MemberDeclarationSyntax RemoveMember(this ClassDeclarationSyntax declaration, MemberDeclarationSyntax member)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            return RemoveMember(declaration, member, declaration.Members.IndexOf(member));
-        }
-
-        private static MemberDeclarationSyntax RemoveMember(
-            ClassDeclarationSyntax declaration,
-            MemberDeclarationSyntax member,
-            int index)
-        {
-            MemberDeclarationSyntax newMember = member.RemoveSingleLineDocumentationComment();
-
-            declaration = declaration
-                .WithMembers(declaration.Members.Replace(member, newMember));
-
-            return declaration
-                .RemoveNode(declaration.Members[index], RemoveMemberDeclarationRefactoring.GetRemoveOptions(newMember));
-        }
-
-        public static ClassDeclarationSyntax WithoutSemicolonToken(this ClassDeclarationSyntax classDeclaration)
-        {
-            if (classDeclaration == null)
-                throw new ArgumentNullException(nameof(classDeclaration));
-
-            return classDeclaration.WithSemicolonToken(CSharpFactory.NoneToken());
         }
     }
 }

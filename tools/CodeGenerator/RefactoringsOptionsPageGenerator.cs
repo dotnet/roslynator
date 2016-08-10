@@ -26,9 +26,9 @@ namespace CodeGenerator
                     UsingDirective(ParseName("Pihrtsoft.CodeAnalysis.CSharp.Refactoring")),
                     UsingDirective(ParseName("Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters"))
                     )
-                .WithMember(
+                .WithMembers(
                     NamespaceDeclaration(DefaultNamespace)
-                        .WithMember(
+                        .WithMembers(
                             ClassDeclaration("RefactoringsOptionsPage")
                                 .WithModifiers(
                                         SyntaxKind.PublicKeyword,
@@ -51,11 +51,11 @@ namespace CodeGenerator
 
             yield return MethodDeclaration(VoidType(), "Apply")
                 .WithModifiers(SyntaxKind.PublicKeyword)
-                .WithStatements(refactorings.Select(refactoring =>
+                .WithBody(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
                             InvocationExpression("SetIsEnabled")
-                                .WithArguments(
+                                .WithArgumentList(
                                     Argument(
                                         SimpleMemberAccessExpression(
                                             IdentifierName("RefactoringIdentifiers"),
@@ -71,11 +71,10 @@ namespace CodeGenerator
         {
             return PropertyDeclaration(BoolType(), refactoring.Identifier)
                 .WithAttributeLists(
-                    AttributeList(Attribute("Category").WithArgument(IdentifierName("RefactoringCategory"))),
-                    AttributeList(Attribute("DisplayName").WithArgument(StringLiteralExpression(refactoring.Title))),
-                    AttributeList(Attribute("Description").WithArgument(StringLiteralExpression(CreateDescription(refactoring)))),
-                    AttributeList(Attribute("TypeConverter").WithArgument(TypeOfExpression(IdentifierName("EnabledDisabledConverter"))))
-                    )
+                    AttributeList(Attribute("Category", IdentifierName("RefactoringCategory"))),
+                    AttributeList(Attribute("DisplayName", StringLiteralExpression(refactoring.Title))),
+                    AttributeList(Attribute("Description", StringLiteralExpression(CreateDescription(refactoring)))),
+                    AttributeList(Attribute("TypeConverter", TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
                 .WithModifiers(SyntaxKind.PublicKeyword)
                 .WithAccessorList(
                     AutoGetter(),

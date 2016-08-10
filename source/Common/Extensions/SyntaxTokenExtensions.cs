@@ -19,16 +19,6 @@ namespace Pihrtsoft.CodeAnalysis
                 || token.IsKind(SyntaxKind.PrivateKeyword);
         }
 
-        public static bool IsNoneKind(this SyntaxToken token)
-        {
-            return token.IsKind(SyntaxKind.None);
-        }
-
-        public static bool IsCommaToken(this SyntaxToken token)
-        {
-            return token.IsKind(SyntaxKind.CommaToken);
-        }
-
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
@@ -61,6 +51,36 @@ namespace Pihrtsoft.CodeAnalysis
             return -1;
         }
 
+        public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
+        {
+            return token.WithLeadingTrivia(token.LeadingTrivia.TrimStart());
+        }
+
+        public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
+        {
+            return token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
+        }
+
+        public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
+        {
+            return token.WithLeadingTrivia(SyntaxTriviaList.Empty);
+        }
+
+        public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
+        {
+            return token.WithTrailingTrivia(SyntaxTriviaList.Empty);
+        }
+
+        public static SyntaxToken WithTrailingSpace(this SyntaxToken token)
+        {
+            return token.WithTrailingTrivia(SyntaxFactory.Space);
+        }
+
+        public static SyntaxToken WithTrailingNewLine(this SyntaxToken token)
+        {
+            return token.WithTrailingTrivia(CSharpFactory.NewLine);
+        }
+
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(Formatter.Annotation);
@@ -70,23 +90,5 @@ namespace Pihrtsoft.CodeAnalysis
         {
             return token.WithAdditionalAnnotations(Simplifier.Annotation);
         }
-
-        public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
-            => token.WithLeadingTrivia(token.LeadingTrivia.TrimStart());
-
-        public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
-            => token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
-
-        public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
-            => token.WithLeadingTrivia(SyntaxTriviaList.Empty);
-
-        public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
-            => token.WithTrailingTrivia(SyntaxTriviaList.Empty);
-
-        public static SyntaxToken WithTrailingSpace(this SyntaxToken token)
-            => token.WithTrailingTrivia(SyntaxFactory.Space);
-
-        public static SyntaxToken WithTrailingNewLine(this SyntaxToken token)
-            => token.WithTrailingTrivia(CSharpFactory.NewLine);
     }
 }

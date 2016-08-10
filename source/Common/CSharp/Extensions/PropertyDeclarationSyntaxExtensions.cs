@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,12 +27,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static PropertyDeclarationSyntax WithModifiers(
             this PropertyDeclarationSyntax propertyDeclaration,
-            params SyntaxKind[] tokenKinds)
+            params SyntaxKind[] kinds)
         {
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            return propertyDeclaration.WithModifiers(TokenList(tokenKinds));
+            return propertyDeclaration.WithModifiers(TokenList(kinds));
         }
 
         public static PropertyDeclarationSyntax WithAttributeLists(
@@ -44,32 +43,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
             return propertyDeclaration.WithAttributeLists(List(attributeLists));
-        }
-
-        public static PropertyDeclarationSyntax WithAttributes(
-            this PropertyDeclarationSyntax propertyDeclaration,
-            params AttributeSyntax[] attributes)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return propertyDeclaration
-                .WithAttributeLists(
-                    AttributeList(
-                        SeparatedList(attributes)));
-        }
-
-        public static PropertyDeclarationSyntax WithAttribute(
-            this PropertyDeclarationSyntax propertyDeclaration,
-            AttributeSyntax attribute)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return propertyDeclaration
-                .WithAttributeLists(
-                    AttributeList(
-                        SingletonSeparatedList(attribute)));
         }
 
         public static PropertyDeclarationSyntax WithAccessorList(
@@ -85,32 +58,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                         List(accessors)));
         }
 
-        public static PropertyDeclarationSyntax WithInitializer(
-            this PropertyDeclarationSyntax propertyDeclaration,
-            ExpressionSyntax value)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return propertyDeclaration.WithInitializer(EqualsValueClause(value));
-        }
-
-        public static PropertyDeclarationSyntax WithSemicolonToken(
-            this PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return propertyDeclaration.WithSemicolonToken(SemicolonToken());
-        }
-
         public static PropertyDeclarationSyntax WithoutSemicolonToken(
             this PropertyDeclarationSyntax propertyDeclaration)
         {
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            return propertyDeclaration.WithSemicolonToken(Token(SyntaxKind.None));
+            return propertyDeclaration.WithSemicolonToken(NoneToken());
         }
 
         public static PropertyDeclarationSyntax WithoutInitializer(
@@ -137,10 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            if (propertyDeclaration.AccessorList == null)
-                return null;
-
-            return propertyDeclaration.AccessorList.Getter();
+            return propertyDeclaration.AccessorList?.Getter();
         }
 
         public static AccessorDeclarationSyntax Setter(this PropertyDeclarationSyntax propertyDeclaration)
@@ -148,10 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            if (propertyDeclaration.AccessorList == null)
-                return null;
-
-            return propertyDeclaration.AccessorList.Setter();
+            return propertyDeclaration.AccessorList?.Setter();
         }
 
         public static bool HasGetter(this PropertyDeclarationSyntax propertyDeclaration)
@@ -159,10 +107,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            return propertyDeclaration
-                .AccessorList?
-                .Accessors
-                .Any(f => f.IsKind(SyntaxKind.GetAccessorDeclaration)) == true;
+            return propertyDeclaration.AccessorList?.ContainsGetter() == true;
         }
 
         public static bool HasSetter(this PropertyDeclarationSyntax propertyDeclaration)
@@ -170,10 +115,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (propertyDeclaration == null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
-            return propertyDeclaration
-                .AccessorList?
-                .Accessors
-                .Any(f => f.IsKind(SyntaxKind.SetAccessorDeclaration)) == true;
+            return propertyDeclaration.AccessorList?.ContainsSetter() == true;
         }
     }
 }

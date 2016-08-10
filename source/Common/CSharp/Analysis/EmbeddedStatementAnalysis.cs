@@ -267,13 +267,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     }
                 case SyntaxKind.ForEachStatement:
                     {
-                        return ((ForEachStatementSyntax)node).HasParenthesesOnSameLine();
+                        return ForEachStatementAnalysis.HasParenthesesOnSameLine(((ForEachStatementSyntax)node));
                     }
                 case SyntaxKind.ForStatement:
                     {
                         var forStatement = (ForStatementSyntax)node;
 
-                        return forStatement.HasParenthesesOnSameLine()
+                        return ForStatementAnalysis.HasParenthesesOnSameLine(forStatement)
                             || forStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true;
                     }
                 case SyntaxKind.UsingStatement:

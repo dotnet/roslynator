@@ -137,7 +137,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             {
                 if (ancestor.IsKind(SyntaxKind.IfStatement))
                 {
-                    return ((IfStatementSyntax)ancestor).ParentElse() ?? ancestor;
+                    var parentElse = ancestor.Parent as ElseClauseSyntax;
+
+                    return parentElse ?? ancestor;
                 }
                 else if (ancestor.IsMemberDeclaration())
                 {

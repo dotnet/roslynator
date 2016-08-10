@@ -4,11 +4,11 @@ using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp
+namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 {
-    public static class ForStatementSyntaxExtensions
+    public static class ForStatementAnalysis
     {
-        public static bool HasParenthesesOnSameLine(this ForStatementSyntax forStatement)
+        public static bool HasParenthesesOnSameLine(ForStatementSyntax forStatement)
         {
             if (forStatement == null)
                 throw new ArgumentNullException(nameof(forStatement));

@@ -12,13 +12,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (usingDirective == null)
                 throw new ArgumentNullException(nameof(usingDirective));
 
-            if (string.Equals(usingDirective.Name.ToString(), "System", StringComparison.Ordinal))
-                return true;
+            string name = usingDirective.Name.ToString();
 
-            if (usingDirective.Name.ToString().StartsWith("System.", StringComparison.Ordinal))
-                return true;
-
-            return false;
+            return string.Equals(name, "System", StringComparison.Ordinal)
+                || name.StartsWith("System.", StringComparison.Ordinal);
         }
     }
 }

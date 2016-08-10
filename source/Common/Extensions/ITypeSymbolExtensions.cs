@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace Pihrtsoft.CodeAnalysis
 {
@@ -85,9 +86,11 @@ namespace Pihrtsoft.CodeAnalysis
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+            for (int i = 0; i < allInterfaces.Length; i++)
             {
-                if (typeSymbol.AllInterfaces[i].SpecialType == specialType)
+                if (allInterfaces[i].SpecialType == specialType)
                     return true;
             }
 
@@ -107,8 +110,10 @@ namespace Pihrtsoft.CodeAnalysis
                 {
                     var methodSymbol = (IMethodSymbol)symbol;
 
-                    if (methodSymbol.Parameters.Length == 1
-                        && methodSymbol.Parameters[0].Type?.SpecialType == SpecialType.System_Int32)
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    if (parameters.Length == 1
+                        && parameters[0].Type?.SpecialType == SpecialType.System_Int32)
                     {
                         return true;
                     }

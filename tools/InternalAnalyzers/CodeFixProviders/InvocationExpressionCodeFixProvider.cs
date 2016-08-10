@@ -91,7 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
                 return invocation
                     .WithExpression(
                         memberAccess.WithName(IdentifierName(newName)))
-                    .WithArgumentList();
+                    .WithEmptyArgumentList();
             }
             else if (invocation.Expression.IsKind(SyntaxKind.MemberBindingExpression))
             {
@@ -100,7 +100,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
                 return invocation
                     .WithExpression(
                         memberBinding.WithName(IdentifierName(newName)))
-                    .WithArgumentList();
+                    .WithEmptyArgumentList();
             }
 
             return invocation;

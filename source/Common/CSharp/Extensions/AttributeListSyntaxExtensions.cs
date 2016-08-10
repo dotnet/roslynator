@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,11 +16,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (attributeList == null)
                 throw new ArgumentNullException(nameof(attributeList));
 
-            foreach (SyntaxToken syntaxToken in attributeList.ChildTokens())
-            {
-                if (syntaxToken.IsKind(SyntaxKind.CommaToken))
-                    yield return syntaxToken;
-            }
+            return attributeList
+                .ChildTokens()
+                .Where(token => token.IsKind(SyntaxKind.CommaToken));
         }
     }
 }
