@@ -56,7 +56,10 @@ namespace CodeGenerator
                         return ExpressionStatement(
                             InvocationExpression("SetIsEnabled")
                                 .WithArguments(
-                                    Argument(SimpleMemberAccessExpression("RefactoringIdentifiers", refactoring.Identifier)),
+                                    Argument(
+                                        SimpleMemberAccessExpression(
+                                            IdentifierName("RefactoringIdentifiers"),
+                                            IdentifierName(refactoring.Identifier))),
                                     Argument(refactoring.Identifier)));
                     }));
 

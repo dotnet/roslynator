@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,10 +10,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class CSharpFactory
     {
-        internal static SyntaxTokenList TokenList(params SyntaxKind[] tokenKinds)
+        public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");
+
+        public static SyntaxTrivia EmptyWhitespaceTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
+
+        public static SyntaxTrivia NewLine { get; } = CreateNewLine();
+
+        internal static SyntaxTokenList TokenList(params SyntaxKind[] kinds)
         {
-            return SyntaxFactory.TokenList(
-                tokenKinds.Select(f => Token(f)));
+            var tokens = new SyntaxToken[kinds.Length];
+
+            for (int i = 0; i < kinds.Length; i++)
+                tokens[i] = Token(kinds[i]);
+
+            return SyntaxFactory.TokenList(tokens);
         }
 
         public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
@@ -27,17 +36,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
         }
 
-        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, VariableDeclaratorSyntax variableDeclarator)
-        {
-            return SyntaxFactory.FieldDeclaration(VariableDeclaration(type, variableDeclarator));
-        }
-
-        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, ExpressionSyntax initializerValue = null)
+        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, ExpressionSyntax value = null)
         {
             return FieldDeclaration(
                 type,
                 identifier,
-                (initializerValue != null) ? EqualsValueClause(initializerValue) : null);
+                (value != null) ? EqualsValueClause(value) : null);
         }
 
         public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer = null)
@@ -51,24 +55,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                         initializer)));
         }
 
+        public static ArgumentListSyntax ArgumentList(ArgumentSyntax argument)
+        {
+            return SyntaxFactory.ArgumentList(SingletonSeparatedList(argument));
+        }
+
         public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
         {
             return SyntaxFactory.ArgumentList(SeparatedList(arguments));
         }
 
-        public static ArgumentSyntax Argument(string identifierName)
+        public static ArgumentSyntax Argument(string name)
         {
-            return SyntaxFactory.Argument(IdentifierName(identifierName));
+            return SyntaxFactory.Argument(IdentifierName(name));
         }
 
-        public static AttributeSyntax Attribute(string identifierName)
+        public static AttributeSyntax Attribute(string name)
         {
-            return SyntaxFactory.Attribute(IdentifierName(identifierName));
+            return SyntaxFactory.Attribute(IdentifierName(name));
         }
 
-        public static NamespaceDeclarationSyntax NamespaceDeclaration(string identifierName)
+        public static NamespaceDeclarationSyntax NamespaceDeclaration(string name)
         {
-            return SyntaxFactory.NamespaceDeclaration(IdentifierName(identifierName));
+            return SyntaxFactory.NamespaceDeclaration(IdentifierName(name));
         }
 
         public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, SimpleNameSyntax name)
@@ -81,11 +90,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
         }
 
-        public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(string identifierName, string name)
-        {
-            return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, IdentifierName(identifierName), IdentifierName(name));
-        }
-
         public static InvocationExpressionSyntax InvocationExpression(string name)
         {
             return SyntaxFactory.InvocationExpression(IdentifierName(name));
@@ -95,14 +99,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             return SyntaxFactory.InvocationExpression(
                 IdentifierName(name),
-                SyntaxFactory.ArgumentList(SingletonSeparatedList(argument)));
+                ArgumentList(argument));
         }
 
         public static InvocationExpressionSyntax InvocationExpression(string name, params ArgumentSyntax[] arguments)
         {
             return SyntaxFactory.InvocationExpression(
                 IdentifierName(name),
-                SyntaxFactory.ArgumentList(SeparatedList(arguments)));
+                ArgumentList(arguments));
         }
 
         public static AccessorDeclarationSyntax Getter()
@@ -125,9 +129,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return Setter().WithSemicolonToken();
         }
 
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variableDeclarator)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
         {
-            return SyntaxFactory.VariableDeclaration(type, SingletonSeparatedList(variableDeclarator));
+            return SyntaxFactory.VariableDeclaration(type, SingletonSeparatedList(variable));
         }
 
         public static SyntaxToken SemicolonToken()
@@ -188,6 +192,66 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static PredefinedTypeSyntax VoidType()
         {
             return PredefinedType((SyntaxKind.VoidKeyword));
+        }
+
+        public static PredefinedTypeSyntax ObjectType()
+        {
+            return PredefinedType(SyntaxKind.ObjectKeyword);
+        }
+
+        public static PredefinedTypeSyntax CharType()
+        {
+            return PredefinedType(SyntaxKind.CharKeyword);
+        }
+
+        public static PredefinedTypeSyntax SByteType()
+        {
+            return PredefinedType(SyntaxKind.SByteKeyword);
+        }
+
+        public static PredefinedTypeSyntax ByteType()
+        {
+            return PredefinedType(SyntaxKind.ByteKeyword);
+        }
+
+        public static PredefinedTypeSyntax ShortType()
+        {
+            return PredefinedType(SyntaxKind.ShortKeyword);
+        }
+
+        public static PredefinedTypeSyntax UShortType()
+        {
+            return PredefinedType(SyntaxKind.UShortKeyword);
+        }
+
+        public static PredefinedTypeSyntax UIntType()
+        {
+            return PredefinedType(SyntaxKind.UIntKeyword);
+        }
+
+        public static PredefinedTypeSyntax LongType()
+        {
+            return PredefinedType(SyntaxKind.LongKeyword);
+        }
+
+        public static PredefinedTypeSyntax ULongType()
+        {
+            return PredefinedType(SyntaxKind.ULongKeyword);
+        }
+
+        public static PredefinedTypeSyntax DecimalType()
+        {
+            return PredefinedType(SyntaxKind.DecimalKeyword);
+        }
+
+        public static PredefinedTypeSyntax SingleType()
+        {
+            return PredefinedType(SyntaxKind.FloatKeyword);
+        }
+
+        public static PredefinedTypeSyntax DoubleType()
+        {
+            return PredefinedType(SyntaxKind.DoubleKeyword);
         }
 
         private static PredefinedTypeSyntax PredefinedType(SyntaxKind syntaxKind)
@@ -271,25 +335,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
         }
 
-        public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");
-
-        public static SyntaxTrivia EmptyWhitespaceTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
-
-        public static SyntaxTrivia NewLine { get; } = CreateNewLine();
-
-        private static SyntaxTrivia CreateNewLine()
-        {
-            switch (Environment.NewLine)
-            {
-                case "\r":
-                    return CarriageReturn;
-                case "\n":
-                    return LineFeed;
-                default:
-                    return CarriageReturnLineFeed;
-            }
-        }
-
         public static InvocationExpressionSyntax NameOf(string identifier)
         {
             return InvocationExpression(
@@ -305,6 +350,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
         {
             return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
+        }
+
+        private static SyntaxTrivia CreateNewLine()
+        {
+            switch (Environment.NewLine)
+            {
+                case "\r":
+                    return CarriageReturn;
+                case "\n":
+                    return LineFeed;
+                default:
+                    return CarriageReturnLineFeed;
+            }
         }
     }
 }
