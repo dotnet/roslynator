@@ -94,7 +94,7 @@
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactoring\TypeSyntaxRefactoring.cs" />
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\IdentifierNameSyntaxRewriter.cs" />
+    <Compile Include="CSharp\Rewriters\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />

@@ -14,7 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
+using Pihrtsoft.CodeAnalysis.CSharp.Rewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
