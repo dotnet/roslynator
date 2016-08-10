@@ -2,22 +2,16 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
     public sealed class RegionRemover : CSharpSyntaxRewriter
     {
-        private static readonly RegionRemover _instance = new RegionRemover();
+        internal static readonly RegionRemover Instance = new RegionRemover();
 
-        private RegionRemover()
+        public RegionRemover()
             : base(visitIntoStructuredTrivia: true)
         {
-        }
-
-        public static CompilationUnitSyntax RemoveFrom(CompilationUnitSyntax compilationUnit)
-        {
-            return (CompilationUnitSyntax)_instance.Visit(compilationUnit);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)

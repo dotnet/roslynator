@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            AccessorDeclarationSyntax newAccessor = WhitespaceOrEndOfLineRemover.RemoveFrom(accessor)
+            AccessorDeclarationSyntax newAccessor = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessor)
                 .WithTriviaFrom(accessor)
                 .WithFormatterAnnotation();
 

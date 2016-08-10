@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -13,28 +11,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
         private readonly SyntaxNode _node;
         private readonly CommentRemoveOptions _removeOptions;
 
-        private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions)
+        internal CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions)
             : base(visitIntoStructuredTrivia: true)
         {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
             _node = node;
             _removeOptions = removeOptions;
-        }
-
-        public static async Task<Document> RemoveAsync(
-            Document document,
-            CommentRemoveOptions removeOptions,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            root = new CommentRemover(root, removeOptions)
-                .Visit(root)
-                .WithFormatterAnnotation();
-
-            return document.WithSyntaxRoot(root);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)

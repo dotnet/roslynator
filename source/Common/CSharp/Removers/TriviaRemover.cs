@@ -7,16 +7,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
     public sealed class TriviaRemover : CSharpSyntaxRewriter
     {
-        private static readonly TriviaRemover _instance = new TriviaRemover();
-
-        private TriviaRemover()
-        {
-        }
-
-        public static SyntaxNode RemoveFrom(SyntaxNode node)
-            => _instance.Visit(node);
+        internal static readonly TriviaRemover Instance = new TriviaRemover();
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-            => CSharpFactory.EmptyWhitespaceTrivia;
+        {
+            return CSharpFactory.EmptyWhitespaceTrivia;
+        }
     }
 }

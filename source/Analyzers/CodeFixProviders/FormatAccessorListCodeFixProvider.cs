@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     accessorList.CloseBraceToken.Span.Start);
 
                 PropertyDeclarationSyntax newPropertyDeclaration =
-                    WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration, span);
+                    SyntaxRemover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span);
 
                 newPropertyDeclaration = newPropertyDeclaration
                     .WithFormatterAnnotation();
@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
                     .Add(CSharpFactory.NewLine);
 
-                return WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
+                return SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(triviaList));
             }
             else
@@ -112,7 +112,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     throw new ArgumentNullException(nameof(node));
 
                 if (AccessorListDiagnosticAnalyzer.ShouldBeFormatted(node))
-                    return WhitespaceOrEndOfLineRemover.RemoveFrom(node, node.Span);
+                    return SyntaxRemover.RemoveWhitespaceOrEndOfLine(node, node.Span);
 
                 return base.VisitAccessorDeclaration(node);
             }

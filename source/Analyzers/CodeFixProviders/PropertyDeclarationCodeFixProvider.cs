@@ -151,7 +151,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             AccessorListSyntax accessorList = CreateAccessorList(property);
 
-            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList);
+            accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
 
             if (initializer != null)
             {

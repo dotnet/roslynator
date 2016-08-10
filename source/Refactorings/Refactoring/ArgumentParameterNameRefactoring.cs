@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,14 +41,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
 
                 if (arguments?.Count > 0)
-                    await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToArray()).ConfigureAwait(false);
+                    await AddOrRemoveParameterNameAsync(context, argumentList, arguments.ToImmutableArray()).ConfigureAwait(false);
             }
         }
 
         private static async Task AddOrRemoveParameterNameAsync(
             RefactoringContext context,
             ArgumentListSyntax argumentList,
-            ArgumentSyntax[] arguments)
+            ImmutableArray<ArgumentSyntax> arguments)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
                 && await CanAddParameterNameAsync(context, arguments).ConfigureAwait(false))
@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> AddParameterNameToArgumentsAsync(
             Document document,
             ArgumentListSyntax argumentList,
-            ArgumentSyntax[] arguments,
+            ImmutableArray<ArgumentSyntax> arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -102,12 +102,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static async Task<Document> RemoveParameterNameFromArgumentsAsync(
             Document document,
             ArgumentListSyntax argumentList,
-            ArgumentSyntax[] arguments,
+            ImmutableArray<ArgumentSyntax> arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ArgumentListSyntax newArgumentList = ParameterNameRemover.VisitNode(argumentList, arguments)
+            ArgumentListSyntax newArgumentList = SyntaxRemover.RemoveNameColon(argumentList, arguments)
                 .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
@@ -142,7 +142,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task<bool> CanAddParameterNameAsync(
             RefactoringContext context,
-            ArgumentSyntax[] arguments)
+            ImmutableArray<ArgumentSyntax> arguments)
         {
             foreach (ArgumentSyntax argument in arguments)
             {
@@ -164,22 +164,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private class AddParameterNameSyntaxRewriter : CSharpSyntaxRewriter
         {
             private readonly SemanticModel _semanticModel;
-            private readonly ArgumentSyntax[] _arguments;
+            private readonly ImmutableArray<ArgumentSyntax> _arguments;
 
-            private AddParameterNameSyntaxRewriter(ArgumentSyntax[] arguments, SemanticModel semanticModel)
+            private AddParameterNameSyntaxRewriter(ImmutableArray<ArgumentSyntax> arguments, SemanticModel semanticModel)
             {
                 _arguments = arguments;
                 _semanticModel = semanticModel;
             }
 
-            public static ArgumentListSyntax VisitNode(ArgumentListSyntax argumentList, ArgumentSyntax[] arguments, SemanticModel semanticModel)
+            public static ArgumentListSyntax VisitNode(
+                ArgumentListSyntax argumentList,
+                ImmutableArray<ArgumentSyntax> arguments,
+                SemanticModel semanticModel)
             {
                 return (ArgumentListSyntax)new AddParameterNameSyntaxRewriter(arguments, semanticModel).Visit(argumentList);
             }
 
             public override SyntaxNode VisitArgument(ArgumentSyntax node)
             {
-                if (Array.IndexOf(_arguments, node) != -1)
+                if (_arguments.Contains(node))
                     return AddParameterName(node, _semanticModel);
 
                 return base.VisitArgument(node);

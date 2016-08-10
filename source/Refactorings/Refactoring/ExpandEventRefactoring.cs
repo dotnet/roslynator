@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, Block()),
                 }));
 
-            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
+            accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];

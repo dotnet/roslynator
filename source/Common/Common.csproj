@@ -89,12 +89,13 @@
     <Compile Include="CSharp\Refactoring\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Removers\CommentRemover.cs" />
     <Compile Include="CSharp\Removers\RegionRemover.cs" />
-    <Compile Include="CSharp\Removers\ParameterNameRemover.cs" />
+    <Compile Include="CSharp\Removers\NameColonRemover.cs" />
     <Compile Include="CSharp\Removers\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactoring\TypeSyntaxRefactoring.cs" />
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
     <Compile Include="CSharp\Rewriters\IdentifierNameSyntaxRewriter.cs" />
+    <Compile Include="CSharp\SyntaxRemover.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />

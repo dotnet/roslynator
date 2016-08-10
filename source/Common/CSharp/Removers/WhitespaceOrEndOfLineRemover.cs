@@ -8,23 +8,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
     public sealed class WhitespaceOrEndOfLineRemover : CSharpSyntaxRewriter
     {
-        private static readonly WhitespaceOrEndOfLineRemover _instance = new WhitespaceOrEndOfLineRemover();
+        internal static readonly WhitespaceOrEndOfLineRemover Instance = new WhitespaceOrEndOfLineRemover();
 
         private readonly TextSpan? _span;
 
-        private WhitespaceOrEndOfLineRemover(TextSpan? span = null)
+        public WhitespaceOrEndOfLineRemover(TextSpan? span = null)
         {
             _span = span;
-        }
-
-        public static TNode RemoveFrom<TNode>(TNode node) where TNode : SyntaxNode
-        {
-            return (TNode)_instance.Visit(node);
-        }
-
-        public static TNode RemoveFrom<TNode>(TNode node, TextSpan span) where TNode : SyntaxNode
-        {
-            return (TNode)new WhitespaceOrEndOfLineRemover(span).Visit(node);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)

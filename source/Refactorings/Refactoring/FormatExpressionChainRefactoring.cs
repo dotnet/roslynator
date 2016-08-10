@@ -82,7 +82,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newNode = WhitespaceOrEndOfLineRemover.RemoveFrom(expression)
+            SyntaxNode newNode = SyntaxRemover.RemoveWhitespaceOrEndOfLine(expression)
                 .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);

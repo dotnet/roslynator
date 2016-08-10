@@ -104,7 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
-            AccessorListSyntax accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(propertyDeclaration.AccessorList)
+            AccessorListSyntax accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(propertyDeclaration.AccessorList)
                 .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration

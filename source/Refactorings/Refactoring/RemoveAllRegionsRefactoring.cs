@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            CompilationUnitSyntax newRoot = RegionRemover.RemoveFrom((CompilationUnitSyntax)oldRoot);
+            CompilationUnitSyntax newRoot = SyntaxRemover.RemoveRegion((CompilationUnitSyntax)oldRoot);
 
             return document.WithSyntaxRoot(newRoot);
         }

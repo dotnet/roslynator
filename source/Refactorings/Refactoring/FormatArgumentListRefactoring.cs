@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ArgumentListSyntax newArgumentList = WhitespaceOrEndOfLineRemover.RemoveFrom(argumentList)
+            ArgumentListSyntax newArgumentList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(argumentList)
                 .WithFormatterAnnotation();
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);

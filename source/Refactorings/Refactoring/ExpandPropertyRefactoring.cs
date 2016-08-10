@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .WithBody(Block())
                         .WithoutSemicolonToken())));
 
-            accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList)
+            accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
 
             return propertyDeclaration

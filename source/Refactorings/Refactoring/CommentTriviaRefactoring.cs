@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Pihrtsoft.CodeAnalysis.CSharp.Removers;
@@ -24,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments",
-                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.All, cancellationToken: cancellationToken));
+                        cancellationToken => RemoveCommentAsync(context.Document, CommentRemoveOptions.All, cancellationToken: cancellationToken));
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments)
@@ -32,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all comments (except xml comments)",
-                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, cancellationToken: cancellationToken));
+                        cancellationToken => RemoveCommentAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, cancellationToken: cancellationToken));
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllXmlComments)
@@ -40,9 +43,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 {
                     context.RegisterRefactoring(
                         "Remove all xml comments",
-                        cancellationToken => CommentRemover.RemoveAsync(context.Document, CommentRemoveOptions.Documentation, cancellationToken: cancellationToken));
+                        cancellationToken => RemoveCommentAsync(context.Document, CommentRemoveOptions.Documentation, cancellationToken: cancellationToken));
                 }
             }
+        }
+
+        private static async Task<Document> RemoveCommentAsync(
+            Document document,
+            CommentRemoveOptions removeOptions,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            root = SyntaxRemover.RemoveComment(root, removeOptions)
+                .WithFormatterAnnotation();
+
+            return document.WithSyntaxRoot(root);
         }
     }
 }

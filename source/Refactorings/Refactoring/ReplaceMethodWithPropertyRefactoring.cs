@@ -86,7 +86,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             block)));
 
             if (singleline)
-                accessorList = WhitespaceOrEndOfLineRemover.RemoveFrom(accessorList);
+                accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
 
             return accessorList;
         }
