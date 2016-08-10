@@ -69,6 +69,16 @@ namespace Pihrtsoft.CodeAnalysis.Text
                 && char.IsLower(value[0]);
         }
 
+        public static bool StartsWithUpperLetter(string value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            return value.Length > 0
+                && char.IsLetter(value[0])
+                && char.IsUpper(value[0]);
+        }
+
         public static bool IsWhitespace(string value)
         {
             if (value == null)
