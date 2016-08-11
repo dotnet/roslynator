@@ -96,6 +96,7 @@
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />
+    <Compile Include="Extensions\IMethodSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
     <Compile Include="SymbolRenamer.cs" />
