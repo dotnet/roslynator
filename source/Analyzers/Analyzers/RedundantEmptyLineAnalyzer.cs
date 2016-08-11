@@ -61,7 +61,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
             if (!brace.IsMissing
                 && (node.GetSpanStartLine() - brace.GetSpanEndLine()) > 1)
             {
-                AnalyzeTriviaList(context, node.GetLeadingTrivia(), isEnd: false);
+                TextSpan? span = GetEmptyLineSpan(node.GetLeadingTrivia(), isEnd: false);
+
+                if (span != null)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                        Location.Create(context.Node.SyntaxTree, span.Value));
+                }
             }
         }
 
@@ -70,15 +77,56 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
             SyntaxNode node,
             SyntaxToken brace)
         {
-            if (!brace.IsMissing
-                && (brace.GetSpanStartLine() - node.GetSpanEndLine()) > 1)
+            if (!brace.IsMissing)
             {
-                AnalyzeTriviaList(context, brace.LeadingTrivia, isEnd: true);
+                int braceLine = brace.GetSpanStartLine();
+
+                if (braceLine - node.GetSpanEndLine() > 1)
+                {
+                    TextSpan? span = GetEmptyLineSpan(brace.LeadingTrivia, isEnd: true);
+
+                    if (span != null
+                        && !IsEmptyLastLineInDoStatement(node, braceLine, span.Value))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                            Location.Create(context.Node.SyntaxTree, span.Value));
+                    }
+                }
             }
         }
 
-        private static void AnalyzeTriviaList(
-            SyntaxNodeAnalysisContext context,
+        private static bool IsEmptyLastLineInDoStatement(
+            SyntaxNode node,
+            int closeBraceLine,
+            TextSpan span)
+        {
+            SyntaxNode parent = node.Parent;
+
+            if (parent?.IsKind(SyntaxKind.Block) == true)
+            {
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.DoStatement) == true)
+                {
+                    var doStatement = (DoStatementSyntax)parent;
+
+                    int emptyLine = doStatement.SyntaxTree.GetLineSpan(span).EndLine();
+
+                    if (emptyLine == closeBraceLine)
+                    {
+                        int whileKeywordLine = doStatement.WhileKeyword.GetSpanStartLine();
+
+                        if (closeBraceLine == whileKeywordLine)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static TextSpan? GetEmptyLineSpan(
             SyntaxTriviaList triviaList,
             bool isEnd)
         {
@@ -86,32 +134,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
 
             foreach (SyntaxTrivia trivia in triviaList)
             {
-                if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                if (trivia.IsEndOfLineTrivia())
                 {
                     if (isEnd)
                     {
                         for (int j = i + 1; j < triviaList.Count; j++)
                         {
                             if (!triviaList[j].IsWhitespaceOrEndOfLineTrivia())
-                                return;
+                                return null;
                         }
                     }
 
-                    TextSpan span = TextSpan.FromBounds(triviaList.Span.Start, trivia.Span.End);
-
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
-                        Location.Create(context.Node.SyntaxTree, span));
-
-                    return;
+                    return TextSpan.FromBounds(triviaList.Span.Start, trivia.Span.End);
                 }
-                else if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                else if (!trivia.IsWhitespaceTrivia())
                 {
-                    return;
+                    return null;
                 }
 
                 i++;
             }
+
+            return null;
         }
     }
 }
