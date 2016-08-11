@@ -533,7 +533,7 @@
   </Refactoring>
   <Refactoring Id="InlineMethod" Title="Inline method" ExtensionVersion="0.96.0">
     <Syntaxes>
-      <Syntax>method invocation</Syntax>
+      <Syntax>static/extension method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="IntroduceConstructor" Title="Introduce constructor from selected member(s)" IsEnabledByDefault="false" ExtensionVersion="0.9.40">

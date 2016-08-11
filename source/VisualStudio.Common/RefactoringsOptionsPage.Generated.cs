@@ -748,7 +748,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Inline method")]
-        [Description("Syntax: method invocation")]
+        [Description("Syntax: static/extension method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool InlineMethod
         {
