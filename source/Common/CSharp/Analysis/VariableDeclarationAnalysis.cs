@@ -88,7 +88,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 SyntaxKind.ArrayCreationExpression,
                 SyntaxKind.CastExpression,
                 SyntaxKind.AsExpression,
-                SyntaxKind.ThisExpression))
+                SyntaxKind.ThisExpression,
+                SyntaxKind.DefaultExpression))
             {
                 return false;
             }
