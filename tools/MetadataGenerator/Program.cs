@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using System.Xml.Linq;
 using Pihrtsoft.CodeAnalysis.Metadata;
 
 namespace MetadataGenerator
@@ -10,10 +11,14 @@ namespace MetadataGenerator
     {
         private static void Main(string[] args)
         {
+            const string refactoringsPath = @"..\source\Refactorings\Refactorings.xml";
+
+            SortRefactoringsInFile(refactoringsPath);
+
             var generator = new Generator();
 
             foreach (RefactoringInfo refactoring in RefactoringInfo
-                .LoadFromFile(@"..\source\Refactorings\Refactorings.xml")
+                .LoadFromFile(refactoringsPath)
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture))
             {
                 generator.Refactorings.Add(refactoring);
@@ -54,6 +59,21 @@ namespace MetadataGenerator
 
             Console.WriteLine("*** FINISHED ***");
             Console.ReadKey();
+        }
+
+        public static void SortRefactoringsInFile(string filePath)
+        {
+            XDocument doc = XDocument.Load(filePath, LoadOptions.PreserveWhitespace);
+
+            XElement root = doc.Root;
+
+            IOrderedEnumerable<XElement> newElements = root
+                .Elements()
+                .OrderBy(f => f.Attribute("Id").Value);
+
+            root.ReplaceAll(newElements);
+
+            doc.Save(filePath);
         }
     }
 }
