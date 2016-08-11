@@ -12,8 +12,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
     {
         public RefactoringsOptionsPage()
         {
-             AddCastExpression = true;
             AddBooleanComparison = true;
+            AddCastExpression = true;
             AddConfigureAwait = true;
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
@@ -150,8 +150,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         public void Apply()
         {
-            SetIsEnabled(RefactoringIdentifiers. AddCastExpression,  AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
+            SetIsEnabled(RefactoringIdentifiers.AddCastExpression, AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddConfigureAwait, AddConfigureAwait);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
@@ -287,20 +287,20 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add cast expression")]
-        [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
+        [DisplayName("Add boolean comparison")]
+        [Description("Syntax: boolean? expression in place where must be boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool  AddCastExpression
+        public bool AddBooleanComparison
         {
             get;
             set;
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add boolean comparison")]
-        [Description("Syntax: boolean? expression in place where must be boolean expression")]
+        [DisplayName("Add cast expression")]
+        [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddBooleanComparison
+        public bool AddCastExpression
         {
             get;
             set;
