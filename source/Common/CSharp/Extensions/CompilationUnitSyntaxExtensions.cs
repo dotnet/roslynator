@@ -103,73 +103,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             if (namespaceSymbol.IsGlobalNamespace)
                 return compilationUnit;
 
-            return AddUsingDirective(compilationUnit, namespaceSymbol.ToString());
-        }
+            UsingDirectiveSyntax usingDirective = UsingDirective(ParseName(namespaceSymbol.ToString()));
 
-        private static CompilationUnitSyntax AddUsingDirective(this CompilationUnitSyntax compilationUnit, string @namespace)
-        {
-            if (compilationUnit == null)
-                throw new ArgumentNullException(nameof(compilationUnit));
-
-            UsingDirectiveSyntax usingDirective = UsingDirective(ParseName(@namespace));
-
-            int index = 0;
-
-            SyntaxList<UsingDirectiveSyntax>.Enumerator en = compilationUnit.Usings.GetEnumerator();
-
-            bool isSkippingSystem = true;
-
-            while (en.MoveNext())
-            {
-                int result = string.Compare(
-                    en.Current.Name.ToString(),
-                    usingDirective.Name.ToString(),
-                    StringComparison.Ordinal);
-
-                if (result == 0)
-                    return compilationUnit;
-
-                if (isSkippingSystem)
-                {
-                    if (en.Current.IsSystem())
-                    {
-                        index++;
-                        continue;
-                    }
-                    else
-                    {
-                        isSkippingSystem = false;
-                    }
-                }
-
-                if (result > 0)
-                    index++;
-            }
-
-            SyntaxList<UsingDirectiveSyntax> usings = compilationUnit.Usings.Insert(index, usingDirective);
-
-            return compilationUnit.WithUsings(usings);
-        }
-
-        private static bool IsAlreadyContainedInNamespace(
-            TypeSyntax typeSyntax,
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel)
-        {
-            NamespaceDeclarationSyntax namespaceDeclaration = typeSyntax.FirstAncestorOrSelf<NamespaceDeclarationSyntax>();
-
-            if (namespaceDeclaration != null)
-            {
-                INamespaceSymbol namespaceSymbol = semanticModel.GetDeclaredSymbol(namespaceDeclaration);
-                if (namespaceSymbol != null)
-                {
-                    return namespaceSymbol
-                        .ContainingNamespacesAndSelf()
-                        .Any(f => string.Equals(f.ToString(), typeSymbol.ContainingNamespace.ToString(), StringComparison.Ordinal));
-                }
-            }
-
-            return false;
+            return compilationUnit.AddUsings(usingDirective);
         }
     }
 }

@@ -118,7 +118,6 @@
     <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaListExtensions.cs" />
-    <Compile Include="CSharp\Extensions\UsingDirectiveSyntaxExtensions.cs" />
     <Compile Include="CSharp\Analysis\EmbeddedStatementAnalysis.cs" />
     <Compile Include="GeneratedCodeAnalyzer.cs" />
     <Compile Include="IGeneratedCodeAnalyzer.cs" />
