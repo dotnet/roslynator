@@ -248,9 +248,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     return "Length";
                 }
 
-                for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+                ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+                for (int i = 0; i < allInterfaces.Length; i++)
                 {
-                    if (typeSymbol.AllInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                    if (allInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
                     {
                         foreach (ISymbol members in typeSymbol.GetMembers("Count"))
                         {

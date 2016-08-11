@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System.Collections.Immutable;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -116,9 +117,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (typeSymbol.IsGenericImmutableArray(semanticModel))
                     return "Length";
 
-                for (int i = 0; i < typeSymbol.AllInterfaces.Length; i++)
+                ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+                for (int i = 0; i < allInterfaces.Length; i++)
                 {
-                    if (typeSymbol.AllInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                    if (allInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
                     {
                         foreach (ISymbol members in typeSymbol.GetMembers("Count"))
                         {

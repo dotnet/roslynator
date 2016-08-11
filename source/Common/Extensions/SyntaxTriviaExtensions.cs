@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool IsDocumentationCommentTrivia(this SyntaxTrivia trivia)
         {
-            return trivia.IsSingleLineDocumentationCommentTrivia() 
+            return trivia.IsSingleLineDocumentationCommentTrivia()
                 || trivia.IsMultiLineDocumentationCommentTrivia();
         }
 

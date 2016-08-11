@@ -51,7 +51,8 @@ namespace CodeGenerator
 
             yield return MethodDeclaration(VoidType(), "Apply")
                 .WithModifiers(SyntaxKind.PublicKeyword)
-                .WithBody(refactorings.Select(refactoring =>
+                .WithBody(
+                    Block(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
                             InvocationExpression("SetIsEnabled")
@@ -61,7 +62,7 @@ namespace CodeGenerator
                                             IdentifierName("RefactoringIdentifiers"),
                                             IdentifierName(refactoring.Identifier))),
                                     Argument(refactoring.Identifier)));
-                    }));
+                    })));
 
             foreach (RefactoringInfo info in refactorings)
                 yield return CreateRefactoringProperty(info);

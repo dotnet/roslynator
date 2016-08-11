@@ -18,8 +18,7 @@ namespace Pihrtsoft.CodeAnalysis
                 yield return @namespace;
 
                 @namespace = @namespace.ContainingNamespace;
-            }
-            while (@namespace != null);
+            } while (@namespace != null);
         }
 
         public static IEnumerable<INamespaceSymbol> ContainingNamespaces(this INamespaceSymbol @namespace)

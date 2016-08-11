@@ -21,26 +21,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return methodDeclaration.WithModifiers(CSharpFactory.TokenList(kinds));
         }
 
-        public static MethodDeclarationSyntax WithBody(
-            this MethodDeclarationSyntax methodDeclaration,
-            IEnumerable<StatementSyntax> statements)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return methodDeclaration.WithBody(Block(statements));
-        }
-
-        public static MethodDeclarationSyntax WithBody(
-            this MethodDeclarationSyntax methodDeclaration,
-            params StatementSyntax[] statements)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return methodDeclaration.WithBody(Block(statements));
-        }
-
         public static bool ReturnsVoid(this MethodDeclarationSyntax methodDeclaration)
         {
             if (methodDeclaration == null)
