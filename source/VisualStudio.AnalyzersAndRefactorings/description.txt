@@ -40,17 +40,17 @@
 
     <h3>List of Analyzers</h3>
     <ul>
-        <li>RCS1001 - Replace embedded statement with block.</li>
-        <li>RCS1002 - Replace block with embedded statement.</li>
-        <li>RCS1003 - Replace embedded statement with block (in if-else).</li>
-        <li>RCS1004 - Replace block with embedded statement (in if-else).</li>
+        <li>RCS1001 - Add braces.</li>
+        <li>RCS1002 - Remove braces.</li>
+        <li>RCS1003 - Add braces to if-else.</li>
+        <li>RCS1004 - Remove braces from if-else.</li>
         <li>RCS1005 - Simplify nested using statement.</li>
         <li>RCS1006 - Simplify else clause containing only if statement.</li>
         <li>RCS1007 - Avoid embedded statement.</li>
-        <li>RCS1008 - Replace 'var' with explicit type (when the type is not obvious).</li>
-        <li>RCS1009 - Replace 'var' with explicit type (in foreach).</li>
-        <li>RCS1010 - Replace explicit type with 'var' (when the type is obvious).</li>
-        <li>RCS1012 - Replace 'var' with explicit type (even if the type is obvious).</li>
+        <li>RCS1008 - Use explicit type instead of 'var' (when the type is not obvious).</li>
+        <li>RCS1009 - Use explicit type instead of 'var' (in 'foreach').</li>
+        <li>RCS1010 - Use 'var' instead of explicit type (when the type is obvious).</li>
+        <li>RCS1012 - Use explicit type instead of 'var' (even if the type is obvious).</li>
         <li>RCS1013 - Use predefined type.</li>
         <li>RCS1014 - Avoid implicitly-typed array.</li>
         <li>RCS1015 - Use nameof operator.</li>
@@ -91,10 +91,10 @@
         <li>RCS1050 - Add constructor argument list.</li>
         <li>RCS1051 - Wrap conditional expression condition in parentheses.</li>
         <li>RCS1052 - Declare each attribute separately.</li>
-        <li>RCS1053 - Replace foreach with for.</li>
+        <li>RCS1053 - Replace 'foreach' with 'for'.</li>
         <li>RCS1054 - Merge local declaration with return statement.</li>
         <li>RCS1055 - Avoid semicolon at the end of declaration.</li>
-        <li>RCS1056 - Avoid using alias directive.</li>
+        <li>RCS1056 - Avoid alias directive.</li>
         <li>RCS1057 - Add empty line between declarations.</li>
         <li>RCS1058 - Simplify assignment expression.</li>
         <li>RCS1059 - Avoid locking on publicly accessible instance.</li>
@@ -512,9 +512,6 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-declaration-in-using-statement">Wrap declaration in using statement</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
         </li>
         <li>
@@ -528,5 +525,8 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-try-catch">Wrap in try-catch</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-using-statement">Wrap in using statement</a>
         </li>
     </ul>
