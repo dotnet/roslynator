@@ -859,11 +859,6 @@
     </Syntaxes>
     <Scope>body or accessor list</Scope>
   </Refactoring>
-  <Refactoring Id="WrapDeclarationInUsingStatement" Title="Wrap declaration in using statement" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>local declaration of type that implements IDisposable</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="WrapExpressionInParentheses" Title="Wrap expression in parentheses" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>selected expression</Syntax>
@@ -887,6 +882,11 @@
   <Refactoring Id="WrapInTryCatch" Title="Wrap in try-catch" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="WrapInUsingStatement" Title="Wrap in using statement" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
 </Refactorings>

@@ -140,12 +140,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SwapStatementsInIfElse = true;
             Uncomment = true;
             UseExpressionBodiedMember = true;
-            WrapDeclarationInUsingStatement = true;
             WrapExpressionInParentheses = true;
             WrapInIfDirective = true;
             WrapInIfStatement = true;
             WrapInRegion = true;
             WrapInTryCatch = true;
+            WrapInUsingStatement = true;
         }
 
         public void Apply()
@@ -278,12 +278,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
             SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
-            SetIsEnabled(RefactoringIdentifiers.WrapDeclarationInUsingStatement, WrapDeclarationInUsingStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapExpressionInParentheses, WrapExpressionInParentheses);
             SetIsEnabled(RefactoringIdentifiers.WrapInIfDirective, WrapInIfDirective);
             SetIsEnabled(RefactoringIdentifiers.WrapInIfStatement, WrapInIfStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapInRegion, WrapInRegion);
             SetIsEnabled(RefactoringIdentifiers.WrapInTryCatch, WrapInTryCatch);
+            SetIsEnabled(RefactoringIdentifiers.WrapInUsingStatement, WrapInUsingStatement);
         }
 
         [Category(RefactoringCategory)]
@@ -1567,16 +1567,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap declaration in using statement")]
-        [Description("Syntax: local declaration of type that implements IDisposable")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool WrapDeclarationInUsingStatement
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Wrap expression in parentheses")]
         [Description("Syntax: selected expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1621,6 +1611,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInTryCatch
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Wrap in using statement")]
+        [Description("Syntax: local declaration of type that implements IDisposable")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool WrapInUsingStatement
         {
             get;
             set;

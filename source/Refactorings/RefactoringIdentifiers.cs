@@ -134,11 +134,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
-        public const string WrapDeclarationInUsingStatement = "WrapDeclarationInUsingStatement";
         public const string WrapExpressionInParentheses = "WrapExpressionInParentheses";
         public const string WrapInIfDirective = "WrapInIfDirective";
         public const string WrapInIfStatement = "WrapInIfStatement";
         public const string WrapInRegion = "WrapInRegion";
         public const string WrapInTryCatch = "WrapInTryCatch";
+        public const string WrapInUsingStatement = "WrapInUsingStatement";
     }
 }

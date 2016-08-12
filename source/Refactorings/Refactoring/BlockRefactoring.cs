@@ -18,12 +18,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RemoveBracesRefactoring.ComputeRefactoring(context, block);
 
             if (context.Settings.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.WrapInUsingStatement,
                 RefactoringIdentifiers.MergeIfStatements,
                 RefactoringIdentifiers.CollapseToInitializer,
                 RefactoringIdentifiers.WrapInIfStatement,
                 RefactoringIdentifiers.WrapInTryCatch))
             {
                 var blockSpan = new BlockSpan(block, context.Span);
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
+                    && context.SupportsSemanticModel
+                    && blockSpan.HasSelectedStatement)
+                {
+                    var refactoring = new WrapInUsingStatementRefactoring();
+                    await refactoring.ComputeRefactoringAsync(context, blockSpan);
+                }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
                     && blockSpan.HasSelectedStatement)

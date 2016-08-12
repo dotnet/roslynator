@@ -419,9 +419,6 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-declaration-in-using-statement">Wrap declaration in using statement</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
         </li>
         <li>
@@ -435,5 +432,8 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-try-catch">Wrap in try-catch</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-using-statement">Wrap in using statement</a>
         </li>
     </ul>

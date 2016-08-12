@@ -93,7 +93,7 @@
     <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactoring\ChangeVariableDeclarationTypeRefactoring.cs" />
     <Compile Include="Refactoring\InitializeLocalWithDefaultValueRefactoring.cs" />
-    <Compile Include="Refactoring\WrapDeclarationInUsingStatementRefactoring.cs" />
+    <Compile Include="Refactoring\WrapInUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactoring\MergeStringLiteralsRefactoring.cs" />
