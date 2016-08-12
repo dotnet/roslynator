@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return conditionalExpression.Condition != null
                 && conditionalExpression.WhenTrue != null
                 && conditionalExpression.WhenFalse != null
-                && conditionalExpression.Condition.Span.Contains(context.Span);
+                && conditionalExpression.Span.Equals(context.Span);
         }
 
         public static async Task<Document> RefactorAsync(

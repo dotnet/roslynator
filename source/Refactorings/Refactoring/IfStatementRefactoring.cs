@@ -10,8 +10,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
+            bool isTopmostIf = IfElseChainAnalysis.IsTopmostIf(ifStatement);
+
             if (ifStatement.IfKeyword.Span.Contains(context.Span)
-                && IfElseChainAnalysis.IsTopmostIf(ifStatement))
+                && isTopmostIf)
             {
                 if (context.Settings.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.AddBracesToIfElse,
@@ -48,20 +50,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             });
                     }
                 }
+            }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
-                    && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
-                {
-                    context.RegisterRefactoring(
-                        "Swap statements",
-                        cancellationToken =>
-                        {
-                            return SwapStatementInIfElseRefactoring.RefactorAsync(
-                                context.Document,
-                                ifStatement,
-                                cancellationToken);
-                        });
-                }
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
+                && isTopmostIf
+                && ifStatement.Span.Equals(context.Span)
+                && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
+            {
+                context.RegisterRefactoring(
+                    "Swap statements",
+                    cancellationToken =>
+                    {
+                        return SwapStatementInIfElseRefactoring.RefactorAsync(
+                            context.Document,
+                            ifStatement,
+                            cancellationToken);
+                    });
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
