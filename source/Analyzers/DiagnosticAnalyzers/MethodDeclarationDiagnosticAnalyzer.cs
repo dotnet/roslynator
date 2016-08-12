@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 if (methodSymbol.IsAsync)
                 {
                     if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
-                        && ContainsAwait(methodDeclaration))
+                        && AsyncAnalysis.ContainsAwait(methodDeclaration))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
@@ -91,16 +91,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
 
             return false;
-        }
-
-        private static bool ContainsAwait(MethodDeclarationSyntax methodDeclaration)
-        {
-            return methodDeclaration
-                .DescendantNodes(node => !node.IsKind(
-                    SyntaxKind.SimpleLambdaExpression,
-                    SyntaxKind.ParenthesizedLambdaExpression,
-                    SyntaxKind.AnonymousMethodExpression))
-                .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
     }
 }

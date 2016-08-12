@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\Analysis\AsyncAnalysis.cs" />
     <Compile Include="CSharp\Analysis\ForStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
