@@ -22,34 +22,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 IMethodSymbol methodSymbol = GetMethodSymbol(invocation, semanticModel, context.CancellationToken);
 
-                MethodDeclarationSyntax method = await GetMethodAsync(methodSymbol, context.CancellationToken);
-
-                if (method != null)
+                if (methodSymbol != null)
                 {
-                    ExpressionSyntax expression = GetMethodExpression(method, context.CancellationToken);
+                    MethodDeclarationSyntax method = await GetMethodAsync(methodSymbol, context.CancellationToken);
 
-                    if (expression != null)
+                    if (method != null)
                     {
-                        List<ParameterInfo> parameterInfos = GetParameterInfos(invocation.ArgumentList, semanticModel, context.CancellationToken);
+                        ExpressionSyntax expression = GetMethodExpression(method, context.CancellationToken);
 
-                        if (parameterInfos != null)
+                        if (expression != null)
                         {
-                            if (methodSymbol.IsReducedExtension())
+                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation.ArgumentList, semanticModel, context.CancellationToken);
+
+                            if (parameterInfos != null)
                             {
-                                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                                if (methodSymbol.IsReducedExtension())
+                                {
+                                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                                parameterInfos.Add(new ParameterInfo(memberAccess.Expression, methodSymbol.ReducedFrom.Parameters[0]));
-                            }
+                                    parameterInfos.Add(new ParameterInfo(memberAccess.Expression, methodSymbol.ReducedFrom.Parameters[0]));
+                                }
 
-                            context.RegisterRefactoring(
-                                "Inline method",
-                                c => InlineAsync(context.Document, invocation, expression, parameterInfos, c));
-
-                            if (!method.Contains(invocation))
-                            {
                                 context.RegisterRefactoring(
-                                    "Inline and remove method",
-                                    c => InlineAndRemoveAsync(context.Document, invocation, method, expression, parameterInfos, c));
+                                    "Inline method",
+                                    c => InlineAsync(context.Document, invocation, expression, parameterInfos, c));
+
+                                if (!method.Contains(invocation))
+                                {
+                                    context.RegisterRefactoring(
+                                        "Inline and remove method",
+                                        c => InlineAndRemoveAsync(context.Document, invocation, method, expression, parameterInfos, c));
+                                }
                             }
                         }
                     }
