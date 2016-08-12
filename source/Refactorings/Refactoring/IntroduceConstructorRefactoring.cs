@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (members?.Count > 0)
                 {
-                    string text = "Introduce constructor from selected member";
+                    string text = "Introduce constructor from declaration";
 
                     if (members.Count > 1)
                         text += "s";

@@ -797,7 +797,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Introduce constructor from selected member(s)")]
+        [DisplayName("Introduce constructor")]
         [Description("Syntax: field, property")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceConstructor

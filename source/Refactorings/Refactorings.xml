@@ -387,7 +387,7 @@
       <Syntax>static/extension method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="IntroduceConstructor" Title="Introduce constructor from selected member(s)" IsEnabledByDefault="false" ExtensionVersion="0.9.40">
+  <Refactoring Id="IntroduceConstructor" Title="Introduce constructor" IsEnabledByDefault="false" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>field</Syntax>
       <Syntax>property</Syntax>

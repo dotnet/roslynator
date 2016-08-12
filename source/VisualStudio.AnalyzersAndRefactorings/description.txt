@@ -281,7 +281,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#inline-method">Inline method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-constructor-from-selected-members">Introduce constructor from selected member(s)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-constructor">Introduce constructor</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-using-static-directive">Introduce using static directive</a>
