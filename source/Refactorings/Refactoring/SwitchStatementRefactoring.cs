@@ -34,25 +34,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && switchStatement.SwitchKeyword.Span.Contains(context.Span))
             {
                 if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection,
-                    RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection))
+                    RefactoringIdentifiers.AddBracesToSwitchSections,
+                    RefactoringIdentifiers.RemoveBracesFromSwitchSections))
                 {
                     SwitchStatementAnalysisResult result = SwitchStatementAnalysis.Analyze(switchStatement);
 
-                    if (result.CanReplaceStatementsWithBlock
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection))
+                    if (result.CanAddBraces
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Replace statements with block (in each section)",
-                            cancellationToken => ReplaceStatementsWithBlockInEachSectionRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                            "Add braces to switch sections",
+                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                     }
 
-                    if (result.CanReplaceBlockWithStatements
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection))
+                    if (result.CanRemoveBraces
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Replace block with statements (in each section)",
-                            cancellationToken => ReplaceBlockWithStatementsInEachSectionRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                            "Remove braces from switch sections",
+                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                     }
                 }
 
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
                 {
                     context.RegisterRefactoring(
-                        "Replace switch with if-else",
+                        "Replace 'switch' with 'if-else'",
                         cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                 }
             }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlock,
+                    DiagnosticDescriptors.AddBraces,
                     DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
                     DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement);
             }
@@ -58,8 +59,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (statement != null)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlock,
-                    statement.GetLocation());
+                    DiagnosticDescriptors.AddBraces,
+                    statement.GetLocation(),
+                    SyntaxHelper.GetNodeTitle(context.Node));
             }
         }
 

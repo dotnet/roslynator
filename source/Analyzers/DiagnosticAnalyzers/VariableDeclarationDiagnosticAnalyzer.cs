@@ -18,9 +18,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceVarWithExplicitType,
-                    DiagnosticDescriptors.ReplaceVarWithExplicitTypeEvenIfObvious,
-                    DiagnosticDescriptors.ReplaceExplicitTypeWithVar);
+                    DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
+                    DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
+                    DiagnosticDescriptors.UseVarInsteadOfExplicitType);
             }
         }
 
@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.ExplicitButShouldBeImplicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.ReplaceExplicitTypeWithVar,
+                            DiagnosticDescriptors.UseVarInsteadOfExplicitType,
                             variableDeclaration.Type.GetLocation());
 
                         break;
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.Implicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.ReplaceVarWithExplicitTypeEvenIfObvious,
+                            DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
                             variableDeclaration.Type.GetLocation());
 
                         break;
@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case TypeAnalysisResult.ImplicitButShouldBeExplicit:
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.ReplaceVarWithExplicitType,
+                            DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
                             variableDeclaration.Type.GetLocation());
 
                         break;

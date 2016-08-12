@@ -15,13 +15,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
         {
-            ReplaceBlockWithEmbeddedStatementRefactoring.ComputeRefactoring(context, block);
+            RemoveBracesRefactoring.ComputeRefactoring(context, block);
 
             if (context.Settings.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.MergeIfStatements,
                 RefactoringIdentifiers.CollapseToInitializer,
-                RefactoringIdentifiers.WrapStatementsInIfStatement,
-                RefactoringIdentifiers.WrapStatementsInTryCatch))
+                RefactoringIdentifiers.WrapInIfStatement,
+                RefactoringIdentifiers.WrapInTryCatch))
             {
                 var blockSpan = new BlockSpan(block, context.Span);
 
@@ -104,13 +104,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                             }
                         }
 
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInIfStatement))
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
                         {
                             context.RegisterRefactoring(
                                 "Wrap in if statement",
                                 cancellationToken =>
                                 {
-                                    var refactoring = new WrapStatementsInIfStatementRefactoring();
+                                    var refactoring = new WrapInIfStatementRefactoring();
 
                                     return refactoring.RefactorAsync(
                                         context.Document,
@@ -120,13 +120,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 });
                         }
 
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInTryCatch))
+                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
                         {
                             context.RegisterRefactoring(
                                 "Wrap in try-catch",
                                 cancellationToken =>
                                 {
-                                    var refactoring = new WrapStatementsInTryCatchRefactoring();
+                                    var refactoring = new WrapInTryCatchRefactoring();
 
                                     return refactoring.RefactorAsync(
                                         context.Document,

@@ -21,8 +21,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.ReplaceVarWithExplicitType,
-                    DiagnosticIdentifiers.ReplaceVarWithExplicitTypeEvenIfObvious);
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious);
             }
         }
 
@@ -45,9 +45,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).Type;
 
                 CodeAction codeAction = CodeAction.Create(
-                    $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                    $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                     cancellationToken => TypeSyntaxRefactoring.ChangeTypeAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken),
-                    DiagnosticIdentifiers.ReplaceVarWithExplicitType + EquivalenceKeySuffix);
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }

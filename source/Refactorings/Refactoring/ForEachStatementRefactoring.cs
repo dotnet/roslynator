@@ -19,8 +19,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     await ChangeTypeAccordingToExpressionAsync(context, forEachStatement).ConfigureAwait(false);
 
                 if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
-                    RefactoringIdentifiers.ReplaceVarWithExplicitType))
+                    RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                    RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
                 }
@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        "Replace foreach with for",
+                        "Replace 'foreach' with 'for'",
                         cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
                 }
             }
@@ -56,21 +56,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (result == TypeAnalysisResult.Explicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                 {
                     context.RegisterRefactoring(
-                        $"Replace '{forEachStatement.Type}' with 'var'",
+                        "Change type to 'var'",
                         cancellationToken => TypeSyntaxRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
                 }
             }
             else if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                     context.RegisterRefactoring(
-                        $"Replace 'var' with '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                         cancellationToken => TypeSyntaxRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
@@ -122,7 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Replace '{forEachStatement.Type}' with '{info.ElementType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            $"Change type to '{info.ElementType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                             cancellationToken =>
                             {
                                 return TypeSyntaxRefactoring.ChangeTypeAsync(

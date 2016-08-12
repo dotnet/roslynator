@@ -6,18 +6,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public const string Prefix = "RCS";
 
-        public const string ReplaceEmbeddedStatementWithBlock = Prefix + "1001";
-        public const string ReplaceBlockWithEmbeddedStatement = Prefix + "1002";
-        public const string ReplaceEmbeddedStatementWithBlockInIfElse = Prefix + "1003";
-        public const string ReplaceBlockWithEmbeddedStatementInIfElse = Prefix + "1004";
+        public const string AddBraces = Prefix + "1001";
+        public const string RemoveBraces = Prefix + "1002";
+        public const string AddBracesToIfElse = Prefix + "1003";
+        public const string RemoveBracesFromIfElse = Prefix + "1004";
         public const string SimplifyNestedUsingStatement = Prefix + "1005";
         public const string SimplifyElseClauseContainingOnlyIfStatement = Prefix + "1006";
         public const string AvoidEmbeddedStatement = Prefix + "1007";
-        public const string ReplaceVarWithExplicitType = Prefix + "1008";
-        public const string ReplaceVarWithExplicitTypeInForEach = Prefix + "1009";
-        public const string ReplaceExplicitTypeWithVar = Prefix + "1010";
-        public const string ReplaceExplicitTypeWithVarInForEach = Prefix + "1011";
-        public const string ReplaceVarWithExplicitTypeEvenIfObvious = Prefix + "1012";
+        public const string UseExplicitTypeInsteadOfVar = Prefix + "1008";
+        public const string UseExplicitTypeInsteadOfVarInForEach = Prefix + "1009";
+        public const string UseVarInsteadOfExplicitType = Prefix + "1010";
+        public const string UseVarInsteadOfExplicitTypeInForEach = Prefix + "1011";
+        public const string UseExplicitTypeInsteadOfVarEvenIfObvious = Prefix + "1012";
         public const string UsePredefinedType = Prefix + "1013";
         public const string AvoidImplicitlyTypedArray = Prefix + "1014";
         public const string UseNameOfOperator = Prefix + "1015";
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string ReplaceForEachWithFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
-        public const string AvoidUsingAliasDirective = Prefix + "1056";
+        public const string AvoidAliasDirective = Prefix + "1056";
         public const string AddEmptyLineBetweenDeclarations = Prefix + "1057";
         public const string SimplifyAssignmentExpression = Prefix + "1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";

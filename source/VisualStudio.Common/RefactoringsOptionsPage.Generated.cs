@@ -13,21 +13,25 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         public RefactoringsOptionsPage()
         {
             AddBooleanComparison = true;
+            AddBraces = true;
+            AddBracesToIfElse = true;
+            AddBracesToSwitchSection = true;
+            AddBracesToSwitchSections = true;
             AddCastExpression = true;
             AddConfigureAwait = true;
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
             AddIdentifierToVariableDeclaration = true;
-            AddIfDirective = true;
             AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
-            AddRegion = true;
             AddUsingDirective = true;
+            ChangeExplicitTypeToVar = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeMethodReturnTypeToVoid = true;
             ChangeTypeAccordingToExpression = true;
+            ChangeVarToExplicitType = true;
             CheckParameterForNull = true;
             CollapseToInitializer = true;
             CommentOutMember = true;
@@ -80,8 +84,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllStatements = true;
             RemoveAllSwitchSections = true;
             RemoveAllXmlComments = false;
+            RemoveBraces = true;
+            RemoveBracesFromIfElse = true;
+            RemoveBracesFromSwitchSection = true;
+            RemoveBracesFromSwitchSections = true;
             RemoveComment = true;
-            RemoveConditionFromLastElseIf = true;
+            RemoveConditionFromLastElse = true;
             RemoveEmptyLines = true;
             RemoveMember = true;
             RemoveMemberDeclarations = true;
@@ -97,22 +105,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RenamePropertyAccordingToTypeName = true;
             ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
-            ReplaceBlockWithEmbeddedStatement = true;
-            ReplaceBlockWithEmbeddedStatementInIfElse = true;
-            ReplaceBlockWithStatementsInEachSwitchSection = true;
             ReplaceBooleanExpressionWithIfStatement = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
             ReplaceCountWithLengthOrLengthWithCount = true;
             ReplaceDoStatementWithWhileStatement = true;
-            ReplaceEmbeddedStatementWithBlock = true;
-            ReplaceEmbeddedStatementWithBlockInIfElse = true;
             ReplaceEmptyStringLiteralWithStringEmpty = true;
-            ReplaceEnumHasFlagWithBitwiseOperation = true;
-            ReplaceExplicitTypeWithVar = true;
             ReplaceFieldWithConstant = true;
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
+            ReplaceHasFlagWithBitwiseOperation = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
@@ -120,15 +122,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
-            ReplaceStatementsWithBlockInEachSwitchSection = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceStringLiteralWithCharacterLiteral = true;
             ReplaceStringLiteralWithInterpolatedString = true;
-            ReplaceSwitchSectionBlockWithStatements = true;
-            ReplaceSwitchSectionStatementsWithBlock = true;
             ReplaceSwitchWithIfElse = true;
-            ReplaceVarWithExplicitType = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiteral = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiterals = true;
             ReplaceWhileStatementWithDoStatement = true;
@@ -144,28 +142,34 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             UseExpressionBodiedMember = true;
             WrapDeclarationInUsingStatement = true;
             WrapExpressionInParentheses = true;
-            WrapStatementsInIfStatement = true;
-            WrapStatementsInTryCatch = true;
+            WrapInIfDirective = true;
+            WrapInIfStatement = true;
+            WrapInRegion = true;
+            WrapInTryCatch = true;
         }
 
         public void Apply()
         {
             SetIsEnabled(RefactoringIdentifiers.AddBooleanComparison, AddBooleanComparison);
+            SetIsEnabled(RefactoringIdentifiers.AddBraces, AddBraces);
+            SetIsEnabled(RefactoringIdentifiers.AddBracesToIfElse, AddBracesToIfElse);
+            SetIsEnabled(RefactoringIdentifiers.AddBracesToSwitchSection, AddBracesToSwitchSection);
+            SetIsEnabled(RefactoringIdentifiers.AddBracesToSwitchSections, AddBracesToSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.AddCastExpression, AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddConfigureAwait, AddConfigureAwait);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
-            SetIsEnabled(RefactoringIdentifiers.AddIfDirective, AddIfDirective);
             SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
-            SetIsEnabled(RefactoringIdentifiers.AddRegion, AddRegion);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
+            SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
+            SetIsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType, ChangeVarToExplicitType);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
             SetIsEnabled(RefactoringIdentifiers.CollapseToInitializer, CollapseToInitializer);
             SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
@@ -218,8 +222,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllStatements, RemoveAllStatements);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
+            SetIsEnabled(RefactoringIdentifiers.RemoveBraces, RemoveBraces);
+            SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse, RemoveBracesFromIfElse);
+            SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection, RemoveBracesFromSwitchSection);
+            SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections, RemoveBracesFromSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
-            SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf, RemoveConditionFromLastElseIf);
+            SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse, RemoveConditionFromLastElse);
             SetIsEnabled(RefactoringIdentifiers.RemoveEmptyLines, RemoveEmptyLines);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
@@ -235,22 +243,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, RenamePropertyAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatement, ReplaceBlockWithEmbeddedStatement);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse, ReplaceBlockWithEmbeddedStatementInIfElse);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceBlockWithStatementsInEachSwitchSection, ReplaceBlockWithStatementsInEachSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement, ReplaceBooleanExpressionWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
             SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
             SetIsEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement, ReplaceDoStatementWithWhileStatement);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlock, ReplaceEmbeddedStatementWithBlock);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse, ReplaceEmbeddedStatementWithBlockInIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceEnumHasFlagWithBitwiseOperation, ReplaceEnumHasFlagWithBitwiseOperation);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar, ReplaceExplicitTypeWithVar);
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
@@ -258,15 +260,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementsWithBlockInEachSwitchSection, ReplaceStatementsWithBlockInEachSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, ReplaceStringLiteralWithCharacterLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString, ReplaceStringLiteralWithInterpolatedString);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchSectionBlockWithStatements, ReplaceSwitchSectionBlockWithStatements);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchSectionStatementsWithBlock, ReplaceSwitchSectionStatementsWithBlock);
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse, ReplaceSwitchWithIfElse);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType, ReplaceVarWithExplicitType);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, ReplaceVerbatimStringLiteralWithRegularStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, ReplaceVerbatimStringLiteralWithRegularStringLiterals);
             SetIsEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement, ReplaceWhileStatementWithDoStatement);
@@ -282,8 +280,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
             SetIsEnabled(RefactoringIdentifiers.WrapDeclarationInUsingStatement, WrapDeclarationInUsingStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapExpressionInParentheses, WrapExpressionInParentheses);
-            SetIsEnabled(RefactoringIdentifiers.WrapStatementsInIfStatement, WrapStatementsInIfStatement);
-            SetIsEnabled(RefactoringIdentifiers.WrapStatementsInTryCatch, WrapStatementsInTryCatch);
+            SetIsEnabled(RefactoringIdentifiers.WrapInIfDirective, WrapInIfDirective);
+            SetIsEnabled(RefactoringIdentifiers.WrapInIfStatement, WrapInIfStatement);
+            SetIsEnabled(RefactoringIdentifiers.WrapInRegion, WrapInRegion);
+            SetIsEnabled(RefactoringIdentifiers.WrapInTryCatch, WrapInTryCatch);
         }
 
         [Category(RefactoringCategory)]
@@ -291,6 +291,46 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: boolean? expression in place where must be boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddBooleanComparison
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add braces")]
+        [Description("Syntax: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement\r\nScope: embedded statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddBraces
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add braces to if-else")]
+        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddBracesToIfElse
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add braces to switch section")]
+        [Description("Syntax: switch section\r\nScope: statements")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddBracesToSwitchSection
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add braces to switch sections")]
+        [Description("Syntax: switch statement\r\nScope: switch keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddBracesToSwitchSections
         {
             get;
             set;
@@ -347,16 +387,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add #if directive")]
-        [Description("Syntax: selected lines")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddIfDirective
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Add interpolation")]
         [Description("Syntax: selected text inside interpolated string text")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -387,20 +417,20 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add region")]
-        [Description("Syntax: selected lines")]
+        [DisplayName("Add using directive")]
+        [Description("Syntax: qualified name\r\nScope: selected namespace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddRegion
+        public bool AddUsingDirective
         {
             get;
             set;
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add using directive")]
-        [Description("Syntax: qualified name\r\nScope: selected namespace")]
+        [DisplayName("Change explicit type to 'var'")]
+        [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddUsingDirective
+        public bool ChangeExplicitTypeToVar
         {
             get;
             set;
@@ -441,6 +471,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeTypeAccordingToExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Change 'var' to explicit type")]
+        [Description("Syntax: variable declaration, foreach statetement\r\nScope: type")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ChangeVarToExplicitType
         {
             get;
             set;
@@ -638,7 +678,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Extract generic type")]
-        [Description("Syntax: generic name (with single type argument)\r\nScope: type argument")]
+        [Description("Syntax: generic name with single type argument\r\nScope: type argument")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExtractGenericType
         {
@@ -967,6 +1007,46 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Remove braces")]
+        [Description("Syntax: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement\r\nScope: block with a single statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveBraces
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove braces from if-else")]
+        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveBracesFromIfElse
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove braces from switch section")]
+        [Description("Syntax: switch section\r\nScope: block")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveBracesFromSwitchSection
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove braces from switch sections")]
+        [Description("Syntax: switch statement\r\nScope: switch keyword")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveBracesFromSwitchSections
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Remove comment")]
         [Description("Syntax: singleline/multiline comment, singleline/multiline xml documentation comment")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -977,10 +1057,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove condition from last else-if")]
+        [DisplayName("Remove condition from last else")]
         [Description("Syntax: else clause\r\nScope: else keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemoveConditionFromLastElseIf
+        public bool RemoveConditionFromLastElse
         {
             get;
             set;
@@ -1058,7 +1138,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Remove statements from switch sections")]
-        [Description("Syntax: switch statement\r\nScope: selected sections")]
+        [Description("Syntax: selected switch sections")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveStatementsFromSwitchSections
         {
@@ -1068,7 +1148,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Rename backing field according to property name")]
-        [Description("Syntax: backing field\r\nScope: property declaration")]
+        [Description("Syntax: field identifier inside property declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RenameBackingFieldAccordingToPropertyName
         {
@@ -1137,37 +1217,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace block with embedded statement")]
-        [Description("Syntax: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement\r\nScope: block with a single statement")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceBlockWithEmbeddedStatement
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace block with embedded statement (in if-else)")]
-        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceBlockWithEmbeddedStatementInIfElse
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace block with statements in each switch section")]
-        [Description("Syntax: switch statement\r\nScope: switch keyword")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceBlockWithStatementsInEachSwitchSection
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace return statement with if statement")]
+        [DisplayName("Replace boolean expression with if statement")]
         [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceBooleanExpressionWithIfStatement
@@ -1207,30 +1257,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace do statement with while statement")]
+        [DisplayName("Replace 'do' statement with 'while' statement")]
         [Description("Syntax: do statement\r\nScope: do keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceDoStatementWithWhileStatement
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace embedded statement with block")]
-        [Description("Syntax: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement\r\nScope: embedded statement")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceEmbeddedStatementWithBlock
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace embedded statement with block (in if-else)")]
-        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceEmbeddedStatementWithBlockInIfElse
         {
             get;
             set;
@@ -1247,26 +1277,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace Enum.HasFlag method with bitwise operation")]
-        [Description("Syntax: Enum.HasFlag method invocation")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceEnumHasFlagWithBitwiseOperation
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace explicit type with 'var'")]
-        [Description("Syntax: variable declaration, foreach statement\r\nScope: type")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceExplicitTypeWithVar
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Replace field with constant")]
         [Description("Syntax: read-only field")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1277,7 +1287,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace foreach with for")]
+        [DisplayName("Replace 'foreach' with 'for'")]
         [Description("Syntax: foreach statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceForEachWithFor
@@ -1287,10 +1297,20 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace for with foreach")]
+        [DisplayName("Replace 'for' with 'foreach'")]
         [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceForWithForEach
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace 'HasFlag' with bitwise operation")]
+        [Description("Syntax: Enum.HasFlag method invocation")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceHasFlagWithBitwiseOperation
         {
             get;
             set;
@@ -1367,17 +1387,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace statements with block in each switch section")]
-        [Description("Syntax: switch statement\r\nScope: switch keyword")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceStatementsWithBlockInEachSwitchSection
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace string.Empty with \"\"")]
+        [DisplayName("Replace 'string.Empty' with \"\"")]
         [Description("Syntax: string.Empty")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringEmptyWithEmptyStringLiteral
@@ -1387,7 +1397,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace string.Format with interpolated string")]
+        [DisplayName("Replace 'string.Format' with interpolated string")]
         [Description("Syntax: string.Format method")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringFormatWithInterpolatedString
@@ -1417,40 +1427,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace switch section block with statements")]
-        [Description("Syntax: switch section\r\nScope: block")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceSwitchSectionBlockWithStatements
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace switch section statements with block")]
-        [Description("Syntax: switch section\r\nScope: statements")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceSwitchSectionStatementsWithBlock
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace switch with if-else")]
+        [DisplayName("Replace 'switch' with 'if-else'")]
         [Description("Syntax: switch statement\r\nScope: switch keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceSwitchWithIfElse
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace 'var' with explicit type")]
-        [Description("Syntax: variable declaration, foreach statetement\r\nScope: type")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceVarWithExplicitType
         {
             get;
             set;
@@ -1477,7 +1457,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace while statement with do statement")]
+        [DisplayName("Replace 'while' statement with 'do' statement")]
         [Description("Syntax: while statement\r\nScope: while keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceWhileStatementWithDoStatement
@@ -1487,7 +1467,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Reverse for loop")]
+        [DisplayName("Reverse 'for' loop")]
         [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReverseForLoop
@@ -1607,20 +1587,40 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap statements in if statement")]
-        [Description("Syntax: selected statements")]
+        [DisplayName("Wrap in #if directive")]
+        [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool WrapStatementsInIfStatement
+        public bool WrapInIfDirective
         {
             get;
             set;
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap statements in try-catch")]
+        [DisplayName("Wrap in if statement")]
         [Description("Syntax: selected statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool WrapStatementsInTryCatch
+        public bool WrapInIfStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Wrap in region")]
+        [Description("Syntax: selected lines")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool WrapInRegion
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Wrap in try-catch")]
+        [Description("Syntax: selected statements")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool WrapInTryCatch
         {
             get;
             set;

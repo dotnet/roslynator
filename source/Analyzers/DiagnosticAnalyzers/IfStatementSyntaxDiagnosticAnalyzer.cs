@@ -18,9 +18,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
-                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
-                    DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElseFadeOut,
+                    DiagnosticDescriptors.AddBracesToIfElse,
+                    DiagnosticDescriptors.RemoveBracesFromIfElse,
+                    DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
                     DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
@@ -50,20 +50,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 var result = new IfElseChainAnalysisResult(ifStatement);
 
-                if (result.ReplaceEmbeddedStatementWithBlock)
+                if (result.AddBraces)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.ReplaceEmbeddedStatementWithBlockInIfElse,
+                        DiagnosticDescriptors.AddBracesToIfElse,
                         ifStatement.GetLocation());
                 }
 
-                if (result.ReplaceBlockWithEmbeddedStatement)
+                if (result.RemoveBraces)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElse,
+                        DiagnosticDescriptors.RemoveBracesFromIfElse,
                         ifStatement.GetLocation());
 
-                    ReplaceBlockWithEmbeddedStatementInIfElseFadeOut(context, ifStatement);
+                    RemoveBracesFromIfElseFadeOut(context, ifStatement);
                 }
             }
 
@@ -72,14 +72,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
         }
 
-        private static void ReplaceBlockWithEmbeddedStatementInIfElseFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        private static void RemoveBracesFromIfElseFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
             foreach (SyntaxNode node in ifStatement.DescendantNodes())
             {
                 if (node.IsKind(SyntaxKind.Block))
                 {
                     context.FadeOutBraces(
-                        DiagnosticDescriptors.ReplaceBlockWithEmbeddedStatementInIfElseFadeOut,
+                        DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut,
                         (BlockSyntax)node);
                 }
             }

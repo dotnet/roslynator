@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             return new SwitchStatementAnalysisResult(switchStatement);
         }
 
-        public static bool CanReplaceStatementsWithBlock(SwitchSectionSyntax section)
+        public static bool CanAddBraces(SwitchSectionSyntax section)
         {
             if (section == null)
                 throw new ArgumentNullException(nameof(section));
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             }
         }
 
-        public static bool CanReplaceBlockWithStatements(SwitchSectionSyntax section)
+        public static bool CanRemoveBraces(SwitchSectionSyntax section)
         {
             if (section == null)
                 throw new ArgumentNullException(nameof(section));

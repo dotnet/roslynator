@@ -87,7 +87,7 @@
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ConvertForEachToForCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceForEachWithForCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEnumDefaultBaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InitializerCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ElseClauseCodeFixProvider.cs" />
@@ -138,11 +138,11 @@
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
-    <Compile Include="Refactoring\ReplaceEmbeddedStatementWithBlockRefactoring.cs" />
+    <Compile Include="Refactoring\AddBracesRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactoring\FormatStatementOnNextLineRefactoring.cs" />
     <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring.cs" />
+    <Compile Include="Refactoring\RemoveBracesFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
@@ -180,8 +180,8 @@
     <Compile Include="CodeFixProviders\ReorderModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ChangeForEachDeclaredTypeToExplicitCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\SpecifyImplicitTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeInForEachCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceExplicitTypeWithVarCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\SimpleMemberAccessExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArgumentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingStatementDiagnosticAnalyzer.cs" />
@@ -201,16 +201,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="DiagnosticAnalyzers\BlockThatCanBeEmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\ReplaceBlockWithEmbeddedStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveBracesCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\VariableDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\ReplaceEmbeddedStatementWithBlockCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceBlockWithEmbeddedStatementInIfElseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AddBracesCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveBracesFromIfElseCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\FieldSymbolDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\ReplaceEmbeddedStatementWithBlockInIfElseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AddBracesToIfElseCodeFixProvider.cs" />
+    <Compile Include="SyntaxHelper.cs" />
     <Compile Include="TokenPair.cs" />
   </ItemGroup>
   <ItemGroup>

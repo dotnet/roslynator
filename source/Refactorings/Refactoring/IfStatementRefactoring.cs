@@ -14,34 +14,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && IfElseChainAnalysis.IsTopmostIf(ifStatement))
             {
                 if (context.Settings.IsAnyRefactoringEnabled(
-                        RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse,
-                        RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse)
+                        RefactoringIdentifiers.AddBracesToIfElse,
+                        RefactoringIdentifiers.RemoveBracesFromIfElse)
                     && ifStatement.Else != null)
                 {
                     var result = new IfElseChainAnalysisResult(ifStatement);
 
-                    if (result.ReplaceEmbeddedStatementWithBlock
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse))
+                    if (result.AddBraces
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
                     {
                         context.RegisterRefactoring(
-                            "Replace embedded statement with block (in if-else)",
+                            "Add braces to if-else",
                             cancellationToken =>
                             {
-                                return ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.RefactorAsync(
+                                return AddBracesToIfElseRefactoring.RefactorAsync(
                                     context.Document,
                                     ifStatement,
                                     cancellationToken);
                             });
                     }
 
-                    if (result.ReplaceBlockWithEmbeddedStatement
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse))
+                    if (result.RemoveBraces
+                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
                     {
                         context.RegisterRefactoring(
-                            "Replace block with embedded statement (in if-else)",
+                            "Remove braces from if-else",
                             cancellationToken =>
                             {
-                                return ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.RefactorAsync(
+                                return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
                                     context.Document,
                                     ifStatement,
                                     cancellationToken);

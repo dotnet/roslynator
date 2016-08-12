@@ -5,6 +5,38 @@
       <Syntax>boolean? expression in place where must be boolean expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="AddBraces" Title="Add braces" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>else clause</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>embedded statement</Scope>
+  </Refactoring>
+  <Refactoring Id="AddBracesToIfElse" Title="Add braces to if-else" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>if-else chain</Syntax>
+    </Syntaxes>
+    <Scope>topmost if keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="AddBracesToSwitchSection" Title="Add braces to switch section" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+    <Scope>statements</Scope>
+  </Refactoring>
+  <Refactoring Id="AddBracesToSwitchSections" Title="Add braces to switch sections" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>switch keyword</Scope>
+  </Refactoring>
   <Refactoring Id="AddCastExpression" Title="Add cast expression" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>argument</Syntax>
@@ -41,11 +73,6 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddIfDirective" Title="Add #if directive" ExtensionVersion="0.97.0">
-    <Syntaxes>
-      <Syntax>selected lines</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.9.80">
     <Syntaxes>
       <Syntax>selected text inside interpolated string text</Syntax>
@@ -61,11 +88,6 @@
       <Syntax>parameter</Syntax>
     </Syntaxes>
     <Scope>missing identifier</Scope>
-  </Refactoring>
-  <Refactoring Id="AddRegion" Title="Add region" ExtensionVersion="0.97.0">
-    <Syntaxes>
-      <Syntax>selected lines</Syntax>
-    </Syntaxes>
   </Refactoring>
   <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.97.0">
     <Syntaxes>
@@ -217,7 +239,7 @@
   </Refactoring>
   <Refactoring Id="ExtractGenericType" Title="Extract generic type" ExtensionVersion="0.9.0">
     <Syntaxes>
-      <Syntax>generic name (with single type argument)</Syntax>
+      <Syntax>generic name with single type argument</Syntax>
     </Syntaxes>
     <Scope>type argument</Scope>
   </Refactoring>
@@ -308,6 +330,13 @@
       <Syntax>switch statement (that is empty or contains only default section)</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ChangeExplicitTypeToVar" Title="Change explicit type to 'var'" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>variable declaration</Syntax>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+    <Scope>type</Scope>
+  </Refactoring>
   <Refactoring Id="ChangeMemberTypeAccordingToReturnExpression" Title="Change method/property/indexer type according to return expression" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>return statement in method/property/indexer</Syntax>
@@ -333,6 +362,13 @@
       <Image>ChangeTypeAccordingToExpression</Image>
       <Image>ChangeForEachTypeAccordingToExpression</Image>
     </Images>
+  </Refactoring>
+  <Refactoring Id="ChangeVarToExplicitType" Title="Change 'var' to explicit type" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>variable declaration</Syntax>
+      <Syntax>foreach statetement</Syntax>
+    </Syntaxes>
+    <Scope>type</Scope>
   </Refactoring>
   <Refactoring Id="CheckParameterForNull" Title="Check parameter for null" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -477,13 +513,45 @@
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveBraces" Title="Remove braces" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>do statement</Syntax>
+      <Syntax>else clause</Syntax>
+      <Syntax>fixed statement</Syntax>
+      <Syntax>for statement</Syntax>
+      <Syntax>foreach statement</Syntax>
+      <Syntax>if statement</Syntax>
+      <Syntax>lock statement</Syntax>
+      <Syntax>using statement</Syntax>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+    <Scope>block with a single statement</Scope>
+  </Refactoring>
+  <Refactoring Id="RemoveBracesFromIfElse" Title="Remove braces from if-else" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>if-else chain</Syntax>
+    </Syntaxes>
+    <Scope>topmost if keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="RemoveBracesFromSwitchSection" Title="Remove braces from switch section" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+    <Scope>block</Scope>
+  </Refactoring>
+  <Refactoring Id="RemoveBracesFromSwitchSections" Title="Remove braces from switch sections" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>switch statement</Syntax>
+    </Syntaxes>
+    <Scope>switch keyword</Scope>
+  </Refactoring>
   <Refactoring Id="RemoveComment" Title="Remove comment" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveConditionFromLastElseIf" Title="Remove condition from last else-if" ExtensionVersion="0.91.0">
+  <Refactoring Id="RemoveConditionFromLastElse" Title="Remove condition from last else" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>else clause</Syntax>
     </Syntaxes>
@@ -549,15 +617,13 @@
   </Refactoring>
   <Refactoring Id="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections" ExtensionVersion="0.95.0">
     <Syntaxes>
-      <Syntax>switch statement</Syntax>
+      <Syntax>selected switch sections</Syntax>
     </Syntaxes>
-    <Scope>selected sections</Scope>
   </Refactoring>
   <Refactoring Id="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name" ExtensionVersion="0.9.0">
     <Syntaxes>
-      <Syntax>backing field</Syntax>
+      <Syntax>field identifier inside property declaration</Syntax>
     </Syntaxes>
-    <Scope>property declaration</Scope>
   </Refactoring>
   <Refactoring Id="RenameIdentifierAccordingToTypeName" Title="Rename identifier according to type name" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -598,33 +664,7 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceBlockWithEmbeddedStatement" Title="Replace block with embedded statement" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>do statement</Syntax>
-      <Syntax>else clause</Syntax>
-      <Syntax>fixed statement</Syntax>
-      <Syntax>for statement</Syntax>
-      <Syntax>foreach statement</Syntax>
-      <Syntax>if statement</Syntax>
-      <Syntax>lock statement</Syntax>
-      <Syntax>using statement</Syntax>
-      <Syntax>while statement</Syntax>
-    </Syntaxes>
-    <Scope>block with a single statement</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceBlockWithEmbeddedStatementInIfElse" Title="Replace block with embedded statement (in if-else)" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>if-else chain</Syntax>
-    </Syntaxes>
-    <Scope>topmost if keyword</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceBlockWithStatementsInEachSwitchSection" Title="Replace block with statements in each switch section" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>switch statement</Syntax>
-    </Syntaxes>
-    <Scope>switch keyword</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceBooleanExpressionWithIfStatement" Title="Replace return statement with if statement" ExtensionVersion="0.94.0">
+  <Refactoring Id="ReplaceBooleanExpressionWithIfStatement" Title="Replace boolean expression with if statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
@@ -648,62 +688,35 @@
     </Syntaxes>
     <Scope>name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace 'do' statement with 'while' statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
     <Scope>do keyword</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceEmbeddedStatementWithBlock" Title="Replace embedded statement with block" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>do statement</Syntax>
-      <Syntax>else clause</Syntax>
-      <Syntax>fixed statement</Syntax>
-      <Syntax>for statement</Syntax>
-      <Syntax>foreach statement</Syntax>
-      <Syntax>if statement</Syntax>
-      <Syntax>lock statement</Syntax>
-      <Syntax>using statement</Syntax>
-      <Syntax>while statement</Syntax>
-    </Syntaxes>
-    <Scope>embedded statement</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceEmbeddedStatementWithBlockInIfElse" Title="Replace embedded statement with block (in if-else)" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>if-else chain</Syntax>
-    </Syntaxes>
-    <Scope>topmost if keyword</Scope>
   </Refactoring>
   <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with string.Empty" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceEnumHasFlagWithBitwiseOperation" Title="Replace Enum.HasFlag method with bitwise operation" ExtensionVersion="0.91.0">
-    <Syntaxes>
-      <Syntax>Enum.HasFlag method invocation</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="ReplaceExplicitTypeWithVar" Title="Replace explicit type with 'var'" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>variable declaration</Syntax>
-      <Syntax>foreach statement</Syntax>
-    </Syntaxes>
-    <Scope>type</Scope>
-  </Refactoring>
   <Refactoring Id="ReplaceFieldWithConstant" Title="Replace field with constant" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>read-only field</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceForEachWithFor" Title="Replace foreach with for" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceForEachWithFor" Title="Replace 'foreach' with 'for'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceForWithForEach" Title="Replace for with foreach" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceForWithForEach" Title="Replace 'for' with 'foreach'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>for statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="ReplaceHasFlagWithBitwiseOperation" Title="Replace 'HasFlag' with bitwise operation" ExtensionVersion="0.91.0">
+    <Syntaxes>
+      <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceIncrementOperatorWithDecrementOperator" Title="Replace increment operator with decrement operator" ExtensionVersion="0.9.0">
@@ -744,18 +757,12 @@
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceStatementsWithBlockInEachSwitchSection" Title="Replace statements with block in each switch section" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>switch statement</Syntax>
-    </Syntaxes>
-    <Scope>switch keyword</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace string.Empty with &quot;&quot;" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace 'string.Empty' with &quot;&quot;" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>string.Empty</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceStringFormatWithInterpolatedString" Title="Replace string.Format with interpolated string" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceStringFormatWithInterpolatedString" Title="Replace 'string.Format' with interpolated string" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>string.Format method</Syntax>
     </Syntaxes>
@@ -770,30 +777,11 @@
       <Syntax>string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceSwitchSectionBlockWithStatements" Title="Replace switch section block with statements" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>switch section</Syntax>
-    </Syntaxes>
-    <Scope>block</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceSwitchSectionStatementsWithBlock" Title="Replace switch section statements with block" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>switch section</Syntax>
-    </Syntaxes>
-    <Scope>statements</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceSwitchWithIfElse" Title="Replace switch with if-else" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceSwitchWithIfElse" Title="Replace 'switch' with 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Scope>switch keyword</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceVarWithExplicitType" Title="Replace 'var' with explicit type" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>variable declaration</Syntax>
-      <Syntax>foreach statetement</Syntax>
-    </Syntaxes>
-    <Scope>type</Scope>
   </Refactoring>
   <Refactoring Id="ReplaceVerbatimStringLiteralWithRegularStringLiteral" Title="Replace verbatim string literal with regular string literal" ExtensionVersion="0.9.60">
     <Syntaxes>
@@ -805,13 +793,13 @@
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace 'while' statement with 'do' statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
     <Scope>while keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReverseForLoop" Title="Reverse for loop" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReverseForLoop" Title="Reverse 'for' loop" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
@@ -881,12 +869,22 @@
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapStatementsInIfStatement" Title="Wrap statements in if statement" ExtensionVersion="0.94.0">
+  <Refactoring Id="WrapInIfDirective" Title="Wrap in #if directive" ExtensionVersion="0.97.0">
+    <Syntaxes>
+      <Syntax>selected lines</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="WrapInIfStatement" Title="Wrap in if statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapStatementsInTryCatch" Title="Wrap statements in try-catch" ExtensionVersion="0.94.0">
+  <Refactoring Id="WrapInRegion" Title="Wrap in region" ExtensionVersion="0.97.0">
+    <Syntaxes>
+      <Syntax>selected lines</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="WrapInTryCatch" Title="Wrap in try-catch" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>

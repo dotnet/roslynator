@@ -12,16 +12,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElseIf)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)
                 && elseClause.ElseKeyword.Span.Contains(context.Span)
                 && elseClause.Statement?.IsKind(SyntaxKind.IfStatement) == true
                 && ((IfStatementSyntax)elseClause.Statement).Else == null)
             {
                 context.RegisterRefactoring(
-                    "Remove  condition",
+                    "Remove condition",
                     cancellationToken =>
                     {
-                        return RemoveConditionFromLastElseIfAsync(
+                        return RemoveConditionFromLastElseAsync(
                             context.Document,
                             elseClause,
                             cancellationToken);
@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
         }
 
-        private static async Task<Document> RemoveConditionFromLastElseIfAsync(
+        private static async Task<Document> RemoveConditionFromLastElseAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken = default(CancellationToken))

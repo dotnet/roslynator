@@ -6,45 +6,45 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class DiagnosticDescriptors
     {
-        public static readonly DiagnosticDescriptor ReplaceEmbeddedStatementWithBlock = new DiagnosticDescriptor(
-             id: DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlock,
-             title: "Replace embedded statement with block.",
-             messageFormat: "Consider replacing embedded statement with block.",
+        public static readonly DiagnosticDescriptor AddBraces = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddBraces,
+             title: "Add braces.",
+             messageFormat: "Consider adding braces to {0}.",
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
          );
 
-        public static readonly DiagnosticDescriptor ReplaceBlockWithEmbeddedStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatement,
-            title: "Replace block with embedded statement.",
-            messageFormat: "Consider replacing block with embedded statement.",
+        public static readonly DiagnosticDescriptor RemoveBraces = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveBraces,
+            title: "Remove braces.",
+            messageFormat: "Consider removing braces from {0}.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceBlockWithEmbeddedStatementFadeOut = ReplaceBlockWithEmbeddedStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor RemoveBracesFadeOut = RemoveBraces.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor ReplaceEmbeddedStatementWithBlockInIfElse = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceEmbeddedStatementWithBlockInIfElse,
-            title: "Replace embedded statement with block (in if-else).",
-            messageFormat: "Consider replacing embedded statement with block (in if-else).",
+        public static readonly DiagnosticDescriptor AddBracesToIfElse = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddBracesToIfElse,
+            title: "Add braces to if-else.",
+            messageFormat: "Consider adding braces to if-else.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceBlockWithEmbeddedStatementInIfElse = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceBlockWithEmbeddedStatementInIfElse,
-            title: "Replace block with embedded statement (in if-else).",
-            messageFormat: "Consider replacing block with embedded statement (in if-else).",
+        public static readonly DiagnosticDescriptor RemoveBracesFromIfElse = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveBracesFromIfElse,
+            title: "Remove braces from if-else.",
+            messageFormat: "Consider removing braces from if-else.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceBlockWithEmbeddedStatementInIfElseFadeOut = ReplaceBlockWithEmbeddedStatementInIfElse.CreateFadeOut();
+        public static readonly DiagnosticDescriptor RemoveBracesFromIfElseFadeOut = RemoveBracesFromIfElse.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor SimplifyNestedUsingStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.SimplifyNestedUsingStatement,
@@ -71,46 +71,46 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor AvoidEmbeddedStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidEmbeddedStatement,
             title: "Avoid embedded statement.",
-            messageFormat: "Consider replacing embedded statement with block.",
+            messageFormat: "Consider adding braces to {0}.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor ReplaceVarWithExplicitType = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceVarWithExplicitType,
-            title: "Replace 'var' with explicit type (when the type is not obvious).",
-            messageFormat: "Consider replacing 'var' with explicit type (when the type is not obvious).",
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVar = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
+            title: "Use explicit type instead of 'var' (when the type is not obvious).",
+            messageFormat: "Consider using explicit type instead of 'var' (when the type is not obvious).",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor ReplaceVarWithExplicitTypeInForEach = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceVarWithExplicitTypeInForEach,
-            title: "Replace 'var' with explicit type (in foreach).",
-            messageFormat: "Consider replacing 'var' with explicit type (in foreach).",
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach,
+            title: "Use explicit type instead of 'var' (in 'foreach').",
+            messageFormat: "Consider using explicit type instead of 'var'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor ReplaceExplicitTypeWithVar = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceExplicitTypeWithVar,
-            title: "Replace explicit type with 'var' (when the type is obvious).",
-            messageFormat: "Consider replacing explicit type with 'var' (when the type is obvious).",
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitType = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseVarInsteadOfExplicitType,
+            title: "Use 'var' instead of explicit type (when the type is obvious).",
+            messageFormat: "Consider using 'var' instead of explicit type (when the type is obvious).",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor ReplaceVarWithExplicitTypeEvenIfObvious = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceVarWithExplicitTypeEvenIfObvious,
-            title: "Replace 'var' with explicit type (even if the type is obvious).",
-            messageFormat: "Consider replacing 'var' with explicit type (even if the type is obvious).",
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarEvenIfObvious = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious,
+            title: "Use explicit type instead of 'var' (even if the type is obvious).",
+            messageFormat: "Consider using explicit type instead of 'var' (even if the type is obvious).",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false,
@@ -511,8 +511,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor ReplaceForEachWithFor = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.ReplaceForEachWithFor,
-            title: "Replace foreach with for.",
-            messageFormat: "Consider replacing foreach with for.",
+            title: "Replace 'foreach' with 'for'.",
+            messageFormat: "Consider replacing 'foreach' with 'for'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
@@ -541,10 +541,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor AvoidUsingAliasDirective = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AvoidUsingAliasDirective,
-            title: "Avoid using alias directive.",
-            messageFormat: "Avoid using alias directive.", //TODO: improve messageFormat for AvoidUsingAliasDirective
+        public static readonly DiagnosticDescriptor AvoidAliasDirective = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidAliasDirective,
+            title: "Avoid alias directive.",
+            messageFormat: "Avoid alias directive.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false

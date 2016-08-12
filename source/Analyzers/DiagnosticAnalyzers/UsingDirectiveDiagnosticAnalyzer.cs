@@ -9,12 +9,12 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
-    //TODO: code fix for AvoidUsingAliasDirective
+    //TODO: code fix for AvoidAliasDirective
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UsingDirectiveDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidUsingAliasDirective);
+            => ImmutableArray.Create(DiagnosticDescriptors.AvoidAliasDirective);
 
         public override void Initialize(AnalysisContext context)
         {
@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (usingDirective.Alias != null)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidUsingAliasDirective,
+                    DiagnosticDescriptors.AvoidAliasDirective,
                     usingDirective.GetLocation());
             }
         }

@@ -41,7 +41,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             StatementSyntax statement = EmbeddedStatementAnalysis.GetEmbeddedStatement(context.Node);
 
             if (statement != null)
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidEmbeddedStatement, statement.GetLocation());
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AvoidEmbeddedStatement,
+                    statement.GetLocation(),
+                    SyntaxHelper.GetNodeTitle(context.Node));
+            }
         }
     }
 }

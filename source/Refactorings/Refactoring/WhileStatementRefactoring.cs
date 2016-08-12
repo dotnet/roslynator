@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && (whileStatement.WhileKeyword.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(
-                    "Replace while statement with do statement",
+                    "Replace 'while' statement with 'do' statement",
                     cancellationToken =>
                     {
                         return ReplaceWhileStatementWithDoStatementRefactoring.RefactorAsync(

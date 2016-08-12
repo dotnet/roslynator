@@ -8,20 +8,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchSectionStatementsWithBlock)
-                && ReplaceSwitchSectionStatementsWithBlockRefactoring.CanRefactor(switchSection))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSection)
+                && AddBracesToSwitchSectionRefactoring.CanRefactor(switchSection))
             {
                 context.RegisterRefactoring(
-                    "Replace statements with block",
-                    cancellationToken => ReplaceSwitchSectionStatementsWithBlockRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                    "Add braces to switch section",
+                    cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchSectionBlockWithStatements)
-                && ReplaceSwitchSectionBlockWithStatementsRefactoring.CanRefactor(context, switchSection))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection)
+                && RemoveBracesFromSwitchSectionRefactoring.CanRefactor(context, switchSection))
             {
                 context.RegisterRefactoring(
-                    "Replace block with statements",
-                    cancellationToken => ReplaceSwitchSectionBlockWithStatementsRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                    "Remove braces from switch section",
+                    cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
         }
     }

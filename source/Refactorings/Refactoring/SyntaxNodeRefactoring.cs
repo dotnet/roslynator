@@ -9,14 +9,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddRegion)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion)
                 && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
-                   "Add region",
+                   "Wrap in region",
                    cancellationToken =>
                    {
-                       var refactoring = new AddRegionRefactoring();
+                       var refactoring = new WrapInRegionRefactoring();
 
                        return refactoring.RefactorAsync(
                            context.Document,
@@ -26,14 +26,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                    });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddIfDirective)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective)
                 && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
-                   "Add #if",
+                   "Wrap in #if",
                    cancellationToken =>
                    {
-                       var refactoring = new AddIfDirectiveRefactoring();
+                       var refactoring = new WrapInIfDirectiveRefactoring();
 
                        return refactoring.RefactorAsync(
                            context.Document,

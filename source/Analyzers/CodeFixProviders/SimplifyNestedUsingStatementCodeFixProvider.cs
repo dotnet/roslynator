@@ -36,15 +36,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .DescendantNodes()
                 .Any(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
-            string title = (fMultiple)
-                ? "Replace blocks with embedded statements"
-                : "Replace block with embedded statement";
+            string title = "Remove braces from 'using' statement";
+
+            if (fMultiple)
+                title += "s";
 
             CodeAction codeAction = CodeAction.Create(
                 title,
                 cancellationToken =>
                 {
-                    return ReplaceBlockWithEmbeddedStatementInUsingStatementRefactoring.RefactorAsync(
+                    return RemoveBracesFromUsingStatementRefactoring.RefactorAsync(
                         context.Document,
                         usingStatement,
                         cancellationToken);

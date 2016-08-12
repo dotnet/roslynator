@@ -20,8 +20,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
 
                 if (context.Settings.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceExplicitTypeWithVar,
-                    RefactoringIdentifiers.ReplaceVarWithExplicitType))
+                    RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                    RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     await ChangeTypeAsync(context, variableDeclaration).ConfigureAwait(false);
                 }
@@ -69,10 +69,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (result == TypeAnalysisResult.Explicit || result == TypeAnalysisResult.ExplicitButShouldBeImplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceExplicitTypeWithVar))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                 {
                     context.RegisterRefactoring(
-                        $"Replace '{variableDeclaration.Type}' with 'var'",
+                        "Change type to 'var'",
                         cancellationToken =>
                         {
                             return TypeSyntaxRefactoring.ChangeTypeToVarAsync(
@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
             else if (result == TypeAnalysisResult.Implicit || result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVarWithExplicitType))
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     ITypeSymbol typeSymbol = semanticModel
                         .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
@@ -98,21 +98,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static void ChangeType(
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration,
-            ITypeSymbol type,
+            ITypeSymbol typeSymbol,
             SemanticModel semanticModel)
         {
+            TypeSyntax type = variableDeclaration.Type;
+
             if (variableDeclaration.Variables.Count == 1
                 && variableDeclaration.Variables[0].Initializer?.Value != null
-                && type.IsNamedType())
+                && typeSymbol.IsNamedType())
             {
                 INamedTypeSymbol taskOfT = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
-                if (((INamedTypeSymbol)type).ConstructedFrom.Equals(taskOfT))
+                if (((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(taskOfT))
                 {
-                    ITypeSymbol typeArgumentType = ((INamedTypeSymbol)type).TypeArguments[0];
+                    ITypeSymbol typeArgumentType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
                     context.RegisterRefactoring(
-                        $"Replace '{variableDeclaration.Type}' with '{typeArgumentType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Change type to '{typeArgumentType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}' and insert 'await'",
                         cancellationToken =>
                         {
                             return ChangeTypeAndAddAwaitAsync(
@@ -125,13 +127,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             context.RegisterRefactoring(
-                $"Replace '{variableDeclaration.Type}' with '{type.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
                 cancellationToken =>
                 {
                     return TypeSyntaxRefactoring.ChangeTypeAsync(
                         context.Document,
-                        variableDeclaration.Type,
                         type,
+                        typeSymbol,
                         cancellationToken);
                 });
         }

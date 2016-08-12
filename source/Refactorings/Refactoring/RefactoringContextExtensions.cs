@@ -466,7 +466,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                         if (!fStatement)
                         {
-                            ReplaceEmbeddedStatementWithBlockRefactoring.ComputeRefactoring(context, statement);
+                            AddBracesRefactoring.ComputeRefactoring(context, statement);
                             ExtractStatementRefactoring.ComputeRefactoring(context, statement);
                             fStatement = true;
                         }

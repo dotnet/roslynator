@@ -7,21 +7,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     public static class RefactoringIdentifiers
     {
         public const string AddBooleanComparison = "AddBooleanComparison";
+        public const string AddBraces = "AddBraces";
+        public const string AddBracesToIfElse = "AddBracesToIfElse";
+        public const string AddBracesToSwitchSection = "AddBracesToSwitchSection";
+        public const string AddBracesToSwitchSections = "AddBracesToSwitchSections";
         public const string AddCastExpression = "AddCastExpression";
         public const string AddConfigureAwait = "AddConfigureAwait";
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddDefaultValueToReturnStatement = "AddDefaultValueToReturnStatement";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
-        public const string AddIfDirective = "AddIfDirective";
         public const string AddInterpolation = "AddInterpolation";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
-        public const string AddRegion = "AddRegion";
         public const string AddUsingDirective = "AddUsingDirective";
+        public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
         public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
+        public const string ChangeVarToExplicitType = "ChangeVarToExplicitType";
         public const string CheckParameterForNull = "CheckParameterForNull";
         public const string CollapseToInitializer = "CollapseToInitializer";
         public const string CommentOutMember = "CommentOutMember";
@@ -74,8 +78,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RemoveAllStatements = "RemoveAllStatements";
         public const string RemoveAllSwitchSections = "RemoveAllSwitchSections";
         public const string RemoveAllXmlComments = "RemoveAllXmlComments";
+        public const string RemoveBraces = "RemoveBraces";
+        public const string RemoveBracesFromIfElse = "RemoveBracesFromIfElse";
+        public const string RemoveBracesFromSwitchSection = "RemoveBracesFromSwitchSection";
+        public const string RemoveBracesFromSwitchSections = "RemoveBracesFromSwitchSections";
         public const string RemoveComment = "RemoveComment";
-        public const string RemoveConditionFromLastElseIf = "RemoveConditionFromLastElseIf";
+        public const string RemoveConditionFromLastElse = "RemoveConditionFromLastElse";
         public const string RemoveEmptyLines = "RemoveEmptyLines";
         public const string RemoveMember = "RemoveMember";
         public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
@@ -91,22 +99,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string RenamePropertyAccordingToTypeName = "RenamePropertyAccordingToTypeName";
         public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
-        public const string ReplaceBlockWithEmbeddedStatement = "ReplaceBlockWithEmbeddedStatement";
-        public const string ReplaceBlockWithEmbeddedStatementInIfElse = "ReplaceBlockWithEmbeddedStatementInIfElse";
-        public const string ReplaceBlockWithStatementsInEachSwitchSection = "ReplaceBlockWithStatementsInEachSwitchSection";
         public const string ReplaceBooleanExpressionWithIfStatement = "ReplaceBooleanExpressionWithIfStatement";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
         public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";
         public const string ReplaceDoStatementWithWhileStatement = "ReplaceDoStatementWithWhileStatement";
-        public const string ReplaceEmbeddedStatementWithBlock = "ReplaceEmbeddedStatementWithBlock";
-        public const string ReplaceEmbeddedStatementWithBlockInIfElse = "ReplaceEmbeddedStatementWithBlockInIfElse";
         public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
-        public const string ReplaceEnumHasFlagWithBitwiseOperation = "ReplaceEnumHasFlagWithBitwiseOperation";
-        public const string ReplaceExplicitTypeWithVar = "ReplaceExplicitTypeWithVar";
         public const string ReplaceFieldWithConstant = "ReplaceFieldWithConstant";
         public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";
         public const string ReplaceForWithForEach = "ReplaceForWithForEach";
+        public const string ReplaceHasFlagWithBitwiseOperation = "ReplaceHasFlagWithBitwiseOperation";
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
         public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";
@@ -114,15 +116,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string ReplacePrefixOperatorWithPostfixOperator = "ReplacePrefixOperatorWithPostfixOperator";
         public const string ReplacePropertyWithMethod = "ReplacePropertyWithMethod";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
-        public const string ReplaceStatementsWithBlockInEachSwitchSection = "ReplaceStatementsWithBlockInEachSwitchSection";
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";
         public const string ReplaceStringLiteralWithInterpolatedString = "ReplaceStringLiteralWithInterpolatedString";
-        public const string ReplaceSwitchSectionBlockWithStatements = "ReplaceSwitchSectionBlockWithStatements";
-        public const string ReplaceSwitchSectionStatementsWithBlock = "ReplaceSwitchSectionStatementsWithBlock";
         public const string ReplaceSwitchWithIfElse = "ReplaceSwitchWithIfElse";
-        public const string ReplaceVarWithExplicitType = "ReplaceVarWithExplicitType";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = "ReplaceVerbatimStringLiteralWithRegularStringLiteral";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = "ReplaceVerbatimStringLiteralWithRegularStringLiterals";
         public const string ReplaceWhileStatementWithDoStatement = "ReplaceWhileStatementWithDoStatement";
@@ -138,7 +136,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
         public const string WrapDeclarationInUsingStatement = "WrapDeclarationInUsingStatement";
         public const string WrapExpressionInParentheses = "WrapExpressionInParentheses";
-        public const string WrapStatementsInIfStatement = "WrapStatementsInIfStatement";
-        public const string WrapStatementsInTryCatch = "WrapStatementsInTryCatch";
+        public const string WrapInIfDirective = "WrapInIfDirective";
+        public const string WrapInIfStatement = "WrapInIfStatement";
+        public const string WrapInRegion = "WrapInRegion";
+        public const string WrapInTryCatch = "WrapInTryCatch";
     }
 }

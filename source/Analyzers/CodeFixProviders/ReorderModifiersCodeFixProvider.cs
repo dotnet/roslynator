@@ -14,7 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SpecifyImplicitTypeCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceExplicitTypeWithVarCodeFixProvider))]
     [Shared]
     public class ReorderModifiersCodeFixProvider : BaseCodeFixProvider
     {

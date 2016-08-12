@@ -128,10 +128,19 @@
     <h3>List of Refactoring</h3>
     <ul>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-if-directive">Add #if directive</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-braces">Add braces</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-braces-to-if-else">Add braces to if-else</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-braces-to-switch-section">Add braces to switch section</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-braces-to-switch-sections">Add braces to switch sections</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-cast-expression">Add cast expression</a>
@@ -158,10 +167,10 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-region">Add region</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-using-directive">Add using directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-using-directive">Add using directive</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-explicit-type-to-var">Change explicit type to 'var'</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-method-return-type-to-void">Change method return type to void</a>
@@ -174,6 +183,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-type-according-to-expression">Change type according to expression</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#change-var-to-explicit-type">Change 'var' to explicit type</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
@@ -332,10 +344,22 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-xml-comments">Remove all xml comments</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-braces">Remove braces</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-braces-from-if-else">Remove braces from if-else</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-braces-from-switch-section">Remove braces from switch section</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-braces-from-switch-sections">Remove braces from switch sections</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-comment">Remove comment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-condition-from-last-else-if">Remove condition from last else-if</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-condition-from-last-else">Remove condition from last else</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-empty-lines">Remove empty lines</a>
@@ -386,13 +410,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-embedded-statement">Replace block with embedded statement</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-embedded-statement-in-if-else">Replace block with embedded statement (in if-else)</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-block-with-statements-in-each-switch-section">Replace block with statements in each switch section</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-boolean-expression-with-if-statement">Replace boolean expression with if statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
@@ -404,28 +422,19 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-countlength-with-lengthcount">Replace 'Count/Length' with 'Length/Count'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-embedded-statement-with-block">Replace embedded statement with block</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-embedded-statement-with-block-in-if-else">Replace embedded statement with block (in if-else)</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-enumhasflag-method-with-bitwise-operation">Replace Enum.HasFlag method with bitwise operation</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-explicit-type-with-var">Replace explicit type with 'var'</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-do-statement-with-while-statement">Replace 'do' statement with 'while' statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-for-with-foreach">Replace for with foreach</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-for-with-foreach">Replace 'for' with 'foreach'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-foreach-with-for">Replace foreach with for</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-foreach-with-for">Replace 'foreach' with 'for'</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-hasflag-with-bitwise-operation">Replace 'HasFlag' with bitwise operation</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
@@ -449,34 +458,19 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-return-statement-with-if-statement">Replace return statement with if statement</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-statements-with-block-in-each-switch-section">Replace statements with block in each switch section</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-interpolated-string">Replace string literal with interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringempty-with-">Replace string.Empty with ""</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringempty-with-">Replace 'string.Empty' with ""</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringformat-with-interpolated-string">Replace string.Format with interpolated string</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringformat-with-interpolated-string">Replace 'string.Format' with interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-section-block-with-statements">Replace switch section block with statements</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-section-statements-with-block">Replace switch section statements with block</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-with-if-else">Replace switch with if-else</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-var-with-explicit-type">Replace 'var' with explicit type</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-switch-with-if-else">Replace 'switch' with 'if-else'</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
@@ -485,10 +479,10 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-while-statement-with-do-statement">Replace 'while' statement with 'do' statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#reverse-for-loop">Reverse for loop</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#reverse-for-loop">Reverse 'for' loop</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
@@ -524,9 +518,15 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-statements-in-if-statement">Wrap statements in if statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-if-directive">Wrap in #if directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-statements-in-try-catch">Wrap statements in try-catch</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-if-statement">Wrap in if statement</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-region">Wrap in region</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-try-catch">Wrap in try-catch</a>
         </li>
     </ul>

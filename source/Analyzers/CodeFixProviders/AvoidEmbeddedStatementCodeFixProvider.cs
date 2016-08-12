@@ -30,8 +30,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Replace embedded statement with block",
-                cancellationToken => ReplaceEmbeddedStatementWithBlockRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                "Add braces",
+                cancellationToken => AddBracesRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 DiagnosticIdentifiers.AvoidEmbeddedStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

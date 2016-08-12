@@ -55,8 +55,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace block with embedded statement",
-                                cancellationToken => ReplaceBlockWithEmbeddedStatementInElseClauseAsync(context.Document, elseClause, cancellationToken),
+                                "Remove braces",
+                                cancellationToken => RemoveBracesFromElseClauseAsync(context.Document, elseClause, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -78,7 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static async Task<Document> ReplaceBlockWithEmbeddedStatementInElseClauseAsync(
+        private static async Task<Document> RemoveBracesFromElseClauseAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)

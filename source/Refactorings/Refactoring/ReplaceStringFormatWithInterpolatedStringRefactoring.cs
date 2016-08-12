@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (invocation != null)
             {
                 context.RegisterRefactoring(
-                    "Replace string.Format with interpolated string",
+                    "Replace 'string.Format' with interpolated string",
                     cancellationToken => CreateInterpolatedStringAsync(context.Document, invocation, cancellationToken));
             }
         }

@@ -72,14 +72,14 @@
     <Compile Include="CSharp\Extensions\YieldStatementSyntaxExtensions.cs" />
     <Compile Include="CSharp\Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
-    <Compile Include="CSharp\Refactoring\ReplaceEmbeddedStatementWithBlockInIfElseRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\AddBracesToIfElseRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ExpandAssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SimplifyAssignmentExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AttributeRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceForEachWithForRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceInterpolatedStringWithStringLiteralRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\DuplicateMemberDeclarationRefactoring.cs" />
-    <Compile Include="CSharp\Refactoring\ReplaceBlockWithEmbeddedStatementInIfElseRefactoring.cs" />
+    <Compile Include="CSharp\Refactoring\RemoveBracesFromIfElseElseRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceStringEmptyWithEmptyStringLiteralRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\SplitVariableDeclarationRefactoring.cs" />
