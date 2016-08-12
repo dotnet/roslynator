@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                         if (!initializerTypeSymbol.Equals(typeSymbol))
                         {
-                            ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel);
+                            ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
                         }
                     }
                 }
@@ -90,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
                         .Type;
 
-                    ChangeType(context, variableDeclaration, typeSymbol, semanticModel);
+                    ChangeType(context, variableDeclaration, typeSymbol, semanticModel, context.CancellationToken);
                 }
             }
         }
@@ -99,7 +99,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration,
             ITypeSymbol typeSymbol,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             TypeSyntax type = variableDeclaration.Type;
 
@@ -109,32 +110,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 INamedTypeSymbol taskOfT = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
-                if (((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(taskOfT))
+                if (((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(taskOfT)
+                    && AsyncAnalysis.IsPartOfAsyncBlock(variableDeclaration, semanticModel, cancellationToken))
                 {
                     ITypeSymbol typeArgumentType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
                     context.RegisterRefactoring(
                         $"Change type to '{typeArgumentType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}' and insert 'await'",
-                        cancellationToken =>
+                        c =>
                         {
                             return ChangeTypeAndAddAwaitAsync(
                                 context.Document,
                                 variableDeclaration,
                                 typeArgumentType,
-                                cancellationToken);
+                                c);
                         });
                 }
             }
 
             context.RegisterRefactoring(
                 $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken =>
+                c =>
                 {
                     return TypeSyntaxRefactoring.ChangeTypeAsync(
                         context.Document,
                         type,
                         typeSymbol,
-                        cancellationToken);
+                        c);
                 });
         }
 
