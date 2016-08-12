@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     return false;
             }
 
-            if (IsForEachExpression(expression)
+            if (IsConditionOrExpression(expression)
                 || IsVariableDeclarationValue(expression))
             {
                 return false;
@@ -78,17 +78,49 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             return root.ReplaceNode(expression, newNode);
         }
 
-        private static bool IsForEachExpression(ExpressionSyntax expression)
+        private static bool IsConditionOrExpression(ExpressionSyntax expression)
         {
-            return expression.Parent?.IsKind(SyntaxKind.ForEachStatement) == true
-                && expression.Equals(((ForEachStatementSyntax)expression.Parent).Expression);
+            SyntaxNode parent = expression.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.ForEachStatement:
+                    return expression == ((ForEachStatementSyntax)parent).Expression;
+                case SyntaxKind.WhileStatement:
+                    return expression == ((WhileStatementSyntax)parent).Condition;
+                case SyntaxKind.DoStatement:
+                    return expression == ((DoStatementSyntax)parent).Condition;
+                case SyntaxKind.UsingStatement:
+                    return expression == ((UsingStatementSyntax)parent).Expression;
+                case SyntaxKind.LockStatement:
+                    return expression == ((LockStatementSyntax)parent).Expression;
+                case SyntaxKind.IfStatement:
+                    return expression == ((IfStatementSyntax)parent).Condition;
+                case SyntaxKind.SwitchStatement:
+                    return expression == ((SwitchStatementSyntax)parent).Expression;
+            }
+
+            return false;
         }
 
         private static bool IsVariableDeclarationValue(ExpressionSyntax expression)
         {
-            return expression.Parent?.IsKind(SyntaxKind.EqualsValueClause) == true
-                && expression.Parent.Parent?.IsKind(SyntaxKind.VariableDeclarator) == true
-                && expression.Parent.Parent.Parent?.IsKind(SyntaxKind.VariableDeclaration) == true;
+            SyntaxNode parent = expression.Parent;
+
+            if (parent?.IsKind(SyntaxKind.EqualsValueClause) == true)
+            {
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.VariableDeclarator) == true)
+                {
+                    parent = parent.Parent;
+
+                    if (parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
+                        return true;
+                }
+            }
+
+            return false;
         }
     }
 }
