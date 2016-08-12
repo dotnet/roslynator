@@ -1,35 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="ReplaceEmbeddedStatementWithBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1001</Id>
-    <Title>Replace embedded statement with block.</Title>
+    <Title>Add braces.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceBlockWithEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1002</Id>
-    <Title>Replace block with embedded statement.</Title>
+    <Title>Remove braces.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceEmbeddedStatementWithBlockInIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddBracesToIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1003</Id>
-    <Title>Replace embedded statement with block (in if-else).</Title>
+    <Title>Add braces to if-else.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceBlockWithEmbeddedStatementInIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveBracesFromIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1004</Id>
-    <Title>Replace block with embedded statement (in if-else).</Title>
+    <Title>Remove braces from if-else.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -63,36 +63,36 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceVarWithExplicitType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVar" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1008</Id>
-    <Title>Replace 'var' with explicit type (when the type is not obvious).</Title>
+    <Title>Use explicit type instead of 'var' (when the type is not obvious).</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceVarWithExplicitTypeInForEach" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVarInForEach" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1009</Id>
-    <Title>Replace 'var' with explicit type (in foreach).</Title>
+    <Title>Use explicit type instead of 'var' (in 'foreach').</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceExplicitTypeWithVar" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseVarInsteadOfExplicitType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1010</Id>
-    <Title>Replace explicit type with 'var' (when the type is obvious).</Title>
+    <Title>Use 'var' instead of explicit type (when the type is obvious).</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceVarWithExplicitTypeEvenIfObvious" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVarEvenIfObvious" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1012</Id>
-    <Title>Replace 'var' with explicit type (even if the type is obvious).</Title>
+    <Title>Use explicit type instead of 'var' (even if the type is obvious).</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -461,7 +461,7 @@
   </Analyzer>
   <Analyzer Identifier="ReplaceForEachWithFor" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1053</Id>
-    <Title>Replace foreach with for.</Title>
+    <Title>Replace 'foreach' with 'for'.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -486,9 +486,9 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsingAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AvoidAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1056</Id>
-    <Title>Avoid using alias directive.</Title>
+    <Title>Avoid alias directive.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
