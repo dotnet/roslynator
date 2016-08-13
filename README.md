@@ -25,17 +25,17 @@
 
 ### List of Analyzers
 
-* RCS1001 - Replace embedded statement with block
-* RCS1002 - Replace block with embedded statement
-* RCS1003 - Replace embedded statement with block (in if-else)
-* RCS1004 - Replace block with embedded statement (in if-else)
+* RCS1001 - Add braces
+* RCS1002 - Remove braces
+* RCS1003 - Add braces to if-else
+* RCS1004 - Remove braces from if-else
 * RCS1005 - Simplify nested using statement
 * RCS1006 - Simplify else clause containing only if statement
 * RCS1007 - Avoid embedded statement
-* RCS1008 - Replace 'var' with explicit type (when the type is not obvious)
-* RCS1009 - Replace 'var' with explicit type (in foreach)
-* RCS1010 - Replace explicit type with 'var' (when the type is obvious)
-* RCS1012 - Replace 'var' with explicit type (even if the type is obvious)
+* RCS1008 - Use explicit type instead of 'var' (when the type is not obvious)
+* RCS1009 - Use explicit type instead of 'var' (in 'foreach')
+* RCS1010 - Use 'var' instead of explicit type (when the type is obvious)
+* RCS1012 - Use explicit type instead of 'var' (even if the type is obvious)
 * RCS1013 - Use predefined type
 * RCS1014 - Avoid implicitly-typed array
 * RCS1015 - Use nameof operator
@@ -76,10 +76,10 @@
 * RCS1050 - Add constructor argument list
 * RCS1051 - Wrap conditional expression condition in parentheses
 * RCS1052 - Declare each attribute separately
-* RCS1053 - Replace foreach with for
+* RCS1053 - Replace 'foreach' with 'for'
 * RCS1054 - Merge local declaration with return statement
 * RCS1055 - Avoid semicolon at the end of declaration
-* RCS1056 - Avoid using alias directive
+* RCS1056 - Avoid alias directive
 * RCS1057 - Add empty line between declarations
 * RCS1058 - Simplify assignment expression
 * RCS1059 - Avoid locking on publicly accessible instance
@@ -112,8 +112,11 @@
 
 ### List of Refactorings
 
-* [Add #if directive](Refactorings.md#add-if-directive)
 * [Add boolean comparison](Refactorings.md#add-boolean-comparison)
+* [Add braces](Refactorings.md#add-braces)
+* [Add braces to if-else](Refactorings.md#add-braces-to-if-else)
+* [Add braces to switch section](Refactorings.md#add-braces-to-switch-section)
+* [Add braces to switch sections](Refactorings.md#add-braces-to-switch-sections)
 * [Add cast expression](Refactorings.md#add-cast-expression)
 * [Add ConfigureAwait](Refactorings.md#add-configureawait)
 * [Add default value to parameter](Refactorings.md#add-default-value-to-parameter)
@@ -122,13 +125,15 @@
 * [Add interpolation](Refactorings.md#add-interpolation)
 * [Add parameter name to argument](Refactorings.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](Refactorings.md#add-parameter-name-to-parameter)
-* [Add region](Refactorings.md#add-region)
 * [Add using directive](Refactorings.md#add-using-directive)
+* [Change explicit type to 'var'](Refactorings.md#change-explicit-type-to-var)
 * [Change method return type to void](Refactorings.md#change-method-return-type-to-void)
 * [Change method/property/indexer type according to return expression](Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression)
 * [Change method/property/indexer type according to yield return expression](Refactorings.md#change-methodpropertyindexer-type-according-to-yield-return-expression)
 * [Change type according to expression](Refactorings.md#change-type-according-to-expression)
+* [Change 'var' to explicit type](Refactorings.md#change-var-to-explicit-type)
 * [Check parameter for null](Refactorings.md#check-parameter-for-null)
+* [Collapse to initalizer](Refactorings.md#collapse-to-initalizer)
 * [Comment out member](Refactorings.md#comment-out-member)
 * [Comment out statement](Refactorings.md#comment-out-statement)
 * [Duplicate argument](Refactorings.md#duplicate-argument)
@@ -158,11 +163,14 @@
 * [Generate switch sections](Refactorings.md#generate-switch-sections)
 * [Initialize local with default value](Refactorings.md#initialize-local-with-default-value)
 * [Inline method](Refactorings.md#inline-method)
-* [Introduce constructor from selected member(s)](Refactorings.md#introduce-constructor-from-selected-members)
+* [Introduce and initialize field](Refactorings.md#introduce-and-initialize-field)
+* [Introduce and initialize property](Refactorings.md#introduce-and-initialize-property)
+* [Introduce constructor](Refactorings.md#introduce-constructor)
 * [Introduce using static directive](Refactorings.md#introduce-using-static-directive)
 * [Make member abstract](Refactorings.md#make-member-abstract)
 * [Mark all members as static](Refactorings.md#mark-all-members-as-static)
 * [Mark member as static](Refactorings.md#mark-member-as-static)
+* [Merge assignment expression with return statement](Refactorings.md#merge-assignment-expression-with-return-statement)
 * [Merge attributes](Refactorings.md#merge-attributes)
 * [Merge if statements](Refactorings.md#merge-if-statements)
 * [Merge string literals](Refactorings.md#merge-string-literals)
@@ -178,8 +186,12 @@
 * [Remove all statements](Refactorings.md#remove-all-statements)
 * [Remove all switch sections](Refactorings.md#remove-all-switch-sections)
 * [Remove all xml comments](Refactorings.md#remove-all-xml-comments)
+* [Remove braces](Refactorings.md#remove-braces)
+* [Remove braces from if-else](Refactorings.md#remove-braces-from-if-else)
+* [Remove braces from switch section](Refactorings.md#remove-braces-from-switch-section)
+* [Remove braces from switch sections](Refactorings.md#remove-braces-from-switch-sections)
 * [Remove comment](Refactorings.md#remove-comment)
-* [Remove condition from last else-if](Refactorings.md#remove-condition-from-last-else-if)
+* [Remove condition from last else](Refactorings.md#remove-condition-from-last-else)
 * [Remove empty lines](Refactorings.md#remove-empty-lines)
 * [Remove member](Refactorings.md#remove-member)
 * [Remove member declarations above/below](Refactorings.md#remove-member-declarations-abovebelow)
@@ -196,20 +208,15 @@
 * [Replace "" with string.Empty](Refactorings.md#replace--with-stringempty)
 * [Replace anonymous method with lambda expression](Refactorings.md#replace-anonymous-method-with-lambda-expression)
 * [Replace 'Any/All' with 'All/Any'](Refactorings.md#replace-anyall-with-allany)
-* [Replace block with embedded statement](Refactorings.md#replace-block-with-embedded-statement)
-* [Replace block with embedded statement (in if-else)](Refactorings.md#replace-block-with-embedded-statement-in-if-else)
-* [Replace block with statements in each switch section](Refactorings.md#replace-block-with-statements-in-each-switch-section)
+* [Replace boolean expression with if statement](Refactorings.md#replace-boolean-expression-with-if-statement)
 * [Replace conditional expression with if-else](Refactorings.md#replace-conditional-expression-with-if-else)
 * [Replace constant with field](Refactorings.md#replace-constant-with-field)
 * [Replace 'Count/Length' with 'Length/Count'](Refactorings.md#replace-countlength-with-lengthcount)
-* [Replace do statement with while statement](Refactorings.md#replace-do-statement-with-while-statement)
-* [Replace embedded statement with block](Refactorings.md#replace-embedded-statement-with-block)
-* [Replace embedded statement with block (in if-else)](Refactorings.md#replace-embedded-statement-with-block-in-if-else)
-* [Replace Enum.HasFlag method with bitwise operation](Refactorings.md#replace-enumhasflag-method-with-bitwise-operation)
-* [Replace explicit type with 'var'](Refactorings.md#replace-explicit-type-with-var)
+* [Replace 'do' statement with 'while' statement](Refactorings.md#replace-do-statement-with-while-statement)
 * [Replace field with constant](Refactorings.md#replace-field-with-constant)
-* [Replace for with foreach](Refactorings.md#replace-for-with-foreach)
-* [Replace foreach with for](Refactorings.md#replace-foreach-with-for)
+* [Replace 'for' with 'foreach'](Refactorings.md#replace-for-with-foreach)
+* [Replace 'foreach' with 'for'](Refactorings.md#replace-foreach-with-for)
+* [Replace 'HasFlag' with bitwise operation](Refactorings.md#replace-hasflag-with-bitwise-operation)
 * [Replace increment operator with decrement operator](Refactorings.md#replace-increment-operator-with-decrement-operator)
 * [Replace interpolated string with string literal](Refactorings.md#replace-interpolated-string-with-string-literal)
 * [Replace method invocation with '[]'](Refactorings.md#replace-method-invocation-with-)
@@ -217,20 +224,15 @@
 * [Replace prefix operator to postfix operator](Refactorings.md#replace-prefix-operator-to-postfix-operator)
 * [Replace property with method](Refactorings.md#replace-property-with-method)
 * [Replace regular string literal with verbatim string literal](Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal)
-* [Replace return statement with if statement](Refactorings.md#replace-return-statement-with-if-statement)
-* [Replace statements with block in each switch section](Refactorings.md#replace-statements-with-block-in-each-switch-section)
 * [Replace string literal with character literal](Refactorings.md#replace-string-literal-with-character-literal)
 * [Replace string literal with interpolated string](Refactorings.md#replace-string-literal-with-interpolated-string)
-* [Replace string.Empty with ""](Refactorings.md#replace-stringempty-with-)
-* [Replace string.Format with interpolated string](Refactorings.md#replace-stringformat-with-interpolated-string)
-* [Replace switch section block with statements](Refactorings.md#replace-switch-section-block-with-statements)
-* [Replace switch section statements with block](Refactorings.md#replace-switch-section-statements-with-block)
-* [Replace switch with if-else](Refactorings.md#replace-switch-with-if-else)
-* [Replace 'var' with explicit type](Refactorings.md#replace-var-with-explicit-type)
+* [Replace 'string.Empty' with ""](Refactorings.md#replace-stringempty-with-)
+* [Replace 'string.Format' with interpolated string](Refactorings.md#replace-stringformat-with-interpolated-string)
+* [Replace 'switch' with 'if-else'](Refactorings.md#replace-switch-with-if-else)
 * [Replace verbatim string literal with regular string literal](Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)
 * [Replace verbatim string literal with regular string literals](Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals)
-* [Replace while statement with do statement](Refactorings.md#replace-while-statement-with-do-statement)
-* [Reverse for loop](Refactorings.md#reverse-for-loop)
+* [Replace 'while' statement with 'do' statement](Refactorings.md#replace-while-statement-with-do-statement)
+* [Reverse 'for' loop](Refactorings.md#reverse-for-loop)
 * [Simplify lambda expression](Refactorings.md#simplify-lambda-expression)
 * [Split attributes](Refactorings.md#split-attributes)
 * [Split variable declaration](Refactorings.md#split-variable-declaration)
@@ -240,7 +242,9 @@
 * [Swap statements in if-else](Refactorings.md#swap-statements-in-if-else)
 * [Uncomment](Refactorings.md#uncomment)
 * [Use expression-bodied member](Refactorings.md#use-expression-bodied-member)
-* [Wrap declaration in using statement](Refactorings.md#wrap-declaration-in-using-statement)
 * [Wrap expression in parentheses](Refactorings.md#wrap-expression-in-parentheses)
-* [Wrap statements in if statement](Refactorings.md#wrap-statements-in-if-statement)
-* [Wrap statements in try-catch](Refactorings.md#wrap-statements-in-try-catch)
+* [Wrap in #if directive](Refactorings.md#wrap-in-if-directive)
+* [Wrap in if statement](Refactorings.md#wrap-in-if-statement)
+* [Wrap in region](Refactorings.md#wrap-in-region)
+* [Wrap in try-catch](Refactorings.md#wrap-in-try-catch)
+* [Wrap in using statement](Refactorings.md#wrap-in-using-statement)
