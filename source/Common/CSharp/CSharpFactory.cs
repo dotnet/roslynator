@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -49,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 (value != null) ? EqualsValueClause(value) : null);
         }
 
-        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer = null)
+        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
         {
             return SyntaxFactory.FieldDeclaration(
                 VariableDeclaration(
@@ -119,9 +120,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return AccessorDeclaration(SyntaxKind.GetAccessorDeclaration);
         }
 
-        public static AccessorDeclarationSyntax AutoGetter()
+        public static AccessorDeclarationSyntax AutoGetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
         {
-            return Getter().WithSemicolonToken(SemicolonToken());
+            return AutoAccessor(SyntaxKind.GetAccessorDeclaration, modifiers);
         }
 
         public static AccessorDeclarationSyntax Setter()
@@ -129,9 +130,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return AccessorDeclaration(SyntaxKind.SetAccessorDeclaration);
         }
 
-        public static AccessorDeclarationSyntax AutoSetter()
+        public static AccessorDeclarationSyntax AutoSetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
         {
-            return Setter().WithSemicolonToken(SemicolonToken());
+            return AutoAccessor(SyntaxKind.SetAccessorDeclaration, modifiers);
+        }
+
+        private static AccessorDeclarationSyntax AutoAccessor(SyntaxKind kind, SyntaxTokenList modifiers = default(SyntaxTokenList))
+        {
+            return AccessorDeclaration(
+                kind,
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                Token(GetAccessorDeclarationKeywordKind(kind)),
+                default(BlockSyntax),
+                SemicolonToken());
+        }
+
+        private static SyntaxKind GetAccessorDeclarationKeywordKind(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.GetAccessorDeclaration:
+                    return SyntaxKind.GetKeyword;
+                case SyntaxKind.SetAccessorDeclaration:
+                    return SyntaxKind.SetKeyword;
+                case SyntaxKind.AddAccessorDeclaration:
+                    return SyntaxKind.AddKeyword;
+                case SyntaxKind.RemoveAccessorDeclaration:
+                    return SyntaxKind.RemoveKeyword;
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxKind.IdentifierToken;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind));
+            }
         }
 
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
@@ -264,6 +295,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.PredefinedType(Token(syntaxKind));
         }
 
+        public static SyntaxToken PublicToken()
+        {
+            return Token(SyntaxKind.PublicKeyword);
+        }
+
+        public static SyntaxToken InternalToken()
+        {
+            return Token(SyntaxKind.InternalKeyword);
+        }
+
+        public static SyntaxToken ProtectedToken()
+        {
+            return Token(SyntaxKind.ProtectedKeyword);
+        }
+
+        public static SyntaxToken PrivateToken()
+        {
+            return Token(SyntaxKind.PrivateKeyword);
+        }
+
         public static IdentifierNameSyntax Var()
         {
             return IdentifierName("var");
@@ -381,6 +432,57 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
         {
             return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
+        }
+
+        public static PropertyDeclarationSyntax PropertyDeclaration(PropertyKind kind, TypeSyntax type, string name)
+        {
+            switch (kind)
+            {
+                case PropertyKind.AutoProperty:
+                    {
+                        return SyntaxFactory.PropertyDeclaration(
+                            default(SyntaxList<AttributeListSyntax>),
+                            default(SyntaxTokenList),
+                            type,
+                            default(ExplicitInterfaceSpecifierSyntax),
+                            Identifier(name),
+                            AccessorList(
+                                AutoGetter(),
+                                AutoSetter()));
+                    }
+                case PropertyKind.AutoPropertyWithPrivateSet:
+                    {
+                        return SyntaxFactory.PropertyDeclaration(
+                            default(SyntaxList<AttributeListSyntax>),
+                            default(SyntaxTokenList),
+                            type,
+                            default(ExplicitInterfaceSpecifierSyntax),
+                            Identifier(name),
+                            AccessorList(
+                                AutoGetter(),
+                                AutoSetter(TokenList(SyntaxKind.PrivateKeyword))));
+                    }
+                case PropertyKind.ReadOnlyAutoProperty:
+                    {
+                        return SyntaxFactory.PropertyDeclaration(
+                            default(SyntaxList<AttributeListSyntax>),
+                            default(SyntaxTokenList),
+                            type,
+                            default(ExplicitInterfaceSpecifierSyntax),
+                            Identifier(name),
+                            AccessorList(AutoGetter()));
+                    }
+                default:
+                    {
+                        Debug.Assert(false, kind.ToString());
+                        throw new ArgumentOutOfRangeException(nameof(kind));
+                    }
+            }
+        }
+
+        public static AccessorListSyntax AccessorList(params AccessorDeclarationSyntax[] accessors)
+        {
+            return SyntaxFactory.AccessorList(List(accessors));
         }
 
         private static SyntaxTrivia CreateNewLine()

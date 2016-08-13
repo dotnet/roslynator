@@ -22,5 +22,13 @@ namespace Pihrtsoft.CodeAnalysis
 
             return methodSymbol.MethodKind == MethodKind.ReducedExtension;
         }
+
+        public static bool IsConstructor(this IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            return methodSymbol.MethodKind == MethodKind.Constructor;
+        }
     }
 }

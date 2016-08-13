@@ -9,6 +9,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class MemberDeclarationSyntaxExtensions
     {
+        public static MemberDeclarationSyntax GetContainingMember(this MemberDeclarationSyntax member)
+        {
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            return member.Parent as MemberDeclarationSyntax;
+        }
+
         public static SyntaxList<MemberDeclarationSyntax> GetMembers(this MemberDeclarationSyntax declaration)
         {
             if (declaration == null)

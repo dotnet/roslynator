@@ -71,6 +71,7 @@
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
     <Compile Include="CSharp\Extensions\YieldStatementSyntaxExtensions.cs" />
+    <Compile Include="CSharp\PropertyKind.cs" />
     <Compile Include="CSharp\Refactoring\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactoring\AddBracesToIfElseRefactoring.cs" />
