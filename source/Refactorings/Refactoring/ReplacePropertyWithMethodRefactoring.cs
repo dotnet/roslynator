@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -13,10 +14,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class ReplacePropertyWithMethodRefactoring
     {
+        private static readonly Regex _regex = new Regex(
+            @"
+            ^
+            (Is|Has|Are|Can|Allow|Supports|Should)
+            \P{Ll}
+            ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            return propertyDeclaration.AccessorList?.Accessors.Count > 0
-                && propertyDeclaration.AccessorList.Accessors.All(f => f.Body != null);
+            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+            if (accessorList != null)
+            {
+                SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
+
+                return accessors.Any()
+                    && accessors.All(f => f.Body != null);
+            }
+
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -43,10 +60,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             AccessorDeclarationSyntax getter = property.Getter();
             AccessorDeclarationSyntax setter = property.Setter();
 
+            string methodName = method.Identifier.ValueText;
+            bool addPrefix = !_regex.IsMatch(methodName);
+
             if (getter != null)
             {
+                string name = methodName;
+
+                if (addPrefix)
+                    name = "Get" + methodName;
+
                 MethodDeclarationSyntax getMethod = method
-                    .WithIdentifier(Identifier("Get" + method.Identifier))
+                    .WithIdentifier(Identifier(name))
                     .WithBody(Block(getter.Body.Statements))
                     .WithLeadingTrivia(property.GetLeadingTrivia())
                     .WithFormatterAnnotation();
@@ -61,12 +86,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             if (setter != null)
             {
+                string name = methodName;
+
+                if (addPrefix)
+                    name = "Set" + methodName;
+
                 ParameterSyntax parameter = Parameter(Identifier("value"))
                     .WithType(property.Type);
 
                 MethodDeclarationSyntax setMethod = method
                     .WithReturnType(VoidType())
-                    .WithIdentifier(Identifier("Set" + method.Identifier))
+                    .WithIdentifier(Identifier(name))
                     .WithParameterList(method.ParameterList.AddParameters(parameter))
                     .WithBody(Block(setter.Body.Statements))
                     .WithTrailingTrivia(property.GetTrailingTrivia())
@@ -90,13 +120,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static MethodDeclarationSyntax SetAccessModifiers(AccessorDeclarationSyntax accessor, MethodDeclarationSyntax method)
         {
-            if (accessor.Modifiers.Any())
-            {
-                SyntaxTokenList modifiers = method.Modifiers
-                    .RemoveAccessModifiers()
-                    .InsertRange(0, accessor.Modifiers);
+            SyntaxTokenList accessorModifiers = accessor.Modifiers;
 
-                return method.WithModifiers(modifiers);
+            if (accessorModifiers.Any())
+            {
+                SyntaxTokenList newModifiers = method.Modifiers
+                    .RemoveAccessModifiers()
+                    .InsertRange(0, accessorModifiers);
+
+                return method.WithModifiers(newModifiers);
             }
 
             return method;
