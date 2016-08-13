@@ -1,16 +1,38 @@
 ﻿## C# Refactorings
 
-#### Add #if directive
-
-* **Syntax**: selected lines
-
-![Add #if directive](/images/refactorings/AddIfDirective.png)
-
 #### Add boolean comparison
 
 * **Syntax**: boolean? expression in place where must be boolean expression
 
 ![Add boolean comparison](/images/refactorings/AddBooleanComparison.png)
+
+#### Add braces
+
+* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+* **Scope**: embedded statement
+
+![Add braces](/images/refactorings/AddBraces.png)
+
+#### Add braces to if-else
+
+* **Syntax**: if-else chain
+* **Scope**: topmost if keyword
+
+![Add braces to if-else](/images/refactorings/AddBracesToIfElse.png)
+
+#### Add braces to switch section
+
+* **Syntax**: switch section
+* **Scope**: statements
+
+![Add braces to switch section](/images/refactorings/AddBracesToSwitchSection.png)
+
+#### Add braces to switch sections
+
+* **Syntax**: switch statement
+* **Scope**: switch keyword
+
+![Add braces to switch sections](/images/refactorings/AddBracesToSwitchSections.png)
 
 #### Add cast expression
 
@@ -69,18 +91,19 @@
 
 ![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
 
-#### Add region
-
-* **Syntax**: selected lines
-
-![Add region](/images/refactorings/AddRegion.png)
-
 #### Add using directive
 
 * **Syntax**: qualified name
 * **Scope**: selected namespace
 
 ![Add using directive](/images/refactorings/AddUsingDirective.png)
+
+#### Change explicit type to 'var'
+
+* **Syntax**: variable declaration, foreach statement
+* **Scope**: type
+
+![Change explicit type to 'var'](/images/refactorings/ChangeExplicitTypeToVar.png)
 
 #### Change method return type to void
 
@@ -109,12 +132,25 @@
 
 ![Change type according to expression](/images/refactorings/ChangeForEachTypeAccordingToExpression.png)
 
+#### Change 'var' to explicit type
+
+* **Syntax**: variable declaration, foreach statetement
+* **Scope**: type
+
+![Change 'var' to explicit type](/images/refactorings/ChangeVarToExplicitType.png)
+
 #### Check parameter for null
 
 * **Syntax**: parameter
 * **Scope**: parameter identifier
 
 ![Check parameter for null](/images/refactorings/CheckParameterForNull.png)
+
+#### Collapse to initalizer
+
+* **Syntax**: object creation followed with assignment(s)
+
+![Collapse to initalizer](/images/refactorings/CollapseToInitializer.png)
 
 #### Comment out member
 
@@ -230,7 +266,7 @@
 
 #### Extract generic type
 
-* **Syntax**: generic name (with single type argument)
+* **Syntax**: generic name with single type argument
 * **Scope**: type argument
 
 ![Extract generic type](/images/refactorings/ExtractGenericType.png)
@@ -311,15 +347,27 @@
 
 #### Inline method
 
-* **Syntax**: method invocation
+* **Syntax**: static/extension method invocation
 
 ![Inline method](/images/refactorings/InlineMethod.png)
 
-#### Introduce constructor from selected member(s)
+#### Introduce and initialize field
+
+* **Syntax**: constructor parameter
+
+![Introduce and initialize field](/images/refactorings/IntroduceAndInitializeField.png)
+
+#### Introduce and initialize property
+
+* **Syntax**: constructor parameter
+
+![Introduce and initialize property](/images/refactorings/IntroduceAndInitializeProperty.png)
+
+#### Introduce constructor
 
 * **Syntax**: field, property
 
-![Introduce constructor from selected member(s)](/images/refactorings/IntroduceConstructor.png)
+![Introduce constructor](/images/refactorings/IntroduceConstructor.png)
 
 #### Introduce using static directive
 
@@ -346,6 +394,12 @@
 * **Syntax**: non-static field/method/property/event in static class
 
 ![Mark member as static](/images/refactorings/MarkMemberAsStatic.png)
+
+#### Merge assignment expression with return statement
+
+* **Syntax**: assignment expression followed with return statement
+
+![Merge assignment expression with return statement](/images/refactorings/MergeAssignmentExpressionWithReturnStatement.png)
 
 #### Merge attributes
 
@@ -441,18 +495,46 @@
 
 ![Remove all xml comments](/images/refactorings/RemoveAllXmlComments.png)
 
+#### Remove braces
+
+* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+* **Scope**: block with a single statement
+
+![Remove braces](/images/refactorings/RemoveBraces.png)
+
+#### Remove braces from if-else
+
+* **Syntax**: if-else chain
+* **Scope**: topmost if keyword
+
+![Remove braces from if-else](/images/refactorings/RemoveBracesFromIfElse.png)
+
+#### Remove braces from switch section
+
+* **Syntax**: switch section
+* **Scope**: block
+
+![Remove braces from switch section](/images/refactorings/RemoveBracesFromSwitchSection.png)
+
+#### Remove braces from switch sections
+
+* **Syntax**: switch statement
+* **Scope**: switch keyword
+
+![Remove braces from switch sections](/images/refactorings/RemoveBracesFromSwitchSections.png)
+
 #### Remove comment
 
 * **Syntax**: singleline/multiline comment, singleline/multiline xml documentation comment
 
 ![Remove comment](/images/refactorings/RemoveComment.png)
 
-#### Remove condition from last else-if
+#### Remove condition from last else
 
 * **Syntax**: else clause
 * **Scope**: else keyword
 
-![Remove condition from last else-if](/images/refactorings/RemoveConditionFromLastElseIf.png)
+![Remove condition from last else](/images/refactorings/RemoveConditionFromLastElse.png)
 
 #### Remove empty lines
 
@@ -500,15 +582,13 @@
 
 #### Remove statements from switch sections
 
-* **Syntax**: switch statement
-* **Scope**: selected sections
+* **Syntax**: selected switch sections
 
 ![Remove statements from switch sections](/images/refactorings/RemoveStatementsFromSwitchSections.png)
 
 #### Rename backing field according to property name
 
-* **Syntax**: backing field
-* **Scope**: property declaration
+* **Syntax**: field identifier inside property declaration
 
 ![Rename backing field according to property name](/images/refactorings/RenameBackingFieldAccordingToPropertyName.png)
 
@@ -560,26 +640,12 @@
 
 ![Replace 'Any/All' with 'All/Any'](/images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
-#### Replace block with embedded statement
+#### Replace boolean expression with if statement
 
-* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
-* **Scope**: block with a single statement
+* **Syntax**: return statement, yield return statement, expression statement
+* **Scope**: boolean expression
 
-![Replace block with embedded statement](/images/refactorings/ReplaceBlockWithEmbeddedStatement.png)
-
-#### Replace block with embedded statement (in if-else)
-
-* **Syntax**: if-else chain
-* **Scope**: topmost if keyword
-
-![Replace block with embedded statement (in if-else)](/images/refactorings/ReplaceBlockWithEmbeddedStatementInIfElse.png)
-
-#### Replace block with statements in each switch section
-
-* **Syntax**: switch statement
-* **Scope**: switch keyword
-
-![Replace block with statements in each switch section](/images/refactorings/ReplaceBlockWithStatementsInEachSwitchSection.png)
+![Replace boolean expression with if statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
 
 #### Replace conditional expression with if-else
 
@@ -600,39 +666,12 @@
 
 ![Replace 'Count/Length' with 'Length/Count'](/images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
-#### Replace do statement with while statement
+#### Replace 'do' statement with 'while' statement
 
 * **Syntax**: do statement
 * **Scope**: do keyword
 
-![Replace do statement with while statement](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
-
-#### Replace embedded statement with block
-
-* **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
-* **Scope**: embedded statement
-
-![Replace embedded statement with block](/images/refactorings/ReplaceEmbeddedStatementWithBlock.png)
-
-#### Replace embedded statement with block (in if-else)
-
-* **Syntax**: if-else chain
-* **Scope**: topmost if keyword
-
-![Replace embedded statement with block (in if-else)](/images/refactorings/ReplaceEmbeddedStatementWithBlockInIfElse.png)
-
-#### Replace Enum.HasFlag method with bitwise operation
-
-* **Syntax**: Enum.HasFlag method invocation
-
-![Replace Enum.HasFlag method with bitwise operation](/images/refactorings/ReplaceEnumHasFlagWithBitwiseOperation.png)
-
-#### Replace explicit type with 'var'
-
-* **Syntax**: variable declaration, foreach statement
-* **Scope**: type
-
-![Replace explicit type with 'var'](/images/refactorings/ReplaceExplicitTypeWithVar.png)
+![Replace 'do' statement with 'while' statement](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
 #### Replace field with constant
 
@@ -640,17 +679,23 @@
 
 ![Replace field with constant](/images/refactorings/ReplaceFieldWithConstant.png)
 
-#### Replace for with foreach
+#### Replace 'for' with 'foreach'
 
 * **Syntax**: for statement
 
-![Replace for with foreach](/images/refactorings/ReplaceForWithForEach.png)
+![Replace 'for' with 'foreach'](/images/refactorings/ReplaceForWithForEach.png)
 
-#### Replace foreach with for
+#### Replace 'foreach' with 'for'
 
 * **Syntax**: foreach statement
 
-![Replace foreach with for](/images/refactorings/ReplaceForEachWithFor.png)
+![Replace 'foreach' with 'for'](/images/refactorings/ReplaceForEachWithFor.png)
+
+#### Replace 'HasFlag' with bitwise operation
+
+* **Syntax**: Enum.HasFlag method invocation
+
+![Replace 'HasFlag' with bitwise operation](/images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
 
 #### Replace increment operator with decrement operator
 
@@ -697,20 +742,6 @@
 
 ![Replace regular string literal with verbatim string literal](/images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
 
-#### Replace return statement with if statement
-
-* **Syntax**: return statement, yield return statement, expression statement
-* **Scope**: boolean expression
-
-![Replace return statement with if statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
-
-#### Replace statements with block in each switch section
-
-* **Syntax**: switch statement
-* **Scope**: switch keyword
-
-![Replace statements with block in each switch section](/images/refactorings/ReplaceStatementsWithBlockInEachSwitchSection.png)
-
 #### Replace string literal with character literal
 
 * **Syntax**: string literal
@@ -723,45 +754,24 @@
 
 ![Replace string literal with interpolated string](/images/refactorings/ReplaceStringLiteralWithInterpolatedString.png)
 
-#### Replace string.Empty with ""
+#### Replace 'string.Empty' with ""
 
 * **Syntax**: string.Empty
 
-![Replace string.Empty with ""](/images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
+![Replace 'string.Empty' with ""](/images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
 
-#### Replace string.Format with interpolated string
+#### Replace 'string.Format' with interpolated string
 
 * **Syntax**: string.Format method
 
-![Replace string.Format with interpolated string](/images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+![Replace 'string.Format' with interpolated string](/images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
-#### Replace switch section block with statements
-
-* **Syntax**: switch section
-* **Scope**: block
-
-![Replace switch section block with statements](/images/refactorings/ReplaceSwitchSectionBlockWithStatements.png)
-
-#### Replace switch section statements with block
-
-* **Syntax**: switch section
-* **Scope**: statements
-
-![Replace switch section statements with block](/images/refactorings/ReplaceSwitchSectionStatementsWithBlock.png)
-
-#### Replace switch with if-else
+#### Replace 'switch' with 'if-else'
 
 * **Syntax**: switch statement
 * **Scope**: switch keyword
 
-![Replace switch with if-else](/images/refactorings/ReplaceSwitchWithIfElse.png)
-
-#### Replace 'var' with explicit type
-
-* **Syntax**: variable declaration, foreach statetement
-* **Scope**: type
-
-![Replace 'var' with explicit type](/images/refactorings/ReplaceVarWithExplicitType.png)
+![Replace 'switch' with 'if-else'](/images/refactorings/ReplaceSwitchWithIfElse.png)
 
 #### Replace verbatim string literal with regular string literal
 
@@ -775,18 +785,18 @@
 
 ![Replace verbatim string literal with regular string literals](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
 
-#### Replace while statement with do statement
+#### Replace 'while' statement with 'do' statement
 
 * **Syntax**: while statement
 * **Scope**: while keyword
 
-![Replace while statement with do statement](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
+![Replace 'while' statement with 'do' statement](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
 
-#### Reverse for loop
+#### Reverse 'for' loop
 
 * **Syntax**: for statement
 
-![Reverse for loop](/images/refactorings/ReverseForLoop.png)
+![Reverse 'for' loop](/images/refactorings/ReverseForLoop.png)
 
 #### Simplify lambda expression
 
@@ -847,26 +857,38 @@
 
 ![Use expression-bodied member](/images/refactorings/UseExpressionBodiedMember.png)
 
-#### Wrap declaration in using statement
-
-* **Syntax**: local declaration of type that implements IDisposable
-
-![Wrap declaration in using statement](/images/refactorings/WrapDeclarationInUsingStatement.png)
-
 #### Wrap expression in parentheses
 
 * **Syntax**: selected expression
 
 ![Wrap expression in parentheses](/images/refactorings/WrapExpressionInParentheses.png)
 
-#### Wrap statements in if statement
+#### Wrap in #if directive
+
+* **Syntax**: selected lines
+
+![Wrap in #if directive](/images/refactorings/WrapInIfDirective.png)
+
+#### Wrap in if statement
 
 * **Syntax**: selected statements
 
-![Wrap statements in if statement](/images/refactorings/WrapStatementsInIfStatement.png)
+![Wrap in if statement](/images/refactorings/WrapInIfStatement.png)
 
-#### Wrap statements in try-catch
+#### Wrap in region
+
+* **Syntax**: selected lines
+
+![Wrap in region](/images/refactorings/WrapInRegion.png)
+
+#### Wrap in try-catch
 
 * **Syntax**: selected statements
 
-![Wrap statements in try-catch](/images/refactorings/WrapStatementsInTryCatch.png)
+![Wrap in try-catch](/images/refactorings/WrapInTryCatch.png)
+
+#### Wrap in using statement
+
+* **Syntax**: local declaration of type that implements IDisposable
+
+![Wrap in using statement](/images/refactorings/WrapInUsingStatement.png)
