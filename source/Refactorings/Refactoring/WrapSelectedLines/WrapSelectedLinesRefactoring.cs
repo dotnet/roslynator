@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.WrapSelectedLines
 {
     internal abstract class WrapSelectedLinesRefactoring : SelectedLinesRefactoring
     {

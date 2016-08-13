@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.WrapStatements
 {
     internal class WrapInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
     {

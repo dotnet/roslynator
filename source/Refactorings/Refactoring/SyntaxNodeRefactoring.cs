@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.WrapSelectedLines;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {

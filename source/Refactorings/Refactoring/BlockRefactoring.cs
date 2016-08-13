@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.WrapStatements;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.WrapStatements
 {
     internal abstract class WrapStatementsRefactoring<TStatement> where TStatement : StatementSyntax
     {
