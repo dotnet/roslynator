@@ -70,24 +70,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (argumentList != null)
                 {
-                    if (invocation.Span.Equals(span))
+                    if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                     {
-                        return true;
+                        return ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(span) == true;
                     }
-                    else if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)expression;
-
-                        SimpleNameSyntax name = memberAccess.Name;
-
-                        if (name != null)
-                        {
-                            return span.Start == name.Span.Start
-                                && span.End == invocation.Span.End;
-                        }
-                    }
-                    else if (span.Start == expression.Span.Start
-                        && span.End == invocation.Span.End)
+                    else if (expression.Span.Contains(span))
                     {
                         return true;
                     }
@@ -158,7 +145,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (methodSymbol.IsOrdinary())
                 {
                     if (methodSymbol.IsStatic)
+                    {
                         return methodSymbol;
+                    }
+                    else
+                    {
+                        TypeDeclarationSyntax containingType = SyntaxUtility.GetContainingType(invocation);
+
+                        if (containingType != null)
+                        {
+                            ISymbol containingTypeSymbol = semanticModel.GetDeclaredSymbol(containingType, cancellationToken);
+
+                            if (methodSymbol.ContainingType?.Equals(containingTypeSymbol) == true)
+                                return methodSymbol;
+                        }
+                    }
                 }
                 else if (methodSymbol.IsReducedExtension()
                     && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
