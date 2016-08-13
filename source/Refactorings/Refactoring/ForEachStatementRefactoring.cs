@@ -29,6 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
+                    && context.Span.IsEmpty
                     && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
