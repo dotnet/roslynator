@@ -95,7 +95,7 @@
     </Syntaxes>
     <Scope>selected namespace</Scope>
   </Refactoring>
-  <Refactoring Id="CollapseToInitializer" Title="Collapse to initalizer" ExtensionVersion="0.0.0">
+  <Refactoring Id="CollapseToInitializer" Title="Collapse to initalizer" ExtensionVersion="0.98.0">
     <Syntaxes>
       <Syntax>object creation followed with assignment(s)</Syntax>
     </Syntaxes>
@@ -387,12 +387,12 @@
       <Syntax>static/extension method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="IntroduceAndInitializeField" Title="Introduce and initialize field" ExtensionVersion="0.0.0">
+  <Refactoring Id="IntroduceAndInitializeField" Title="Introduce and initialize field" ExtensionVersion="0.98.0">
     <Syntaxes>
       <Syntax>constructor parameter</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="IntroduceAndInitializeProperty" Title="Introduce and initialize property" ExtensionVersion="0.0.0">
+  <Refactoring Id="IntroduceAndInitializeProperty" Title="Introduce and initialize property" ExtensionVersion="0.98.0">
     <Syntaxes>
       <Syntax>constructor parameter</Syntax>
     </Syntaxes>
@@ -426,7 +426,7 @@
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement" ExtensionVersion="0.98.0">
     <Syntaxes>
       <Syntax>assignment expression followed with return statement</Syntax>
     </Syntaxes>
