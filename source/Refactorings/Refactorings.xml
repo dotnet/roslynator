@@ -387,6 +387,16 @@
       <Syntax>static/extension method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="IntroduceAndInitializeField" Title="Introduce and initialize field" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>constructor parameter</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="IntroduceAndInitializeProperty" Title="Introduce and initialize property" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>constructor parameter</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="IntroduceConstructor" Title="Introduce constructor" IsEnabledByDefault="false" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>field</Syntax>

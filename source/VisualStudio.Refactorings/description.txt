@@ -188,6 +188,12 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#inline-method">Inline method</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-and-initialize-field">Introduce and initialize field</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-and-initialize-property">Introduce and initialize property</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-constructor">Introduce constructor</a>
         </li>
         <li>

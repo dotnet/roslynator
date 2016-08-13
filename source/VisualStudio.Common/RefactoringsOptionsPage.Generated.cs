@@ -63,6 +63,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
             InlineMethod = true;
+            IntroduceAndInitializeField = true;
+            IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
             IntroduceUsingStaticDirective = true;
             MakeMemberAbstract = true;
@@ -201,6 +203,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField, IntroduceAndInitializeField);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
             SetIsEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective, IntroduceUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
@@ -791,6 +795,26 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: static/extension method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool InlineMethod
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Introduce and initialize field")]
+        [Description("Syntax: constructor parameter")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool IntroduceAndInitializeField
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Introduce and initialize property")]
+        [Description("Syntax: constructor parameter")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool IntroduceAndInitializeProperty
         {
             get;
             set;

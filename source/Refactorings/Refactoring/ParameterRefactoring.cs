@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -14,6 +15,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
 
                 await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
+
+                if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.IntroduceAndInitializeField,
+                    RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                {
+                    IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameter);
+                }
 
                 await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
             }

@@ -44,6 +44,9 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializePropertyRefactoring.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeRefactoring.cs" />
     <Compile Include="Refactoring\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\AddUsingDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\CollapseToInitializerRefactoring.cs" />

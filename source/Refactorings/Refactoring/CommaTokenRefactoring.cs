@@ -19,7 +19,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddParameterNameToParameter,
                     RefactoringIdentifiers.RenameParameterAccordingToTypeName,
-                    RefactoringIdentifiers.CheckParameterForNull)
+                    RefactoringIdentifiers.CheckParameterForNull,
+                    RefactoringIdentifiers.IntroduceAndInitializeField,
+                    RefactoringIdentifiers.IntroduceAndInitializeProperty)
                 && commaToken.Parent?.IsKind(SyntaxKind.ParameterList) == true
                 && context.Span.Start > 0)
             {
