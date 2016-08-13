@@ -1,3 +1,21 @@
+### 0.98.0 (2016-08-14)
+
+#### Analyzers
+
+##### Changes
+
+* "RemoveRedundantEmptyLine" analyzer - empty line is allowed when it is last line in 'do' statement's body (when 'while' token is on the same line as closing brace)
+* "UseExplicitTypeInsteadOfVar" and "UseVarInsteadOfExplicitType" analyzers - 'var' is allowed for 'default(T)' expression
+
+#### Refactorings
+
+##### New Refactorings
+
+* MergeAssignmentExpressionWithReturnStatement
+* CollapseToInitializer
+* IntroduceAndInitializeField
+* IntroduceAndInitializeProperty
+
 ### 0.97.0 (2016-08-08)
 
 #### Refactorings
