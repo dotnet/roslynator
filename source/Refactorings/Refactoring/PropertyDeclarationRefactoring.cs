@@ -107,16 +107,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                string newName = NamingHelper.CreateIdentifierName(propertyDeclaration.Type, semanticModel);
+                ITypeSymbol typeSymbol = semanticModel
+                    .GetTypeInfo(propertyDeclaration.Type, context.CancellationToken)
+                    .Type;
 
-                if (!string.IsNullOrEmpty(newName)
-                    && !string.Equals(newName, propertyDeclaration.Identifier.ValueText, StringComparison.Ordinal))
+                if (typeSymbol?.IsErrorType() == false)
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+                    string newName = SyntaxUtility.CreateIdentifier(typeSymbol);
 
-                    context.RegisterRefactoring(
-                        $"Rename property to '{newName}'",
-                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                    if (!string.IsNullOrEmpty(newName))
+                    {
+                        newName = TextUtility.FirstCharToUpper(newName);
+
+                        if (!string.Equals(newName, propertyDeclaration.Identifier.ValueText, StringComparison.Ordinal))
+                        {
+                            ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+
+                            context.RegisterRefactoring(
+                                $"Rename property to '{newName}'",
+                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                        }
+                    }
                 }
             }
         }

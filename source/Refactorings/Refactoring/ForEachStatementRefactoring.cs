@@ -88,19 +88,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 string oldName = forEachStatement.Identifier.ValueText;
 
-                string newName = NamingHelper.CreateIdentifierName(
-                    forEachStatement.Type,
-                    semanticModel,
-                    firstCharToLower: true);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, context.CancellationToken).Type;
 
-                if (!string.IsNullOrEmpty(newName)
-                    && !string.Equals(newName, oldName, StringComparison.Ordinal))
+                if (typeSymbol?.IsErrorType() == false)
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+                    string newName = SyntaxUtility.CreateIdentifier(
+                        typeSymbol,
+                        firstCharToLower: true);
 
-                    context.RegisterRefactoring(
-                        $"Rename '{oldName}' to '{newName}'",
-                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                    if (!string.IsNullOrEmpty(newName)
+                        && !string.Equals(newName, oldName, StringComparison.Ordinal))
+                    {
+                        ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+
+                        context.RegisterRefactoring(
+                            $"Rename '{oldName}' to '{newName}'",
+                            cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                    }
                 }
             }
         }

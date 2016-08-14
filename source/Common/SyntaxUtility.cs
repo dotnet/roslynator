@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp
+namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxUtility
     {
@@ -231,6 +231,116 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                         yield return identifierName;
                 }
             }
+        }
+
+        public static string CreateIdentifier(ITypeSymbol typeSymbol, bool firstCharToLower = false)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
+                return null;
+
+            ITypeSymbol typeSymbol2 = ExtractFromNullableType(typeSymbol);
+
+            ITypeSymbol typeSymbol3 = ExtractFromArrayOrGenericCollection(typeSymbol2);
+
+            string name = GetName(typeSymbol3);
+
+            if (name == null)
+                return null;
+
+            if (typeSymbol3.TypeKind == TypeKind.Interface
+                && name.Length > 1
+                && name[0] == 'I')
+            {
+                name = name.Substring(1);
+            }
+
+            if (UsePlural(typeSymbol2)
+                && typeSymbol2.Implements(SpecialType.System_Collections_IEnumerable))
+            {
+                if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
+                    name += "es";
+                else if (name.EndsWith("y", StringComparison.Ordinal))
+                    name += "ies";
+                else
+                    name += "s";
+            }
+
+            if (firstCharToLower)
+                name = TextUtility.FirstCharToLowerInvariant(name);
+
+            return name;
+        }
+
+        private static ITypeSymbol ExtractFromNullableType(ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.IsNamedType())
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                    return namedTypeSymbol.TypeArguments[0];
+            }
+
+            return typeSymbol;
+        }
+
+        private static ITypeSymbol ExtractFromArrayOrGenericCollection(ITypeSymbol typeSymbol)
+        {
+            switch (typeSymbol.Kind)
+            {
+                case SymbolKind.ArrayType:
+                    {
+                        return ((IArrayTypeSymbol)typeSymbol).ElementType;
+                    }
+                case SymbolKind.NamedType:
+                    {
+                        var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                        if (namedTypeSymbol.TypeArguments.Length == 1
+                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable))
+                        {
+                            return namedTypeSymbol.TypeArguments[0];
+                        }
+
+                        break;
+                    }
+            }
+
+            return typeSymbol;
+        }
+
+        private static bool UsePlural(ITypeSymbol typeSymbol)
+        {
+            switch (typeSymbol.Kind)
+            {
+                case SymbolKind.ArrayType:
+                    return true;
+                case SymbolKind.NamedType:
+                    return ((INamedTypeSymbol)typeSymbol).TypeArguments.Length == 1;
+                default:
+                    return false;
+            }
+        }
+
+        private static string GetName(ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.IsTypeParameter())
+            {
+                if (typeSymbol.Name.Length > 1
+                    && typeSymbol.Name[0] == 'T')
+                {
+                    return typeSymbol.Name.Substring(1);
+                }
+            }
+            else if (typeSymbol.IsPredefinedType())
+            {
+                return null;
+            }
+
+            return typeSymbol.Name;
         }
     }
 }

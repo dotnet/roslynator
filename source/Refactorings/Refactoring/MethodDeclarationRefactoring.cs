@@ -76,7 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (typeSymbol != null)
                 {
-                    string newName = NamingHelper.CreateIdentifierName(typeSymbol);
+                    string newName = SyntaxUtility.CreateIdentifier(typeSymbol);
 
                     if (!string.IsNullOrEmpty(newName))
                     {

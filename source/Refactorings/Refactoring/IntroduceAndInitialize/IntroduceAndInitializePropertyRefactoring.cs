@@ -3,7 +3,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.Text;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize

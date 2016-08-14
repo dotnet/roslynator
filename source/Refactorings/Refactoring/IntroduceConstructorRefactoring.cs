@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -283,9 +282,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             foreach (MemberDeclarationSyntax member in members)
             {
                 string name = GetIdentifier(member).ValueText;
-
-                string parameterName = NamingHelper.RemoveUnderscoreFromIdentifier(name);
-                parameterName = TextUtility.FirstCharToLower(parameterName);
+                string parameterName = TextUtility.ToCamelCase(name);
 
                 statements.Add(ExpressionStatement(
                     AssignmentExpression(

@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize
             get
             {
                 if (_name == null)
-                    _name = NamingHelper.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
+                    _name = TextUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
 
                 return _name;
             }

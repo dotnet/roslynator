@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            string fieldName = NamingHelper.ToCamelCase(
+            string fieldName = TextUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 

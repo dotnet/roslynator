@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 
-namespace Pihrtsoft.CodeAnalysis.Text
+namespace Pihrtsoft.CodeAnalysis
 {
     public static class TextUtility
     {
@@ -116,6 +116,83 @@ namespace Pihrtsoft.CodeAnalysis.Text
             }
 
             return sb.ToString();
+        }
+
+        public static string ToCamelCaseWithUnderscore(string value)
+        {
+            return CreateName(value, "_");
+        }
+
+        public static string ToCamelCase(string value)
+        {
+            return CreateName(value, "");
+        }
+
+        public static string ToCamelCase(string value, bool prefixWithUnderscore = false)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            string prefix = (prefixWithUnderscore) ? "_" : "";
+
+            if (value.Length == 0)
+                return prefix;
+
+            return CreateName(value, prefix);
+        }
+
+        private static string CreateName(string value, string prefix)
+        {
+            var sb = new StringBuilder(prefix, value.Length + prefix.Length);
+
+            int i = 0;
+
+            while (i < value.Length && value[i] == '_')
+                i++;
+
+            if (char.IsUpper(value[i]))
+            {
+                sb.Append(char.ToLower(value[i]));
+            }
+            else
+            {
+                sb.Append(value[i]);
+            }
+
+            i++;
+
+            sb.Append(value, i, value.Length - i);
+
+            return sb.ToString();
+        }
+
+        public static bool IsValidCamelCaseWithUnderscore(string value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (value[0] == '_')
+            {
+                if (value.Length > 1)
+                {
+                    return value[1] != '_'
+                        && !char.IsUpper(value[1]);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsValidCamelCaseWithoutUnderscore(string value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            return value.Length > 0
+                && value[0] != '_'
+                && char.IsLower(value[0]);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                                 if (typeSymbol?.IsErrorType() == false)
                                 {
-                                    string name = NamingHelper.CreateIdentifierName(typeSymbol, firstCharToLower: true);
+                                    string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
 
                                     if (!string.IsNullOrEmpty(name))
                                     {
@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (typeSymbol?.IsErrorType() == false)
                     {
-                        string name = NamingHelper.CreateIdentifierName(typeSymbol, firstCharToLower: true);
+                        string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {

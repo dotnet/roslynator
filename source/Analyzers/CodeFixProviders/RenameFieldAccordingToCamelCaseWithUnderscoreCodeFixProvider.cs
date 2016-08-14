@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-                string newName = NamingHelper.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
+                string newName = TextUtility.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Rename field to '{newName}'",

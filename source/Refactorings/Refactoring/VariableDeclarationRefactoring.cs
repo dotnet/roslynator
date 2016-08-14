@@ -48,26 +48,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 if (symbol != null)
                 {
-                    string newName = NamingHelper.CreateIdentifierName(
-                        variableDeclaration.Type,
-                        semanticModel,
-                        FirstCharToLower(symbol));
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, context.CancellationToken).Type;
 
-                    if (!string.IsNullOrEmpty(newName))
+                    if (typeSymbol?.IsErrorType() == false)
                     {
-                        if (context.Settings.PrefixFieldIdentifierWithUnderscore
-                            && symbol.IsField()
-                            && symbol.IsPrivate()
-                            && !((IFieldSymbol)symbol).IsConst)
-                        {
-                            newName = NamingHelper.ToCamelCaseWithUnderscore(newName);
-                        }
+                        string newName = SyntaxUtility.CreateIdentifier(
+                            typeSymbol,
+                            FirstCharToLower(symbol));
 
-                        if (!string.Equals(variableDeclaration.Variables[0].Identifier.ValueText, newName, StringComparison.Ordinal))
+                        if (!string.IsNullOrEmpty(newName))
                         {
-                            context.RegisterRefactoring(
-                                $"Rename {GetName(symbol)} to '{newName}'",
-                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                            if (context.Settings.PrefixFieldIdentifierWithUnderscore
+                                && symbol.IsField()
+                                && symbol.IsPrivate()
+                                && !((IFieldSymbol)symbol).IsConst)
+                            {
+                                newName = TextUtility.ToCamelCaseWithUnderscore(newName);
+                            }
+
+                            if (!string.Equals(variableDeclaration.Variables[0].Identifier.ValueText, newName, StringComparison.Ordinal))
+                            {
+                                context.RegisterRefactoring(
+                                    $"Rename {GetName(symbol)} to '{newName}'",
+                                    cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                            }
                         }
                     }
                 }

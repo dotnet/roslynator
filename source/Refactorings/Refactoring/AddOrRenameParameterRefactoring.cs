@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                     if (span.Contains(context.Span))
                     {
-                        string name = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                        string name = SyntaxUtility.CreateIdentifier(parameterSymbol.Type, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {
@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string name = parameter.Identifier.ValueText;
-                string newName = NamingHelper.CreateIdentifierName(parameterSymbol.Type, firstCharToLower: true);
+                string newName = SyntaxUtility.CreateIdentifier(parameterSymbol.Type, firstCharToLower: true);
 
                 if (!string.IsNullOrEmpty(newName)
                     && !string.Equals(name, newName, StringComparison.Ordinal))

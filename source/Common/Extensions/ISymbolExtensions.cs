@@ -9,6 +9,22 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class ISymbolExtensions
     {
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind)
+        {
+            return symbol?.Kind == kind;
+        }
+
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2)
+        {
+            if (symbol == null)
+                return false;
+
+            SymbolKind kind = symbol.Kind;
+
+            return kind == kind1
+                || kind == kind2;
+        }
+
         public static ImmutableArray<IParameterSymbol> GetParameters(this ISymbol symbol)
         {
             if (symbol == null)
