@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             SyntaxTokenList modifiers = declaration.GetDeclarationModifiers();
 
-            SyntaxToken[] newModifiers = modifiers.OrderBy(f => f, ModifierSorter.Instance).ToArray();
+            SyntaxToken[] newModifiers = modifiers.OrderBy(f => f, ModifierComparer.Instance).ToArray();
 
             for (int i = 0; i < modifiers.Count; i++)
                 newModifiers[i] = newModifiers[i].WithTriviaFrom(modifiers[i]);

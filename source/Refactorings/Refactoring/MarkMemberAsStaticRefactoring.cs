@@ -224,7 +224,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             return TokenList(
                 modifiers.Add(Token(SyntaxKind.StaticKeyword))
-                    .OrderBy(f => f, ModifierSorter.Instance));
+                    .OrderBy(f => f, ModifierComparer.Instance));
         }
     }
 }

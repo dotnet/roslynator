@@ -102,7 +102,7 @@
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
     <Compile Include="SymbolRenamer.cs" />
-    <Compile Include="ModifierSorter.cs" />
+    <Compile Include="ModifierComparer.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\CompilationUnitSyntaxExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

@@ -63,14 +63,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         private static SyntaxList<MemberDeclarationSyntax> SortMembers(IEnumerable<MemberDeclarationSyntax> memberDeclarations)
         {
             IEnumerable<MemberDeclarationSyntax> newMembers = memberDeclarations
-                .OrderBy(f => f, MemberDeclarationSorter.Instance);
+                .OrderBy(f => f, MemberDeclarationComparer.Instance);
 
             return SyntaxFactory.List(newMembers);
         }
 
-        private class MemberDeclarationSorter : IComparer<MemberDeclarationSyntax>
+        private class MemberDeclarationComparer : IComparer<MemberDeclarationSyntax>
         {
-            public static readonly MemberDeclarationSorter Instance = new MemberDeclarationSorter();
+            public static readonly MemberDeclarationComparer Instance = new MemberDeclarationComparer();
 
             public int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y)
             {

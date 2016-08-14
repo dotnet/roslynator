@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (modifiers.Count <= 1)
                 return;
 
-            if (ModifierSorter.AreModifiersSorted(modifiers))
+            if (ModifierComparer.AreModifiersSorted(modifiers))
                 return;
 
             context.ReportDiagnostic(

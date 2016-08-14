@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Pihrtsoft.CodeAnalysis
 {
-    public sealed class ModifierSorter : IComparer<SyntaxToken>
+    public sealed class ModifierComparer : IComparer<SyntaxToken>
     {
-        public static readonly ModifierSorter Instance = new ModifierSorter();
+        public static readonly ModifierComparer Instance = new ModifierComparer();
 
         public int Compare(SyntaxToken x, SyntaxToken y)
         {

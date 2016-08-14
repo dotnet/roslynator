@@ -157,8 +157,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             modifiers = AddAbstractKeywordIfNotPresent(modifiers);
 
-            if (!ModifierSorter.AreModifiersSorted(modifiers))
-                modifiers = TokenList(modifiers.OrderBy(f => f, ModifierSorter.Instance));
+            if (!ModifierComparer.AreModifiersSorted(modifiers))
+                modifiers = TokenList(modifiers.OrderBy(f => f, ModifierComparer.Instance));
 
             return modifiers;
         }
