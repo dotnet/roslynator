@@ -48,6 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             do
                             {
                                 i++;
+
                             } while (i < s.Length && s[i] == '\t');
 
                             context.ReportDiagnostic(

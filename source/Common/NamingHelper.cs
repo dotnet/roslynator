@@ -239,6 +239,7 @@ namespace Pihrtsoft.CodeAnalysis
                         }
 
                         sb.Append(value, prevIndex, i - prevIndex);
+
                     } while (i < value.Length);
 
                     return sb.ToString();

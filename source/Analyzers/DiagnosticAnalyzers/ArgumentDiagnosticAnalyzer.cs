@@ -121,8 +121,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 if (IdentifierEquals(enumerator.Current.Identifier.ValueText, name))
                     return true;
-            }
-            while (enumerator.MoveNext());
+
+            } while (enumerator.MoveNext());
 
             return false;
         }

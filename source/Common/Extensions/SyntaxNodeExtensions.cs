@@ -290,8 +290,8 @@ namespace Pihrtsoft.CodeAnalysis
                 }
 
                 node = node.Parent;
-            }
-            while (node != null);
+
+            } while (node != null);
 
             return null;
         }

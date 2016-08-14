@@ -81,6 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                                 {
                                     yield break;
                                 }
+
                             } while (en.MoveNext());
                         }
                         else if (span.Start <= en.Current.Span.End)
