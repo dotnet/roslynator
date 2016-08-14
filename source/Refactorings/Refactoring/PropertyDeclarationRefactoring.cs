@@ -93,7 +93,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
             }
 
-            if (propertyDeclaration.HeaderSpan().Contains(context.Span)
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+                && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(propertyDeclaration))
             {
                 context.RegisterRefactoring(
@@ -101,7 +102,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
-            if (context.SupportsSemanticModel
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)
+                && context.SupportsSemanticModel
                 && propertyDeclaration.Type != null
                 && propertyDeclaration.Identifier.Span.Contains(context.Span))
             {
