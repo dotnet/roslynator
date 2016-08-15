@@ -219,6 +219,8 @@
     <Rule Id="RCS1009" Action="Info" />
     <Rule Id="RCS1010" Action="Info" />
     <Rule Id="RCS1013" Action="Info" />
+    <Rule Id="RCS1016" Action="None" />
+    <Rule Id="RCS1016FadeOut" Action="None" />
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Warning" />
