@@ -130,8 +130,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.98.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.Common.dll" />
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.98.0\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.CSharp.dll" />
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.98.1\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.Common.dll" />
+    <Analyzer Include="..\..\packages\CSharpAnalyzers.0.98.1\analyzers\dotnet\cs\Pihrtsoft.CodeAnalysis.CSharp.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
