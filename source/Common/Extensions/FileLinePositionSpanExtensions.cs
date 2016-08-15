@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
         {
-            return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
+            return fileLinePositionSpan.StartLine() != fileLinePositionSpan.EndLine();
         }
 
         public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
