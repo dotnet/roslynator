@@ -46,10 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
-                .WithSimplifierAnnotation();
-
-            ExpressionSyntax expression = RefactoringHelper.CreateDefaultValue(type, typeSymbol);
+            ExpressionSyntax expression = SyntaxUtility.CreateDefaultValue(typeSymbol);
 
             root = root.ReplaceNode(
                 returnStatement,

@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             TypeSyntax type,
             ITypeSymbol typeSymbol)
         {
-            ExpressionSyntax value = RefactoringHelper.CreateDefaultValue(type, typeSymbol);
+            ExpressionSyntax value = SyntaxUtility.CreateDefaultValue(typeSymbol, type);
 
             EqualsValueClauseSyntax @default = EqualsValueClause(value);
 
