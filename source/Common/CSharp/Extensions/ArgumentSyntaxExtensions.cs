@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -46,12 +47,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
-            if (argument.NameColon != null && !argument.NameColon.IsMissing)
-            {
-                string name = argument.NameColon.Name.Identifier.ValueText;
+            string name = argument.NameColon?.Name?.Identifier.ValueText;
 
+            if (name!= null)
                 return parameters.FirstOrDefault(p => p.Name == name);
-            }
 
             int index = argumentList.Arguments.IndexOf(argument);
 
@@ -88,6 +87,107 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
             return default(SymbolInfo);
+        }
+
+        public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
+            this ArgumentSyntax argument,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var argumentList = argument.Parent as BaseArgumentListSyntax;
+
+            if (argumentList != null)
+            {
+                var invocableExpression = argumentList.Parent as ExpressionSyntax;
+
+                if (invocableExpression != null)
+                {
+                    SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(invocableExpression, cancellationToken);
+
+                    ISymbol symbol = symbolInfo.Symbol;
+
+                    if (symbol != null)
+                    {
+                        ITypeSymbol typeSymbol = DetermineParameterType(symbol, argument, argumentList);
+
+                        if (typeSymbol?.IsErrorType() == false)
+                            return ImmutableArray.Create(typeSymbol);
+                    }
+                    else
+                    {
+                        HashSet<ITypeSymbol> typeSymbols = null;
+
+                        foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
+                        {
+                            ITypeSymbol typeSymbol = DetermineParameterType(candidateSymbol, argument, argumentList);
+
+                            if (typeSymbol?.IsErrorType() == false)
+                            {
+                                if (typeSymbols == null)
+                                    typeSymbols = new HashSet<ITypeSymbol>();
+
+                                typeSymbols.Add(typeSymbol);
+                            }
+                        }
+
+                        return typeSymbols.ToImmutableArray();
+                    }
+                }
+            }
+
+            return ImmutableArray<ITypeSymbol>.Empty;
+        }
+
+        private static ITypeSymbol DetermineParameterType(
+            ISymbol symbol,
+            ArgumentSyntax argument,
+            BaseArgumentListSyntax argumentList)
+        {
+            IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
+
+            return GetParameterType(parameterSymbol);
+        }
+
+        private static IParameterSymbol DetermineParameterSymbol(
+            ISymbol symbol,
+            ArgumentSyntax argument,
+            BaseArgumentListSyntax argumentList)
+        {
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
+
+            string name = argument.NameColon?.Name?.Identifier.ValueText;
+
+            if (name != null)
+                return parameters.FirstOrDefault(f => f.Name == name);
+
+            int index = argumentList.Arguments.IndexOf(argument);
+
+            if (index >= 0
+                && index < parameters.Length)
+            {
+                return parameters[index];
+            }
+
+            IParameterSymbol lastParameter = parameters.LastOrDefault();
+
+            if (lastParameter?.IsParams == true)
+                return lastParameter;
+
+            return null;
+        }
+
+        private static ITypeSymbol GetParameterType(IParameterSymbol parameterSymbol)
+        {
+            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+            if (parameterSymbol.IsParams
+                && typeSymbol.IsArrayType())
+            {
+                var arrayTypeSymbol = (IArrayTypeSymbol)typeSymbol;
+                return arrayTypeSymbol.ElementType;
+            }
+
+            return typeSymbol;
         }
 
         public static ArgumentSyntax WithoutNameColon(this ArgumentSyntax argument)
