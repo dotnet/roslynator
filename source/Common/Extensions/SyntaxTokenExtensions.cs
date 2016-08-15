@@ -11,6 +11,56 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
+        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
+        {
+            SyntaxKind kind = token.Kind();
+
+            return kind == kind1
+                || kind == kind2;
+        }
+
+        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            SyntaxKind kind = token.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3;
+        }
+
+        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        {
+            SyntaxKind kind = token.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4;
+        }
+
+        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        {
+            SyntaxKind kind = token.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4
+                || kind == kind5;
+        }
+
+        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+        {
+            SyntaxKind kind = token.Kind();
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4
+                || kind == kind5
+                || kind == kind6;
+        }
+
         public static bool IsAccessModifier(this SyntaxToken token)
         {
             return token.IsKind(SyntaxKind.PublicKeyword)
