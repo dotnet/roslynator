@@ -77,7 +77,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             var ifStatement = (IfStatementSyntax)block.Statements[0];
 
                             if (ifStatement.Else == null
-                                && CheckTrivia(ifStatement.Else, block, ifStatement))
+                                && CheckTrivia(elseClause, block, ifStatement))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
