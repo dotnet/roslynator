@@ -1,16 +1,28 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class MethodDeclarationSyntaxExtensions
     {
+        public static bool IsIterator(this MethodDeclarationSyntax methodDeclaration)
+        {
+            if (methodDeclaration == null)
+                throw new ArgumentNullException(nameof(methodDeclaration));
+
+            return methodDeclaration
+                    .DescendantNodes(node => !node.IsKind(
+                        SyntaxKind.SimpleLambdaExpression,
+                        SyntaxKind.ParenthesizedLambdaExpression,
+                        SyntaxKind.AnonymousMethodExpression))
+                    .Any(f => f.IsYieldStatement());
+        }
+
         public static MethodDeclarationSyntax WithModifiers(
             this MethodDeclarationSyntax methodDeclaration,
             params SyntaxKind[] kinds)

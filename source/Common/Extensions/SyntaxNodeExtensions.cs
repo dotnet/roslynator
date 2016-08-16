@@ -14,6 +14,11 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool IsYieldStatement(this SyntaxNode node)
+        {
+            return node.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement);
+        }
+
         internal static bool IsBinaryExpression(this SyntaxNode node)
         {
             if (node == null)
