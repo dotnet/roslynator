@@ -14,9 +14,11 @@ namespace Pihrtsoft.CodeAnalysis
             if (namedType == null)
                 throw new ArgumentNullException(nameof(namedType));
 
-            if (namedType.TypeArguments.Length > 0)
+            ImmutableArray<ITypeSymbol> typeArguments = namedType.TypeArguments;
+
+            if (typeArguments.Length > 0)
             {
-                var stack = new Stack<ITypeSymbol>(namedType.TypeArguments);
+                var stack = new Stack<ITypeSymbol>(typeArguments);
 
                 while (stack.Count > 0)
                 {
@@ -27,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis
 
                     if (type.IsNamedType())
                     {
-                        ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)type).TypeArguments;
+                        typeArguments = ((INamedTypeSymbol)type).TypeArguments;
 
                         for (int i = 0; i < typeArguments.Length; i++)
                             stack.Push(typeArguments[i]);
@@ -43,9 +45,11 @@ namespace Pihrtsoft.CodeAnalysis
             if (namedType == null)
                 throw new ArgumentNullException(nameof(namedType));
 
-            if (namedType.TypeArguments.Length > 0)
+            ImmutableArray<ITypeSymbol> typeArguments = namedType.TypeArguments;
+
+            if (typeArguments.Length > 0)
             {
-                var stack = new Stack<ITypeSymbol>(namedType.TypeArguments);
+                var stack = new Stack<ITypeSymbol>(typeArguments);
 
                 while (stack.Count > 0)
                 {
@@ -55,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis
 
                     if (type.IsNamedType())
                     {
-                        ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)type).TypeArguments;
+                        typeArguments = ((INamedTypeSymbol)type).TypeArguments;
 
                         for (int i = 0; i < typeArguments.Length; i++)
                             stack.Push(typeArguments[i]);
