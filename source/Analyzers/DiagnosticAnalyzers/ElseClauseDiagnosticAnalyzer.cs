@@ -60,10 +60,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (block.Statements.Count == 0)
                     {
-                        if (elseClause.ElseKeyword.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                            && block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                            && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                            && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        if (elseClause
+                            .DescendantTrivia(elseClause.Span)
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.RemoveEmptyElseClause,
@@ -95,18 +94,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
         private static bool CheckTrivia(ElseClauseSyntax elseClause, BlockSyntax block, IfStatementSyntax ifStatement)
         {
-            TextSpan span = TextSpan.FromBounds(elseClause.Span.Start, ifStatement.Span.Start);
+            TextSpan elseSpan = elseClause.Span;
+            TextSpan ifSpan = ifStatement.Span;
 
-            TextSpan span2 = TextSpan.FromBounds(ifStatement.Span.End, elseClause.Span.End);
+            TextSpan span = TextSpan.FromBounds(elseSpan.Start, ifSpan.Start);
+            TextSpan span2 = TextSpan.FromBounds(ifSpan.End, elseSpan.End);
 
             foreach (SyntaxTrivia trivia in elseClause.DescendantTrivia())
             {
-                if (span.Contains(trivia.Span))
+                TextSpan triviaSpan = trivia.Span;
+
+                if (span.Contains(triviaSpan))
                 {
                     if (!trivia.IsWhitespaceOrEndOfLineTrivia())
                         return false;
                 }
-                else if (span2.Contains(trivia.Span))
+                else if (span2.Contains(triviaSpan))
                 {
                     if (!trivia.IsWhitespaceOrEndOfLineTrivia())
                         return false;
