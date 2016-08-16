@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -9,18 +11,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
         {
-            if (argumentList.Arguments.Count == 0)
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+
+            if (arguments.Count == 0)
                 return;
 
             await ArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
-            DuplicateArgumentRefactoring.ComputeRefactoring(context, argumentList);
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
+            {
+                var refactoring = new DuplicateArgumentRefactoring(argumentList);
+                refactoring.ComputeRefactoring(context, argumentList);
+            }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList))
             {
                 if (argumentList.IsSingleLine())
                 {
-                    if (argumentList.Arguments.Count > 1)
+                    if (arguments.Count > 1)
                     {
                         context.RegisterRefactoring(
                             "Format each argument on separate line",
@@ -35,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 }
                 else
                 {
-                    string title = (argumentList.Arguments.Count == 1)
+                    string title = arguments.Count == 1
                             ? "Format argument on a single line"
                             : "Format all arguments on a single line";
 

@@ -44,6 +44,8 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\NodeInList\DuplicateArgumentOrParameterRefactoring.cs" />
+    <Compile Include="Refactoring\NodeInList\NodeInListRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializePropertyRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeRefactoring.cs" />
@@ -167,14 +169,14 @@
     <Compile Include="Refactoring\ArgumentRefactoring.cs" />
     <Compile Include="Refactoring\AccessorDeclarationRefactoring.cs" />
     <Compile Include="Refactoring\AssignmentExpressionRefactoring.cs" />
-    <Compile Include="Refactoring\DuplicateArgumentRefactoring.cs" />
+    <Compile Include="Refactoring\NodeInList\DuplicateArgumentRefactoring.cs" />
     <Compile Include="Refactoring\ExpandInitializerRefactoring.cs" />
     <Compile Include="Refactoring\FormatAccessorBraceOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactoring\NotifyPropertyChangedRefactoring.cs" />
     <Compile Include="Refactoring\SplitAttributesRefactoring.cs" />
     <Compile Include="Refactoring\MergeAttributesRefactoring.cs" />
     <Compile Include="Refactoring\ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
-    <Compile Include="Refactoring\DuplicateParameterRefactoring.cs" />
+    <Compile Include="Refactoring\NodeInList\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactoring\ExpandCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactoring\AddBooleanComparisonRefactoring.cs" />
     <Compile Include="Refactoring\ExpandEventRefactoring.cs" />
@@ -218,6 +220,9 @@
     <Compile Include="SyntaxRewriters\InterpolatedStringSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactoring\MemberDeclarationRefactoring.cs" />
+    <Compile Include="Refactoring\NodeInList\ArgumentOrParameterSyntaxRewriter.cs" />
+    <Compile Include="Refactoring\NodeInList\ParameterSyntaxRewriter.cs" />
+    <Compile Include="Refactoring\NodeInList\ArgumentSyntaxRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
