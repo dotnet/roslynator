@@ -21,61 +21,71 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (variableDeclaration.Type == null)
-                return TypeAnalysisResult.None;
+            TypeSyntax type = variableDeclaration.Type;
 
-            if (variableDeclaration.Variables.Count == 0)
-                return TypeAnalysisResult.None;
-
-            if (variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) == true)
-                return TypeAnalysisResult.None;
-
-            ExpressionSyntax expression = variableDeclaration.Variables[0].Initializer?.Value;
-
-            if (expression == null)
-                return TypeAnalysisResult.None;
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type, cancellationToken).Type;
-
-            if (typeSymbol == null || typeSymbol.IsErrorType())
-                return TypeAnalysisResult.None;
-
-            if (typeSymbol.IsAnonymousType)
-                return TypeAnalysisResult.None;
-
-            if (typeSymbol.IsNamedType())
+            if (type != null)
             {
-                if (((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType())
-                    return TypeAnalysisResult.None;
-            }
-            else if (!typeSymbol.IsTypeParameter()
-                && !typeSymbol.IsArrayType())
-            {
-                return TypeAnalysisResult.None;
+                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+
+                if (variables.Count > 0
+                    && variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) != true)
+                {
+                    ExpressionSyntax expression = variables[0].Initializer?.Value;
+
+                    if (expression != null)
+                    {
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
+
+                        if (typeSymbol != null
+                            && CanBeExplicit(typeSymbol))
+                        {
+                            bool isVar = type.IsVar;
+
+                            if (variables.Count > 1)
+                            {
+                                if (isVar)
+                                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                                else
+                                    return TypeAnalysisResult.None;
+                            }
+
+                            if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
+                            {
+                                if (isVar)
+                                    return TypeAnalysisResult.Implicit;
+                                else
+                                    return TypeAnalysisResult.ExplicitButShouldBeImplicit;
+                            }
+                            else
+                            {
+                                if (isVar)
+                                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                                else
+                                    return TypeAnalysisResult.Explicit;
+                            }
+                        }
+                    }
+                }
             }
 
-            if (variableDeclaration.Variables.Count > 1)
+            return TypeAnalysisResult.None;
+        }
+
+        private static bool CanBeExplicit(ITypeSymbol typeSymbol)
+        {
+            if (!typeSymbol.IsAnonymousType)
             {
-                if (variableDeclaration.Type.IsVar)
-                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
-                else
-                    return TypeAnalysisResult.None;
+                switch (typeSymbol.Kind)
+                {
+                    case SymbolKind.TypeParameter:
+                    case SymbolKind.ArrayType:
+                        return true;
+                    case SymbolKind.NamedType:
+                        return !((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType();
+                }
             }
 
-            if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
-            {
-                if (variableDeclaration.Type.IsVar)
-                    return TypeAnalysisResult.Implicit;
-                else
-                    return TypeAnalysisResult.ExplicitButShouldBeImplicit;
-            }
-            else
-            {
-                if (variableDeclaration.Type.IsVar)
-                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
-                else
-                    return TypeAnalysisResult.Explicit;
-            }
+            return false;
         }
 
         private static bool IsImplicitTypeAllowed(
