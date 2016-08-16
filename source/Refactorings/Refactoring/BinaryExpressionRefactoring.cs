@@ -12,6 +12,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
+            {
+                SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+                if (operatorToken.Span.Contains(context.Span)
+                    && NegateOperatorRefactoring.CanBeNegated(operatorToken))
+                {
+                    context.RegisterRefactoring(
+                        "Negate operator",
+                        cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken));
+                }
+            }
+
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.Left?.IsMissing == false

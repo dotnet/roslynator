@@ -542,24 +542,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 switch (token.Kind())
                 {
-                    case SyntaxKind.AmpersandAmpersandToken:
-                    case SyntaxKind.BarBarToken:
-                    case SyntaxKind.EqualsEqualsToken:
-                    case SyntaxKind.ExclamationEqualsToken:
-                    case SyntaxKind.GreaterThanToken:
-                    case SyntaxKind.GreaterThanEqualsToken:
-                    case SyntaxKind.LessThanToken:
-                    case SyntaxKind.LessThanEqualsToken:
-                        {
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
-                            {
-                                context.RegisterRefactoring(
-                                    "Negate operator",
-                                    cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, token, cancellationToken));
-                            }
-
-                            break;
-                        }
                     case SyntaxKind.CloseParenToken:
                         {
                             await CloseParenTokenRefactoring.ComputeRefactoringsAsync(context, token).ConfigureAwait(false);

@@ -10,6 +10,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class NegateOperatorRefactoring
     {
+        public static bool CanBeNegated(SyntaxToken operatorToken)
+        {
+            switch (operatorToken.Kind())
+            {
+                case SyntaxKind.AmpersandAmpersandToken:
+                case SyntaxKind.BarBarToken:
+                case SyntaxKind.EqualsEqualsToken:
+                case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.GreaterThanToken:
+                case SyntaxKind.GreaterThanEqualsToken:
+                case SyntaxKind.LessThanToken:
+                case SyntaxKind.LessThanEqualsToken:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SyntaxToken operatorToken,
