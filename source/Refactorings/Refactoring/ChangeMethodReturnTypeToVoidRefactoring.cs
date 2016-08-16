@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                         && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
                     {
                         context.RegisterRefactoring(
-                            "Change method's return type to 'void'",
+                            "Change return type to 'void'",
                             cancellationToken =>
                             {
                                 return TypeSyntaxRefactoring.ChangeTypeAsync(

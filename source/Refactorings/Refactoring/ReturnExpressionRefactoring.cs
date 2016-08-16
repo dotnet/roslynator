@@ -214,7 +214,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             switch (declaration.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                    return "method's return";
+                    return "return";
                 case SyntaxKind.PropertyDeclaration:
                     return "property";
                 case SyntaxKind.IndexerDeclaration:
