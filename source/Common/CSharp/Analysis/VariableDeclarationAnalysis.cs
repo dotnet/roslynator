@@ -48,7 +48,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 if (((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType())
                     return TypeAnalysisResult.None;
             }
-            else if (!typeSymbol.IsArrayType())
+            else if (!typeSymbol.IsTypeParameter()
+                && !typeSymbol.IsArrayType())
             {
                 return TypeAnalysisResult.None;
             }
