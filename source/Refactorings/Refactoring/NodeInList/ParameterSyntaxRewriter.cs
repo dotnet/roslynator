@@ -3,22 +3,19 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList
 {
-    internal class ParameterSyntaxRewriter : ArgumentOrParameterSyntaxRewriter<ParameterSyntax>
+    internal class ParameterSyntaxRewriter : NodeSyntaxRewriter<ParameterSyntax>
     {
-        public ParameterSyntaxRewriter(
-            ParameterSyntax parameter,
-            ParameterSyntax newParameter,
-            SyntaxToken tokenBefore,
-            SyntaxToken tokenAfter) : base(parameter, newParameter, tokenBefore, tokenAfter)
+        public ParameterSyntaxRewriter(RewriterInfo<ParameterSyntax> info)
+            : base(info)
         {
         }
 
         public override SyntaxNode VisitParameter(ParameterSyntax node)
         {
-            if (node == Node)
-                return NewNode;
+            if (node == Info.Node)
+                return Info.NewNode;
 
             return base.VisitParameter(node);
         }

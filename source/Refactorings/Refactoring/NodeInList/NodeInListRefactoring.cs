@@ -5,61 +5,56 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList
 {
-    internal abstract class NodeInListRefactoring<TSyntax, TSyntaxList>
+    internal abstract class NodeInListRefactoring<TSyntax, TListSyntax>
         where TSyntax : SyntaxNode
-        where TSyntaxList : SyntaxNode
+        where TListSyntax : SyntaxNode
     {
-        public NodeInListRefactoring(TSyntaxList nodeList)
+        public NodeInListRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
         {
-            Nodes = GetNodes(nodeList);
+            ListSyntax = listSyntax;
+            List = list;
         }
 
-        public SeparatedSyntaxList<TSyntax> Nodes { get; }
+        public TListSyntax ListSyntax { get; }
 
-        public abstract SeparatedSyntaxList<TSyntax> GetNodes(TSyntaxList nodeList);
+        public SeparatedSyntaxList<TSyntax> List { get; }
 
-        public abstract SyntaxToken GetCloseParenToken(TSyntaxList nodeList);
+        public abstract SyntaxToken GetOpenParenToken();
 
-        public abstract ArgumentOrParameterSyntaxRewriter<TSyntax> GetRewriter(TSyntax node, TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter);
+        public abstract SyntaxToken GetCloseParenToken();
 
-        protected abstract string GetTitle();
+        protected abstract NodeSyntaxRewriter<TSyntax> GetRewriter(RewriterInfo<TSyntax> info);
 
-        public void ComputeRefactoring(RefactoringContext context, TSyntaxList nodeList)
+        protected virtual SyntaxToken GetTokenBefore(int index)
         {
-            int index = FindMissingNode(nodeList, context.Span);
-
-            if (index != -1)
-            {
-                context.RegisterRefactoring(
-                    GetTitle(),
-                    cancellationToken => RefactorAsync(context.Document, index, nodeList, cancellationToken));
-            }
+            return (index == 0)
+                ? GetOpenParenToken()
+                : GetSeparator(index - 1);
         }
 
-        private SyntaxToken GetTokenAfter(TSyntaxList nodeList, SeparatedSyntaxList<TSyntax> nodes, int index)
+        protected virtual SyntaxToken GetTokenAfter(int index)
         {
-            return (index == nodes.Count - 1)
-                ? GetCloseParenToken(nodeList)
-                : nodes.GetSeparator(index);
+            return (index == List.Count - 1)
+                ? GetCloseParenToken()
+                : GetSeparator(index);
         }
 
-        protected virtual int FindMissingNode(TSyntaxList nodeList, TextSpan span)
+        protected virtual int FindNode(TextSpan span)
         {
-            SeparatedSyntaxList<TSyntax> nodes = Nodes;
+            SeparatedSyntaxList<TSyntax> nodes = List;
 
             int i = 0;
             foreach (TSyntax node in nodes)
             {
-                if (i > 0
-                    && node.IsMissing)
+                if (node.IsMissing)
                 {
-                    SyntaxToken tokenBefore = nodes.GetSeparator(i - 1);
+                    SyntaxToken tokenBefore = GetTokenBefore(i);
 
                     if (span.Start >= tokenBefore.Span.End)
                     {
-                        SyntaxToken tokenAfter = GetTokenAfter(nodeList, nodes, i);
+                        SyntaxToken tokenAfter = GetTokenAfter(i);
 
                         if (span.End <= tokenAfter.Span.Start)
                             return i;
@@ -74,45 +69,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList
             return -1;
         }
 
-        private async Task<Document> RefactorAsync(
-            Document document,
-            int nodeIndex,
-            TSyntaxList nodeList,
-            CancellationToken cancellationToken = default(CancellationToken))
+        protected virtual SyntaxNode Rewrite(RewriterInfo<TSyntax> info)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            NodeSyntaxRewriter<TSyntax> rewriter = GetRewriter(info);
 
-            SeparatedSyntaxList<TSyntax> nodes = Nodes;
-
-            TSyntax node = nodes[nodeIndex];
-            SyntaxToken tokenBefore = nodes.GetSeparator(nodeIndex - 1);
-            SyntaxToken tokenAfter = GetTokenAfter(nodeList, nodes, nodeIndex);
-            TSyntax newNode = GetNewNode(node, nodes[nodeIndex - 1], tokenBefore, tokenAfter);
-
-            SyntaxNode newArgumentList = Rewrite(nodeList, node, newNode, tokenBefore, tokenAfter);
-
-            SyntaxNode newRoot = root.ReplaceNode(nodeList, newArgumentList);
-
-            return document.WithSyntaxRoot(newRoot);
+            return rewriter.Visit(ListSyntax);
         }
 
-        protected virtual SyntaxNode Rewrite(TSyntaxList nodeList, TSyntax node, TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
+        public SyntaxToken GetSeparator(int index)
         {
-            ArgumentOrParameterSyntaxRewriter<TSyntax> rewriter = GetRewriter(node, newNode, tokenBefore, tokenAfter);
-
-            return rewriter.Visit(nodeList);
-        }
-
-        protected virtual TSyntax GetNewNode(TSyntax node, TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
-        {
-            SyntaxTriviaList leadingTrivia = tokenBefore
-                .TrailingTrivia
-                .AddRange(tokenAfter.LeadingTrivia);
-
-            return newNode
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia()
-                .WithFormatterAnnotation();
+            return List.GetSeparator(index);
         }
     }
 }

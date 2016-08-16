@@ -3,33 +3,33 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList
 {
     internal class DuplicateArgumentRefactoring : DuplicateArgumentOrParameterRefactoring<ArgumentSyntax, ArgumentListSyntax>
     {
-        public DuplicateArgumentRefactoring(ArgumentListSyntax nodeList)
-            : base(nodeList)
+        public DuplicateArgumentRefactoring(ArgumentListSyntax listSyntax)
+            : base(listSyntax, listSyntax.Arguments)
         {
         }
 
-        public override SyntaxToken GetCloseParenToken(ArgumentListSyntax nodeList)
+        public override SyntaxToken GetOpenParenToken()
         {
-            return nodeList.CloseParenToken;
+            return ListSyntax.OpenParenToken;
         }
 
-        public override SeparatedSyntaxList<ArgumentSyntax> GetNodes(ArgumentListSyntax nodeList)
+        public override SyntaxToken GetCloseParenToken()
         {
-            return nodeList.Arguments;
+            return ListSyntax.CloseParenToken;
         }
 
-        protected override string GetTitle()
+        protected override NodeSyntaxRewriter<ArgumentSyntax> GetRewriter(RewriterInfo<ArgumentSyntax> info)
+        {
+            return new ArgumentSyntaxRewriter(info);
+        }
+
+        protected override string GetTitle(params string[] args)
         {
             return "Duplicate argument";
-        }
-
-        public override ArgumentOrParameterSyntaxRewriter<ArgumentSyntax> GetRewriter(ArgumentSyntax node, ArgumentSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
-        {
-            return new ArgumentSyntaxRewriter(node, newNode, tokenBefore, tokenAfter);
         }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializePropertyRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeRefactoring.cs" />
+    <Compile Include="Refactoring\NodeInList\RewriterInfo.cs" />
     <Compile Include="Refactoring\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\AddUsingDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\CollapseToInitializerRefactoring.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="SyntaxRewriters\InterpolatedStringSyntaxRewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactoring\MemberDeclarationRefactoring.cs" />
-    <Compile Include="Refactoring\NodeInList\ArgumentOrParameterSyntaxRewriter.cs" />
+    <Compile Include="Refactoring\NodeInList\NodeSyntaxRewriter.cs" />
     <Compile Include="Refactoring\NodeInList\ParameterSyntaxRewriter.cs" />
     <Compile Include="Refactoring\NodeInList\ArgumentSyntaxRewriter.cs" />
   </ItemGroup>

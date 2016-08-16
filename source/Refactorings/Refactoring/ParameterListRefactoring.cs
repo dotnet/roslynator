@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {

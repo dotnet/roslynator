@@ -3,33 +3,33 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.MissingNodeInList
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList
 {
     internal class DuplicateParameterRefactoring : DuplicateArgumentOrParameterRefactoring<ParameterSyntax, ParameterListSyntax>
     {
-        public DuplicateParameterRefactoring(ParameterListSyntax nodeList)
-            : base(nodeList)
+        public DuplicateParameterRefactoring(ParameterListSyntax listSyntax)
+            : base(listSyntax, listSyntax.Parameters)
         {
         }
 
-        public override SeparatedSyntaxList<ParameterSyntax> GetNodes(ParameterListSyntax nodeList)
+        public override SyntaxToken GetOpenParenToken()
         {
-            return nodeList.Parameters;
+            return ListSyntax.OpenParenToken;
         }
 
-        public override SyntaxToken GetCloseParenToken(ParameterListSyntax nodeList)
+        public override SyntaxToken GetCloseParenToken()
         {
-            return nodeList.CloseParenToken;
+            return ListSyntax.CloseParenToken;
         }
 
-        protected override string GetTitle()
+        protected override string GetTitle(params string[] args)
         {
             return "Duplicate parameter";
         }
 
-        public override ArgumentOrParameterSyntaxRewriter<ParameterSyntax> GetRewriter(ParameterSyntax node, ParameterSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
+        protected override NodeSyntaxRewriter<ParameterSyntax> GetRewriter(RewriterInfo<ParameterSyntax> info)
         {
-            return new ParameterSyntaxRewriter(node, newNode, tokenBefore, tokenAfter);
+            return new ParameterSyntaxRewriter(info);
         }
     }
 }
