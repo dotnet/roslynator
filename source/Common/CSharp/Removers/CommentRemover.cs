@@ -3,57 +3,78 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
 {
     public sealed class CommentRemover : CSharpSyntaxRewriter
     {
-        private readonly SyntaxNode _node;
-        private readonly CommentRemoveOptions _removeOptions;
-
-        internal CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions)
+        private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions, TextSpan span)
             : base(visitIntoStructuredTrivia: true)
+        {
+            Node = node;
+            RemoveOptions = removeOptions;
+            Span = span;
+        }
+
+        public SyntaxNode Node { get; }
+        public CommentRemoveOptions RemoveOptions { get; }
+        public TextSpan Span { get; }
+
+        public static CommentRemover Create(SyntaxNode node, CommentRemoveOptions removeOptions)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            _node = node;
-            _removeOptions = removeOptions;
+            return new CommentRemover(node, removeOptions, node.FullSpan);
+        }
+
+        public static CommentRemover Create(SyntaxNode node, CommentRemoveOptions removeOptions, TextSpan span)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return new CommentRemover(node, removeOptions, span);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
-            switch (trivia.Kind())
+            TextSpan span = trivia.Span;
+
+            if (Span.Contains(span))
             {
-                case SyntaxKind.SingleLineCommentTrivia:
-                case SyntaxKind.MultiLineCommentTrivia:
-                    {
-                        if (_removeOptions != CommentRemoveOptions.Documentation)
-                            return CSharpFactory.EmptyWhitespaceTrivia;
-
-                        break;
-                    }
-                case SyntaxKind.SingleLineDocumentationCommentTrivia:
-                case SyntaxKind.MultiLineDocumentationCommentTrivia:
-                    {
-                        if (_removeOptions != CommentRemoveOptions.AllExceptDocumentation)
-                            return CSharpFactory.EmptyWhitespaceTrivia;
-
-                        break;
-                    }
-                case SyntaxKind.EndOfLineTrivia:
-                    {
-                        if (_removeOptions != CommentRemoveOptions.Documentation
-                            && trivia.SpanStart > 0)
+                switch (trivia.Kind())
+                {
+                    case SyntaxKind.SingleLineCommentTrivia:
+                    case SyntaxKind.MultiLineCommentTrivia:
                         {
-                            SyntaxTrivia trivia2 = _node.FindTrivia(trivia.SpanStart - 1);
-
-                            if (trivia2.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                            if (RemoveOptions != CommentRemoveOptions.Documentation)
                                 return CSharpFactory.EmptyWhitespaceTrivia;
-                        }
 
-                        break;
-                    }
+                            break;
+                        }
+                    case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                    case SyntaxKind.MultiLineDocumentationCommentTrivia:
+                        {
+                            if (RemoveOptions != CommentRemoveOptions.AllExceptDocumentation)
+                                return CSharpFactory.EmptyWhitespaceTrivia;
+
+                            break;
+                        }
+                    case SyntaxKind.EndOfLineTrivia:
+                        {
+                            if (RemoveOptions != CommentRemoveOptions.Documentation
+                                && span.Start > 0
+                                && Node
+                                    .FindTrivia(span.Start - 1)
+                                    .IsSingleLineCommentTrivia())
+                            {
+                                return CSharpFactory.EmptyWhitespaceTrivia;
+                            }
+
+                            break;
+                        }
+                }
             }
 
             return base.VisitTrivia(trivia);

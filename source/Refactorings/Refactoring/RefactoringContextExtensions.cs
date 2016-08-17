@@ -516,6 +516,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             }
 
             await SyntaxNodeRefactoring.ComputeRefactoringsAsync(context, firstNode).ConfigureAwait(false);
+
+            CommentTriviaRefactoring.ComputeRefactorings(context, firstNode);
         }
 
         public static void ComputeRefactoringsForNodeInsideTrivia(this RefactoringContext context)

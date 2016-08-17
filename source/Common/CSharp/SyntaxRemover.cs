@@ -13,7 +13,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static TNode RemoveComment<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
         {
-            var remover = new CommentRemover(node, removeOptions);
+            CommentRemover remover = CommentRemover.Create(node, removeOptions);
+
+            return (TNode)remover.Visit(node);
+        }
+
+        public static TNode RemoveComment<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
+        {
+            CommentRemover remover = CommentRemover.Create(node, removeOptions, span);
 
             return (TNode)remover.Visit(node);
         }
