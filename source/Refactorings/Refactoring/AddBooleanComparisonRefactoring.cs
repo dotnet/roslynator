@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
@@ -14,46 +15,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (await CanRefactorAsync(context, expression).ConfigureAwait(false))
+            ExpressionSyntax expression2 = GetExpression(expression);
+
+            if (expression2 != null)
             {
-                context.RegisterRefactoring(
-                    Title,
-                    cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                var namedTypeSymbol = semanticModel
+                    .GetTypeInfo(expression2, context.CancellationToken)
+                    .ConvertedType as INamedTypeSymbol;
+
+                if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
+                {
+                    context.RegisterRefactoring(
+                        Title,
+                        cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+                }
             }
         }
 
-        private static async Task<bool> CanRefactorAsync(RefactoringContext context, ExpressionSyntax expression)
+        private static ExpressionSyntax GetExpression(ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)expression;
 
-                if (logicalNot.Operand != null)
-                    return await IsNullableBooleanAsync(context, logicalNot.Operand).ConfigureAwait(false);
+                if (logicalNot.Operand?.IsMissing == false)
+                    return logicalNot.Operand;
             }
             else
             {
-                return await IsNullableBooleanAsync(context, expression).ConfigureAwait(false);
+                return expression;
             }
 
-            return false;
-        }
-
-        private static async Task<bool> IsNullableBooleanAsync(RefactoringContext context, ExpressionSyntax expression)
-        {
-            if (context.SupportsSemanticModel)
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                var namedTypeSymbol = semanticModel
-                    .GetTypeInfo(expression, context.CancellationToken)
-                    .ConvertedType as INamedTypeSymbol;
-
-                return namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
-                    && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean;
-            }
-
-            return false;
+            return null;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -61,13 +56,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             BinaryExpressionSyntax newNode = CreateNewExpression(expression)
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(expression, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -78,17 +73,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)expression;
 
-                return SyntaxFactory.BinaryExpression(
-                    SyntaxKind.EqualsExpression,
+                return EqualsExpression(
                     logicalNot.Operand.WithoutTrivia(),
-                    SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression));
+                    FalseLiteralExpression());
             }
             else
             {
-                return SyntaxFactory.BinaryExpression(
-                    SyntaxKind.EqualsExpression,
+                return EqualsExpression(
                     expression.WithoutTrivia(),
-                    SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression));
+                    TrueLiteralExpression());
             }
         }
     }

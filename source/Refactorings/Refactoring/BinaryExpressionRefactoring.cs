@@ -28,7 +28,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false)
+                && binaryExpression.Right?.IsMissing == false
+                && context.SupportsSemanticModel)
             {
                 if (binaryExpression.Left.Span.Contains(context.Span))
                 {
