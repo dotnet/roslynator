@@ -11,6 +11,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 {
     internal static class RefactoringContextExtensions
     {
+        public static bool IsRefactoringEnabled(this RefactoringContext context, string identifier)
+        {
+            return context.Settings.IsRefactoringEnabled(identifier);
+        }
+
+        public static bool IsAnyRefactoringEnabled(this RefactoringContext context, string identifier1, string identifier2)
+        {
+            return context.Settings.IsAnyRefactoringEnabled(identifier1, identifier2);
+        }
+
+        public static bool IsAnyRefactoringEnabled(this RefactoringContext context, string identifier1, string identifier2, string identifier3)
+        {
+            return context.Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3);
+        }
+
+        public static bool IsAnyRefactoringEnabled(this RefactoringContext context, string identifier1, string identifier2, string identifier3, string identifier4)
+        {
+            return context.Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3, identifier4);
+        }
+
+        public static bool IsAnyRefactoringEnabled(this RefactoringContext context, string identifier1, string identifier2, string identifier3, string identifier4, string identifier5)
+        {
+            return context.Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3, identifier4, identifier5);
+        }
+
         public static async Task ComputeRefactoringsAsync(this RefactoringContext context)
         {
             Debug.WriteLine($"START {nameof(ComputeRefactoringsForNodeInsideTrivia)}");
