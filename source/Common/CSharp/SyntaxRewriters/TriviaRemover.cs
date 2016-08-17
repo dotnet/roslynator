@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Removers
+namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 {
     public sealed class TriviaRemover : CSharpSyntaxRewriter
     {

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Rewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 {
     internal class InterpolatedStringSyntaxRewriter : CSharpSyntaxRewriter
     {

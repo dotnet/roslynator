@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.CSharp.Removers;
+using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
