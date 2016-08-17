@@ -2,7 +2,7 @@
 
 using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactorings;
 using Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters;
 
 namespace Pihrtsoft.CodeAnalysis.VisualStudio

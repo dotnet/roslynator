@@ -1,0 +1,58 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+{
+    internal static class RemoveRedundantBooleanLiteralRefactoring
+    {
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            BinaryExpressionSyntax binaryExpression,
+            CancellationToken cancellationToken)
+        {
+            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newNode = Refactor(binaryExpression)
+                .WithFormatterAnnotation();
+
+            SyntaxNode newRoot = oldRoot.ReplaceNode(binaryExpression, newNode);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static SyntaxNode Refactor(BinaryExpressionSyntax binaryExpression)
+        {
+            if (binaryExpression.Left.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression))
+            {
+                SyntaxTriviaList triviaList = SyntaxFactory.TriviaList()
+                    .AddRange(binaryExpression.Left.GetLeadingTrivia())
+                    .AddRange(binaryExpression.Left.GetTrailingTrivia())
+                    .AddRange(binaryExpression.OperatorToken.LeadingTrivia)
+                    .AddRange(binaryExpression.OperatorToken.TrailingTrivia)
+                    .AddRange(binaryExpression.Right.GetLeadingTrivia());
+
+                return binaryExpression.Right
+                    .WithLeadingTrivia(triviaList)
+                    .WithTrailingTrivia(binaryExpression.Right.GetTrailingTrivia());
+            }
+            else
+            {
+                SyntaxTriviaList triviaList = SyntaxFactory.TriviaList()
+                    .AddRange(binaryExpression.Left.GetTrailingTrivia())
+                    .AddRange(binaryExpression.OperatorToken.LeadingTrivia)
+                    .AddRange(binaryExpression.OperatorToken.TrailingTrivia)
+                    .AddRange(binaryExpression.Right.GetLeadingTrivia())
+                    .AddRange(binaryExpression.Right.GetTrailingTrivia());
+
+                return binaryExpression.Left
+                    .WithLeadingTrivia(binaryExpression.Left.GetLeadingTrivia())
+                    .WithTrailingTrivia(triviaList);
+            }
+        }
+    }
+}

@@ -58,10 +58,10 @@
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
-    <Compile Include="Refactoring\SimplifyLinqMethodChainRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceCountMethodWithAnyMethodRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceCountMethodWithCountOrLengthPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\SimplifyLinqMethodChainRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceCountMethodWithAnyMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceCountMethodWithCountOrLengthPropertyRefactoring.cs" />
     <Compile Include="CodeFixProviders\ConstructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclarationCodeFixProvider.cs" />
@@ -138,13 +138,13 @@
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
     <Compile Include="IfElseChainAnalysisResult.cs" />
-    <Compile Include="Refactoring\AddBracesRefactoring.cs" />
-    <Compile Include="Refactoring\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
-    <Compile Include="Refactoring\FormatStatementOnNextLineRefactoring.cs" />
-    <Compile Include="Refactoring\ExpandExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveBracesFromUsingStatementRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveModifierRefactoring.cs" />
-    <Compile Include="Refactoring\RemoveRedundantBooleanLiteralRefactoring.cs" />
+    <Compile Include="Refactorings\AddBracesRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
+    <Compile Include="Refactorings\FormatStatementOnNextLineRefactoring.cs" />
+    <Compile Include="Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveBracesFromUsingStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveModifierRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantBooleanLiteralRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />
@@ -193,7 +193,7 @@
     <Compile Include="DiagnosticAnalyzers\AttributeListDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DeclareEachAttributeSeparatelyCodeFixProvider.cs" />
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
-    <Compile Include="Refactoring\SimplifyBooleanComparisonRefactoring.cs" />
+    <Compile Include="Refactorings\SimplifyBooleanComparisonRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

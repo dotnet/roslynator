@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     public class RefactoringIdentifierSet : HashSet<string>
     {

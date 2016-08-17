@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactoring;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactorings;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
