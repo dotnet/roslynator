@@ -249,7 +249,6 @@
     <Rule Id="RCS1069" Action="Info" />
     <Rule Id="RCS1070" Action="Info" />
     <Rule Id="RCS1071" Action="Info" />
-    <Rule Id="RCS1073" Action="Info" />
     <Rule Id="RCS1074" Action="Info" />
     <Rule Id="RCS1081" Action="Warning" />
   </Rules>
