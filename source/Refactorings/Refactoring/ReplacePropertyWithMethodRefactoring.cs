@@ -29,8 +29,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 
-                return accessors.Any()
-                    && accessors.All(f => f.Body != null);
+                if (accessors.Any())
+                {
+                    if (accessors.All(f => f.Body != null))
+                    {
+                        return true;
+                    }
+                    else if (accessors.Count == 1
+                        && accessors.First().IsAutoGetter()
+                        && propertyDeclaration.Initializer?.Value != null)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -70,13 +81,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
                 if (addPrefix)
                     name = "Get" + methodName;
 
+                BlockSyntax body = getter.Body;
+
+                BlockSyntax methodBody = (body != null)
+                    ? Block(body.Statements)
+                    : Block(ReturnStatement(property.Initializer.Value));
+
                 MethodDeclarationSyntax getMethod = method
                     .WithIdentifier(Identifier(name))
-                    .WithBody(Block(getter.Body.Statements))
+                    .WithBody(methodBody)
                     .WithLeadingTrivia(property.GetLeadingTrivia())
                     .WithFormatterAnnotation();
 
-                getMethod = SetAccessModifiers(getter, getMethod);
+                if (body != null)
+                    getMethod = SetAccessModifiers(getter, getMethod);
 
                 if (setter == null)
                     getMethod = getMethod.WithTrailingTrivia(property.GetTrailingTrivia());
