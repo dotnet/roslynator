@@ -1,100 +1,100 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize
 {
     internal abstract class IntroduceAndInitializeRefactoring
     {
-        public IntroduceAndInitializeRefactoring(ParameterSyntax parameter)
+        public IntroduceAndInitializeRefactoring(IEnumerable<ParameterSyntax> parameters)
         {
-            Parameter = parameter;
-            Identifier = parameter.Identifier;
-            ParameterName = Identifier.ValueText;
+            Infos = parameters
+                .Select(f => CreateInfo(f))
+                .ToImmutableArray();
         }
 
-        public ParameterSyntax Parameter { get; }
-        public string ParameterName { get; }
-        public SyntaxToken Identifier { get; }
+        public ImmutableArray<IntroduceAndInitializeInfo> Infos { get; }
 
-        public abstract string Name { get; }
+        public IntroduceAndInitializeInfo FirstInfo
+        {
+            get { return Infos[0]; }
+        }
 
         public ConstructorDeclarationSyntax Constructor
         {
-            get { return Parameter.Parent?.Parent as ConstructorDeclarationSyntax; }
+            get { return FirstInfo.Parameter.Parent?.Parent as ConstructorDeclarationSyntax; }
         }
 
-        public TypeSyntax Type
-        {
-            get { return Parameter.Type?.WithoutTrivia(); }
-        }
-
-        protected abstract MemberDeclarationSyntax CreateDeclaration();
+        protected abstract IntroduceAndInitializeInfo CreateInfo(ParameterSyntax parameter);
 
         protected abstract int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members);
 
-        protected virtual ExpressionStatementSyntax CreateAssignment()
-        {
-            AssignmentExpressionSyntax assignment = SimpleAssignmentExpression(
-                CreateAssignmentLeft(),
-                IdentifierName(ParameterName));
-
-            return ExpressionStatement(assignment);
-        }
-
-        private ExpressionSyntax CreateAssignmentLeft()
-        {
-            if (string.Equals(Name, ParameterName, StringComparison.Ordinal))
-                return SimpleMemberAccessExpression(ThisExpression(), IdentifierName(Name));
-
-            return IdentifierName(Name);
-        }
-
-        public static bool IsValid(ParameterSyntax parameter)
-        {
-            if (parameter.Type != null
-                && !parameter.Identifier.IsMissing
-                && parameter.Parent?.IsKind(SyntaxKind.ParameterList) == true)
-            {
-                SyntaxNode parent = parameter.Parent;
-
-                if (parent.Parent?.IsKind(SyntaxKind.ConstructorDeclaration) == true)
-                    return true;
-            }
-
-            return false;
-        }
+        protected abstract string GetTitle();
 
         public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (IsValid(parameter)
-                && parameter.Identifier.Span.Contains(context.Span))
+            if (parameter.Identifier.Span.Contains(context.Span)
+                && IsValid(parameter))
             {
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
-                    var propertyRefactoring = new IntroduceAndInitializePropertyRefactoring(parameter);
-
-                    context.RegisterRefactoring(
-                        $"Introduce and initialize property '{propertyRefactoring.Name}'",
-                        cancellationToken => propertyRefactoring.RefactorAsync(context.Document, cancellationToken));
+                    var refactoring = new IntroduceAndInitializePropertyRefactoring(ImmutableArray.Create(parameter));
+                    refactoring.RegisterRefactoring(context);
                 }
 
                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
-                    var fieldRefactoring = new IntroduceAndInitializeFieldRefactoring(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore);
-
-                    context.RegisterRefactoring(
-                        $"Introduce and initialize field '{fieldRefactoring.Name}'",
-                        cancellationToken => fieldRefactoring.RefactorAsync(context.Document, cancellationToken));
+                    var refactoring = new IntroduceAndInitializeFieldRefactoring(ImmutableArray.Create(parameter));
+                    refactoring.RegisterRefactoring(context);
                 }
             }
+        }
+
+        public static void ComputeRefactoring(RefactoringContext context, ParameterListSyntax parameterList)
+        {
+            ImmutableArray<ParameterSyntax> parameters = GetParameters(parameterList, context.Span);
+
+            if (parameters.Any())
+            {
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                {
+                    var refactoring = new IntroduceAndInitializePropertyRefactoring(parameters);
+                    refactoring.RegisterRefactoring(context);
+                }
+
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+                {
+                    var refactoring = new IntroduceAndInitializeFieldRefactoring(parameters);
+                    refactoring.RegisterRefactoring(context);
+                }
+            }
+        }
+
+        private static ImmutableArray<ParameterSyntax> GetParameters(ParameterListSyntax parameterList, TextSpan span)
+        {
+            return GetSelectedParameters(parameterList, span)
+                .Where(f => IsValid(f))
+                .ToImmutableArray();
+        }
+
+        private void RegisterRefactoring(RefactoringContext context)
+        {
+            context.RegisterRefactoring(
+                GetTitle(),
+                cancellationToken => RefactorAsync(context.Document, cancellationToken));
+        }
+
+        protected string GetNames()
+        {
+            return string.Join(", ", Infos.Select(f => $"'{f.Name}'"));
         }
 
         private async Task<Document> RefactorAsync(
@@ -111,17 +111,51 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members.Replace(
                 constructor,
-                constructor.AddBodyStatements(CreateAssignment()));
+                constructor.AddBodyStatements(CreateAssignments().ToArray()));
 
-            newMembers = newMembers.Insert(
+            newMembers = newMembers.InsertRange(
                 GetDeclarationIndex(members),
-                CreateDeclaration());
+                CreateDeclarations());
 
             SyntaxNode newRoot = root.ReplaceNode(
                 containingMember,
                 containingMember.SetMembers(newMembers));
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        private IEnumerable<ExpressionStatementSyntax> CreateAssignments()
+        {
+            return Infos
+                .Select(f => f.CreateAssignment());
+        }
+
+        private IEnumerable<MemberDeclarationSyntax> CreateDeclarations()
+        {
+            return Infos
+                .Select(f => f.CreateDeclaration());
+        }
+
+        private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)
+        {
+            return parameterList.Parameters
+                .SkipWhile(f => span.Start > f.Span.Start)
+                .TakeWhile(f => span.End >= f.Span.End);
+        }
+
+        private static bool IsValid(ParameterSyntax parameter)
+        {
+            if (parameter.Type != null
+                && !parameter.Identifier.IsMissing
+                && parameter.Parent?.IsKind(SyntaxKind.ParameterList) == true)
+            {
+                SyntaxNode parent = parameter.Parent;
+
+                if (parent.Parent?.IsKind(SyntaxKind.ConstructorDeclaration) == true)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

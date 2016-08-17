@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactoring.NodeInList;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
@@ -19,6 +20,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             {
                 var refactoring = new DuplicateParameterRefactoring(parameterList);
                 refactoring.ComputeRefactoring(context, parameterList);
+            }
+
+            if (context.Settings.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.IntroduceAndInitializeField,
+                RefactoringIdentifiers.IntroduceAndInitializeProperty))
+            {
+                IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList))

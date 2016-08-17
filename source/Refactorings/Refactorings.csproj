@@ -44,11 +44,14 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeFieldInfo.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeInfo.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializePropertyInfo.cs" />
+    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeRefactoring.cs" />
     <Compile Include="Refactoring\NodeInList\DuplicateArgumentOrParameterRefactoring.cs" />
     <Compile Include="Refactoring\NodeInList\NodeInListRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializePropertyRefactoring.cs" />
     <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
-    <Compile Include="Refactoring\IntroduceAndInitialize\IntroduceAndInitializeRefactoring.cs" />
     <Compile Include="Refactoring\NodeInList\RewriterInfo.cs" />
     <Compile Include="Refactoring\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactoring\AddUsingDirectiveRefactoring.cs" />

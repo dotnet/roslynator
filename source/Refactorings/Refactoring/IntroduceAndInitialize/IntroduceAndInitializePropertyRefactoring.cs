@@ -1,72 +1,44 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring.IntroduceAndInitialize
 {
     internal class IntroduceAndInitializePropertyRefactoring : IntroduceAndInitializeRefactoring
     {
-        private string _name;
-
-        public IntroduceAndInitializePropertyRefactoring(ParameterSyntax parameter)
-            : base(parameter)
+        public IntroduceAndInitializePropertyRefactoring(IEnumerable<ParameterSyntax> parameters)
+            : base(parameters)
         {
-        }
-
-        public override string Name
-        {
-            get
-            {
-                if (_name == null)
-                    _name = TextUtility.FirstCharToUpper(ParameterName);
-
-                return _name;
-            }
-        }
-
-        protected override MemberDeclarationSyntax CreateDeclaration()
-        {
-            return PropertyDeclaration(PropertyKind.AutoPropertyWithPrivateSet, Type, Name)
-                .WithModifiers(SyntaxKind.PublicKeyword);
         }
 
         protected override int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members)
         {
-            int fieldIndex = IndexOfLastProperty(members) + 1;
+            int index = members.LastIndexOf(SyntaxKind.PropertyDeclaration);
 
-            if (fieldIndex == 0)
-            {
-                int constructorIndex = members.IndexOf(Constructor);
-                fieldIndex = constructorIndex + 1;
+            if (index == -1)
+                index = members.LastIndexOf(SyntaxKind.ConstructorDeclaration);
 
-                for (int i = fieldIndex; i < members.Count; i++)
-                {
-                    if (members[i].IsKind(SyntaxKind.ConstructorDeclaration))
-                    {
-                        fieldIndex++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-            return fieldIndex;
+            return index + 1;
         }
 
-        private static int IndexOfLastProperty(SyntaxList<MemberDeclarationSyntax> members)
+        protected override string GetTitle()
         {
-            for (int i = members.Count - 1; i >= 0; i--)
+            if (Infos.Length > 1)
             {
-                if (members[i].IsKind(SyntaxKind.PropertyDeclaration))
-                    return i;
+                return $"Introduce and initialize properties {GetNames()}";
             }
+            else
+            {
+                return $"Introduce and initialize property '{FirstInfo.Name}'";
+            }
+        }
 
-            return -1;
+        protected override IntroduceAndInitializeInfo CreateInfo(ParameterSyntax parameter)
+        {
+            return new IntroduceAndInitializePropertyInfo(parameter);
         }
     }
 }
