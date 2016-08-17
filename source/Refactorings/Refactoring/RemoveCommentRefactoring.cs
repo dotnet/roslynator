@@ -112,9 +112,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
             switch (trivia.Kind())
             {
                 case SyntaxKind.WhitespaceTrivia:
-                    return true;
                 case SyntaxKind.EndOfLineTrivia:
-                    return true;
                 case SyntaxKind.SingleLineCommentTrivia:
                     return true;
                 default:
