@@ -7,6 +7,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class SyntaxListExtensions
     {
+        public static int LastIndexOf<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
+        {
+            return list.LastIndexOf(f => f.IsKind(kind));
+        }
+
         public static bool Contains<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
         {
             return list.IndexOf(kind) != -1;
