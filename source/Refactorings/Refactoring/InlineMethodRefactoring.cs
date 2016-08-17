@@ -205,7 +205,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             Solution solution = document.Project.Solution;
 
-            expression = await RewriteExpressionAsync(parameterInfos, expression, solution, cancellationToken);
+            expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
 
             root = root.ReplaceNode(invocation, expression);
 
@@ -226,7 +226,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 Solution solution = document.Project.Solution;
 
-                expression = await RewriteExpressionAsync(parameterInfos, expression, solution, cancellationToken);
+                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
 
                 editor.ReplaceNode(invocation, expression);
 
@@ -242,7 +242,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
                 Solution solution = document.Project.Solution;
 
-                expression = await RewriteExpressionAsync(parameterInfos, expression, solution, cancellationToken);
+                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
 
                 root = root.ReplaceNode(invocation, expression);
 
@@ -272,6 +272,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
         private static async Task<ExpressionSyntax> RewriteExpressionAsync(
             List<ParameterInfo> parameterInfos,
+            InvocationExpressionSyntax invocation,
             ExpressionSyntax expression,
             Solution solution,
             CancellationToken cancellationToken)
@@ -307,25 +308,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactoring
 
             var rewriter = new IdentifierNameSyntaxRewriter(dic);
 
-            expression = (ExpressionSyntax)rewriter.Visit(expression);
+            var newExpression = (ExpressionSyntax)rewriter.Visit(expression);
 
-            expression = WrapInParenthesesIfNecessary(expression);
+            if (AddParentheses(invocation))
+                newExpression = SyntaxFactory.ParenthesizedExpression(newExpression.WithoutTrivia());
 
-            return expression.WithFormatterAnnotation();
+            return newExpression
+                .WithTriviaFrom(invocation)
+                .WithFormatterAnnotation();
         }
 
-        private static ExpressionSyntax WrapInParenthesesIfNecessary(ExpressionSyntax expression)
+        private static bool AddParentheses(InvocationExpressionSyntax invocation)
         {
-            switch (expression.Parent?.Kind())
+            SyntaxNode parent = invocation.Parent;
+
+            switch (parent?.Kind())
             {
+                case SyntaxKind.ParenthesizedExpression:
                 case SyntaxKind.ExpressionStatement:
-                    return expression;
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
+                    return false;
             }
 
-            if (!expression.IsKind(SyntaxKind.ParenthesizedExpression))
-                expression = SyntaxFactory.ParenthesizedExpression(expression);
+            var assignment = parent as AssignmentExpressionSyntax;
 
-            return expression;
+            if (assignment?.Right == invocation)
+                return false;
+
+            return true;
         }
 
         private static List<ParameterInfo> GetParameterInfos(
