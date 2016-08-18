@@ -214,6 +214,7 @@
   </Rules>
   <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
     <Rule Id="RCS1004" Action="None" />
+    <Rule Id="RCS1004FadeOut" Action="None" />
     <Rule Id="RCS1006" Action="Info" />
     <Rule Id="RCS1008" Action="Info" />
     <Rule Id="RCS1009" Action="Info" />
