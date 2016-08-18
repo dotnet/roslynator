@@ -36,9 +36,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoring(context, conditionalExpression);
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
+                ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoring(context, conditionalExpression);
 
-            if (SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)
+                && SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
             {
                 context.RegisterRefactoring(
                     "Swap expressions in conditional expression",
