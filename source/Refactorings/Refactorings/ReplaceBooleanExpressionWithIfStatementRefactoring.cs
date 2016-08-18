@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -10,21 +11,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplaceBooleanExpressionWithIfStatementRefactoring
     {
-        public static void RegisterRefactoring(RefactoringContext context, ReturnStatementSyntax returnStatement)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            RegisterRefactoring(context, returnStatement.Expression);
-        }
+            if (!expression.IsKind(
+                SyntaxKind.TrueLiteralExpression,
+                SyntaxKind.FalseLiteralExpression,
+                SyntaxKind.ConditionalExpression))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-        public static void RegisterRefactoring(RefactoringContext context, YieldStatementSyntax yieldStatement)
-        {
-            RegisterRefactoring(context, yieldStatement.Expression);
-        }
+                ITypeSymbol expressionSymbol = semanticModel
+                    .GetTypeInfo(expression, context.CancellationToken)
+                    .ConvertedType;
 
-        private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
-        {
-            context.RegisterRefactoring(
-                $"Replace statement with 'if ({expression.ToString()})'",
-                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+                if (expressionSymbol?.IsBoolean() == true)
+                {
+                    context.RegisterRefactoring(
+                        $"Replace statement with 'if ({expression.ToString()})'",
+                        cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+                }
+            }
         }
 
         private static async Task<Document> RefactorAsync(

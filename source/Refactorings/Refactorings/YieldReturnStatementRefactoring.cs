@@ -71,18 +71,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
-                    && !yieldStatement.Expression.IsBooleanLiteralExpression())
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    ITypeSymbol expressionSymbol = semanticModel
-                        .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
-                        .ConvertedType;
-
-                    if (expressionSymbol?.IsBoolean() == true)
-                        ReplaceBooleanExpressionWithIfStatementRefactoring.RegisterRefactoring(context, yieldStatement);
-                }
+                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
+                    await ReplaceBooleanExpressionWithIfStatementRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression);
             }
         }
     }
