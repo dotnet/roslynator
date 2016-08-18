@@ -485,6 +485,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.AccessorList(List(accessors));
         }
 
+        public static YieldStatementSyntax YieldReturnStatement(ExpressionSyntax expression)
+        {
+            return YieldStatement(SyntaxKind.YieldReturnStatement, expression);
+        }
+
+        public static YieldStatementSyntax YieldBreakStatement()
+        {
+            return YieldStatement(SyntaxKind.YieldBreakStatement);
+        }
+
         private static SyntaxTrivia CreateNewLine()
         {
             switch (Environment.NewLine)
