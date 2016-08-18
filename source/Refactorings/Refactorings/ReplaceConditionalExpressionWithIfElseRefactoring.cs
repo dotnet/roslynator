@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplaceConditionalExpressionWithIfElseRefactoring
     {
-        private const string Title = "Replace conditional expression with if-else";
+        private const string Title = "Replace conditional expression with 'if-else'";
 
         public static void ComputeRefactoring(RefactoringContext context, ConditionalExpressionSyntax expression)
         {
@@ -21,32 +21,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (parent == null)
                 return;
 
-            if (parent.Kind() == SyntaxKind.ReturnStatement)
+            SyntaxKind kind = parent.Kind();
+
+            if (kind == SyntaxKind.ReturnStatement)
             {
                 context.RegisterRefactoring(
                     Title,
                     cancellationToken => RefactorAsync(context.Document, expression, (ReturnStatementSyntax)parent, cancellationToken));
             }
-            else if (parent.Kind() == SyntaxKind.YieldReturnStatement)
+            else if (kind == SyntaxKind.YieldReturnStatement)
             {
                 context.RegisterRefactoring(
                     Title,
                     cancellationToken => RefactorAsync(context.Document, expression, (YieldStatementSyntax)parent, cancellationToken));
             }
-            else if (parent.Kind() == SyntaxKind.SimpleAssignmentExpression)
+            else if (kind == SyntaxKind.SimpleAssignmentExpression)
             {
-                if (parent.Parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
                 {
                     context.RegisterRefactoring(
                         Title,
-                        cancellationToken => RefactorAsync(context.Document, expression, (ExpressionStatementSyntax)parent.Parent, cancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, expression, (ExpressionStatementSyntax)parent, cancellationToken));
                 }
             }
-            else if (IsValueOfLocalDeclaration(expression))
+            else
             {
-                context.RegisterRefactoring(
-                    Title,
-                    cancellationToken => RefactorAsync(context.Document, expression, (LocalDeclarationStatementSyntax)parent.Parent.Parent.Parent, cancellationToken));
+                LocalDeclarationStatementSyntax localDeclaration = GetLocalDeclaration(expression);
+
+                if (localDeclaration != null)
+                {
+                    context.RegisterRefactoring(
+                        Title,
+                        cancellationToken => RefactorAsync(context.Document, expression, localDeclaration, cancellationToken));
+                }
             }
         }
 
@@ -56,12 +65,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            IfStatementSyntax ifStatement = ConvertToIfElseWithReturn(conditionalExpression, returnStatement)
+            IfStatementSyntax ifStatement = ReplaceWithIfElseWithReturn(conditionalExpression, returnStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(returnStatement, ifStatement);
+            SyntaxNode newRoot = root.ReplaceNode(returnStatement, ifStatement);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -72,12 +81,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             YieldStatementSyntax yieldStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            IfStatementSyntax ifStatement = ConvertToIfElseWithYieldReturn(conditionalExpression, yieldStatement)
+            IfStatementSyntax ifStatement = ReplaceWithIfElseWithYieldReturn(conditionalExpression, yieldStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(yieldStatement, ifStatement);
+            SyntaxNode newRoot = root.ReplaceNode(yieldStatement, ifStatement);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -88,15 +97,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             ExpressionStatementSyntax expressionStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var assignmentExpression = (AssignmentExpressionSyntax)conditionalExpression.Parent;
 
-            IfStatementSyntax ifStatement = ConvertToIfElseWithAssignment(conditionalExpression, assignmentExpression.Left.WithoutTrivia())
+            IfStatementSyntax ifStatement = ReplaceWithIfElseWithAssignment(conditionalExpression, assignmentExpression.Left.WithoutTrivia())
                 .WithTriviaFrom(expressionStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expressionStatement, ifStatement);
+            SyntaxNode newRoot = root.ReplaceNode(expressionStatement, ifStatement);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -107,7 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
             var block = (BlockSyntax)localDeclaration.Parent;
@@ -118,15 +127,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var variableDeclarator = (VariableDeclaratorSyntax)conditionalExpression.Parent.Parent;
 
-            IfStatementSyntax ifStatement = ConvertToIfElseWithAssignment(conditionalExpression, IdentifierName(variableDeclarator.Identifier.ToString()))
+            IfStatementSyntax ifStatement = ReplaceWithIfElseWithAssignment(conditionalExpression, IdentifierName(variableDeclarator.Identifier.ValueText))
                 .WithTrailingTrivia(localDeclaration.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            SyntaxList<StatementSyntax> statements = block.Statements
-                .Replace(localDeclaration, newLocalDeclaration)
-                .Insert(block.Statements.IndexOf(localDeclaration) + 1, ifStatement);
+            SyntaxList<StatementSyntax> statements = block.Statements;
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(block, block.WithStatements(statements));
+            statements = statements
+                .Replace(localDeclaration, newLocalDeclaration)
+                .Insert(statements.IndexOf(localDeclaration) + 1, ifStatement);
+
+            SyntaxNode newRoot = root.ReplaceNode(block, block.WithStatements(statements));
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -157,115 +168,98 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return localDeclaration;
         }
 
-        private static IfStatementSyntax ConvertToIfElseWithAssignment(ConditionalExpressionSyntax conditionalExpression, ExpressionSyntax left)
-        {
-            if (conditionalExpression == null)
-                throw new ArgumentNullException(nameof(conditionalExpression));
-
-            ExpressionSyntax whenTrue = conditionalExpression.WhenTrue.WithoutTrivia();
-            ExpressionSyntax whenFalse = conditionalExpression.WhenFalse.WithoutTrivia();
-
-            bool addBlock = whenTrue.IsMultiLine() || whenFalse.IsMultiLine();
-
-            return IfStatement(
-                    GetCondition(conditionalExpression),
-                    GetIfContent(whenTrue, addBlock, left),
-                    ElseClause(GetElseContent(whenFalse, addBlock, left)));
-        }
-
-        private static ExpressionSyntax GetCondition(ConditionalExpressionSyntax conditionalExpression)
+        private static IfStatementSyntax ReplaceWithIfElseWithAssignment(
+            ConditionalExpressionSyntax conditionalExpression,
+            ExpressionSyntax left)
         {
             ExpressionSyntax condition = conditionalExpression.Condition;
 
             if (condition.IsKind(SyntaxKind.ParenthesizedExpression))
                 condition = ((ParenthesizedExpressionSyntax)condition).Expression;
 
-            return condition.WithoutTrivia();
+            condition = condition.WithoutTrivia();
+
+            return IfStatement(
+                    condition,
+                    Block(
+                    ExpressionStatement(
+                    SimpleAssignmentExpression(
+                                left,
+                                conditionalExpression.WhenTrue.WithoutTrivia()))),
+                    ElseClause(
+                        Block(
+                            ExpressionStatement(
+                                SimpleAssignmentExpression(
+                                    left,
+                                    conditionalExpression.WhenFalse.WithoutTrivia())))));
         }
 
-        private static StatementSyntax GetIfContent(ExpressionSyntax whenTrue, bool addBlock, ExpressionSyntax left)
-        {
-            StatementSyntax ifContent = ExpressionStatement(
-                AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, whenTrue));
-
-            if (addBlock)
-                ifContent = Block(ifContent);
-
-            return ifContent;
-        }
-
-        private static StatementSyntax GetElseContent(ExpressionSyntax whenFalse, bool addBlock, ExpressionSyntax left)
-        {
-            StatementSyntax elseContent = ExpressionStatement(
-                AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, whenFalse));
-
-            if (addBlock)
-                elseContent = Block(elseContent);
-
-            return elseContent;
-        }
-
-        private static IfStatementSyntax ConvertToIfElseWithReturn(
+        private static IfStatementSyntax ReplaceWithIfElseWithReturn(
             ConditionalExpressionSyntax conditionalExpression,
             ReturnStatementSyntax returnStatement)
         {
-            if (conditionalExpression == null)
-                throw new ArgumentNullException(nameof(conditionalExpression));
-
             ExpressionSyntax condition = conditionalExpression.Condition.WithoutTrivia();
 
             if (condition.IsKind(SyntaxKind.ParenthesizedExpression))
                 condition = ((ParenthesizedExpressionSyntax)condition).Expression;
 
-            ReturnStatementSyntax trueStatement = ReturnStatement(conditionalExpression.WhenTrue.WithoutTrivia());
-            ReturnStatementSyntax falseStatement = ReturnStatement(conditionalExpression.WhenFalse.WithoutTrivia());
+            IfStatementSyntax ifStatement = CreateIfStatement(
+                condition,
+                ReturnStatement(conditionalExpression.WhenTrue.WithoutTrivia()),
+                ReturnStatement(conditionalExpression.WhenFalse.WithoutTrivia()));
 
-            return CreateIfStatement(condition, trueStatement, falseStatement)
-                .WithTriviaFrom(returnStatement);
+            return ifStatement.WithTriviaFrom(returnStatement);
         }
 
-        private static IfStatementSyntax ConvertToIfElseWithYieldReturn(
+        private static IfStatementSyntax ReplaceWithIfElseWithYieldReturn(
             ConditionalExpressionSyntax conditionalExpression,
             YieldStatementSyntax yieldStatement)
         {
-            if (conditionalExpression == null)
-                throw new ArgumentNullException(nameof(conditionalExpression));
-
             ExpressionSyntax condition = conditionalExpression.Condition.WithoutTrivia();
 
             if (condition.IsKind(SyntaxKind.ParenthesizedExpression))
                 condition = ((ParenthesizedExpressionSyntax)condition).Expression;
 
-            YieldStatementSyntax trueStatement = YieldStatement(SyntaxKind.YieldReturnStatement, conditionalExpression.WhenTrue.WithoutTrivia());
-            YieldStatementSyntax falseStatement = YieldStatement(SyntaxKind.YieldReturnStatement, conditionalExpression.WhenFalse.WithoutTrivia());
+            IfStatementSyntax ifStatement = CreateIfStatement(
+                condition,
+                YieldReturnStatement(conditionalExpression.WhenTrue.WithoutTrivia()),
+                YieldReturnStatement(conditionalExpression.WhenFalse.WithoutTrivia()));
 
-            return CreateIfStatement(condition, trueStatement, falseStatement)
-                .WithTriviaFrom(yieldStatement);
+            return ifStatement.WithTriviaFrom(yieldStatement);
         }
 
         private static IfStatementSyntax CreateIfStatement(ExpressionSyntax condition, StatementSyntax trueStatement, StatementSyntax falseStatement)
         {
-            bool addBlock = trueStatement.IsMultiLine() || falseStatement.IsMultiLine();
-
-            StatementSyntax ifContent = trueStatement;
-
-            if (addBlock)
-                ifContent = Block(trueStatement);
-
-            StatementSyntax elseContent = falseStatement;
-
-            if (addBlock)
-                elseContent = Block(falseStatement);
-
-            return IfStatement(condition, ifContent, ElseClause(elseContent));
+            return IfStatement(
+                condition,
+                Block(trueStatement),
+                ElseClause(
+                    Block(falseStatement)));
         }
 
-        private static bool IsValueOfLocalDeclaration(this ExpressionSyntax expression)
+        private static LocalDeclarationStatementSyntax GetLocalDeclaration(this ExpressionSyntax expression)
         {
-            return expression.Parent is EqualsValueClauseSyntax
-                && expression.Parent.Parent is VariableDeclaratorSyntax
-                && expression.Parent.Parent.Parent is VariableDeclarationSyntax
-                && expression.Parent.Parent.Parent.Parent is LocalDeclarationStatementSyntax;
+            SyntaxNode parent = expression.Parent;
+
+            if (parent?.IsKind(SyntaxKind.EqualsValueClause) != true)
+                return null;
+
+            parent = parent.Parent;
+
+            if (parent?.IsKind(SyntaxKind.VariableDeclarator) != true)
+                return null;
+
+            parent = parent.Parent;
+
+            if (parent?.IsKind(SyntaxKind.VariableDeclaration) != true)
+                return null;
+
+            parent = parent.Parent;
+
+            if (parent?.IsKind(SyntaxKind.LocalDeclarationStatement) != true)
+                return null;
+
+            return (LocalDeclarationStatementSyntax)parent;
         }
     }
 }
