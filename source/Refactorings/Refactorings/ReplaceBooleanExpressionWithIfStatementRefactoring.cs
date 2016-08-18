@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -10,52 +12,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplaceBooleanExpressionWithIfStatementRefactoring
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ReturnStatementSyntax returnStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static void RegisterRefactoring(RefactoringContext context, ReturnStatementSyntax returnStatement)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            IfStatementSyntax newNode = IfStatement(returnStatement.Expression, Block())
-                .WithTriviaFrom(returnStatement)
-                .WithFormatterAnnotation();
-
-            root = root.ReplaceNode(returnStatement, newNode);
-
-            return document.WithSyntaxRoot(root);
+            RegisterRefactoring(context, returnStatement.Expression);
         }
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            YieldStatementSyntax yieldStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static void RegisterRefactoring(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            IfStatementSyntax newNode = IfStatement(yieldStatement.Expression, Block())
-                .WithTriviaFrom(yieldStatement)
-                .WithFormatterAnnotation();
-
-            root = root.ReplaceNode(yieldStatement, newNode);
-
-            return document.WithSyntaxRoot(root);
+            RegisterRefactoring(context, yieldStatement.Expression);
         }
 
-        public static async Task<Document> RefactorAsync(
+        private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
+        {
+            context.RegisterRefactoring(
+                $"Replace statement with 'if ({expression.ToString()})'",
+                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+        }
+
+        private static async Task<Document> RefactorAsync(
             Document document,
-            ExpressionStatementSyntax expressionStatement,
+            ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            IfStatementSyntax newNode = IfStatement(expressionStatement.Expression, Block())
-                .WithTriviaFrom(expressionStatement)
+            IfStatementSyntax newNode = IfStatement(expression, Block())
+                .WithTriviaFrom(expression.Parent)
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(expressionStatement, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(expression.Parent, newNode);
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

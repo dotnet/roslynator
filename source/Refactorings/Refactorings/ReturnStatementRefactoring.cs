@@ -33,17 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             .ConvertedType;
 
                         if (expressionSymbol?.IsBoolean() == true)
-                        {
-                            context.RegisterRefactoring(
-                                "Replace expression with if statement",
-                                cancellationToken =>
-                                {
-                                    return ReplaceBooleanExpressionWithIfStatementRefactoring.RefactorAsync(
-                                        context.Document,
-                                        returnStatement,
-                                        cancellationToken);
-                                });
-                        }
+                            ReplaceBooleanExpressionWithIfStatementRefactoring.RegisterRefactoring(context, returnStatement);
                     }
                 }
                 else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
