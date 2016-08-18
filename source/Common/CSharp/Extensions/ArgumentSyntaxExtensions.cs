@@ -145,7 +145,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
-            return GetParameterType(parameterSymbol);
+            if (parameterSymbol != null)
+                return GetParameterType(parameterSymbol);
+
+            return null;
         }
 
         private static IParameterSymbol DetermineParameterSymbol(
