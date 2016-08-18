@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
-                && ReplacePropertyWithMethodRefactoring.CanRefactor(propertyDeclaration))
+                && ReplacePropertyWithMethodRefactoring.CanRefactor(context, propertyDeclaration))
             {
                 string title = "Replace property with method";
 

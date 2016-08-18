@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             \P{Ll}
             ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
 
-        public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
+        public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
             AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
 
@@ -35,7 +35,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         return true;
                     }
-                    else if (accessors.Count == 1
+                    else if (context.SupportsCSharp6
+                        && accessors.Count == 1
                         && accessors.First().IsAutoGetter()
                         && propertyDeclaration.Initializer?.Value != null)
                     {
