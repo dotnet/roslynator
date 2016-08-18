@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .ConvertedType;
 
             return typeSymbol?.IsNamedType() == true
-                && ((INamedTypeSymbol)typeSymbol).SpecialType == SpecialType.System_String;
+                && ((INamedTypeSymbol)typeSymbol).IsString();
         }
 
         private static bool CheckOperatorTrailingTrivia(SyntaxTriviaList triviaList)

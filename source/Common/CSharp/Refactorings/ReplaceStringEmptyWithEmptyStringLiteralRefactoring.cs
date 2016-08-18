@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && fieldSymbol.IsPublic()
                     && fieldSymbol.IsReadOnly
                     && fieldSymbol.IsStatic
-                    && fieldSymbol.ContainingType?.SpecialType == SpecialType.System_String;
+                    && fieldSymbol.ContainingType?.IsString() == true;
             }
 
             return false;

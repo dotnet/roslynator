@@ -38,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             if (expressionSymbol?.IsErrorType() == false)
                             {
                                 if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                                    && memberTypeSymbol.SpecialType == SpecialType.System_Boolean
+                                    && memberTypeSymbol.IsBoolean()
                                     && expressionSymbol.IsNamedType())
                                 {
                                     var namedTypeSymbol = (INamedTypeSymbol)expressionSymbol;

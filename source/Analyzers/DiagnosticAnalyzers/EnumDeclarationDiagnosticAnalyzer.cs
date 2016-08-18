@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         {
                             var symbol = context.SemanticModel.GetSymbolInfo(simpleBaseType.Type, context.CancellationToken).Symbol as INamedTypeSymbol;
 
-                            if (symbol?.SpecialType == SpecialType.System_Int32)
+                            if (symbol?.IsInt32() == true)
                                 return baseType;
                         }
                     }

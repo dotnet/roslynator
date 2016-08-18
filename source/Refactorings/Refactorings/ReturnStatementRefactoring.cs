@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             .GetTypeInfo(returnStatement.Expression, context.CancellationToken)
                             .ConvertedType;
 
-                        if (expressionSymbol?.SpecialType == SpecialType.System_Boolean)
+                        if (expressionSymbol?.IsBoolean() == true)
                         {
                             context.RegisterRefactoring(
                                 "Replace expression with if statement",

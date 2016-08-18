@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                         if (methodSymbol.Name == "HasFlag"
                             && !methodSymbol.IsExtensionMethod
-                            && methodSymbol.ReturnType.SpecialType == SpecialType.System_Boolean
+                            && methodSymbol.ReturnType.IsBoolean()
                             && methodSymbol.Parameters.Length == 1
                             && methodSymbol.Parameters[0].Type.SpecialType == SpecialType.System_Enum
                             && methodSymbol.ContainingType?.SpecialType == SpecialType.System_Enum)

@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (typeSymbol?.IsErrorType() == false)
             {
                 return typeSymbol.IsArrayType()
-                   || typeSymbol.SpecialType == SpecialType.System_String
+                   || typeSymbol.IsString()
                    || typeSymbol.HasPublicIndexer();
             }
 
@@ -122,7 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (typeSymbol?.IsErrorType() == false)
             {
-                if (typeSymbol.SpecialType == SpecialType.System_String)
+                if (typeSymbol.IsString())
                     return "Length";
 
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)

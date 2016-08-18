@@ -151,7 +151,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
 
                         if (methodSymbol.IsPublic()
                             && methodSymbol.IsStatic
-                            && methodSymbol.ReturnType.SpecialType == SpecialType.System_Boolean
+                            && methodSymbol.ReturnType.IsBoolean()
                             && methodSymbol.Parameters.Length == 1
                             && methodSymbol.Parameters[0].Type.Equals(typeSymbol))
                         {

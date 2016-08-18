@@ -11,18 +11,22 @@ namespace Pihrtsoft.CodeAnalysis
     {
         public static bool IsInt32(this ITypeSymbol typeSymbol)
         {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            return typeSymbol.SpecialType == SpecialType.System_Int32;
+            return typeSymbol?.SpecialType == SpecialType.System_Int32;
         }
 
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
+            return typeSymbol?.SpecialType == SpecialType.System_Void;
+        }
 
-            return typeSymbol.SpecialType == SpecialType.System_Void;
+        public static bool IsBoolean(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_Boolean;
+        }
+
+        public static bool IsString(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_String;
         }
 
         public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
@@ -113,7 +117,7 @@ namespace Pihrtsoft.CodeAnalysis
                     ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
                     if (parameters.Length == 1
-                        && parameters[0].Type?.SpecialType == SpecialType.System_Int32)
+                        && parameters[0].Type?.IsInt32() == true)
                     {
                         return true;
                     }

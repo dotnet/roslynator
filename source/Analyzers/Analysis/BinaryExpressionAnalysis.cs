@@ -120,7 +120,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
-                        return typeSymbol?.SpecialType == SpecialType.System_Boolean;
+                        return typeSymbol?.IsBoolean() == true;
                     }
             }
         }
