@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.98.1" Language="en-US" Publisher="Josef Pihrt" />
+    <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.98.2" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>C# Refactorings</DisplayName>
     <Description xml:space="preserve">Roslyn-based extension that offers 120+ refactorings for C#.</Description>
     <MoreInfo>http://github.com/JosefPihrt/RoslynTools</MoreInfo>
