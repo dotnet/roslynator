@@ -11,8 +11,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class AddBooleanComparisonRefactoring
     {
-        public const string Title = "Add boolean comparison";
-
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             ExpressionSyntax expression2 = GetExpression(expression);
@@ -26,12 +24,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     .ConvertedType as INamedTypeSymbol;
 
                 if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
-                {
-                    context.RegisterRefactoring(
-                        Title,
-                        cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
-                }
+                    RegisterRefactoring(context, expression);
             }
+        }
+
+        public static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
+        {
+            context.RegisterRefactoring(
+                "Add boolean comparison",
+                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
         }
 
         private static ExpressionSyntax GetExpression(ExpressionSyntax expression)

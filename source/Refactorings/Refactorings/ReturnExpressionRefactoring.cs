@@ -43,18 +43,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 {
                                     var namedTypeSymbol = (INamedTypeSymbol)expressionSymbol;
 
-                                    if (namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
-                                        && namedTypeSymbol.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
+                                    if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
                                     {
-                                        context.RegisterRefactoring(
-                                            AddBooleanComparisonRefactoring.Title,
-                                            cancellationToken =>
-                                            {
-                                                return AddBooleanComparisonRefactoring.RefactorAsync(
-                                                    context.Document,
-                                                    expression,
-                                                    context.CancellationToken);
-                                            });
+                                        AddBooleanComparisonRefactoring.RegisterRefactoring(context, expression);
                                     }
                                 }
 
