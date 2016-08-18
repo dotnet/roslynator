@@ -23,7 +23,7 @@ namespace CodeGenerator
             return CompilationUnit()
                 .WithUsings(
                     UsingDirective(ParseName("System.ComponentModel")),
-                    UsingDirective(ParseName("Pihrtsoft.CodeAnalysis.CSharp.Refactoring")),
+                    UsingDirective(ParseName("Pihrtsoft.CodeAnalysis.CSharp.Refactorings")),
                     UsingDirective(ParseName("Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters"))
                     )
                 .WithMembers(
