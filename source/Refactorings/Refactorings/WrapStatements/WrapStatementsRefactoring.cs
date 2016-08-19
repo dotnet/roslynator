@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 {
@@ -16,15 +15,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 
         public async Task<Document> RefactorAsync(
             Document document,
-            BlockSyntax block,
-            TextSpan span,
+            BlockSpan blockSpan,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            StatementSyntax[] statements = BlockRefactoring.GetSelectedStatements(block, span).ToArray();
+            StatementSyntax[] statements = blockSpan.SelectedStatements().ToArray();
 
-            int index = block.Statements.IndexOf(statements[0]);
+            int index = blockSpan.FirstSelectedStatementIndex;
 
             SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
             SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();
@@ -32,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
             statements[0] = statements[0].WithLeadingTrivia();
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
 
-            SyntaxList<StatementSyntax> newStatements = block.Statements;
+            SyntaxList<StatementSyntax> newStatements = blockSpan.Statements;
 
             int cnt = statements.Length;
 
@@ -51,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            root = root.ReplaceNode(block, block.WithStatements(newStatements));
+            root = root.ReplaceNode(blockSpan.Block, blockSpan.Block.WithStatements(newStatements));
 
             return document.WithSyntaxRoot(root);
         }

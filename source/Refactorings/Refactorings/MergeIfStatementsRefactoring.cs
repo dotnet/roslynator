@@ -15,6 +15,50 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class MergeIfStatementsRefactoring
     {
+        public static void ComputeRefactorings(RefactoringContext context, BlockSpan blockSpan)
+        {
+            List<IfStatementSyntax> ifStatements = GetIfStatements(blockSpan);
+
+            if (ifStatements?.Count > 1)
+            {
+                context.RegisterRefactoring(
+                    "Merge if statements",
+                    cancellationToken =>
+                    {
+                        return RefactorAsync(
+                            context.Document,
+                            blockSpan.Block,
+                            ifStatements.ToImmutableArray(),
+                            cancellationToken);
+                    });
+            }
+        }
+
+        private static List<IfStatementSyntax> GetIfStatements(BlockSpan blockSpan)
+        {
+            List<IfStatementSyntax> ifStatements = null;
+
+            using (IEnumerator<StatementSyntax> en = blockSpan.SelectedStatements().GetEnumerator())
+            {
+                while (en.MoveNext())
+                {
+                    if (en.Current.IsKind(SyntaxKind.IfStatement))
+                    {
+                        if (ifStatements == null)
+                            ifStatements = new List<IfStatementSyntax>();
+
+                        ifStatements.Add((IfStatementSyntax)en.Current);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+            return ifStatements;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             BlockSyntax block,

@@ -9,21 +9,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     internal class BlockSpan
     {
-        private readonly SyntaxList<StatementSyntax> _statements;
         private bool _findExecuted;
         private int _firstIndex = -1;
+        private int _lastIndex = -1;
 
         public BlockSpan(BlockSyntax block, TextSpan span)
         {
             Block = block;
             Span = span;
-
-            _statements = Block.Statements;
+            Statements = Block.Statements;
         }
 
         public BlockSyntax Block { get; }
-
         public TextSpan Span { get; }
+        public SyntaxList<StatementSyntax> Statements { get; }
 
         public bool HasSelectedStatement
         {
@@ -36,11 +35,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             {
                 if (!_findExecuted)
                 {
-                    FindFirstSelectedStatement();
+                    FindSelectedStatements();
                     _findExecuted = true;
                 }
 
                 return _firstIndex;
+            }
+        }
+
+        public int LastSelectedStatementIndex
+        {
+            get
+            {
+                if (!_findExecuted)
+                {
+                    FindSelectedStatements();
+                    _findExecuted = true;
+                }
+
+                return _lastIndex;
             }
         }
 
@@ -51,7 +64,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 int index = FirstSelectedStatementIndex;
 
                 if (index != -1)
-                    return _statements[index];
+                    return Statements[index];
+
+                return null;
+            }
+        }
+
+        public StatementSyntax LastSelectedStatement
+        {
+            get
+            {
+                int index = LastSelectedStatementIndex;
+
+                if (index != -1)
+                    return Statements[index];
 
                 return null;
             }
@@ -63,40 +89,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             if (firstIndex != -1)
             {
-                yield return _statements[firstIndex];
+                int lastIndex = LastSelectedStatementIndex;
 
-                for (int i = firstIndex + 1; i < _statements.Count; i++)
-                {
-                    StatementSyntax statement = _statements[i];
-
-                    if (Span.End >= statement.Span.End)
-                    {
-                        yield return statement;
-                    }
-                    else
-                    {
-                        yield break;
-                    }
-                }
+                for (int i = firstIndex; i <= lastIndex; i++)
+                    yield return Statements[i];
             }
         }
 
-        private void FindFirstSelectedStatement()
+        private void FindSelectedStatements()
         {
+            SyntaxList<StatementSyntax>.Enumerator en = Statements.GetEnumerator();
+
             int i = 0;
-            foreach (StatementSyntax statement in _statements)
+
+            while (en.MoveNext()
+                && Span.Start >= en.Current.FullSpan.End)
             {
-                TextSpan span = statement.Span;
+                i++;
+            }
 
-                if (Span.Start <= span.Start)
+            if (Span.Start <= en.Current.Span.Start)
+            {
+                int j = i;
+
+                while (Span.End > en.Current.FullSpan.End
+                    && en.MoveNext())
                 {
-                    if (Span.End >= span.End)
-                        _firstIndex = i;
-
-                    break;
+                    j++;
                 }
 
-                i++;
+                if (Span.End >= en.Current.Span.End)
+                {
+                    _firstIndex = i;
+                    _lastIndex = j;
+                }
             }
         }
     }

@@ -20,23 +20,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
             if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
             {
                 var localDeclaration = (LocalDeclarationStatementSyntax)statement;
+                VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
-                if (localDeclaration.Declaration?.Variables.Count == 1
-                    && localDeclaration.Declaration.Variables[0].Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
-                    && localDeclaration.Declaration.Type != null)
+                if (declaration != null)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    VariableDeclaratorSyntax variable = declaration.SingleVariableOrDefault();
 
-                    ITypeSymbol type = semanticModel
-                        .GetTypeInfo(localDeclaration.Declaration.Type)
-                        .Type;
-
-                    if (type?.IsNamedType() == true
-                        && ((INamedTypeSymbol)type).Implements(SpecialType.System_IDisposable))
+                    if (variable != null
+                        && variable.Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
+                        && declaration.Type != null)
                     {
-                        context.RegisterRefactoring(
-                            "Wrap in 'using' statement",
-                            cancellationToken => RefactorAsync(context.Document, (BlockSyntax)localDeclaration.Parent, context.Span, cancellationToken));
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ITypeSymbol typeSymbol = semanticModel
+                            .GetTypeInfo(declaration.Type, context.CancellationToken)
+                            .Type;
+
+                        if (typeSymbol?.IsNamedType() == true
+                            && ((INamedTypeSymbol)typeSymbol).Implements(SpecialType.System_IDisposable))
+                        {
+                            context.RegisterRefactoring(
+                                "Wrap in 'using' statement",
+                                cancellationToken => RefactorAsync(context.Document, blockSpan, cancellationToken));
+                        }
                     }
                 }
             }
