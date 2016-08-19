@@ -120,7 +120,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 while (en.MoveNext())
                 {
                     node = en.Current;
-                    Debug.WriteLine(node.Kind().ToString());
+
+                    SyntaxKind kind = node.Kind();
+
+                    Debug.WriteLine(kind.ToString());
 
                     if (!fAccessor)
                     {
@@ -134,7 +137,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fArgument
-                        && node.IsKind(SyntaxKind.Argument))
+                        && kind == SyntaxKind.Argument)
                     {
                         await ArgumentRefactoring.ComputeRefactoringsAsync(context, (ArgumentSyntax)node).ConfigureAwait(false);
                         fArgument = true;
@@ -142,7 +145,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fArgumentList
-                        && node.IsKind(SyntaxKind.ArgumentList))
+                        && kind == SyntaxKind.ArgumentList)
                     {
                         await ArgumentListRefactoring.ComputeRefactoringsAsync(context, (ArgumentListSyntax)node).ConfigureAwait(false);
                         fArgumentList = true;
@@ -150,7 +153,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fAttributeArgumentList
-                        && node.IsKind(SyntaxKind.AttributeArgumentList))
+                        && kind == SyntaxKind.AttributeArgumentList)
                     {
                         await AttributeArgumentListRefactoring.ComputeRefactoringsAsync(context, (AttributeArgumentListSyntax)node).ConfigureAwait(false);
                         fAttributeArgumentList = true;
@@ -158,7 +161,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fArrowExpressionClause
-                        && node.IsKind(SyntaxKind.ArrowExpressionClause))
+                        && kind == SyntaxKind.ArrowExpressionClause)
                     {
                         await ArrowExpressionClauseRefactoring.ComputeRefactoringsAsync(context, (ArrowExpressionClauseSyntax)node).ConfigureAwait(false);
                         fArrowExpressionClause = true;
@@ -166,7 +169,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fParameter
-                        && node.IsKind(SyntaxKind.Parameter))
+                        && kind == SyntaxKind.Parameter)
                     {
                         await ParameterRefactoring.ComputeRefactoringsAsync(context, (ParameterSyntax)node).ConfigureAwait(false);
                         fParameter = true;
@@ -174,7 +177,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fParameterList
-                        && node.IsKind(SyntaxKind.ParameterList))
+                        && kind == SyntaxKind.ParameterList)
                     {
                         ParameterListRefactoring.ComputeRefactorings(context, (ParameterListSyntax)node);
                         fParameterList = true;
@@ -182,7 +185,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fSwitchSection
-                        && node.IsKind(SyntaxKind.SwitchSection))
+                        && kind == SyntaxKind.SwitchSection)
                     {
                         SwitchSectionRefactoring.ComputeRefactorings(context, (SwitchSectionSyntax)node);
                         fSwitchSection = true;
@@ -190,7 +193,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fVariableDeclaration
-                        && node.IsKind(SyntaxKind.VariableDeclaration))
+                        && kind == SyntaxKind.VariableDeclaration)
                     {
                         await VariableDeclarationRefactoring.ComputeRefactoringsAsync(context, (VariableDeclarationSyntax)node).ConfigureAwait(false);
                         fVariableDeclaration = true;
@@ -198,7 +201,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fInterpolatedStringText
-                        && node.IsKind(SyntaxKind.InterpolatedStringText))
+                        && kind == SyntaxKind.InterpolatedStringText)
                     {
                         InterpolatedStringTextRefactoring.ComputeRefactorings(context, (InterpolatedStringTextSyntax)node);
                         fInterpolatedStringText = true;
@@ -206,7 +209,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fElseClause
-                        && node.IsKind(SyntaxKind.ElseClause))
+                        && kind == SyntaxKind.ElseClause)
                     {
                         ElseClauseRefactoring.ComputeRefactorings(context, (ElseClauseSyntax)node);
                         fElseClause = true;
@@ -214,7 +217,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (!fCaseSwitchLabel
-                        && node.IsKind(SyntaxKind.CaseSwitchLabel))
+                        && kind == SyntaxKind.CaseSwitchLabel)
                     {
                         await CaseSwitchLabelRefactoring.ComputeRefactoringsAsync(context, (CaseSwitchLabelSyntax)node).ConfigureAwait(false);
                         fCaseSwitchLabel = true;
@@ -241,7 +244,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fAnonymousMethod
-                            && node.IsKind(SyntaxKind.AnonymousMethodExpression))
+                            && kind == SyntaxKind.AnonymousMethodExpression)
                         {
                             AnonymousMethodExpressionRefactoring.ComputeRefactorings(context, (AnonymousMethodExpressionSyntax)node);
                             fAnonymousMethod = true;
@@ -258,28 +261,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fConditionalExpression
-                            && node.IsKind(SyntaxKind.ConditionalExpression))
+                            && kind == SyntaxKind.ConditionalExpression)
                         {
                             ConditionalExpressionRefactoring.ComputeRefactorings(context, (ConditionalExpressionSyntax)expression);
                             fConditionalExpression = true;
                         }
 
                         if (!fQualifiedName
-                            && node.IsKind(SyntaxKind.QualifiedName))
+                            && kind == SyntaxKind.QualifiedName)
                         {
                             await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression);
                             fQualifiedName = true;
                         }
 
                         if (!fGenericName
-                            && node.IsKind(SyntaxKind.GenericName))
+                            && kind == SyntaxKind.GenericName)
                         {
                             GenericNameRefactoring.ComputeRefactorings(context, (GenericNameSyntax)expression);
                             fGenericName = true;
                         }
 
                         if (!fIdentifierName
-                            && node.IsKind(SyntaxKind.IdentifierName))
+                            && kind == SyntaxKind.IdentifierName)
                         {
                             await IdentifierNameRefactoring.ComputeRefactoringsAsync(context, (IdentifierNameSyntax)expression).ConfigureAwait(false);
                             fIdentifierName = true;
@@ -296,14 +299,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fInterpolatedStringExpression
-                            && node.IsKind(SyntaxKind.InterpolatedStringExpression))
+                            && kind == SyntaxKind.InterpolatedStringExpression)
                         {
                             InterpolatedStringRefactoring.ComputeRefactorings(context, (InterpolatedStringExpressionSyntax)expression);
                             fInterpolatedStringExpression = true;
                         }
 
                         if (!fInvocationExpression
-                            && node.IsKind(SyntaxKind.InvocationExpression))
+                            && kind == SyntaxKind.InvocationExpression)
                         {
                             await InvocationExpressionRefactoring.ComputeRefactoringsAsync(context, (InvocationExpressionSyntax)expression).ConfigureAwait(false);
                             fInvocationExpression = true;
@@ -330,14 +333,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fSimpleMemberAccessExpression
-                            && node.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                            && kind == SyntaxKind.SimpleMemberAccessExpression)
                         {
                             await SimpleMemberAccessExpressionRefactoring.ComputeRefactoringAsync(context, (MemberAccessExpressionSyntax)node).ConfigureAwait(false);
                             fSimpleMemberAccessExpression = true;
                         }
 
                         if (!fParenthesizedExpression
-                            && node.IsKind(SyntaxKind.ParenthesizedExpression))
+                            && kind == SyntaxKind.ParenthesizedExpression)
                         {
                             ParenthesizedExpressionRefactoring.ComputeRefactorings(context, (ParenthesizedExpressionSyntax)expression);
                             fParenthesizedExpression = true;
@@ -364,7 +367,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fAwaitExpression
-                            && node.IsKind(SyntaxKind.AwaitExpression))
+                            && kind == SyntaxKind.AwaitExpression)
                         {
                             await AwaitExpressionRefactoring.ComputeRefactoringsAsync(context, (AwaitExpressionSyntax)node).ConfigureAwait(false);
                             fAwaitExpression = true;
@@ -403,70 +406,70 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (statement != null)
                     {
                         if (!fDoStatement
-                            && node.IsKind(SyntaxKind.DoStatement))
+                            && kind == SyntaxKind.DoStatement)
                         {
                             await DoStatementRefactoring.ComputeRefactoringsAsync(context, (DoStatementSyntax)statement).ConfigureAwait(false);
                             fDoStatement = true;
                         }
 
                         if (!fExpressionStatement
-                            && node.IsKind(SyntaxKind.ExpressionStatement))
+                            && kind == SyntaxKind.ExpressionStatement)
                         {
                             await ExpressionStatementRefactoring.ComputeRefactoringsAsync(context, (ExpressionStatementSyntax)statement).ConfigureAwait(false);
                             fExpressionStatement = true;
                         }
 
                         if (!fForEachStatement
-                            && node.IsKind(SyntaxKind.ForEachStatement))
+                            && kind == SyntaxKind.ForEachStatement)
                         {
                             await ForEachStatementRefactoring.ComputeRefactoringsAsync(context, (ForEachStatementSyntax)statement).ConfigureAwait(false);
                             fForEachStatement = true;
                         }
 
                         if (!fForStatement
-                            && node.IsKind(SyntaxKind.ForStatement))
+                            && kind == SyntaxKind.ForStatement)
                         {
                             await ForStatementRefactoring.ComputeRefactoringsAsync(context, (ForStatementSyntax)statement).ConfigureAwait(false);
                             fForStatement = true;
                         }
 
                         if (!fIfStatement
-                            && node.IsKind(SyntaxKind.IfStatement))
+                            && kind == SyntaxKind.IfStatement)
                         {
                             await IfStatementRefactoring.ComputeRefactoringsAsync(context, (IfStatementSyntax)statement).ConfigureAwait(false);
                             fIfStatement = true;
                         }
 
                         if (!fLocalDeclarationStatement
-                            && node.IsKind(SyntaxKind.LocalDeclarationStatement))
+                            && kind == SyntaxKind.LocalDeclarationStatement)
                         {
                             await LocalDeclarationStatementRefactoring.ComputeRefactoringsAsync(context, (LocalDeclarationStatementSyntax)statement).ConfigureAwait(false);
                             fLocalDeclarationStatement = true;
                         }
 
                         if (!fReturnStatement
-                            && node.IsKind(SyntaxKind.ReturnStatement))
+                            && kind == SyntaxKind.ReturnStatement)
                         {
                             await ReturnStatementRefactoring.ComputeRefactoringsAsync(context, (ReturnStatementSyntax)statement).ConfigureAwait(false);
                             fReturnStatement = true;
                         }
 
                         if (!fSwitchStatement
-                            && node.IsKind(SyntaxKind.SwitchStatement))
+                            && kind == SyntaxKind.SwitchStatement)
                         {
                             await SwitchStatementRefactoring.ComputeRefactoringsAsync(context, (SwitchStatementSyntax)statement).ConfigureAwait(false);
                             fSwitchStatement = true;
                         }
 
                         if (!fUsingStatement
-                            && node.IsKind(SyntaxKind.UsingStatement))
+                            && kind == SyntaxKind.UsingStatement)
                         {
                             await UsingStatementRefactoring.ComputeRefactoringsAsync(context, (UsingStatementSyntax)statement).ConfigureAwait(false);
                             fUsingStatement = true;
                         }
 
                         if (!fWhileStatement
-                            && node.IsKind(SyntaxKind.WhileStatement))
+                            && kind == SyntaxKind.WhileStatement)
                         {
                             await WhileStatementRefactoring.ComputeRefactoringsAsync(context, (WhileStatementSyntax)statement).ConfigureAwait(false);
                             fWhileStatement = true;
@@ -483,7 +486,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
 
                         if (!fBlock
-                            && node.IsKind(SyntaxKind.Block))
+                            && kind == SyntaxKind.Block)
                         {
                             await BlockRefactoring.ComputeRefactoringAsync(context, (BlockSyntax)node);
                             fBlock = true;
@@ -498,12 +501,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                         if (!fStatementRefactoring)
                         {
-                            if (node.IsKind(SyntaxKind.Block))
+                            if (kind == SyntaxKind.Block)
                             {
                                 StatementRefactoring.ComputeRefactoring(context, (BlockSyntax)node);
                                 fStatementRefactoring = true;
                             }
-                            else if (node.IsKind(SyntaxKind.SwitchStatement))
+                            else if (kind == SyntaxKind.SwitchStatement)
                             {
                                 StatementRefactoring.ComputeRefactoring(context, (SwitchStatementSyntax)node);
                                 fStatementRefactoring = true;
@@ -562,12 +565,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             SyntaxToken token = context.FindToken();
 
-            if (!token.IsKind(SyntaxKind.None)
+            SyntaxKind kind = token.Kind();
+
+            if (kind != SyntaxKind.None
                 && token.Span.Contains(context.Span))
             {
-                Debug.WriteLine(token.Kind().ToString());
+                Debug.WriteLine(kind.ToString());
 
-                switch (token.Kind())
+                switch (kind)
                 {
                     case SyntaxKind.CloseParenToken:
                         {
