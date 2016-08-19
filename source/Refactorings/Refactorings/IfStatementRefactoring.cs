@@ -12,43 +12,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             bool isTopmostIf = IfElseChainAnalysis.IsTopmostIf(ifStatement);
 
-            if (ifStatement.IfKeyword.Span.Contains(context.Span)
-                && isTopmostIf)
+            if (context.Settings.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.AddBracesToIfElse,
+                    RefactoringIdentifiers.RemoveBracesFromIfElse)
+                && isTopmostIf
+                && ifStatement.Else != null
+                && ifStatement.IfKeyword.Span.Contains(context.Span))
             {
-                if (context.Settings.IsAnyRefactoringEnabled(
-                        RefactoringIdentifiers.AddBracesToIfElse,
-                        RefactoringIdentifiers.RemoveBracesFromIfElse)
-                    && ifStatement.Else != null)
+                var result = new IfElseChainAnalysisResult(ifStatement);
+
+                if (result.AddBraces
+                    && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
                 {
-                    var result = new IfElseChainAnalysisResult(ifStatement);
+                    context.RegisterRefactoring(
+                        "Add braces to if-else",
+                        cancellationToken =>
+                        {
+                            return AddBracesToIfElseRefactoring.RefactorAsync(
+                                context.Document,
+                                ifStatement,
+                                cancellationToken);
+                        });
+                }
 
-                    if (result.AddBraces
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
-                    {
-                        context.RegisterRefactoring(
-                            "Add braces to if-else",
-                            cancellationToken =>
-                            {
-                                return AddBracesToIfElseRefactoring.RefactorAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    cancellationToken);
-                            });
-                    }
-
-                    if (result.RemoveBraces
-                        && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
-                    {
-                        context.RegisterRefactoring(
-                            "Remove braces from if-else",
-                            cancellationToken =>
-                            {
-                                return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    cancellationToken);
-                            });
-                    }
+                if (result.RemoveBraces
+                    && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
+                {
+                    context.RegisterRefactoring(
+                        "Remove braces from if-else",
+                        cancellationToken =>
+                        {
+                            return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
+                                context.Document,
+                                ifStatement,
+                                cancellationToken);
+                        });
                 }
             }
 
