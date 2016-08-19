@@ -102,6 +102,7 @@
     <Compile Include="Extensions\IMethodSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
+    <Compile Include="Extensions\TextSpanExtensions.cs" />
     <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierComparer.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
