@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             BlockSyntax body = accessor.Body;
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatAccessorBraces)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatAccessorBraces)
                 && body?.Span.Contains(context.Span) == true
                 && !body.OpenBraceToken.IsMissing
                 && !body.CloseBraceToken.IsMissing)

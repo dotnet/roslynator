@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, WhileStatementSyntax whileStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && whileStatement.Condition != null
                 && whileStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)
@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, whileStatement.Condition).ConfigureAwait(false);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement)
                 && (whileStatement.WhileKeyword.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(

@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && propertyDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
             {
@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplacePropertyWithMethodRefactoring.CanRefactor(context, propertyDeclaration))
             {
@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => ReplacePropertyWithMethodRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && propertyDeclaration.AccessorList?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemovePropertyInitializer)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePropertyInitializer)
                 && RemovePropertyInitializerRefactoring.CanRefactor(context, propertyDeclaration))
             {
                 context.RegisterRefactoring(
@@ -57,20 +57,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (context.SupportsSemanticModel)
             {
-                if (context.Settings.IsAnyRefactoringEnabled(
+                if (context.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.ExpandProperty,
                         RefactoringIdentifiers.ExpandPropertyAndAddBackingField)
                     && propertyDeclaration.Span.Contains(context.Span)
                     && ExpandPropertyRefactoring.CanRefactor(propertyDeclaration))
                 {
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandProperty))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandProperty))
                     {
                         context.RegisterRefactoring(
                             "Expand property",
                             cancellationToken => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField))
                     {
                         context.RegisterRefactoring(
                             "Expand property and add backing field",
@@ -78,7 +78,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NotifyPropertyChanged)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.NotifyPropertyChanged)
                     && await NotifyPropertyChangedRefactoring.CanRefactorAsync(context, propertyDeclaration).ConfigureAwait(false))
                 {
                     context.RegisterRefactoring(
@@ -93,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(propertyDeclaration))
             {
@@ -102,7 +102,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)
                 && context.SupportsSemanticModel
                 && propertyDeclaration.Type != null
                 && propertyDeclaration.Identifier.Span.Contains(context.Span))

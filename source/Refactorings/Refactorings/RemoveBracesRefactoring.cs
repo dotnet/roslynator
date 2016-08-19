@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces)
                 && CanRefactor(context, block))
             {
                 context.RegisterRefactoring(

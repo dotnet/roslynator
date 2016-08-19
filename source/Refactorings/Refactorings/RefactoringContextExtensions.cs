@@ -598,7 +598,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.Uncomment))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.Uncomment))
                         {
                             context.RegisterRefactoring(
                                 "Uncomment",

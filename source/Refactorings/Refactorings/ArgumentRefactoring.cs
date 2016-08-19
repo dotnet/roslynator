@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
                 && argument.Expression?.IsMissing == false
                 && context.SupportsSemanticModel)
             {

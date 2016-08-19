@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression)
                 && (context.Span.IsEmpty || context.Span.IsBetweenSpans(conditionalExpression)))
             {
                 if (conditionalExpression.IsSingleLine())
@@ -37,10 +37,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
                 ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoring(context, conditionalExpression);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)
                 && SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
             {
                 context.RegisterRefactoring(

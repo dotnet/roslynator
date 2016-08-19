@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, QualifiedNameSyntax qualifiedName)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
                 && context.SupportsSemanticModel)
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, qualifiedName);

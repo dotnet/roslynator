@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {
                 AttributeArgumentSyntax argument = GetArgument(context, argumentList);
 

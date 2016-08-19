@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 if (returnStatement.Expression != null)
                 {
-                    if (context.Settings.IsAnyRefactoringEnabled(
+                    if (context.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.AddBooleanComparison,
                         RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                         RefactoringIdentifiers.AddCastExpression))
@@ -21,10 +21,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
                         await ReplaceBooleanExpressionWithIfStatementRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression);
                 }
-                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
+                else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
                 {
                     await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement);
                 }

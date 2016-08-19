@@ -15,16 +15,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (context.SupportsSemanticModel)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
                     await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration).ConfigureAwait(false);
 
                 await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
                     await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
                 && SplitVariableDeclarationRefactoring.CanRefactor(variableDeclaration))
             {
                 context.RegisterRefactoring(

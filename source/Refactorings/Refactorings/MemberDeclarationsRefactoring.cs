@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (fileSpan.StartLine() > members[index].SyntaxTree.GetLineSpan(members[index].TrimmedSpan(), context.CancellationToken).EndLine()
                             && fileSpan.EndLine() < members[index + 1].SyntaxTree.GetLineSpan(members[index + 1].TrimmedSpan(), context.CancellationToken).StartLine())
                         {
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
+                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
                             {
                                 context.RegisterRefactoring(
                                     "Remove declarations above",
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     });
                             }
 
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
+                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
                             {
                                 context.RegisterRefactoring(
                                     "Swap declarations",

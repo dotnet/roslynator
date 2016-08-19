@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractStatement)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractStatement)
                 && context.Span.IsEmpty)
             {
                 if (!statement.IsKind(SyntaxKind.Block)

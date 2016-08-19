@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (!context.Settings.IsAnyRefactoringEnabled(
+            if (!context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.AddParameterNameToParameter,
                 RefactoringIdentifiers.RenameParameterAccordingToTypeName))
             {
@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (parameter.Identifier.IsMissing)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToParameter))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToParameter))
                 {
                     TextSpan span = (parameter.Type != null)
                         ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
             }
-            else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string name = parameter.Identifier.ValueText;

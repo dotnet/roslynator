@@ -44,13 +44,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             if (parameter.Identifier.Span.Contains(context.Span)
                 && IsValid(parameter))
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
                     var refactoring = new IntroduceAndInitializePropertyRefactoring(ImmutableArray.Create(parameter));
                     refactoring.RegisterRefactoring(context);
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
                     var refactoring = new IntroduceAndInitializeFieldRefactoring(ImmutableArray.Create(parameter));
                     refactoring.RegisterRefactoring(context);
@@ -64,13 +64,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 
             if (parameters.Any())
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
                     var refactoring = new IntroduceAndInitializePropertyRefactoring(parameters);
                     refactoring.RegisterRefactoring(context);
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
                     var refactoring = new IntroduceAndInitializeFieldRefactoring(parameters);
                     refactoring.RegisterRefactoring(context);

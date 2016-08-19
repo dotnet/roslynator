@@ -16,20 +16,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (parameters.Count == 0)
                 return;
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
             {
                 var refactoring = new DuplicateParameterRefactoring(parameterList);
                 refactoring.ComputeRefactoring(context, parameterList);
             }
 
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.IntroduceAndInitializeField,
                 RefactoringIdentifiers.IntroduceAndInitializeProperty))
             {
                 IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
                 && (context.Span.IsEmpty || context.Span.IsBetweenSpans(parameterList)))
             {
                 if (parameterList.IsSingleLine())

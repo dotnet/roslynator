@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
                 && context.Span.IsEmpty)
             {
                 foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
                 && ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
                 context.RegisterRefactoring("Replace interpolated string with string literal",

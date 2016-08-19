@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            if (!context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes))
+            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes))
                 return;
 
             SyntaxList<AttributeListSyntax> attributeLists = member.GetAttributeLists();

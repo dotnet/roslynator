@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
                 && parameter.Identifier.Span.Contains(context.Span)
                 && await CanRefactorAsync(context, parameter).ConfigureAwait(false))
             {

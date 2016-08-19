@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (!closeParen.IsKind(SyntaxKind.CloseParenToken))
                 return;
 
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddParameterNameToParameter,
                     RefactoringIdentifiers.RenameParameterAccordingToTypeName,
                     RefactoringIdentifiers.CheckParameterForNull,

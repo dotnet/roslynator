@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             DuplicateAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList)
                 && (context.Span.IsEmpty || context.Span.IsBetweenSpans(argumentList)))
             {
                 if (argumentList.IsSingleLine())

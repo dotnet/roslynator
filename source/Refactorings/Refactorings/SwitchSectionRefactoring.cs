@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSection)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSection)
                 && AddBracesToSwitchSectionRefactoring.CanRefactor(switchSection))
             {
                 context.RegisterRefactoring(
@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection)
                 && RemoveBracesFromSwitchSectionRefactoring.CanRefactor(context, switchSection))
             {
                 context.RegisterRefactoring(

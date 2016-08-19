@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective)
                 && memberAccess.Expression?.IsMissing == false
                 && memberAccess.Name?.IsMissing == false
                 && context.SupportsSemanticModel)

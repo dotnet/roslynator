@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
                 && AddInterpolationRefactoring.CanRefactor(context, interpolatedStringText))
             {
                 context.RegisterRefactoring("Add interpolation",

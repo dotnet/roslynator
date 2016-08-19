@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ReplacePostIncrementWithPreIncrement(RefactoringContext context, PostfixUnaryExpressionSyntax postfixUnaryExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)
                 && postfixUnaryExpression.Operand != null)
             {
                 context.RegisterRefactoring(
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ReplacePostIncrementWithPostDecrement(RefactoringContext context, PostfixUnaryExpressionSyntax postfixUnaryExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
             {
                 context.RegisterRefactoring(
                     "Replace with decrement operator",
@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ReplacePostDecrementWithPreDecrement(RefactoringContext context, PostfixUnaryExpressionSyntax postfixUnaryExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)
                 && postfixUnaryExpression.Operand != null)
             {
                 context.RegisterRefactoring(
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ReplacePostDecrementWithPostIncrement(RefactoringContext context, PostfixUnaryExpressionSyntax postfixUnaryExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
             {
                 context.RegisterRefactoring(
                     "Replace with increment operator",

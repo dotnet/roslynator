@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, CaseSwitchLabelSyntax caseLabel)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
                 && caseLabel.Value?.Span.Contains(context.Span) == true)
             {
                 var switchStatement = caseLabel.Parent?.Parent as SwitchStatementSyntax;

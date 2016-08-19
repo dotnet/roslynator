@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 initializer = (InitializerExpressionSyntax)initializer.Parent;
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
                 && initializer.Expressions.Count > 0
                 && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
                 && initializer.Parent?.IsKind(

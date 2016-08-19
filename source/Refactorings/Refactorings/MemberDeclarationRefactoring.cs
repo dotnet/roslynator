@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.EnumDeclaration:
                     {
-                        if (context.Settings.IsAnyRefactoringEnabled(
+                        if (context.IsAnyRefactoringEnabled(
                                 RefactoringIdentifiers.RemoveMember,
                                 RefactoringIdentifiers.DuplicateMember,
                                 RefactoringIdentifiers.CommentOutMember)
@@ -42,14 +42,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 SyntaxKind.InterfaceDeclaration,
                                 SyntaxKind.CompilationUnit) == true)
                             {
-                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                                 {
                                     context.RegisterRefactoring(
                                         "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
                                         cancellationToken => MemberRemover.RemoveAsync(context.Document, member, cancellationToken));
                                 }
 
-                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                                 {
                                     context.RegisterRefactoring(
                                         "Duplicate " + SyntaxHelper.GetSyntaxNodeTitle(member),
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 }
                             }
 
-                            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
+                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
                                 CommentOutRefactoring.RegisterRefactoring(context, member);
                         }
 
@@ -65,13 +65,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllStatements))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllStatements))
                 RemoveAllStatementsRefactoring.ComputeRefactoring(context, member);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations))
                 RemoveAllMemberDeclarationsRefactoring.ComputeRefactoring(context, member);
 
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.SwapMemberDeclarations,
                     RefactoringIdentifiers.RemoveMemberDeclarations)
                 && !member.Span.IntersectsWith(context.Span))
@@ -131,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ComputeRefactorings(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && constructorDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
             {
@@ -145,7 +145,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
@@ -158,7 +158,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ComputeRefactorings(RefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
@@ -171,7 +171,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void ComputeRefactorings(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && eventDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
             {

@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, UsingStatementSyntax usingStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement)
                 && (await ExtractDeclarationFromUsingStatementRefactoring.CanRefactorAsync(context, usingStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(

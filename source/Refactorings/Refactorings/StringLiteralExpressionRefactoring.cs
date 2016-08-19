@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (!literalExpression.Span.Contains(context.Span))
                 return;
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
                 && context.SupportsCSharp6
                 && context.Span.End < literalExpression.Span.End)
             {
@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 {
                     if (text.Contains("\"\""))
                     {
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
                         {
                             context.RegisterRefactoring(
                                 "Replace verbatim string literal with regular string literal",
@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 });
                         }
 
-                        if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
                             && text.Contains("\n"))
                         {
                             context.RegisterRefactoring(
@@ -70,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         }
                     }
                 }
-                else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)
+                else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)
                     && text.Contains(@"\"))
                 {
                     context.RegisterRefactoring(
@@ -85,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty)
                 && ReplaceStringLiteralRefactoring.CanReplaceWithStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
@@ -99,7 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
                 && ReplaceStringLiteralRefactoring.CanReplaceWithCharacterLiteral(literalExpression))
             {
                 context.RegisterRefactoring(

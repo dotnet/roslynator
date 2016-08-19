@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField)
                     && fieldDeclaration.Span.Contains(context.Span))
                 {
                     context.RegisterRefactoring(
@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
-            else if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)
                 && fieldDeclaration.Span.Contains(context.Span)
@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && fieldDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
             {

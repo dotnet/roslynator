@@ -12,14 +12,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
                     RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression))
                 {
                     MemberDeclarationSyntax declaration = ReturnExpressionRefactoring.GetDeclaration(yieldStatement.Expression);
 
@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
                     await ReplaceBooleanExpressionWithIfStatementRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression);
             }
         }

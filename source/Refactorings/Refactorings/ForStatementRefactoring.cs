@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
                 && context.SupportsSemanticModel
                 && context.Span.IsEmpty
                 && forStatement.Span.Contains(context.Span)
@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
                 && context.Span.IsEmpty
                 && forStatement.Span.Contains(context.Span))
             {

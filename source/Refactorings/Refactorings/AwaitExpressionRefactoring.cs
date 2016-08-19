@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AwaitExpressionSyntax awaitExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddConfigureAwait))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddConfigureAwait))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

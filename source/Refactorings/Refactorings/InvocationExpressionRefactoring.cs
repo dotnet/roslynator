@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
         {
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
                     RefactoringIdentifiers.AddConfigureAwait)
@@ -24,15 +24,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                     && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
                 {
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
                         await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
                         await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)
                 && context.SupportsCSharp6)
             {
                 await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             await ReplaceHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod)
                 && context.SupportsSemanticModel)
             {
                 await InlineMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression);

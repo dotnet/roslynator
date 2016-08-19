@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)
                 && elseClause.ElseKeyword.Span.Contains(context.Span)
                 && elseClause.Statement?.IsKind(SyntaxKind.IfStatement) == true
                 && ((IfStatementSyntax)elseClause.Statement).Else == null)

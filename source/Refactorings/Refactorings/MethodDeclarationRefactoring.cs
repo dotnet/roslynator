@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (methodDeclaration.Span.Contains(context.Span))
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                     && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
                 {
                     context.RegisterRefactoring(
@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
                 && methodDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplaceMethodWithPropertyRefactoring.CanRefactor(methodDeclaration))
             {
@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => ReplaceMethodWithPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && methodDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
                 && methodDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(methodDeclaration))
             {
@@ -63,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             RefactoringContext context,
             MethodDeclarationSyntax methodDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)
                 && context.SupportsSemanticModel
                 && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Identifier.Span.Contains(context.Span))

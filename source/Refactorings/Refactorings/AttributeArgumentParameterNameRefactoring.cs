@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddParameterNameToArgument,
                     RefactoringIdentifiers.RemoveParameterNameFromArgument)
                 && !context.Span.IsEmpty
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             AttributeArgumentListSyntax argumentList,
             AttributeArgumentSyntax[] arguments)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
                 && await CanAddParameterNameAsync(context, arguments).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
@@ -64,7 +64,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)
                 && arguments.Any(f => f.NameColon != null))
             {
                 context.RegisterRefactoring(

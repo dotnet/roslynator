@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion)
                 && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                    });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective)
                 && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                    });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines)
                 && await RemoveEmptyLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(

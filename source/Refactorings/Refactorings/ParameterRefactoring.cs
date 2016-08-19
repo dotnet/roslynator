@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
 
-                if (context.Settings.IsAnyRefactoringEnabled(
+                if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.IntroduceAndInitializeField,
                     RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {

@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation)
                 && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
                 && invocation.ArgumentList?.Arguments.Count == 1
                 && context.SupportsSemanticModel)

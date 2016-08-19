@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                             if (expressionSymbol?.IsErrorType() == false)
                             {
-                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                                     && memberTypeSymbol.IsBoolean()
                                     && expressionSymbol.IsNamedType())
                                 {
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                                 ISymbol memberSymbol = semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
-                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                                 {
                                     ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
 
@@ -71,7 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     }
                                 }
 
-                                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
                                 {
                                     ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 

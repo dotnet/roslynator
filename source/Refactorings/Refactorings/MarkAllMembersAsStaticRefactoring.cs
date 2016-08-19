@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void RegisterRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
             {
                 context.RegisterRefactoring(
                     "Mark all members as static",

@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, GenericNameSyntax genericName)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractGenericType)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractGenericType)
                 && ExtractGenericTypeRefactoring.CanRefactor(context, genericName))
             {
                 context.RegisterRefactoring(

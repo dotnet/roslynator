@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && eventFieldDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
             {
@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)
                 && eventFieldDeclaration.Span.Contains(context.Span)
                 && context.SupportsSemanticModel
                 && ExpandEventRefactoring.CanRefactor(eventFieldDeclaration))

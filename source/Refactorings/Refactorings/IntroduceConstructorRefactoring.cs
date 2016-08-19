@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberDeclarationSyntax declaration)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor)
                 && context.SupportsSemanticModel)
             {
                 List<MemberDeclarationSyntax> members = await GetAssignableMembersAsync(context, declaration).ConfigureAwait(false);

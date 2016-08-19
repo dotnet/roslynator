@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.RemoveStatement,
                 RefactoringIdentifiers.DuplicateStatement,
                 RefactoringIdentifiers.CommentOutStatement))
@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         RegisterRefactoring(context, statement);
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
                         CommentOutRefactoring.RegisterRefactoring(context, statement);
                 }
             }
@@ -43,10 +43,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (switchStatement.Parent?.IsKind(SyntaxKind.Block) == true)
                     RegisterRefactoring(context, switchStatement);
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
                     CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllSwitchSections)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllSwitchSections)
                     && switchStatement.Sections.Any())
                 {
                     context.RegisterRefactoring(
@@ -58,14 +58,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement))
             {
                 context.RegisterRefactoring(
                     "Remove statement",
                     cancellationToken => RemoveStatementAsync(context.Document, statement, cancellationToken));
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
             {
                 context.RegisterRefactoring(
                     "Duplicate statement",

@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
             {
                 binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 

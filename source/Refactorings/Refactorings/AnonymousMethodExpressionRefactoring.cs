@@ -8,7 +8,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression)
                 && anonymousMethod.DelegateKeyword.Span.Contains(context.Span)
                 && ReplaceAnonymousMethodWithLambdaExpressionRefactoring.CanRefactor(anonymousMethod))
             {

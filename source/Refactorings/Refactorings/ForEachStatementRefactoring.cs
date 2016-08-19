@@ -15,20 +15,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (context.SupportsSemanticModel)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
                     await ChangeTypeAccordingToExpressionAsync(context, forEachStatement).ConfigureAwait(false);
 
-                if (context.Settings.IsAnyRefactoringEnabled(
+                if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeExplicitTypeToVar,
                     RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
                 }
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
                     await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
                     && context.Span.IsEmpty
                     && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
                 {
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (result == TypeAnalysisResult.Explicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                 {
                     context.RegisterRefactoring(
                         "Change type to 'var'",
@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
             else if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {
-                if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 

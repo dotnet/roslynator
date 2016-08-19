@@ -18,13 +18,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             await ArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {
                 var refactoring = new DuplicateArgumentRefactoring(argumentList);
                 refactoring.ComputeRefactoring(context, argumentList);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList)
                 && (context.Span.IsEmpty || context.Span.IsBetweenSpans(argumentList)))
             {
                 if (argumentList.IsSingleLine())

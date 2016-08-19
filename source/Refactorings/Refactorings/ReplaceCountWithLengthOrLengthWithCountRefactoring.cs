@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount)
                 && memberAccess.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 memberAccess = GetTopmostMemberAccessExpression(memberAccess);

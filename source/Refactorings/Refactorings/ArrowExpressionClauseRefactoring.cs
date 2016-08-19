@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
         {
             if (arrowExpressionClause.Expression != null
-                && context.Settings.IsAnyRefactoringEnabled(
+                && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression)
@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression).ConfigureAwait(false);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)
                 && arrowExpressionClause.Parent?.SupportsExpressionBody() == true)
             {
                 context.RegisterRefactoring(

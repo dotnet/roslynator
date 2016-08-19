@@ -9,7 +9,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives)
                 && context.Root.IsKind(SyntaxKind.CompilationUnit))
             {
                 context.RegisterRefactoring(

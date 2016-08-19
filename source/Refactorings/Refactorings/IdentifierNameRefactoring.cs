@@ -12,13 +12,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)
                 && context.SupportsSemanticModel)
             {
                 await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
                 && context.SupportsSemanticModel)
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName);

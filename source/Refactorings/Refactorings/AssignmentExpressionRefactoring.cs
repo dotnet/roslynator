@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandAssignmentExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandAssignmentExpression)
                 && assignmentExpression.OperatorToken.Span.Contains(context.Span)
                 && ExpandAssignmentExpressionRefactoring.CanRefactor(assignmentExpression))
             {
@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
                 && assignmentExpression.Left?.IsMissing == false
                 && assignmentExpression.Right?.IsMissing == false

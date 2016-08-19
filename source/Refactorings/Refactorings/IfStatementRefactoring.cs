@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             bool isTopmostIf = IfElseChainAnalysis.IsTopmostIf(ifStatement);
 
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBracesToIfElse,
                     RefactoringIdentifiers.RemoveBracesFromIfElse)
                 && isTopmostIf
@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 var result = new IfElseChainAnalysisResult(ifStatement);
 
                 if (result.AddBraces
-                    && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
                 {
                     context.RegisterRefactoring(
                         "Add braces to if-else",
@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
 
                 if (result.RemoveBraces
-                    && context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
                 {
                     context.RegisterRefactoring(
                         "Remove braces from if-else",
@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
                 && isTopmostIf
                 && context.Span.IsBetweenSpans(ifStatement)
                 && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && ifStatement.Condition != null
                 && ifStatement.Condition.Span.Contains(context.Span)
                 && context.SupportsSemanticModel)

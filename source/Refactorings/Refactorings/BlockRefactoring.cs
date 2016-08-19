@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             RemoveBracesRefactoring.ComputeRefactoring(context, block);
 
-            if (context.Settings.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.WrapInUsingStatement,
                 RefactoringIdentifiers.CollapseToInitializer,
                 RefactoringIdentifiers.MergeIfStatements,
@@ -23,23 +23,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (blockSpan.HasSelectedStatement)
                 {
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
                         && context.SupportsSemanticModel)
                     {
                         var refactoring = new WrapInUsingStatementRefactoring();
                         await refactoring.ComputeRefactoringAsync(context, blockSpan);
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
                         await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, blockSpan);
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                         MergeIfStatementsRefactoring.ComputeRefactorings(context, blockSpan);
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
                         MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, blockSpan);
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
                     {
                         context.RegisterRefactoring(
                             "Wrap in if statement",
@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             });
                     }
 
-                    if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
                     {
                         context.RegisterRefactoring(
                             "Wrap in try-catch",
