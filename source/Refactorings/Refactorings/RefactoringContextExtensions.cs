@@ -224,6 +224,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     var expression = node as ExpressionSyntax;
                     if (expression != null)
                     {
+                        if (!fExpression)
+                        {
+                            ExpressionRefactoring.ComputeRefactorings(context, expression);
+                            fExpression = true;
+                        }
+
                         if (!fAssignmentExpression)
                         {
                             var assignmentExpression = node as AssignmentExpressionSyntax;
@@ -362,12 +368,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         {
                             await AwaitExpressionRefactoring.ComputeRefactoringsAsync(context, (AwaitExpressionSyntax)node).ConfigureAwait(false);
                             fAwaitExpression = true;
-                        }
-
-                        if (!fExpression)
-                        {
-                            ExpressionRefactoring.ComputeRefactorings(context, expression);
-                            fExpression = true;
                         }
 
                         continue;
