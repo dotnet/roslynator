@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false
                 && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && binaryExpression.Span.Equals(context.Span))
+                && context.Span.IsBetweenSpans(binaryExpression))
             {
                 context.RegisterRefactoring(
                     "Swap expressions",

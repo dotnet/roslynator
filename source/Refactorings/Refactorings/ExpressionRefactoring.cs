@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapExpressionInParentheses)
-                && expression.Span == context.Span
+                && context.Span.IsBetweenSpans(expression)
                 && WrapExpressionInParenthesesRefactoring.CanRefactor(context, expression))
             {
                 context.RegisterRefactoring(

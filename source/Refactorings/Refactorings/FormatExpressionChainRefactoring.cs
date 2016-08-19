@@ -15,6 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain)
+                && context.Span.IsEmpty
                 && memberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

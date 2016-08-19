@@ -34,7 +34,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            if (literalExpression.Span.Equals(context.Span))
+            if (context.Span.IsBetweenSpans(literalExpression))
             {
                 string text = GetTextWithoutEnclosingChars(literalExpression);
 

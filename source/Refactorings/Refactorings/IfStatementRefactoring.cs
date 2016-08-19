@@ -54,7 +54,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
                 && isTopmostIf
-                && ifStatement.Span.Equals(context.Span)
+                && context.Span.IsBetweenSpans(ifStatement)
                 && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
             {
                 context.RegisterRefactoring(

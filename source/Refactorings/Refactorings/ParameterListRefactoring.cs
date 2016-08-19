@@ -29,7 +29,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
             }
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
+                && (context.Span.IsEmpty || context.Span.IsBetweenSpans(parameterList)))
             {
                 if (parameterList.IsSingleLine())
                 {

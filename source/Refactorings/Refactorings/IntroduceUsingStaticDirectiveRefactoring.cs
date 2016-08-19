@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 memberAccess = GetTopmostMemberAccessExpression(memberAccess);
 
-                if (memberAccess.Expression.Span.Equals(context.Span))
+                if (context.Span.IsBetweenSpans(memberAccess.Expression))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

@@ -8,7 +8,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression))
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression)
+                && (context.Span.IsEmpty || context.Span.IsBetweenSpans(conditionalExpression)))
             {
                 if (conditionalExpression.IsSingleLine())
                 {

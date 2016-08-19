@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return conditionalExpression.Condition != null
                 && conditionalExpression.WhenTrue != null
                 && conditionalExpression.WhenFalse != null
-                && conditionalExpression.Span.Equals(context.Span);
+                && context.Span.IsBetweenSpans(conditionalExpression);
         }
 
         public static async Task<Document> RefactorAsync(

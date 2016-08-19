@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static bool CanRefactor(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
             return binaryExpression.IsKind(SyntaxKind.AddExpression)
-                && binaryExpression.Span == context.Span
+                && context.Span.IsBetweenSpans(binaryExpression)
                 && StringLiteralChain.IsStringLiteralChain(binaryExpression);
         }
 
