@@ -8,8 +8,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, AccessorDeclarationSyntax accessor)
         {
-            ComputeRefactorings(context, accessor);
-
             BlockSyntax body = accessor.Body;
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatAccessorBraces)
