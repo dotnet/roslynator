@@ -95,9 +95,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             bool fAwaitExpression = false;
 
             bool fMemberDeclaration = false;
-#if DEBUG
-            bool fSortMembers = false;
-#endif
             bool fStatement = false;
             bool fDoStatement = false;
             bool fExpressionStatement = false;
@@ -379,18 +376,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     var memberDeclaration = node as MemberDeclarationSyntax;
                     if (memberDeclaration != null)
                     {
-#if DEBUG
-                        if (!fSortMembers
-                            && node.IsKind(
-                                SyntaxKind.NamespaceDeclaration,
-                                SyntaxKind.ClassDeclaration,
-                                SyntaxKind.StructDeclaration,
-                                SyntaxKind.InterfaceDeclaration))
-                        {
-                            SortMemberDeclarationsRefactoring.ComputeRefactorings(context, memberDeclaration);
-                            fSortMembers = true;
-                        }
-#endif
                         if (!fMemberDeclaration)
                         {
                             await MemberDeclarationRefactoring.ComputeRefactoringsAsync(context, memberDeclaration).ConfigureAwait(false);
