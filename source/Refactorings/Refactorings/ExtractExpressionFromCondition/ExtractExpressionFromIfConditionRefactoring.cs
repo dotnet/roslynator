@@ -14,19 +14,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression.Parent?.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression) == true)
+            if (context.Span.IsBetweenSpans(expression))
             {
-                BinaryExpressionSyntax binaryExpression = GetTopmostBinaryExpression((BinaryExpressionSyntax)expression.Parent, SyntaxKind.IfStatement);
+                SyntaxNode parent = expression.Parent;
 
-                if (binaryExpression != null
-                    && (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression)
-                        || binaryExpression.Parent.Parent?.IsKind(SyntaxKind.Block) == true))
+                if (parent?.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression) == true)
                 {
-                    context.RegisterRefactoring(
-                        "Extract expression",
-                        cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
+                    BinaryExpressionSyntax binaryExpression = GetCondition((BinaryExpressionSyntax)parent);
+
+                    if (binaryExpression != null)
+                    {
+                        context.RegisterRefactoring(
+                            "Extract expression",
+                            cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
+                    }
                 }
             }
+        }
+
+        private static BinaryExpressionSyntax GetCondition(BinaryExpressionSyntax parent)
+        {
+            BinaryExpressionSyntax binaryExpression = ExtractExpressionFromConditionRefactoring.GetCondition(parent, SyntaxKind.IfStatement);
+
+            if (binaryExpression != null)
+            {
+                if (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression)
+                    || binaryExpression.Parent.Parent?.IsKind(SyntaxKind.Block) == true)
+                {
+                    return binaryExpression;
+                }
+            }
+
+            return null;
         }
 
         public static async Task<Document> RefactorAsync(

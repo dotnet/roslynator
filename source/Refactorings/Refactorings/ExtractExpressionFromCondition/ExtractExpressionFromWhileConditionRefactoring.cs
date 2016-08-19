@@ -14,17 +14,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
-            SyntaxNode parent = expression.Parent;
-
-            if (parent?.IsKind(SyntaxKind.LogicalAndExpression) == true)
+            if (context.Span.IsBetweenSpans(expression))
             {
-                BinaryExpressionSyntax binaryExpression = GetTopmostBinaryExpression((BinaryExpressionSyntax)parent, SyntaxKind.WhileStatement);
+                SyntaxNode parent = expression.Parent;
 
-                if (binaryExpression?.IsKind(SyntaxKind.LogicalAndExpression) == true)
+                if (parent?.IsKind(SyntaxKind.LogicalAndExpression) == true)
                 {
-                    context.RegisterRefactoring(
-                        "Extract expression",
-                        cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
+                    BinaryExpressionSyntax binaryExpression = GetCondition((BinaryExpressionSyntax)parent, SyntaxKind.WhileStatement);
+
+                    if (binaryExpression?.IsKind(SyntaxKind.LogicalAndExpression) == true)
+                    {
+                        context.RegisterRefactoring(
+                            "Extract expression",
+                            cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
+                    }
                 }
             }
         }

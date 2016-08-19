@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
         }
 
-        public static BinaryExpressionSyntax GetTopmostBinaryExpression(BinaryExpressionSyntax binaryExpression, SyntaxKind statementKind)
+        public static BinaryExpressionSyntax GetCondition(BinaryExpressionSyntax binaryExpression, SyntaxKind statementKind)
         {
             SyntaxKind kind = binaryExpression.Kind();
 
