@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -14,27 +15,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
             {
-                binaryExpression = GetTopmostBinaryExpression(binaryExpression);
+                binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 
-                if (binaryExpression.Span.Contains(context.Span)
-                    && IsAllowedBinaryExpression(binaryExpression)
+                if (binaryExpression != null
+                    && IsFormattableKind(binaryExpression.Kind())
                     && binaryExpression.IsSingleLine())
                 {
-                    string title = binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true
-                        ? "Format binary expressions on multiple lines"
-                        : "Format binary expression on multiple lines";
-
                     context.RegisterRefactoring(
-                        title,
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                binaryExpression,
-                                cancellationToken);
-                        });
+                        GetTitle(binaryExpression),
+                        cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
+        }
+
+        private static string GetTitle(BinaryExpressionSyntax binaryExpression)
+        {
+            string s = (binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true) ? "s" : "";
+
+            return $"Format binary expression{s} on multiple lines";
+        }
+
+        private static BinaryExpressionSyntax GetBinaryExpression(BinaryExpressionSyntax binaryExpression, TextSpan span)
+        {
+            if (span.IsEmpty)
+            {
+                return GetTopmostBinaryExpression(binaryExpression);
+            }
+            else if (span.IsBetweenSpans(binaryExpression)
+                && binaryExpression == GetTopmostBinaryExpression(binaryExpression))
+            {
+                return binaryExpression;
+            }
+
+            return null;
         }
 
         private static async Task<Document> RefactorAsync(
@@ -57,9 +70,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return document.WithSyntaxRoot(root);
         }
 
-        private static bool IsAllowedBinaryExpression(SyntaxNode node)
+        private static bool IsFormattableKind(SyntaxKind kind)
         {
-            switch (node.Kind())
+            switch (kind)
             {
                 case SyntaxKind.LogicalAndExpression:
                 case SyntaxKind.LogicalOrExpression:
@@ -80,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 success = false;
 
                 if (binaryExpression.Parent != null
-                    && IsAllowedBinaryExpression(binaryExpression.Parent))
+                    && IsFormattableKind(binaryExpression.Parent.Kind()))
                 {
                     var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
 
