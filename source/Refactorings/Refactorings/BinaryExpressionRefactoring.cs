@@ -43,21 +43,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression)
-                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false)
-            {
-                context.RegisterRefactoring(
-                    "Negate binary expression",
-                    cancellationToken =>
-                    {
-                        return NegateBinaryExpressionRefactoring.RefactorAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
-            }
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
+                NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
                 && binaryExpression.OperatorToken.Span.Contains(context.Span)

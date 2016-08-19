@@ -5,29 +5,56 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class NegateBinaryExpressionRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
+        {
+            if (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && binaryExpression.Left?.IsMissing == false
+                && binaryExpression.Right?.IsMissing == false)
+            {
+                binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
+
+                if (binaryExpression != null)
+                {
+                    context.RegisterRefactoring(
+                        "Negate binary expression",
+                        cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+                }
+            }
+        }
+
+        private static BinaryExpressionSyntax GetBinaryExpression(BinaryExpressionSyntax binaryExpression, TextSpan span)
+        {
+            if (span.IsEmpty)
+                return GetTopmostExpression(binaryExpression);
+
+            if (span.IsBetweenSpans(binaryExpression))
+                return binaryExpression;
+
+            return null;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            binaryExpression = GetTopmostExpression(binaryExpression);
-
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax newNode = binaryExpression.Negate()
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(binaryExpression, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
 
-        private static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
+        internal static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
         {
             bool success = true;
 
