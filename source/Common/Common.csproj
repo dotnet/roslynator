@@ -45,6 +45,7 @@
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
+    <Compile Include="CSharp\Extensions\VariableDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\MemberRemover.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Extensions\AccessorDeclarationSyntaxExtensions.cs" />
