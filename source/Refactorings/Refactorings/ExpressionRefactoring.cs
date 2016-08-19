@@ -8,7 +8,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ExpressionSyntax expression)
         {
-            SplitIfStatementRefactoring.ComputeRefactoring(context, expression);
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+            {
+                ExtractExpressionFromIfConditionRefactoring.ComputeRefactoring(context, expression);
+                ExtractExpressionFromWhileConditionRefactoring.ComputeRefactoring(context, expression);
+            }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.WrapExpressionInParentheses)
                 && expression.Span == context.Span

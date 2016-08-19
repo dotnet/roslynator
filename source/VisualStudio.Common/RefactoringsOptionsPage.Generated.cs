@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ExpandProperty = true;
             ExpandPropertyAndAddBackingField = true;
             ExtractDeclarationFromUsingStatement = true;
-            ExtractExpressionFromIfStatement = true;
+            ExtractExpressionFromCondition = true;
             ExtractExpressionFromParentheses = true;
             ExtractGenericType = true;
             ExtractStatement = true;
@@ -189,7 +189,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ExpandProperty, ExpandProperty);
             SetIsEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField, ExpandPropertyAndAddBackingField);
             SetIsEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement, ExtractDeclarationFromUsingStatement);
-            SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromIfStatement, ExtractExpressionFromIfStatement);
+            SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition, ExtractExpressionFromCondition);
             SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromParentheses, ExtractExpressionFromParentheses);
             SetIsEnabled(RefactoringIdentifiers.ExtractGenericType, ExtractGenericType);
             SetIsEnabled(RefactoringIdentifiers.ExtractStatement, ExtractStatement);
@@ -661,10 +661,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Extract expression from if statement")]
-        [Description("Syntax: if statement\r\nScope: condition")]
+        [DisplayName("Extract expression from condition")]
+        [Description("Syntax: if statement, while statement\r\nScope: condition")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ExtractExpressionFromIfStatement
+        public bool ExtractExpressionFromCondition
         {
             get;
             set;

@@ -6,17 +6,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractExpressionFromConditionRefactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
-    internal static class SplitIfStatementRefactoring
+    internal static class ExtractExpressionFromIfConditionRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromIfStatement)
-                && expression.Parent?.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression) == true)
+            if (expression.Parent?.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression) == true)
             {
-                BinaryExpressionSyntax binaryExpression = GetTopmostBinaryExpression((BinaryExpressionSyntax)expression.Parent);
+                BinaryExpressionSyntax binaryExpression = GetTopmostBinaryExpression((BinaryExpressionSyntax)expression.Parent, SyntaxKind.IfStatement);
 
                 if (binaryExpression != null
                     && (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression)
@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 expression.Parent,
-                GetNewExpression(condition, expression));
+                GetNewCondition(condition, expression));
 
             newIfStatement = newIfStatement.WithFormatterAnnotation();
 
@@ -59,29 +59,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             return document.WithSyntaxRoot(root);
-        }
-
-        private static ExpressionSyntax GetNewExpression(
-            ExpressionSyntax condition,
-            ExpressionSyntax expression)
-        {
-            var binaryExpression = (BinaryExpressionSyntax)expression.Parent;
-
-            if (expression.Equals(binaryExpression.Left))
-            {
-                return binaryExpression.Right;
-            }
-            else
-            {
-                if (binaryExpression.Equals(condition))
-                {
-                    return binaryExpression.Left.TrimTrailingTrivia();
-                }
-                else
-                {
-                    return binaryExpression.Left;
-                }
-            }
         }
 
         private static IfStatementSyntax ExtractExpressionToNestedIf(
@@ -130,30 +107,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithStatements(parentBlock.Statements
                     .Replace(ifStatement, newIfStatement)
                     .Insert(index + 1, ifStatement2));
-        }
-
-        private static BinaryExpressionSyntax GetTopmostBinaryExpression(BinaryExpressionSyntax binaryExpression)
-        {
-            SyntaxKind kind = binaryExpression.Kind();
-
-            while (binaryExpression.Parent != null)
-            {
-                SyntaxKind parentKind = binaryExpression.Parent.Kind();
-
-                if (parentKind == kind)
-                {
-                    binaryExpression = (BinaryExpressionSyntax)binaryExpression.Parent;
-                    continue;
-                }
-                else if (parentKind == SyntaxKind.IfStatement)
-                {
-                    return binaryExpression;
-                }
-
-                return null;
-            }
-
-            return null;
         }
     }
 }

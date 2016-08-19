@@ -44,6 +44,7 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldInfo.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeInfo.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializePropertyInfo.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializePropertyRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\RewriterInfo.cs" />
+    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromWhileConditionRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\CollapseToInitializerRefactoring.cs" />
@@ -69,7 +71,7 @@
     <Compile Include="Refactorings\AddDefaultValueToReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\SplitIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromIfConditionRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInTryCatchRefactoring.cs" />

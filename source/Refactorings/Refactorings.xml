@@ -225,9 +225,10 @@
     </Syntaxes>
     <Scope>declaration</Scope>
   </Refactoring>
-  <Refactoring Id="ExtractExpressionFromIfStatement" Title="Extract expression from if statement" ExtensionVersion="0.95.0">
+  <Refactoring Id="ExtractExpressionFromCondition" Title="Extract expression from condition" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>if statement</Syntax>
+      <Syntax>while statement</Syntax>
     </Syntaxes>
     <Scope>condition</Scope>
   </Refactoring>

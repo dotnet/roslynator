@@ -239,7 +239,7 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-if-statement">Extract expression from if statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-condition">Extract expression from condition</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-parentheses">Extract expression from parentheses</a>
