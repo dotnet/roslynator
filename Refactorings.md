@@ -250,12 +250,12 @@
 
 ![Extract declaration from using statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
 
-#### Extract expression from if statement
+#### Extract expression from condition
 
-* **Syntax**: if statement
+* **Syntax**: if statement, while statement
 * **Scope**: condition
 
-![Extract expression from if statement](/images/refactorings/ExtractExpressionFromIfStatement.png)
+![Extract expression from condition](/images/refactorings/ExtractExpressionFromCondition.png)
 
 #### Extract expression from parentheses
 
