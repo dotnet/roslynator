@@ -11,9 +11,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            SplitAttributesRefactoring.ComputeRefactoring(context, member);
-            MergeAttributesRefactoring.ComputeRefactoring(context, member);
-
             switch (member.Kind())
             {
                 case SyntaxKind.MethodDeclaration:

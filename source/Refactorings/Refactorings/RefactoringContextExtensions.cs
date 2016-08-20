@@ -379,7 +379,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fMemberDeclaration)
                         {
                             await MemberDeclarationRefactoring.ComputeRefactoringsAsync(context, memberDeclaration).ConfigureAwait(false);
-
+                            AttributeListRefactoring.ComputeRefactorings(context, memberDeclaration);
                             await IntroduceConstructorRefactoring.ComputeRefactoringsAsync(context, memberDeclaration).ConfigureAwait(false);
                             fMemberDeclaration = true;
                         }

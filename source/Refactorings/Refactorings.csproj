@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
@@ -179,8 +180,6 @@
     <Compile Include="Refactorings\ExpandInitializerRefactoring.cs" />
     <Compile Include="Refactorings\FormatAccessorBraceOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactorings\NotifyPropertyChangedRefactoring.cs" />
-    <Compile Include="Refactorings\SplitAttributesRefactoring.cs" />
-    <Compile Include="Refactorings\MergeAttributesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactorings\ExpandCoalesceExpressionRefactoring.cs" />
