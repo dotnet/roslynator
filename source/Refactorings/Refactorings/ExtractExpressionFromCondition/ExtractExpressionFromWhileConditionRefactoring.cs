@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractExpressionFromConditionRefactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -20,12 +19,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (parent?.IsKind(SyntaxKind.LogicalAndExpression) == true)
                 {
-                    BinaryExpressionSyntax binaryExpression = GetCondition((BinaryExpressionSyntax)parent, SyntaxKind.WhileStatement);
+                    BinaryExpressionSyntax binaryExpression = ExtractExpressionFromConditionRefactoring.GetCondition((BinaryExpressionSyntax)parent, SyntaxKind.WhileStatement);
 
                     if (binaryExpression?.IsKind(SyntaxKind.LogicalAndExpression) == true)
                     {
                         context.RegisterRefactoring(
-                            "Extract expression",
+                            ExtractExpressionFromConditionRefactoring.Title,
                             cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
                     }
                 }
@@ -44,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             WhileStatementSyntax newWhileStatement = whileStatement.ReplaceNode(
                 expression.Parent,
-                GetNewCondition(condition, expression));
+                ExtractExpressionFromConditionRefactoring.GetNewCondition(condition, expression));
 
             newWhileStatement = newWhileStatement.WithFormatterAnnotation();
 

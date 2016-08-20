@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractExpressionFromConditionRefactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -25,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (binaryExpression != null)
                     {
                         context.RegisterRefactoring(
-                            "Extract expression",
+                            ExtractExpressionFromConditionRefactoring.Title,
                             cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
                     }
                 }
@@ -60,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 expression.Parent,
-                GetNewCondition(condition, expression));
+                ExtractExpressionFromConditionRefactoring.GetNewCondition(condition, expression));
 
             newIfStatement = newIfStatement.WithFormatterAnnotation();
 

@@ -7,6 +7,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ExtractExpressionFromConditionRefactoring
     {
+        public const string Title = "Extract expression";
+
         public static ExpressionSyntax GetNewCondition(
             ExpressionSyntax condition,
             ExpressionSyntax expression)
