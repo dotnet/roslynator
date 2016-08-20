@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -40,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         {
                             return RefactorAsync(
                                 context.Document,
-                                directives,
+                                directives.ToImmutableArray(),
                                 cancellationToken);
                         });
                 }
@@ -49,37 +48,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            List<DirectiveTriviaSyntax> directives,
+            ImmutableArray<DirectiveTriviaSyntax> directives,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var rewriter = new DirectiveTriviaRemover(directives
-                .Select(f => f.ParentTrivia)
-                .ToImmutableArray());
+            SyntaxNode newRoot = SyntaxRemover.RemoveDirectiveTrivia(root, directives);
 
-            root = rewriter.Visit(root);
-
-            return document.WithSyntaxRoot(root);
-        }
-
-        private class DirectiveTriviaRemover : CSharpSyntaxRewriter
-        {
-            private readonly ImmutableArray<SyntaxTrivia> _trivias;
-
-            public DirectiveTriviaRemover(ImmutableArray<SyntaxTrivia> trivia)
-                : base(visitIntoStructuredTrivia: true)
-            {
-                _trivias = trivia;
-            }
-
-            public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-            {
-                if (_trivias.Contains(trivia))
-                    return CSharpFactory.NewLine;
-
-                return base.VisitTrivia(trivia);
-            }
+            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

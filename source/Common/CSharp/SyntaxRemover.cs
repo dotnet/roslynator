@@ -57,12 +57,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return (TNode)RegionRemover.Instance.Visit(node);
         }
 
-        public static TNode RemoveTrivia<TNode>(SyntaxNode node) where TNode : SyntaxNode
+        public static TNode RemoveTrivia<TNode>(TNode node) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             return (TNode)TriviaRemover.Instance.Visit(node);
+        }
+
+        public static TNode RemoveDirectiveTrivia<TNode>(TNode node, ImmutableArray<DirectiveTriviaSyntax> directives) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            var rewriter = new DirectiveTriviaRemover(directives);
+
+            return (TNode)rewriter.Visit(node);
         }
 
         public static TNode RemoveWhitespaceOrEndOfLine<TNode>(TNode node) where TNode : SyntaxNode
