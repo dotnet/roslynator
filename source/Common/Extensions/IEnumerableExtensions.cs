@@ -4,11 +4,22 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis
 {
     public static class IEnumerableExtensions
     {
+        public static SyntaxList<TNode> ToSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        {
+            return List(nodes);
+        }
+
+        public static SeparatedSyntaxList<TNode> ToSeparatedSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        {
+            return SeparatedList(nodes);
+        }
+
         public static bool ContainsEndOfLine(this IEnumerable<SyntaxTrivia> collection)
         {
             if (collection == null)
