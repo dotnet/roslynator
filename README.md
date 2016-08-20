@@ -149,7 +149,7 @@
 * [Expand property](Refactorings.md#expand-property)
 * [Expand property and add backing field](Refactorings.md#expand-property-and-add-backing-field)
 * [Extract declaration from using statement](Refactorings.md#extract-declaration-from-using-statement)
-* [Extract expression from if statement](Refactorings.md#extract-expression-from-if-statement)
+* [Extract expression from condition](Refactorings.md#extract-expression-from-condition)
 * [Extract expression from parentheses](Refactorings.md#extract-expression-from-parentheses)
 * [Extract generic type](Refactorings.md#extract-generic-type)
 * [Extract statement(s)](Refactorings.md#extract-statements)
