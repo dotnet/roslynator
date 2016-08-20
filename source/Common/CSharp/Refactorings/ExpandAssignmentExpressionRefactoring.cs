@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -19,10 +20,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 throw new ArgumentNullException(nameof(assignmentExpression));
 
             return !assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
-                && assignmentExpression.Left != null
-                && !assignmentExpression.Left.IsMissing
-                && assignmentExpression.Right != null
-                && !assignmentExpression.Right.IsMissing;
+                && assignmentExpression.Left?.IsMissing == false
+                && assignmentExpression.Right?.IsMissing == false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -36,13 +35,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (assignmentExpression == null)
                 throw new ArgumentNullException(nameof(assignmentExpression));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             AssignmentExpressionSyntax newAssignmentExpression = Expand(assignmentExpression)
                 .WithTriviaFrom(assignmentExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(assignmentExpression, newAssignmentExpression);
+            SyntaxNode newRoot = root.ReplaceNode(assignmentExpression, newAssignmentExpression);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -53,8 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 throw new ArgumentNullException(nameof(assignmentExpression));
 
             return
-                AssignmentExpression(
-                    SyntaxKind.SimpleAssignmentExpression,
+                SimpleAssignmentExpression(
                     assignmentExpression.Left,
                     BinaryExpression(
                         GetBinaryExpressionKind(assignmentExpression),
