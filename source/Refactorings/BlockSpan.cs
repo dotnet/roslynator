@@ -100,28 +100,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             SyntaxList<StatementSyntax>.Enumerator en = Statements.GetEnumerator();
 
-            int i = 0;
-
-            while (en.MoveNext()
-                && Span.Start >= en.Current.FullSpan.End)
+            if (en.MoveNext())
             {
-                i++;
-            }
+                int i = 0;
 
-            if (Span.Start <= en.Current.Span.Start)
-            {
-                int j = i;
-
-                while (Span.End > en.Current.FullSpan.End
+                while (Span.Start >= en.Current.FullSpan.End
                     && en.MoveNext())
                 {
-                    j++;
+                    i++;
                 }
 
-                if (Span.End >= en.Current.Span.End)
+                if (Span.Start <= en.Current.Span.Start)
                 {
-                    _firstIndex = i;
-                    _lastIndex = j;
+                    int j = i;
+
+                    while (Span.End > en.Current.FullSpan.End
+                        && en.MoveNext())
+                    {
+                        j++;
+                    }
+
+                    if (Span.End >= en.Current.Span.End)
+                    {
+                        _firstIndex = i;
+                        _lastIndex = j;
+                    }
                 }
             }
         }
