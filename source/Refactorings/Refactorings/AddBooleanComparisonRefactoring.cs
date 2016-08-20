@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
             context.RegisterRefactoring(
-                "Add boolean comparison",
+                (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Add ' == false'" : "Add ' == true'",
                 cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
         }
 
