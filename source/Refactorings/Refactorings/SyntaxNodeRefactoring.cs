@@ -10,38 +10,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion)
-                && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
+            if (context.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.WrapInRegion,
+                RefactoringIdentifiers.WrapInIfDirective))
             {
-                context.RegisterRefactoring(
-                   "Wrap in region",
-                   cancellationToken =>
-                   {
-                       var refactoring = new WrapInRegionRefactoring();
+                SelectedLinesInfo info = await SelectedLinesRefactoring.GetSelectedLinesInfoAsync(context, node).ConfigureAwait(false);
 
-                       return refactoring.RefactorAsync(
-                           context.Document,
-                           node,
-                           context.Span,
-                           cancellationToken);
-                   });
-            }
+                if (info?.IsAnySelected == true)
+                {
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
+                    {
+                        context.RegisterRefactoring(
+                           "Wrap in region",
+                           cancellationToken =>
+                           {
+                               var refactoring = new WrapInRegionRefactoring();
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective)
-                && await SelectedLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
-            {
-                context.RegisterRefactoring(
-                   "Wrap in #if",
-                   cancellationToken =>
-                   {
-                       var refactoring = new WrapInIfDirectiveRefactoring();
+                               return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                           });
+                    }
 
-                       return refactoring.RefactorAsync(
-                           context.Document,
-                           node,
-                           context.Span,
-                           cancellationToken);
-                   });
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective))
+                    {
+                        context.RegisterRefactoring(
+                           "Wrap in #if",
+                           cancellationToken =>
+                           {
+                               var refactoring = new WrapInIfDirectiveRefactoring();
+
+                               return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                           });
+                    }
+                }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines)
