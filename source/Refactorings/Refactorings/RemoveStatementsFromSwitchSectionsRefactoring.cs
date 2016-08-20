@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
@@ -16,16 +15,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            if (switchStatement.Sections.Any())
-            {
-                ImmutableArray<SwitchSectionSyntax> sections = GetSelectedSwitchSections(switchStatement, context.Span)
-                    .ToImmutableArray();
+            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                if (sections.Any())
+            if (sections.Any())
+            {
+                var info = new SelectedNodesInfo<SwitchSectionSyntax>(sections, context.Span);
+
+                if (info.IsAnySelected)
                 {
                     string title = "Remove statements from section";
 
-                    if (sections.Length > 1)
+                    if (info.AreManySelected)
                         title += "s";
 
                     context.RegisterRefactoring(
@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             return RefactorAsync(
                                 context.Document,
                                 switchStatement,
-                                sections,
+                                info.SelectedNodes().ToImmutableArray(),
                                 cancellationToken);
                         });
                 }
@@ -63,13 +63,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             root = root.ReplaceNode(switchStatement, newSwitchStatement);
 
             return document.WithSyntaxRoot(root);
-        }
-
-        public static IEnumerable<SwitchSectionSyntax> GetSelectedSwitchSections(SwitchStatementSyntax switchStatement, TextSpan span)
-        {
-            return switchStatement.Sections
-                .SkipWhile(f => span.Start > f.Span.Start)
-                .TakeWhile(f => span.End >= f.Span.End);
         }
     }
 }
