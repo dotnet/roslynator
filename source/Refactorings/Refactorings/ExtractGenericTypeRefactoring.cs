@@ -11,9 +11,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, GenericNameSyntax genericName)
         {
-            return genericName.TypeArgumentList != null
-                && genericName.TypeArgumentList.Arguments.Count == 1
-                && genericName.TypeArgumentList.Arguments[0].Span.Contains(context.Span);
+            TypeArgumentListSyntax typeArgumentList = genericName.TypeArgumentList;
+
+            if (typeArgumentList != null)
+            {
+                SeparatedSyntaxList<TypeSyntax> arguments = typeArgumentList.Arguments;
+
+                if (arguments.Count == 1
+                    && arguments[0].Span.Contains(context.Span))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
