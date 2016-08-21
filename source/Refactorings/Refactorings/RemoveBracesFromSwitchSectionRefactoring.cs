@@ -12,8 +12,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
-            return switchSection.Statements.Count == 1
-                && switchSection.Statements[0].IsKind(SyntaxKind.Block);
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+            return statements.Count == 1
+                && statements[0].IsKind(SyntaxKind.Block);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -21,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)switchSection.Statements[0];
 
@@ -29,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithStatements(block.Statements)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newSwitchSection);
+            SyntaxNode newRoot = root.ReplaceNode(switchSection, newSwitchSection);
 
             return document.WithSyntaxRoot(newRoot);
         }

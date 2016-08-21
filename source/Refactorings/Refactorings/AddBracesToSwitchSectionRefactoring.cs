@@ -22,13 +22,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SwitchSectionSyntax newNode = switchSection
-                .WithStatements(List<StatementSyntax>(SingletonList(Block(switchSection.Statements))))
+                .WithStatements(
+                    List<StatementSyntax>(
+                        SingletonList(
+                            Block(switchSection.Statements))))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(switchSection, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
