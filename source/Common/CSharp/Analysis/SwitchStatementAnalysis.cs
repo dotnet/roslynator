@@ -17,16 +17,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             return new SwitchStatementAnalysisResult(switchStatement);
         }
 
+        public static SwitchSectionAnalysisResult AnalyzeSection(SwitchSectionSyntax section)
+        {
+            if (section == null)
+                throw new ArgumentNullException(nameof(section));
+
+            SyntaxList<StatementSyntax> statements = section.Statements;
+
+            if (statements.Count > 1)
+            {
+                return  SwitchSectionAnalysisResult.AddBraces;
+            }
+            else if (statements.Count == 1)
+            {
+                if (statements[0].IsKind(SyntaxKind.Block))
+                {
+                    return SwitchSectionAnalysisResult.RemoveBraces;
+                }
+                else
+                {
+                    return SwitchSectionAnalysisResult.AddBraces;
+                }
+            }
+
+            return SwitchSectionAnalysisResult.None;
+        }
+
         public static bool CanAddBraces(SwitchSectionSyntax section)
         {
             if (section == null)
                 throw new ArgumentNullException(nameof(section));
 
-            if (section.Statements.Count > 1)
+            SyntaxList<StatementSyntax> statements = section.Statements;
+
+            if (statements.Count > 1)
             {
                 return true;
             }
-            else if (section.Statements.Count == 1 && !section.Statements[0].IsKind(SyntaxKind.Block))
+            else if (statements.Count == 1 && !statements[0].IsKind(SyntaxKind.Block))
             {
                 return true;
             }
@@ -41,8 +69,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (section == null)
                 throw new ArgumentNullException(nameof(section));
 
-            return section.Statements.Count == 1
-                && section.Statements[0].IsKind(SyntaxKind.Block);
+            SyntaxList<StatementSyntax> statements = section.Statements;
+
+            return statements.Count == 1
+                && statements[0].IsKind(SyntaxKind.Block);
         }
     }
 }
