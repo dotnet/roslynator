@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -111,14 +112,19 @@ namespace Pihrtsoft.CodeAnalysis
             return token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
         }
 
+        public static SyntaxToken WithoutTrivia(this SyntaxToken token)
+        {
+            return token.WithoutLeadingTrivia().WithoutTrailingTrivia();
+        }
+
         public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
         {
-            return token.WithLeadingTrivia(SyntaxTriviaList.Empty);
+            return token.WithLeadingTrivia((IEnumerable<SyntaxTrivia>)null);
         }
 
         public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
         {
-            return token.WithTrailingTrivia(SyntaxTriviaList.Empty);
+            return token.WithTrailingTrivia((IEnumerable<SyntaxTrivia>)null);
         }
 
         public static SyntaxToken WithTrailingSpace(this SyntaxToken token)
