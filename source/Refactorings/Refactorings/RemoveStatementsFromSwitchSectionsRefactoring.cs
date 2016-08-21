@@ -13,35 +13,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class RemoveStatementsFromSwitchSectionsRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
-        {
-            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-            if (sections.Any())
-            {
-                var info = new SelectedNodesInfo<SwitchSectionSyntax>(sections, context.Span);
-
-                if (info.IsAnySelected)
-                {
-                    string title = "Remove statements from section";
-
-                    if (info.AreManySelected)
-                        title += "s";
-
-                    context.RegisterRefactoring(
-                        title,
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                switchStatement,
-                                info.SelectedNodes().ToImmutableArray(),
-                                cancellationToken);
-                        });
-                }
-            }
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,

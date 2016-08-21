@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,18 +14,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class AddBracesToSwitchSectionsRefactoring
     {
+        public const string Title = "Add braces to sections";
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
+            SwitchSectionSyntax[] sections,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             IEnumerable<SwitchSectionSyntax> newSections = switchStatement
                 .Sections
                 .Select(section =>
                 {
-                    if (SwitchStatementAnalysis.CanAddBraces(section))
+                    if ((sections == null || Array.IndexOf(sections, section) != -1)
+                        && SwitchStatementAnalysis.CanAddBraces(section))
                     {
                         return section.WithStatements(SingletonList<StatementSyntax>(Block(section.Statements)));
                     }
@@ -38,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithSections(List(newSections))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchStatement, newSwitchStatement);
+            SyntaxNode newRoot = root.ReplaceNode(switchStatement, newSwitchStatement);
 
             return document.WithSyntaxRoot(newRoot);
         }

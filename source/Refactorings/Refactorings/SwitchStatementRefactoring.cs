@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -27,8 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections))
-                RemoveStatementsFromSwitchSectionsRefactoring.ComputeRefactoring(context, switchStatement);
+            SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
             if (switchStatement.Sections.Count > 0
                 && switchStatement.SwitchKeyword.Span.Contains(context.Span))
@@ -43,16 +45,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         && context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Add braces to sections",
-                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                            AddBracesToSwitchSectionsRefactoring.Title,
+                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
                     }
 
                     if (result.CanRemoveBraces
                         && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Remove braces from sections",
-                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                            RemoveBracesFromSwitchSectionsRefactoring.Title,
+                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
                     }
                 }
 
