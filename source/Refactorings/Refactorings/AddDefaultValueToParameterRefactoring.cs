@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (typeSymbol?.IsErrorType() == false)
                 {
                     context.RegisterRefactoring(
-                        $"Add default value to '{parameter.Identifier}'",
+                        "Add default value",
                         cancellationToken =>
                         {
                             return RefactorAsync(
