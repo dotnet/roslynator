@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -32,40 +29,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
-            if (switchStatement.Sections.Count > 0
-                && switchStatement.SwitchKeyword.Span.Contains(context.Span))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse)
+                && (switchStatement.SwitchKeyword.Span.Contains(context.Span) || context.Span.IsBetweenSpans(switchStatement))
+                && switchStatement
+                    .Sections
+                    .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
             {
-                if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddBracesToSwitchSections,
-                    RefactoringIdentifiers.RemoveBracesFromSwitchSections))
-                {
-                    SwitchStatementAnalysisResult result = SwitchStatementAnalysis.Analyze(switchStatement);
-
-                    if (result.CanAddBraces
-                        && context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections))
-                    {
-                        context.RegisterRefactoring(
-                            AddBracesToSwitchSectionsRefactoring.Title,
-                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
-                    }
-
-                    if (result.CanRemoveBraces
-                        && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections))
-                    {
-                        context.RegisterRefactoring(
-                            RemoveBracesFromSwitchSectionsRefactoring.Title,
-                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
-                    }
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse)
-                    && switchStatement.Sections
-                        .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
-                {
-                    context.RegisterRefactoring(
-                        "Replace 'switch' with 'if-else'",
-                        cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
-                }
+                context.RegisterRefactoring(
+                    "Replace 'switch' with 'if-else'",
+                    cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
             }
         }
     }

@@ -3,21 +3,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class RemoveBracesFromSwitchSectionRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, SwitchSectionSyntax switchSection)
-        {
-            SyntaxList<StatementSyntax> statements = switchSection.Statements;
-
-            return statements.Count == 1
-                && statements[0].IsKind(SyntaxKind.Block);
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
