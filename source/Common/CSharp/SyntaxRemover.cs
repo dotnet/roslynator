@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
@@ -49,30 +52,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
         }
 
-        public static TNode RemoveRegion<TNode>(TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return (TNode)RegionRemover.Instance.Visit(node);
-        }
-
         public static TNode RemoveTrivia<TNode>(TNode node) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
             return (TNode)TriviaRemover.Instance.Visit(node);
-        }
-
-        public static TNode RemoveDirectiveTrivia<TNode>(TNode node, ImmutableArray<DirectiveTriviaSyntax> directives) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            var rewriter = new DirectiveTriviaRemover(directives);
-
-            return (TNode)rewriter.Visit(node);
         }
 
         public static TNode RemoveWhitespaceOrEndOfLine<TNode>(TNode node) where TNode : SyntaxNode
@@ -91,6 +76,86 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             var remover = new WhitespaceOrEndOfLineRemover(span);
 
             return (TNode)remover.Visit(node);
+        }
+
+        public static async Task<SyntaxTree> RemoveDirectivesAsync(
+            SyntaxTree syntaxTree,
+            ImmutableArray<DirectiveTriviaSyntax> directives,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
+            SourceText sourceText = await syntaxTree.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = RemoveDirectives(sourceText, directives);
+
+            return syntaxTree.WithChangedText(newSourceText);
+        }
+
+        public static async Task<Document> RemoveDirectivesAsync(
+            Document document,
+            ImmutableArray<DirectiveTriviaSyntax> directives,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = RemoveDirectives(sourceText, directives);
+
+            return document.WithText(newSourceText);
+        }
+
+        public static SourceText RemoveDirectives(
+            SourceText sourceText,
+            ImmutableArray<DirectiveTriviaSyntax> directives,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (sourceText == null)
+                throw new ArgumentNullException(nameof(sourceText));
+
+            TextLineCollection lines = sourceText.Lines;
+
+            var changes = new List<TextChange>();
+
+            foreach (DirectiveTriviaSyntax directive in directives)
+            {
+                int startLine = directive.GetSpanStartLine();
+
+                changes.Add(new TextChange(lines[startLine].SpanIncludingLineBreak, string.Empty));
+            }
+
+            return sourceText.WithChanges(changes);
+        }
+
+        public static async Task<SyntaxTree> RemoveRegionDirectivesAsync<TNode>(
+            SyntaxTree syntaxTree,
+            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+        {
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
+            SyntaxNode root = await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
+
+            return await RemoveDirectivesAsync(syntaxTree, directives, cancellationToken);
+        }
+
+        public static async Task<Document> RemoveRegionDirectivesAsync(
+            Document document,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
+
+            return await RemoveDirectivesAsync(document, directives, cancellationToken);
         }
     }
 }

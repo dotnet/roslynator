@@ -130,7 +130,6 @@
     <Compile Include="Refactorings\ReplaceAnyWithAllOrAllWithAnyRefactoring.cs" />
     <Compile Include="Refactorings\NegateBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactorings\NegateBooleanLiteralRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveAllRegionsRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesToSwitchSectionsRefactoring.cs" />

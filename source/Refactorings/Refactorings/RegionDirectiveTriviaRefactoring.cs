@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove all region directives",
-                    cancellationToken => RemoveAllRegionsRefactoring.RefactorAsync(context.Document, cancellationToken));
+                    cancellationToken => SyntaxRemover.RemoveRegionDirectivesAsync(context.Document, cancellationToken));
             }
         }
     }

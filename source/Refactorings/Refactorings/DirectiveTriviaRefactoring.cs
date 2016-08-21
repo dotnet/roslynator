@@ -2,9 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -37,25 +34,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         title,
                         cancellationToken =>
                         {
-                            return RefactorAsync(
+                            return SyntaxRemover.RemoveDirectivesAsync(
                                 context.Document,
                                 directives.ToImmutableArray(),
                                 cancellationToken);
                         });
                 }
             }
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ImmutableArray<DirectiveTriviaSyntax> directives,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = SyntaxRemover.RemoveDirectiveTrivia(root, directives);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

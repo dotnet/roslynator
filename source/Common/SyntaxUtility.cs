@@ -16,6 +16,16 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxUtility
     {
+        public static IEnumerable<DirectiveTriviaSyntax> GetRegionDirectives(SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.DescendantNodesAndSelf(descendIntoTrivia: true)
+                .Where(f => f.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia))
+                .Cast<DirectiveTriviaSyntax>();
+        }
+
         public static TypeDeclarationSyntax GetContainingType(SyntaxNode node)
         {
             if (node == null)

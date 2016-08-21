@@ -88,9 +88,7 @@
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\RegionRemover.cs" />
     <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\DirectiveTriviaRemover.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactorings\TypeSyntaxRefactoring.cs" />
