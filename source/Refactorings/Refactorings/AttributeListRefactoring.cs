@@ -26,7 +26,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes)
                         && info.SelectedNodes().Any(f => f.Attributes.Count > 1))
                     {
-                        context.RegisterRefactoring("Split attributes",
+                        context.RegisterRefactoring(
+                            "Split attributes",
                             cancellationToken =>
                             {
                                 return SplitAsync(

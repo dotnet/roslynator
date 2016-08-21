@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             SyntaxToken token = comment.Token;
 
-            SyntaxTriviaList triviaList = default(SyntaxTriviaList);
+            var triviaList = default(SyntaxTriviaList);
 
             int index = token.LeadingTrivia.IndexOf(comment);
 

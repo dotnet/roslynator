@@ -20,8 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     SyntaxKind.RegionDirectiveTrivia,
                     SyntaxKind.EndRegionDirectiveTrivia))
             {
-                List<DirectiveTriviaSyntax> directives = directiveTrivia
-                    .GetRelatedDirectives();
+                List<DirectiveTriviaSyntax> directives = directiveTrivia.GetRelatedDirectives();
 
                 if (directives.Count > 1)
                 {
