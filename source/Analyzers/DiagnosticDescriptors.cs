@@ -780,8 +780,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider replacing 'Any' method with '{0}' property.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor SplitVariableDeclaration = new DiagnosticDescriptor(
