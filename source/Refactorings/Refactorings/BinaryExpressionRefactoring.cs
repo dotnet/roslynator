@@ -41,7 +41,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
             }
 
-            FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
+                FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
                 NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);

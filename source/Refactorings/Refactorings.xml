@@ -287,7 +287,7 @@
       <Syntax>bitwise and/or expression</Syntax>
     </Syntaxes>
     <Images>
-      <Image>FormatBinaryExpressionOnMultipleLines</Image>
+      <Image>FormatBinaryExpression</Image>
     </Images>
   </Refactoring>
   <Refactoring Id="FormatConditionalExpression" Title="Format conditional expression" ExtensionVersion="0.9.0">

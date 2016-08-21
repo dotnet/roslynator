@@ -13,26 +13,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
-            {
-                binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
+            binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 
-                if (binaryExpression != null
-                    && IsFormattableKind(binaryExpression.Kind())
-                    && binaryExpression.IsSingleLine())
+            if (binaryExpression != null
+                && IsFormattableKind(binaryExpression.Kind()))
+            {
+                string title = "Format binary expression";
+
+                if (binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true)
+                    title += "s";
+
+                if (binaryExpression.IsSingleLine())
                 {
+                    title += " on multiple lines";
+
                     context.RegisterRefactoring(
-                        GetTitle(binaryExpression),
-                        cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+                        title,
+                        cancellationToken => FormatOnMultipleLinesAsync(context.Document, binaryExpression, cancellationToken));
+                }
+                else
+                {
+                    title += " on a single line";
+
+                    context.RegisterRefactoring(
+                        title,
+                        cancellationToken => FormatOnSingleLineAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
-        }
-
-        private static string GetTitle(BinaryExpressionSyntax binaryExpression)
-        {
-            string s = (binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true) ? "s" : "";
-
-            return $"Format binary expression{s} on multiple lines";
         }
 
         private static BinaryExpressionSyntax GetBinaryExpression(BinaryExpressionSyntax binaryExpression, TextSpan span)
@@ -50,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return null;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static async Task<Document> FormatOnMultipleLinesAsync(
             Document document,
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -61,11 +68,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .AddRange(SyntaxUtility.GetIndentTrivia(condition))
                 .Add(CSharpFactory.IndentTrivia);
 
-            var rewriter = new SyntaxRewriter(triviaList);
+            var rewriter = new BinaryExpressioneSyntaxRewriter(triviaList);
 
             var newCondition = (ExpressionSyntax)rewriter.Visit(condition);
 
-             root = root.ReplaceNode(condition, newCondition);
+            root = root.ReplaceNode(condition, newCondition);
+
+            return document.WithSyntaxRoot(root);
+        }
+
+        private static async Task<Document> FormatOnSingleLineAsync(
+            Document document,
+            BinaryExpressionSyntax condition,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            BinaryExpressionSyntax newCondition = SyntaxRemover.RemoveWhitespaceOrEndOfLine(condition);
+
+            root = root.ReplaceNode(
+                condition,
+                newCondition.WithFormatterAnnotation());
 
             return document.WithSyntaxRoot(root);
         }
@@ -109,13 +132,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return binaryExpression;
         }
 
-        private class SyntaxRewriter : CSharpSyntaxRewriter
+        private class BinaryExpressioneSyntaxRewriter : CSharpSyntaxRewriter
         {
             private readonly SyntaxTriviaList _triviaList;
 
             private BinaryExpressionSyntax _previous;
 
-            public SyntaxRewriter(SyntaxTriviaList triviaList)
+            public BinaryExpressioneSyntaxRewriter(SyntaxTriviaList triviaList)
             {
                 _triviaList = triviaList;
             }
