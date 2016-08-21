@@ -15,14 +15,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 
         public async Task<Document> RefactorAsync(
             Document document,
-            BlockSpan blockSpan,
+            SelectedStatementsInfo info,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            StatementSyntax[] statements = blockSpan.SelectedStatements().ToArray();
+            StatementSyntax[] statements = info.SelectedNodes().ToArray();
 
-            int index = blockSpan.FirstSelectedStatementIndex;
+            int index = info.FirstSelectedNodeIndex;
 
             SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
             SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();
@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
             statements[0] = statements[0].WithLeadingTrivia();
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
 
-            SyntaxList<StatementSyntax> newStatements = blockSpan.Statements;
+            SyntaxList<StatementSyntax> newStatements = info.List;
 
             int cnt = statements.Length;
 
@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            root = root.ReplaceNode(blockSpan.Block, blockSpan.Block.WithStatements(newStatements));
+            root = root.ReplaceNode(info.Block, info.Block.WithStatements(newStatements));
 
             return document.WithSyntaxRoot(root);
         }

@@ -19,25 +19,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInIfStatement,
                 RefactoringIdentifiers.WrapInTryCatch))
             {
-                var blockSpan = new BlockSpan(block, context.Span);
+                var info = new SelectedStatementsInfo(block, context.Span);
 
-                if (blockSpan.HasSelectedStatement)
+                if (info.IsAnySelected)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
                         && context.SupportsSemanticModel)
                     {
                         var refactoring = new WrapInUsingStatementRefactoring();
-                        await refactoring.ComputeRefactoringAsync(context, blockSpan);
+                        await refactoring.ComputeRefactoringAsync(context, info);
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
-                        await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, blockSpan);
+                        await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, info);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
-                        MergeIfStatementsRefactoring.ComputeRefactorings(context, blockSpan);
+                        MergeIfStatementsRefactoring.ComputeRefactorings(context, info);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
-                        MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, blockSpan);
+                        MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
                     {
@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             cancellationToken =>
                             {
                                 var refactoring = new WrapInIfStatementRefactoring();
-                                return refactoring.RefactorAsync(context.Document, blockSpan, cancellationToken);
+                                return refactoring.RefactorAsync(context.Document, info, cancellationToken);
                             });
                     }
 
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             cancellationToken =>
                             {
                                 var refactoring = new WrapInTryCatchRefactoring();
-                                return refactoring.RefactorAsync(context.Document,blockSpan, cancellationToken);
+                                return refactoring.RefactorAsync(context.Document, info, cancellationToken);
                             });
                     }
                 }

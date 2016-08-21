@@ -13,9 +13,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 {
     internal class WrapInUsingStatementRefactoring : WrapStatementsRefactoring<UsingStatementSyntax>
     {
-        public async Task ComputeRefactoringAsync(RefactoringContext context, BlockSpan blockSpan)
+        public async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
         {
-            StatementSyntax statement = blockSpan.FirstSelectedStatement;
+            StatementSyntax statement = info.FirstSelectedNode;
 
             if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
             {
@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
                         {
                             context.RegisterRefactoring(
                                 "Wrap in 'using' statement",
-                                cancellationToken => RefactorAsync(context.Document, blockSpan, cancellationToken));
+                                cancellationToken => RefactorAsync(context.Document, info, cancellationToken));
                         }
                     }
                 }

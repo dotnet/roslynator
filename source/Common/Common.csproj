@@ -103,6 +103,7 @@
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
     <Compile Include="SelectedLinesInfo.cs" />
+    <Compile Include="SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />
     <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierComparer.cs" />

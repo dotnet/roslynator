@@ -12,14 +12,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class CollapseToInitializerRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, BlockSpan blockSpan)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SelectedStatementsInfo info)
         {
-            StatementSyntax firstStatement = blockSpan.FirstSelectedStatement;
+            StatementSyntax firstStatement = info.FirstSelectedNode;
             SemanticModel semanticModel = null;
             ISymbol symbol = null;
             ObjectCreationExpressionSyntax objectCreation = null;
 
-            using (IEnumerator<StatementSyntax> en = blockSpan.SelectedStatements().GetEnumerator())
+            using (IEnumerator<StatementSyntax> en = info.SelectedNodes().GetEnumerator())
             {
                 en.MoveNext();
 

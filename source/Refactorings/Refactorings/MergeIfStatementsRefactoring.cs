@@ -15,9 +15,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class MergeIfStatementsRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, BlockSpan blockSpan)
+        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementsInfo info)
         {
-            List<IfStatementSyntax> ifStatements = GetIfStatements(blockSpan);
+            List<IfStatementSyntax> ifStatements = GetIfStatements(info.SelectedNodes());
 
             if (ifStatements?.Count > 1)
             {
@@ -27,18 +27,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         return RefactorAsync(
                             context.Document,
-                            blockSpan.Block,
+                            info.Block,
                             ifStatements.ToImmutableArray(),
                             cancellationToken);
                     });
             }
         }
 
-        private static List<IfStatementSyntax> GetIfStatements(BlockSpan blockSpan)
+        private static List<IfStatementSyntax> GetIfStatements(IEnumerable<StatementSyntax> statements)
         {
             List<IfStatementSyntax> ifStatements = null;
 
-            using (IEnumerator<StatementSyntax> en = blockSpan.SelectedStatements().GetEnumerator())
+            using (IEnumerator<StatementSyntax> en = statements.GetEnumerator())
             {
                 while (en.MoveNext())
                 {

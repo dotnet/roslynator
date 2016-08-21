@@ -11,9 +11,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class MergeAssignmentExpressionWithReturnStatementRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, BlockSpan blockSpan)
+        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementsInfo info)
         {
-            using (IEnumerator<StatementSyntax> en = blockSpan.SelectedStatements().GetEnumerator())
+            using (IEnumerator<StatementSyntax> en = info.SelectedNodes().GetEnumerator())
             {
                 if (en.MoveNext()
                     && en.Current.IsKind(SyntaxKind.ExpressionStatement))
