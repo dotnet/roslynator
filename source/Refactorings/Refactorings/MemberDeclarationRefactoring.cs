@@ -133,7 +133,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark constructor as static",
+                    "Mark constructor as 'static'",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, constructorDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)constructorDeclaration.Parent);
@@ -173,7 +173,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark event as static",
+                    "Mark event as 'static'",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventDeclaration.Parent);

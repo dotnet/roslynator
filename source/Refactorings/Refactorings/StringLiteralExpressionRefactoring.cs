@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && ReplaceStringLiteralRefactoring.CanReplaceWithStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
-                    "Replace \"\" with string.Empty",
+                    "Replace \"\" with 'string.Empty'",
                     cancellationToken =>
                     {
                         return ReplaceStringLiteralRefactoring.ReplaceWithStringEmptyAsync(

@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, DirectiveTriviaSyntax directiveTrivia)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePreprocessorDirectiveAndRelatedDirectives)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives)
                 && directiveTrivia.IsKind(
                     SyntaxKind.IfDirectiveTrivia,
                     SyntaxKind.ElseDirectiveTrivia,

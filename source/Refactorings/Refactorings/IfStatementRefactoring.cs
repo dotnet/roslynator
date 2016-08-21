@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
                 {
                     context.RegisterRefactoring(
-                        "Add braces to if-else",
+                        "Add braces to 'if-else'",
                         cancellationToken =>
                         {
                             return AddBracesToIfElseRefactoring.RefactorAsync(
@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
                 {
                     context.RegisterRefactoring(
-                        "Remove braces from if-else",
+                        "Remove braces from 'if-else'",
                         cancellationToken =>
                         {
                             return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(

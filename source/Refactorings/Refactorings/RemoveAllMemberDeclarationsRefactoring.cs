@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (CanRefactor(context, member))
                         {
                             context.RegisterRefactoring(
-                                "Remove all declarations",
+                                "Remove all members",
                                 cancellationToken => RefactorAsync(context.Document, member, cancellationToken));
                         }
 

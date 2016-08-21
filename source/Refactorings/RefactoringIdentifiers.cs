@@ -86,11 +86,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RemoveBracesFromSwitchSections = "RemoveBracesFromSwitchSections";
         public const string RemoveComment = "RemoveComment";
         public const string RemoveConditionFromLastElse = "RemoveConditionFromLastElse";
+        public const string RemoveDirectiveAndRelatedDirectives = "RemoveDirectiveAndRelatedDirectives";
         public const string RemoveEmptyLines = "RemoveEmptyLines";
         public const string RemoveMember = "RemoveMember";
         public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
-        public const string RemovePreprocessorDirectiveAndRelatedDirectives = "RemovePreprocessorDirectiveAndRelatedDirectives";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";

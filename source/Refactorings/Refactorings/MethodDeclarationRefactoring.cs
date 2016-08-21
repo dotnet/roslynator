@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
                 {
                     context.RegisterRefactoring(
-                        "Mark method as static",
+                        "Mark method as 'static'",
                         cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
 
                     MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && ReplaceMethodWithPropertyRefactoring.CanRefactor(methodDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Replace method with property",
+                    $"Replace '{methodDeclaration.Identifier.ValueText}' with property",
                     cancellationToken => ReplaceMethodWithPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 

@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
                     {
                         context.RegisterRefactoring(
-                           "Wrap in region",
+                           "Wrap in '#region'",
                            cancellationToken =>
                            {
                                var refactoring = new WrapInRegionRefactoring();
@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective))
                     {
                         context.RegisterRefactoring(
-                           "Wrap in #if",
+                           "Wrap in '#if'",
                            cancellationToken =>
                            {
                                var refactoring = new WrapInIfDirectiveRefactoring();

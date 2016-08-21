@@ -54,8 +54,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                             if (!string.Equals(newName, fieldSymbol.Name, StringComparison.Ordinal))
                             {
+                                string fieldName = identifierName.Identifier.ValueText;
+
                                 context.RegisterRefactoring(
-                                    $"Rename field to '{newName}'",
+                                    $"Rename '{fieldName}' to '{newName}'",
                                     cancellationToken =>
                                     {
                                         return SymbolRenamer.RenameAsync(

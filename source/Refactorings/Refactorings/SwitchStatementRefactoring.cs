@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && await GenerateSwitchSectionsRefactoring.CanRefactorAsync(context, switchStatement).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
-                    "Generate switch sections",
+                    "Generate sections",
                     cancellationToken =>
                     {
                         return GenerateSwitchSectionsRefactoring.RefactorAsync(
@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         && context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Add braces to switch sections",
+                            "Add braces to sections",
                             cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                     }
 
@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections))
                     {
                         context.RegisterRefactoring(
-                            "Remove braces from switch sections",
+                            "Remove braces from sections",
                             cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
                     }
                 }

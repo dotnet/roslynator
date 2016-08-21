@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && AddBracesToSwitchSectionRefactoring.CanRefactor(switchSection))
             {
                 context.RegisterRefactoring(
-                    "Add braces to switch section",
+                    "Add braces to section",
                     cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
 
@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && RemoveBracesFromSwitchSectionRefactoring.CanRefactor(context, switchSection))
             {
                 context.RegisterRefactoring(
-                    "Remove braces from switch section",
+                    "Remove braces from section",
                     cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
             }
         }

@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark property as static",
+                    "Mark property as 'static'",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
@@ -27,7 +27,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplacePropertyWithMethodRefactoring.CanRefactor(context, propertyDeclaration))
             {
-                string title = "Replace property with method";
+                string propertyName = propertyDeclaration.Identifier.ValueText;
+
+                string title = $"Replace '{propertyName}' with method";
 
                 if (propertyDeclaration.AccessorList.Accessors.Count > 1)
                     title += "s";

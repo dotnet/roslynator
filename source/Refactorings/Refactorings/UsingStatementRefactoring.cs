@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && (await ExtractDeclarationFromUsingStatementRefactoring.CanRefactorAsync(context, usingStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(
-                    "Extract declaration from using statement",
+                    "Extract declaration from 'using'",
                     cancellationToken =>
                     {
                         return ExtractDeclarationFromUsingStatementRefactoring.RefactorAsync(

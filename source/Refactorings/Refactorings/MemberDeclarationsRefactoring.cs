@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
                             {
                                 context.RegisterRefactoring(
-                                    "Remove declarations above",
+                                    "Remove members above",
                                     cancellationToken =>
                                     {
                                         return ReplaceMembersAsync(
@@ -45,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     });
 
                                 context.RegisterRefactoring(
-                                    "Remove declarations below",
+                                    "Remove members below",
                                     cancellationToken =>
                                     {
                                         return ReplaceMembersAsync(
@@ -60,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
                             {
                                 context.RegisterRefactoring(
-                                    "Swap declarations",
+                                    "Swap members",
                                     cancellationToken =>
                                     {
                                         return RefactorAsync(

@@ -19,7 +19,7 @@
     </Syntaxes>
     <Scope>embedded statement</Scope>
   </Refactoring>
-  <Refactoring Id="AddBracesToIfElse" Title="Add braces to if-else" ExtensionVersion="0.9.0">
+  <Refactoring Id="AddBracesToIfElse" Title="Add braces to 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
@@ -51,7 +51,7 @@
       <Image>AddCastExpressionToVariableDeclaration</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="AddConfigureAwait" Title="Add ConfigureAwait" ExtensionVersion="0.95.0">
+  <Refactoring Id="AddConfigureAwait" Title="Add 'ConfigureAwait(false)'" ExtensionVersion="0.95.0">
     <Syntaxes>
       <Syntax>awaitable method invocation</Syntax>
     </Syntaxes>
@@ -89,7 +89,7 @@
     </Syntaxes>
     <Scope>missing identifier</Scope>
   </Refactoring>
-  <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.97.0">
+  <Refactoring Id="AddUsingDirective" Title="Add 'using' directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>qualified name</Syntax>
     </Syntaxes>
@@ -219,7 +219,7 @@
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExtractDeclarationFromUsingStatement" Title="Extract declaration from using statement" ExtensionVersion="0.9.0">
+  <Refactoring Id="ExtractDeclarationFromUsingStatement" Title="Extract declaration from 'using' statement" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>using statement</Syntax>
     </Syntaxes>
@@ -348,7 +348,7 @@
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to void" ExtensionVersion="0.91.0">
+  <Refactoring Id="ChangeMethodReturnTypeToVoid" Title="Change method return type to 'void'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>method</Syntax>
     </Syntaxes>
@@ -405,7 +405,7 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
-  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.91.0">
+  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce 'using static' directive" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>member access expression (public or internal static class)</Syntax>
     </Syntaxes>
@@ -417,12 +417,12 @@
     </Syntaxes>
     <Scope>indexer/method/property header</Scope>
   </Refactoring>
-  <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as static" ExtensionVersion="0.9.70">
+  <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as 'static'" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MarkMemberAsStatic" Title="Mark member as static" ExtensionVersion="0.9.70">
+  <Refactoring Id="MarkMemberAsStatic" Title="Mark member as 'static'" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
@@ -437,7 +437,7 @@
       <Syntax>selected attribute lists</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeIfStatements" Title="Merge if statements" ExtensionVersion="0.96.0">
+  <Refactoring Id="MergeIfStatements" Title="Merge 'if' statements" ExtensionVersion="0.96.0">
     <Syntaxes>
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
@@ -500,7 +500,7 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
-  <Refactoring Id="RemoveAllRegionDirectives" Title="Remove all region directives" ExtensionVersion="0.9.0">
+  <Refactoring Id="RemoveAllRegionDirectives" Title="Remove all '#region' directives" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>region directive</Syntax>
     </Syntaxes>
@@ -538,7 +538,7 @@
     </Syntaxes>
     <Scope>block with a single statement</Scope>
   </Refactoring>
-  <Refactoring Id="RemoveBracesFromIfElse" Title="Remove braces from if-else" ExtensionVersion="0.9.0">
+  <Refactoring Id="RemoveBracesFromIfElse" Title="Remove braces from 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
@@ -562,11 +562,17 @@
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveConditionFromLastElse" Title="Remove condition from last else" ExtensionVersion="0.91.0">
+  <Refactoring Id="RemoveConditionFromLastElse" Title="Remove condition from last 'else'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>else clause</Syntax>
     </Syntaxes>
     <Scope>else keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="RemoveDirectiveAndRelatedDirectives" Title="Remove directive and related directives" ExtensionVersion="0.95.0">
+    <Syntaxes>
+      <Syntax>preprocessor directive</Syntax>
+      <Syntax>region directive</Syntax>
+    </Syntaxes>
   </Refactoring>
   <Refactoring Id="RemoveEmptyLines" Title="Remove empty lines" ExtensionVersion="0.93.0">
     <Syntaxes>
@@ -596,11 +602,6 @@
   <Refactoring Id="RemoveParameterNameFromArgument" Title="Remove parameter name from argument" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>selected argument(s)</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="RemovePreprocessorDirectiveAndRelatedDirectives" Title="Remove preprocessor directive and related directives" ExtensionVersion="0.95.0">
-    <Syntaxes>
-      <Syntax>preprocessor directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RemovePropertyInitializer" Title="Remove property initializer" ExtensionVersion="0.9.0">
@@ -675,7 +676,7 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceBooleanExpressionWithIfStatement" Title="Replace boolean expression with if statement" ExtensionVersion="0.94.0">
+  <Refactoring Id="ReplaceBooleanExpressionWithIfStatement" Title="Replace boolean expression with 'if' statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
@@ -683,7 +684,7 @@
     </Syntaxes>
     <Scope>boolean expression</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with if-else" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
@@ -699,13 +700,13 @@
     </Syntaxes>
     <Scope>name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace 'do' statement with 'while' statement" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceDoStatementWithWhileStatement" Title="Replace 'do' with 'while'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with string.Empty" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with 'string.Empty'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
@@ -804,7 +805,7 @@
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace 'while' statement with 'do' statement" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceWhileStatementWithDoStatement" Title="Replace 'while' with 'do'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -850,7 +851,7 @@
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="SwapStatementsInIfElse" Title="Swap statements in if-else" ExtensionVersion="0.9.0">
+  <Refactoring Id="SwapStatementsInIfElse" Title="Swap statements in 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -875,27 +876,27 @@
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapInIfDirective" Title="Wrap in #if directive" ExtensionVersion="0.97.0">
+  <Refactoring Id="WrapInIfDirective" Title="Wrap in '#if' directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapInIfStatement" Title="Wrap in if statement" ExtensionVersion="0.94.0">
+  <Refactoring Id="WrapInIfStatement" Title="Wrap in 'if' statement" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapInRegion" Title="Wrap in region" ExtensionVersion="0.97.0">
+  <Refactoring Id="WrapInRegion" Title="Wrap in '#region'" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapInTryCatch" Title="Wrap in try-catch" ExtensionVersion="0.94.0">
+  <Refactoring Id="WrapInTryCatch" Title="Wrap in 'try-catch'" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="WrapInUsingStatement" Title="Wrap in using statement" ExtensionVersion="0.9.0">
+  <Refactoring Id="WrapInUsingStatement" Title="Wrap in 'using' statement" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>

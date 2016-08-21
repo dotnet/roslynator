@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (ifStatements?.Count > 1)
             {
                 context.RegisterRefactoring(
-                    "Merge if statements",
+                    "Merge 'if' statements",
                     cancellationToken =>
                     {
                         return RefactorAsync(

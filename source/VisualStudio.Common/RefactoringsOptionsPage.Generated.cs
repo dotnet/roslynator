@@ -92,11 +92,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveBracesFromSwitchSections = true;
             RemoveComment = true;
             RemoveConditionFromLastElse = true;
+            RemoveDirectiveAndRelatedDirectives = true;
             RemoveEmptyLines = true;
             RemoveMember = true;
             RemoveMemberDeclarations = true;
             RemoveParameterNameFromArgument = true;
-            RemovePreprocessorDirectiveAndRelatedDirectives = true;
             RemovePropertyInitializer = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
@@ -232,11 +232,11 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections, RemoveBracesFromSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveComment, RemoveComment);
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse, RemoveConditionFromLastElse);
+            SetIsEnabled(RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives, RemoveDirectiveAndRelatedDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveEmptyLines, RemoveEmptyLines);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
-            SetIsEnabled(RefactoringIdentifiers.RemovePreprocessorDirectiveAndRelatedDirectives, RemovePreprocessorDirectiveAndRelatedDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
@@ -311,7 +311,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add braces to if-else")]
+        [DisplayName("Add braces to 'if-else'")]
         [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddBracesToIfElse
@@ -351,7 +351,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add ConfigureAwait")]
+        [DisplayName("Add 'ConfigureAwait(false)'")]
         [Description("Syntax: awaitable method invocation\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddConfigureAwait
@@ -421,7 +421,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add using directive")]
+        [DisplayName("Add 'using' directive")]
         [Description("Syntax: qualified name\r\nScope: selected namespace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddUsingDirective
@@ -461,7 +461,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Change method return type to void")]
+        [DisplayName("Change method return type to 'void'")]
         [Description("Syntax: method")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeMethodReturnTypeToVoid
@@ -651,7 +651,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Extract declaration from using statement")]
+        [DisplayName("Extract declaration from 'using' statement")]
         [Description("Syntax: using statement\r\nScope: declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExtractDeclarationFromUsingStatement
@@ -831,7 +831,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Introduce using static directive")]
+        [DisplayName("Introduce 'using static' directive")]
         [Description("Syntax: member access expression (public or internal static class)\r\nScope: selected class name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceUsingStaticDirective
@@ -851,7 +851,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Mark all members as static")]
+        [DisplayName("Mark all members as 'static'")]
         [Description("Syntax: non-static field/method/property/event in static class")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MarkAllMembersAsStatic
@@ -861,7 +861,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Mark member as static")]
+        [DisplayName("Mark member as 'static'")]
         [Description("Syntax: non-static field/method/property/event in static class")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MarkMemberAsStatic
@@ -891,7 +891,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Merge if statements")]
+        [DisplayName("Merge 'if' statements")]
         [Description("Syntax: selected if statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MergeIfStatements
@@ -991,7 +991,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove all region directives")]
+        [DisplayName("Remove all '#region' directives")]
         [Description("Syntax: region directive")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllRegionDirectives
@@ -1041,7 +1041,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove braces from if-else")]
+        [DisplayName("Remove braces from 'if-else'")]
         [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveBracesFromIfElse
@@ -1081,10 +1081,20 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove condition from last else")]
+        [DisplayName("Remove condition from last 'else'")]
         [Description("Syntax: else clause\r\nScope: else keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveConditionFromLastElse
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove directive and related directives")]
+        [Description("Syntax: preprocessor directive, region directive")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveDirectiveAndRelatedDirectives
         {
             get;
             set;
@@ -1125,16 +1135,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected argument(s)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveParameterNameFromArgument
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Remove preprocessor directive and related directives")]
-        [Description("Syntax: preprocessor directive")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemovePreprocessorDirectiveAndRelatedDirectives
         {
             get;
             set;
@@ -1241,7 +1241,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace boolean expression with if statement")]
+        [DisplayName("Replace boolean expression with 'if' statement")]
         [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceBooleanExpressionWithIfStatement
@@ -1251,7 +1251,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace conditional expression with if-else")]
+        [DisplayName("Replace conditional expression with 'if-else'")]
         [Description("Syntax: conditional expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceConditionalExpressionWithIfElse
@@ -1281,7 +1281,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'do' statement with 'while' statement")]
+        [DisplayName("Replace 'do' with 'while'")]
         [Description("Syntax: do statement\r\nScope: do keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceDoStatementWithWhileStatement
@@ -1291,7 +1291,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace \"\" with string.Empty")]
+        [DisplayName("Replace \"\" with 'string.Empty'")]
         [Description("Syntax: empty string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEmptyStringLiteralWithStringEmpty
@@ -1481,7 +1481,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'while' statement with 'do' statement")]
+        [DisplayName("Replace 'while' with 'do'")]
         [Description("Syntax: while statement\r\nScope: while keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceWhileStatementWithDoStatement
@@ -1561,7 +1561,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Swap statements in if-else")]
+        [DisplayName("Swap statements in 'if-else'")]
         [Description("Syntax: if statement\r\nScope: if keyword")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool SwapStatementsInIfElse
@@ -1601,7 +1601,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap in #if directive")]
+        [DisplayName("Wrap in '#if' directive")]
         [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInIfDirective
@@ -1611,7 +1611,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap in if statement")]
+        [DisplayName("Wrap in 'if' statement")]
         [Description("Syntax: selected statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInIfStatement
@@ -1621,7 +1621,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap in region")]
+        [DisplayName("Wrap in '#region'")]
         [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInRegion
@@ -1631,7 +1631,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap in try-catch")]
+        [DisplayName("Wrap in 'try-catch'")]
         [Description("Syntax: selected statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInTryCatch
@@ -1641,7 +1641,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap in using statement")]
+        [DisplayName("Wrap in 'using' statement")]
         [Description("Syntax: local declaration of type that implements IDisposable")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInUsingStatement

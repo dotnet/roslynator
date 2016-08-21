@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && ExpandAssignmentExpressionRefactoring.CanRefactor(assignmentExpression))
             {
                 context.RegisterRefactoring(
-                    "Expand assignment expression",
+                    $"Expand '{assignmentExpression.OperatorToken.ValueText}'",
                     cancellationToken =>
                     {
                         return ExpandAssignmentExpressionRefactoring.RefactorAsync(
