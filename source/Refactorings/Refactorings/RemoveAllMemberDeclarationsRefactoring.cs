@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
@@ -20,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
-                        if (CanRefactor(context, member))
+                        if (CanRefactor(member, context.Span))
                         {
                             context.RegisterRefactoring(
                                 "Remove all members",
@@ -32,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
         }
 
-        public static bool CanRefactor(RefactoringContext context, MemberDeclarationSyntax member)
+        public static bool CanRefactor(MemberDeclarationSyntax member, TextSpan span)
         {
             switch (member.Kind())
             {
@@ -40,36 +41,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         var declaration = (NamespaceDeclarationSyntax)member;
 
-                        return declaration.Members.Count > 0
-                            && (declaration.OpenBraceToken.Span.Contains(context.Span)
-                                || declaration.CloseBraceToken.Span.Contains(context.Span));
+                        return declaration.Members.Any()
+                            && (declaration.OpenBraceToken.Span.Contains(span)
+                                || declaration.CloseBraceToken.Span.Contains(span));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var declaration = (ClassDeclarationSyntax)member;
 
-                        return declaration != null
-                            && declaration.Members.Count > 0
-                            && (declaration.OpenBraceToken.Span.Contains(context.Span)
-                                || declaration.CloseBraceToken.Span.Contains(context.Span));
+                        return declaration.Members.Any()
+                            && (declaration.OpenBraceToken.Span.Contains(span)
+                                || declaration.CloseBraceToken.Span.Contains(span));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)member;
 
-                        return declaration != null
-                            && declaration.Members.Count > 0
-                            && (declaration.OpenBraceToken.Span.Contains(context.Span)
-                                || declaration.CloseBraceToken.Span.Contains(context.Span));
+                        return declaration.Members.Any()
+                            && (declaration.OpenBraceToken.Span.Contains(span)
+                                || declaration.CloseBraceToken.Span.Contains(span));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var declaration = (InterfaceDeclarationSyntax)member;
 
-                        return declaration != null
-                            && declaration.Members.Count > 0
-                            && (declaration.OpenBraceToken.Span.Contains(context.Span)
-                                || declaration.CloseBraceToken.Span.Contains(context.Span));
+                        return declaration.Members.Any()
+                            && (declaration.OpenBraceToken.Span.Contains(span)
+                                || declaration.CloseBraceToken.Span.Contains(span));
                     }
             }
 
@@ -87,9 +85,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .SetMembers(List<MemberDeclarationSyntax>())
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(member, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(member, newNode);
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
     }
 }
