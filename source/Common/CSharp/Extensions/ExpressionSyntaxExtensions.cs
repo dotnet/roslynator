@@ -11,6 +11,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ExpressionSyntaxExtensions
     {
+        public static ParenthesizedExpressionSyntax Parenthesize(this ExpressionSyntax expression, bool cutCopyTrivia = false)
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (cutCopyTrivia)
+            {
+                return ParenthesizedExpression(expression.WithoutTrivia())
+                    .WithTriviaFrom(expression);
+            }
+            else
+            {
+                return ParenthesizedExpression(expression);
+            }
+        }
+
         [DebuggerStepThrough]
         public static ExpressionSyntax UnwrapParentheses(this ExpressionSyntax expression)
         {
