@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -17,64 +18,74 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class SimplifyLogicalNotExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLogicalNotExpression);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLogicalNotExpression); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document
-                .GetSyntaxRootAsync(context.CancellationToken)
-                .ConfigureAwait(false);
-
-            PrefixUnaryExpressionSyntax logicalNot = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<PrefixUnaryExpressionSyntax>();
-
-            if (logicalNot == null)
-                return;
+            PrefixUnaryExpressionSyntax node = await context.FindNodeAsync<PrefixUnaryExpressionSyntax>(true).ConfigureAwait(false);
 
             CodeAction codeAction = CodeAction.Create(
-                "Simplify logical not expression",
-                cancellationToken =>
-                {
-                    return SimplifyLogicalNotExpressionAsync(
-                        context.Document,
-                        logicalNot,
-                        cancellationToken);
-                },
+                "Simplify '!' expression",
+                cancellationToken => RefactorAsync(context.Document, node, cancellationToken),
                 DiagnosticIdentifiers.SimplifyLogicalNotExpression + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> SimplifyLogicalNotExpressionAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             PrefixUnaryExpressionSyntax logicalNot,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxKind booleanLiteralKind = (logicalNot.Operand.IsKind(SyntaxKind.TrueLiteralExpression))
-                ? SyntaxKind.FalseLiteralExpression
-                : SyntaxKind.TrueLiteralExpression;
+            ExpressionSyntax newNode = GetNewNode(logicalNot);
 
-            ExpressionSyntax newNode = GetNewNode(logicalNot.Operand)
-                .WithTriviaFrom(logicalNot);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(logicalNot, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(logicalNot, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static ExpressionSyntax GetNewNode(ExpressionSyntax expression)
+        private static ExpressionSyntax GetNewNode(PrefixUnaryExpressionSyntax logicalNot)
         {
-            switch (expression.Kind())
+            SyntaxToken operatorToken = logicalNot.OperatorToken;
+            ExpressionSyntax operand = logicalNot.Operand;
+
+            switch (operand.Kind())
             {
                 case SyntaxKind.TrueLiteralExpression:
-                    return SyntaxFactory.LiteralExpression(SyntaxKind.FalseLiteralExpression);
                 case SyntaxKind.FalseLiteralExpression:
-                    return SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression);
+                    {
+                        SyntaxTriviaList leadingTrivia = operatorToken.LeadingTrivia
+                            .AddRange(operatorToken.TrailingTrivia)
+                            .AddRange(operand.GetLeadingTrivia());
+
+                        LiteralExpressionSyntax expression = (operand.IsKind(SyntaxKind.TrueLiteralExpression))
+                            ? FalseLiteralExpression()
+                            : TrueLiteralExpression();
+
+                        return expression
+                            .WithLeadingTrivia(leadingTrivia)
+                            .WithTrailingTrivia(logicalNot.GetTrailingTrivia());
+                    }
                 case SyntaxKind.LogicalNotExpression:
-                    return ((PrefixUnaryExpressionSyntax)expression).Operand;
+                    {
+                        var logicalNot2 = (PrefixUnaryExpressionSyntax)operand;
+                        SyntaxToken operatorToken2 = logicalNot2.OperatorToken;
+                        ExpressionSyntax operand2 = logicalNot2.Operand;
+
+                        SyntaxTriviaList leadingTrivia = operatorToken.LeadingTrivia
+                            .AddRange(operatorToken.TrailingTrivia)
+                            .AddRange(operatorToken2.LeadingTrivia)
+                            .AddRange(operatorToken2.TrailingTrivia)
+                            .AddRange(operand2.GetLeadingTrivia());
+
+                        return operand2
+                            .WithLeadingTrivia(leadingTrivia)
+                            .WithTrailingTrivia(logicalNot.GetTrailingTrivia());
+                    }
             }
 
             return null;

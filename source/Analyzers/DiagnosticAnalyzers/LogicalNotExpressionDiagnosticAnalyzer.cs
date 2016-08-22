@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,7 +14,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class LogicalNotExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.SimplifyLogicalNotExpression);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLogicalNotExpression); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -32,39 +33,30 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
 
-            if (CanBeSimplified(logicalNot))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyLogicalNotExpression,
-                    logicalNot.GetLocation());
-            }
-        }
-
-        private static bool CanBeSimplified(PrefixUnaryExpressionSyntax logicalNot)
-        {
             switch (logicalNot.Operand?.Kind())
             {
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        return logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                            && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.SimplifyLogicalNotExpression,
+                            logicalNot.GetLocation());
+
+                        break;
                     }
                 case SyntaxKind.LogicalNotExpression:
                     {
                         var logicalNot2 = (PrefixUnaryExpressionSyntax)logicalNot.Operand;
 
-                        TextSpan span = TextSpan.FromBounds(
-                            logicalNot.OperatorToken.Span.End,
-                            logicalNot2.Operand.Span.Start);
+                        TextSpan span = TextSpan.FromBounds(logicalNot.OperatorToken.Span.Start, logicalNot2.OperatorToken.Span.End);
 
-                        return logicalNot
-                            .DescendantTrivia(span)
-                            .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.SimplifyLogicalNotExpression,
+                            Location.Create(logicalNot.SyntaxTree, span));
+
+                        break;
                     }
             }
-
-            return false;
         }
     }
 }
