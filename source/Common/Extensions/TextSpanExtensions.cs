@@ -22,6 +22,11 @@ namespace Pihrtsoft.CodeAnalysis
                 && span.End <= nodeFullSpan.End;
         }
 
+        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxNode node)
+        {
+            return span.IsEmpty || IsBetweenSpans(span, node);
+        }
+
         public static bool IsBetweenSpans(this TextSpan span, SyntaxToken token)
         {
             TextSpan nodeSpan = token.Span;

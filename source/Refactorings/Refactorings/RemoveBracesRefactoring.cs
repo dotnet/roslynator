@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -13,18 +15,42 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces)
+            if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.RemoveBraces,
+                    RefactoringIdentifiers.RemoveBracesFromIfElse)
                 && CanRefactor(context, block))
             {
-                context.RegisterRefactoring(
-                    "Remove braces",
-                    cancellationToken => RefactorAsync(context.Document, block, cancellationToken));
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces))
+                {
+                    context.RegisterRefactoring(
+                        "Remove braces",
+                        cancellationToken => RefactorAsync(context.Document, block, cancellationToken));
+                }
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
+                {
+                    IfStatementSyntax topmostIf = GetTopmostIf(block);
+
+                    if (topmostIf?.Else != null
+                        && GetBlocks(topmostIf).Any(f => f != block))
+                    {
+                        context.RegisterRefactoring(
+                            "Remove braces from 'if-else'",
+                            cancellationToken =>
+                            {
+                                return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(
+                                    context.Document,
+                                    topmostIf,
+                                    cancellationToken);
+                            });
+                    }
+                }
             }
         }
 
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
-            if (context.Span.IsEmpty
+            if (context.Span.IsEmptyOrBetweenSpans(block)
                 && EmbeddedStatementAnalysis.IsEmbeddableBlock(block))
             {
                 StatementSyntax statement = EmbeddedStatementAnalysis.GetEmbeddedStatement(block.Statements[0]);
@@ -34,6 +60,53 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             return false;
+        }
+
+        private static IEnumerable<BlockSyntax> GetBlocks(IfStatementSyntax topmostIf)
+        {
+            foreach (SyntaxNode node in IfElseChainAnalysis.GetChain(topmostIf))
+            {
+                switch (node.Kind())
+                {
+                    case SyntaxKind.IfStatement:
+                        {
+                            var ifStatement = (IfStatementSyntax)node;
+
+                            StatementSyntax statement = ifStatement.Statement;
+
+                            if (statement?.IsKind(SyntaxKind.Block) == true)
+                                yield return (BlockSyntax)statement;
+
+                            break;
+                        }
+                    case SyntaxKind.ElseClause:
+                        {
+                            var elseClause = (ElseClauseSyntax)node;
+
+                            StatementSyntax statement = elseClause.Statement;
+
+                            if (statement?.IsKind(SyntaxKind.Block) == true)
+                                yield return (BlockSyntax)statement;
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static IfStatementSyntax GetTopmostIf(BlockSyntax block)
+        {
+            SyntaxNode parent = block.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    return IfElseChainAnalysis.GetTopmostIf((IfStatementSyntax)parent);
+                case SyntaxKind.ElseClause:
+                    return IfElseChainAnalysis.GetTopmostIf((ElseClauseSyntax)parent);
+                default:
+                    return null;
+            }
         }
 
         public static async Task<Document> RefactorAsync(
