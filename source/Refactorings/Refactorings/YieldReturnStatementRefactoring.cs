@@ -14,18 +14,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
+                    RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression))
+                if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
+                    RefactoringIdentifiers.AddCastExpression))
                 {
-                    MemberDeclarationSyntax declaration = ReturnExpressionRefactoring.GetDeclaration(yieldStatement.Expression);
+                    MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMember(yieldStatement.Expression);
 
-                    if (declaration != null)
+                    if (containingMember != null)
                     {
-                        TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(declaration);
+                        TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(containingMember);
 
                         if (memberType != null)
                         {
@@ -35,13 +38,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 .GetTypeInfo(memberType, context.CancellationToken)
                                 .Type;
 
-                            if (memberTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable)
+                            if (memberTypeSymbol?.SpecialType != SpecialType.System_Collections_IEnumerable)
                             {
                                 ITypeSymbol typeSymbol = semanticModel
                                     .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
                                     .Type;
 
-                                if (typeSymbol?.IsErrorType() == false
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
+                                    && typeSymbol?.IsErrorType() == false
                                     && (memberTypeSymbol == null
                                         || memberTypeSymbol.IsErrorType()
                                         || !memberTypeSymbol.IsGenericIEnumerable()
@@ -56,7 +60,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                                     TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
 
                                     context.RegisterRefactoring(
-                                        $"Change {ReturnExpressionRefactoring.GetText(declaration)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                        $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
                                         cancellationToken =>
                                         {
                                             return TypeSyntaxRefactoring.ChangeTypeAsync(
@@ -65,6 +69,27 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                                 newType,
                                                 cancellationToken);
                                         });
+                                }
+
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                                    && yieldStatement.Expression.Span.Contains(context.Span)
+                                    && memberTypeSymbol?.IsNamedType() == true)
+                                {
+                                    var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
+
+                                    if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                                    {
+                                        ITypeSymbol argumentSymbol = namedTypeSymbol.TypeArguments[0];
+
+                                        if (argumentSymbol != typeSymbol)
+                                        {
+                                            AddCastExpressionRefactoring.RegisterRefactoring(
+                                               context,
+                                               yieldStatement.Expression,
+                                               argumentSymbol,
+                                               semanticModel);
+                                        }
+                                    }
                                 }
                             }
                         }
