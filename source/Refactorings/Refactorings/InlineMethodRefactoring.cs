@@ -310,33 +310,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var newExpression = (ExpressionSyntax)rewriter.Visit(expression);
 
-            if (AddParentheses(invocation))
-                newExpression = SyntaxFactory.ParenthesizedExpression(newExpression.WithoutTrivia());
+            if (!SyntaxHelper.AreParenthesesUnnecessary(invocation))
+            {
+                newExpression = newExpression
+                   .WithoutTrivia()
+                   .Parenthesize();
+            }
 
             return newExpression
                 .WithTriviaFrom(invocation)
                 .WithFormatterAnnotation();
-        }
-
-        private static bool AddParentheses(InvocationExpressionSyntax invocation)
-        {
-            SyntaxNode parent = invocation.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.ParenthesizedExpression:
-                case SyntaxKind.ExpressionStatement:
-                case SyntaxKind.ReturnStatement:
-                case SyntaxKind.YieldReturnStatement:
-                    return false;
-            }
-
-            var assignment = parent as AssignmentExpressionSyntax;
-
-            if (assignment?.Right == invocation)
-                return false;
-
-            return true;
         }
 
         private static List<ParameterInfo> GetParameterInfos(
