@@ -24,9 +24,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 IfStatementSyntax tmp = GetNextIf(ifStatement);
 
                 if (tmp != null)
+                {
                     ifStatement = tmp;
+                }
                 else
+                {
                     break;
+                }
             }
 
             if (ifStatement.Else != null)
@@ -83,9 +87,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 ifStatement = GetPreviousIf(ifStatement);
 
                 if (ifStatement != null)
+                {
                     yield return ifStatement;
+                }
                 else
+                {
                     break;
+                }
             }
         }
 
@@ -99,9 +107,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 ifStatement = GetNextIf(ifStatement);
 
                 if (ifStatement != null)
+                {
                     yield return ifStatement;
+                }
                 else
+                {
                     break;
+                }
             }
         }
 

@@ -55,8 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             {
                 StatementSyntax statement = block.Statements[0];
 
-                if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement)
-                    && !statement.IsKind(SyntaxKind.LabeledStatement)
+                if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)
                     && statement.IsSingleLine()
                     && AllowsEmbeddedStatement(node))
                 {
@@ -72,8 +71,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement)
-                && !statement.IsKind(SyntaxKind.LabeledStatement)
+            if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)
                 && statement.Parent?.IsKind(SyntaxKind.Block) == true)
             {
                 var block = (BlockSyntax)statement.Parent;
@@ -97,8 +95,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             {
                 StatementSyntax statement = block.Statements[0];
 
-                return !statement.IsKind(SyntaxKind.LocalDeclarationStatement)
-                    && !statement.IsKind(SyntaxKind.LabeledStatement);
+                return !statement.IsKind(
+                    SyntaxKind.LocalDeclarationStatement,
+                    SyntaxKind.LabeledStatement);
             }
 
             return false;
