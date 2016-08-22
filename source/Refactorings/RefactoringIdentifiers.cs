@@ -102,6 +102,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
         public const string ReplaceBooleanExpressionWithIfStatement = "ReplaceBooleanExpressionWithIfStatement";
+        public const string ReplaceConditionalExpressionWithExpression = "ReplaceConditionalExpressionWithExpression";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
         public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";

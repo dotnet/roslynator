@@ -108,6 +108,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
             ReplaceBooleanExpressionWithIfStatement = true;
+            ReplaceConditionalExpressionWithExpression = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
             ReplaceCountWithLengthOrLengthWithCount = true;
@@ -248,6 +249,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
             SetIsEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement, ReplaceBooleanExpressionWithIfStatement);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, ReplaceConditionalExpressionWithExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
             SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
@@ -1245,6 +1247,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceBooleanExpressionWithIfStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace conditional expression with expression")]
+        [Description("Syntax: conditional expression\r\nScope: selected true/false expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceConditionalExpressionWithExpression
         {
             get;
             set;

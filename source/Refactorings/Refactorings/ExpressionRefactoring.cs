@@ -22,6 +22,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     "Wrap in parentheses",
                     cancellationToken => WrapExpressionInParenthesesRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
             }
+
+            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
+                ReplaceConditionalExpressionWithExpressionRefactoring.ComputeRefactoring(context, expression);
         }
     }
 }

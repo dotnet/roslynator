@@ -684,6 +684,12 @@
     </Syntaxes>
     <Scope>boolean expression</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+    <Scope>selected true/false expression</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with 'if-else'" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>

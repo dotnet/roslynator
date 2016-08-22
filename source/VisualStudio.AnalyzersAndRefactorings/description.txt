@@ -419,6 +419,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-boolean-expression-with-if-statement">Replace boolean expression with 'if' statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-expression">Replace conditional expression with expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with 'if-else'</a>
         </li>
         <li>
