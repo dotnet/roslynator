@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -102,9 +103,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 if (diff < 2)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
-                        statement.GetLocation());
+                    SyntaxTrivia trivia = statement
+                        .GetTrailingTrivia()
+                        .FirstOrDefault(f => f.IsEndOfLineTrivia());
+
+                    if (trivia.IsEndOfLineTrivia())
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
+                            trivia.GetLocation());
+                    }
                 }
             }
         }
