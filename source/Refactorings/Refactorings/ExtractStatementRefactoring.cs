@@ -31,7 +31,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         string s = (UsePlural(statement)) ? "s" : "";
 
                         context.RegisterRefactoring(
-                            $"Extract statement{s} from {SyntaxHelper.GetSyntaxNodeTitle(statement.Parent)}",
+                            $"Extract statement{s}",
                             cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
                     }
                 }
