@@ -83,7 +83,7 @@
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\SimplifyIfStatementToReturnStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceIfStatementWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />

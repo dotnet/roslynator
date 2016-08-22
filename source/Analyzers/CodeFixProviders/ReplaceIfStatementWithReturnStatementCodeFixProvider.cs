@@ -14,9 +14,9 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analyzers;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyIfStatementToReturnStatementCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceIfStatementWithReturnStatementCodeFixProvider))]
     [Shared]
-    public class SimplifyIfStatementToReturnStatementCodeFixProvider : BaseCodeFixProvider
+    public class ReplaceIfStatementWithReturnStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
             => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement);
