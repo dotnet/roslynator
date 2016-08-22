@@ -118,6 +118,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
             ReplaceHasFlagWithBitwiseOperation = true;
+            ReplaceIfElseWithConditionalExpression = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
@@ -259,6 +260,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression, ReplaceIfElseWithConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
@@ -1347,6 +1349,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: Enum.HasFlag method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceHasFlagWithBitwiseOperation
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace 'if-else' with conditional expression")]
+        [Description("Syntax: conditional expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceIfElseWithConditionalExpression
         {
             get;
             set;

@@ -353,6 +353,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-hasflag-with-bitwise-operation">Replace 'HasFlag' with bitwise operation</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-if-else-with-conditional-expression">Replace 'if-else' with conditional expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
         </li>
         <li>

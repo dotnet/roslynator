@@ -737,6 +737,11 @@
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceIfElseWithConditionalExpression" Title="Replace 'if-else' with conditional expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>conditional expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceIncrementOperatorWithDecrementOperator" Title="Replace increment operator with decrement operator" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>
