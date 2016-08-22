@@ -13,12 +13,12 @@
 
 ![Add braces](/images/refactorings/AddBraces.png)
 
-#### Add braces to if-else
+#### Add braces to 'if-else'
 
 * **Syntax**: if-else chain
 * **Scope**: topmost if keyword
 
-![Add braces to if-else](/images/refactorings/AddBracesToIfElse.png)
+![Add braces to 'if-else'](/images/refactorings/AddBracesToIfElse.png)
 
 #### Add braces to switch section
 
@@ -46,12 +46,12 @@
 
 ![Add cast expression](/images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
-#### Add ConfigureAwait
+#### Add 'ConfigureAwait(false)'
 
 * **Syntax**: awaitable method invocation
 * **Scope**: method name
 
-![Add ConfigureAwait](/images/refactorings/AddConfigureAwait.png)
+![Add 'ConfigureAwait(false)'](/images/refactorings/AddConfigureAwait.png)
 
 #### Add default value to parameter
 
@@ -91,12 +91,12 @@
 
 ![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
 
-#### Add using directive
+#### Add 'using' directive
 
 * **Syntax**: qualified name
 * **Scope**: selected namespace
 
-![Add using directive](/images/refactorings/AddUsingDirective.png)
+![Add 'using' directive](/images/refactorings/AddUsingDirective.png)
 
 #### Change explicit type to 'var'
 
@@ -105,11 +105,11 @@
 
 ![Change explicit type to 'var'](/images/refactorings/ChangeExplicitTypeToVar.png)
 
-#### Change method return type to void
+#### Change method return type to 'void'
 
 * **Syntax**: method
 
-![Change method return type to void](/images/refactorings/ChangeMethodReturnTypeToVoid.png)
+![Change method return type to 'void'](/images/refactorings/ChangeMethodReturnTypeToVoid.png)
 
 #### Change method/property/indexer type according to return expression
 
@@ -243,12 +243,12 @@
 
 ![Expand property and add backing field](/images/refactorings/ExpandPropertyAndAddBackingField.png)
 
-#### Extract declaration from using statement
+#### Extract declaration from 'using' statement
 
 * **Syntax**: using statement
 * **Scope**: declaration
 
-![Extract declaration from using statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
+![Extract declaration from 'using' statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
 
 #### Extract expression from condition
 
@@ -298,7 +298,7 @@
 
 * **Syntax**: logical and/or expression, bitwise and/or expression
 
-![Format binary expression](/images/refactorings/FormatBinaryExpressionOnMultipleLines.png)
+![Format binary expression](/images/refactorings/FormatBinaryExpression.png)
 
 #### Format conditional expression
 
@@ -369,12 +369,12 @@
 
 ![Introduce constructor](/images/refactorings/IntroduceConstructor.png)
 
-#### Introduce using static directive
+#### Introduce 'using static' directive
 
 * **Syntax**: member access expression (public or internal static class)
 * **Scope**: selected class name
 
-![Introduce using static directive](/images/refactorings/IntroduceUsingStaticDirective.png)
+![Introduce 'using static' directive](/images/refactorings/IntroduceUsingStaticDirective.png)
 
 #### Make member abstract
 
@@ -383,17 +383,17 @@
 
 ![Make member abstract](/images/refactorings/MakeMemberAbstract.png)
 
-#### Mark all members as static
+#### Mark all members as 'static'
 
 * **Syntax**: non-static field/method/property/event in static class
 
-![Mark all members as static](/images/refactorings/MarkAllMembersAsStatic.png)
+![Mark all members as 'static'](/images/refactorings/MarkAllMembersAsStatic.png)
 
-#### Mark member as static
+#### Mark member as 'static'
 
 * **Syntax**: non-static field/method/property/event in static class
 
-![Mark member as static](/images/refactorings/MarkMemberAsStatic.png)
+![Mark member as 'static'](/images/refactorings/MarkMemberAsStatic.png)
 
 #### Merge assignment expression with return statement
 
@@ -407,11 +407,11 @@
 
 ![Merge attributes](/images/refactorings/MergeAttributes.png)
 
-#### Merge if statements
+#### Merge 'if' statements
 
 * **Syntax**: selected if statements
 
-![Merge if statements](/images/refactorings/MergeIfStatements.png)
+![Merge 'if' statements](/images/refactorings/MergeIfStatements.png)
 
 #### Merge string literals
 
@@ -450,6 +450,12 @@
 
 ![Notify property changed](/images/refactorings/NotifyPropertyChanged.png)
 
+#### Remove all '#region' directives
+
+* **Syntax**: region directive
+
+![Remove all '#region' directives](/images/refactorings/RemoveAllRegionDirectives.png)
+
 #### Remove all comments
 
 * **Syntax**: singleline/multiline comment, singleline/multiline xml documentation comment
@@ -468,12 +474,6 @@
 * **Scope**: opening or closing brace
 
 ![Remove all member declarations](/images/refactorings/RemoveAllMemberDeclarations.png)
-
-#### Remove all region directives
-
-* **Syntax**: region directive
-
-![Remove all region directives](/images/refactorings/RemoveAllRegionDirectives.png)
 
 #### Remove all statements
 
@@ -502,12 +502,12 @@
 
 ![Remove braces](/images/refactorings/RemoveBraces.png)
 
-#### Remove braces from if-else
+#### Remove braces from 'if-else'
 
 * **Syntax**: if-else chain
 * **Scope**: topmost if keyword
 
-![Remove braces from if-else](/images/refactorings/RemoveBracesFromIfElse.png)
+![Remove braces from 'if-else'](/images/refactorings/RemoveBracesFromIfElse.png)
 
 #### Remove braces from switch section
 
@@ -529,12 +529,18 @@
 
 ![Remove comment](/images/refactorings/RemoveComment.png)
 
-#### Remove condition from last else
+#### Remove condition from last 'else'
 
 * **Syntax**: else clause
 * **Scope**: else keyword
 
-![Remove condition from last else](/images/refactorings/RemoveConditionFromLastElse.png)
+![Remove condition from last 'else'](/images/refactorings/RemoveConditionFromLastElse.png)
+
+#### Remove directive and related directives
+
+* **Syntax**: preprocessor directive, region directive
+
+![Remove directive and related directives](/images/refactorings/RemoveDirectiveAndRelatedDirectives.png)
 
 #### Remove empty lines
 
@@ -560,12 +566,6 @@
 * **Syntax**: selected argument(s)
 
 ![Remove parameter name from argument](/images/refactorings/RemoveParameterNameFromArgument.png)
-
-#### Remove preprocessor directive and related directives
-
-* **Syntax**: preprocessor directive
-
-![Remove preprocessor directive and related directives](/images/refactorings/RemovePreprocessorDirectiveAndRelatedDirectives.png)
 
 #### Remove property initializer
 
@@ -620,11 +620,11 @@
 
 ![Rename property according to type name](/images/refactorings/RenamePropertyAccordingToTypeName.png)
 
-#### Replace "" with string.Empty
+#### Replace "" with 'string.Empty'
 
 * **Syntax**: empty string literal
 
-![Replace "" with string.Empty](/images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
+![Replace "" with 'string.Empty'](/images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
 
 #### Replace anonymous method with lambda expression
 
@@ -640,18 +640,18 @@
 
 ![Replace 'Any/All' with 'All/Any'](/images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
-#### Replace boolean expression with if statement
+#### Replace boolean expression with 'if' statement
 
 * **Syntax**: return statement, yield return statement, expression statement
 * **Scope**: boolean expression
 
-![Replace boolean expression with if statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
+![Replace boolean expression with 'if' statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
 
-#### Replace conditional expression with if-else
+#### Replace conditional expression with 'if-else'
 
 * **Syntax**: conditional expression
 
-![Replace conditional expression with if-else](/images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
+![Replace conditional expression with 'if-else'](/images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
 
 #### Replace constant with field
 
@@ -666,12 +666,12 @@
 
 ![Replace 'Count/Length' with 'Length/Count'](/images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
-#### Replace 'do' statement with 'while' statement
+#### Replace 'do' with 'while'
 
 * **Syntax**: do statement
 * **Scope**: do keyword
 
-![Replace 'do' statement with 'while' statement](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
+![Replace 'do' with 'while'](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
 #### Replace field with constant
 
@@ -785,12 +785,12 @@
 
 ![Replace verbatim string literal with regular string literals](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
 
-#### Replace 'while' statement with 'do' statement
+#### Replace 'while' with 'do'
 
 * **Syntax**: while statement
 * **Scope**: while keyword
 
-![Replace 'while' statement with 'do' statement](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
+![Replace 'while' with 'do'](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
 
 #### Reverse 'for' loop
 
@@ -837,12 +837,12 @@
 
 ![Swap member declarations](/images/refactorings/SwapMemberDeclarations.png)
 
-#### Swap statements in if-else
+#### Swap statements in 'if-else'
 
 * **Syntax**: if statement
 * **Scope**: if keyword
 
-![Swap statements in if-else](/images/refactorings/SwapStatementsInIfElse.png)
+![Swap statements in 'if-else'](/images/refactorings/SwapStatementsInIfElse.png)
 
 #### Uncomment
 
@@ -863,32 +863,32 @@
 
 ![Wrap expression in parentheses](/images/refactorings/WrapExpressionInParentheses.png)
 
-#### Wrap in #if directive
+#### Wrap in '#if' directive
 
 * **Syntax**: selected lines
 
-![Wrap in #if directive](/images/refactorings/WrapInIfDirective.png)
+![Wrap in '#if' directive](/images/refactorings/WrapInIfDirective.png)
 
-#### Wrap in if statement
-
-* **Syntax**: selected statements
-
-![Wrap in if statement](/images/refactorings/WrapInIfStatement.png)
-
-#### Wrap in region
+#### Wrap in '#region'
 
 * **Syntax**: selected lines
 
-![Wrap in region](/images/refactorings/WrapInRegion.png)
+![Wrap in '#region'](/images/refactorings/WrapInRegion.png)
 
-#### Wrap in try-catch
+#### Wrap in 'if' statement
 
 * **Syntax**: selected statements
 
-![Wrap in try-catch](/images/refactorings/WrapInTryCatch.png)
+![Wrap in 'if' statement](/images/refactorings/WrapInIfStatement.png)
 
-#### Wrap in using statement
+#### Wrap in 'try-catch'
+
+* **Syntax**: selected statements
+
+![Wrap in 'try-catch'](/images/refactorings/WrapInTryCatch.png)
+
+#### Wrap in 'using' statement
 
 * **Syntax**: local declaration of type that implements IDisposable
 
-![Wrap in using statement](/images/refactorings/WrapInUsingStatement.png)
+![Wrap in 'using' statement](/images/refactorings/WrapInUsingStatement.png)
