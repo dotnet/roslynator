@@ -36,6 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             CollapseToInitializer = true;
             CommentOutMember = true;
             CommentOutStatement = true;
+            CreateConditionFromBooleanExpression = true;
             DuplicateArgument = true;
             DuplicateMember = true;
             DuplicateParameter = true;
@@ -107,7 +108,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RenamePropertyAccordingToTypeName = true;
             ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
-            ReplaceBooleanExpressionWithIfStatement = true;
             ReplaceConditionalExpressionWithExpression = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
@@ -178,6 +178,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.CollapseToInitializer, CollapseToInitializer);
             SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
             SetIsEnabled(RefactoringIdentifiers.CommentOutStatement, CommentOutStatement);
+            SetIsEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression, CreateConditionFromBooleanExpression);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
             SetIsEnabled(RefactoringIdentifiers.DuplicateParameter, DuplicateParameter);
@@ -249,7 +250,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, RenamePropertyAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement, ReplaceBooleanExpressionWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, ReplaceConditionalExpressionWithExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
@@ -529,6 +529,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CommentOutStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Create condition from boolean expression")]
+        [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CreateConditionFromBooleanExpression
         {
             get;
             set;
@@ -1239,16 +1249,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceAnyWithAllOrAllWithAny
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace boolean expression with 'if' statement")]
-        [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceBooleanExpressionWithIfStatement
         {
             get;
             set;

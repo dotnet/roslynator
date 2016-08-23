@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement)
+                    RefactoringIdentifiers.CreateConditionFromBooleanExpression)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
                 && context.SupportsSemanticModel)
@@ -96,8 +96,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
-                    await ReplaceBooleanExpressionWithIfStatementRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
+                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression);
             }
         }
     }

@@ -200,6 +200,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#comment-out-statement">Comment out statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#create-condition-from-boolean-expression">Create condition from boolean expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#duplicate-argument">Duplicate argument</a>
         </li>
         <li>
@@ -414,9 +417,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-boolean-expression-with-if-statement">Replace boolean expression with 'if' statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-conditional-expression-with-expression">Replace conditional expression with expression</a>

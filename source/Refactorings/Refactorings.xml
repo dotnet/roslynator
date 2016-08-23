@@ -133,6 +133,14 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
+  <Refactoring Id="CreateConditionFromBooleanExpression" Title="Create condition from boolean expression" ExtensionVersion="0.94.0">
+    <Syntaxes>
+      <Syntax>return statement</Syntax>
+      <Syntax>yield return statement</Syntax>
+      <Syntax>expression statement</Syntax>
+    </Syntaxes>
+    <Scope>boolean expression</Scope>
+  </Refactoring>
   <Refactoring Id="DuplicateArgument" Title="Duplicate argument" ExtensionVersion="0.9.60">
     <Syntaxes>
       <Syntax>missing argument</Syntax>
@@ -675,14 +683,6 @@
       <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
     </Syntaxes>
     <Scope>method name</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceBooleanExpressionWithIfStatement" Title="Replace boolean expression with 'if' statement" ExtensionVersion="0.94.0">
-    <Syntaxes>
-      <Syntax>return statement</Syntax>
-      <Syntax>yield return statement</Syntax>
-      <Syntax>expression statement</Syntax>
-    </Syntaxes>
-    <Scope>boolean expression</Scope>
   </Refactoring>
   <Refactoring Id="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression" ExtensionVersion="0.0.0">
     <Syntaxes>

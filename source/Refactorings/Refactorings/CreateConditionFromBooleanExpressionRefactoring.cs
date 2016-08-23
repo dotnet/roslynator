@@ -9,14 +9,15 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
-    internal static class ReplaceBooleanExpressionWithIfStatementRefactoring
+    internal static class CreateConditionFromBooleanExpressionRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (!expression.IsKind(
-                SyntaxKind.TrueLiteralExpression,
-                SyntaxKind.FalseLiteralExpression,
-                SyntaxKind.ConditionalExpression))
+            if (context.Span.IsBetweenSpans(expression)
+                && !expression.IsKind(
+                    SyntaxKind.TrueLiteralExpression,
+                    SyntaxKind.FalseLiteralExpression,
+                    SyntaxKind.ConditionalExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -27,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (expressionSymbol?.IsBoolean() == true)
                 {
                     context.RegisterRefactoring(
-                        $"Replace statement with 'if ({expression.ToString()})'",
+                        $"Create condition from '{expression.ToString()}'",
                         cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
                 }
             }

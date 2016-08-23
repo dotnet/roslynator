@@ -79,7 +79,7 @@
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInTryCatchRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceBooleanExpressionWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\CreateConditionFromBooleanExpressionRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="Refactorings\SyntaxNodeRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultValueToParameterRefactoring.cs" />

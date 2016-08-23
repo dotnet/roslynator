@@ -30,6 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string CollapseToInitializer = "CollapseToInitializer";
         public const string CommentOutMember = "CommentOutMember";
         public const string CommentOutStatement = "CommentOutStatement";
+        public const string CreateConditionFromBooleanExpression = "CreateConditionFromBooleanExpression";
         public const string DuplicateArgument = "DuplicateArgument";
         public const string DuplicateMember = "DuplicateMember";
         public const string DuplicateParameter = "DuplicateParameter";
@@ -101,7 +102,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RenamePropertyAccordingToTypeName = "RenamePropertyAccordingToTypeName";
         public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
-        public const string ReplaceBooleanExpressionWithIfStatement = "ReplaceBooleanExpressionWithIfStatement";
         public const string ReplaceConditionalExpressionWithExpression = "ReplaceConditionalExpressionWithExpression";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";

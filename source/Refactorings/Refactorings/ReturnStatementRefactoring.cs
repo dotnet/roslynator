@@ -21,8 +21,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceBooleanExpressionWithIfStatement))
-                        await ReplaceBooleanExpressionWithIfStatementRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression);
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
+                        await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression);
                 }
                 else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
                 {
