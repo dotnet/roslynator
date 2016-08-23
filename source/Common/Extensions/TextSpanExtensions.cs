@@ -22,9 +22,26 @@ namespace Pihrtsoft.CodeAnalysis
                 && span.End <= nodeFullSpan.End;
         }
 
-        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxNode node)
+        public static bool IsBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> list) where TNode : SyntaxNode
         {
-            return span.IsEmpty || IsBetweenSpans(span, node);
+            TextSpan nodeSpan = list.Span;
+            TextSpan nodeFullSpan = list.FullSpan;
+
+            return span.Start >= nodeFullSpan.Start
+                && span.Start <= nodeSpan.Start
+                && span.End >= nodeSpan.End
+                && span.End <= nodeFullSpan.End;
+        }
+
+        public static bool IsBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            TextSpan nodeSpan = list.Span;
+            TextSpan nodeFullSpan = list.FullSpan;
+
+            return span.Start >= nodeFullSpan.Start
+                && span.Start <= nodeSpan.Start
+                && span.End >= nodeSpan.End
+                && span.End <= nodeFullSpan.End;
         }
 
         public static bool IsBetweenSpans(this TextSpan span, SyntaxToken token)
@@ -36,6 +53,26 @@ namespace Pihrtsoft.CodeAnalysis
                 && span.Start <= nodeSpan.Start
                 && span.End >= nodeSpan.End
                 && span.End <= nodeFullSpan.End;
+        }
+
+        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxNode node)
+        {
+            return span.IsEmpty || IsBetweenSpans(span, node);
+        }
+
+        public static bool IsEmptyOrBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> node) where TNode : SyntaxNode
+        {
+            return span.IsEmpty || IsBetweenSpans(span, node);
+        }
+
+        public static bool IsEmptyOrBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> node) where TNode : SyntaxNode
+        {
+            return span.IsEmpty || IsBetweenSpans(span, node);
+        }
+
+        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxToken token)
+        {
+            return span.IsEmpty || IsBetweenSpans(span, token);
         }
     }
 }
