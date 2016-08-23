@@ -49,10 +49,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                     return expression == ((SwitchStatementSyntax)parent).Expression;
             }
 
-            var assignment = parent as AssignmentExpressionSyntax;
-
-            if (assignment?.Right == expression)
-                return false;
+            if (parent is AssignmentExpressionSyntax)
+                return true;
 
             if (parent?.IsKind(SyntaxKind.EqualsValueClause) == true)
             {
