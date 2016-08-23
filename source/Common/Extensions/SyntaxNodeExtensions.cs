@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -14,6 +15,26 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static TNode WithTrivia<TNode>(
+            this TNode node,
+            SyntaxTriviaList leadingTrivia,
+            SyntaxTriviaList trailingTrivia) where TNode : SyntaxNode
+        {
+            return Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithTrailingTrivia(
+                Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithLeadingTrivia(node, leadingTrivia),
+                trailingTrivia);
+        }
+
+        public static TNode WithTrivia<TNode>(
+            this TNode node,
+            IEnumerable<SyntaxTrivia> leadingTrivia,
+            IEnumerable<SyntaxTrivia> trailingTrivia) where TNode : SyntaxNode
+        {
+            return Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithTrailingTrivia(
+                Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithLeadingTrivia(node, leadingTrivia),
+                trailingTrivia);
+        }
+
         public static bool IsYieldStatement(this SyntaxNode node)
         {
             return node.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement);

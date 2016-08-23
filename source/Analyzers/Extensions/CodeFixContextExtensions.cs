@@ -10,15 +10,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
     {
         public static async Task<TNode> FindNodeAsync<TNode>(
             this CodeFixContext context,
-            bool getInnermostNodeForTie = true) where TNode : SyntaxNode
+            bool findInsideTrivia = false,
+            bool getInnermostNodeForTie = false) where TNode : SyntaxNode
         {
             SyntaxNode root = await context.Document
                 .GetSyntaxRootAsync(context.CancellationToken)
                 .ConfigureAwait(false);
 
-            return root
-                .FindNode(context.Span, getInnermostNodeForTie)?
-                .FirstAncestorOrSelf<TNode>();
+            SyntaxNode node = root.FindNode(
+                context.Span,
+                findInsideTrivia: findInsideTrivia,
+                getInnermostNodeForTie: getInnermostNodeForTie);
+
+            return node?.FirstAncestorOrSelf<TNode>();
         }
     }
 }

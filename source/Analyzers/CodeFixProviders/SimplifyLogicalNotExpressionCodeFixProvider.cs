@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            PrefixUnaryExpressionSyntax node = await context.FindNodeAsync<PrefixUnaryExpressionSyntax>(true).ConfigureAwait(false);
+            PrefixUnaryExpressionSyntax node = await context.FindNodeAsync<PrefixUnaryExpressionSyntax>(getInnermostNodeForTie: true).ConfigureAwait(false);
 
             CodeAction codeAction = CodeAction.Create(
                 "Simplify '!' expression",

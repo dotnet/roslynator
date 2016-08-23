@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -29,6 +30,17 @@ namespace Pihrtsoft.CodeAnalysis
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(descriptor, location, properties, messageArgs));
+        }
+
+        public static void ReportDiagnostic(
+            this SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            Location location,
+            IEnumerable<Location> additionalLocations,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptor, location, additionalLocations, messageArgs));
         }
 
         public static void ReportDiagnostic(
