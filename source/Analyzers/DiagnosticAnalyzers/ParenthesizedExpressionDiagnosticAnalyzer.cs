@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -29,12 +28,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             context.RegisterSyntaxNodeAction(f => AnalyzeParenthesizedExpression(f), SyntaxKind.ParenthesizedExpression);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeYieldReturnStatement(f), SyntaxKind.YieldReturnStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeExpressionStatement(f), SyntaxKind.ExpressionStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeArgument(f), SyntaxKind.Argument);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgument(f), SyntaxKind.AttributeArgument);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SimpleAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SubtractAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.MultiplyAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.DivideAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.ModuloAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AndAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.ExclusiveOrAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.OrAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.LeftShiftAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.RightShiftAssignmentExpression);
         }
 
         private void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context)
@@ -44,7 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var parenthesizedExpression = (ParenthesizedExpressionSyntax)context.Node;
 
-            AnalyzeExpression(context, parenthesizedExpression.Expression, parenthesizedExpression.OpenParenToken, parenthesizedExpression.CloseParenToken);
+            AnalyzeExpression(context, parenthesizedExpression.Expression);
         }
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
@@ -54,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var whileStatement = (WhileStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, whileStatement.Condition, whileStatement.OpenParenToken, whileStatement.CloseParenToken);
+            AnalyzeExpression(context, whileStatement.Condition);
         }
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
@@ -64,7 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var doStatement = (DoStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, doStatement.Condition, doStatement.OpenParenToken, doStatement.CloseParenToken);
+            AnalyzeExpression(context, doStatement.Condition);
         }
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
@@ -74,7 +93,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var usingStatement = (UsingStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, usingStatement.Expression, usingStatement.OpenParenToken, usingStatement.CloseParenToken);
+            AnalyzeExpression(context, usingStatement.Expression);
         }
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
@@ -84,7 +103,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var lockStatement = (LockStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, lockStatement.Expression, lockStatement.OpenParenToken, lockStatement.CloseParenToken);
+            AnalyzeExpression(context, lockStatement.Expression);
         }
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
@@ -94,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, ifStatement.Condition, ifStatement.OpenParenToken, ifStatement.CloseParenToken);
+            AnalyzeExpression(context, ifStatement.Condition);
         }
 
         private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -104,34 +123,96 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
-            AnalyzeExpression(context, switchStatement.Expression, switchStatement.OpenParenToken, switchStatement.CloseParenToken);
+            AnalyzeExpression(context, switchStatement.Expression);
         }
 
-        private static void AnalyzeExpression(
-            SyntaxNodeAnalysisContext context,
-            ExpressionSyntax expression,
-            SyntaxToken openParenToken,
-            SyntaxToken closeParenToken)
+        private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var returnStatement = (ReturnStatementSyntax)context.Node;
+
+            AnalyzeExpression(context, returnStatement.Expression);
+        }
+
+        private void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var yieldStatement = (YieldStatementSyntax)context.Node;
+
+            AnalyzeExpression(context, yieldStatement.Expression);
+        }
+
+        private void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var expressionStatement = (ExpressionStatementSyntax)context.Node;
+
+            AnalyzeExpression(context, expressionStatement.Expression);
+        }
+
+        private void AnalyzeArgument(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var argument = (ArgumentSyntax)context.Node;
+
+            AnalyzeExpression(context, argument.Expression);
+        }
+
+        private void AnalyzeAttributeArgument(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var attributeArgument = (AttributeArgumentSyntax)context.Node;
+
+            AnalyzeExpression(context, attributeArgument.Expression);
+        }
+
+        private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
+
+            AnalyzeExpression(context, equalsValueClause.Value);
+        }
+
+        private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var assignment = (AssignmentExpressionSyntax)context.Node;
+
+            AnalyzeExpression(context, assignment.Left);
+            AnalyzeExpression(context, assignment.Right);
+        }
+
+        private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
             if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
             {
                 var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
 
-                if (openParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && closeParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && parenthesizedExpression.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && parenthesizedExpression.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    Diagnostic diagnostic = Diagnostic.Create(
-                        DiagnosticDescriptors.RemoveRedundantParentheses,
-                        parenthesizedExpression.OpenParenToken.GetLocation(),
-                        additionalLocations: new Location[] { parenthesizedExpression.CloseParenToken.GetLocation() });
+                SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
+                SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
 
-                    context.ReportDiagnostic(diagnostic);
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveRedundantParentheses,
+                    openParen.GetLocation(),
+                    additionalLocations: new Location[] { closeParen.GetLocation() });
 
-                    context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.OpenParenToken);
-                    context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, parenthesizedExpression.CloseParenToken);
-                }
+                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
+                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,38 +18,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class RemoveRedundantParenthesesCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantParentheses);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantParentheses); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
-
-            ParenthesizedExpressionSyntax parenthesizedExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ParenthesizedExpressionSyntax>();
-
-            if (parenthesizedExpression == null)
-                return;
+            ParenthesizedExpressionSyntax parenthesizedExpression = await context
+                .FindNodeAsync<ParenthesizedExpressionSyntax>(getInnermostNodeForTie: true)
+                .ConfigureAwait(false);
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove redundant parentheses",
-                cancellationToken => RemoveRedundantParenthesesAsync(context.Document, parenthesizedExpression, cancellationToken),
+                cancellationToken => RefactorAsync(context.Document, parenthesizedExpression, cancellationToken),
                 DiagnosticIdentifiers.RemoveRedundantParentheses + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> RemoveRedundantParenthesesAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             ParenthesizedExpressionSyntax parenthesizedExpression,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newNode = parenthesizedExpression.Expression
-                .WithTriviaFrom(parenthesizedExpression);
+            ExpressionSyntax expression = parenthesizedExpression.Expression;
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parenthesizedExpression, newNode);
+            IEnumerable<SyntaxTrivia> leading = parenthesizedExpression.GetLeadingTrivia()
+                .Concat(parenthesizedExpression.OpenParenToken.TrailingTrivia)
+                .Concat(expression.GetLeadingTrivia());
+
+            IEnumerable<SyntaxTrivia> trailing = expression.GetTrailingTrivia()
+                .Concat(parenthesizedExpression.CloseParenToken.LeadingTrivia)
+                .Concat(parenthesizedExpression.GetTrailingTrivia());
+
+            SyntaxNode newRoot = root.ReplaceNode(
+                parenthesizedExpression,
+                expression.WithTrivia(leading, trailing));
 
             return document.WithSyntaxRoot(newRoot);
         }
