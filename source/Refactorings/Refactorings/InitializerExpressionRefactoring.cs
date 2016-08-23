@@ -18,36 +18,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 initializer = (InitializerExpressionSyntax)initializer.Parent;
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
-                && initializer.Expressions.Count > 0
-                && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                && initializer.Parent?.IsKind(
-                    SyntaxKind.ArrayCreationExpression,
-                    SyntaxKind.ImplicitArrayCreationExpression,
-                    SyntaxKind.ObjectCreationExpression,
-                    SyntaxKind.CollectionInitializerExpression) == true)
+            if (context.Span.IsEmpty
+                || context.Span.IsBetweenSpans(initializer)
+                || context.Span.IsBetweenSpans(initializer.Expressions))
             {
-                if (initializer.IsSingleLine(includeExteriorTrivia: false))
-                {
-                    context.RegisterRefactoring(
-                        "Format initializer on multiple lines",
-                        cancellationToken => FormatInitializerOnMultipleLinesRefactoring.RefactorAsync(
-                            context.Document,
-                            initializer,
-                            cancellationToken));
-                }
-                else if (initializer.Expressions.All(expression => expression.IsSingleLine()))
-                {
-                    context.RegisterRefactoring(
-                        "Format initializer on a single line",
-                        cancellationToken => FormatInitializerOnSingleLineRefactoring.RefactorAsync(
-                            context.Document,
-                            initializer,
-                            cancellationToken));
-                }
-            }
+                SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
+                    && expressions.Any()
+                    && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
+                    && initializer.Parent?.IsKind(
+                        SyntaxKind.ArrayCreationExpression,
+                        SyntaxKind.ImplicitArrayCreationExpression,
+                        SyntaxKind.ObjectCreationExpression,
+                        SyntaxKind.CollectionInitializerExpression) == true)
+                {
+                    if (initializer.IsSingleLine(includeExteriorTrivia: false))
+                    {
+                        context.RegisterRefactoring(
+                            "Format initializer on multiple lines",
+                            cancellationToken => FormatInitializerOnMultipleLinesRefactoring.RefactorAsync(
+                                context.Document,
+                                initializer,
+                                cancellationToken));
+                    }
+                    else if (expressions.All(expression => expression.IsSingleLine()))
+                    {
+                        context.RegisterRefactoring(
+                            "Format initializer on a single line",
+                            cancellationToken => FormatInitializerOnSingleLineRefactoring.RefactorAsync(
+                                context.Document,
+                                initializer,
+                                cancellationToken));
+                    }
+                }
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer))
+                    await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
+            }
         }
     }
 }

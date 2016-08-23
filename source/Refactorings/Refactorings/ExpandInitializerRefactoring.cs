@@ -18,8 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer)
-                && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
+            if (initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.CollectionInitializerExpression)
                 && initializer.Expressions.Any()
                 && initializer.Parent?.IsKind(SyntaxKind.ObjectCreationExpression) == true
                 && await CanExpandAsync(context, initializer).ConfigureAwait(false))
