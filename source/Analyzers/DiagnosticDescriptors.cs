@@ -509,17 +509,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor ReplaceForEachWithFor = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceForEachWithFor,
-            title: "Replace foreach statement with for statement.",
-            messageFormat: "Consider replacing foreach statement with for statement.",
-            category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: false
-        );
-
-        public static readonly DiagnosticDescriptor ReplaceForEachWithForFadeOut = ReplaceForEachWithFor.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement,
             title: "Merge local declaration with return statement.",

@@ -88,7 +88,6 @@
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceForEachWithForCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEnumDefaultBaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InitializerCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ElseClauseCodeFixProvider.cs" />
@@ -153,7 +152,6 @@
     <Compile Include="DiagnosticAnalyzers\CatchClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ElseClauseDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\ConvertForEachToForDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BaseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\GenericNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InitializerDiagnosticAnalyzer.cs" />
