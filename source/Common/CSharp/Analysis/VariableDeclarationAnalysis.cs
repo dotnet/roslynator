@@ -78,8 +78,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                 switch (typeSymbol.Kind)
                 {
                     case SymbolKind.TypeParameter:
-                    case SymbolKind.ArrayType:
                         return true;
+                    case SymbolKind.ArrayType:
+                        return CanBeExplicit(((IArrayTypeSymbol)typeSymbol).ElementType);
                     case SymbolKind.NamedType:
                         return !((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType();
                 }
