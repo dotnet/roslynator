@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0.-->
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>SyntaxList&lt;T&gt;</Title>
+            <Shortcut>gsxl</Shortcut>
+            <Description>SyntaxList&lt;T&gt; type declaration.</Description>
+            <Author>Josef Pihrt</Author>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Imports>
+                <Import>
+                    <Namespace>Microsoft.CodeAnalysis</Namespace>
+                </Import>
+            </Imports>
+            <Declarations>
+                <Literal>
+                    <ID>_generictype</ID>
+                    <ToolTip>Generic type</ToolTip>
+                    <Default>T</Default>
+                </Literal>
+            </Declarations>
+            <Code Language="CSharp"><![CDATA[SyntaxList<$_generictype$>$end$]]></Code>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>
