@@ -16,7 +16,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddDefaultValueToReturnStatement = "AddDefaultValueToReturnStatement";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
-        public const string AddInterpolation = "AddInterpolation";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
         public const string AddUsingDirective = "AddUsingDirective";
@@ -58,6 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string GenerateSwitchSections = "GenerateSwitchSections";
         public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
         public const string InlineMethod = "InlineMethod";
+        public const string InsertStringInterpolation = "InsertStringInterpolation";
         public const string IntroduceAndInitializeField = "IntroduceAndInitializeField";
         public const string IntroduceAndInitializeProperty = "IntroduceAndInitializeProperty";
         public const string IntroduceConstructor = "IntroduceConstructor";
@@ -123,7 +123,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";
-        public const string ReplaceStringLiteralWithInterpolatedString = "ReplaceStringLiteralWithInterpolatedString";
         public const string ReplaceSwitchWithIfElse = "ReplaceSwitchWithIfElse";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = "ReplaceVerbatimStringLiteralWithRegularStringLiteral";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = "ReplaceVerbatimStringLiteralWithRegularStringLiterals";

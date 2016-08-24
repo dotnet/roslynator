@@ -136,7 +136,7 @@
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesToSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactorings\AddInterpolationRefactoring.cs" />
+    <Compile Include="Refactorings\InsertInterpolationRefactoring.cs" />
     <Compile Include="Refactorings\DefaultCodeRefactoringProvider.cs" />
     <Compile Include="Refactorings\WrapExpressionInParenthesesRefactoring.cs" />
     <Compile Include="Refactorings\InterpolatedStringTextRefactoring.cs" />

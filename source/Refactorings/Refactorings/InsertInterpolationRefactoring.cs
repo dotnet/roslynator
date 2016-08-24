@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
-    internal static class AddInterpolationRefactoring
+    internal static class InsertInterpolationRefactoring
     {
         public static bool CanRefactor(InterpolatedStringTextSyntax interpolatedStringText)
         {

@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
                 && context.Span.IsEmpty)
             {
                 foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
@@ -18,10 +18,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (content.IsKind(SyntaxKind.InterpolatedStringText)
                         && content.Span.End == context.Span.End)
                     {
-                        context.RegisterRefactoring("Add interpolation",
+                        context.RegisterRefactoring("Insert interpolation",
                             cancellationToken =>
                             {
-                                return AddInterpolationRefactoring.RefactorAsync(
+                                return InsertInterpolationRefactoring.RefactorAsync(
                                     context.Document,
                                     (InterpolatedStringTextSyntax)content,
                                     context.Span,

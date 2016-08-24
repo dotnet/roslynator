@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (!literalExpression.Span.Contains(context.Span))
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
                 && context.SupportsCSharp6
                 && context.Span.End < literalExpression.Span.End)
             {
@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (startIndex != -1)
                 {
                     context.RegisterRefactoring(
-                        "Replace string literal with interpolated string",
+                        "Insert interpolation",
                         cancellationToken =>
                         {
                             return ReplaceStringLiteralRefactoring.ReplaceWithInterpolatedStringAsync(

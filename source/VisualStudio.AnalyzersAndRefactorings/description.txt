@@ -158,9 +158,6 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-interpolation">Add interpolation</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-parameter-name-to-argument">Add parameter name to argument</a>
         </li>
         <li>
@@ -282,6 +279,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#inline-method">Inline method</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#insert-string-interpolation">Insert string interpolation</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#introduce-and-initialize-field">Introduce and initialize field</a>
@@ -471,9 +471,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-string-literal-with-interpolated-string">Replace string literal with interpolated string</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#replace-stringempty-with-">Replace 'string.Empty' with ""</a>

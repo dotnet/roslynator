@@ -73,11 +73,6 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddInterpolation" Title="Add interpolation" ExtensionVersion="0.9.80">
-    <Syntaxes>
-      <Syntax>selected text inside interpolated string text</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="AddParameterNameToArgument" Title="Add parameter name to argument" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>argument list</Syntax>
@@ -395,6 +390,16 @@
     <Syntaxes>
       <Syntax>static/extension method invocation</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="InsertStringInterpolation" Title="Insert string interpolation" ExtensionVersion="0.9.2">
+    <Syntaxes>
+      <Syntax>string literal</Syntax>
+      <Syntax>interpolated string</Syntax>
+    </Syntaxes>
+    <Images>
+      <Image>InsertInterpolationIntoStringLiteral</Image>
+      <Image>InsertInterpolationIntoInterpolatedString</Image>
+    </Images>
   </Refactoring>
   <Refactoring Id="IntroduceAndInitializeField" Title="Introduce and initialize field" ExtensionVersion="0.98.0">
     <Syntaxes>
@@ -791,11 +796,6 @@
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceStringLiteralWithCharacterLiteral" Title="Replace string literal with character literal" ExtensionVersion="0.9.70">
-    <Syntaxes>
-      <Syntax>string literal</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="ReplaceStringLiteralWithInterpolatedString" Title="Replace string literal with interpolated string" ExtensionVersion="0.9.2">
     <Syntaxes>
       <Syntax>string literal</Syntax>
     </Syntaxes>

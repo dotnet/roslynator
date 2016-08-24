@@ -22,7 +22,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
             AddIdentifierToVariableDeclaration = true;
-            AddInterpolation = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
             AddUsingDirective = true;
@@ -64,6 +63,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
             InlineMethod = true;
+            InsertStringInterpolation = true;
             IntroduceAndInitializeField = true;
             IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
@@ -129,7 +129,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceStringLiteralWithCharacterLiteral = true;
-            ReplaceStringLiteralWithInterpolatedString = true;
             ReplaceSwitchWithIfElse = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiteral = true;
             ReplaceVerbatimStringLiteralWithRegularStringLiterals = true;
@@ -164,7 +163,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
-            SetIsEnabled(RefactoringIdentifiers.AddInterpolation, AddInterpolation);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
@@ -206,6 +204,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
+            SetIsEnabled(RefactoringIdentifiers.InsertStringInterpolation, InsertStringInterpolation);
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField, IntroduceAndInitializeField);
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
@@ -271,7 +270,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, ReplaceStringLiteralWithCharacterLiteral);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithInterpolatedString, ReplaceStringLiteralWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse, ReplaceSwitchWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, ReplaceVerbatimStringLiteralWithRegularStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, ReplaceVerbatimStringLiteralWithRegularStringLiterals);
@@ -389,16 +387,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: variable declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddIdentifierToVariableDeclaration
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Add interpolation")]
-        [Description("Syntax: selected text inside interpolated string text")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddInterpolation
         {
             get;
             set;
@@ -809,6 +797,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: static/extension method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool InlineMethod
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Insert string interpolation")]
+        [Description("Syntax: string literal, interpolated string")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool InsertStringInterpolation
         {
             get;
             set;
@@ -1459,16 +1457,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringLiteralWithCharacterLiteral
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace string literal with interpolated string")]
-        [Description("Syntax: string literal")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceStringLiteralWithInterpolatedString
         {
             get;
             set;

@@ -8,13 +8,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddInterpolation)
-                && AddInterpolationRefactoring.CanRefactor(interpolatedStringText))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
+                && InsertInterpolationRefactoring.CanRefactor(interpolatedStringText))
             {
-                context.RegisterRefactoring("Add interpolation",
+                context.RegisterRefactoring("Insert interpolation",
                     cancellationToken =>
                     {
-                        return AddInterpolationRefactoring.RefactorAsync(
+                        return InsertInterpolationRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedStringText,
                             context.Span,
