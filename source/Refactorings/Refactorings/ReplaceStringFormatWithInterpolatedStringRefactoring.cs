@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -97,7 +98,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + formatText);
 
-            InterpolatedStringExpressionSyntax newInterpolatedString = InterpolatedStringSyntaxRewriter.VisitNode(interpolatedString, expandedArguments);
+            var rewriter = new InterpolatedStringSyntaxRewriter(expandedArguments);
+
+            var newInterpolatedString = (InterpolatedStringExpressionSyntax)rewriter.Visit(interpolatedString);
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -158,6 +161,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 return false;
 
             return true;
+        }
+
+        private class InterpolatedStringSyntaxRewriter : CSharpSyntaxRewriter
+        {
+            private readonly ImmutableArray<ExpressionSyntax> _expandedArguments;
+
+            public InterpolatedStringSyntaxRewriter(ImmutableArray<ExpressionSyntax> expandedArguments)
+            {
+                _expandedArguments = expandedArguments;
+            }
+
+            public override SyntaxNode VisitInterpolation(InterpolationSyntax node)
+            {
+                if (node == null)
+                    throw new ArgumentNullException(nameof(node));
+
+                var literalExpression = node.Expression as LiteralExpressionSyntax;
+
+                if (literalExpression != null && literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+                {
+                    var index = (int)literalExpression.Token.Value;
+
+                    if (index >= 0 && index < _expandedArguments.Length)
+                        return node.WithExpression(_expandedArguments[index]);
+                }
+
+                return base.VisitInterpolation(node);
+            }
         }
     }
 }
