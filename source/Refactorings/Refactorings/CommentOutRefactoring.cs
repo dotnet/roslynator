@@ -122,8 +122,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static FileLinePositionSpan GetFileLinePositionSpan(MemberDeclarationSyntax member, CancellationToken cancellationToken)
         {
-            SyntaxTriviaList leadingTrivia = member.GetLeadingTrivia();
-
             SyntaxTrivia trivia = member
                 .GetLeadingTrivia()
                 .Reverse()

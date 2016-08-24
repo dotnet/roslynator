@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     ReplaceIfElseWithConditionalExpressionRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)
-                    && SwapStatementInIfElseRefactoring.CanRefactor(context, ifStatement))
+                    && SwapStatementInIfElseRefactoring.CanRefactor(ifStatement))
                 {
                     context.RegisterRefactoring(
                         "Swap statements in 'if-else'",

@@ -76,7 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                             var ifStatement = (IfStatementSyntax)block.Statements[0];
 
                             if (ifStatement.Else == null
-                                && CheckTrivia(elseClause, block, ifStatement))
+                                && CheckTrivia(elseClause, ifStatement))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement,
@@ -92,7 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private static bool CheckTrivia(ElseClauseSyntax elseClause, BlockSyntax block, IfStatementSyntax ifStatement)
+        private static bool CheckTrivia(ElseClauseSyntax elseClause, IfStatementSyntax ifStatement)
         {
             TextSpan elseSpan = elseClause.Span;
             TextSpan ifSpan = ifStatement.Span;

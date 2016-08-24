@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
             {
                 var refactoring = new DuplicateParameterRefactoring(parameterList);
-                refactoring.ComputeRefactoring(context, parameterList);
+                refactoring.ComputeRefactoring(context);
             }
 
             if (context.IsAnyRefactoringEnabled(

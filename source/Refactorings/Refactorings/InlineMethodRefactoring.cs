@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                     if (method != null)
                     {
-                        ExpressionSyntax expression = GetMethodExpression(method, context.CancellationToken);
+                        ExpressionSyntax expression = GetMethodExpression(method);
 
                         if (expression != null)
                         {
@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return false;
         }
 
-        public static ExpressionSyntax GetMethodExpression(MethodDeclarationSyntax method, CancellationToken cancellationToken)
+        public static ExpressionSyntax GetMethodExpression(MethodDeclarationSyntax method)
         {
             BlockSyntax body = method.Body;
 

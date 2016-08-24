@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (symbol?.IsErrorType() == false)
             {
-                ITypeSymbol typeSymbol = GetTypeSymbol(symbol, semanticModel, context.CancellationToken);
+                ITypeSymbol typeSymbol = GetTypeSymbol(symbol, semanticModel);
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
@@ -97,8 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static ITypeSymbol GetTypeSymbol(
             ISymbol symbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            SemanticModel semanticModel)
         {
             if (symbol.IsProperty())
             {

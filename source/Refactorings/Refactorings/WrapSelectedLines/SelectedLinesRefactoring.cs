@@ -33,7 +33,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapSelectedLines
             if (!span.IsEmpty)
             {
                 int start = span.Start;
-                int end = span.End;
 
                 if (start == 0
                     || root

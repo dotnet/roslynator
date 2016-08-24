@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.NodeInList
 
         protected abstract string GetTitle(params string[] args);
 
-        public void ComputeRefactoring(RefactoringContext context, TListSyntax listSyntax)
+        public void ComputeRefactoring(RefactoringContext context)
         {
             int index = FindNode(context.Span);
 

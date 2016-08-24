@@ -78,9 +78,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             if (ifStatement.Else != null)
             {
-                ReturnStatementSyntax returnStatement = SimplifyIfStatementToReturnStatementAnalyzer.GetReturnStatement(ifStatement.Statement);
-                LiteralExpressionSyntax booleanLiteral = SimplifyIfStatementToReturnStatementAnalyzer.GetBooleanLiteral(returnStatement);
-
                 newReturnStatement = newReturnStatement.WithTriviaFrom(ifStatement);
 
                 return root.ReplaceNode(ifStatement, newReturnStatement);
@@ -92,8 +89,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 int index = block.Statements.IndexOf(ifStatement);
 
                 var returnStatement = (ReturnStatementSyntax)block.Statements[index + 1];
-
-                LiteralExpressionSyntax booleanLiteral = SimplifyIfStatementToReturnStatementAnalyzer.GetBooleanLiteral(returnStatement);
 
                 newReturnStatement = newReturnStatement
                     .WithLeadingTrivia(ifStatement.GetLeadingTrivia())

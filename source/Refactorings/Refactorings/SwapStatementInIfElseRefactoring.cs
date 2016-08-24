@@ -10,7 +10,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class SwapStatementInIfElseRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, IfStatementSyntax ifStatement)
+        public static bool CanRefactor(IfStatementSyntax ifStatement)
         {
             if (ifStatement.Condition != null
                 && ifStatement.Statement != null)

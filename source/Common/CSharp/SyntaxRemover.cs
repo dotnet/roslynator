@@ -110,8 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static SourceText RemoveDirectives(
             SourceText sourceText,
-            ImmutableArray<DirectiveTriviaSyntax> directives,
-            CancellationToken cancellationToken = default(CancellationToken))
+            ImmutableArray<DirectiveTriviaSyntax> directives)
         {
             if (sourceText == null)
                 throw new ArgumentNullException(nameof(sourceText));
@@ -130,9 +129,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return sourceText.WithChanges(changes);
         }
 
-        public static async Task<SyntaxTree> RemoveRegionDirectivesAsync<TNode>(
+        public static async Task<SyntaxTree> RemoveRegionDirectivesAsync(
             SyntaxTree syntaxTree,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));

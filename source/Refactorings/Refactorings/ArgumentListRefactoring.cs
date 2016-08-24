@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {
                 var refactoring = new DuplicateArgumentRefactoring(argumentList);
-                refactoring.ComputeRefactoring(context, argumentList);
+                refactoring.ComputeRefactoring(context);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatArgumentList)

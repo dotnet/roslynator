@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class AddInterpolationRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
+        public static bool CanRefactor(InterpolatedStringTextSyntax interpolatedStringText)
         {
             return interpolatedStringText.Parent?.IsKind(SyntaxKind.InterpolatedStringExpression) == true;
         }
