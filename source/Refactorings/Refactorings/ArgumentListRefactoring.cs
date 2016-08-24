@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (arguments.Count > 1)
                     {
                         context.RegisterRefactoring(
-                            "Format each argument on separate line",
+                            "Format each argument on a separate line",
                             cancellationToken =>
                             {
                                 return FormatArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(

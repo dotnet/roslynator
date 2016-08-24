@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
                 && ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
-                context.RegisterRefactoring("Replace interpolated string with string literal",
+                context.RegisterRefactoring("Remove '$'",
                     cancellationToken =>
                     {
                         return ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(

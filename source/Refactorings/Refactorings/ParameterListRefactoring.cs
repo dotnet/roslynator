@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (parameters.Count > 1)
                     {
                         context.RegisterRefactoring(
-                            "Format each parameter on separate line",
+                            "Format each parameter on a separate line",
                             cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
                     }
                 }
