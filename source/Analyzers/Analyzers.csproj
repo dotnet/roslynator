@@ -77,7 +77,6 @@
     <Compile Include="CodeFixProviders\LockStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NamespaceDeclarationCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\PropertyDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="CodeFixProviders\RemoveRedundantParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantPartialModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantSealedModifierCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceTabWithSpacesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEachStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEmbeddedStatementOnSeparateLineCodeFixProvider.cs" />
@@ -129,7 +127,6 @@
     <Compile Include="DiagnosticAnalyzers\LockStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NamespaceDeclarationDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\NewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RedundantEmptyLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LogicalNotExpressionDiagnosticAnalyzer.cs" />
@@ -163,7 +160,6 @@
     <Compile Include="DiagnosticAnalyzers\NamedTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReturnStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SwitchSectionDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\SyntaxTreeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParenthesizedExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\QualifiedNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\IdentifierNameDiagnosticAnalyzer.cs" />
