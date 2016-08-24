@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.FormatBlock,
+                    DiagnosticDescriptors.FormatEmptyBlock,
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
                     DiagnosticDescriptors.RemoveRedundantEmptyLine);
             }
@@ -42,20 +42,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             RedundantEmptyLineAnalyzer.AnalyzeBlock(context, block);
 
-            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, block.Statements);
+            SyntaxList<StatementSyntax> statements = block.Statements;
 
-            if (block.Statements.Count == 0)
+            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, statements);
+
+            if (!statements.Any())
             {
-                int startLineIndex = block.OpenBraceToken.GetSpanStartLine();
-                int endLineIndex = block.CloseBraceToken.GetSpanEndLine();
+                int startLine = block.OpenBraceToken.GetSpanStartLine();
+                int endLine = block.CloseBraceToken.GetSpanEndLine();
 
-                if ((endLineIndex - startLineIndex) != 1
-                    && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                if ((endLine - startLine) != 1
+                    && block
+                        .DescendantTrivia(block.Span)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.FormatBlock,
-                        block.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block.GetLocation());
                 }
             }
         }

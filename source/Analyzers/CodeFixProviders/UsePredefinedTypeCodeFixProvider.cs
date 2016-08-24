@@ -18,7 +18,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class UsePredefinedTypeCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UsePredefinedType);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePredefinedType); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -26,56 +28,44 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             SyntaxNode node = root.FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true);
 
-            if (node == null)
-                return;
-
-            if (!node.IsKind(
-                SyntaxKind.QualifiedName,
-                SyntaxKind.IdentifierName,
-                SyntaxKind.SimpleMemberAccessExpression))
+            if (node != null
+                && node.IsKind(
+                    SyntaxKind.QualifiedName,
+                    SyntaxKind.IdentifierName,
+                    SyntaxKind.SimpleMemberAccessExpression)
+                && context.Document.SupportsSemanticModel)
             {
-                return;
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                var namedTypeSymbol = semanticModel
+                    .GetSymbolInfo(node, context.CancellationToken)
+                    .Symbol as INamedTypeSymbol;
+
+                if (namedTypeSymbol?.IsPredefinedType() == true)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        cancellationToken => RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
+                        DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
+
+                    context.RegisterCodeFix(codeAction, context.Diagnostics);
+                }
             }
-
-            if (!context.Document.SupportsSemanticModel)
-                return;
-
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-
-            ISymbol symbol = semanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol;
-
-            if (symbol == null)
-                return;
-
-            if (!symbol.IsNamedType())
-                return;
-
-            var namedTypeSymbol = (INamedTypeSymbol)symbol;
-
-            if (!namedTypeSymbol.IsPredefinedType())
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                $"Use predefined type '{namedTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken => UsePredefinedTypeAsync(context.Document, node, namedTypeSymbol, cancellationToken),
-                DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> UsePredefinedTypeAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             SyntaxNode node,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
                 .WithTriviaFrom(node)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newType);
+            SyntaxNode newRoot = root.ReplaceNode(node, newType);
 
             return document.WithSyntaxRoot(newRoot);
         }

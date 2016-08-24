@@ -14,51 +14,36 @@ using Pihrtsoft.CodeAnalysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddAccessModifierCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddDefaultAccessModifierCodeFixProvider))]
     [Shared]
-    public class AddAccessModifierCodeFixProvider : BaseCodeFixProvider
+    public class AddDefaultAccessModifierCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AddAccessModifier);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddDefaultAccessModifier); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!context.Document.SupportsSemanticModel)
-                return;
-
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
             SyntaxNode declaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(
-                    SyntaxKind.ClassDeclaration,
-                    SyntaxKind.ConstructorDeclaration,
-                    SyntaxKind.ConversionOperatorDeclaration,
-                    SyntaxKind.DelegateDeclaration,
-                    SyntaxKind.DestructorDeclaration,
-                    SyntaxKind.EnumDeclaration,
-                    SyntaxKind.EventDeclaration,
-                    SyntaxKind.EventFieldDeclaration,
-                    SyntaxKind.FieldDeclaration,
-                    SyntaxKind.IndexerDeclaration,
-                    SyntaxKind.InterfaceDeclaration,
-                    SyntaxKind.MethodDeclaration,
-                    SyntaxKind.OperatorDeclaration,
-                    SyntaxKind.PropertyDeclaration,
-                    SyntaxKind.StructDeclaration);
+                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
-            if (declaration == null)
-                return;
+            if (declaration != null
+                && context.Document.SupportsSemanticModel)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add default access modifier",
+                    cancellationToken => RefactorAsync(context.Document, declaration, cancellationToken),
+                    DiagnosticIdentifiers.AddDefaultAccessModifier + EquivalenceKeySuffix);
 
-            CodeAction codeAction = CodeAction.Create(
-                "Add access modifier",
-                cancellationToken => AddAccessModifierAsync(context.Document, declaration, cancellationToken),
-                DiagnosticIdentifiers.AddAccessModifier + EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
+            }
         }
 
-        internal static async Task<Document> AddAccessModifierAsync(
+        internal static async Task<Document> RefactorAsync(
             Document document,
             SyntaxNode declaration,
             CancellationToken cancellationToken)

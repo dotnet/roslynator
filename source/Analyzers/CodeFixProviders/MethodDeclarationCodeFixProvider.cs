@@ -36,37 +36,36 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MethodDeclarationSyntax>();
 
-            if (methodDeclaration == null)
-                return;
-
-            if (!context.Document.SupportsSemanticModel)
-                return;
-
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-            if (methodSymbol == null)
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            if (methodDeclaration != null
+                && context.Document.SupportsSemanticModel)
             {
-                switch (diagnostic.Id)
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                if (methodSymbol != null)
                 {
-                    case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
-                    case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
+                    foreach (Diagnostic diagnostic in context.Diagnostics)
+                    {
+                        switch (diagnostic.Id)
                         {
-                            string newName = GetNewName(methodDeclaration, diagnostic);
+                            case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
+                            case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
+                                {
+                                    string name = methodDeclaration.Identifier.ValueText;
+                                    string newName = GetNewName(methodDeclaration, diagnostic);
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Rename method to '{newName}'",
-                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                    CodeAction codeAction = CodeAction.Create(
+                                        $"Rename '{name}' to '{newName}'",
+                                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken),
+                                        diagnostic.Id + EquivalenceKeySuffix);
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                                    context.RegisterCodeFix(codeAction, diagnostic);
 
-                            break;
+                                    break;
+                                }
                         }
+                    }
                 }
             }
         }

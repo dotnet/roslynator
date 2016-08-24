@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AddBracesToIfElse = Prefix + "1003";
         public const string RemoveBracesFromIfElse = Prefix + "1004";
         public const string SimplifyNestedUsingStatement = Prefix + "1005";
-        public const string SimplifyElseClauseContainingOnlyIfStatement = Prefix + "1006";
+        public const string MergeElseClauseWithNestedIfStatement = Prefix + "1006";
         public const string AvoidEmbeddedStatement = Prefix + "1007";
         public const string UseExplicitTypeInsteadOfVar = Prefix + "1008";
         public const string UseExplicitTypeInsteadOfVarInForEach = Prefix + "1009";
@@ -23,12 +23,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string UseNameOfOperator = Prefix + "1015";
         public const string UseExpressionBodiedMember = Prefix + "1016";
         public const string AvoidMultilineExpressionBody = Prefix + "1017";
-        public const string AddAccessModifier = Prefix + "1018";
+        public const string AddDefaultAccessModifier = Prefix + "1018";
         public const string ReorderModifiers = Prefix + "1019";
         public const string SimplifyNullableOfT = Prefix + "1020";
         public const string SimplifyLambdaExpression = Prefix + "1021";
         public const string SimplifyLambdaExpressionParameterList = Prefix + "1022";
-        public const string FormatBlock = Prefix + "1023";
+        public const string FormatEmptyBlock = Prefix + "1023";
         public const string FormatAccessorList = Prefix + "1024";
         public const string FormatEachEnumMemberOnSeparateLine = Prefix + "1025";
         public const string FormatEachStatementOnSeparateLine = Prefix + "1026";
@@ -67,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
         public const string DeclareEachTypeInSeparateFile = Prefix + "1060";
         public const string MergeIfStatementWithNestedIfStatement = Prefix + "1061";
-        public const string ReplaceInterpolatedStringWithStringLiteral = Prefix + "1062";
+        public const string AvoidInterpolatedStringWithNoInterpolation = Prefix + "1062";
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = Prefix + "1063";
         public const string AvoidUsageOfForStatementToCreateInfiniteLoop = Prefix + "1064";
         public const string AvoidUsageOfWhileStatementToCreateInfiniteLoop = Prefix + "1065";

@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveEmptyElseClause,
-                    DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement);
+                    DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement:
+                    case DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove braces",

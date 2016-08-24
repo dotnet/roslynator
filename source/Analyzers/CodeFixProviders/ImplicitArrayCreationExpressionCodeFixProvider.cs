@@ -18,54 +18,56 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class ImplicitArrayCreationExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidImplicitlyTypedArray);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidImplicitlyTypedArray); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            ImplicitArrayCreationExpressionSyntax node = root
+            ImplicitArrayCreationExpressionSyntax expression = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ImplicitArrayCreationExpressionSyntax>();
 
-            if (node == null)
-                return;
+            if (expression != null
+                && context.Document.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-            if (!context.Document.SupportsSemanticModel)
-                return;
+                var typeSymbol = semanticModel
+                    .GetTypeInfo(expression, context.CancellationToken)
+                    .Type as IArrayTypeSymbol;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                if (typeSymbol?.ElementType?.IsErrorType() == false)
+                {
+                    var arrayType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol) as ArrayTypeSyntax;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(node, context.CancellationToken).Type;
+                    if (arrayType != null)
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Declare explicit type '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
+                            DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 
-            if (typeSymbol == null)
-                return;
-
-            var arrayType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol) as ArrayTypeSyntax;
-
-            if (arrayType == null)
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                $"Declare explicit type '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                cancellationToken => SpecifyExplicitTypeAsync(context.Document, node, arrayType, cancellationToken),
-                DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                        context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    }
+                }
+            }
         }
 
-        private static async Task<Document> SpecifyExplicitTypeAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             ImplicitArrayCreationExpressionSyntax node,
             ArrayTypeSyntax arrayType,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ArrayCreationExpressionSyntax newNode = CreateArrayCreationExpression(node, arrayType)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(node, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }

@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Format statement on separate line",
+                "Format statement on a separate line",
                 cancellationToken => FormatStatementOnNextLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine + EquivalenceKeySuffix);
 

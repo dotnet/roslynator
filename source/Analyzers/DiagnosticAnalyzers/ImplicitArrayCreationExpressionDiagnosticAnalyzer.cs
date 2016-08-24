@@ -14,7 +14,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class ImplicitArrayCreationExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidImplicitlyTypedArray);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidImplicitlyTypedArray); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -31,13 +33,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 
-            if (!expression.NewKeyword.IsMissing
-                && !expression.OpenBracketToken.IsMissing
-                && !expression.CloseBracketToken.IsMissing)
+            SyntaxToken newKeyword = expression.NewKeyword;
+            SyntaxToken openBracket = expression.OpenBracketToken;
+            SyntaxToken closeBracket = expression.CloseBracketToken;
+
+            if (!newKeyword.IsMissing
+                && !openBracket.IsMissing
+                && !closeBracket.IsMissing)
             {
-                TextSpan span = TextSpan.FromBounds(
-                    expression.NewKeyword.Span.Start,
-                    expression.CloseBracketToken.Span.End);
+                TextSpan span = TextSpan.FromBounds(newKeyword.Span.Start, closeBracket.Span.End);
 
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidImplicitlyTypedArray,

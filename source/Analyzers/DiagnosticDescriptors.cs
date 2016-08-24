@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider removing braces from {0}.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor RemoveBracesFadeOut = RemoveBraces.CreateFadeOut();
@@ -41,7 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider removing braces from if-else.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor RemoveBracesFromIfElseFadeOut = RemoveBracesFromIfElse.CreateFadeOut();
@@ -57,16 +57,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyNestedUsingStatementFadeOut = SimplifyNestedUsingStatement.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor SimplifyElseClauseContainingOnlyIfStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.SimplifyElseClauseContainingOnlyIfStatement,
-            title: "Simplify else clause containing only if statement.",
-            messageFormat: "Consider simplifying else clause containing only if statement.",
+        public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement,
+            title: "Merge else clause with nested if statement.",
+            messageFormat: "Consider merging else clause with nested if statement.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor SimplifyElseClauseContainingOnlyIfStatementFadeOut = SimplifyElseClauseContainingOnlyIfStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatementFadeOut = MergeElseClauseWithNestedIfStatement.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor AvoidEmbeddedStatement = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidEmbeddedStatement,
@@ -80,7 +80,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVar = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
             title: "Use explicit type instead of 'var' (when the type is not obvious).",
-            messageFormat: "Consider using explicit type instead of 'var' (when the type is not obvious).",
+            messageFormat: "Consider using explicit type instead of 'var'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach,
-            title: "Use explicit type instead of 'var' (in 'foreach').",
+            title: "Use explicit type instead of 'var' (in foreach statement).",
             messageFormat: "Consider using explicit type instead of 'var'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
@@ -100,7 +100,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitType = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseVarInsteadOfExplicitType,
             title: "Use 'var' instead of explicit type (when the type is obvious).",
-            messageFormat: "Consider using 'var' instead of explicit type (when the type is obvious).",
+            messageFormat: "Consider using 'var' instead of explicit type.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
@@ -110,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarEvenIfObvious = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious,
             title: "Use explicit type instead of 'var' (even if the type is obvious).",
-            messageFormat: "Consider using explicit type instead of 'var' (even if the type is obvious).",
+            messageFormat: "Consider using explicit type instead of 'var'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false,
@@ -133,13 +133,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider declaring explicit type when creating an array.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor UseNameOfOperator = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseNameOfOperator,
-            title: "Use nameof operator.",
-            messageFormat: "Consider using nameof operator.",
+            title: "Use 'nameof' operator.",
+            messageFormat: "Consider using 'nameof' operator.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -153,7 +153,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider using expression bodied member.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor UseExpressionBodiedMemberFadeOut = UseExpressionBodiedMember.CreateFadeOut();
@@ -167,10 +167,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor AddAccessModifier = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AddAccessModifier,
-            title: "Add access modifier.",
-            messageFormat: "Consider adding access modifier.",
+        public static readonly DiagnosticDescriptor AddDefaultAccessModifier = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddDefaultAccessModifier,
+            title: "Add default access modifier.",
+            messageFormat: "Consider adding default access modifier.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -217,10 +217,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = SimplifyLambdaExpressionParameterList.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor FormatBlock = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.FormatBlock,
-            title: "Format block.",
-            messageFormat: "Consider formatting block.",
+        public static readonly DiagnosticDescriptor FormatEmptyBlock = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatEmptyBlock,
+            title: "Format empty block.",
+            messageFormat: "Consider formatting empty block.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -237,17 +237,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor FormatEachEnumMemberOnSeparateLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine,
-            title: "Format each enum member on separate line.",
-            messageFormat: "Consider formatting each enum member on separate line.",
+            title: "Format each enum member on a separate line.",
+            messageFormat: "Consider formatting each enum member on a separate line.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor FormatEachStatementOnSeparateLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.FormatEachStatementOnSeparateLine,
-            title: "Format each statement on separate line.",
-            messageFormat: "Consider formatting each statement on separate line.",
+            title: "Format each statement on a separate line.",
+            messageFormat: "Consider formatting each statement on a separate line.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
@@ -255,8 +255,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor FormatEmbeddedStatementOnSeparateLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine,
-            title: "Format embedded statement on separate line.",
-            messageFormat: "Consider formatting embedded statement on separate line.",
+            title: "Format embedded statement on a separate line.",
+            messageFormat: "Consider formatting embedded statement on a separate line.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
@@ -264,8 +264,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor FormatSwitchSectionStatementOnSeparateLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine,
-            title: "Format switch section statement on separate line.",
-            messageFormat: "Consider formatting switch section statement on separate line.",
+            title: "Format switch section's statement on a separate line.",
+            messageFormat: "Consider formatting switch section's statement on a separate line.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
@@ -348,7 +348,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             title: "Remove redundant empty line.",
             messageFormat: "Consider removing redundant empty line.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -445,16 +445,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             title: "Asynchronous method name should end with 'Async'.",
             messageFormat: "Consider adding 'Async' to asynchronous method name.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsync = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync,
             title: "Non-asynchronous method name should not end with 'Async'.",
-            messageFormat: "Consider removing suffix 'Async' from non-asynchronous method name.",
+            messageFormat: "Consider removing 'Async' from non-asynchronous method name.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -511,8 +511,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor ReplaceForEachWithFor = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.ReplaceForEachWithFor,
-            title: "Replace 'foreach' with 'for'.",
-            messageFormat: "Consider replacing 'foreach' with 'for'.",
+            title: "Replace foreach statement with for statement.",
+            messageFormat: "Consider replacing foreach statement with for statement.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
@@ -584,8 +584,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             title: "Declare each type in separate file.",
             messageFormat: "Consider declaring each type in separate file.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatement = new DiagnosticDescriptor(
@@ -599,16 +599,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatementFadeOut = MergeIfStatementWithNestedIfStatement.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithStringLiteral = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceInterpolatedStringWithStringLiteral,
-            title: "Replace interpolated string with string literal.",
-            messageFormat: "Consider replacing interpolated string with string literal.",
+        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolation = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation,
+            title: "Avoid interpolated string with no interpolation.",
+            messageFormat: "Consider removing '$' from interpolated string with no interpolation.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
         );
-
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithStringLiteralFadeOut = ReplaceInterpolatedStringWithStringLiteral.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop,
@@ -712,7 +711,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             messageFormat: "Consider replacing if statement with return statement.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatementFadeOut = ReplaceIfStatementWithReturnStatement.CreateFadeOut();

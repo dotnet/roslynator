@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Format each enum member on separate line",
+                "Format each enum member on a separate line",
                 cancellationToken => FormatEachEnumMemberOnSeparateLineAsync(context.Document, enumDeclaration, cancellationToken),
                 DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine + EquivalenceKeySuffix);
 

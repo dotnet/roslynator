@@ -30,7 +30,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Format embedded statement on separate line",
+                "Format embedded statement on a separate line",
                 cancellationToken => FormatStatementOnNextLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine + EquivalenceKeySuffix);
 

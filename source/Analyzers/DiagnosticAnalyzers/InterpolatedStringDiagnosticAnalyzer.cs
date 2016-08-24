@@ -16,12 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteral,
-                    DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteralFadeOut);
-            }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolation); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -41,20 +36,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteral,
-                    context.Node.GetLocation());
-
                 SyntaxToken token = interpolatedString.StringStartToken;
 
-                if (!token.IsMissing
-                    && token.Text.StartsWith("$"))
+                if (token.Text.StartsWith("$"))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.ReplaceInterpolatedStringWithStringLiteralFadeOut,
-                        Location.Create(
-                            interpolatedString.SyntaxTree,
-                            new TextSpan(token.SpanStart, 1)));
+                        DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolation,
+                        Location.Create(interpolatedString.SyntaxTree, new TextSpan(token.SpanStart, 1)));
                 }
             }
         }

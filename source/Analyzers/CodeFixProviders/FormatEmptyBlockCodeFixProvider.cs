@@ -11,12 +11,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatBlockCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatEmptyBlockCodeFixProvider))]
     [Shared]
-    public class FormatBlockCodeFixProvider : BaseCodeFixProvider
+    public class FormatEmptyBlockCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.FormatBlock);
+            => ImmutableArray.Create(DiagnosticIdentifiers.FormatEmptyBlock);
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Format braces",
                 cancellationToken => FormatBlockAsync(context.Document, block, cancellationToken),
-                DiagnosticIdentifiers.FormatBlock + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.FormatEmptyBlock + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

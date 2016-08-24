@@ -21,8 +21,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemoveEmptyElseClause,
                     DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
-                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
-                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatementFadeOut);
+                    DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement,
+                    DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut);
             }
         }
 
@@ -79,11 +79,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                                 && CheckTrivia(elseClause, block, ifStatement))
                             {
                                 context.ReportDiagnostic(
-                                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatement,
+                                    DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement,
                                     block.GetLocation());
 
                                 context.FadeOutBraces(
-                                    DiagnosticDescriptors.SimplifyElseClauseContainingOnlyIfStatementFadeOut,
+                                    DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut,
                                     block);
                             }
                         }

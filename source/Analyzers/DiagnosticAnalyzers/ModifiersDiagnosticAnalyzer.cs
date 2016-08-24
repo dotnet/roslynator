@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.ReorderModifiers,
-                    DiagnosticDescriptors.AddAccessModifier);
+                    DiagnosticDescriptors.AddDefaultAccessModifier);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (location == null)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddAccessModifier, location);
+            context.ReportDiagnostic(DiagnosticDescriptors.AddDefaultAccessModifier, location);
         }
 
         private static bool IsAccessModifierRequired(SyntaxNodeAnalysisContext context)

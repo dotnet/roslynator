@@ -95,7 +95,7 @@
     <Compile Include="CodeFixProviders\EmptyStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatAccessorListCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\FormatBlockCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\FormatEmptyBlockCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ImplicitArrayCreationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParenthesizedLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEmptyObjectInitializerCodeFixProvider.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BooleanLiteralDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AttributeArgumentListDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\AddAccessModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AddDefaultAccessModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatBinaryOperatorOnNextLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReorderModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
