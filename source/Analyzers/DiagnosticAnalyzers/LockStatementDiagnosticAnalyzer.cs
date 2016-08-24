@@ -13,48 +13,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class LockStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var lockStatement = (LockStatementSyntax)context.Node;
 
-            if (lockStatement.Expression != null
-                && lockStatement.Expression.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression))
+            ExpressionSyntax expression = lockStatement.Expression;
+
+            if (expression?.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression) == true)
             {
                 ITypeSymbol typeSymbol = context.SemanticModel
-                    .GetTypeInfo(lockStatement.Expression, context.CancellationToken).Type;
+                    .GetTypeInfo(expression, context.CancellationToken)
+                    .Type;
 
-                if (typeSymbol != null && IsPubliclyAccessible(typeSymbol))
+                if (typeSymbol?.IsPubliclyAccessible() == true)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
-                        lockStatement.Expression.GetLocation());
+                        expression.GetLocation(),
+                        expression.ToString());
                 }
-            }
-        }
-
-        private static bool IsPubliclyAccessible(ITypeSymbol typeSymbol)
-        {
-            switch (typeSymbol.DeclaredAccessibility)
-            {
-                case Accessibility.Protected:
-                case Accessibility.ProtectedOrInternal:
-                case Accessibility.Public:
-                    return true;
-                default:
-                    return false;
             }
         }
     }

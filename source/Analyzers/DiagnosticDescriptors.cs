@@ -562,7 +562,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor AvoidLockingOnPubliclyAccessibleInstance = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance,
             title: "Avoid locking on publicly accessible instance.",
-            messageFormat: "Avoid locking on publicly accessible instance.", //TODO: Improve messageFormat for AvoidLockingOnPubliclyAccessibleInstance
+            messageFormat: "Consider locking on private field instead of locking on '{0}'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true

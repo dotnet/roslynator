@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -21,7 +23,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         private const string LockObjectName = "_lockObject";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -45,9 +49,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         private static async Task<Document> IntroduceFieldToLockOnAsync(
             Document document,
             LockStatementSyntax lockStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax containingMember = lockStatement.FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
@@ -66,14 +70,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                     int index = members.IndexOf(containingMember);
 
+                    string name = LockObjectName;
+
+                    if (document.SupportsSemanticModel)
+                    {
+                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+                        name = SyntaxUtility.GetUniqueName(name, semanticModel, lockStatement.Expression.Span.Start);
+                    }
+
                     LockStatementSyntax newLockStatement = lockStatement
-                        .WithExpression(IdentifierName(LockObjectName));
+                        .WithExpression(IdentifierName(name));
 
                     MemberDeclarationSyntax newContainingMember = containingMember
                         .ReplaceNode(lockStatement, newLockStatement);
 
-                    FieldDeclarationSyntax field = CreateField()
-                        .WithFormatterAnnotation();
+                    bool isStatic = containingMember.GetDeclarationModifiers().Contains(SyntaxKind.StaticKeyword);
+
+                    FieldDeclarationSyntax field = CreateField(name, isStatic).WithFormatterAnnotation();
 
                     SyntaxList<MemberDeclarationSyntax> newMembers = members
                         .Replace(members[index], newContainingMember)
@@ -81,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                     MemberDeclarationSyntax newNode = containingDeclaration.SetMembers(newMembers);
 
-                    SyntaxNode newRoot = oldRoot.ReplaceNode(containingDeclaration, newNode);
+                    SyntaxNode newRoot = root.ReplaceNode(containingDeclaration, newNode);
 
                     return document.WithSyntaxRoot(newRoot);
                 }
@@ -101,25 +114,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             return -1;
         }
 
-        private static FieldDeclarationSyntax CreateField()
+        private static FieldDeclarationSyntax CreateField(string name, bool isStatic)
         {
             return FieldDeclaration(
-                List<AttributeListSyntax>(),
-                TokenList(
-                    Token(SyntaxKind.PrivateKeyword),
-                    Token(SyntaxKind.StaticKeyword),
-                    Token(SyntaxKind.ReadOnlyKeyword)),
-                VariableDeclaration(
-                    PredefinedType(Token(SyntaxKind.ObjectKeyword)),
-                    SingletonSeparatedList(
-                        VariableDeclarator(
-                            Identifier(LockObjectName),
-                            null,
-                            EqualsValueClause(
-                                ObjectCreationExpression(
-                                    PredefinedType(Token(SyntaxKind.ObjectKeyword)),
-                                    ArgumentList(),
-                                    null))))));
+                (isStatic) ? Modifiers.PrivateStaticReadOnly() : Modifiers.PrivateReadOnly(),
+                ObjectType(),
+                Identifier(name).WithRenameAnnotation(),
+                ObjectCreationExpression(ObjectType(), ArgumentList()));
         }
     }
 }
