@@ -42,21 +42,38 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
         }
 
-        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, ExpressionSyntax value = null)
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, ExpressionSyntax value = null)
         {
             return FieldDeclaration(
+                modifiers,
+                type,
+                Identifier(identifier),
+                value);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+        {
+            return FieldDeclaration(
+                modifiers,
                 type,
                 identifier,
                 (value != null) ? EqualsValueClause(value) : null);
         }
 
-        public static FieldDeclarationSyntax FieldDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
+        {
+            return FieldDeclaration(modifiers, type, Identifier(identifier), initializer);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
         {
             return SyntaxFactory.FieldDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
                 VariableDeclaration(
                     type,
                     VariableDeclarator(
-                        Identifier(identifier),
+                        identifier,
                         null,
                         initializer)));
         }
@@ -203,6 +220,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static SyntaxToken StaticToken()
         {
             return Token(SyntaxKind.StaticKeyword);
+        }
+
+        public static SyntaxToken ReadOnlyToken()
+        {
+            return Token(SyntaxKind.ReadOnlyKeyword);
+        }
+
+        public static SyntaxToken ConstToken()
+        {
+            return Token(SyntaxKind.ConstKeyword);
         }
 
         private static SyntaxToken Token(SyntaxKind syntaxKind)
@@ -506,6 +533,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 default:
                     return CarriageReturnLineFeed;
             }
+        }
+
+        public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, ArgumentListSyntax argumentList)
+        {
+            return SyntaxFactory.ObjectCreationExpression(type, argumentList, default(InitializerExpressionSyntax));
         }
     }
 }

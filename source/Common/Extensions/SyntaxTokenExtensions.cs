@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
@@ -145,6 +146,11 @@ namespace Pihrtsoft.CodeAnalysis
         public static SyntaxToken WithSimplifierAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(Simplifier.Annotation);
+        }
+
+        public static SyntaxToken WithRenameAnnotation(this SyntaxToken token)
+        {
+            return token.WithAdditionalAnnotations(RenameAnnotation.Create());
         }
     }
 }

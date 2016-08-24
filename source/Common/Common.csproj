@@ -104,6 +104,7 @@
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
+    <Compile Include="Modifiers.cs" />
     <Compile Include="SelectedLinesInfo.cs" />
     <Compile Include="SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />

@@ -9,6 +9,18 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class ITypeSymbolExtensions
     {
+        public static bool IsPubliclyAccessible(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            Accessibility accessibility = typeSymbol.DeclaredAccessibility;
+
+            return accessibility == Accessibility.Protected
+                || accessibility == Accessibility.ProtectedOrInternal
+                || accessibility == Accessibility.Public;
+        }
+
         public static bool IsInt32(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Int32;

@@ -32,8 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 
         public override MemberDeclarationSyntax CreateDeclaration()
         {
-            return FieldDeclaration(Type, Name)
-                .WithModifiers(new SyntaxKind[] { SyntaxKind.PrivateKeyword, SyntaxKind.ReadOnlyKeyword });
+            return FieldDeclaration(Modifiers.PrivateReadOnly(), Type, Name);
         }
     }
 }

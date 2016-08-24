@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp;
 using Pihrtsoft.CodeAnalysis.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -52,8 +53,7 @@ namespace CodeGenerator
 
         private static MemberDeclarationSyntax CreateConstantDeclaration(string name)
         {
-            return FieldDeclaration(StringType(), name, StringLiteralExpression(name))
-                .WithModifiers(SyntaxKind.PublicKeyword, SyntaxKind.ConstKeyword);
+            return FieldDeclaration(Modifiers.PublicConst(), StringType(), name, StringLiteralExpression(name));
         }
     }
 }

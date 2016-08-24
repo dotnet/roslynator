@@ -116,8 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                 modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
 
-            return FieldDeclaration(propertyDeclaration.Type, name, propertyDeclaration.Initializer)
-                .WithModifiers(modifiers);
+            return FieldDeclaration(modifiers, propertyDeclaration.Type, name, propertyDeclaration.Initializer);
         }
     }
 }
