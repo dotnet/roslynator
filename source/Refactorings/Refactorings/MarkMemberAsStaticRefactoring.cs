@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
@@ -217,7 +218,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static ConstructorDeclarationSyntax AddStaticModifier(ConstructorDeclarationSyntax node)
         {
-            return node.WithModifiers(TokenList(Token(SyntaxKind.StaticKeyword)));
+            return node.WithModifiers(Modifiers.Static());
         }
 
         private static SyntaxTokenList AddStaticModifier(SyntaxTokenList modifiers)

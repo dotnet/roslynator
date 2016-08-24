@@ -10,42 +10,42 @@ namespace Pihrtsoft.CodeAnalysis
     {
         public static SyntaxTokenList PrivateStaticReadOnly()
         {
-            return TokenList(Private(), Static(), ReadOnly());
+            return TokenList(PrivateToken(), StaticToken(), ReadOnlyToken());
+        }
+
+        public static SyntaxTokenList InternalStatic()
+        {
+            return TokenList(InternalToken(), StaticToken());
         }
 
         public static SyntaxTokenList PrivateReadOnly()
         {
-            return TokenList(Private(), ReadOnly());
+            return TokenList(PrivateToken(), ReadOnlyToken());
+        }
+
+        public static SyntaxTokenList Public()
+        {
+            return TokenList(PublicToken());
         }
 
         public static SyntaxTokenList PublicConst()
         {
-            return TokenList(Public(), Const());
+            return TokenList(PublicToken(), ConstToken());
         }
 
-        private static SyntaxToken Public()
+        public static SyntaxTokenList PublicStatic()
         {
-            return PublicToken();
+            return TokenList(PublicToken(), StaticToken());
         }
 
-        private static SyntaxToken Private()
+        public static SyntaxTokenList PublicPartial()
         {
-            return PrivateToken();
+            return TokenList(PublicToken(), PartialToken());
         }
 
-        private static SyntaxToken Static()
+        public static SyntaxTokenList Static()
         {
-            return StaticToken();
-        }
-
-        private static SyntaxToken ReadOnly()
-        {
-            return ReadOnlyToken();
-        }
-
-        private static SyntaxToken Const()
-        {
-            return ConstToken();
+            return TokenList(StaticToken());
         }
     }
 }

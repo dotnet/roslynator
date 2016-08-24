@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp;
@@ -23,9 +22,7 @@ namespace CodeGenerator
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
                             ClassDeclaration("RefactoringIdentifiers")
-                                .WithModifiers(
-                                    SyntaxKind.PublicKeyword,
-                                    SyntaxKind.StaticKeyword)
+                                .WithModifiers(Modifiers.PublicStatic())
                                 .WithMembers(
                                     CreateMembers(refactorings))));
         }
@@ -36,7 +33,7 @@ namespace CodeGenerator
                 yield return CreateConstantDeclaration(refactoring.Identifier);
 
             //yield return MethodDeclaration(ParseTypeName("ImmutableArray<string>"), "GetIdentifiers")
-            //    .WithModifiers(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword)
+            //    .WithModifiers(Modifiers.InternalStatic())
             //    .WithStatements(
             //        ReturnStatement(
             //            InvocationExpression(

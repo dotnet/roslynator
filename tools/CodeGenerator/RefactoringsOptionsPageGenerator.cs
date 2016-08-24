@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis;
 using Pihrtsoft.CodeAnalysis.CSharp;
 using Pihrtsoft.CodeAnalysis.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -30,9 +31,7 @@ namespace CodeGenerator
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
                             ClassDeclaration("RefactoringsOptionsPage")
-                                .WithModifiers(
-                                        SyntaxKind.PublicKeyword,
-                                        SyntaxKind.PartialKeyword)
+                                .WithModifiers(Modifiers.PublicPartial())
                                 .WithMembers(
                                     CreateMembers(refactorings))));
         }
@@ -40,7 +39,7 @@ namespace CodeGenerator
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringInfo> refactorings)
         {
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
-                .WithModifiers(SyntaxKind.PublicKeyword)
+                .WithModifiers(Modifiers.Public())
                 .WithBody(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
@@ -50,7 +49,7 @@ namespace CodeGenerator
                     }));
 
             yield return MethodDeclaration(VoidType(), "Apply")
-                .WithModifiers(SyntaxKind.PublicKeyword)
+                .WithModifiers(Modifiers.Public())
                 .WithBody(
                     Block(refactorings.Select(refactoring =>
                     {
@@ -76,7 +75,7 @@ namespace CodeGenerator
                     AttributeList(Attribute("DisplayName", StringLiteralExpression(refactoring.Title))),
                     AttributeList(Attribute("Description", StringLiteralExpression(CreateDescription(refactoring)))),
                     AttributeList(Attribute("TypeConverter", TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
-                .WithModifiers(SyntaxKind.PublicKeyword)
+                .WithModifiers(Modifiers.Public())
                 .WithAccessorList(
                     AutoGetter(),
                     AutoSetter());

@@ -342,6 +342,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return Token(SyntaxKind.PrivateKeyword);
         }
 
+        public static SyntaxToken PartialToken()
+        {
+            return Token(SyntaxKind.PartialKeyword);
+        }
+
         public static IdentifierNameSyntax Var()
         {
             return IdentifierName("var");

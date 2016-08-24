@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -16,6 +18,29 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxUtility
     {
+        public static string GetUniqueName(string name, SemanticModel semanticModel, int position)
+        {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
+
+            int suffix = 2;
+
+            string newName = name;
+
+            while (symbols.Any(f => string.Equals(f.Name, newName, StringComparison.Ordinal)))
+            {
+                newName = name + suffix.ToString();
+                suffix++;
+            }
+
+            return newName;
+        }
+
         public static IEnumerable<DirectiveTriviaSyntax> GetRegionDirectives(SyntaxNode node)
         {
             if (node == null)
