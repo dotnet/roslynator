@@ -13,7 +13,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class IdentifierNameDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.UsePredefinedType);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePredefinedType); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -31,18 +33,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             var identifierName = (IdentifierNameSyntax)context.Node;
 
             if (!identifierName.IsVar
-                && identifierName.Parent != null
-                && !identifierName.Parent.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                && !identifierName.Parent.IsKind(SyntaxKind.QualifiedName)
-                && !identifierName.Parent.IsKind(SyntaxKind.UsingDirective))
+                && !identifierName.IsParentKind(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.QualifiedName,
+                    SyntaxKind.UsingDirective))
             {
-                var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(identifierName, context.CancellationToken).Symbol as INamedTypeSymbol;
+                var namedTypeSymbol = context.SemanticModel
+                    .GetSymbolInfo(identifierName, context.CancellationToken)
+                    .Symbol as INamedTypeSymbol;
 
                 if (namedTypeSymbol?.IsPredefinedType() == true)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UsePredefinedType,
-                        identifierName.GetLocation());
+                    IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(identifierName, context.CancellationToken);
+
+                    if (aliasSymbol == null)
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.UsePredefinedType,
+                            identifierName.GetLocation());
+                    }
                 }
             }
         }

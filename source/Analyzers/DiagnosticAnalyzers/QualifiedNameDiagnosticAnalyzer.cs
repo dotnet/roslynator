@@ -27,37 +27,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIdentifierName(f), SyntaxKind.QualifiedName);
+            context.RegisterSyntaxNodeAction(f => AnalyzeQualifiedName(f), SyntaxKind.QualifiedName);
         }
 
-        private void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
+        private void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
-                return;
-
-            var type = (QualifiedNameSyntax)context.Node;
-
-            var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(type, context.CancellationToken).Symbol as INamedTypeSymbol;
-
-            if (namedTypeSymbol == null)
-                return;
-
-            if (namedTypeSymbol.IsPredefinedType())
+            if (!context.Node.IsParentKind(SyntaxKind.UsingDirective))
             {
-                Diagnostic diagnostic = Diagnostic.Create(
-                    DiagnosticDescriptors.UsePredefinedType,
-                    context.Node.GetLocation());
+                var qualifiedName = (QualifiedNameSyntax)context.Node;
 
-                context.ReportDiagnostic(diagnostic);
-            }
-            else if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyNullableOfT,
-                    context.Node.GetLocation());
+                var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(qualifiedName, context.CancellationToken).Symbol as INamedTypeSymbol;
+
+                if (namedTypeSymbol != null)
+                {
+                    if (namedTypeSymbol.IsPredefinedType())
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.UsePredefinedType,
+                            qualifiedName.GetLocation());
+                    }
+                    else if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.SimplifyNullableOfT,
+                            qualifiedName.GetLocation());
+                    }
+                }
             }
         }
     }

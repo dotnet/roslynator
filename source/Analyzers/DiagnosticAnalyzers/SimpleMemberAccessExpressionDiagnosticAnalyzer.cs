@@ -52,21 +52,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SyntaxNodeAnalysisContext context,
             MemberAccessExpressionSyntax memberAccess)
         {
-            ExpressionSyntax expression = memberAccess.Expression;
-
-            if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true
-                && expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.IdentifierName) == true)
+            if (!memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
-                var namedTypeSymbol = context
-                    .SemanticModel
-                    .GetSymbolInfo(expression, context.CancellationToken)
-                    .Symbol as INamedTypeSymbol;
+                ExpressionSyntax expression = memberAccess.Expression;
 
-                if (namedTypeSymbol?.IsPredefinedType() == true)
+                if (expression?.IsKind(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.IdentifierName) == true)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UsePredefinedType,
-                        expression.GetLocation());
+                    var namedTypeSymbol = context.SemanticModel
+                        .GetSymbolInfo(expression, context.CancellationToken)
+                        .Symbol as INamedTypeSymbol;
+
+                    if (namedTypeSymbol?.IsPredefinedType() == true)
+                    {
+                        IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(expression, context.CancellationToken);
+
+                        if (aliasSymbol == null)
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UsePredefinedType,
+                                expression.GetLocation());
+                        }
+                    }
                 }
             }
         }
