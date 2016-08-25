@@ -530,10 +530,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor AvoidAliasDirective = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AvoidAliasDirective,
-            title: "Avoid alias directive.",
-            messageFormat: "Avoid alias directive.",
+        public static readonly DiagnosticDescriptor AvoidUsageOfUsingAliasDirective = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective,
+            title: "Avoid usage of using alias directive.",
+            messageFormat: "Avoid usage of using alias directive.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false

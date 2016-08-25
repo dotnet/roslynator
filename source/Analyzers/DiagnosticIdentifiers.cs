@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         //public const string ReplaceForEachWithFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
-        public const string AvoidAliasDirective = Prefix + "1056";
+        public const string AvoidUsageOfUsingAliasDirective = Prefix + "1056";
         public const string AddEmptyLineBetweenDeclarations = Prefix + "1057";
         public const string SimplifyAssignmentExpression = Prefix + "1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = Prefix + "1059";
