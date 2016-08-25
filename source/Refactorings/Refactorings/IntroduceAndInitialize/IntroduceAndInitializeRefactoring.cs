@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
-                    var refactoring = new IntroduceAndInitializeFieldRefactoring(ImmutableArray.Create(parameter));
+                    var refactoring = new IntroduceAndInitializeFieldRefactoring(ImmutableArray.Create(parameter), context.Settings.PrefixFieldIdentifierWithUnderscore);
                     refactoring.RegisterRefactoring(context);
                 }
             }
