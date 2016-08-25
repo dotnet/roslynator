@@ -296,7 +296,19 @@ namespace Pihrtsoft.CodeAnalysis
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
         {
             return node != null
-                && node.Parent.IsKind(kind);
+                && Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node.Parent, kind);
+        }
+
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
+        {
+            return node != null
+                && IsKind(node.Parent, kind1, kind2);
+        }
+
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            return node != null
+                && IsKind(node.Parent, kind1, kind2, kind3);
         }
 
         public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] kinds)
