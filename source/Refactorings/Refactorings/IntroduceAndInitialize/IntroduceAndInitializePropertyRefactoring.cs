@@ -9,8 +9,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 {
     internal class IntroduceAndInitializePropertyRefactoring : IntroduceAndInitializeRefactoring
     {
-        public IntroduceAndInitializePropertyRefactoring(IEnumerable<ParameterSyntax> parameters)
-            : base(parameters)
+        public IntroduceAndInitializePropertyRefactoring(IntroduceAndInitializeInfo info)
+            : base(info)
+        {
+        }
+
+        public IntroduceAndInitializePropertyRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+            : base(infos)
         {
         }
 
@@ -34,11 +39,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             {
                 return $"Introduce and initialize property '{FirstInfo.Name}'";
             }
-        }
-
-        protected override IntroduceAndInitializeInfo CreateInfo(ParameterSyntax parameter)
-        {
-            return new IntroduceAndInitializePropertyInfo(parameter);
         }
     }
 }

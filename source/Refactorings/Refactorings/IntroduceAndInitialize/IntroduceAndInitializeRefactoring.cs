@@ -14,11 +14,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 {
     internal abstract class IntroduceAndInitializeRefactoring
     {
-        public IntroduceAndInitializeRefactoring(IEnumerable<ParameterSyntax> parameters)
+        public IntroduceAndInitializeRefactoring(IntroduceAndInitializeInfo info)
         {
-            Infos = parameters
-                .Select(f => CreateInfo(f))
-                .ToImmutableArray();
+            Infos = ImmutableArray.Create(info);
+        }
+
+        public IntroduceAndInitializeRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+        {
+            Infos = infos.ToImmutableArray();
         }
 
         public ImmutableArray<IntroduceAndInitializeInfo> Infos { get; }
@@ -33,8 +36,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             get { return FirstInfo.Parameter.Parent?.Parent as ConstructorDeclarationSyntax; }
         }
 
-        protected abstract IntroduceAndInitializeInfo CreateInfo(ParameterSyntax parameter);
-
         protected abstract int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members);
 
         protected abstract string GetTitle();
@@ -46,13 +47,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
-                    var refactoring = new IntroduceAndInitializePropertyRefactoring(ImmutableArray.Create(parameter));
+                    var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter);
+                    var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfo);
                     refactoring.RegisterRefactoring(context);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
-                    var refactoring = new IntroduceAndInitializeFieldRefactoring(ImmutableArray.Create(parameter), context.Settings.PrefixFieldIdentifierWithUnderscore);
+                    var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                    var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfo);
                     refactoring.RegisterRefactoring(context);
                 }
             }
@@ -66,13 +69,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
-                    var refactoring = new IntroduceAndInitializePropertyRefactoring(parameters);
+                    IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
+                        .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter));
+
+                    var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
                     refactoring.RegisterRefactoring(context);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
                 {
-                    var refactoring = new IntroduceAndInitializeFieldRefactoring(parameters);
+                    IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
+                        .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore));
+
+                    var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
                     refactoring.RegisterRefactoring(context);
                 }
             }

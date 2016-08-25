@@ -9,13 +9,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 {
     internal class IntroduceAndInitializeFieldRefactoring : IntroduceAndInitializeRefactoring
     {
-        public IntroduceAndInitializeFieldRefactoring(IEnumerable<ParameterSyntax> parameters, bool prefixFieldIndentifierWithUnderscore = false)
-            : base(parameters)
+        public IntroduceAndInitializeFieldRefactoring(IntroduceAndInitializeInfo info)
+            : base(info)
         {
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIndentifierWithUnderscore;
         }
 
-        public bool PrefixFieldIdentifierWithUnderscore { get; }
+        public IntroduceAndInitializeFieldRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+            : base(infos)
+        {
+        }
 
         protected override int GetDeclarationIndex(SyntaxList<MemberDeclarationSyntax> members)
         {
@@ -42,11 +44,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             {
                 return $"Introduce and initialize field '{FirstInfo.Name}'";
             }
-        }
-
-        protected override IntroduceAndInitializeInfo CreateInfo(ParameterSyntax parameter)
-        {
-            return new IntroduceAndInitializeFieldInfo(parameter, PrefixFieldIdentifierWithUnderscore);
         }
     }
 }
