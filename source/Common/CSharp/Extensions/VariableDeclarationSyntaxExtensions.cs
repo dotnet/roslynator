@@ -20,5 +20,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             return null;
         }
+
+        public static VariableDeclaratorSyntax FirstVariableOrDefault(this VariableDeclarationSyntax declaration)
+        {
+            if (declaration == null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
+
+            if (variables.Any())
+                return variables[0];
+
+            return null;
+        }
     }
 }

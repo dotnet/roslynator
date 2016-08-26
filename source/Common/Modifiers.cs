@@ -13,9 +13,29 @@ namespace Pihrtsoft.CodeAnalysis
             return TokenList(PrivateToken(), StaticToken(), ReadOnlyToken());
         }
 
+        public static SyntaxTokenList Internal()
+        {
+            return TokenList(InternalToken());
+        }
+
         public static SyntaxTokenList InternalStatic()
         {
             return TokenList(InternalToken(), StaticToken());
+        }
+
+        public static SyntaxTokenList Protected()
+        {
+            return TokenList(ProtectedToken());
+        }
+
+        public static SyntaxTokenList ProtectedInternal()
+        {
+            return TokenList(ProtectedToken(), InternalToken());
+        }
+
+        public static SyntaxTokenList Private()
+        {
+            return TokenList(PrivateToken());
         }
 
         public static SyntaxTokenList PrivateReadOnly()

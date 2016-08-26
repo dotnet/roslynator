@@ -20,6 +20,11 @@ namespace Pihrtsoft.CodeAnalysis
             return SeparatedList(nodes);
         }
 
+        public static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
+        {
+            return TokenList(tokens);
+        }
+
         public static bool ContainsEndOfLine(this IEnumerable<SyntaxTrivia> collection)
         {
             if (collection == null)
