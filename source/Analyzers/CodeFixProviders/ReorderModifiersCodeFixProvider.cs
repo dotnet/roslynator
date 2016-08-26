@@ -25,24 +25,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            SyntaxNode declaration = root
+            MemberDeclarationSyntax declaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(
-                    SyntaxKind.ClassDeclaration,
-                    SyntaxKind.ConstructorDeclaration,
-                    SyntaxKind.ConversionOperatorDeclaration,
-                    SyntaxKind.DelegateDeclaration,
-                    SyntaxKind.DestructorDeclaration,
-                    SyntaxKind.EnumDeclaration,
-                    SyntaxKind.EventDeclaration,
-                    SyntaxKind.EventFieldDeclaration,
-                    SyntaxKind.FieldDeclaration,
-                    SyntaxKind.IndexerDeclaration,
-                    SyntaxKind.InterfaceDeclaration,
-                    SyntaxKind.MethodDeclaration,
-                    SyntaxKind.OperatorDeclaration,
-                    SyntaxKind.PropertyDeclaration,
-                    SyntaxKind.StructDeclaration);
+                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
             if (declaration == null)
                 return;
@@ -57,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
         private static async Task<Document> RefactorAsync(
             Document document,
-            SyntaxNode declaration,
+            MemberDeclarationSyntax declaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);

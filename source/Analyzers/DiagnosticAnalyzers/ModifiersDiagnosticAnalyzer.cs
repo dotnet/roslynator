@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -27,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeDeclaration(f),
+            context.RegisterSyntaxNodeAction(f => AnalyzeMemberDeclaration(f),
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.ConstructorDeclaration,
                 SyntaxKind.ConversionOperatorDeclaration,
@@ -44,111 +46,128 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 SyntaxKind.StructDeclaration);
         }
 
-        private void AnalyzeDeclaration(SyntaxNodeAnalysisContext context)
+        private void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            SyntaxTokenList modifiers = context.Node.GetDeclarationModifiers();
+            var declaration = (MemberDeclarationSyntax)context.Node;
 
-            ReorderModifiers(context, modifiers);
+            SyntaxTokenList modifiers = declaration.GetModifiers();
 
-            AddDefaultAccessModifier(context, modifiers);
+            if (modifiers.Count > 1
+                && !ModifierUtility.IsSorted(modifiers))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.ReorderModifiers,
+                    Location.Create(context.Node.SyntaxTree, modifiers.Span));
+            }
+
+            AccessModifier accessModifier = GetAccessModifier(context, declaration, modifiers);
+
+            if (accessModifier != AccessModifier.None)
+            {
+                Location location = GetLocation(declaration);
+
+                if (location != null)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AddDefaultAccessModifier,
+                        location,
+                        ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(AccessModifier), accessModifier.ToString()) }));
+                }
+            }
         }
 
-        private static void ReorderModifiers(SyntaxNodeAnalysisContext context, SyntaxTokenList modifiers)
+        private static AccessModifier GetAccessModifier(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
-            if (modifiers.Count <= 1)
-                return;
+            if (!ModifierUtility.ContainsAccessModifier(modifiers))
+            {
+                if (modifiers.Any(SyntaxKind.PartialKeyword))
+                {
+                    if (!declaration.IsKind(SyntaxKind.MethodDeclaration))
+                    {
+                        AccessModifier? accessModifier = GetPartialAccessModifier(context, declaration);
 
-            if (ModifierComparer.AreModifiersSorted(modifiers))
-                return;
+                        if (accessModifier != null)
+                        {
+                            if (accessModifier == AccessModifier.None)
+                            {
+                                return ModifierUtility.GetDefaultAccessModifier(declaration);
+                            }
+                            else
+                            {
+                                return accessModifier.Value;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return ModifierUtility.GetDefaultAccessModifier(declaration);
+                }
+            }
 
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.ReorderModifiers,
-                Location.Create(context.Node.SyntaxTree, modifiers.Span));
+            return AccessModifier.None;
         }
 
-        private static void AddDefaultAccessModifier(SyntaxNodeAnalysisContext context, SyntaxTokenList modifiers)
+        private static AccessModifier? GetPartialAccessModifier(
+            SyntaxNodeAnalysisContext context,
+            MemberDeclarationSyntax declaration)
         {
-            if (context.Node.IsKind(SyntaxKind.OperatorDeclaration))
-                return;
-
-            //TODO: check access modifier for partial class, struct, interface
-            if (modifiers.Any(SyntaxKind.PartialKeyword))
-                return;
-
-            if (modifiers.ContainsAccessModifier())
-                return;
-
-            if (!IsAccessModifierRequired(context))
-                return;
-
-            Location location = GetLocation(context.Node);
-
-            if (location == null)
-                return;
-
-            context.ReportDiagnostic(DiagnosticDescriptors.AddDefaultAccessModifier, location);
-        }
-
-        private static bool IsAccessModifierRequired(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.Kind() == SyntaxKind.FieldDeclaration)
-                return true;
-
-            if (context.Node.HasExplicitInterfaceSpecifier())
-                return false;
-
-            SyntaxNode declaration = GetDeclarationNode(context.Node);
-
-            if (declaration == null)
-                return false;
+            AccessModifier accessModifier = AccessModifier.None;
 
             ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
-            if (symbol == null || symbol.IsErrorType())
-                return false;
+            if (symbol != null)
+            {
+                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
+                {
+                    var declaration2 = syntaxReference.GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
 
-            if (context.Node.Kind() == SyntaxKind.ConstructorDeclaration && symbol.IsStatic)
-                return false;
+                    if (declaration2 != null)
+                    {
+                        SyntaxTokenList modifiers = declaration2.GetModifiers();
 
-            if (symbol.ContainingType?.TypeKind == TypeKind.Interface)
-                return false;
+                        AccessModifier accessModifier2 = ModifierUtility.GetAccessModifier(modifiers);
 
-            return true;
+                        if (accessModifier2 != AccessModifier.None)
+                        {
+                            if (accessModifier == AccessModifier.None || accessModifier == accessModifier2)
+                            {
+                                accessModifier = accessModifier2;
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return accessModifier;
         }
 
-        private static SyntaxNode GetDeclarationNode(SyntaxNode syntaxNode)
+        private static Location GetLocation(SyntaxNode node)
         {
-            if (syntaxNode.Kind() != SyntaxKind.EventFieldDeclaration)
-                return syntaxNode;
+            SyntaxKind kind = node.Kind();
 
-            var eventFieldDeclaration = (EventFieldDeclarationSyntax)syntaxNode;
+            if (kind == SyntaxKind.OperatorDeclaration)
+                return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
 
-            if (eventFieldDeclaration.Declaration?.Variables.Count > 0)
-                return eventFieldDeclaration.Declaration?.Variables[0];
+            if (kind == SyntaxKind.ConversionOperatorDeclaration)
+                return ((ConversionOperatorDeclarationSyntax)node).Type?.GetLocation();
+
+            SyntaxToken token = GetToken(node);
+
+            if (!token.IsKind(SyntaxKind.None))
+                return token.GetLocation();
 
             return null;
         }
 
-        private static Location GetLocation(SyntaxNode syntaxNode)
-        {
-            if (syntaxNode.Kind() == SyntaxKind.ConversionOperatorDeclaration)
-                return ((ConversionOperatorDeclarationSyntax)syntaxNode).Type?.GetLocation();
-
-            SyntaxToken? syntaxToken = GetToken(syntaxNode);
-
-            if (syntaxToken == null)
-                return null;
-
-            if (syntaxToken.Value.Kind() == SyntaxKind.None)
-                return null;
-
-            return syntaxToken.Value.GetLocation();
-        }
-
-        private static SyntaxToken? GetToken(SyntaxNode declaration)
+        private static SyntaxToken GetToken(SyntaxNode declaration)
         {
             switch (declaration.Kind())
             {
@@ -173,26 +192,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Identifier;
                 case SyntaxKind.FieldDeclaration:
-                    {
-                        var fieldDeclaration = (FieldDeclarationSyntax)declaration;
-
-                        if (fieldDeclaration.Declaration?.Variables.Count > 0)
-                            return fieldDeclaration.Declaration.Variables[0].Identifier;
-
-                        break;
-                    }
+                    return GetToken(((FieldDeclarationSyntax)declaration).Declaration);
                 case SyntaxKind.EventFieldDeclaration:
-                    {
-                        var eventFieldDeclaration = (EventFieldDeclarationSyntax)declaration;
-
-                        if (eventFieldDeclaration.Declaration?.Variables.Count > 0)
-                            return eventFieldDeclaration.Declaration.Variables[0].Identifier;
-
-                        break;
-                    }
+                    return GetToken(((EventFieldDeclarationSyntax)declaration).Declaration);
             }
 
-            return null;
+            return default(SyntaxToken);
+        }
+
+        private static SyntaxToken GetToken(VariableDeclarationSyntax variableDeclaration)
+        {
+            if (variableDeclaration != null)
+            {
+                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+
+                if (variables.Any())
+                    return variables[0].Identifier;
+            }
+
+            return default(SyntaxToken);
         }
     }
 }
