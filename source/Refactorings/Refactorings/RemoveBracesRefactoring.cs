@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     IfStatementSyntax topmostIf = GetTopmostIf(block);
 
                     if (topmostIf?.Else != null
-                        && GetBlocks(topmostIf).Any(f => f != block))
+                        && CanRefactorIfElse(block, topmostIf))
                     {
                         context.RegisterRefactoring(
                             "Remove braces from 'if-else'",
@@ -46,6 +46,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool CanRefactorIfElse(BlockSyntax selectedBlock, IfStatementSyntax topmostIf)
+        {
+            bool success = false;
+
+            foreach (BlockSyntax block in GetBlocks(topmostIf))
+            {
+                if (block == selectedBlock)
+                {
+                    continue;
+                }
+                else if (EmbeddedStatementAnalysis.IsEmbeddableBlock(block))
+                {
+                    success = true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return success;
         }
 
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
