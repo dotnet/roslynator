@@ -186,48 +186,6 @@ namespace Pihrtsoft.CodeAnalysis
             }
         }
 
-        public static SyntaxTokenList GetDeclarationModifiers(this SyntaxNode declaration)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.DestructorDeclaration:
-                    return ((DestructorDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)declaration).Modifiers;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).Modifiers;
-                default:
-                    return SyntaxFactory.TokenList();
-            }
-        }
-
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
             if (node == null)
@@ -403,31 +361,6 @@ namespace Pihrtsoft.CodeAnalysis
             }
 
             return end;
-        }
-
-        public static bool HasExplicitInterfaceSpecifier(this SyntaxNode syntaxNode)
-        {
-            return GetExplicitInterfaceSpecifier(syntaxNode) != null;
-        }
-
-        public static ExplicitInterfaceSpecifierSyntax GetExplicitInterfaceSpecifier(this SyntaxNode syntaxNode)
-        {
-            if (syntaxNode == null)
-                throw new ArgumentNullException(nameof(syntaxNode));
-
-            switch (syntaxNode.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)syntaxNode).ExplicitInterfaceSpecifier;
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)syntaxNode).ExplicitInterfaceSpecifier;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)syntaxNode).ExplicitInterfaceSpecifier;
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)syntaxNode).ExplicitInterfaceSpecifier;
-                default:
-                    return null;
-            }
         }
 
         public static TNode FirstAncestor<TNode>(

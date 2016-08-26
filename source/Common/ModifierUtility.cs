@@ -25,13 +25,6 @@ namespace Pihrtsoft.CodeAnalysis
             return tokenList.Any(token => IsAccessModifier(token));
         }
 
-        public static SyntaxTokenList RemoveAccessModifiers(SyntaxTokenList tokenList)
-        {
-            return tokenList
-                .Where(f => !IsAccessModifier(f))
-                .ToSyntaxTokenList();
-        }
-
         public static AccessModifier GetDefaultAccessModifier(MemberDeclarationSyntax declaration)
         {
             if (declaration == null)

@@ -58,16 +58,5 @@ namespace Pihrtsoft.CodeAnalysis
                     return 16;
                 }
         }
-
-        public static bool AreModifiersSorted(SyntaxTokenList list)
-        {
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                if (Instance.Compare(list[i], list[i + 1]) >= 0)
-                    return false;
-            }
-
-            return true;
-        }
     }
 }

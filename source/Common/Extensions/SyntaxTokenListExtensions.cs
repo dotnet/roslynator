@@ -12,21 +12,5 @@ namespace Pihrtsoft.CodeAnalysis
         {
             return tokenList.IndexOf(kind) != -1;
         }
-
-        public static bool ContainsAccessModifier(this SyntaxTokenList tokenList)
-        {
-            return tokenList.Any(token => token.IsAccessModifier());
-        }
-
-        public static SyntaxTokenList RemoveAccessModifiers(this SyntaxTokenList tokenList)
-        {
-            for (int i = tokenList.Count - 1; i >= 0; i--)
-            {
-                if (tokenList[i].IsAccessModifier())
-                    tokenList = tokenList.RemoveAt(i);
-            }
-
-            return tokenList;
-        }
     }
 }

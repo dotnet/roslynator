@@ -63,14 +63,6 @@ namespace Pihrtsoft.CodeAnalysis
                 || kind == kind6;
         }
 
-        public static bool IsAccessModifier(this SyntaxToken token)
-        {
-            return token.IsKind(SyntaxKind.PublicKeyword)
-                || token.IsKind(SyntaxKind.InternalKeyword)
-                || token.IsKind(SyntaxKind.ProtectedKeyword)
-                || token.IsKind(SyntaxKind.PrivateKeyword);
-        }
-
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
