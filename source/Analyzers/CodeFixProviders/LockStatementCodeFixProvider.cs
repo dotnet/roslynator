@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     MemberDeclarationSyntax newContainingMember = containingMember
                         .ReplaceNode(lockStatement, newLockStatement);
 
-                    bool isStatic = containingMember.GetDeclarationModifiers().Contains(SyntaxKind.StaticKeyword);
+                    bool isStatic = containingMember.GetModifiers().Contains(SyntaxKind.StaticKeyword);
 
                     FieldDeclarationSyntax field = CreateField(name, isStatic).WithFormatterAnnotation();
 

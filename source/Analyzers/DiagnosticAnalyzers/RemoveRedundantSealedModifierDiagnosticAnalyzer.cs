@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
@@ -30,7 +31,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(context.Node, context.CancellationToken);
+            var declaration = (MemberDeclarationSyntax)context.Node;
+
+            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
             if (symbol == null)
                 return;
@@ -46,8 +49,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (!containingSymbol.IsSealed)
                 return;
 
-            SyntaxToken sealedKeyword = context.Node
-                .GetDeclarationModifiers()
+            SyntaxToken sealedKeyword = declaration
+                .GetModifiers()
                 .FirstOrDefault(f => f.IsKind(SyntaxKind.SealedKeyword));
 
             if (sealedKeyword.IsKind(SyntaxKind.None))

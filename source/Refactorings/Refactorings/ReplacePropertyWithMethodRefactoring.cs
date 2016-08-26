@@ -143,9 +143,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (accessorModifiers.Any())
             {
-                SyntaxTokenList newModifiers = method.Modifiers
-                    .RemoveAccessModifiers()
-                    .InsertRange(0, accessorModifiers);
+                SyntaxTokenList newModifiers = accessorModifiers
+                    .Concat(method.Modifiers.Where(f => !ModifierUtility.IsAccessModifier(f)))
+                    .ToSyntaxTokenList();
 
                 return method.WithModifiers(newModifiers);
             }

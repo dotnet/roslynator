@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxTokenList modifiers = declaration.GetDeclarationModifiers();
+            SyntaxTokenList modifiers = declaration.GetModifiers();
 
             SyntaxToken[] newModifiers = modifiers.OrderBy(f => f, ModifierComparer.Instance).ToArray();
 
