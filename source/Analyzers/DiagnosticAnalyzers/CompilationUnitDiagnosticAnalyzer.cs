@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
-    //TODO: add code fix for DeclareEachTypeInSeparateFile
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class CompilationUnitDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
