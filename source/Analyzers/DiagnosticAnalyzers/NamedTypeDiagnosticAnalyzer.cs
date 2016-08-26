@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
@@ -13,59 +14,51 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class NamedTypeDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSymbolAction(f => AnalyzeSyntaxNode(f), SymbolKind.NamedType);
+            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
         }
 
-        private void AnalyzeSyntaxNode(SymbolAnalysisContext context)
+        private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var symbol = (INamedTypeSymbol)context.Symbol;
 
-            switch (symbol.TypeKind)
+            TypeKind kind = symbol.TypeKind;
+
+            if (kind == TypeKind.Class
+                || kind == TypeKind.Struct
+                || kind == TypeKind.Interface)
             {
-                case TypeKind.Class:
+                ImmutableArray<SyntaxReference> syntaxReference = symbol.DeclaringSyntaxReferences;
+
+                if (syntaxReference.Length == 1)
+                {
+                    var declaration = syntaxReference[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
+
+                    if (declaration != null)
                     {
-                        ReportPartialTypeWithSinglePart(context, symbol);
-                        break;
+                        SyntaxToken partialToken = declaration.GetModifiers()
+                            .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
+
+                        if (partialToken.IsKind(SyntaxKind.PartialKeyword))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                                partialToken.GetLocation());
+                        }
                     }
-                case TypeKind.Struct:
-                    {
-                        ReportPartialTypeWithSinglePart(context, symbol);
-                        break;
-                    }
-                case TypeKind.Interface:
-                    {
-                        ReportPartialTypeWithSinglePart(context, symbol);
-                        break;
-                    }
+                }
             }
-        }
-
-        private static void ReportPartialTypeWithSinglePart(SymbolAnalysisContext context, INamedTypeSymbol symbol)
-        {
-            if (symbol.DeclaringSyntaxReferences.Length != 1)
-                return;
-
-            SyntaxNode declaration = symbol.DeclaringSyntaxReferences[0].GetSyntax(context.CancellationToken);
-
-            SyntaxToken partialModifier = declaration.GetDeclarationModifiers()
-                .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
-
-            if (partialModifier.IsKind(SyntaxKind.None))
-                return;
-
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                partialModifier.GetLocation());
         }
     }
 }
