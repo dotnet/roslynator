@@ -36,8 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
 
-                        if (typeSymbol != null
-                            && CanBeExplicit(typeSymbol))
+                        if (typeSymbol?.SupportsExplicitDeclaration() == true)
                         {
                             bool isVar = type.IsVar;
 
@@ -69,24 +68,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             }
 
             return TypeAnalysisResult.None;
-        }
-
-        private static bool CanBeExplicit(ITypeSymbol typeSymbol)
-        {
-            if (!typeSymbol.IsAnonymousType)
-            {
-                switch (typeSymbol.Kind)
-                {
-                    case SymbolKind.TypeParameter:
-                        return true;
-                    case SymbolKind.ArrayType:
-                        return CanBeExplicit(((IArrayTypeSymbol)typeSymbol).ElementType);
-                    case SymbolKind.NamedType:
-                        return !((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType();
-                }
-            }
-
-            return false;
         }
 
         private static bool IsImplicitTypeAllowed(

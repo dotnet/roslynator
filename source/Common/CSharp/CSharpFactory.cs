@@ -544,5 +544,15 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             return SyntaxFactory.ObjectCreationExpression(type, argumentList, default(InitializerExpressionSyntax));
         }
+
+        public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier)
+        {
+            return SyntaxFactory.Parameter(
+                default(SyntaxList<AttributeListSyntax>),
+                default(SyntaxTokenList),
+                type,
+                identifier,
+                default(EqualsValueClauseSyntax));
+        }
     }
 }

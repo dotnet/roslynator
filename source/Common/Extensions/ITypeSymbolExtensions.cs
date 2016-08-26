@@ -9,6 +9,27 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class ITypeSymbolExtensions
     {
+        public static bool SupportsExplicitDeclaration(this ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (!typeSymbol.IsAnonymousType)
+            {
+                switch (typeSymbol.Kind)
+                {
+                    case SymbolKind.TypeParameter:
+                        return true;
+                    case SymbolKind.ArrayType:
+                        return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
+                    case SymbolKind.NamedType:
+                        return !((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType();
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsPubliclyAccessible(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
