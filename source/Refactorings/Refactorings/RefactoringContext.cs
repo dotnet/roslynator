@@ -14,8 +14,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal class RefactoringContext
     {
-        private SemanticModel _semanticModel;
-
         public RefactoringContext(CodeRefactoringContext context, SyntaxNode root, RefactoringSettings settings)
         {
             BaseContext = context;
@@ -72,12 +70,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
         }
 
-        public async Task<SemanticModel> GetSemanticModelAsync()
+        public Task<SemanticModel> GetSemanticModelAsync()
         {
-            if (_semanticModel == null)
-                _semanticModel = await Document.GetSemanticModelAsync(CancellationToken).ConfigureAwait(false);
-
-            return _semanticModel;
+            return Document.GetSemanticModelAsync(CancellationToken);
         }
 
         public void RegisterRefactoring(
