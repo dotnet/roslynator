@@ -67,7 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
             string newName = classDeclaration.Identifier.ValueText + GetSuffix(diagnostic);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Rename  class to '{newName}'",
+                $"Rename class to '{newName}'",
                 cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),
                 DiagnosticIdentifiers.AddCodeFixProviderSuffix);
 
