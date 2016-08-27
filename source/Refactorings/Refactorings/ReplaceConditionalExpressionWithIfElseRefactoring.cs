@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 {
                     LocalDeclarationStatementSyntax localDeclaration = GetLocalDeclaration(expression);
 
-                    if (localDeclaration != null)
+                    if (localDeclaration?.IsParentKind(SyntaxKind.Block, SyntaxKind.SwitchSection) == true)
                     {
                         context.RegisterRefactoring(
                             Title,
@@ -117,9 +117,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
-            var block = (BlockSyntax)localDeclaration.Parent;
+            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
             LocalDeclarationStatementSyntax newLocalDeclaration = GetNewLocalDeclaration(conditionalExpression, localDeclaration, semanticModel)
                 .WithLeadingTrivia(localDeclaration.GetLeadingTrivia())
@@ -131,15 +130,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithTrailingTrivia(localDeclaration.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            SyntaxList<StatementSyntax> statements = block.Statements;
+            SyntaxNode parent = localDeclaration.Parent;
 
-            statements = statements
-                .Replace(localDeclaration, newLocalDeclaration)
-                .Insert(statements.IndexOf(localDeclaration) + 1, ifStatement);
+            if (parent.IsKind(SyntaxKind.SwitchSection))
+            {
+                var section = (SwitchSectionSyntax)parent;
 
-            SyntaxNode newRoot = root.ReplaceNode(block, block.WithStatements(statements));
+                SyntaxList<StatementSyntax> statements = section.Statements;
 
-            return document.WithSyntaxRoot(newRoot);
+                statements = statements
+                    .Replace(localDeclaration, newLocalDeclaration)
+                    .Insert(statements.IndexOf(localDeclaration) + 1, ifStatement);
+
+                root = root.ReplaceNode(section, section.WithStatements(statements));
+            }
+            else
+            {
+                var block = (BlockSyntax)parent;
+
+                SyntaxList<StatementSyntax> statements = block.Statements;
+
+                statements = statements
+                    .Replace(localDeclaration, newLocalDeclaration)
+                    .Insert(statements.IndexOf(localDeclaration) + 1, ifStatement);
+
+                root = root.ReplaceNode(block, block.WithStatements(statements));
+            }
+
+            return document.WithSyntaxRoot(root);
         }
 
         private static LocalDeclarationStatementSyntax GetNewLocalDeclaration(
