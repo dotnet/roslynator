@@ -81,12 +81,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             NegateOperator = true;
             NotifyPropertyChanged = true;
             RemoveAllComments = true;
-            RemoveAllCommentsExceptXmlComments = true;
+            RemoveAllCommentsExceptDocumentationComments = true;
+            RemoveAllDocumentationComments = false;
             RemoveAllMemberDeclarations = true;
             RemoveAllRegionDirectives = true;
             RemoveAllStatements = true;
             RemoveAllSwitchSections = true;
-            RemoveAllXmlComments = false;
             RemoveBraces = true;
             RemoveBracesFromIfElse = true;
             RemoveBracesFromSwitchSection = true;
@@ -222,12 +222,12 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.NegateOperator, NegateOperator);
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
-            SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments, RemoveAllCommentsExceptXmlComments);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments, RemoveAllCommentsExceptDocumentationComments);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments, RemoveAllDocumentationComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations, RemoveAllMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives, RemoveAllRegionDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllStatements, RemoveAllStatements);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
-            SetIsEnabled(RefactoringIdentifiers.RemoveAllXmlComments, RemoveAllXmlComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveBraces, RemoveBraces);
             SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse, RemoveBracesFromIfElse);
             SetIsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection, RemoveBracesFromSwitchSection);
@@ -974,7 +974,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Remove all comments")]
-        [Description("Syntax: singleline/multiline comment, singleline/multiline xml documentation comment")]
+        [Description("Syntax: singleline/multiline comment, singleline/multiline documentation documentation comment")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllComments
         {
@@ -983,10 +983,20 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Remove all comments (except xml comments)")]
+        [DisplayName("Remove all comments (except documentation comments)")]
         [Description("Syntax: singleline/multiline comment")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemoveAllCommentsExceptXmlComments
+        public bool RemoveAllCommentsExceptDocumentationComments
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove all documentation comments")]
+        [Description("Syntax: singleline/multiline documentation comment")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllDocumentationComments
         {
             get;
             set;
@@ -1027,16 +1037,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: switch statement\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllSwitchSections
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Remove all xml comments")]
-        [Description("Syntax: singleline/multiline xml documentation comment")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemoveAllXmlComments
         {
             get;
             set;

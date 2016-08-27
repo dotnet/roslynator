@@ -32,19 +32,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         c => RemoveCommentAsync(context.Document, CommentRemoveOptions.All, c));
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments)
                     && (kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia))
                 {
                     context.RegisterRefactoring(
-                        "Remove all comments (except xml comments)",
+                        "Remove all comments (except documentation comments)",
                         c => RemoveCommentAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, c));
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllXmlComments)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments)
                     && IsDocumentationComment(kind))
                 {
                     context.RegisterRefactoring(
-                        "Remove all xml comments",
+                        "Remove all documentation comments",
                         c => RemoveCommentAsync(context.Document, CommentRemoveOptions.Documentation, c));
                 }
             }
@@ -54,8 +54,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.RemoveAllComments,
-                RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments,
-                RefactoringIdentifiers.RemoveAllXmlComments))
+                RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments,
+                RefactoringIdentifiers.RemoveAllDocumentationComments))
             {
                 bool fComment = false;
                 bool fDocComment = false;
@@ -95,18 +95,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (fComment
                     && fDocComment
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptXmlComments))
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments))
                 {
                     context.RegisterRefactoring(
-                        "Remove comments (except xml comments)",
+                        "Remove comments (except documentation comments)",
                         c => RemoveCommentAsync(context.Document, CommentRemoveOptions.AllExceptDocumentation, context.Span, c));
                 }
 
                 if (fDocComment
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllXmlComments))
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments))
                 {
                     context.RegisterRefactoring(
-                        "Remove xml comments",
+                        "Remove documentation comments",
                         c => RemoveCommentAsync(context.Document, CommentRemoveOptions.Documentation, context.Span, c));
                 }
             }

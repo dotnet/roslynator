@@ -335,7 +335,10 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments">Remove all comments</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments-except-xml-comments">Remove all comments (except xml comments)</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments-except-documentation-comments">Remove all comments (except documentation comments)</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-documentation-comments">Remove all documentation comments</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-member-declarations">Remove all member declarations</a>
@@ -348,9 +351,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-switch-sections">Remove all switch sections</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-xml-comments">Remove all xml comments</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-braces">Remove braces</a>

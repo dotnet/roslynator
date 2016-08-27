@@ -496,12 +496,17 @@
   <Refactoring Id="RemoveAllComments" Title="Remove all comments" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
-      <Syntax>singleline/multiline xml documentation comment</Syntax>
+      <Syntax>singleline/multiline documentation documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveAllCommentsExceptXmlComments" Title="Remove all comments (except xml comments)" ExtensionVersion="0.9.0">
+  <Refactoring Id="RemoveAllCommentsExceptDocumentationComments" Title="Remove all comments (except documentation comments)" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="RemoveAllDocumentationComments" Title="Remove all documentation comments" IsEnabledByDefault="false" ExtensionVersion="0.91.0">
+    <Syntaxes>
+      <Syntax>singleline/multiline documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RemoveAllMemberDeclarations" Title="Remove all member declarations" ExtensionVersion="0.97.0">
@@ -531,11 +536,6 @@
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
-  </Refactoring>
-  <Refactoring Id="RemoveAllXmlComments" Title="Remove all xml comments" IsEnabledByDefault="false" ExtensionVersion="0.91.0">
-    <Syntaxes>
-      <Syntax>singleline/multiline xml documentation comment</Syntax>
-    </Syntaxes>
   </Refactoring>
   <Refactoring Id="RemoveBraces" Title="Remove braces" ExtensionVersion="0.9.0">
     <Syntaxes>

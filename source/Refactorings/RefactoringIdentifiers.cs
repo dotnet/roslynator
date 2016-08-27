@@ -75,12 +75,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string NegateOperator = "NegateOperator";
         public const string NotifyPropertyChanged = "NotifyPropertyChanged";
         public const string RemoveAllComments = "RemoveAllComments";
-        public const string RemoveAllCommentsExceptXmlComments = "RemoveAllCommentsExceptXmlComments";
+        public const string RemoveAllCommentsExceptDocumentationComments = "RemoveAllCommentsExceptDocumentationComments";
+        public const string RemoveAllDocumentationComments = "RemoveAllDocumentationComments";
         public const string RemoveAllMemberDeclarations = "RemoveAllMemberDeclarations";
         public const string RemoveAllRegionDirectives = "RemoveAllRegionDirectives";
         public const string RemoveAllStatements = "RemoveAllStatements";
         public const string RemoveAllSwitchSections = "RemoveAllSwitchSections";
-        public const string RemoveAllXmlComments = "RemoveAllXmlComments";
         public const string RemoveBraces = "RemoveBraces";
         public const string RemoveBracesFromIfElse = "RemoveBracesFromIfElse";
         public const string RemoveBracesFromSwitchSection = "RemoveBracesFromSwitchSection";
