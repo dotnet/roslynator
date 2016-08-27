@@ -11,34 +11,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ExtractDeclarationFromUsingStatementRefactoring
     {
-        public static async Task<bool> CanRefactorAsync(
-            RefactoringContext context,
-            UsingStatementSyntax usingStatement)
-        {
-            if (context.SupportsSemanticModel
-                && usingStatement.Declaration?.Type != null
-                && usingStatement.Parent?.IsKind(SyntaxKind.Block) == true
-                && usingStatement.Declaration.Span.Contains(context.Span))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(usingStatement.Declaration.Type, context.CancellationToken)
-                    .ConvertedType;
-
-                if (typeSymbol != null)
-                    return true;
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             var block = (BlockSyntax)usingStatement.Parent;
 
@@ -64,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithStatements(newBlock.Statements.InsertRange(index, statements))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(block, newBlock);
+            SyntaxNode newRoot = root.ReplaceNode(block, newBlock);
 
             return document.WithSyntaxRoot(newRoot);
         }

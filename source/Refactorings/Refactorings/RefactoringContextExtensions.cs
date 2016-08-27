@@ -449,7 +449,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fUsingStatement
                             && kind == SyntaxKind.UsingStatement)
                         {
-                            await UsingStatementRefactoring.ComputeRefactoringsAsync(context, (UsingStatementSyntax)statement).ConfigureAwait(false);
+                            UsingStatementRefactoring.ComputeRefactorings(context, (UsingStatementSyntax)statement);
                             fUsingStatement = true;
                         }
 
