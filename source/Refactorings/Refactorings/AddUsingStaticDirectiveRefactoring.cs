@@ -8,11 +8,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
-    internal static class IntroduceUsingStaticDirectiveRefactoring
+    internal static class AddUsingStaticDirectiveRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingStaticDirective)
                 && memberAccess.Expression?.IsMissing == false
                 && memberAccess.Name?.IsMissing == false
                 && context.SupportsSemanticModel)

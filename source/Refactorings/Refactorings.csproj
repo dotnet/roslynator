@@ -99,7 +99,7 @@
     <Compile Include="Refactorings\FormatAttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\ElseClauseRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
-    <Compile Include="Refactorings\IntroduceUsingStaticDirectiveRefactoring.cs" />
+    <Compile Include="Refactorings\AddUsingStaticDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\IndexerDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\ChangeMethodReturnTypeToVoidRefactoring.cs" />
     <Compile Include="Refactorings\MethodDeclarationRefactoring.cs" />

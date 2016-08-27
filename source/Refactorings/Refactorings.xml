@@ -90,6 +90,12 @@
     </Syntaxes>
     <Scope>selected namespace</Scope>
   </Refactoring>
+  <Refactoring Id="AddUsingStaticDirective" Title="Add using static directive" ExtensionVersion="0.91.0">
+    <Syntaxes>
+      <Syntax>member access expression (public or internal static class)</Syntax>
+    </Syntaxes>
+    <Scope>selected class name</Scope>
+  </Refactoring>
   <Refactoring Id="CollapseToInitializer" Title="Collapse to initalizer" ExtensionVersion="0.98.0">
     <Syntaxes>
       <Syntax>object creation followed with assignment(s)</Syntax>
@@ -417,12 +423,6 @@
       <Syntax>property</Syntax>
     </Syntaxes>
     <Scope></Scope>
-  </Refactoring>
-  <Refactoring Id="IntroduceUsingStaticDirective" Title="Introduce using static directive" ExtensionVersion="0.91.0">
-    <Syntaxes>
-      <Syntax>member access expression (public or internal static class)</Syntax>
-    </Syntaxes>
-    <Scope>selected class name</Scope>
   </Refactoring>
   <Refactoring Id="MakeMemberAbstract" Title="Make member abstract" ExtensionVersion="0.9.0">
     <Syntaxes>

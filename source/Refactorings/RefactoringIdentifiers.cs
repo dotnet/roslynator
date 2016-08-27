@@ -19,6 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
         public const string AddUsingDirective = "AddUsingDirective";
+        public const string AddUsingStaticDirective = "AddUsingStaticDirective";
         public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";
@@ -61,7 +62,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string IntroduceAndInitializeField = "IntroduceAndInitializeField";
         public const string IntroduceAndInitializeProperty = "IntroduceAndInitializeProperty";
         public const string IntroduceConstructor = "IntroduceConstructor";
-        public const string IntroduceUsingStaticDirective = "IntroduceUsingStaticDirective";
         public const string MakeMemberAbstract = "MakeMemberAbstract";
         public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";

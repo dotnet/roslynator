@@ -25,6 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
             AddUsingDirective = true;
+            AddUsingStaticDirective = true;
             ChangeExplicitTypeToVar = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
@@ -67,7 +68,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             IntroduceAndInitializeField = true;
             IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
-            IntroduceUsingStaticDirective = true;
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
@@ -166,6 +166,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
+            SetIsEnabled(RefactoringIdentifiers.AddUsingStaticDirective, AddUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
@@ -208,7 +209,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField, IntroduceAndInitializeField);
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
-            SetIsEnabled(RefactoringIdentifiers.IntroduceUsingStaticDirective, IntroduceUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
@@ -417,6 +417,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: qualified name\r\nScope: selected namespace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddUsingDirective
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add using static directive")]
+        [Description("Syntax: member access expression (public or internal static class)\r\nScope: selected class name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddUsingStaticDirective
         {
             get;
             set;
@@ -837,16 +847,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: field, property")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceConstructor
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Introduce using static directive")]
-        [Description("Syntax: member access expression (public or internal static class)\r\nScope: selected class name")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool IntroduceUsingStaticDirective
         {
             get;
             set;
