@@ -559,5 +559,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 identifier,
                 default(EqualsValueClauseSyntax));
         }
+
+        public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PreDecrementExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, operand);
+        }
+
+        public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, operand);
+        }
+
+        public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand);
+        }
     }
 }
