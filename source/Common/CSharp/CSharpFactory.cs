@@ -37,6 +37,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right);
         }
 
+        public static ExpressionStatementSyntax SimpleAssignmentExpressionStatement(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return ExpressionStatement(SimpleAssignmentExpression(left, right));
+        }
+
         public static AttributeListSyntax AttributeList(AttributeSyntax attribute)
         {
             return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
@@ -132,9 +137,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 ArgumentList(arguments));
         }
 
-        public static AccessorDeclarationSyntax Getter()
+        public static AccessorDeclarationSyntax Getter(BlockSyntax body = null)
         {
-            return AccessorDeclaration(SyntaxKind.GetAccessorDeclaration);
+            return AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, body);
         }
 
         public static AccessorDeclarationSyntax AutoGetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
@@ -142,9 +147,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return AutoAccessor(SyntaxKind.GetAccessorDeclaration, modifiers);
         }
 
-        public static AccessorDeclarationSyntax Setter()
+        public static AccessorDeclarationSyntax Setter(BlockSyntax body = null)
         {
-            return AccessorDeclaration(SyntaxKind.SetAccessorDeclaration);
+            return AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, body);
         }
 
         public static AccessorDeclarationSyntax AutoSetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
