@@ -346,7 +346,7 @@ namespace Pihrtsoft.CodeAnalysis
 
             string name = GetName(typeSymbol3);
 
-            if (name == null)
+            if (string.IsNullOrEmpty(name))
                 return null;
 
             if (typeSymbol3.TypeKind == TypeKind.Interface
@@ -433,6 +433,10 @@ namespace Pihrtsoft.CodeAnalysis
                 {
                     return typeSymbol.Name.Substring(1);
                 }
+            }
+            else if (typeSymbol.IsAnonymousType)
+            {
+                return null;
             }
             else if (typeSymbol.IsPredefinedType())
             {
