@@ -58,6 +58,13 @@ namespace Pihrtsoft.CodeAnalysis
                     return expression == ((IfStatementSyntax)parent).Condition;
                 case SyntaxKind.SwitchStatement:
                     return expression == ((SwitchStatementSyntax)parent).Expression;
+                case SyntaxKind.ConditionalExpression:
+                    {
+                        var conditionalExpression = (ConditionalExpressionSyntax)parent;
+
+                        return expression == conditionalExpression.WhenTrue
+                            || expression == conditionalExpression.WhenFalse;
+                    }
             }
 
             if (parent is AssignmentExpressionSyntax)
