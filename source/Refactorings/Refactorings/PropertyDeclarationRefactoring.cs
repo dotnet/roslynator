@@ -90,6 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             return NotifyPropertyChangedRefactoring.RefactorAsync(
                                 context.Document,
                                 propertyDeclaration,
+                                context.SupportsCSharp6,
                                 cancellationToken);
                         });
                 }

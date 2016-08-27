@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -66,6 +67,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax property,
+            bool supportsCSharp6,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -74,7 +76,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             AccessorDeclarationSyntax newSetter = CreateSetter(
                 GetBackingFieldIdentifierName(setter).WithoutTrivia(),
-                property.Identifier.ValueText);
+                property.Identifier.ValueText,
+                supportsCSharp6);
 
             newSetter = newSetter
                 .WithTriviaFrom(property)
@@ -85,34 +88,33 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static AccessorDeclarationSyntax CreateSetter(IdentifierNameSyntax fieldIdentifierName, string propertName)
+        private static AccessorDeclarationSyntax CreateSetter(IdentifierNameSyntax fieldIdentifierName, string propertyName, bool supportsCSharp6)
         {
-            return AccessorDeclaration(
-                SyntaxKind.SetAccessorDeclaration,
+            ExpressionSyntax argumentExpression;
+
+            if (supportsCSharp6)
+            {
+                argumentExpression = NameOf(propertyName);
+            }
+            else
+            {
+                argumentExpression = StringLiteralExpression(propertyName);
+            }
+
+            return Setter(
                 Block(
                     IfStatement(
-                        BinaryExpression(
-                            SyntaxKind.NotEqualsExpression,
+                        NotEqualsExpression(
                             fieldIdentifierName,
                             IdentifierName("value")),
                         Block(
-                            ExpressionStatement(
-                                AssignmentExpression(
-                                    SyntaxKind.SimpleAssignmentExpression,
-                                    fieldIdentifierName,
-                                    IdentifierName("value"))),
+                            SimpleAssignmentExpressionStatement(
+                                fieldIdentifierName,
+                                IdentifierName("value")),
                             ExpressionStatement(
                                 InvocationExpression(
-                                    IdentifierName("OnPropertyChanged"),
-                                    ArgumentList(
-                                        SingletonSeparatedList(
-                                            Argument(
-                                                InvocationExpression(
-                                                    IdentifierName("nameof"),
-                                                    ArgumentList(
-                                                        SingletonSeparatedList(
-                                                            Argument(
-                                                                IdentifierName(Identifier(propertName)))))))))))))));
+                                    "OnPropertyChanged",
+                                    Argument(argumentExpression)))))));
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)
