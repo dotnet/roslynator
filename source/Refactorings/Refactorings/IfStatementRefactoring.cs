@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && SwapStatementInIfElseRefactoring.CanRefactor(ifStatement))
                 {
                     context.RegisterRefactoring(
-                        "Swap statements in 'if-else'",
+                        "Swap statements in if-else",
                         cancellationToken =>
                         {
                             return SwapStatementInIfElseRefactoring.RefactorAsync(

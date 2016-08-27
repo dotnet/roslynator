@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
             {
                 context.RegisterRefactoring(
-                    "Mark all members as 'static'",
+                    "Mark all members as static",
                     cancellationToken => RefactorAsync(context.Document, classDeclaration, cancellationToken));
             }
         }

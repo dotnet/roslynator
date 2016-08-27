@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark property as 'static'",
+                    "Mark property as static",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
@@ -129,7 +129,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
                             context.RegisterRefactoring(
-                                $"Rename property to '{newName}'",
+                                $"Rename '{propertyDeclaration.Identifier.ValueText}' to '{newName}'",
                                 cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
                         }
                     }

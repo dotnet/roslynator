@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
@@ -22,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (invocation != null)
             {
                 context.RegisterRefactoring(
-                    "Replace 'string.Format' with interpolated string",
+                    $"Replace '{invocation.Expression}' with interpolated string",
                     cancellationToken => CreateInterpolatedStringAsync(context.Document, invocation, cancellationToken));
             }
         }

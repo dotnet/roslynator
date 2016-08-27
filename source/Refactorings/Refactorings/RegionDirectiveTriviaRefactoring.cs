@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && context.Root.IsKind(SyntaxKind.CompilationUnit))
             {
                 context.RegisterRefactoring(
-                    "Remove all '#region' directives",
+                    "Remove all region directives",
                     cancellationToken => SyntaxRemover.RemoveRegionDirectivesAsync(context.Document, cancellationToken));
             }
         }

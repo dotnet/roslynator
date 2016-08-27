@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
             {
                 context.RegisterRefactoring(
-                    "Replace 'switch' with 'if-else'",
+                    "Replace switch with if-else",
                     cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
             }
         }

@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
                             && ((INamedTypeSymbol)typeSymbol).Implements(SpecialType.System_IDisposable))
                         {
                             context.RegisterRefactoring(
-                                "Wrap in 'using' statement",
+                                $"Using '{variable.Identifier.ValueText}'",
                                 cancellationToken => RefactorAsync(context.Document, info, cancellationToken));
                         }
                     }

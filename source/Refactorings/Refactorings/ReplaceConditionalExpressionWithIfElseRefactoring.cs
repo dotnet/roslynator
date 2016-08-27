@@ -12,49 +12,49 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplaceConditionalExpressionWithIfElseRefactoring
     {
-        private const string Title = "Replace '?:' with 'if-else'";
+        private const string Title = "Replace ?: with if-else";
 
         public static void ComputeRefactoring(RefactoringContext context, ConditionalExpressionSyntax expression)
         {
             SyntaxNode parent = expression.Parent;
 
-            if (parent == null)
-                return;
-
-            SyntaxKind kind = parent.Kind();
-
-            if (kind == SyntaxKind.ReturnStatement)
+            if (parent != null && context.Span.IsBetweenSpans(expression))
             {
-                context.RegisterRefactoring(
-                    Title,
-                    cancellationToken => RefactorAsync(context.Document, expression, (ReturnStatementSyntax)parent, cancellationToken));
-            }
-            else if (kind == SyntaxKind.YieldReturnStatement)
-            {
-                context.RegisterRefactoring(
-                    Title,
-                    cancellationToken => RefactorAsync(context.Document, expression, (YieldStatementSyntax)parent, cancellationToken));
-            }
-            else if (kind == SyntaxKind.SimpleAssignmentExpression)
-            {
-                parent = parent.Parent;
+                SyntaxKind kind = parent.Kind();
 
-                if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                if (kind == SyntaxKind.ReturnStatement)
                 {
                     context.RegisterRefactoring(
                         Title,
-                        cancellationToken => RefactorAsync(context.Document, expression, (ExpressionStatementSyntax)parent, cancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, expression, (ReturnStatementSyntax)parent, cancellationToken));
                 }
-            }
-            else
-            {
-                LocalDeclarationStatementSyntax localDeclaration = GetLocalDeclaration(expression);
-
-                if (localDeclaration != null)
+                else if (kind == SyntaxKind.YieldReturnStatement)
                 {
                     context.RegisterRefactoring(
                         Title,
-                        cancellationToken => RefactorAsync(context.Document, expression, localDeclaration, cancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, expression, (YieldStatementSyntax)parent, cancellationToken));
+                }
+                else if (kind == SyntaxKind.SimpleAssignmentExpression)
+                {
+                    parent = parent.Parent;
+
+                    if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                    {
+                        context.RegisterRefactoring(
+                            Title,
+                            cancellationToken => RefactorAsync(context.Document, expression, (ExpressionStatementSyntax)parent, cancellationToken));
+                    }
+                }
+                else
+                {
+                    LocalDeclarationStatementSyntax localDeclaration = GetLocalDeclaration(expression);
+
+                    if (localDeclaration != null)
+                    {
+                        context.RegisterRefactoring(
+                            Title,
+                            cancellationToken => RefactorAsync(context.Document, expression, localDeclaration, cancellationToken));
+                    }
                 }
             }
         }

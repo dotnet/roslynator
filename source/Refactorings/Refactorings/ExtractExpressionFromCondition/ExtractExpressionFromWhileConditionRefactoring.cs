@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (binaryExpression?.IsKind(SyntaxKind.LogicalAndExpression) == true)
                     {
                         context.RegisterRefactoring(
-                            ExtractExpressionFromConditionRefactoring.Title,
+                            $"Extract '{expression}'",
                             cancellationToken => RefactorAsync(context.Document, binaryExpression, expression, cancellationToken));
                     }
                 }

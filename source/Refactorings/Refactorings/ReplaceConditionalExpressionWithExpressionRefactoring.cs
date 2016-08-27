@@ -23,7 +23,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     || expression.Equals(conditionalExpression.WhenFalse))
                 {
                     context.RegisterRefactoring(
-                        $"Replace '?:' with '{expression.ToString()}'",
+                        $"Replace ?: with '{expression.ToString()}'",
                         cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
                 }
             }

@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         && CanRefactorIfElse(block, topmostIf))
                     {
                         context.RegisterRefactoring(
-                            "Remove braces from 'if-else'",
+                            "Remove braces from if-else",
                             cancellationToken =>
                             {
                                 return RemoveBracesFromIfElseElseRefactoring.RefactorAsync(

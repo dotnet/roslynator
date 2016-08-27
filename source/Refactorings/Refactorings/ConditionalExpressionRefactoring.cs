@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (conditionalExpression.IsSingleLine())
                 {
                     context.RegisterRefactoring(
-                        "Format '?:' on multiple lines",
+                        "Format ?: on multiple lines",
                         cancellationToken =>
                         {
                             return FormatConditionalExpressionOnMultipleLinesRefactoring.RefactorAsync(
@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 else
                 {
                     context.RegisterRefactoring(
-                        "Format '?:' on a single line",
+                        "Format ?: on a single line",
                         cancellationToken =>
                         {
                             return FormatConditionalExpressionOnSingleLineRefactoring.RefactorAsync(
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
             {
                 context.RegisterRefactoring(
-                    "Swap expressions in '?:'",
+                    "Swap expressions in ?:",
                     cancellationToken =>
                     {
                         return SwapExpressionsInConditionalExpressionRefactoring.RefactorAsync(

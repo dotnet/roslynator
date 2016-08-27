@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplaceIfElseWithConditionalExpressionRefactoring
     {
-        private const string Title = "Replace 'if-else' with '?:'";
+        private const string Title = "Replace if-else with ?:";
 
         public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {

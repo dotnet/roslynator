@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapSelectedLines
 
         public override string GetFirstLineText()
         {
-            return "#region ";
+            return "#region";
         }
 
         public override string GetLastLineText()

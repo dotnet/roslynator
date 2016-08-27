@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark event as 'static'",
+                    "Mark event as static",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);

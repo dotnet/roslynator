@@ -39,7 +39,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
             {
                 context.RegisterRefactoring(
-                    "Mark field as 'static'",
+                    "Mark field as static",
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)fieldDeclaration.Parent);

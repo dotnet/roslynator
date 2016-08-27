@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(
-                    "Replace 'for' with 'foreach'",
+                    "Replace for with foreach",
                     cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
             }
 
@@ -27,13 +27,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (ReverseForLoopRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse 'for' loop",
+                        "Reverse for loop",
                         cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
                 }
                 else if (ReverseReversedForLoopRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse 'for' loop",
+                        "Reverse for loop",
                         cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
                 }
             }

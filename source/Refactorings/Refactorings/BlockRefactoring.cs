@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
                     {
                         context.RegisterRefactoring(
-                            "Wrap in 'if'",
+                            "Wrap in condition",
                             cancellationToken =>
                             {
                                 var refactoring = new WrapInIfStatementRefactoring();
@@ -53,7 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
                     {
                         context.RegisterRefactoring(
-                            "Wrap in 'try-catch'",
+                            "Wrap in try-catch",
                             cancellationToken =>
                             {
                                 var refactoring = new WrapInTryCatchRefactoring();

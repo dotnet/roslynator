@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && WrapExpressionInParenthesesRefactoring.CanRefactor(context, expression))
             {
                 context.RegisterRefactoring(
-                    "Wrap in parentheses",
+                    $"Parenthesize '{expression.ToString()}'",
                     cancellationToken => WrapExpressionInParenthesesRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
             }
 

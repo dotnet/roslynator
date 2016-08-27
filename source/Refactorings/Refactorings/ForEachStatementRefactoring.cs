@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        "Replace 'foreach' with 'for'",
+                        "Replace foreach with for",
                         cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
                 }
             }

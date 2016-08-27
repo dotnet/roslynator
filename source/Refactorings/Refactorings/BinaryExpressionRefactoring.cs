@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && ExpandCoalesceExpressionRefactoring.CanRefactor(binaryExpression))
             {
                 context.RegisterRefactoring(
-                    "Expand '??'",
+                    "Expand ??",
                     cancellationToken =>
                     {
                         return ExpandCoalesceExpressionRefactoring.RefactorAsync(

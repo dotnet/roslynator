@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
                 {
                     context.RegisterRefactoring(
-                        "Mark method as 'static'",
+                        "Mark method as static",
                         cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
 
                     MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!string.Equals(newName, methodDeclaration.Identifier.ValueText, StringComparison.Ordinal))
                         {
                             context.RegisterRefactoring(
-                                $"Rename method to '{newName}'",
+                                $"Rename '{methodDeclaration.Identifier.ValueText}' to '{newName}'",
                                 cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken));
                         }
                     }

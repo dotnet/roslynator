@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         && GetEmbeddedStatements(topmostIf).Any(f => f != statement))
                     {
                         context.RegisterRefactoring(
-                            "Add braces to 'if-else'",
+                            "Add braces to if-else",
                             cancellationToken =>
                             {
                                 return AddBracesToIfElseRefactoring.RefactorAsync(
