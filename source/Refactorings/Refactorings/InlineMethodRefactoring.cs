@@ -310,7 +310,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var newExpression = (ExpressionSyntax)rewriter.Visit(expression);
 
-            if (!SyntaxHelper.AreParenthesesUnnecessary(invocation))
+            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(invocation))
             {
                 newExpression = newExpression
                    .WithoutTrivia()

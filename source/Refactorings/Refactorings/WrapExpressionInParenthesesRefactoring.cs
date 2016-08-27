@@ -13,25 +13,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (SyntaxHelper.AreParenthesesUnnecessary(expression))
-                return false;
-
-            try
+            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(expression))
             {
-                Refactor(expression, context.Root);
-            }
-            catch (InvalidCastException)
-            {
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-                Debug.Assert(false, nameof(WrapExpressionInParenthesesRefactoring));
-                return false;
+                try
+                {
+                    Refactor(expression, context.Root);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    Debug.Assert(false, $"{nameof(WrapExpressionInParenthesesRefactoring)}\r\n{expression.Kind().ToString()}");
+                }
             }
 
-            return true;
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
