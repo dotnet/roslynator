@@ -142,7 +142,8 @@ namespace Pihrtsoft.CodeAnalysis
                     i++;
                 }
 
-                if (Span.Start <= en.Current.Span.Start)
+                if (Span.Start >= en.Current.FullSpan.Start
+                    && Span.Start <= en.Current.Span.Start)
                 {
                     int j = i;
 
@@ -152,7 +153,8 @@ namespace Pihrtsoft.CodeAnalysis
                         j++;
                     }
 
-                    if (Span.End >= en.Current.Span.End)
+                    if (Span.End >= en.Current.Span.End
+                        && Span.End <= en.Current.FullSpan.End)
                     {
                         _firstIndex = i;
                         _lastIndex = j;
