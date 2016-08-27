@@ -36,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             ReturnStatementSyntax returnStatement = CreateReturnStatement(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Replace 'if' with '{returnStatement}'",
+                $"Replace if with '{returnStatement}'",
                 cancellationToken => RefactorAsync(context.Document, ifStatement, returnStatement, cancellationToken),
                 DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement + EquivalenceKeySuffix);
 

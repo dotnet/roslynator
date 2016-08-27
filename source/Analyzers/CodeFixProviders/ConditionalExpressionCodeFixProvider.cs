@@ -52,7 +52,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace '?:' with '??'",
+                                "Replace ?: with ??",
                                 cancellationToken =>
                                 {
                                     return UseCoalesceExpressionInsteadOfConditionalExpressionAsync(
