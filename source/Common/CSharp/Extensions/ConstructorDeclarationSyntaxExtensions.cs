@@ -11,16 +11,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class ConstructorDeclarationSyntaxExtensions
     {
-        public static ConstructorDeclarationSyntax WithModifiers(
-            this ConstructorDeclarationSyntax constructorDeclaration,
-            params SyntaxKind[] kinds)
-        {
-            if (constructorDeclaration == null)
-                throw new ArgumentNullException(nameof(constructorDeclaration));
-
-            return constructorDeclaration.WithModifiers(CSharpFactory.TokenList(kinds));
-        }
-
         public static ConstructorDeclarationSyntax WithBody(
             this ConstructorDeclarationSyntax constructorDeclaration,
             IEnumerable<StatementSyntax> statements)

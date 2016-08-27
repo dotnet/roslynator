@@ -56,7 +56,6 @@
     <Compile Include="CSharp\Extensions\AttributeArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AttributeSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\FieldDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\InterfaceDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ConversionOperatorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\ConstructorDeclarationSyntaxExtensions.cs" />

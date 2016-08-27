@@ -25,16 +25,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 && !propertyDeclaration.HasSetter();
         }
 
-        public static PropertyDeclarationSyntax WithModifiers(
-            this PropertyDeclarationSyntax propertyDeclaration,
-            params SyntaxKind[] kinds)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return propertyDeclaration.WithModifiers(TokenList(kinds));
-        }
-
         public static PropertyDeclarationSyntax WithAttributeLists(
             this PropertyDeclarationSyntax propertyDeclaration,
             params AttributeListSyntax[] attributeLists)

@@ -23,16 +23,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                     .Any(f => f.IsYieldStatement());
         }
 
-        public static MethodDeclarationSyntax WithModifiers(
-            this MethodDeclarationSyntax methodDeclaration,
-            params SyntaxKind[] kinds)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return methodDeclaration.WithModifiers(CSharpFactory.TokenList(kinds));
-        }
-
         public static bool ReturnsVoid(this MethodDeclarationSyntax methodDeclaration)
         {
             if (methodDeclaration == null)
