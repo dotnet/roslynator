@@ -102,7 +102,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                         context.RegisterRefactoring(
-                            $"Rename '{oldName}' to '{newName}'",
+                            $"Rename variable to '{newName}'",
                             cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
                     }
                 }

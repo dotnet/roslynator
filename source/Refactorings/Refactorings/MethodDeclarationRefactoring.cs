@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!string.Equals(newName, methodDeclaration.Identifier.ValueText, StringComparison.Ordinal))
                         {
                             context.RegisterRefactoring(
-                                $"Rename '{methodDeclaration.Identifier.ValueText}' to '{newName}'",
+                                $"Rename method to '{newName}'",
                                 cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken));
                         }
                     }

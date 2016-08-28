@@ -56,7 +56,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                                     string newName = GetNewName(methodDeclaration, diagnostic);
 
                                     CodeAction codeAction = CodeAction.Create(
-                                        $"Rename '{name}' to '{newName}'",
+                                        $"Rename method to '{newName}'",
                                         cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken),
                                         diagnostic.Id + EquivalenceKeySuffix);
 
