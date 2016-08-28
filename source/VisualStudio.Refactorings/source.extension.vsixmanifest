@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.98.4" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>C# Refactorings</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 120+ refactorings for C#.</Description>
+    <Description xml:space="preserve">Roslyn-based extension that offers 130+ refactorings for C#.</Description>
     <MoreInfo>http://github.com/JosefPihrt/RoslynTools</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://github.com/JosefPihrt/RoslynTools/blob/master/ChangeLog.md</ReleaseNotes>

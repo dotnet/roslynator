@@ -1,6 +1,6 @@
 ﻿<h3>Introduction</h3>
 <p>
-    Roslyn-based extension that offers 120+ refactorings for C#. 
+    Roslyn-based extension that offers 130+ refactorings for C#. 
 </p>
 
 <h3>Links</h3>
