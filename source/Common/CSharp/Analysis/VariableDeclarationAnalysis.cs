@@ -43,24 +43,35 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                             if (variables.Count > 1)
                             {
                                 if (isVar)
+                                {
                                     return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                                }
                                 else
+                                {
                                     return TypeAnalysisResult.None;
+                                }
                             }
-
-                            if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
+                            else if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
                             {
                                 if (isVar)
+                                {
                                     return TypeAnalysisResult.Implicit;
+                                }
                                 else
+                                {
                                     return TypeAnalysisResult.ExplicitButShouldBeImplicit;
+                                }
                             }
                             else
                             {
                                 if (isVar)
+                                {
                                     return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                                }
                                 else
+                                {
                                     return TypeAnalysisResult.Explicit;
+                                }
                             }
                         }
                     }
@@ -76,23 +87,36 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!expression.IsKind(
-                SyntaxKind.ObjectCreationExpression,
-                SyntaxKind.ArrayCreationExpression,
-                SyntaxKind.CastExpression,
-                SyntaxKind.AsExpression,
-                SyntaxKind.ThisExpression,
-                SyntaxKind.DefaultExpression))
+            switch (expression.Kind())
             {
-                return false;
+                case SyntaxKind.ObjectCreationExpression:
+                case SyntaxKind.ArrayCreationExpression:
+                case SyntaxKind.CastExpression:
+                case SyntaxKind.AsExpression:
+                case SyntaxKind.ThisExpression:
+                case SyntaxKind.DefaultExpression:
+                    {
+                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
+
+                        return expressionTypeSymbol == typeSymbol;
+                    }
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
+
+                        if (expressionTypeSymbol == typeSymbol)
+                        {
+                            ISymbol symbol = semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol;
+
+                            if (symbol.IsEnumField())
+                                return true;
+                        }
+
+                        break;
+                    }
             }
 
-            ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
-
-            if (expressionTypeSymbol == null)
-                return false;
-
-            return typeSymbol.Equals(expressionTypeSymbol);
+            return false;
         }
     }
 }
