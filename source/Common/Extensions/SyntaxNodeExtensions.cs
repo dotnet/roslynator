@@ -15,6 +15,13 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool ContainsDirective(this SyntaxNode node, TextSpan span)
+        {
+            return node
+                .DescendantTrivia(span)
+                .Any(f => f.IsDirective);
+        }
+
         public static TNode WithTrivia<TNode>(
             this TNode node,
             SyntaxTriviaList leadingTrivia,
