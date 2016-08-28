@@ -171,7 +171,6 @@
     <Compile Include="Refactorings\SwapExpressionsInConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwapStatementInIfElseRefactoring.cs" />
     <Compile Include="Refactorings\UncommentRefactoring.cs" />
-    <Compile Include="IfElseChainAnalysisResult.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\AddCastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckParameterForNullRefactoring.cs" />
