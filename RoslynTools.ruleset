@@ -211,15 +211,11 @@
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
-    <Rule Id="RCS1004" Action="None" />
-    <Rule Id="RCS1004FadeOut" Action="None" />
     <Rule Id="RCS1006" Action="Info" />
     <Rule Id="RCS1008" Action="Info" />
     <Rule Id="RCS1009" Action="Info" />
     <Rule Id="RCS1010" Action="Info" />
     <Rule Id="RCS1013" Action="Info" />
-    <Rule Id="RCS1016" Action="None" />
-    <Rule Id="RCS1016FadeOut" Action="None" />
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Warning" />
@@ -235,7 +231,6 @@
     <Rule Id="RCS1042" Action="Info" />
     <Rule Id="RCS1043" Action="Info" />
     <Rule Id="RCS1045" Action="Warning" />
-    <Rule Id="RCS1047" Action="Info" />
     <Rule Id="RCS1050" Action="Info" />
     <Rule Id="RCS1052" Action="Info" />
     <Rule Id="RCS1055" Action="Warning" />
