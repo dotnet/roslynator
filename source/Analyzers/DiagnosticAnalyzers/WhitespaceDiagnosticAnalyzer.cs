@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (!context.Tree.TryGetRoot(out root))
                 return;
 
-            TextSpan emptyLines = default(TextSpan);
+            var emptyLines = default(TextSpan);
             bool previousLineIsEmpty = false;
             int i = 0;
 

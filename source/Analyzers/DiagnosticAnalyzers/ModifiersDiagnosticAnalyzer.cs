@@ -116,7 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SyntaxNodeAnalysisContext context,
             MemberDeclarationSyntax declaration)
         {
-            AccessModifier accessModifier = AccessModifier.None;
+            var accessModifier = AccessModifier.None;
 
             ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
