@@ -1,3 +1,20 @@
+### 0.99.0 (2016-08-28)
+
+#### Analyzers
+
+##### Changes
+
+* "UseExplicitTypeInsteadOfVar" and "UseVarInsteadOfExplicitType" allow 'var' for enum member expression.
+* "AddDefaultAccessModifier" works with partial classes.
+* "AvoidUsageOfUsingAliasDirective" has code fix.
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceIfElseWithConditionalExpression
+* ReplaceConditionalExpressionWithExpression
+
 ### 0.98.0 (2016-08-14)
 
 #### Analyzers
