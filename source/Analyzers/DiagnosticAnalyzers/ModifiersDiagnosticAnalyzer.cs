@@ -56,7 +56,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             SyntaxTokenList modifiers = declaration.GetModifiers();
 
             if (modifiers.Count > 1
-                && !ModifierUtility.IsSorted(modifiers))
+                && !ModifierUtility.IsSorted(modifiers)
+                && !declaration.ContainsDirective(modifiers.Span))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReorderModifiers,
