@@ -13,12 +13,12 @@
 
 ![Add braces](/images/refactorings/AddBraces.png)
 
-#### Add braces to 'if-else'
+#### Add braces to if-else
 
 * **Syntax**: if-else chain
 * **Scope**: topmost if keyword
 
-![Add braces to 'if-else'](/images/refactorings/AddBracesToIfElse.png)
+![Add braces to if-else](/images/refactorings/AddBracesToIfElse.png)
 
 #### Add braces to switch section
 
@@ -72,12 +72,6 @@
 
 ![Add identifier to variable declaration](/images/refactorings/AddIdentifierToVariableDeclaration.png)
 
-#### Add interpolation
-
-* **Syntax**: selected text inside interpolated string text
-
-![Add interpolation](/images/refactorings/AddInterpolation.png)
-
 #### Add parameter name to argument
 
 * **Syntax**: argument list
@@ -91,12 +85,19 @@
 
 ![Add parameter name to parameter](/images/refactorings/AddParameterNameToParameter.png)
 
-#### Add 'using' directive
+#### Add using directive
 
 * **Syntax**: qualified name
 * **Scope**: selected namespace
 
-![Add 'using' directive](/images/refactorings/AddUsingDirective.png)
+![Add using directive](/images/refactorings/AddUsingDirective.png)
+
+#### Add using static directive
+
+* **Syntax**: member access expression (public or internal static class)
+* **Scope**: selected class name
+
+![Add using static directive](/images/refactorings/AddUsingStaticDirective.png)
 
 #### Change explicit type to 'var'
 
@@ -165,6 +166,13 @@
 * **Scope**: opening or closing brace
 
 ![Comment out statement](/images/refactorings/CommentOutStatement.png)
+
+#### Create condition from boolean expression
+
+* **Syntax**: return statement, yield return statement, expression statement
+* **Scope**: boolean expression
+
+![Create condition from boolean expression](/images/refactorings/CreateConditionFromBooleanExpression.png)
 
 #### Duplicate argument
 
@@ -243,12 +251,12 @@
 
 ![Expand property and add backing field](/images/refactorings/ExpandPropertyAndAddBackingField.png)
 
-#### Extract declaration from 'using' statement
+#### Extract declaration from using statement
 
 * **Syntax**: using statement
 * **Scope**: declaration
 
-![Extract declaration from 'using' statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
+![Extract declaration from using statement](/images/refactorings/ExtractDeclarationFromUsingStatement.png)
 
 #### Extract expression from condition
 
@@ -351,6 +359,14 @@
 
 ![Inline method](/images/refactorings/InlineMethod.png)
 
+#### Insert string interpolation
+
+* **Syntax**: string literal, interpolated string
+
+![Insert string interpolation](/images/refactorings/InsertInterpolationIntoStringLiteral.png)
+
+![Insert string interpolation](/images/refactorings/InsertInterpolationIntoInterpolatedString.png)
+
 #### Introduce and initialize field
 
 * **Syntax**: constructor parameter
@@ -369,13 +385,6 @@
 
 ![Introduce constructor](/images/refactorings/IntroduceConstructor.png)
 
-#### Introduce 'using static' directive
-
-* **Syntax**: member access expression (public or internal static class)
-* **Scope**: selected class name
-
-![Introduce 'using static' directive](/images/refactorings/IntroduceUsingStaticDirective.png)
-
 #### Make member abstract
 
 * **Syntax**: non-abstract indexer/method/property in abstract class
@@ -383,17 +392,17 @@
 
 ![Make member abstract](/images/refactorings/MakeMemberAbstract.png)
 
-#### Mark all members as 'static'
+#### Mark all members as static
 
 * **Syntax**: non-static field/method/property/event in static class
 
-![Mark all members as 'static'](/images/refactorings/MarkAllMembersAsStatic.png)
+![Mark all members as static](/images/refactorings/MarkAllMembersAsStatic.png)
 
-#### Mark member as 'static'
+#### Mark member as static
 
 * **Syntax**: non-static field/method/property/event in static class
 
-![Mark member as 'static'](/images/refactorings/MarkMemberAsStatic.png)
+![Mark member as static](/images/refactorings/MarkMemberAsStatic.png)
 
 #### Merge assignment expression with return statement
 
@@ -407,11 +416,11 @@
 
 ![Merge attributes](/images/refactorings/MergeAttributes.png)
 
-#### Merge 'if' statements
+#### Merge if statements
 
 * **Syntax**: selected if statements
 
-![Merge 'if' statements](/images/refactorings/MergeIfStatements.png)
+![Merge if statements](/images/refactorings/MergeIfStatements.png)
 
 #### Merge string literals
 
@@ -450,23 +459,23 @@
 
 ![Notify property changed](/images/refactorings/NotifyPropertyChanged.png)
 
-#### Remove all '#region' directives
-
-* **Syntax**: region directive
-
-![Remove all '#region' directives](/images/refactorings/RemoveAllRegionDirectives.png)
-
 #### Remove all comments
 
-* **Syntax**: singleline/multiline comment, singleline/multiline xml documentation comment
+* **Syntax**: singleline/multiline comment, singleline/multiline documentation documentation comment
 
 ![Remove all comments](/images/refactorings/RemoveAllComments.png)
 
-#### Remove all comments (except xml comments)
+#### Remove all comments (except documentation comments)
 
 * **Syntax**: singleline/multiline comment
 
-![Remove all comments (except xml comments)](/images/refactorings/RemoveAllCommentsExceptXmlComments.png)
+![Remove all comments (except documentation comments)](/images/refactorings/RemoveAllCommentsExceptDocumentationComments.png)
+
+#### Remove all documentation comments
+
+* **Syntax**: singleline/multiline documentation comment
+
+![Remove all documentation comments](/images/refactorings/RemoveAllDocumentationComments.png)
 
 #### Remove all member declarations
 
@@ -474,6 +483,12 @@
 * **Scope**: opening or closing brace
 
 ![Remove all member declarations](/images/refactorings/RemoveAllMemberDeclarations.png)
+
+#### Remove all region directives
+
+* **Syntax**: region directive
+
+![Remove all region directives](/images/refactorings/RemoveAllRegionDirectives.png)
 
 #### Remove all statements
 
@@ -489,12 +504,6 @@
 
 ![Remove all switch sections](/images/refactorings/RemoveAllSwitchSections.png)
 
-#### Remove all xml comments
-
-* **Syntax**: singleline/multiline xml documentation comment
-
-![Remove all xml comments](/images/refactorings/RemoveAllXmlComments.png)
-
 #### Remove braces
 
 * **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
@@ -502,12 +511,12 @@
 
 ![Remove braces](/images/refactorings/RemoveBraces.png)
 
-#### Remove braces from 'if-else'
+#### Remove braces from if-else
 
 * **Syntax**: if-else chain
 * **Scope**: topmost if keyword
 
-![Remove braces from 'if-else'](/images/refactorings/RemoveBracesFromIfElse.png)
+![Remove braces from if-else](/images/refactorings/RemoveBracesFromIfElse.png)
 
 #### Remove braces from switch section
 
@@ -529,12 +538,12 @@
 
 ![Remove comment](/images/refactorings/RemoveComment.png)
 
-#### Remove condition from last 'else'
+#### Remove condition from last else clause
 
 * **Syntax**: else clause
 * **Scope**: else keyword
 
-![Remove condition from last 'else'](/images/refactorings/RemoveConditionFromLastElse.png)
+![Remove condition from last else clause](/images/refactorings/RemoveConditionFromLastElse.png)
 
 #### Remove directive and related directives
 
@@ -640,18 +649,18 @@
 
 ![Replace 'Any/All' with 'All/Any'](/images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
-#### Replace boolean expression with 'if' statement
+#### Replace conditional expression with expression
 
-* **Syntax**: return statement, yield return statement, expression statement
-* **Scope**: boolean expression
+* **Syntax**: conditional expression
+* **Scope**: selected true/false expression
 
-![Replace boolean expression with 'if' statement](/images/refactorings/ReplaceBooleanExpressionWithIfStatement.png)
+![Replace conditional expression with expression](/images/refactorings/ReplaceConditionalExpressionWithExpression.png)
 
-#### Replace conditional expression with 'if-else'
+#### Replace conditional expression with if-else
 
 * **Syntax**: conditional expression
 
-![Replace conditional expression with 'if-else'](/images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
+![Replace conditional expression with if-else](/images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
 
 #### Replace constant with field
 
@@ -666,12 +675,12 @@
 
 ![Replace 'Count/Length' with 'Length/Count'](/images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
-#### Replace 'do' with 'while'
+#### Replace do statement with while statement
 
 * **Syntax**: do statement
 * **Scope**: do keyword
 
-![Replace 'do' with 'while'](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
+![Replace do statement with while statement](/images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
 #### Replace field with constant
 
@@ -679,23 +688,29 @@
 
 ![Replace field with constant](/images/refactorings/ReplaceFieldWithConstant.png)
 
-#### Replace 'for' with 'foreach'
+#### Replace for statement with foreach statement
 
 * **Syntax**: for statement
 
-![Replace 'for' with 'foreach'](/images/refactorings/ReplaceForWithForEach.png)
+![Replace for statement with foreach statement](/images/refactorings/ReplaceForWithForEach.png)
 
-#### Replace 'foreach' with 'for'
+#### Replace foreach statement with for statement
 
 * **Syntax**: foreach statement
 
-![Replace 'foreach' with 'for'](/images/refactorings/ReplaceForEachWithFor.png)
+![Replace foreach statement with for statement](/images/refactorings/ReplaceForEachWithFor.png)
 
 #### Replace 'HasFlag' with bitwise operation
 
 * **Syntax**: Enum.HasFlag method invocation
 
 ![Replace 'HasFlag' with bitwise operation](/images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
+
+#### Replace if-else with conditional expression
+
+* **Syntax**: conditional expression
+
+![Replace if-else with conditional expression](/images/refactorings/ReplaceIfElseWithConditionalExpression.png)
 
 #### Replace increment operator with decrement operator
 
@@ -748,12 +763,6 @@
 
 ![Replace string literal with character literal](/images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
-#### Replace string literal with interpolated string
-
-* **Syntax**: string literal
-
-![Replace string literal with interpolated string](/images/refactorings/ReplaceStringLiteralWithInterpolatedString.png)
-
 #### Replace 'string.Empty' with ""
 
 * **Syntax**: string.Empty
@@ -766,12 +775,12 @@
 
 ![Replace 'string.Format' with interpolated string](/images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
-#### Replace 'switch' with 'if-else'
+#### Replace switch statement with if-else
 
 * **Syntax**: switch statement
 * **Scope**: switch keyword
 
-![Replace 'switch' with 'if-else'](/images/refactorings/ReplaceSwitchWithIfElse.png)
+![Replace switch statement with if-else](/images/refactorings/ReplaceSwitchWithIfElse.png)
 
 #### Replace verbatim string literal with regular string literal
 
@@ -785,18 +794,18 @@
 
 ![Replace verbatim string literal with regular string literals](/images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
 
-#### Replace 'while' with 'do'
+#### Replace while statement with do statement
 
 * **Syntax**: while statement
 * **Scope**: while keyword
 
-![Replace 'while' with 'do'](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
+![Replace while statement with do statement](/images/refactorings/ReplaceWhileStatementWithDoStatement.png)
 
-#### Reverse 'for' loop
+#### Reverse for loop
 
 * **Syntax**: for statement
 
-![Reverse 'for' loop](/images/refactorings/ReverseForLoop.png)
+![Reverse for loop](/images/refactorings/ReverseForLoop.png)
 
 #### Simplify lambda expression
 
@@ -837,12 +846,12 @@
 
 ![Swap member declarations](/images/refactorings/SwapMemberDeclarations.png)
 
-#### Swap statements in 'if-else'
+#### Swap statements in if-else
 
 * **Syntax**: if statement
 * **Scope**: if keyword
 
-![Swap statements in 'if-else'](/images/refactorings/SwapStatementsInIfElse.png)
+![Swap statements in if-else](/images/refactorings/SwapStatementsInIfElse.png)
 
 #### Uncomment
 
@@ -863,32 +872,32 @@
 
 ![Wrap expression in parentheses](/images/refactorings/WrapExpressionInParentheses.png)
 
-#### Wrap in '#if' directive
+#### Wrap in #if directive
 
 * **Syntax**: selected lines
 
-![Wrap in '#if' directive](/images/refactorings/WrapInIfDirective.png)
+![Wrap in #if directive](/images/refactorings/WrapInIfDirective.png)
 
-#### Wrap in '#region'
+#### Wrap in if statement
+
+* **Syntax**: selected statements
+
+![Wrap in if statement](/images/refactorings/WrapInIfStatement.png)
+
+#### Wrap in region
 
 * **Syntax**: selected lines
 
-![Wrap in '#region'](/images/refactorings/WrapInRegion.png)
+![Wrap in region](/images/refactorings/WrapInRegion.png)
 
-#### Wrap in 'if' statement
-
-* **Syntax**: selected statements
-
-![Wrap in 'if' statement](/images/refactorings/WrapInIfStatement.png)
-
-#### Wrap in 'try-catch'
+#### Wrap in try-catch
 
 * **Syntax**: selected statements
 
-![Wrap in 'try-catch'](/images/refactorings/WrapInTryCatch.png)
+![Wrap in try-catch](/images/refactorings/WrapInTryCatch.png)
 
-#### Wrap in 'using' statement
+#### Wrap in using statement
 
 * **Syntax**: local declaration of type that implements IDisposable
 
-![Wrap in 'using' statement](/images/refactorings/WrapInUsingStatement.png)
+![Wrap in using statement](/images/refactorings/WrapInUsingStatement.png)
