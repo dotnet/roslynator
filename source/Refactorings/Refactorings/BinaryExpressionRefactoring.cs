@@ -88,7 +88,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false
-                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && binaryExpression.IsKind(
+                    SyntaxKind.LogicalAndExpression,
+                    SyntaxKind.LogicalOrExpression,
+                    SyntaxKind.EqualsExpression,
+                    SyntaxKind.NotEqualsExpression)
                 && context.Span.IsBetweenSpans(binaryExpression))
             {
                 context.RegisterRefactoring(
