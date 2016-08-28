@@ -126,6 +126,13 @@ namespace Pihrtsoft.CodeAnalysis
         }
 
         [DebuggerStepThrough]
+        public static bool IsEnumField(this ISymbol symbol)
+        {
+            return symbol?.Kind == SymbolKind.Field
+                && symbol.ContainingType?.TypeKind == TypeKind.Enum;
+        }
+
+        [DebuggerStepThrough]
         public static bool IsLocal(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Local;
