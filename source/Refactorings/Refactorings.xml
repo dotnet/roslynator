@@ -689,7 +689,7 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression" ExtensionVersion="0.99.0">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
@@ -742,7 +742,7 @@
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceIfElseWithConditionalExpression" Title="Replace if-else with conditional expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceIfElseWithConditionalExpression" Title="Replace if-else with conditional expression" ExtensionVersion="0.99.0">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
