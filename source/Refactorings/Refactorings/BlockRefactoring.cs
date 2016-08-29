@@ -19,7 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInIfStatement,
                 RefactoringIdentifiers.WrapInTryCatch))
             {
-                var info = new SelectedStatementsInfo(block, context.Span);
+                SelectedStatementsInfo info = SelectedStatementsInfo.Create(block, context.Span);
 
                 if (info.IsAnySelected)
                 {

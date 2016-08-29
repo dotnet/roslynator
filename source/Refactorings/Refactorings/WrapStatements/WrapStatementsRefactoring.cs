@@ -20,6 +20,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
+            StatementContainer container = info.Container;
+
             StatementSyntax[] statements = info.SelectedNodes().ToArray();
 
             int index = info.FirstSelectedNodeIndex;
@@ -30,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
             statements[0] = statements[0].WithLeadingTrivia();
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
 
-            SyntaxList<StatementSyntax> newStatements = info.List;
+            SyntaxList<StatementSyntax> newStatements = container.Statements;
 
             int cnt = statements.Length;
 
@@ -49,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            root = root.ReplaceNode(info.Block, info.Block.WithStatements(newStatements));
+            root = root.ReplaceNode(container.Node, container.NodeWithStatements(newStatements));
 
             return document.WithSyntaxRoot(root);
         }

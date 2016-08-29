@@ -12,14 +12,14 @@ namespace Pihrtsoft.CodeAnalysis
         private int _firstIndex = -1;
         private int _lastIndex = -1;
 
-        public SelectedNodesInfo(SyntaxList<TNode> list, TextSpan span)
+        public SelectedNodesInfo(SyntaxList<TNode> nodes, TextSpan span)
         {
             Span = span;
-            List = list;
+            Nodes = nodes;
         }
 
         public TextSpan Span { get; }
-        public SyntaxList<TNode> List { get; }
+        public SyntaxList<TNode> Nodes { get; }
 
         public bool IsAnySelected
         {
@@ -96,7 +96,7 @@ namespace Pihrtsoft.CodeAnalysis
                 int index = FirstSelectedNodeIndex;
 
                 if (index != -1)
-                    return List[index];
+                    return Nodes[index];
 
                 return null;
             }
@@ -109,7 +109,7 @@ namespace Pihrtsoft.CodeAnalysis
                 int index = LastSelectedNodeIndex;
 
                 if (index != -1)
-                    return List[index];
+                    return Nodes[index];
 
                 return null;
             }
@@ -124,13 +124,13 @@ namespace Pihrtsoft.CodeAnalysis
                 int lastIndex = LastSelectedNodeIndex;
 
                 for (int i = firstIndex; i <= lastIndex; i++)
-                    yield return List[i];
+                    yield return Nodes[i];
             }
         }
 
         private void FindSelectedNodes()
         {
-            SyntaxList<TNode>.Enumerator en = List.GetEnumerator();
+            SyntaxList<TNode>.Enumerator en = Nodes.GetEnumerator();
 
             if (en.MoveNext())
             {

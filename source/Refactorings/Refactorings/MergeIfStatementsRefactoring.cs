@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         return RefactorAsync(
                             context.Document,
-                            info.Block,
+                            info.Container,
                             ifStatements.ToImmutableArray(),
                             cancellationToken);
                     });
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            BlockSyntax block,
+            StatementContainer container,
             ImmutableArray<IfStatementSyntax> ifStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -71,9 +71,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 CreateCondition(ifStatements),
                 Block(CreateStatements(ifStatements)));
 
-            int index = block.Statements.IndexOf(ifStatements[0]);
+            SyntaxList<StatementSyntax> statements = container.Statements;
 
-            SyntaxList<StatementSyntax> newStatements = block.Statements.Replace(
+            int index = statements.IndexOf(ifStatements[0]);
+
+            SyntaxList<StatementSyntax> newStatements = statements.Replace(
                 ifStatements[0],
                 newIfStatement
                     .WithLeadingTrivia(ifStatements[0].GetLeadingTrivia())
@@ -82,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             for (int i = 1; i < ifStatements.Length; i++)
                 newStatements = newStatements.RemoveAt(index + 1);
 
-            root = root.ReplaceNode(block, block.WithStatements(newStatements));
+            root = root.ReplaceNode(container.Node, container.NodeWithStatements(newStatements));
 
             return document.WithSyntaxRoot(root);
         }
