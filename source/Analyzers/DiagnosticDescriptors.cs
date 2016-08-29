@@ -89,7 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach,
-            title: "Use explicit type instead of 'var' (in foreach statement).",
+            title: "Use explicit type instead of 'var' (foreach variable).",
             messageFormat: "Consider using explicit type instead of 'var'.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
