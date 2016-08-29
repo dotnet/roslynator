@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Pihrtsoft.CodeAnalysis.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
     <Compile Include="CSharp\Analysis\AsyncAnalysis.cs" />
     <Compile Include="CSharp\Analysis\ForStatementAnalysis.cs" />
@@ -110,6 +111,8 @@
     <Compile Include="SelectedLinesInfo.cs" />
     <Compile Include="SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />
+    <Compile Include="CSharp\BlockContainer.cs" />
+    <Compile Include="CSharp\StatementContainer.cs" />
     <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierComparer.cs" />
     <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
