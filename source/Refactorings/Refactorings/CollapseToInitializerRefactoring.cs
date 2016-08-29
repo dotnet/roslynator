@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -19,115 +18,76 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             ISymbol symbol = null;
             ObjectCreationExpressionSyntax objectCreation = null;
 
-            using (IEnumerator<StatementSyntax> en = info.SelectedNodes().GetEnumerator())
+            if (info.AreManySelected)
             {
-                en.MoveNext();
+                SyntaxKind kind = firstStatement.Kind();
 
-                if (en.MoveNext())
+                if (kind == SyntaxKind.LocalDeclarationStatement)
                 {
-                    SyntaxKind kind = firstStatement.Kind();
+                    var localDeclaration = (LocalDeclarationStatementSyntax)firstStatement;
 
-                    if (kind == SyntaxKind.LocalDeclarationStatement)
+                    VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+                    if (declaration != null)
                     {
-                        var localDeclaration = (LocalDeclarationStatementSyntax)firstStatement;
+                        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
 
-                        VariableDeclarationSyntax declaration = localDeclaration.Declaration;
-
-                        if (declaration != null)
+                        if (variables.Count == 1)
                         {
-                            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
+                            VariableDeclaratorSyntax variable = variables[0];
 
-                            if (variables.Count == 1)
-                            {
-                                VariableDeclaratorSyntax variable = variables[0];
-
-                                objectCreation = variable.Initializer?.Value as ObjectCreationExpressionSyntax;
-
-                                if (objectCreation != null)
-                                {
-                                    semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                    symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
-                                }
-                            }
-                        }
-                    }
-                    else if (kind == SyntaxKind.ExpressionStatement)
-                    {
-                        var expressionStatement = (ExpressionStatementSyntax)firstStatement;
-
-                        var assignment = expressionStatement.Expression as AssignmentExpressionSyntax;
-
-                        if (assignment != null)
-                        {
-                            objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
+                            objectCreation = variable.Initializer?.Value as ObjectCreationExpressionSyntax;
 
                             if (objectCreation != null)
                             {
                                 semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                symbol = semanticModel.GetSymbolInfo(assignment.Left, context.CancellationToken).Symbol;
+                                symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
                             }
                         }
                     }
+                }
+                else if (kind == SyntaxKind.ExpressionStatement)
+                {
+                    var expressionStatement = (ExpressionStatementSyntax)firstStatement;
 
-                    if (objectCreation != null
-                        && symbol?.IsErrorType() == false)
+                    var assignment = expressionStatement.Expression as AssignmentExpressionSyntax;
+
+                    if (assignment != null)
                     {
-                        List<ExpressionStatementSyntax> statements = GetExpressionStatements(en, symbol, semanticModel, context.CancellationToken);
+                        objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
 
-                        if (statements?.Count > 0)
+                        if (objectCreation != null)
                         {
-                            context.RegisterRefactoring(
-                                "Collapse to initializer",
-                                cancellationToken =>
-                                {
-                                    return RefactorAsync(
-                                        context.Document,
-                                        objectCreation,
-                                        statements.ToImmutableArray(),
-                                        cancellationToken);
-                                });
+                            semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            symbol = semanticModel.GetSymbolInfo(assignment.Left, context.CancellationToken).Symbol;
                         }
                     }
                 }
-            }
-        }
 
-        private static List<ExpressionStatementSyntax> GetExpressionStatements(
-            IEnumerator<StatementSyntax> en,
-            ISymbol symbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ExpressionStatementSyntax expressionStatement = GetExpressionStatement(en.Current, symbol, semanticModel, cancellationToken);
-
-            if (expressionStatement != null)
-            {
-                var statements = new List<ExpressionStatementSyntax>();
-                statements.Add(expressionStatement);
-
-                while (en.MoveNext())
+                if (objectCreation != null
+                    && symbol?.IsErrorType() == false
+                    && info
+                        .SelectedNodes()
+                        .Skip(1)
+                        .All(f => IsValidAssignmentStatement(f, symbol, semanticModel, context.CancellationToken)))
                 {
-                    expressionStatement = GetExpressionStatement(en.Current, symbol, semanticModel, cancellationToken);
-
-                    if (expressionStatement != null)
-                    {
-                        statements.Add(expressionStatement);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    context.RegisterRefactoring(
+                        "Collapse to initializer",
+                        cancellationToken =>
+                        {
+                            return RefactorAsync(
+                                context.Document,
+                                objectCreation,
+                                info,
+                                cancellationToken);
+                        });
                 }
-
-                return statements;
             }
-
-            return null;
         }
 
-        public static ExpressionStatementSyntax GetExpressionStatement(
+        public static bool IsValidAssignmentStatement(
             StatementSyntax statement,
             ISymbol symbol,
             SemanticModel semanticModel,
@@ -154,51 +114,56 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             ISymbol leftSymbol = semanticModel.GetSymbolInfo(assignment.Left, cancellationToken).Symbol;
 
                             if (leftSymbol?.IsProperty() == true)
-                            {
-                                return expressionStatement;
-                            }
+                                return true;
                         }
                     }
                 }
             }
 
-            return null;
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
-            ImmutableArray<ExpressionStatementSyntax> expressionStatements,
+            SelectedStatementsInfo info,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var block = (BlockSyntax)expressionStatements[0].Parent;
+            StatementContainer container = info.Container;
 
-            int index = block.Statements.IndexOf(expressionStatements[0]);
+            ExpressionStatementSyntax[] expressionStatements = info
+                .SelectedNodes()
+                .Skip(1)
+                .Cast<ExpressionStatementSyntax>()
+                .ToArray();
 
-            BlockSyntax newBlock = block.ReplaceNode(
-                objectCreation,
-                objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements)));
+            StatementSyntax firstNode = info.FirstSelectedNode;
 
-            SyntaxList<StatementSyntax> statements = newBlock.Statements;
+            SyntaxList<StatementSyntax> newStatements = container.Statements.Replace(
+                firstNode,
+                firstNode.ReplaceNode(
+                    objectCreation,
+                    objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements))));
 
             int count = expressionStatements.Length;
+            int index = info.FirstSelectedNodeIndex + 1;
 
             while (count > 0)
             {
-                statements = statements.RemoveAt(index);
+                newStatements = newStatements.RemoveAt(index);
                 count--;
             }
 
-            root = root.ReplaceNode(
-                block,
-                newBlock.WithStatements(statements));
+            SyntaxNode newRoot = root.ReplaceNode(
+                container.Node,
+                container.NodeWithStatements(newStatements));
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
 
-        private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ImmutableArray<ExpressionStatementSyntax> expressionStatements)
+        private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ExpressionStatementSyntax[] expressionStatements)
         {
             InitializerExpressionSyntax initializer = objectCreation.Initializer
                 ?? SyntaxFactory.InitializerExpression(SyntaxKind.ObjectInitializerExpression);
