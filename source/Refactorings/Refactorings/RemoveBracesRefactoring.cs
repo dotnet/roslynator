@@ -13,7 +13,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class RemoveBracesRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
+        public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
+        {
+            BlockSyntax block = null;
+
+            if (statement.IsKind(SyntaxKind.Block))
+            {
+                block = (BlockSyntax)statement;
+            }
+            else if (statement.IsParentKind(SyntaxKind.Block))
+            {
+                block = (BlockSyntax)statement.Parent;
+            }
+
+            if (block != null)
+            {
+                ComputeRefactoring(context, block);
+            }
+        }
+
+        private static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.RemoveBraces,

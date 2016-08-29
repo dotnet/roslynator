@@ -498,6 +498,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fStatement)
                         {
                             AddBracesRefactoring.ComputeRefactoring(context, statement);
+                            RemoveBracesRefactoring.ComputeRefactoring(context, statement);
                             ExtractStatementRefactoring.ComputeRefactoring(context, statement);
                             fStatement = true;
                         }

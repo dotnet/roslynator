@@ -9,8 +9,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
         {
-            RemoveBracesRefactoring.ComputeRefactoring(context, block);
-
             if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
             {
                 SelectedStatementsInfo info = SelectedStatementsInfo.Create(block, context.Span);
