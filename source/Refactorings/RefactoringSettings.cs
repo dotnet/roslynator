@@ -48,6 +48,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 || IsRefactoringEnabled(identifier5);
         }
 
+        public bool IsAnyRefactoringEnabled(
+            string identifier,
+            string identifier2,
+            string identifier3,
+            string identifier4,
+            string identifier5,
+            string identifier6)
+        {
+            return IsRefactoringEnabled(identifier)
+                || IsRefactoringEnabled(identifier2)
+                || IsRefactoringEnabled(identifier3)
+                || IsRefactoringEnabled(identifier4)
+                || IsRefactoringEnabled(identifier5)
+                || IsRefactoringEnabled(identifier6);
+        }
+
         public void SetIsRefactoringEnabled(string identifier, bool isEnabled)
         {
             if (isEnabled)
