@@ -9,6 +9,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class RemoveBracesFromSwitchSectionRefactoring
     {
+        public const string Title = "Remove braces from section";
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,

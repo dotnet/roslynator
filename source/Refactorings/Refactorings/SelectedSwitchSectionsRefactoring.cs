@@ -56,8 +56,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                             if (fAddBraces && addBraces.Count > 0)
                             {
+                                string title = AddBracesToSwitchSectionRefactoring.Title;
+
+                                if (addBraces.Count > 1)
+                                    title += "s";
+
                                 context.RegisterRefactoring(
-                                    AddBracesToSwitchSectionsRefactoring.Title,
+                                    title,
                                     cancellationToken =>
                                     {
                                         return AddBracesToSwitchSectionsRefactoring.RefactorAsync(
@@ -70,8 +75,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                             if (fRemoveBraces && removeBraces.Count > 0)
                             {
+                                string title = RemoveBracesFromSwitchSectionRefactoring.Title;
+
+                                if (removeBraces.Count > 1)
+                                    title += "s";
+
                                 context.RegisterRefactoring(
-                                    RemoveBracesFromSwitchSectionsRefactoring.Title,
+                                    title,
                                     cancellationToken =>
                                     {
                                         return RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(

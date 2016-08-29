@@ -10,6 +10,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class AddBracesToSwitchSectionRefactoring
     {
+        public const string Title = "Add braces to section";
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,

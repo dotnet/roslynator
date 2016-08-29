@@ -18,7 +18,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, info);
             }
 
-            if (context.IsAnyRefactoringEnabled(
+            if (context.Span.IsEmpty
+                && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBracesToSwitchSection,
                     RefactoringIdentifiers.AddBracesToSwitchSections,
                     RefactoringIdentifiers.RemoveBracesFromSwitchSection,
@@ -35,7 +36,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSection))
                             {
                                 context.RegisterRefactoring(
-                                    "Add braces to section",
+                                    AddBracesToSwitchSectionRefactoring.Title,
                                     cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
                             }
 
@@ -54,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection))
                             {
                                 context.RegisterRefactoring(
-                                    "Remove braces from section",
+                                    RemoveBracesFromSwitchSectionRefactoring.Title,
                                     cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
                             }
 
