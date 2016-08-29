@@ -181,7 +181,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RemoveStatementAsync(
+        private static async Task<Document> RemoveStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -193,7 +193,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return document.WithSyntaxRoot(root);
         }
 
-        public static async Task<Document> DuplicateStatementAsync(
+        private static async Task<Document> DuplicateStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -217,7 +217,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return document.WithSyntaxRoot(root);
         }
 
-        internal static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
+        private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
         {
             SyntaxRemoveOptions removeOptions = MemberRemover.DefaultRemoveOptions;
 
