@@ -37,6 +37,7 @@ namespace Pihrtsoft.CodeAnalysis
                 case SyntaxKind.ParenthesizedExpression:
                 case SyntaxKind.Argument:
                 case SyntaxKind.AttributeArgument:
+                case SyntaxKind.QualifiedName:
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.InvocationExpression:
                 case SyntaxKind.ConditionalAccessExpression:
