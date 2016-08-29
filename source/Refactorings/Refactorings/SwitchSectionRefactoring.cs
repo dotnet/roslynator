@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
@@ -9,13 +10,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class SwitchSectionRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SwitchSectionSyntax switchSection)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
+            if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
+            {
+                SelectedStatementsInfo info = SelectedStatementsInfo.Create(switchSection, context.Span);
+                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, info);
+            }
+
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddBracesToSwitchSection,
-                RefactoringIdentifiers.AddBracesToSwitchSections,
-                RefactoringIdentifiers.RemoveBracesFromSwitchSection,
-                RefactoringIdentifiers.RemoveBracesFromSwitchSections))
+                    RefactoringIdentifiers.AddBracesToSwitchSection,
+                    RefactoringIdentifiers.AddBracesToSwitchSections,
+                    RefactoringIdentifiers.RemoveBracesFromSwitchSection,
+                    RefactoringIdentifiers.RemoveBracesFromSwitchSections))
             {
                 var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
 

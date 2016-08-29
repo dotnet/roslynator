@@ -202,7 +202,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (!fSwitchSection
                         && kind == SyntaxKind.SwitchSection)
                     {
-                        SwitchSectionRefactoring.ComputeRefactorings(context, (SwitchSectionSyntax)node);
+                        await SwitchSectionRefactoring.ComputeRefactoringsAsync(context, (SwitchSectionSyntax)node);
                         fSwitchSection = true;
                         continue;
                     }
