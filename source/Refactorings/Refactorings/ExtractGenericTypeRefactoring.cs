@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 SeparatedSyntaxList<TypeSyntax> arguments = typeArgumentList.Arguments;
 
                 if (arguments.Count == 1
-                    && arguments[0].Span.Contains(context.Span))
+                    && context.Span.IsBetweenSpans(arguments[0]))
                 {
                     return true;
                 }
