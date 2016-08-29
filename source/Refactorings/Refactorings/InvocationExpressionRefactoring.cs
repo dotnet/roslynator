@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod)
                 && context.SupportsSemanticModel)
             {
-                await InlineMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression);
+                await InlineMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
             }
         }
     }

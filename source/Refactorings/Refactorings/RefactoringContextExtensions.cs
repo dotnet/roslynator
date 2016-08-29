@@ -202,7 +202,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (!fSwitchSection
                         && kind == SyntaxKind.SwitchSection)
                     {
-                        await SwitchSectionRefactoring.ComputeRefactoringsAsync(context, (SwitchSectionSyntax)node);
+                        await SwitchSectionRefactoring.ComputeRefactoringsAsync(context, (SwitchSectionSyntax)node).ConfigureAwait(false);
                         fSwitchSection = true;
                         continue;
                     }
@@ -285,7 +285,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fQualifiedName
                             && kind == SyntaxKind.QualifiedName)
                         {
-                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression);
+                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression).ConfigureAwait(false);
                             fQualifiedName = true;
                         }
 
@@ -491,7 +491,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fBlock
                             && kind == SyntaxKind.Block)
                         {
-                            await BlockRefactoring.ComputeRefactoringAsync(context, (BlockSyntax)node);
+                            await BlockRefactoring.ComputeRefactoringAsync(context, (BlockSyntax)node).ConfigureAwait(false);
                             fBlock = true;
                         }
 

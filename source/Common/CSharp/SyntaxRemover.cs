@@ -140,7 +140,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
 
-            return await RemoveDirectivesAsync(syntaxTree, directives, cancellationToken);
+            return await RemoveDirectivesAsync(syntaxTree, directives, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> RemoveRegionDirectivesAsync(
@@ -154,7 +154,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
 
-            return await RemoveDirectivesAsync(document, directives, cancellationToken);
+            return await RemoveDirectivesAsync(document, directives, cancellationToken).ConfigureAwait(false);
         }
     }
 }

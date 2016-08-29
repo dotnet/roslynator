@@ -25,11 +25,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     && context.SupportsSemanticModel)
                 {
                     var refactoring = new WrapInUsingStatementRefactoring();
-                    await refactoring.ComputeRefactoringAsync(context, info);
+                    await refactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
-                    await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, info);
+                    await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                     MergeIfStatementsRefactoring.ComputeRefactorings(context, info);

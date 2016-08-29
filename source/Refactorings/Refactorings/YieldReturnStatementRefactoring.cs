@@ -97,7 +97,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
-                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression);
+                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, yieldStatement.Expression).ConfigureAwait(false);
             }
         }
     }

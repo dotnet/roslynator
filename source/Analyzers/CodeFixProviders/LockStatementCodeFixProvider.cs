@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                     if (document.SupportsSemanticModel)
                     {
-                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                         name = SyntaxUtility.GetUniqueName(name, semanticModel, lockStatement.Expression.Span.Start);
                     }
 

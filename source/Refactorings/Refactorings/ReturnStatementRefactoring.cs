@@ -22,11 +22,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
-                        await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression);
+                        await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression).ConfigureAwait(false);
                 }
                 else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
                 {
-                    await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement);
+                    await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement).ConfigureAwait(false);
                 }
             }
         }

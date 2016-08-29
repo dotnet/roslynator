@@ -24,7 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (methodSymbol != null)
                 {
-                    MethodDeclarationSyntax method = await GetMethodAsync(methodSymbol, context.CancellationToken);
+                    MethodDeclarationSyntax method = await GetMethodAsync(methodSymbol, context.CancellationToken).ConfigureAwait(false);
 
                     if (method != null)
                     {
@@ -113,7 +113,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             foreach (SyntaxReference reference in methodSymbol.DeclaringSyntaxReferences)
             {
-                SyntaxNode node = await reference.GetSyntaxAsync(cancellationToken);
+                SyntaxNode node = await reference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
                 if (node.IsKind(SyntaxKind.MethodDeclaration))
                 {
@@ -205,7 +205,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             Solution solution = document.Project.Solution;
 
-            expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
+            expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken).ConfigureAwait(false);
 
             root = root.ReplaceNode(invocation, expression);
 
@@ -222,11 +222,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (invocation.SyntaxTree.Equals(methodDeclaration.SyntaxTree))
             {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken);
+                DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
                 Solution solution = document.Project.Solution;
 
-                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
+                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken).ConfigureAwait(false);
 
                 editor.ReplaceNode(invocation, expression);
 
@@ -242,7 +242,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 Solution solution = document.Project.Solution;
 
-                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken);
+                expression = await RewriteExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken).ConfigureAwait(false);
 
                 root = root.ReplaceNode(invocation, expression);
 
@@ -252,7 +252,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 solution = document.Project.Solution;
 
-                return await RemoveMethodAsync(solution.GetDocument(documentId), methodDeclaration, cancellationToken);
+                return await RemoveMethodAsync(solution.GetDocument(documentId), methodDeclaration, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -283,7 +283,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             foreach (ParameterInfo parameterInfo in parameterInfos)
             {
-                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(parameterInfo.ParameterSymbol, solution, cancellationToken);
+                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(parameterInfo.ParameterSymbol, solution, cancellationToken).ConfigureAwait(false);
 
                 foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
                 {

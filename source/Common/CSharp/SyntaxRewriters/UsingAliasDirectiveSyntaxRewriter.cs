@@ -34,17 +34,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken);
+            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken) as IAliasSymbol;
 
             var identifierNames = new List<IdentifierNameSyntax>();
 
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(aliasSymbol, document.Project.Solution, cancellationToken);
+            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(aliasSymbol, document.Project.Solution, cancellationToken).ConfigureAwait(false);
 
             foreach (TextSpan span in GetSymbolSpans(referencedSymbols, tree))
             {

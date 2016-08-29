@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
             {
                 SelectedStatementsInfo info = SelectedStatementsInfo.Create(switchSection, context.Span);
-                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, info);
+                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
             }
 
             if (context.Span.IsEmpty
