@@ -285,7 +285,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (!fQualifiedName
                             && kind == SyntaxKind.QualifiedName)
                         {
-                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression).ConfigureAwait(false);
+                            QualifiedNameRefactoring.ComputeRefactorings(context, (QualifiedNameSyntax)expression);
                             fQualifiedName = true;
                         }
 

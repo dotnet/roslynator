@@ -19,6 +19,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+                && context.Span.IsEmpty
                 && context.SupportsSemanticModel)
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);

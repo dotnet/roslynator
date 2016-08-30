@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,139 +12,80 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class AddUsingDirectiveRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, NameSyntax name)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            name = GetFullNamespace(name, semanticModel, context.CancellationToken);
+            INamespaceSymbol namespaceSymbol = null;
 
-            if (name?.Parent?.IsKind(SyntaxKind.QualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true)
+            SyntaxNode node = identifierName;
+            SyntaxNode prevNode = null;
+
+            while (node?.Parent?.IsKind(SyntaxKind.QualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true)
             {
-                ISymbol symbol = semanticModel
-                   .GetSymbolInfo(name, context.CancellationToken)
-                   .Symbol;
-
-                if (symbol?.IsNamespace() == true
-                    && IsRootNamespace(name, semanticModel, context.CancellationToken))
-                {
-                    var namespaceSymbol = (INamespaceSymbol)symbol;
-
-                    if (!SyntaxUtility.IsUsingDirectiveInScope(name, namespaceSymbol, semanticModel, context.CancellationToken))
-                    {
-                        context.RegisterRefactoring(
-                            $"using {symbol.ToString()};",
-                            cancellationToken =>
-                            {
-                                return RefactorAsync(
-                                    context.Document,
-                                    name,
-                                    namespaceSymbol,
-                                    cancellationToken);
-                            });
-                    }
-                }
-            }
-        }
-
-        private static NameSyntax GetFullNamespace(
-            NameSyntax name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            bool isFirst = true;
-
-            while (name.Parent?.IsKind(SyntaxKind.QualifiedName) == true)
-            {
-                var qualifiedName = (QualifiedNameSyntax)name.Parent;
-
-                ISymbol symbol = semanticModel
-                    .GetSymbolInfo(qualifiedName, cancellationToken)
-                    .Symbol;
+                ISymbol symbol = semanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol;
 
                 if (symbol?.IsNamespace() == true)
                 {
-                    if (isFirst
-                        && name.IsKind(SyntaxKind.IdentifierName))
-                    {
-                        return null;
-                    }
-
-                    name = qualifiedName;
+                    namespaceSymbol = (INamespaceSymbol)symbol;
+                    prevNode = node;
+                    node = node.Parent;
                 }
                 else
                 {
                     break;
                 }
-
-                isFirst = false;
             }
 
-            return name;
-        }
+            node = prevNode;
 
-        private static bool IsRootNamespace(
-            NameSyntax name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            NameSyntax left = name;
-
-            while (left?.IsKind(SyntaxKind.QualifiedName) == true)
+            if (node?.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true
+                && !node.IsDescendantOf(SyntaxKind.UsingDirective)
+                && !SyntaxUtility.IsUsingDirectiveInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
             {
-                var qualifiedName = (QualifiedNameSyntax)left;
-
-                if (qualifiedName.Left != null)
-                {
-                    left = qualifiedName.Left;
-                }
-                else
-                {
-                    break;
-                }
+                context.RegisterRefactoring(
+                    $"using {namespaceSymbol.ToString()};",
+                    cancellationToken => RefactorAsync(context.Document, node, namespaceSymbol, cancellationToken));
             }
-
-            ISymbol symbol = semanticModel
-                .GetSymbolInfo(left, cancellationToken)
-                .Symbol;
-
-            return symbol?.ContainingNamespace.IsGlobalNamespace == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
-            NameSyntax name,
+            SyntaxNode node,
             INamespaceSymbol namespaceSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            root = root.ReplaceNode(name.Parent, GetNewNode(name));
+            root = root.ReplaceNode(node.Parent, GetNewNode(node));
 
-            root = ((CompilationUnitSyntax)root)
+            CompilationUnitSyntax newRoot = ((CompilationUnitSyntax)root)
                 .AddUsings(UsingDirective(ParseName(namespaceSymbol.ToString())));
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
 
-        private static NameSyntax GetNewNode(NameSyntax name)
+        private static SyntaxNode GetNewNode(SyntaxNode node)
         {
-            switch (name.Parent.Kind())
+            switch (node.Parent.Kind())
             {
                 case SyntaxKind.QualifiedName:
                     {
-                        var qualifiedName = (QualifiedNameSyntax)name.Parent;
+                        var qualifiedName = (QualifiedNameSyntax)node.Parent;
 
-                        return qualifiedName.Right.WithLeadingTrivia(name.GetLeadingTrivia());
+                        return qualifiedName.Right.WithLeadingTrivia(node.GetLeadingTrivia());
                     }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
-                        var memberAccess = (MemberAccessExpressionSyntax)name.Parent;
+                        var memberAccess = (MemberAccessExpressionSyntax)node.Parent;
 
-                        return memberAccess.Name.WithLeadingTrivia(name.GetLeadingTrivia());
+                        return memberAccess.Name.WithLeadingTrivia(node.GetLeadingTrivia());
                     }
             }
 
-            return null;
+            Debug.Assert(false, node?.Parent?.Kind().ToString());
+
+            return node;
         }
     }
 }
