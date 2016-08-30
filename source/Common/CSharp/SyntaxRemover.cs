@@ -3,9 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
@@ -155,6 +157,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
 
             return await RemoveDirectivesAsync(document, directives, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static SyntaxNode RemoveEmptyNamespaces(SyntaxNode node, SyntaxRemoveOptions removeOptions)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            IEnumerable<NamespaceDeclarationSyntax> emptyNamespaces = node
+                .DescendantNodes()
+                .Where(f => f.IsKind(SyntaxKind.NamespaceDeclaration))
+                .Cast<NamespaceDeclarationSyntax>()
+                .Where(f => f.Members.Count == 0);
+
+            return node.RemoveNodes(emptyNamespaces, removeOptions);
         }
     }
 }
