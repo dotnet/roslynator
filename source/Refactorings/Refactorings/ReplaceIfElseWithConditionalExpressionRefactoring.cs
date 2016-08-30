@@ -21,53 +21,55 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 
-                StatementSyntax statement2 = elseClause.Statement;
-
-                if (elseClause != null
-                    && statement2?.IsKind(SyntaxKind.IfStatement) == false)
+                if (elseClause != null)
                 {
-                    StatementSyntax statement1 = GetStatementOrDefault(ifStatement.Statement);
+                    StatementSyntax statement2 = elseClause.Statement;
 
-                    if (statement1 != null)
+                    if (statement2?.IsKind(SyntaxKind.IfStatement) == false)
                     {
-                        statement2 = GetStatementOrDefault(statement2);
+                        StatementSyntax statement1 = GetStatementOrDefault(ifStatement.Statement);
 
-                        if (statement2 != null)
+                        if (statement1 != null)
                         {
-                            SyntaxKind kind1 = statement1.Kind();
-                            SyntaxKind kind2 = statement2.Kind();
+                            statement2 = GetStatementOrDefault(statement2);
 
-                            if (kind1 == SyntaxKind.ReturnStatement)
+                            if (statement2 != null)
                             {
-                                if (kind2 == SyntaxKind.ReturnStatement)
+                                SyntaxKind kind1 = statement1.Kind();
+                                SyntaxKind kind2 = statement2.Kind();
+
+                                if (kind1 == SyntaxKind.ReturnStatement)
                                 {
-                                    ComputeRefactoring(
-                                       context,
-                                       ifStatement,
-                                       (ReturnStatementSyntax)statement1,
-                                       (ReturnStatementSyntax)statement2);
+                                    if (kind2 == SyntaxKind.ReturnStatement)
+                                    {
+                                        ComputeRefactoring(
+                                           context,
+                                           ifStatement,
+                                           (ReturnStatementSyntax)statement1,
+                                           (ReturnStatementSyntax)statement2);
+                                    }
                                 }
-                            }
-                            else if (kind1 == SyntaxKind.YieldReturnStatement)
-                            {
-                                if (kind2 == SyntaxKind.YieldReturnStatement)
+                                else if (kind1 == SyntaxKind.YieldReturnStatement)
                                 {
-                                    ComputeRefactoring(
-                                       context,
-                                       ifStatement,
-                                       (YieldStatementSyntax)statement1,
-                                       (YieldStatementSyntax)statement2);
+                                    if (kind2 == SyntaxKind.YieldReturnStatement)
+                                    {
+                                        ComputeRefactoring(
+                                           context,
+                                           ifStatement,
+                                           (YieldStatementSyntax)statement1,
+                                           (YieldStatementSyntax)statement2);
+                                    }
                                 }
-                            }
-                            else if (kind1 == SyntaxKind.ExpressionStatement)
-                            {
-                                if (kind2 == SyntaxKind.ExpressionStatement)
+                                else if (kind1 == SyntaxKind.ExpressionStatement)
                                 {
-                                    ComputeRefactoring(
-                                       context,
-                                       ifStatement,
-                                       (ExpressionStatementSyntax)statement2,
-                                       (ExpressionStatementSyntax)statement1);
+                                    if (kind2 == SyntaxKind.ExpressionStatement)
+                                    {
+                                        ComputeRefactoring(
+                                           context,
+                                           ifStatement,
+                                           (ExpressionStatementSyntax)statement2,
+                                           (ExpressionStatementSyntax)statement1);
+                                    }
                                 }
                             }
                         }
