@@ -17,38 +17,40 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class MemberDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.FormatDeclarationBraces);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatDeclarationBraces); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            MemberDeclarationSyntax declaration = root
+            MemberDeclarationSyntax memberDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
-            if (declaration == null)
+            if (memberDeclaration == null)
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Format braces",
-                cancellationToken => FormatBracesAsync(context.Document, declaration, cancellationToken),
-                DiagnosticIdentifiers.FormatDeclarationBraces);
+                cancellationToken => RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                DiagnosticIdentifiers.FormatDeclarationBraces + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private static async Task<Document> FormatBracesAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MemberDeclarationSyntax newNode = GetNewDeclaration(declaration)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(declaration, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(declaration, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
