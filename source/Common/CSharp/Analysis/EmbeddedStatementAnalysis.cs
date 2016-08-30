@@ -266,7 +266,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     }
                 case SyntaxKind.ForEachStatement:
                     {
-                        return ForEachStatementAnalysis.HasParenthesesOnSameLine(((ForEachStatementSyntax)node));
+                        return ForEachStatementAnalysis.HasParenthesesOnSameLine((ForEachStatementSyntax)node);
                     }
                 case SyntaxKind.ForStatement:
                     {

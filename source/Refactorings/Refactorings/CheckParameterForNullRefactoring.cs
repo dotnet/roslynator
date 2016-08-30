@@ -176,7 +176,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var type = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol as INamedTypeSymbol;
 
-            return (type?.Equals(argumentNullExceptionType) == true);
+            return type?.Equals(argumentNullExceptionType) == true;
         }
 
         private static StatementSyntax SingleStatementOrDefault(IfStatementSyntax ifStatement)

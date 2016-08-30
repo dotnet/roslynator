@@ -244,22 +244,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static PredefinedTypeSyntax StringType()
         {
-            return PredefinedType((SyntaxKind.StringKeyword));
+            return PredefinedType(SyntaxKind.StringKeyword);
         }
 
         public static PredefinedTypeSyntax IntType()
         {
-            return PredefinedType((SyntaxKind.IntKeyword));
+            return PredefinedType(SyntaxKind.IntKeyword);
         }
 
         public static PredefinedTypeSyntax BoolType()
         {
-            return PredefinedType((SyntaxKind.BoolKeyword));
+            return PredefinedType(SyntaxKind.BoolKeyword);
         }
 
         public static PredefinedTypeSyntax VoidType()
         {
-            return PredefinedType((SyntaxKind.VoidKeyword));
+            return PredefinedType(SyntaxKind.VoidKeyword);
         }
 
         public static PredefinedTypeSyntax ObjectType()

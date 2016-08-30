@@ -72,7 +72,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 && !closeBrace.IsMissing
                 && closeBrace.GetSpanStartLine() - openBrace.GetSpanEndLine() != 1)
             {
-                TextSpan span = (TextSpan.FromBounds(openBrace.Span.Start, closeBrace.Span.End));
+                TextSpan span = TextSpan.FromBounds(openBrace.Span.Start, closeBrace.Span.End);
 
                 if (declaration
                     .DescendantTrivia(span)
