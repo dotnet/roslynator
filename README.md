@@ -30,28 +30,28 @@
 * RCS1003 - Add braces to if-else
 * RCS1004 - Remove braces from if-else
 * RCS1005 - Simplify nested using statement
-* RCS1006 - Simplify else clause containing only if statement
+* RCS1006 - Merge else clause with nested if statement
 * RCS1007 - Avoid embedded statement
 * RCS1008 - Use explicit type instead of 'var' (when the type is not obvious)
-* RCS1009 - Use explicit type instead of 'var' (in 'foreach')
+* RCS1009 - Use explicit type instead of 'var' (foreach variable)
 * RCS1010 - Use 'var' instead of explicit type (when the type is obvious)
 * RCS1012 - Use explicit type instead of 'var' (even if the type is obvious)
 * RCS1013 - Use predefined type
 * RCS1014 - Avoid implicitly-typed array
-* RCS1015 - Use nameof operator
+* RCS1015 - Use 'nameof' operator
 * RCS1016 - Use expression-bodied member
 * RCS1017 - Avoid multiline expression body
-* RCS1018 - Add access modifier
+* RCS1018 - Add default access modifier
 * RCS1019 - Reorder modifiers
 * RCS1020 - Simplify Nullable<T> to T?
 * RCS1021 - Simplify lambda expression
 * RCS1022 - Simplify lambda expression parameter list
-* RCS1023 - Format block
+* RCS1023 - Format empty block
 * RCS1024 - Format accessor list
-* RCS1025 - Format each enum member on separate line
-* RCS1026 - Format each statement on separate line
-* RCS1027 - Format embedded statement on separate line
-* RCS1028 - Format switch section statement on separate line
+* RCS1025 - Format each enum member on a separate line
+* RCS1026 - Format each statement on a separate line
+* RCS1027 - Format embedded statement on a separate line
+* RCS1028 - Format switch section's statement on a separate line
 * RCS1029 - Format binary operator on next line
 * RCS1030 - Add empty line after embedded statement
 * RCS1031 - Remove redundant braces
@@ -76,16 +76,15 @@
 * RCS1050 - Add constructor argument list
 * RCS1051 - Wrap conditional expression condition in parentheses
 * RCS1052 - Declare each attribute separately
-* RCS1053 - Replace 'foreach' with 'for'
 * RCS1054 - Merge local declaration with return statement
 * RCS1055 - Avoid semicolon at the end of declaration
-* RCS1056 - Avoid alias directive
+* RCS1056 - Avoid usage of using alias directive
 * RCS1057 - Add empty line between declarations
 * RCS1058 - Simplify assignment expression
 * RCS1059 - Avoid locking on publicly accessible instance
 * RCS1060 - Declare each type in separate file
 * RCS1061 - Merge if statement with nested if statement
-* RCS1062 - Replace interpolated string with string literal
+* RCS1062 - Avoid interpolated string with no interpolation
 * RCS1063 - Avoid usage of do statement to create an infinite loop
 * RCS1064 - Avoid usage of for statement to create an infinite loop
 * RCS1065 - Avoid usage of while statement to create an inifinite loop
