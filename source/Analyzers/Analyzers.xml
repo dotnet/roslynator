@@ -14,7 +14,7 @@
     <Title>Remove braces.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -32,7 +32,7 @@
     <Title>Remove braces from if-else.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -45,9 +45,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyElseClauseContainingOnlyIfStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="MergeElseClauseWithNestedIfStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1006</Id>
-    <Title>Simplify else clause containing only if statement.</Title>
+    <Title>Merge else clause with nested if statement.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -74,7 +74,7 @@
   </Analyzer>
   <Analyzer Identifier="UseExplicitTypeInsteadOfVarInForEach" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1009</Id>
-    <Title>Use explicit type instead of 'var' (in 'foreach').</Title>
+    <Title>Use explicit type instead of 'var' (foreach variable).</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -113,13 +113,13 @@
     <Title>Avoid implicitly-typed array.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="UseNameOfOperator" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1015</Id>
-    <Title>Use nameof operator.</Title>
+    <Title>Use 'nameof' operator.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -131,7 +131,7 @@
     <Title>Use expression-bodied member.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -144,9 +144,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddAccessModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddDefaultAccessModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1018</Id>
-    <Title>Add access modifier.</Title>
+    <Title>Add default access modifier.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -189,9 +189,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatEmptyBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1023</Id>
-    <Title>Format block.</Title>
+    <Title>Format empty block.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -209,16 +209,16 @@
   </Analyzer>
   <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1025</Id>
-    <Title>Format each enum member on separate line.</Title>
+    <Title>Format each enum member on a separate line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="FormatEachStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1026</Id>
-    <Title>Format each statement on separate line.</Title>
+    <Title>Format each statement on a separate line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -227,7 +227,7 @@
   </Analyzer>
   <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1027</Id>
-    <Title>Format embedded statement on separate line.</Title>
+    <Title>Format embedded statement on a separate line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -236,7 +236,7 @@
   </Analyzer>
   <Analyzer Identifier="FormatSwitchSectionStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1028</Id>
-    <Title>Format switch section statement on separate line.</Title>
+    <Title>Format switch section's statement on a separate line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -310,7 +310,7 @@
     <Id>RCS1036</Id>
     <Title>Remove redundant empty line.</Title>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -400,7 +400,7 @@
     <Id>RCS1046</Id>
     <Title>Asynchronous method name should end with 'Async'.</Title>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -409,7 +409,7 @@
     <Id>RCS1047</Id>
     <Title>Non-asynchronous method name should not end with 'Async'.</Title>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -459,15 +459,6 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceForEachWithFor" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
-    <Id>RCS1053</Id>
-    <Title>Replace 'foreach' with 'for'.</Title>
-    <Category>General</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1054</Id>
     <Title>Merge local declaration with return statement.</Title>
@@ -486,9 +477,9 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AvoidUsageOfUsingAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1056</Id>
-    <Title>Avoid alias directive.</Title>
+    <Title>Avoid usage of using alias directive.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -526,8 +517,8 @@
     <Id>RCS1060</Id>
     <Title>Declare each type in separate file.</Title>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -540,14 +531,14 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceInterpolatedStringWithStringLiteral" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
+  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolation" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1062</Id>
-    <Title>Replace interpolated string with string literal.</Title>
+    <Title>Avoid interpolated string with no interpolation.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
     <Id>RCS1063</Id>
@@ -644,7 +635,7 @@
     <Title>Replace if statement with return statement.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -708,7 +699,7 @@
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="SplitVariableDeclaration" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
