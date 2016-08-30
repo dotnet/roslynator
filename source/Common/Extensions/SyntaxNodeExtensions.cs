@@ -15,6 +15,14 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool IsDescendantOf(this SyntaxNode node, SyntaxKind kind)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.Ancestors().Any(f => f.IsKind(kind));
+        }
+
         public static bool ContainsDirective(this SyntaxNode node, TextSpan span)
         {
             return node
