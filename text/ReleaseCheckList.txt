@@ -1,12 +1,13 @@
-﻿run CodeGenerator
-run MetadataGenerator
-change number of refactorings and/or analyzers
-update changelog
-change version
-change configuration to "Release"
-build
-publish nuget "CSharpAnalyzers"
-publish extension "C# Analyzers and Refactorings"
-publish extension "C# refactorings"
-push to github
-add github release
+﻿Run CodeGenerator
+Run MetadataGenerator
+Update Analyzers.xml
+Change number of refactorings and/or analyzers
+Update changelog
+Change version
+Change configuration to "Release"
+Build
+Publish nuget "CSharpAnalyzers"
+Publish extension "C# Analyzers and Refactorings"
+Publish extension "C# refactorings"
+Push to github
+Add github release
