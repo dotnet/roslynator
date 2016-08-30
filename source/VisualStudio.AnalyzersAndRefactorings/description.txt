@@ -45,28 +45,28 @@
         <li>RCS1003 - Add braces to if-else.</li>
         <li>RCS1004 - Remove braces from if-else.</li>
         <li>RCS1005 - Simplify nested using statement.</li>
-        <li>RCS1006 - Simplify else clause containing only if statement.</li>
+        <li>RCS1006 - Merge else clause with nested if statement.</li>
         <li>RCS1007 - Avoid embedded statement.</li>
         <li>RCS1008 - Use explicit type instead of 'var' (when the type is not obvious).</li>
-        <li>RCS1009 - Use explicit type instead of 'var' (in 'foreach').</li>
+        <li>RCS1009 - Use explicit type instead of 'var' (foreach variable).</li>
         <li>RCS1010 - Use 'var' instead of explicit type (when the type is obvious).</li>
         <li>RCS1012 - Use explicit type instead of 'var' (even if the type is obvious).</li>
         <li>RCS1013 - Use predefined type.</li>
         <li>RCS1014 - Avoid implicitly-typed array.</li>
-        <li>RCS1015 - Use nameof operator.</li>
+        <li>RCS1015 - Use 'nameof' operator.</li>
         <li>RCS1016 - Use expression-bodied member.</li>
         <li>RCS1017 - Avoid multiline expression body.</li>
-        <li>RCS1018 - Add access modifier.</li>
+        <li>RCS1018 - Add default access modifier.</li>
         <li>RCS1019 - Reorder modifiers.</li>
         <li>RCS1020 - Simplify Nullable&lt;T&gt; to T?.</li>
         <li>RCS1021 - Simplify lambda expression.</li>
         <li>RCS1022 - Simplify lambda expression parameter list.</li>
-        <li>RCS1023 - Format block.</li>
+        <li>RCS1023 - Format empty block.</li>
         <li>RCS1024 - Format accessor list.</li>
-        <li>RCS1025 - Format each enum member on separate line.</li>
-        <li>RCS1026 - Format each statement on separate line.</li>
-        <li>RCS1027 - Format embedded statement on separate line.</li>
-        <li>RCS1028 - Format switch section statement on separate line.</li>
+        <li>RCS1025 - Format each enum member on a separate line.</li>
+        <li>RCS1026 - Format each statement on a separate line.</li>
+        <li>RCS1027 - Format embedded statement on a separate line.</li>
+        <li>RCS1028 - Format switch section's statement on a separate line.</li>
         <li>RCS1029 - Format binary operator on next line.</li>
         <li>RCS1030 - Add empty line after embedded statement.</li>
         <li>RCS1031 - Remove redundant braces.</li>
@@ -91,16 +91,15 @@
         <li>RCS1050 - Add constructor argument list.</li>
         <li>RCS1051 - Wrap conditional expression condition in parentheses.</li>
         <li>RCS1052 - Declare each attribute separately.</li>
-        <li>RCS1053 - Replace 'foreach' with 'for'.</li>
         <li>RCS1054 - Merge local declaration with return statement.</li>
         <li>RCS1055 - Avoid semicolon at the end of declaration.</li>
-        <li>RCS1056 - Avoid alias directive.</li>
+        <li>RCS1056 - Avoid usage of using alias directive.</li>
         <li>RCS1057 - Add empty line between declarations.</li>
         <li>RCS1058 - Simplify assignment expression.</li>
         <li>RCS1059 - Avoid locking on publicly accessible instance.</li>
         <li>RCS1060 - Declare each type in separate file.</li>
         <li>RCS1061 - Merge if statement with nested if statement.</li>
-        <li>RCS1062 - Replace interpolated string with string literal.</li>
+        <li>RCS1062 - Avoid interpolated string with no interpolation.</li>
         <li>RCS1063 - Avoid usage of do statement to create an infinite loop.</li>
         <li>RCS1064 - Avoid usage of for statement to create an infinite loop.</li>
         <li>RCS1065 - Avoid usage of while statement to create an inifinite loop.</li>
