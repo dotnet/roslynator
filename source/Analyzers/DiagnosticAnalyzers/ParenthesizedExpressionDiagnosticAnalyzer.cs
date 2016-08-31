@@ -42,6 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeArgument(f), SyntaxKind.Argument);
             context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgument(f), SyntaxKind.AttributeArgument);
             context.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAwaitExpression(f), SyntaxKind.AwaitExpression);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SimpleAssignmentExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AddAssignmentExpression);
@@ -184,6 +185,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
 
             AnalyzeExpression(context, equalsValueClause.Value);
+        }
+
+        private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var awaitExpression = (AwaitExpressionSyntax)context.Node;
+
+            AnalyzeExpression(context, awaitExpression.Expression);
         }
 
         private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
