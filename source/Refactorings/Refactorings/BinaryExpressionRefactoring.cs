@@ -86,13 +86,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false
                 && binaryExpression.IsKind(
                     SyntaxKind.LogicalAndExpression,
                     SyntaxKind.LogicalOrExpression,
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.NotEqualsExpression)
+                && binaryExpression.Left?.IsMissing == false
+                && binaryExpression.Right?.IsKind(
+                    SyntaxKind.NullLiteralExpression,
+                    SyntaxKind.TrueLiteralExpression,
+                    SyntaxKind.FalseLiteralExpression) == false
                 && context.Span.IsBetweenSpans(binaryExpression))
             {
                 context.RegisterRefactoring(
