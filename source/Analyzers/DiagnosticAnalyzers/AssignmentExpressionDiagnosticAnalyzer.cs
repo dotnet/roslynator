@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,7 +46,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                 if (binaryExpression.Left?.IsMissing == false
                     && binaryExpression.Right?.IsMissing == false
-                    && assignment.Left.IsEquivalentTo(binaryExpression.Left, topLevel: false))
+                    && assignment.Left.IsEquivalentTo(binaryExpression.Left, topLevel: false)
+                    && ContainsOnlyWhitespaceOrEndOfLineTrivia(assignment))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.SimplifyAssignmentExpression,
@@ -74,6 +76,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 default:
                     return false;
             }
+        }
+
+        private static bool ContainsOnlyWhitespaceOrEndOfLineTrivia(SyntaxNode node)
+        {
+            return node
+                .DescendantTrivia(node.Span)
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
     }
 }

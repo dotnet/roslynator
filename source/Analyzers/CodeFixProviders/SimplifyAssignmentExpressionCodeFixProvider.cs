@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -30,23 +29,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (assignmentExpression == null)
                 return;
 
-            if (assignmentExpression
-                .DescendantTrivia(assignmentExpression.Span)
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Simplify assignment expression",
-                    cancellationToken =>
-                    {
-                        return SimplifyAssignmentExpressionRefactoring.RefactorAsync(
-                            context.Document,
-                            assignmentExpression,
-                            cancellationToken);
-                    },
-                    DiagnosticIdentifiers.SimplifyAssignmentExpression + EquivalenceKeySuffix);
+            CodeAction codeAction = CodeAction.Create(
+                "Simplify assignment expression",
+                cancellationToken =>
+                {
+                    return SimplifyAssignmentExpressionRefactoring.RefactorAsync(
+                        context.Document,
+                        assignmentExpression,
+                        cancellationToken);
+                },
+                DiagnosticIdentifiers.SimplifyAssignmentExpression + EquivalenceKeySuffix);
 
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
     }
 }
