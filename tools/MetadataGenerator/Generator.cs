@@ -53,7 +53,7 @@ namespace MetadataGenerator
 
         private void WriteRefactoringsExtensionDescription(XmlWriter xw)
         {
-            xw.WriteElementString("h3", "List of Refactoring");
+            xw.WriteElementString("h3", "List of Refactorings");
             xw.WriteStartElement("ul");
 
             foreach (RefactoringInfo info in Refactorings
