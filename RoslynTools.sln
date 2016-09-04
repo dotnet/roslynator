@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "source\Metadata
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugAnalyzersAndRefactorings", "tools\DebugAnalyzersAndRefactorings\DebugAnalyzersAndRefactorings.csproj", "{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,5 +158,6 @@ Global
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{63A791CC-BD7C-4608-A4D9-9379B0C42F38} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{AD9BE5D0-85C6-44D5-9A55-C801E00DB848} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{1429B734-120B-455C-9FB5-0CC33A45E93D} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 	EndGlobalSection
 EndGlobal
