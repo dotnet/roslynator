@@ -12,7 +12,7 @@
         <a href="http://pihrt.net/Roslyn/Refactorings">List of Refactorings</a>
     </li>  
     <li>
-        <a href="http://github.com/JosefPihrt/Pihrtsoft.CodeAnalysis/blob/master/ChangeLog.md">Release Notes</a>
+        <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/ChangeLog.md">Release Notes</a>
     </li>  
 </ul>
 
