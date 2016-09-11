@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis
@@ -49,6 +50,11 @@ namespace Pihrtsoft.CodeAnalysis
             }
 
             return false;
+        }
+
+        public static AccessorListSyntax ToAccessorList(this IEnumerable<AccessorDeclarationSyntax> accessors)
+        {
+            return AccessorList(List(accessors));
         }
     }
 }

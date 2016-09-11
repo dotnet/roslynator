@@ -101,6 +101,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return member.Parent as MemberDeclarationSyntax;
         }
 
+        public static MemberDeclarationSyntax GetMemberAt(this MemberDeclarationSyntax declaration, int index)
+        {
+            SyntaxList<MemberDeclarationSyntax> members = GetMembers(declaration);
+
+            return members[index];
+        }
+
         public static SyntaxList<MemberDeclarationSyntax> GetMembers(this MemberDeclarationSyntax declaration)
         {
             if (declaration == null)

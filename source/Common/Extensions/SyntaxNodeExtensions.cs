@@ -23,6 +23,14 @@ namespace Pihrtsoft.CodeAnalysis
             return node.Ancestors().Any(f => f.IsKind(kind));
         }
 
+        public static bool SpanContainsDirectives(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.ContainsDirective(node.Span);
+        }
+
         public static bool ContainsDirective(this SyntaxNode node, TextSpan span)
         {
             return node
