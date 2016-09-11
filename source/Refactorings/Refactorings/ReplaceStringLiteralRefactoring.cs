@@ -30,19 +30,26 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             if (interpolationStartIndex != -1)
             {
-                s = s.Substring(0, interpolationStartIndex) +
+                s = EscapeBraces(s.Substring(0, interpolationStartIndex)) +
                    "{" +
                    s.Substring(interpolationStartIndex, interpolationLength) +
                    "}" +
-                   s.Substring(interpolationStartIndex + interpolationLength);
+                   EscapeBraces(s.Substring(interpolationStartIndex + interpolationLength));
             }
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression("$" + s)
+            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
                 .WithTriviaFrom(literalExpression);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, interpolatedString);
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static string EscapeBraces(string s)
+        {
+            return s
+                .Replace("{", "{{")
+                .Replace("}", "}}");
         }
 
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
