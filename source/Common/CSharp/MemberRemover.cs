@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return document.WithSyntaxRoot(root);
         }
 
-        public static MemberDeclarationSyntax RemoveAt(this MemberDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this MemberDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -59,13 +59,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             switch (declaration.Kind())
             {
                 case SyntaxKind.NamespaceDeclaration:
-                    return ((NamespaceDeclarationSyntax)declaration).RemoveAt(index);
+                    return ((NamespaceDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)declaration).RemoveAt(index);
+                    return ((ClassDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)declaration).RemoveAt(index);
+                    return ((StructDeclarationSyntax)declaration).RemoveMemberAt(index);
                 case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)declaration).RemoveAt(index);
+                    return ((InterfaceDeclarationSyntax)declaration).RemoveMemberAt(index);
             }
 
             return declaration;
@@ -94,7 +94,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return declaration;
         }
 
-        public static MemberDeclarationSyntax RemoveAt(this ClassDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this ClassDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -127,7 +127,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .RemoveNode(declaration.Members[index], GetRemoveOptions(newMember));
         }
 
-        public static MemberDeclarationSyntax RemoveAt(this InterfaceDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this InterfaceDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -160,7 +160,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .RemoveNode(declaration.Members[index], GetRemoveOptions(newMember));
         }
 
-        public static MemberDeclarationSyntax RemoveAt(this StructDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this StructDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -193,7 +193,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .RemoveNode(declaration.Members[index], GetRemoveOptions(newMember));
         }
 
-        public static CompilationUnitSyntax RemoveAt(this CompilationUnitSyntax compilationUnit, int index)
+        public static CompilationUnitSyntax RemoveMemberAt(this CompilationUnitSyntax compilationUnit, int index)
         {
             if (compilationUnit == null)
                 throw new ArgumentNullException(nameof(compilationUnit));
@@ -226,7 +226,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 .RemoveNode(compilationUnit.Members[index], GetRemoveOptions(newMember));
         }
 
-        public static MemberDeclarationSyntax RemoveAt(this NamespaceDeclarationSyntax declaration, int index)
+        public static MemberDeclarationSyntax RemoveMemberAt(this NamespaceDeclarationSyntax declaration, int index)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
