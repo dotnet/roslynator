@@ -14,7 +14,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             await AddUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
+                await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral)
                 && context.SupportsSemanticModel)
