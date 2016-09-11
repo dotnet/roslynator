@@ -28,10 +28,10 @@ namespace Pihrtsoft.CodeAnalysis
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.ContainsDirective(node.Span);
+            return node.ContainsDirectives(node.Span);
         }
 
-        public static bool ContainsDirective(this SyntaxNode node, TextSpan span)
+        public static bool ContainsDirectives(this SyntaxNode node, TextSpan span)
         {
             return node
                 .DescendantTrivia(span)

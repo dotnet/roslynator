@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (modifiers.Count > 1
                 && !ModifierUtility.IsSorted(modifiers)
-                && !declaration.ContainsDirective(modifiers.Span))
+                && !declaration.ContainsDirectives(modifiers.Span))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReorderModifiers,
