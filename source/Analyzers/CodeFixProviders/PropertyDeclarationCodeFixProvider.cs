@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 {
@@ -22,7 +23,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
     public class PropertyDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -42,7 +45,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace property with auto-property",
+                                "Use auto-property",
                                 cancellationToken => ReplacePropertyWithAutoPropertyAsync(context.Document, property, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
@@ -94,7 +97,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             if (variableDeclaration.Variables.Count == 1)
             {
-                newParentMember = newParentMember.RemoveAt(fieldIndex);
+                newParentMember = newParentMember.RemoveNode(
+                    newParentMember.GetMemberAt(fieldIndex),
+                    SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
                 if (propertyIndex > fieldIndex)
                     propertyIndex--;
@@ -105,7 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 FieldDeclarationSyntax newField = field.RemoveNode(
                     field.Declaration.Variables[variableDeclaration.Variables.IndexOf(declarator)],
-                    MemberRemover.DefaultRemoveOptions);
+                    SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
                 members = members.Replace(field, newField.WithFormatterAnnotation());
 
@@ -149,12 +154,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             AccessorListSyntax accessorList = CreateAccessorList(property);
 
-            accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
-
-            if (initializer != null)
+            if (accessorList
+                .DescendantTrivia()
+                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                accessorList = accessorList
-                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithoutTrailingTrivia());
+                accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
             }
 
             PropertyDeclarationSyntax newProperty = property
@@ -166,12 +170,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 newProperty = newProperty
                     .WithInitializer(initializer)
-                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+                    .WithSemicolonToken(SemicolonToken());
             }
             else
             {
-                newProperty = newProperty
-                    .WithSemicolonToken(Token(SyntaxKind.None));
+                newProperty = newProperty.WithoutSemicolonToken();
             }
 
             return newProperty
@@ -183,24 +186,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             if (property.ExpressionBody != null)
             {
-                return AccessorList(
-                    SingletonList(
-                        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))));
+                return AccessorList(AutoGetter())
+                    .WithTriviaFrom(property.ExpressionBody);
             }
             else
             {
-                return AccessorList(
-                    List(
-                        property
-                            .AccessorList
-                            .Accessors
-                            .Select(accessor =>
-                            {
-                                return accessor
-                                    .WithBody(null)
-                                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
-                            })));
+                AccessorListSyntax accessorList = property.AccessorList;
+
+                IEnumerable<AccessorDeclarationSyntax> newAccessors = accessorList
+                    .Accessors
+                    .Select(accessor =>
+                    {
+                        return accessor
+                            .WithBody(null)
+                            .WithSemicolonToken(SemicolonToken())
+                            .WithTriviaFrom(accessor);
+                    });
+
+                return accessorList.WithAccessors(List(newAccessors));
             }
         }
     }

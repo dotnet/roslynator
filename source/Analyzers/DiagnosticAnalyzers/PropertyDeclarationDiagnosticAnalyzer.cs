@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -39,7 +38,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             var property = (PropertyDeclarationSyntax)context.Node;
 
-            ISymbol fieldSymbol = GetBackingFieldSymbol(context, property);
+            IFieldSymbol fieldSymbol = GetBackingFieldSymbol(context, property);
 
             if (fieldSymbol != null)
             {
@@ -53,8 +52,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
                     if (propertySymbol != null
                         && propertySymbol.IsStatic == fieldSymbol.IsStatic
+                        && propertySymbol.Type == fieldSymbol.Type
                         && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
-                        && CheckTrivia(property, declarator))
+                        && CheckPreprocessorDirectives(property, declarator))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
@@ -66,7 +66,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private static ISymbol GetBackingFieldSymbol(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
+        private static IFieldSymbol GetBackingFieldSymbol(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
             if (property.ExpressionBody != null)
             {
@@ -100,7 +100,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             return null;
         }
 
-        private static ISymbol GetBackingFieldSymbol(
+        private static IFieldSymbol GetBackingFieldSymbol(
             SyntaxNodeAnalysisContext context,
             NameSyntax identifier)
         {
@@ -110,16 +110,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 .Symbol;
 
             if (symbol?.IsField() == true
-                && symbol.IsPrivate()
-                && ((IFieldSymbol)symbol).IsReadOnly)
+                && symbol.IsPrivate())
             {
-                return symbol;
+                var fieldSymbol = (IFieldSymbol)symbol;
+
+                if (fieldSymbol.IsReadOnly)
+                    return fieldSymbol;
             }
 
             return null;
         }
 
-        private static ISymbol GetBackingFieldSymbol(
+        private static IFieldSymbol GetBackingFieldSymbol(
             SyntaxNodeAnalysisContext context,
             AccessorDeclarationSyntax getter,
             AccessorDeclarationSyntax setter)
@@ -146,7 +148,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                         .Symbol;
 
                         if (symbol.Equals(symbol2))
-                            return symbol;
+                            return (IFieldSymbol)symbol;
                     }
                 }
             }
@@ -215,13 +217,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             return null;
         }
 
-        private static bool CheckTrivia(
+        private static bool CheckPreprocessorDirectives(
             PropertyDeclarationSyntax property,
             VariableDeclaratorSyntax declarator)
         {
-            if (property
-                .DescendantTrivia(TextSpan.FromBounds(property.Identifier.Span.Start, property.Span.End))
-                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            if (property.ExpressionBody != null)
+            {
+                if (property.ExpressionBody.SpanContainsDirectives())
+                    return false;
+            }
+            else if (property.AccessorList.Accessors.Any(f => f.SpanContainsDirectives()))
             {
                 return false;
             }
@@ -230,30 +235,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (variableDeclaration.Variables.Count == 1)
             {
-                if (variableDeclaration
-                    .Parent
-                    .DescendantTrivia(variableDeclaration.Span)
-                    .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                {
+                if (variableDeclaration.Parent.SpanContainsDirectives())
                     return false;
-                }
             }
-            else if (declarator
-                .DescendantTrivia(declarator.Span)
-                .Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            else if (declarator.SpanContainsDirectives())
             {
                 return false;
-            }
-
-            if (declarator.Initializer != null)
-            {
-                foreach (SyntaxTrivia trivia in property.GetTrailingTrivia())
-                {
-                    if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                        return true;
-                    else if (!trivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                        return false;
-                }
             }
 
             return true;
