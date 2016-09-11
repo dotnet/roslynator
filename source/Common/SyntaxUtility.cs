@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -367,13 +368,16 @@ namespace Pihrtsoft.CodeAnalysis
                 name = name.Substring(1);
             }
 
-            if (UsePlural(typeSymbol2)
-                && typeSymbol2.Implements(SpecialType.System_Collections_IEnumerable))
+            if (name.Length > 1
+                && UsePlural(typeSymbol2))
             {
+                if (Regex.IsMatch(name, @"\p{Ll}Collection$"))
+                    name = name.Remove(name.Length - 10);
+
                 if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
                     name += "es";
                 else if (name.EndsWith("y", StringComparison.Ordinal))
-                    name += "ies";
+                    name = name.Remove(name.Length - 1) + "ies";
                 else
                     name += "s";
             }
@@ -429,7 +433,12 @@ namespace Pihrtsoft.CodeAnalysis
                 case SymbolKind.ArrayType:
                     return true;
                 case SymbolKind.NamedType:
-                    return ((INamedTypeSymbol)typeSymbol).TypeArguments.Length == 1;
+                    {
+                        var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                        return namedTypeSymbol.TypeArguments.Length <= 1
+                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable);
+                    }
                 default:
                     return false;
             }
