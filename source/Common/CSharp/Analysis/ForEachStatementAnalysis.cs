@@ -29,31 +29,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, cancellationToken).Type;
 
-            if (ShouldBeExplicit(typeSymbol))
+            if (typeSymbol?.SupportsExplicitDeclaration() == true)
                 return TypeAnalysisResult.ImplicitButShouldBeExplicit;
 
             return TypeAnalysisResult.Implicit;
-        }
-
-        private static bool ShouldBeExplicit(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null || typeSymbol.IsErrorType())
-                return false;
-
-            if (typeSymbol.IsAnonymousType)
-                return false;
-
-            if (typeSymbol.IsNamedType())
-            {
-                if (((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType())
-                    return false;
-            }
-            else if (!typeSymbol.IsArrayType())
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public static bool HasParenthesesOnSameLine(ForEachStatementSyntax forEachStatement)
