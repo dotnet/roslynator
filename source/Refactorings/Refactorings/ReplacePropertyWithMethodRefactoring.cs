@@ -14,12 +14,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class ReplacePropertyWithMethodRefactoring
     {
-        private static readonly Regex _regex = new Regex(
-            @"
-            ^
-            (Is|Has|Are|Can|Allow|Supports|Should)
-            \P{Ll}
-            ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+        private static readonly string[] _prefixes = new string[]
+        {
+            "Is",
+            "Has",
+            "Are",
+            "Can",
+            "Allow",
+            "Supports",
+            "Should",
+            "Get",
+            "Set"
+        };
 
         public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
@@ -73,7 +79,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             AccessorDeclarationSyntax setter = property.Setter();
 
             string methodName = method.Identifier.ValueText;
-            bool addPrefix = !_regex.IsMatch(methodName);
+
+            bool addPrefix = !_prefixes.Any(prefix => TextUtility.HasPrefix(methodName, prefix));
 
             if (getter != null)
             {

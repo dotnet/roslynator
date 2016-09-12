@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -371,8 +370,7 @@ namespace Pihrtsoft.CodeAnalysis
             if (name.Length > 1
                 && UsePlural(typeSymbol2))
             {
-                if (Regex.IsMatch(name, @"\p{Ll}Collection$"))
-                    name = name.Remove(name.Length - 10);
+                name = TextUtility.RemoveSuffix(name, "Collection");
 
                 if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
                     name += "es";

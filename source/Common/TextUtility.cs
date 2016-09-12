@@ -194,5 +194,55 @@ namespace Pihrtsoft.CodeAnalysis
                 && value[0] != '_'
                 && char.IsLower(value[0]);
         }
+
+        public static bool HasPrefix(string value, string prefix)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (prefix == null)
+                throw new ArgumentNullException(nameof(prefix));
+
+            if (prefix.Length == 0 || value.Length <= prefix.Length)
+            {
+                return false;
+            }
+
+            return value.StartsWith(prefix, StringComparison.Ordinal)
+                && !char.IsLower(value[prefix.Length]);
+        }
+
+        public static bool HasSuffix(string value, string suffix)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            if (suffix == null)
+                throw new ArgumentNullException(nameof(suffix));
+
+            if (suffix.Length == 0 || value.Length <= suffix.Length)
+            {
+                return false;
+            }
+
+            return value.EndsWith(suffix, StringComparison.Ordinal)
+                && !char.IsUpper(value[value.Length - suffix.Length - 1]);
+        }
+
+        public static string RemovePrefix(string value, string prefix)
+        {
+            if (HasPrefix(value, prefix))
+                return value.Substring(prefix.Length);
+
+            return value;
+        }
+
+        public static string RemoveSuffix(string value, string suffix)
+        {
+            if (HasSuffix(value, suffix))
+                return value.Remove(value.Length - suffix.Length);
+
+            return value;
+        }
     }
 }
