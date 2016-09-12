@@ -58,6 +58,7 @@
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ExtractMemberToNewDocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsingDirectiveCodeFixProvider.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
     <Compile Include="Refactorings\SimplifyLinqMethodChainRefactoring.cs" />

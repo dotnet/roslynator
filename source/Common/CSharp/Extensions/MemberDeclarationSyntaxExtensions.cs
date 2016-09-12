@@ -10,6 +10,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class MemberDeclarationSyntaxExtensions
     {
+        public static bool IsTypeDeclaration(this MemberDeclarationSyntax memberDeclaration)
+        {
+            return SyntaxNodeExtensions.IsKind(memberDeclaration,
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.InterfaceDeclaration,
+                SyntaxKind.EnumDeclaration,
+                SyntaxKind.DelegateDeclaration);
+        }
+
         public static SyntaxTokenList GetModifiers(this MemberDeclarationSyntax declaration)
         {
             if (declaration == null)

@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractMemberToNewDocumentRefactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -13,90 +16,83 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     public class CompilationUnitDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.DeclareEachTypeInSeparateFile);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareEachTypeInSeparateFile); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.CompilationUnit);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var compilationUnit = (CompilationUnitSyntax)context.Node;
 
-            SyntaxList<MemberDeclarationSyntax> members = GetMembersWithMultipleDeclarations(compilationUnit);
+            SyntaxList<MemberDeclarationSyntax> members = compilationUnit.Members;
 
-            if (members.Count > 0)
+            if (!ContainsSingleNamespaceWithSingleNonNamespaceMember(members))
             {
-                for (int i = 1; i < members.Count; i++)
+                using (IEnumerator<MemberDeclarationSyntax> en = GetNonNestedTypeDeclarations(members).GetEnumerator())
                 {
-                    if (members[i].IsKind(SyntaxKind.NamespaceDeclaration))
+                    if (en.MoveNext())
                     {
-                        var namespaceDeclaration = (NamespaceDeclarationSyntax)members[i];
-                        if (namespaceDeclaration.Name != null
-                            && !namespaceDeclaration.Name.IsMissing)
+                        MemberDeclarationSyntax firstMember = en.Current;
+
+                        if (en.MoveNext())
                         {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.DeclareEachTypeInSeparateFile,
-                                namespaceDeclaration.Name.GetLocation());
-                        }
-                    }
-                    else
-                    {
-                        SyntaxToken token = GetToken(members[i]);
-                        if (!token.IsMissing)
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.DeclareEachTypeInSeparateFile,
-                                token.GetLocation());
+                            ReportDiagnostic(context, firstMember);
+
+                            do
+                            {
+                                ReportDiagnostic(context, en.Current);
+                            }
+                            while (en.MoveNext());
                         }
                     }
                 }
             }
         }
 
-        private static SyntaxList<MemberDeclarationSyntax> GetMembersWithMultipleDeclarations(CompilationUnitSyntax compilationUnit)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax member)
         {
-            SyntaxList<MemberDeclarationSyntax> members = compilationUnit.Members;
+            SyntaxToken token = GetIdentifier(member);
 
-            if (members.Count > 1)
-                return members;
-
-            if (members.Count == 1
-                && (members[0].IsKind(SyntaxKind.NamespaceDeclaration)))
+            if (!token.IsKind(SyntaxKind.None))
             {
-                var namespaceDeclaration = (NamespaceDeclarationSyntax)members[0];
-
-                if (namespaceDeclaration.Members.Count > 1)
-                    return namespaceDeclaration.Members;
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.DeclareEachTypeInSeparateFile,
+                    token.GetLocation());
             }
-
-            return default(SyntaxList<MemberDeclarationSyntax>);
         }
 
-        private static SyntaxToken GetToken(MemberDeclarationSyntax memberDeclaration)
+        private static bool ContainsSingleNamespaceWithSingleNonNamespaceMember(SyntaxList<MemberDeclarationSyntax> members)
         {
-            switch (memberDeclaration.Kind())
+            if (members.Count == 1)
             {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)memberDeclaration).Identifier;
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)memberDeclaration).Identifier;
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)memberDeclaration).Identifier;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)memberDeclaration).Identifier;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)memberDeclaration).Identifier;
+                MemberDeclarationSyntax member = members[0];
+
+                if (member.IsKind(SyntaxKind.NamespaceDeclaration))
+                {
+                    var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
+
+                    members = namespaceDeclaration.Members;
+
+                    if (members.Count == 1
+                        && !members[0].IsKind(SyntaxKind.NamespaceDeclaration))
+                    {
+                        return true;
+                    }
+                }
             }
 
-            return default(SyntaxToken);
+            return false;
         }
     }
 }
