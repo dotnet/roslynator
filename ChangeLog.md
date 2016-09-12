@@ -1,3 +1,21 @@
+### 0.99.5 (2016-09-12)
+
+#### Analyzers
+
+##### Changes
+
+* "DeclareEachTypeInSeparateFile" has code fix.
+
+##### Bug Fixes
+
+* "ReplacePropertyWithAutoProperty" - property and field must be of equal type.
+
+#### Refactorings
+
+##### Bug Fixes
+
+* "InsertInterpolation" - '{' and '}' are escaped by doubling when creating interpolated string from string literal.
+
 ### 0.99.0 (2016-08-28)
 
 #### Analyzers
