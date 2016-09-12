@@ -124,7 +124,7 @@
         <li>RCS1084 - Replace conditional expression with coalesce expression.</li>
         <li>RCS1085 - Replace property with auto-implemented property.</li>
     </ul>
-    <h3>List of Refactoring</h3>
+    <h3>List of Refactorings</h3>
     <ul>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
