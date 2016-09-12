@@ -3,6 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -11,26 +12,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
-                && context.Span.IsEmpty)
+                && context.Span.IsEmpty
+                && CanRefactor(context, interpolatedString))
             {
-                foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
-                {
-                    if (content.IsKind(SyntaxKind.InterpolatedStringText)
-                        && content.Span.End == context.Span.End)
+                context.RegisterRefactoring("Insert interpolation",
+                    cancellationToken =>
                     {
-                        context.RegisterRefactoring("Insert interpolation",
-                            cancellationToken =>
-                            {
-                                return InsertInterpolationRefactoring.RefactorAsync(
-                                    context.Document,
-                                    (InterpolatedStringTextSyntax)content,
-                                    context.Span,
-                                    cancellationToken);
-                            });
-
-                        break;
-                    }
-                }
+                        return InsertInterpolationRefactoring.RefactorAsync(
+                            context.Document,
+                            interpolatedString,
+                            context.Span,
+                            cancellationToken);
+                    });
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
@@ -45,6 +38,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             cancellationToken);
                     });
             }
+        }
+
+        private static bool CanRefactor(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            int i = 0;
+            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+            foreach (InterpolatedStringContentSyntax content in contents)
+            {
+                SyntaxKind kind = content.Kind();
+                TextSpan span = content.Span;
+
+                if (kind == SyntaxKind.InterpolatedStringText)
+                {
+                    if (span.End == context.Span.End)
+                        return true;
+                }
+                else if (kind == SyntaxKind.Interpolation)
+                {
+                    if (span.Start == context.Span.End)
+                        return true;
+
+                    if (span.End == context.Span.Start
+                        && (i == contents.Count - 1 || !contents[i + 1].IsKind(SyntaxKind.InterpolatedStringText)))
+                    {
+                        return true;
+                    }
+                }
+
+                i++;
+            }
+
+            return false;
         }
     }
 }

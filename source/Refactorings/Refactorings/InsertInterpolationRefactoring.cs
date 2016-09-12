@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -12,20 +11,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class InsertInterpolationRefactoring
     {
-        public static bool CanRefactor(InterpolatedStringTextSyntax interpolatedStringText)
-        {
-            return interpolatedStringText.Parent?.IsKind(SyntaxKind.InterpolatedStringExpression) == true;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
-            InterpolatedStringTextSyntax interpolatedStringText,
+            InterpolatedStringExpressionSyntax interpolatedString,
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var interpolatedString = (InterpolatedStringExpressionSyntax)interpolatedStringText.Parent;
 
             string s = interpolatedString.ToString();
 
