@@ -130,7 +130,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                             }
                         }
 
-                        return typeSymbols.ToImmutableArray();
+                        if (typeSymbols != null)
+                            return typeSymbols.ToImmutableArray();
                     }
                 }
             }
