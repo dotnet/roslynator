@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -33,14 +34,47 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (interpolatedString == null)
                 throw new ArgumentNullException(nameof(interpolatedString));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(interpolatedString.ToString().Substring(1))
+            string s = UnescapeBraces(interpolatedString.ToString().Substring(1));
+
+            var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(interpolatedString, newNode);
+            SyntaxNode newRoot = root.ReplaceNode(interpolatedString, newNode);
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        private static string UnescapeBraces(string s)
+        {
+            var sb = new StringBuilder(s.Length);
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == '{')
+                {
+                    if (i < s.Length - 1 && s[i + 1] == '{')
+                    {
+                        sb.Append('{');
+                        i++;
+                        continue;
+                    }
+                }
+                else if (s[i] == '}')
+                {
+                    if (i < s.Length - 1 && s[i + 1] == '}')
+                    {
+                        sb.Append('}');
+                        i++;
+                        continue;
+                    }
+                }
+
+                sb.Append(s[i]);
+            }
+
+            return sb.ToString();
         }
     }
 }
