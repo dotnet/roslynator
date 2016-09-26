@@ -473,15 +473,41 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static PropertyDeclarationSyntax PropertyDeclaration(PropertyKind kind, TypeSyntax type, string name)
         {
+            return PropertyDeclaration(
+                kind,
+                default(SyntaxTokenList),
+                type,
+                name);
+        }
+
+        public static PropertyDeclarationSyntax PropertyDeclaration(PropertyKind kind, SyntaxTokenList modifiers, TypeSyntax type, string name)
+        {
+            return PropertyDeclaration(
+                kind,
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                type,
+                default(ExplicitInterfaceSpecifierSyntax),
+                name);
+        }
+
+        public static PropertyDeclarationSyntax PropertyDeclaration(
+            PropertyKind kind,
+            SyntaxList<AttributeListSyntax> attributeLists,
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier,
+            string name)
+        {
             switch (kind)
             {
                 case PropertyKind.AutoProperty:
                     {
                         return SyntaxFactory.PropertyDeclaration(
-                            default(SyntaxList<AttributeListSyntax>),
-                            default(SyntaxTokenList),
+                            attributeLists,
+                            modifiers,
                             type,
-                            default(ExplicitInterfaceSpecifierSyntax),
+                            explicitInterfaceSpecifier,
                             Identifier(name),
                             AccessorList(
                                 AutoGetter(),
@@ -490,10 +516,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 case PropertyKind.AutoPropertyWithPrivateSet:
                     {
                         return SyntaxFactory.PropertyDeclaration(
-                            default(SyntaxList<AttributeListSyntax>),
-                            default(SyntaxTokenList),
+                            attributeLists,
+                            modifiers,
                             type,
-                            default(ExplicitInterfaceSpecifierSyntax),
+                            explicitInterfaceSpecifier,
                             Identifier(name),
                             AccessorList(
                                 AutoGetter(),
@@ -502,10 +528,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 case PropertyKind.ReadOnlyAutoProperty:
                     {
                         return SyntaxFactory.PropertyDeclaration(
-                            default(SyntaxList<AttributeListSyntax>),
-                            default(SyntaxTokenList),
+                            attributeLists,
+                            modifiers,
                             type,
-                            default(ExplicitInterfaceSpecifierSyntax),
+                            explicitInterfaceSpecifier,
                             Identifier(name),
                             AccessorList(AutoGetter()));
                     }

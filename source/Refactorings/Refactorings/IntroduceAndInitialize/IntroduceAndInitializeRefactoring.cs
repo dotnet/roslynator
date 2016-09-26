@@ -47,7 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
-                    var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter);
+                    var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6);
                     var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfo);
                     refactoring.RegisterRefactoring(context);
                 }
@@ -70,7 +70,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
                 {
                     IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
-                        .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter));
+                        .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
 
                     var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
                     refactoring.RegisterRefactoring(context);

@@ -9,10 +9,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
     {
         private string _name;
 
-        public IntroduceAndInitializePropertyInfo(ParameterSyntax parameter)
+        public IntroduceAndInitializePropertyInfo(ParameterSyntax parameter, bool supportsCSharp6)
             : base(parameter)
         {
+            SupportsCSharp6 = supportsCSharp6;
         }
+
+        public bool SupportsCSharp6 { get; }
 
         public override string Name
         {
@@ -27,8 +30,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 
         public override MemberDeclarationSyntax CreateDeclaration()
         {
-            return PropertyDeclaration(PropertyKind.AutoPropertyWithPrivateSet, Type, Name)
-                .WithModifiers(Modifiers.Public());
+            PropertyKind propertyKind = (SupportsCSharp6)
+                ? PropertyKind.ReadOnlyAutoProperty
+                : PropertyKind.AutoPropertyWithPrivateSet;
+
+            return PropertyDeclaration(propertyKind, Modifiers.Public(), Type, Name);
         }
     }
 }
