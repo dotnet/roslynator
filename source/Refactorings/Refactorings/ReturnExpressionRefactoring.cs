@@ -29,7 +29,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
 
-                        if (memberTypeSymbol?.IsErrorType() == false)
+                        if (memberTypeSymbol != null)
                         {
                             ITypeSymbol expressionSymbol = semanticModel
                                 .GetTypeInfo(expression, context.CancellationToken)
@@ -55,7 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 {
                                     ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
 
-                                    if (newType != null
+                                    if (newType?.IsErrorType() == false
                                         && !memberTypeSymbol.Equals(newType))
                                     {
                                         context.RegisterRefactoring(
@@ -71,7 +71,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     }
                                 }
 
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                                    && !memberTypeSymbol.IsErrorType())
                                 {
                                     ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
