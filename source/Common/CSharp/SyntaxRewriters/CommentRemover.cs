@@ -9,6 +9,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 {
     public sealed class CommentRemover : CSharpSyntaxRewriter
     {
+        private static readonly SyntaxKind[] _syntaxKindSequence = new SyntaxKind[]
+        {
+            SyntaxKind.SingleLineCommentTrivia,
+            SyntaxKind.WhitespaceTrivia,
+            SyntaxKind.EndOfLineTrivia
+        };
+
         private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions, TextSpan span)
             : base(visitIntoStructuredTrivia: true)
         {
@@ -63,14 +70,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
                         }
                     case SyntaxKind.EndOfLineTrivia:
                         {
-                            if (RemoveOptions != CommentRemoveOptions.Documentation
-                                && span.Start > 0
-                                && Node
-                                    .FindTrivia(span.Start - 1)
-                                    .IsSingleLineCommentTrivia())
-                            {
+                            if (ShouldRemoveEndOfLine(span, _syntaxKindSequence))
                                 return CSharpFactory.EmptyWhitespaceTrivia;
-                            }
 
                             break;
                         }
@@ -78,6 +79,24 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
             }
 
             return base.VisitTrivia(trivia);
+        }
+
+        private bool ShouldRemoveEndOfLine(TextSpan span, SyntaxKind[] kinds)
+        {
+            foreach (SyntaxKind kind in kinds)
+            {
+                if (span.Start > 0)
+                {
+                    SyntaxTrivia trivia = Node.FindTrivia(span.Start - 1);
+
+                    if (!trivia.IsKind(kind))
+                        return false;
+
+                    span = trivia.Span;
+                }
+            }
+
+            return true;
         }
     }
 }
