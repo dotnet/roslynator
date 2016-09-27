@@ -429,17 +429,32 @@ namespace Pihrtsoft.CodeAnalysis
             switch (typeSymbol.Kind)
             {
                 case SymbolKind.ArrayType:
-                    return true;
+                    {
+                        return true;
+                    }
                 case SymbolKind.NamedType:
                     {
                         var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                        return namedTypeSymbol.TypeArguments.Length <= 1
-                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable);
+                        if (namedTypeSymbol.TypeArguments.Length <= 1)
+                        {
+                            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+                            return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
+                                && !allInterfaces.Any(f => ImplementsIDictionary(f));
+                        }
+
+                        break;
                     }
-                default:
-                    return false;
             }
+
+            return false;
+        }
+
+        private static bool ImplementsIDictionary(INamedTypeSymbol namedTypeSymbol)
+        {
+            return string.Equals(namedTypeSymbol.ContainingNamespace?.ToString(), "System.Collections", StringComparison.Ordinal)
+                && string.Equals(namedTypeSymbol.MetadataName, "IDictionary", StringComparison.Ordinal);
         }
 
         private static string GetName(ITypeSymbol typeSymbol)
