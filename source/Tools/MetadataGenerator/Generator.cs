@@ -106,7 +106,7 @@ namespace MetadataGenerator
                 foreach (RefactoringInfo info in Refactorings
                     .OrderBy(f => f.Title, StringComparer.InvariantCulture))
                 {
-                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/Refactorings.md#" + info.GetGitHubHref() + ")");
+                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/README.md#" + info.GetGitHubHref() + ")");
                 }
 
                 return sw.ToString();
