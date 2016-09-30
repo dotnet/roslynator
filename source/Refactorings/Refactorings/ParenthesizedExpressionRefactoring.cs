@@ -12,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
             {
                 context.RegisterRefactoring(
-                    "Extract from parentheses",
+                    "Remove parentheses",
                     cancellationToken =>
                     {
                         return ExtractExpressionFromParenthesesRefactoring.RefactorAsync(

@@ -20,9 +20,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 string title = "Format binary expression";
 
-                if (binaryExpression.Left?.IsKind(binaryExpression.Kind()) == true)
-                    title += "s";
-
                 if (binaryExpression.IsSingleLine())
                 {
                     title += " on multiple lines";
