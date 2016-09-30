@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -85,7 +86,7 @@ namespace MetadataGenerator
             xw.WriteEndElement();
         }
 
-        public string CreateGitHubMarkDown()
+        public string CreateReadMeMarkDown()
         {
             using (var sw = new StringWriter())
             {
@@ -105,7 +106,7 @@ namespace MetadataGenerator
                 foreach (RefactoringInfo info in Refactorings
                     .OrderBy(f => f.Title, StringComparer.InvariantCulture))
                 {
-                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](Refactorings.md#" + info.GetGitHubHref() + ")");
+                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/Refactorings.md#" + info.GetGitHubHref() + ")");
                 }
 
                 return sw.ToString();
@@ -154,11 +155,24 @@ namespace MetadataGenerator
             }
         }
 
+        public IEnumerable<string> FindMissingImages(string imagesDirPath)
+        {
+            foreach (RefactoringInfo info in Refactorings
+                .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+            {
+                foreach (ImageInfo image in info.Images)
+                {
+                    string imagePath = Path.Combine(imagesDirPath, image.Name + ".png");
+
+                    if (!File.Exists(imagePath))
+                        yield return imagePath;
+                }
+            }
+        }
+
         private static string CreateImageMarkDown(RefactoringInfo info, string fileName)
         {
-            string url = "/images/refactorings/" + fileName + ".png";
-
-            CheckImageExist(@"..\" + url.Replace("/", @"\"));
+            string url = "../../images/refactorings/" + fileName + ".png";
 
             return "![" + info.Title + "](" + url + ")";
         }
@@ -249,12 +263,6 @@ namespace MetadataGenerator
         private static string RemoveRootHtmlElement(string value)
         {
             return Regex.Replace(value, @"^\s*<html>|</html>\s*$", "");
-        }
-
-        private static void CheckImageExist(string path)
-        {
-            if (!File.Exists(path))
-                throw new IOException($"file not found '{path}'");
         }
     }
 }

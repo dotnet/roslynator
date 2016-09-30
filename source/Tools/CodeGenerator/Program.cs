@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Linq;
 using Pihrtsoft.CodeAnalysis.Metadata;
 
@@ -10,8 +11,19 @@ namespace CodeGenerator
     {
         private static void Main(string[] args)
         {
+            if (args == null || args.Length == 0)
+            {
+#if DEBUG
+                args = new string[] { @"..\..\..\.." };
+#else
+                args = new string[] { Environment.CurrentDirectory };
+#endif
+            }
+
+            string dirPath = args[0];
+
             RefactoringInfo[] refactorings = RefactoringInfo
-                .LoadFromFile(@"..\source\Refactorings\Refactorings.xml")
+                .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
                 .ToArray();
 
@@ -19,16 +31,18 @@ namespace CodeGenerator
 
             var refactoringIdentifiersGenerator = new RefactoringIdentifiersGenerator();
             writer.SaveCode(
-                @"..\source\Refactorings\RefactoringIdentifiers.cs",
+                 Path.Combine(dirPath, @"Refactorings\RefactoringIdentifiers.cs"),
                 refactoringIdentifiersGenerator.Generate(refactorings));
 
             var optionsPagePropertiesGenerator = new OptionsPagePropertiesGenerator();
             writer.SaveCode(
-                @"..\source\VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
+                 Path.Combine(dirPath, @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs"),
                 optionsPagePropertiesGenerator.Generate(refactorings));
 
-            Console.WriteLine("*** FINISHED ***");
+#if DEBUG
+            Console.WriteLine("DONE");
             Console.ReadKey();
+#endif
         }
     }
 }

@@ -9,31 +9,29 @@ namespace Cleaner
 {
     internal class Program
     {
-#if DEBUG
-        private static readonly string _currentDirectory = @"D:\Documents\Visual Studio 2015\Projects\Pihrtsoft.CodeAnalysis";
-#else
-        private static readonly string _currentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
-#endif
-
         private static void Main(string[] args)
         {
-            CleanProjects(new string[]
+            if (args == null || args.Length == 0)
             {
-                "source"
-            });
+#if DEBUG
+                args = new string[] { @"..\..\..\.." };
+#else
+                args = new string[] { Environment.CurrentDirectory };
+#endif
+            }
 
-            Console.WriteLine("*** FINISHED ***");
+            CleanProjects(args);
+#if DEBUG
+            Console.WriteLine("DONE");
             Console.ReadKey();
+#endif
         }
 
         private static void CleanProjects(IEnumerable<string> projectDirectories)
         {
             foreach (string projectDirectory in projectDirectories)
             {
-                foreach (string directory in Directory.EnumerateDirectories(
-                    Path.Combine(_currentDirectory, projectDirectory),
-                    "*",
-                    SearchOption.TopDirectoryOnly))
+                foreach (string directory in Directory.EnumerateDirectories(projectDirectory, "*", SearchOption.TopDirectoryOnly))
                 {
                     CleanProject(directory);
                 }
@@ -60,7 +58,7 @@ namespace Cleaner
 
         private static void DeleteDirectory(string path)
         {
-            Console.WriteLine($"{GetRelativePath(path)}");
+            Console.WriteLine($"{path}");
 
             try
             {
@@ -70,11 +68,6 @@ namespace Cleaner
             {
                 Console.WriteLine(ex.GetBaseException().Message);
             }
-        }
-
-        private static string GetRelativePath(string path)
-        {
-            return path.Replace(_currentDirectory, "");
         }
     }
 }

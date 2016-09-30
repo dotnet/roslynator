@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Pihrtsoft.CodeAnalysis.Metadata;
@@ -11,14 +12,23 @@ namespace MetadataGenerator
     {
         private static void Main(string[] args)
         {
-            const string refactoringsPath = @"..\source\Refactorings\Refactorings.xml";
+            if (args == null || args.Length == 0)
+            {
+#if DEBUG
+                args = new string[] { @"..\..\..\.." };
+#else
+                args = new string[] { Environment.CurrentDirectory };
+#endif
+            }
 
-            SortRefactoringsInFile(refactoringsPath);
+            string dirPath = args[0];
+
+            SortRefactoringsInFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"));
 
             var generator = new Generator();
 
             foreach (RefactoringInfo refactoring in RefactoringInfo
-                .LoadFromFile(refactoringsPath)
+                .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture))
             {
                 generator.Refactorings.Add(refactoring);
@@ -27,7 +37,7 @@ namespace MetadataGenerator
             Console.WriteLine($"number of refactorings: {generator.Refactorings.Count}");
 
             foreach (AnalyzerInfo analyzer in AnalyzerInfo
-                .LoadFromFile(@"..\source\Analyzers\Analyzers.xml")
+                .LoadFromFile(Path.Combine(dirPath, @"Analyzers\Analyzers.xml"))
                 .OrderBy(f => f.Id, StringComparer.InvariantCulture))
             {
                 generator.Analyzers.Add(analyzer);
@@ -38,27 +48,32 @@ namespace MetadataGenerator
             var writer = new CodeFileWriter();
 
             writer.SaveCode(
-                @"..\source\Analyzers\Analyzers.xml",
+                Path.Combine(dirPath, @"Analyzers\Analyzers.xml"),
                 generator.CreateAnalyzersXml());
 
             writer.SaveCode(
-                @"..\source\VisualStudio.AnalyzersAndRefactorings\description.txt",
+                Path.Combine(dirPath, @"VisualStudio.AnalyzersAndRefactorings\description.txt"),
                 generator.CreateAnalyzersExtensionDescription());
 
             writer.SaveCode(
-                @"..\source\VisualStudio.Refactorings\description.txt",
+                Path.Combine(dirPath, @"VisualStudio.Refactorings\description.txt"),
                 generator.CreateRefactoringsExtensionDescription());
 
             writer.SaveCode(
-                @"..\README.md",
-                generator.CreateGitHubMarkDown());
+                 Path.Combine(Path.GetDirectoryName(dirPath), @"README.md"),
+                generator.CreateReadMeMarkDown());
+
+            foreach (string imagePath in generator.FindMissingImages(Path.Combine(Path.GetDirectoryName(dirPath), @"images\refactorings")))
+                Console.WriteLine($"missing image: {imagePath}");
 
             writer.SaveCode(
-                @"..\Refactorings.md",
+                 Path.Combine(dirPath, @"Refactorings\README.md"),
                 generator.CreateRefactoringsMarkDown());
 
-            Console.WriteLine("*** FINISHED ***");
+#if DEBUG
+            Console.WriteLine("DONE");
             Console.ReadKey();
+#endif
         }
 
         public static void SortRefactoringsInFile(string filePath)

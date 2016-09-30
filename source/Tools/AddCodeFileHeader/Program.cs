@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -18,31 +19,20 @@ namespace AddCodeFileHeader
 
         private static void Main(string[] args)
         {
-#if DEBUG
-            string dirPath = @"D:\Documents\Visual Studio 2015\Projects\Pihrtsoft.CodeAnalysis";
-#else
-            string dirPath = Environment.CurrentDirectory;
-            dirPath = Path.GetDirectoryName(dirPath);
-#endif
-
-            var filesWithoutHeader = new List<string>();
-
-            foreach (string filePath in Directory.EnumerateFiles(dirPath, "*.cs", SearchOption.AllDirectories))
+            if (args == null || args.Length == 0)
             {
-                if (IsGeneratedCodeFile(filePath))
-                    continue;
-
-                string s = File.ReadAllText(filePath, Encoding.UTF8);
-
-                if (!_headerRegex.IsMatch(s))
-                {
-                    Console.WriteLine($"header not found in {filePath.Replace(dirPath, string.Empty)}");
-
-                    filesWithoutHeader.Add(filePath);
-                }
+#if DEBUG
+                args = new string[] { @"..\..\..\.." };
+#else
+                args = new string[] { Environment.CurrentDirectory };
+#endif
             }
 
-            if (filesWithoutHeader.Count > 0)
+            string[] filesWithoutHeader = args
+                .SelectMany(dirPath => FindFilesWithoutHeader(dirPath))
+                .ToArray();
+
+            if (filesWithoutHeader.Length > 0)
             {
                 Console.WriteLine("Do you want to add header to the files (y/n)?");
 
@@ -53,7 +43,7 @@ namespace AddCodeFileHeader
                         if (IsGeneratedCodeFile(filePath))
                             continue;
 
-                        Console.WriteLine($"adding header to {filePath.Replace(dirPath, string.Empty)}");
+                        Console.WriteLine($"adding header to {filePath}");
 
                         string s = File.ReadAllText(filePath, Encoding.UTF8);
 
@@ -72,9 +62,28 @@ namespace AddCodeFileHeader
             {
                 Console.WriteLine("No file without header found.");
             }
-
-            Console.WriteLine("FINISHED");
+#if DEBUG
+            Console.WriteLine("DONE");
             Console.ReadKey();
+#endif
+        }
+
+        private static IEnumerable<string> FindFilesWithoutHeader(string dirPath)
+        {
+            foreach (string filePath in Directory.EnumerateFiles(dirPath, "*.cs", SearchOption.AllDirectories))
+            {
+                if (!IsGeneratedCodeFile(filePath))
+                {
+                    string s = File.ReadAllText(filePath, Encoding.UTF8);
+
+                    if (!_headerRegex.IsMatch(s))
+                    {
+                        Console.WriteLine($"header not found in {filePath.Replace(dirPath, string.Empty)}");
+
+                        yield return filePath;
+                    }
+                }
+            }
         }
 
         public static bool IsGeneratedCodeFile(string filePath)
