@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 ExtractExpressionFromWhileConditionRefactoring.ComputeRefactoring(context, expression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapExpressionInParentheses)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ParenthesizeExpression)
                 && context.Span.IsBetweenSpans(expression)
                 && WrapExpressionInParenthesesRefactoring.CanRefactor(context, expression))
             {

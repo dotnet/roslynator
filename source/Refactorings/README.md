@@ -16,7 +16,7 @@
 #### Add braces to if-else
 
 * **Syntax**: if-else chain
-* **Scope**: topmost if keyword
+* **Scope**: embedded statement
 
 ![Add braces to if-else](../../images/refactorings/AddBracesToIfElse.png)
 
@@ -265,13 +265,6 @@
 
 ![Extract expression from condition](../../images/refactorings/ExtractExpressionFromCondition.png)
 
-#### Extract expression from parentheses
-
-* **Syntax**: parenthesized expression
-* **Scope**: opening or closing parenthesis
-
-![Extract expression from parentheses](../../images/refactorings/ExtractExpressionFromParentheses.png)
-
 #### Extract generic type
 
 * **Syntax**: generic name with single type argument
@@ -459,6 +452,12 @@
 
 ![Notify property changed](../../images/refactorings/NotifyPropertyChanged.png)
 
+#### Parenthesize expression
+
+* **Syntax**: selected expression
+
+![Parenthesize expression](../../images/refactorings/ParenthesizeExpression.png)
+
 #### Remove all comments
 
 * **Syntax**: singleline/multiline comment, singleline/multiline documentation documentation comment
@@ -514,7 +513,7 @@
 #### Remove braces from if-else
 
 * **Syntax**: if-else chain
-* **Scope**: topmost if keyword
+* **Scope**: embedded statement
 
 ![Remove braces from if-else](../../images/refactorings/RemoveBracesFromIfElse.png)
 
@@ -575,6 +574,13 @@
 * **Syntax**: selected argument(s)
 
 ![Remove parameter name from argument](../../images/refactorings/RemoveParameterNameFromArgument.png)
+
+#### Remove parentheses
+
+* **Syntax**: parenthesized expression
+* **Scope**: opening or closing parenthesis
+
+![Remove parentheses](../../images/refactorings/RemoveParentheses.png)
 
 #### Remove property initializer
 
@@ -866,23 +872,17 @@
 
 ![Use expression-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
 
-#### Wrap expression in parentheses
-
-* **Syntax**: selected expression
-
-![Wrap expression in parentheses](../../images/refactorings/WrapExpressionInParentheses.png)
-
 #### Wrap in #if directive
 
 * **Syntax**: selected lines
 
 ![Wrap in #if directive](../../images/refactorings/WrapInIfDirective.png)
 
-#### Wrap in if statement
+#### Wrap in condition
 
 * **Syntax**: selected statements
 
-![Wrap in if statement](../../images/refactorings/WrapInIfStatement.png)
+![Wrap in condition](../../images/refactorings/WrapInCondition.png)
 
 #### Wrap in region
 

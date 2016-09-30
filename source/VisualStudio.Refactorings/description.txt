@@ -152,9 +152,6 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-condition">Extract expression from condition</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-expression-from-parentheses">Extract expression from parentheses</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#extract-generic-type">Extract generic type</a>
         </li>
         <li>
@@ -239,6 +236,9 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#notify-property-changed">Notify property changed</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#parenthesize-expression">Parenthesize expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-all-comments">Remove all comments</a>
         </li>
         <li>
@@ -291,6 +291,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-parentheses">Remove parentheses</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#remove-property-initializer">Remove property initializer</a>
@@ -428,13 +431,10 @@
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-expression-in-parentheses">Wrap expression in parentheses</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-if-directive">Wrap in #if directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-if-statement">Wrap in if statement</a>
+            <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-condition">Wrap in condition</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#wrap-in-region">Wrap in region</a>

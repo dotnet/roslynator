@@ -23,7 +23,7 @@
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
-    <Scope>topmost if keyword</Scope>
+    <Scope>embedded statement</Scope>
   </Refactoring>
   <Refactoring Id="AddBracesToSwitchSection" Title="Add braces to switch section" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -240,12 +240,6 @@
       <Syntax>while statement</Syntax>
     </Syntaxes>
     <Scope>condition</Scope>
-  </Refactoring>
-  <Refactoring Id="ExtractExpressionFromParentheses" Title="Extract expression from parentheses" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>parenthesized expression</Syntax>
-    </Syntaxes>
-    <Scope>opening or closing parenthesis</Scope>
   </Refactoring>
   <Refactoring Id="ExtractGenericType" Title="Extract generic type" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -493,6 +487,11 @@
     </Syntaxes>
     <Scope>setter</Scope>
   </Refactoring>
+  <Refactoring Id="ParenthesizeExpression" Title="Parenthesize expression" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>selected expression</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveAllComments" Title="Remove all comments" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
@@ -555,7 +554,7 @@
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
-    <Scope>topmost if keyword</Scope>
+    <Scope>embedded statement</Scope>
   </Refactoring>
   <Refactoring Id="RemoveBracesFromSwitchSection" Title="Remove braces from switch section" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -616,6 +615,12 @@
     <Syntaxes>
       <Syntax>selected argument(s)</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="RemoveParentheses" Title="Remove parentheses" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>parenthesized expression</Syntax>
+    </Syntaxes>
+    <Scope>opening or closing parenthesis</Scope>
   </Refactoring>
   <Refactoring Id="RemovePropertyInitializer" Title="Remove property initializer" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -882,19 +887,14 @@
     </Syntaxes>
     <Scope>body or accessor list</Scope>
   </Refactoring>
-  <Refactoring Id="WrapExpressionInParentheses" Title="Wrap expression in parentheses" ExtensionVersion="0.9.0">
+  <Refactoring Id="WrapInCondition" Title="Wrap in condition" ExtensionVersion="0.94.0">
     <Syntaxes>
-      <Syntax>selected expression</Syntax>
+      <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="WrapInIfDirective" Title="Wrap in #if directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="WrapInIfStatement" Title="Wrap in if statement" ExtensionVersion="0.94.0">
-    <Syntaxes>
-      <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="WrapInRegion" Title="Wrap in region" ExtensionVersion="0.97.0">

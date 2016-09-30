@@ -45,7 +45,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ExpandPropertyAndAddBackingField = "ExpandPropertyAndAddBackingField";
         public const string ExtractDeclarationFromUsingStatement = "ExtractDeclarationFromUsingStatement";
         public const string ExtractExpressionFromCondition = "ExtractExpressionFromCondition";
-        public const string ExtractExpressionFromParentheses = "ExtractExpressionFromParentheses";
         public const string ExtractGenericType = "ExtractGenericType";
         public const string ExtractStatement = "ExtractStatement";
         public const string FormatAccessorBraces = "FormatAccessorBraces";
@@ -74,6 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string NegateBooleanLiteral = "NegateBooleanLiteral";
         public const string NegateOperator = "NegateOperator";
         public const string NotifyPropertyChanged = "NotifyPropertyChanged";
+        public const string ParenthesizeExpression = "ParenthesizeExpression";
         public const string RemoveAllComments = "RemoveAllComments";
         public const string RemoveAllCommentsExceptDocumentationComments = "RemoveAllCommentsExceptDocumentationComments";
         public const string RemoveAllDocumentationComments = "RemoveAllDocumentationComments";
@@ -92,6 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RemoveMember = "RemoveMember";
         public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
+        public const string RemoveParentheses = "RemoveParentheses";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";
@@ -137,9 +138,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
-        public const string WrapExpressionInParentheses = "WrapExpressionInParentheses";
+        public const string WrapInCondition = "WrapInCondition";
         public const string WrapInIfDirective = "WrapInIfDirective";
-        public const string WrapInIfStatement = "WrapInIfStatement";
         public const string WrapInRegion = "WrapInRegion";
         public const string WrapInTryCatch = "WrapInTryCatch";
         public const string WrapInUsingStatement = "WrapInUsingStatement";

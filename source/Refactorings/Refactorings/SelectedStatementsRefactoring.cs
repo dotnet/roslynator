@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInUsingStatement,
                 RefactoringIdentifiers.CollapseToInitializer,
                 RefactoringIdentifiers.MergeIfStatements,
-                RefactoringIdentifiers.WrapInIfStatement,
+                RefactoringIdentifiers.WrapInCondition,
                 RefactoringIdentifiers.WrapInTryCatch);
         }
 
@@ -37,7 +37,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
                     MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfStatement))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {
                     context.RegisterRefactoring(
                         "Wrap in condition",

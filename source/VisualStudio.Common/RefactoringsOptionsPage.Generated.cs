@@ -51,7 +51,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ExpandPropertyAndAddBackingField = true;
             ExtractDeclarationFromUsingStatement = true;
             ExtractExpressionFromCondition = true;
-            ExtractExpressionFromParentheses = true;
             ExtractGenericType = true;
             ExtractStatement = true;
             FormatAccessorBraces = true;
@@ -80,6 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             NegateBooleanLiteral = true;
             NegateOperator = true;
             NotifyPropertyChanged = true;
+            ParenthesizeExpression = true;
             RemoveAllComments = true;
             RemoveAllCommentsExceptDocumentationComments = true;
             RemoveAllDocumentationComments = false;
@@ -98,6 +98,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveMember = true;
             RemoveMemberDeclarations = true;
             RemoveParameterNameFromArgument = true;
+            RemoveParentheses = true;
             RemovePropertyInitializer = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
@@ -143,9 +144,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SwapStatementsInIfElse = true;
             Uncomment = true;
             UseExpressionBodiedMember = true;
-            WrapExpressionInParentheses = true;
+            WrapInCondition = true;
             WrapInIfDirective = true;
-            WrapInIfStatement = true;
             WrapInRegion = true;
             WrapInTryCatch = true;
             WrapInUsingStatement = true;
@@ -192,7 +192,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField, ExpandPropertyAndAddBackingField);
             SetIsEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement, ExtractDeclarationFromUsingStatement);
             SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition, ExtractExpressionFromCondition);
-            SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromParentheses, ExtractExpressionFromParentheses);
             SetIsEnabled(RefactoringIdentifiers.ExtractGenericType, ExtractGenericType);
             SetIsEnabled(RefactoringIdentifiers.ExtractStatement, ExtractStatement);
             SetIsEnabled(RefactoringIdentifiers.FormatAccessorBraces, FormatAccessorBraces);
@@ -221,6 +220,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.NegateBooleanLiteral, NegateBooleanLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateOperator, NegateOperator);
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
+            SetIsEnabled(RefactoringIdentifiers.ParenthesizeExpression, ParenthesizeExpression);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments, RemoveAllCommentsExceptDocumentationComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments, RemoveAllDocumentationComments);
@@ -239,6 +239,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
+            SetIsEnabled(RefactoringIdentifiers.RemoveParentheses, RemoveParentheses);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
@@ -284,9 +285,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
             SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
-            SetIsEnabled(RefactoringIdentifiers.WrapExpressionInParentheses, WrapExpressionInParentheses);
+            SetIsEnabled(RefactoringIdentifiers.WrapInCondition, WrapInCondition);
             SetIsEnabled(RefactoringIdentifiers.WrapInIfDirective, WrapInIfDirective);
-            SetIsEnabled(RefactoringIdentifiers.WrapInIfStatement, WrapInIfStatement);
             SetIsEnabled(RefactoringIdentifiers.WrapInRegion, WrapInRegion);
             SetIsEnabled(RefactoringIdentifiers.WrapInTryCatch, WrapInTryCatch);
             SetIsEnabled(RefactoringIdentifiers.WrapInUsingStatement, WrapInUsingStatement);
@@ -314,7 +314,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Add braces to if-else")]
-        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
+        [Description("Syntax: if-else chain\r\nScope: embedded statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddBracesToIfElse
         {
@@ -683,16 +683,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Extract expression from parentheses")]
-        [Description("Syntax: parenthesized expression\r\nScope: opening or closing parenthesis")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ExtractExpressionFromParentheses
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Extract generic type")]
         [Description("Syntax: generic name with single type argument\r\nScope: type argument")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -973,6 +963,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Parenthesize expression")]
+        [Description("Syntax: selected expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ParenthesizeExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Remove all comments")]
         [Description("Syntax: singleline/multiline comment, singleline/multiline documentation documentation comment")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1054,7 +1054,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Remove braces from if-else")]
-        [Description("Syntax: if-else chain\r\nScope: topmost if keyword")]
+        [Description("Syntax: if-else chain\r\nScope: embedded statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveBracesFromIfElse
         {
@@ -1147,6 +1147,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected argument(s)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveParameterNameFromArgument
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove parentheses")]
+        [Description("Syntax: parenthesized expression\r\nScope: opening or closing parenthesis")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveParentheses
         {
             get;
             set;
@@ -1603,10 +1613,10 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Wrap expression in parentheses")]
-        [Description("Syntax: selected expression")]
+        [DisplayName("Wrap in condition")]
+        [Description("Syntax: selected statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool WrapExpressionInParentheses
+        public bool WrapInCondition
         {
             get;
             set;
@@ -1617,16 +1627,6 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool WrapInIfDirective
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Wrap in if statement")]
-        [Description("Syntax: selected statements")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool WrapInIfStatement
         {
             get;
             set;
