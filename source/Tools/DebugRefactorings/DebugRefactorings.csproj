@@ -38,7 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,7 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
@@ -65,11 +65,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\source\Common\Common.csproj">
+    <ProjectReference Include="..\..\Common\Common.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\source\Refactorings\Refactorings.csproj">
+    <ProjectReference Include="..\..\Refactorings\Refactorings.csproj">
       <Project>{3ad7b124-7b99-440d-84a1-858be5ae268b}</Project>
       <Name>Refactorings</Name>
     </ProjectReference>
