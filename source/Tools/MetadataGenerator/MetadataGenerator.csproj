@@ -80,7 +80,7 @@
       <Project>{2f2b32b2-31d8-4d52-a05f-0d909bd07ebe}</Project>
       <Name>Analyzers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Metadata\Metadata.csproj">
+    <ProjectReference Include="..\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>
       <Name>Metadata</Name>
     </ProjectReference>

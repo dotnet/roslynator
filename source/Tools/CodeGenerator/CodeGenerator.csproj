@@ -82,7 +82,7 @@
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Metadata\Metadata.csproj">
+    <ProjectReference Include="..\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>
       <Name>Metadata</Name>
     </ProjectReference>
