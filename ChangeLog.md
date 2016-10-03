@@ -1,3 +1,14 @@
+### 1.0.0 (2016-10-03)
+
+* Entire project was renamed to **Roslynator**
+
+* Visual Studio extension **C# Analyzers and Refactorings** was renamed to **Roslynator**
+* Visual Studio extension **C# Refactorings** was renamed to **Roslynator Refactorings**
+
+* Some assemblies were renamed. As a result **ruleset** files must be updated in a following way: 
+  * replace <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
+  * with <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+
 ### 0.99.5 (2016-09-12)
 
 #### Analyzers
