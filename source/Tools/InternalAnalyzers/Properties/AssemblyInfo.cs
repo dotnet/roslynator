@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Pihrtsoft.CodeAnalysis.CSharp.Analyzers")]
+[assembly: AssemblyTitle("Roslynator.CSharp.InternalAnalyzers")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pihrtsoft")]
-[assembly: AssemblyProduct("Pihrtsoft.CodeAnalysis.CSharp.Analyzers")]
+[assembly: AssemblyProduct("Roslynator.CSharp.InternalAnalyzers")]
 [assembly: AssemblyCopyright("Copyright (c) 2016 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

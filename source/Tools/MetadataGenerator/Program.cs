@@ -52,7 +52,7 @@ namespace MetadataGenerator
                 generator.CreateAnalyzersXml());
 
             writer.SaveCode(
-                Path.Combine(dirPath, @"VisualStudio.AnalyzersAndRefactorings\description.txt"),
+                Path.Combine(dirPath, @"VisualStudio\description.txt"),
                 generator.CreateAnalyzersExtensionDescription());
 
             writer.SaveCode(

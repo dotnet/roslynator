@@ -1,10 +1,10 @@
-## Roslyn Tools
-* Roslyn-based library that offers 80+ analyzers and 130+ refactorings for C#.
-* [Release Notes](http://github.com/JosefPihrt/RoslynTools/blob/master/ChangeLog.md)
+## Roslynator
+* A collection of 80+ analyzers and 130+ refactorings for C#, powered by Roslyn.
+* [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
 
 ### Documentation
 
-* [Refactorings](http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md)
+* [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 
 ### Options
 
@@ -14,10 +14,10 @@
 
 ### Distribution
 
-##### C# Analyzers and Refactorings
+##### Roslynator
 * [Visual Studio extension](http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e) that contains both analyzers and refactorings.
 
-##### C# Refactorings
+##### Roslynator Refactorings
 * [Visual Studio extension](http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9) that contains only refactorings.
 
 ##### C# Analyzers

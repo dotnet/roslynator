@@ -31,7 +31,7 @@ namespace MetadataGenerator
                     WriteRefactoringsExtensionDescription(xw);
                 }
 
-                return File.ReadAllText(@"..\text\CSharpRefactoringsDescription.txt", Encoding.UTF8)
+                return File.ReadAllText(@"..\text\RoslynatorRefactoringsDescription.txt", Encoding.UTF8)
                     + RemoveRootHtmlElement(sw.ToString());
             }
         }
@@ -47,7 +47,7 @@ namespace MetadataGenerator
                     WriteRefactoringsExtensionDescription(xw);
                 }
 
-                return File.ReadAllText(@"..\text\CSharpAnalyzersAndRefactoringsDescription.txt", Encoding.UTF8)
+                return File.ReadAllText(@"..\text\RoslynatorDescription.txt", Encoding.UTF8)
                     + RemoveRootHtmlElement(sw.ToString());
             }
         }
@@ -60,7 +60,7 @@ namespace MetadataGenerator
             foreach (RefactoringInfo info in Refactorings
                 .OrderBy(f => f.Title, StringComparer.InvariantCulture))
             {
-                string href = "http://github.com/JosefPihrt/RoslynTools/blob/master/Refactorings.md#" + info.GetGitHubHref();
+                string href = "http://github.com/JosefPihrt/Roslynator/blob/master/Refactorings.md#" + info.GetGitHubHref();
                 xw.WriteStartElement("li");
                 xw.WriteStartElement("a");
                 xw.WriteAttributeString("href", href);
@@ -117,7 +117,7 @@ namespace MetadataGenerator
         {
             using (var sw = new StringWriter())
             {
-                sw.WriteLine("## " + "C# Refactorings");
+                sw.WriteLine("## " + "Roslynator Refactorings");
 
                 foreach (RefactoringInfo info in Refactorings
                     .OrderBy(f => f.Title, StringComparer.InvariantCulture))

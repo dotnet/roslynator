@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Pihrtsoft.CodeAnalysis.VisualStudio.Common")]
+[assembly: AssemblyTitle("Roslynator.VisualStudio.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Pihrtsoft.CodeAnalysis.VisualStudio.Common")]
-[assembly: AssemblyCopyright("Copyright © 2016")]
+[assembly: AssemblyCompany("Pihrtsoft")]
+[assembly: AssemblyProduct("Roslynator.VisualStudio.Common")]
+[assembly: AssemblyCopyright("Copyright (c) 2016 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

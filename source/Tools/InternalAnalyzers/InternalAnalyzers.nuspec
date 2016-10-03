@@ -3,7 +3,7 @@
   <metadata>
     <id>Pihrtsoft.CodeAnalysis.CSharp.InternalAnalyzers</id>
     <version>0.1.0.0</version>
-    <description>Analyzers for RoslynTools.</description>
+    <description>Analyzers for Roslynator</description>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

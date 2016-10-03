@@ -1,0 +1,39 @@
+﻿<h3>Introduction</h3>
+
+<p>
+    A collection of 80+ analyzers and 130+ refactorings for C#, powered by Roslyn.
+</p>
+
+<h3>Links</h3>
+
+<ul>
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator">Project Website</a>
+    </li>  
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator#list-of-analyzers">List of Analyzers</a>
+    </li>  
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator#list-of-refactorings">List of Refactorings</a>
+    </li>  
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md">Release Notes</a>
+    </li>  
+</ul>
+
+<h3>Options</h3>
+<p>Refactorings can be enabled/disabled in Visual Studio options.</p>  
+<img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
+
+<h3>Related Products</h3>
+
+<ul>
+    <li>
+        <a href="http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9">Roslynator Refactorings</a>
+        <span> - Visual Studio extension that contains only refactorings.</span>
+    </li>  
+    <li>
+        <a href="http://www.nuget.org/packages/CSharpAnalyzers">CSharpAnalyzers</a>
+        <span> - NuGet package that contains only analyzers.</span>
+    </li>  
+</ul>

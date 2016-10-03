@@ -4,9 +4,8 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-using Pihrtsoft.CodeAnalysis.VisualStudio;
 
-namespace Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings
+namespace Pihrtsoft.CodeAnalysis.VisualStudio
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -27,8 +26,8 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [Guid("F8A97C1B-B204-42B9-A881-816D250F2074")]
-    [ProvideOptionPage(typeof(GeneralOptionsPage), "C# Refactorings", "General", 0, 0, true)]
-    [ProvideOptionPage(typeof(RefactoringsOptionsPage), "C# Refactorings", "Refactorings", 0, 0, true)]
+    [ProvideOptionPage(typeof(GeneralOptionsPage), "Roslynator", "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(RefactoringsOptionsPage), "Roslynator", "Refactorings", 0, 0, true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string)]
     public sealed class VSPackage : Package
     {

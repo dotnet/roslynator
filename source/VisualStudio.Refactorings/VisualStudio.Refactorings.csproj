@@ -12,7 +12,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>VisualStudio.Refactorings.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Roslynator.VisualStudio.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -23,8 +23,8 @@
     <ProjectGuid>{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings</AssemblyName>
+    <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio</RootNamespace>
+    <AssemblyName>Roslynator.VisualStudio.Refactorings</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
@@ -42,7 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Roslynator.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,7 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\RoslynTools.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\Roslynator.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
@@ -61,7 +61,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="VisualStudio.Refactorings.snk" />
+    <None Include="Roslynator.VisualStudio.Refactorings.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -72,11 +72,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Roslynator.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="RoslynatorPreview.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
-      <Name>Common</Name>
+      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Refactorings\Refactorings.csproj">
       <Project>{3ad7b124-7b99-440d-84a1-858be5ae268b}</Project>

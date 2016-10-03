@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings")]
+[assembly: AssemblyTitle("VisualStudio.Refactorings")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings")]
-[assembly: AssemblyCopyright("Copyright © 2016")]
+[assembly: AssemblyCompany("Pihrtsoft")]
+[assembly: AssemblyProduct("VisualStudio.Refactorings")]
+[assembly: AssemblyCopyright("Copyright (c) 2016 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,4 +1,4 @@
-﻿## C# Refactorings
+﻿## Roslynator Refactorings
 
 #### Add boolean comparison
 

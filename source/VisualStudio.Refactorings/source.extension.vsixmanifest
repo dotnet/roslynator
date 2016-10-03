@@ -2,11 +2,13 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="0.99.6" Language="en-US" Publisher="Josef Pihrt" />
-    <DisplayName>C# Refactorings</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 130+ refactorings for C#.</Description>
-    <MoreInfo>http://github.com/JosefPihrt/RoslynTools</MoreInfo>
+    <DisplayName>Roslynator Refactorings</DisplayName>
+    <Description xml:space="preserve">A collection of 130+ refactorings for C#, powered by Roslyn.</Description>
+    <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
-    <ReleaseNotes>http://github.com/JosefPihrt/RoslynTools/blob/master/ChangeLog.md</ReleaseNotes>
+    <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md</ReleaseNotes>
+    <Icon>Roslynator.ico</Icon>
+    <PreviewImage>RoslynatorPreview.png</PreviewImage>
     <Tags>Roslyn,Refactoring,CodeAnalysis,C#,CSharp,Productivity</Tags>
   </Metadata>
   <Installation>
