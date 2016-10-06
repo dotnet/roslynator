@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -58,16 +59,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     if (newType?.IsErrorType() == false
                                         && !memberTypeSymbol.Equals(newType))
                                     {
-                                        context.RegisterRefactoring(
-                                        $"Change {GetText(declaration)} type to '{newType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                                        cancellationToken =>
+                                        if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
                                         {
-                                            return TypeSyntaxRefactoring.ChangeTypeAsync(
-                                                context.Document,
-                                                memberType,
-                                                newType,
-                                                cancellationToken);
-                                        });
+                                            var newNamedType = (INamedTypeSymbol)newType;
+
+                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Linq.IOrderedEnumerable`1");
+
+                                            if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
+                                            {
+                                                INamedTypeSymbol enumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
+
+                                                if (enumerableSymbol != null
+                                                    && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
+                                                {
+                                                    RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()));
+                                                }
+                                            }
+                                        }
+
+                                        RegisterChangeType(context, declaration, memberType, newType);
                                     }
                                 }
 
@@ -90,6 +100,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType)
+        {
+            context.RegisterRefactoring(
+            $"Change {GetText(member)} type to '{newType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+            cancellationToken =>
+            {
+                return TypeSyntaxRefactoring.ChangeTypeAsync(
+                    context.Document,
+                    type,
+                    newType,
+                    cancellationToken);
+            });
         }
 
         private static ITypeSymbol GetMemberNewType(
