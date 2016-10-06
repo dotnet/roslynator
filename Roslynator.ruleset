@@ -210,7 +210,7 @@
     <Rule Id="CA2243" Action="Warning" />
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
-  <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1002" Action="Hidden" />
     <Rule Id="RCS1006" Action="Info" />
     <Rule Id="RCS1008" Action="Info" />
