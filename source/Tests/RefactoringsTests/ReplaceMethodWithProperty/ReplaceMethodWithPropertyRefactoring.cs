@@ -4,11 +4,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
 {
     internal class ReplaceMethodWithPropertyRefactoring
     {
-
-        public string GetValue()
+        public ReplaceMethodWithPropertyRefactoring GetValue()
         {
+            var x = GetValue() /**/
+                .GetValue() /**/
+                .GetValue() /**/;
+
             return null;
         }
 
+        public ReplaceMethodWithPropertyRefactoring()
+        {
+            var a = GetValue();
+            var b = this.GetValue();
+        }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="RemoveDirectiveAndRelatedDirectivesRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithConditionalExpressionRefactoring.cs" />
+    <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring2.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />
     <Compile Include="InlineMethodRefactoring_.cs" />
@@ -127,7 +128,7 @@
     <Compile Include="ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="ReplaceFieldWithConstantRefactoring.cs" />
     <Compile Include="ReplaceForeachWithForRefactoring.cs" />
-    <Compile Include="ReplaceMethodWithPropertyRefactoring.cs" />
+    <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithStringLiteralRefactoring.cs" />
     <Compile Include="ReplaceForWithForeachRefactoring.cs" />
     <Compile Include="ReplaceConstantWithFieldRefactoring.cs" />

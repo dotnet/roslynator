@@ -119,7 +119,7 @@
     <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceFieldWithConstantRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceMethodWithPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyRefactoring.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="Refactorings\ReplaceForWithForEachRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactorings\MemberDeclarationsRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertySyntaxRewriter.cs" />
     <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -299,6 +300,7 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild">
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
