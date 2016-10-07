@@ -12,14 +12,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
     internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
     {
         private readonly TextSpan[] _textSpans;
-        private readonly MethodDeclarationSyntax _methodDeclaration;
         private readonly string _propertyName;
+        private readonly MethodDeclarationSyntax _methodDeclaration;
 
-        public ReplaceMethodWithPropertySyntaxRewriter(TextSpan[] textSpans, MethodDeclarationSyntax methodDeclaration = null, string propertyName = null)
+        public ReplaceMethodWithPropertySyntaxRewriter(TextSpan[] textSpans, string propertyName, MethodDeclarationSyntax methodDeclaration = null)
         {
             _textSpans = textSpans;
-            _methodDeclaration = methodDeclaration;
             _propertyName = propertyName;
+            _methodDeclaration = methodDeclaration;
         }
 
         public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
@@ -30,10 +30,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
             {
                 if (_textSpans.Contains(expression.Span))
                 {
-                    expression = AppendTrailingTrivia(expression, node);
+                    expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
 
-                    if (_propertyName != null)
-                        expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
+                    expression = AppendTrailingTrivia(expression, node);
 
                     return expression;
                 }
@@ -47,12 +46,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
                     {
                         expression = (ExpressionSyntax)base.Visit(memberAccess.Expression);
 
-                        if (_propertyName != null)
-                            memberAccess = memberAccess.WithName(IdentifierName(_propertyName).WithTriviaFrom(name));
+                        memberAccess = memberAccess
+                            .WithExpression(expression)
+                            .WithName(IdentifierName(_propertyName).WithTriviaFrom(name));
 
-                        memberAccess = AppendTrailingTrivia(memberAccess, node);
-
-                        return memberAccess.WithExpression(expression);
+                        return AppendTrailingTrivia(memberAccess, node);
                     }
                 }
             }
@@ -89,12 +87,20 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
             return base.VisitMethodDeclaration(node);
         }
 
-        private static PropertyDeclarationSyntax ReplaceMethodWithProperty(MethodDeclarationSyntax methodDeclaration, string propertyName = null)
-        {
-            SyntaxToken identifier = methodDeclaration.Identifier;
+        public string MethodName() => null;
 
-            if (propertyName != null)
-                identifier = Identifier(propertyName).WithTriviaFrom(identifier);
+        private static PropertyDeclarationSyntax ReplaceMethodWithProperty(MethodDeclarationSyntax methodDeclaration, string propertyName)
+        {
+            SyntaxToken identifier = Identifier(propertyName).WithTriviaFrom(methodDeclaration.Identifier);
+
+            ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+
+            if (parameterList?.IsMissing == false)
+            {
+                identifier = identifier.AppendTrailingTrivia(
+                    parameterList.OpenParenToken.GetLeadingAndTrailingTrivia().Concat(
+                        parameterList.CloseParenToken.GetLeadingAndTrailingTrivia()));
+            }
 
             if (methodDeclaration.ExpressionBody != null)
             {
@@ -104,9 +110,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
                     methodDeclaration.ReturnType,
                     methodDeclaration.ExplicitInterfaceSpecifier,
                     identifier,
-                    null,
+                    default(AccessorListSyntax),
                     methodDeclaration.ExpressionBody,
-                    null);
+                    default(EqualsValueClauseSyntax),
+                    methodDeclaration.SemicolonToken);
             }
             else
             {
@@ -122,14 +129,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
 
         private static AccessorListSyntax CreateAccessorList(MethodDeclarationSyntax method)
         {
-            if (method.Body != null)
-            {
-                bool singleline = method.Body.Statements.Count == 1
-                    && method.Body.Statements[0].IsSingleLine();
+            BlockSyntax body = method.Body;
 
-                return CreateAccessorList(Block(method.Body?.Statements), singleline)
-                    .WithOpenBraceToken(method.Body.OpenBraceToken)
-                    .WithCloseBraceToken(method.Body.CloseBraceToken);
+            if (body != null)
+            {
+                SyntaxList<StatementSyntax> statements = body.Statements;
+
+                bool singleline = statements.Count == 1
+                    && body.DescendantTrivia(body.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && statements[0].IsSingleLine();
+
+                return CreateAccessorList(Block(body.Statements), singleline)
+                    .WithOpenBraceToken(body.OpenBraceToken)
+                    .WithCloseBraceToken(body.CloseBraceToken);
             }
 
             return CreateAccessorList(Block(), singleline: true);

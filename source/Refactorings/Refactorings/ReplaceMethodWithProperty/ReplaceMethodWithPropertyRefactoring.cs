@@ -41,6 +41,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
 
             string propertyName = GetPropertyName(methodDeclaration);
 
+            bool isMethodReplaced = false;
+
             foreach (IGrouping<DocumentId, ReferenceLocation> grouping in locations
                 .GroupBy(f => f.Document.Id))
             {
@@ -50,15 +52,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplaceMethodWithProperty
 
                 TextSpan[] spans = grouping.Select(f => f.Location.SourceSpan).ToArray();
 
-                MethodDeclarationSyntax methodDeclaration2 = (document2.Id == document.Id)
-                    ? methodDeclaration
-                    : null;
+                MethodDeclarationSyntax methodDeclaration2 = null;
 
-                var rewriter = new ReplaceMethodWithPropertySyntaxRewriter(spans, methodDeclaration2, propertyName);
+                if (document.Id == document2.Id)
+                {
+                    isMethodReplaced = true;
+                    methodDeclaration2 = methodDeclaration;
+                }
+
+                var rewriter = new ReplaceMethodWithPropertySyntaxRewriter(spans, propertyName, methodDeclaration2);
 
                 SyntaxNode newRoot = rewriter.Visit(root);
 
                 solution = solution.WithDocumentSyntaxRoot(grouping.Key, newRoot);
+            }
+
+            if (!isMethodReplaced)
+            {
+                document = solution.GetDocument(document.Id);
+
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+
+                var rewriter = new ReplaceMethodWithPropertySyntaxRewriter(new TextSpan[0], propertyName, methodDeclaration);
+
+                SyntaxNode newRoot = rewriter.Visit(root);
+
+                solution = solution.WithDocumentSyntaxRoot(document.Id, newRoot);
             }
 
             return solution;
