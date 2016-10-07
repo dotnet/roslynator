@@ -15,6 +15,17 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static TNode AppendTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return node.WithTrailingTrivia(node.GetTrailingTrivia().AddRange(trivia));
+        }
+
         public static bool IsDescendantOf(this SyntaxNode node, SyntaxKind kind)
         {
             if (node == null)

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -13,6 +15,14 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
+        public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxToken token)
+        {
+            if (token == null)
+                throw new ArgumentNullException(nameof(token));
+
+            return token.LeadingTrivia.Concat(token.TrailingTrivia);
+        }
+
         public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
         {
             SyntaxKind kind = token.Kind();
