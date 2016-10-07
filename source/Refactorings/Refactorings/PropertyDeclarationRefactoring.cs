@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplacePropertyWithMethod;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {

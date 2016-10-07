@@ -45,6 +45,7 @@
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
+    <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldInfo.cs" />
@@ -120,7 +121,7 @@
     <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceFieldWithConstantRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
-    <Compile Include="Refactorings\ReplacePropertyWithMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
