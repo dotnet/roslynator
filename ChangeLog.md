@@ -2,6 +2,8 @@
 
 #### Refactorings
 
+##### Changes
+
 * ReplaceMethodWithProperty and ReplacePropertyWithMethod refactorings significantly improved.
 
 ##### New Refactorings
