@@ -46,6 +46,7 @@
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactorings\ExtractTypeDeclarationToNewFileRefactoring.cs" />
+    <Compile Include="Refactorings\MergeLocalDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />

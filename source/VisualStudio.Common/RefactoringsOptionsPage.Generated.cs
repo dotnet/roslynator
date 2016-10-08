@@ -74,6 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             MergeAssignmentExpressionWithReturnStatement = true;
             MergeAttributes = true;
             MergeIfStatements = true;
+            MergeLocalDeclarations = true;
             MergeStringLiterals = true;
             MergeStringLiteralsIntoMultilineStringLiteral = true;
             NegateBinaryExpression = true;
@@ -216,6 +217,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, MergeAssignmentExpressionWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
+            SetIsEnabled(RefactoringIdentifiers.MergeLocalDeclarations, MergeLocalDeclarations);
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiterals, MergeStringLiterals);
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral, MergeStringLiteralsIntoMultilineStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
@@ -909,6 +911,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected if statements")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MergeIfStatements
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Merge local declarations")]
+        [Description("Syntax: local declarations with same type")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool MergeLocalDeclarations
         {
             get;
             set;

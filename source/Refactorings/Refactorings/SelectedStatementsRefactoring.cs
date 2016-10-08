@@ -13,6 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInUsingStatement,
                 RefactoringIdentifiers.CollapseToInitializer,
                 RefactoringIdentifiers.MergeIfStatements,
+                RefactoringIdentifiers.MergeLocalDeclarations,
                 RefactoringIdentifiers.WrapInCondition,
                 RefactoringIdentifiers.WrapInTryCatch);
         }
@@ -33,6 +34,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                     MergeIfStatementsRefactoring.ComputeRefactorings(context, info);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
+                    && context.SupportsSemanticModel)
+                {
+                    await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info);
+                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
                     MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);

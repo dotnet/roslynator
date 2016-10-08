@@ -3,3 +3,4 @@
 ##### New Refactorings
 
 * ExtractTypeDeclarationToNewFile
+* MergeLocalDeclarations
