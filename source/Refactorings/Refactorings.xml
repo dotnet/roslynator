@@ -262,7 +262,7 @@
       <Syntax>while statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file" ExtensionVersion="0.0.0">
+  <Refactoring Id="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file" ExtensionVersion="1.0.1">
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>
@@ -459,7 +459,7 @@
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeLocalDeclarations" Title="Merge local declarations" ExtensionVersion="0.0.0">
+  <Refactoring Id="MergeLocalDeclarations" Title="Merge local declarations" ExtensionVersion="1.0.1">
     <Syntaxes>
       <Syntax>local declarations with same type</Syntax>
     </Syntaxes>
