@@ -1,3 +1,14 @@
+### 1.0.1 (2016-10-08)
+
+#### Refactorings
+
+* ReplaceMethodWithProperty and ReplacePropertyWithMethod refactorings significantly improved.
+
+##### New Refactorings
+
+* ExtractTypeDeclarationToNewFile
+* MergeLocalDeclarations
+
 ### 1.0.0 (2016-10-03)
 
 * Entire project was renamed to **Roslynator**
