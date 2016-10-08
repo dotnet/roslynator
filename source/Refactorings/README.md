@@ -278,6 +278,13 @@
 
 ![Extract statement(s)](../../images/refactorings/ExtractStatement.png)
 
+#### Extract type declaration to a new file
+
+* **Syntax**: class declaration, struct declaration, interface declaration, enum declaration, delegate declaration
+* **Scope**: identifier
+
+![Extract type declaration to a new file](../../images/refactorings/ExtractTypeDeclarationToNewFile.png)
+
 #### Format accessor braces
 
 * **Syntax**: get accessor, set accessor, add accessor, remove accessor
@@ -414,6 +421,12 @@
 * **Syntax**: selected if statements
 
 ![Merge if statements](../../images/refactorings/MergeIfStatements.png)
+
+#### Merge local declarations
+
+* **Syntax**: local declarations with same type
+
+![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
 
 #### Merge string literals
 
