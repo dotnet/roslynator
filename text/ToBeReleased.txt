@@ -1,0 +1,5 @@
+﻿#### Refactorings
+
+##### New Refactorings
+
+* ExtractTypeDeclarationToNewFile

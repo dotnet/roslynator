@@ -28,11 +28,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
-            string name = ExtractMemberToNewDocumentRefactoring.GetIdentifier(memberDeclaration).ValueText;
+            string name = ExtractTypeDeclarationToNewDocumentRefactoring.GetIdentifier(memberDeclaration).ValueText;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Extract '{name}' to a new file",
-                cancellationToken => ExtractMemberToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(name),
+                cancellationToken => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                 DiagnosticIdentifiers.DeclareEachTypeInSeparateFile + BaseCodeFixProvider.EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

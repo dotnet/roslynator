@@ -2,29 +2,33 @@
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
 {
-    public class SomeClass
-    {
-        public class NestedClass
-        {
-        }
-    }
-
-    public struct SomeStruct
+    public class Foo
     {
     }
 
-    public interface SomeInterface
+    public class Bar
     {
     }
 
-    public enum SomeEnum
+    public struct FooStruct
+    {
+    }
+
+    public interface FooInterface
+    {
+    }
+
+    public enum FooEnum
     {
         None
     }
 
-    public delegate void SomeDelegate();
+    public delegate void FooDelegate();
 
     internal class ExtractTypeDeclarationToNewFile
     {
+        public class FooNested
+        {
+        }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractMemberToNewDocumentRefactoring;
+using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractTypeDeclarationToNewDocumentRefactoring;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {

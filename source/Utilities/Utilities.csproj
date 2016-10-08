@@ -40,7 +40,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CSharp\Refactorings\ExtractMemberToNewDocumentRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
     <Compile Include="CSharp\Analysis\AsyncAnalysis.cs" />

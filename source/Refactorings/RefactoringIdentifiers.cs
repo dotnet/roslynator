@@ -47,6 +47,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ExtractExpressionFromCondition = "ExtractExpressionFromCondition";
         public const string ExtractGenericType = "ExtractGenericType";
         public const string ExtractStatement = "ExtractStatement";
+        public const string ExtractTypeDeclarationToNewFile = "ExtractTypeDeclarationToNewFile";
         public const string FormatAccessorBraces = "FormatAccessorBraces";
         public const string FormatArgumentList = "FormatArgumentList";
         public const string FormatBinaryExpression = "FormatBinaryExpression";

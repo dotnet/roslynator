@@ -53,6 +53,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ExtractExpressionFromCondition = true;
             ExtractGenericType = true;
             ExtractStatement = true;
+            ExtractTypeDeclarationToNewFile = true;
             FormatAccessorBraces = true;
             FormatArgumentList = true;
             FormatBinaryExpression = true;
@@ -194,6 +195,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition, ExtractExpressionFromCondition);
             SetIsEnabled(RefactoringIdentifiers.ExtractGenericType, ExtractGenericType);
             SetIsEnabled(RefactoringIdentifiers.ExtractStatement, ExtractStatement);
+            SetIsEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile, ExtractTypeDeclarationToNewFile);
             SetIsEnabled(RefactoringIdentifiers.FormatAccessorBraces, FormatAccessorBraces);
             SetIsEnabled(RefactoringIdentifiers.FormatArgumentList, FormatArgumentList);
             SetIsEnabled(RefactoringIdentifiers.FormatBinaryExpression, FormatBinaryExpression);
@@ -697,6 +699,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: else clause, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, try statement, unsafe statement, using statement, while statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExtractStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Extract type declaration to a new file")]
+        [Description("Syntax: class declaration, struct declaration, interface declaration, enum declaration, delegate declaration\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ExtractTypeDeclarationToNewFile
         {
             get;
             set;

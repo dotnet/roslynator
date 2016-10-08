@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
-    public static class ExtractMemberToNewDocumentRefactoring
+    public static class ExtractTypeDeclarationToNewDocumentRefactoring
     {
         public static async Task<Solution> RefactorAsync(
             Document document,
@@ -153,6 +153,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 default:
                     return false;
             }
+        }
+
+        public static string GetTitle(string name)
+        {
+            return $"Extract '{name}' to a new file";
         }
     }
 }

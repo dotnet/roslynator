@@ -78,6 +78,31 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             switch (member.Kind())
             {
+                case SyntaxKind.ClassDeclaration:
+                    {
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (ClassDeclarationSyntax)member);
+                        break;
+                    }
+                case SyntaxKind.StructDeclaration:
+                    {
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (StructDeclarationSyntax)member);
+                        break;
+                    }
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (InterfaceDeclarationSyntax)member);
+                        break;
+                    }
+                case SyntaxKind.EnumDeclaration:
+                    {
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (EnumDeclarationSyntax)member);
+                        break;
+                    }
+                case SyntaxKind.DelegateDeclaration:
+                    {
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (DelegateDeclarationSyntax)member);
+                        break;
+                    }
                 case SyntaxKind.MethodDeclaration:
                     {
                         await MethodDeclarationRefactoring.ComputeRefactoringsAsync(context, (MethodDeclarationSyntax)member).ConfigureAwait(false);

@@ -159,6 +159,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/Refactorings.md#extract-statements">Extract statement(s)</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/Refactorings.md#extract-type-declaration-to-a-new-file">Extract type declaration to a new file</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/Refactorings.md#format-accessor-braces">Format accessor braces</a>
         </li>
         <li>

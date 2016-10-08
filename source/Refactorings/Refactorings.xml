@@ -262,6 +262,16 @@
       <Syntax>while statement</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>class declaration</Syntax>
+      <Syntax>struct declaration</Syntax>
+      <Syntax>interface declaration</Syntax>
+      <Syntax>enum declaration</Syntax>
+      <Syntax>delegate declaration</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
   <Refactoring Id="FormatAccessorBraces" Title="Format accessor braces" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>get accessor</Syntax>
