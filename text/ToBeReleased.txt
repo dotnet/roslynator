@@ -1,1 +1,6 @@
-﻿
+﻿#### Analyzers
+
+##### New Analyzers
+
+* UseLinefeedAsNewline
+* UseCarriageReturnAndLinefeedAsNewline

@@ -817,5 +817,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         );
 
         public static readonly DiagnosticDescriptor ReplacePropertyWithAutoImplementedPropertyFadeOut = ReplacePropertyWithAutoImplementedProperty.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
+            title: "Use linefeed as newline.",
+            messageFormat: "Consider using linefeed as newline.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: false
+        );
+
+        public static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine,
+            title: "Use carriage return + linefeed as newline.",
+            messageFormat: "Consider using carriage return + linefeed as newline.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: false
+        );
     }
 }

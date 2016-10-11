@@ -91,5 +91,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string ReplaceCountMethodWithAnyMethod = Prefix + "1083";
         public const string ReplaceConditionalExpressionWithCoalesceExpression = Prefix + "1084";
         public const string ReplacePropertyWithAutoImplementedProperty = Prefix + "1085";
+        public const string UseLinefeedAsNewLine = Prefix + "1086";
+        public const string UseCarriageReturnAndLinefeedAsNewLine = Prefix + "1087";
     }
 }
