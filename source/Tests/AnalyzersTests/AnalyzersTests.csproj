@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
-    <Compile Include="UsePostfixUnaryInsteadOfAssignment.cs" />
+    <Compile Include="UsePostfixUnaryOperatorInsteadOfAssignment.cs" />
     <Compile Include="AddConfigureAwait.cs" />
     <Compile Include="AvoidUsageOfUsingAliasDirective.cs" />
     <Compile Include="AvoidLockingOnPubliclyAccessibleInstance.cs" />

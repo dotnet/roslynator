@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactorings;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
@@ -15,12 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticDescriptors.SimplifyAssignmentExpression,
-                    DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut);
-            }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -28,61 +23,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSimpleAssignment(f), SyntaxKind.SimpleAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f), SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f), SyntaxKind.SubtractAssignmentExpression);
         }
 
-        private void AnalyzeSimpleAssignment(SyntaxNodeAnalysisContext context)
+        private void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
-            if (assignment.Left?.IsMissing == false
-                && assignment.Right?.IsMissing == false
-                && IsBinaryExpression(assignment.Right))
-            {
-                var binaryExpression = (BinaryExpressionSyntax)assignment.Right;
+            ExpressionSyntax left = assignment.Left;
+            ExpressionSyntax right = assignment.Right;
 
-                if (binaryExpression.Left?.IsMissing == false
-                    && binaryExpression.Right?.IsMissing == false
-                    && assignment.Left.IsEquivalentTo(binaryExpression.Left, topLevel: false)
-                    && ContainsOnlyWhitespaceOrEndOfLineTrivia(assignment))
+            if (left?.IsMissing == false
+                && right?.IsNumericLiteralExpression(1) == true)
+            {
+                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(left, context.CancellationToken).Type;
+
+                if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
+                    && !assignment.SpanContainsDirectives())
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.SimplifyAssignmentExpression,
-                        assignment.GetLocation());
-
-                    context.FadeOutNode(DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut, binaryExpression.Left);
+                        DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                        assignment.GetLocation(),
+                        UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(assignment));
                 }
             }
-        }
-
-        private static bool IsBinaryExpression(ExpressionSyntax expression)
-        {
-            switch (expression.Kind())
-            {
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool ContainsOnlyWhitespaceOrEndOfLineTrivia(SyntaxNode node)
-        {
-            return node
-                .DescendantTrivia(node.Span)
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
     }
 }

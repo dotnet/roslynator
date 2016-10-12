@@ -48,6 +48,7 @@
     <Compile Include="Analyzers\MergeIfStatementWithNestedIfStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
+    <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="CodeFixProviders\ReplaceTabWithSpacesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsingDirectiveCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\TabWhiteSpaceDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCarriageReturnAndLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
@@ -88,7 +90,7 @@
     <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\SimplifyAssignmentExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceIfStatementWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeCodeFixProvider.cs" />
@@ -118,7 +120,7 @@
     <Compile Include="CodeFixProviders\UsePredefinedTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\WhileStatementCodeFixProvider.cs" />
-    <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\SimpleAssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\PropertyDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LambdaExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SplitVariableDeclarationDiagnosticAnalyzer.cs" />

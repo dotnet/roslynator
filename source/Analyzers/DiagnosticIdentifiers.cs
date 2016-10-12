@@ -94,5 +94,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string UseLinefeedAsNewLine = Prefix + "1086";
         public const string UseCarriageReturnAndLinefeedAsNewLine = Prefix + "1087";
         public const string AvoidUsageOfTab = Prefix + "1088";
+        public const string UsePostfixUnaryOperatorInsteadOfAssignment = Prefix + "1089";
     }
 }
