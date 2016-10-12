@@ -123,6 +123,9 @@
         <li>RCS1083 - Replace 'Count' method with 'Any' method.</li>
         <li>RCS1084 - Replace conditional expression with coalesce expression.</li>
         <li>RCS1085 - Replace property with auto-implemented property.</li>
+        <li>RCS1086 - Use linefeed as newline.</li>
+        <li>RCS1087 - Use carriage return + linefeed as newline.</li>
+        <li>RCS1088 - Avoid usage of tab.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
