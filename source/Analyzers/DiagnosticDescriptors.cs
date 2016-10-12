@@ -835,5 +835,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor AvoidUsageOfTab = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidUsageOfTab,
+            title: "Avoid usage of tab.",
+            messageFormat: "Consider replacing tab with spaces.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: false
+        );
     }
 }

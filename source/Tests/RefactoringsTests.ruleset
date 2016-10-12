@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Rules for RefactoringsTests" ToolsVersion="14.0">
-  <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp">
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1001" Action="None" />
     <Rule Id="RCS1003" Action="None" />
     <Rule Id="RCS1004" Action="Warning" />
@@ -73,6 +73,7 @@
     <Rule Id="RCS1084" Action="None" />
     <Rule Id="RCS1085" Action="None" />
     <Rule Id="RCS1085FadeOut" Action="None" />
+    <Rule Id="RCS1088" Action="None" />
   </Rules>
   <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers">
     <Rule Id="RCS9001" Action="None" />

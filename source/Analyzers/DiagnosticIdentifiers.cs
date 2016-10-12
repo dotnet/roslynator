@@ -93,5 +93,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string ReplacePropertyWithAutoImplementedProperty = Prefix + "1085";
         public const string UseLinefeedAsNewLine = Prefix + "1086";
         public const string UseCarriageReturnAndLinefeedAsNewLine = Prefix + "1087";
+        public const string AvoidUsageOfTab = Prefix + "1088";
     }
 }

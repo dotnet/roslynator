@@ -60,7 +60,9 @@
     <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ExtractMemberToNewDocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NewLineCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReplaceTabWithSpacesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsingDirectiveCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\TabWhiteSpaceDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCarriageReturnAndLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
