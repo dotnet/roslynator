@@ -75,7 +75,7 @@
     <Rule Id="RCS1085FadeOut" Action="None" />
     <Rule Id="RCS1088" Action="None" />
   </Rules>
-  <Rules AnalyzerId="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers" RuleNamespace="Pihrtsoft.CodeAnalysis.CSharp.Internal.Analyzers">
+  <Rules AnalyzerId="Roslynator.Internal.CSharp.Analyzers" RuleNamespace="Roslynator.Internal.CSharp.Analyzers">
     <Rule Id="RCS9001" Action="None" />
     <Rule Id="RCS9002" Action="None" />
     <Rule Id="RCS9003" Action="None" />
