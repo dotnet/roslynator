@@ -57,6 +57,7 @@
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AnonymousMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArrowExpressionClauseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AwaitExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CaseSwitchLabelCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ExtractMemberToNewDocumentCodeFixProvider.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="CodeFixProviders\ReplaceTabWithSpacesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UsingDirectiveCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\TabWhiteSpaceDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AwaitExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AssignmentExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCarriageReturnAndLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseLinefeedAsNewLineDiagnosticAnalyzer.cs" />

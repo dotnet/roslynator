@@ -50,14 +50,5 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: true
          );
-
-        public static readonly DiagnosticDescriptor AddConfigureAwait = new DiagnosticDescriptor(
-             id: DiagnosticIdentifiers.AddConfigureAwait,
-             title: "Add '.ConfigureAwait(false)' to awaitable method invocation.",
-             messageFormat: "Consider adding '.ConfigureAwait(false) to awaitable method invocation.",
-             category: DiagnosticCategories.General,
-             defaultSeverity: DiagnosticSeverity.Warning,
-             isEnabledByDefault: true
-         );
     }
 }

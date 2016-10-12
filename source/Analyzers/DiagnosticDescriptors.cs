@@ -853,5 +853,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AddConfigureAwait = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddConfigureAwait,
+             title: "Add 'ConfigureAwait(false)' to awaitable expression.",
+             messageFormat: "Consider adding 'ConfigureAwait(false) to awaitable expression.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Info,
+             isEnabledByDefault: true
+         );
     }
 }

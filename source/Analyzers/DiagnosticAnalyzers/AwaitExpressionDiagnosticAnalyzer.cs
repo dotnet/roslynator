@@ -8,13 +8,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Pihrtsoft.CodeAnalysis.CSharp.Refactorings;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
+namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AwaitExpressionDiagnosticAnalyzer : DiagnosticAnalyzer
+    public class AwaitExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AddConfigureAwait);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddConfigureAwait); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -26,6 +28,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
 
         private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
         {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
             if (AddConfigureAwaitRefactoring.CanRefactor(awaitExpression, context.SemanticModel, context.CancellationToken))
