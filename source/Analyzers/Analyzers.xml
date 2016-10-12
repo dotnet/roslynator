@@ -747,4 +747,31 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="UseLinefeedAsNewLine" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1086</Id>
+    <Title>Use linefeed as newline.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1087</Id>
+    <Title>Use carriage return + linefeed as newline.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AvoidUsageOfTab" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1088</Id>
+    <Title>Avoid usage of tab.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
