@@ -1,3 +1,13 @@
+### 1.0.2 (2016-10-12)
+
+#### Analyzers
+
+##### New Analyzers
+
+* UseLinefeedAsNewline
+* UseCarriageReturnAndLinefeedAsNewline
+* AvoidUsageOfTab
+
 ### 1.0.1 (2016-10-08)
 
 #### Refactorings

@@ -1,7 +1,1 @@
-﻿#### Analyzers
-
-##### New Analyzers
-
-* UseLinefeedAsNewline
-* UseCarriageReturnAndLinefeedAsNewline
-* AvoidUsageOfTab
+﻿
