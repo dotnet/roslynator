@@ -774,4 +774,22 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1089</Id>
+    <Title>Use postfix unary operator instead of assignment.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddConfigureAwait" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1090</Id>
+    <Title>Add 'ConfigureAwait(false)' to awaitable expression.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
