@@ -1,3 +1,12 @@
+### 1.0.3 (2016-10-15)
+
+#### Analyzers
+
+##### New Analyzers
+
+* UsePostfixUnaryOperatorInsteadOfAssignment
+* AddConfigureAwait
+
 ### 1.0.2 (2016-10-12)
 
 #### Analyzers
