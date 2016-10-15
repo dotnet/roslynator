@@ -342,6 +342,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#parenthesize-expression">Parenthesize expression</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#promote-local-to-parameter">Promote local to parameter</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-comments">Remove all comments</a>
         </li>
         <li>

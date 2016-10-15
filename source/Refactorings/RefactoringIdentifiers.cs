@@ -76,6 +76,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string NegateOperator = "NegateOperator";
         public const string NotifyPropertyChanged = "NotifyPropertyChanged";
         public const string ParenthesizeExpression = "ParenthesizeExpression";
+        public const string PromoteLocalToParameter = "PromoteLocalToParameter";
         public const string RemoveAllComments = "RemoveAllComments";
         public const string RemoveAllCommentsExceptDocumentationComments = "RemoveAllCommentsExceptDocumentationComments";
         public const string RemoveAllDocumentationComments = "RemoveAllDocumentationComments";

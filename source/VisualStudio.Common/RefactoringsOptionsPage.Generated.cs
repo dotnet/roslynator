@@ -82,6 +82,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             NegateOperator = true;
             NotifyPropertyChanged = true;
             ParenthesizeExpression = true;
+            PromoteLocalToParameter = true;
             RemoveAllComments = true;
             RemoveAllCommentsExceptDocumentationComments = true;
             RemoveAllDocumentationComments = false;
@@ -225,6 +226,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.NegateOperator, NegateOperator);
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
             SetIsEnabled(RefactoringIdentifiers.ParenthesizeExpression, ParenthesizeExpression);
+            SetIsEnabled(RefactoringIdentifiers.PromoteLocalToParameter, PromoteLocalToParameter);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllComments, RemoveAllComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments, RemoveAllCommentsExceptDocumentationComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments, RemoveAllDocumentationComments);
@@ -991,6 +993,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ParenthesizeExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Promote local to parameter")]
+        [Description("Syntax: local declaration in method")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool PromoteLocalToParameter
         {
             get;
             set;

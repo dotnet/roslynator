@@ -17,6 +17,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 await InitializeLocalWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter)
+                && context.SupportsSemanticModel)
+            {
+                await PromoteLocalToParameterRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+            }
         }
     }
 }

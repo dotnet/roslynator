@@ -507,6 +507,11 @@
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="PromoteLocalToParameter" Title="Promote local to parameter" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>local declaration in method</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveAllComments" Title="Remove all comments" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>

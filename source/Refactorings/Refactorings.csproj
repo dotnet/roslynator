@@ -50,6 +50,7 @@
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />
+    <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldInfo.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeInfo.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializePropertyInfo.cs" />
