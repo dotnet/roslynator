@@ -60,7 +60,7 @@ namespace MetadataGenerator
             foreach (RefactoringInfo info in Refactorings
                 .OrderBy(f => f.Title, StringComparer.InvariantCulture))
             {
-                string href = "http://github.com/JosefPihrt/Roslynator/blob/master/Refactorings.md#" + info.GetGitHubHref();
+                string href = "http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#" + info.GetGitHubHref();
                 xw.WriteStartElement("li");
                 xw.WriteStartElement("a");
                 xw.WriteAttributeString("href", href);
