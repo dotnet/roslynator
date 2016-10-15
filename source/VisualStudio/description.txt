@@ -126,6 +126,8 @@
         <li>RCS1086 - Use linefeed as newline.</li>
         <li>RCS1087 - Use carriage return + linefeed as newline.</li>
         <li>RCS1088 - Avoid usage of tab.</li>
+        <li>RCS1089 - Use postfix unary operator instead of assignment.</li>
+        <li>RCS1090 - Add 'ConfigureAwait(false)' to awaitable expression.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
