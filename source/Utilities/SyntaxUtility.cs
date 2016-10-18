@@ -47,6 +47,7 @@ namespace Pihrtsoft.CodeAnalysis
                 case SyntaxKind.TypeArgumentList:
                 case SyntaxKind.VariableDeclaration:
                 case SyntaxKind.AwaitExpression:
+                case SyntaxKind.Interpolation:
                     return true;
                 case SyntaxKind.ForEachStatement:
                     return expression == ((ForEachStatementSyntax)parent).Expression;
