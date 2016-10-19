@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -39,7 +40,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             string documentName = GetDocumentName(memberDeclaration, semanticModel, cancellationToken);
 
-            document = document.Project.AddDocument(documentName, newRoot, document.Folders);
+            var folders = new List<string>(document.Folders.Count + 1);
+            folders.Add(document.Project.Name);
+            folders.AddRange(document.Folders);
+
+            document = document.Project.AddDocument(
+                documentName,
+                newRoot,
+                ImmutableArray.CreateRange(folders));
 
             return document.Project.Solution;
         }
