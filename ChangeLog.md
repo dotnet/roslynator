@@ -1,3 +1,12 @@
+### 1.0.4 (2016-10-20)
+
+#### Refactorings
+
+##### New Refactorings
+
+* PromoteLocalToParameter
+* RemoveInterpolation
+
 ### 1.0.3 (2016-10-15)
 
 #### Analyzers
