@@ -264,14 +264,15 @@ namespace Pihrtsoft.CodeAnalysis
         {
             foreach (UsingDirectiveSyntax usingDirective in usingDirectives)
             {
-                if (!usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
+                if (!usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
+                    && usingDirective.Alias == null)
                 {
                     ISymbol symbol = semanticModel
                         .GetSymbolInfo(usingDirective.Name, cancellationToken)
                         .Symbol;
 
                     if (symbol?.IsNamespace() == true
-                        && namespaceSymbol.Equals(symbol))
+                        && string.Equals(namespaceSymbol.ToString(), symbol.ToString(), StringComparison.Ordinal))
                     {
                         return true;
                     }
