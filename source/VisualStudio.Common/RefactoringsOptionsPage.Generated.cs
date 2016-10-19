@@ -98,6 +98,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveConditionFromLastElse = true;
             RemoveDirectiveAndRelatedDirectives = true;
             RemoveEmptyLines = true;
+            RemoveInterpolation = true;
             RemoveMember = true;
             RemoveMemberDeclarations = true;
             RemoveParameterNameFromArgument = true;
@@ -242,6 +243,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse, RemoveConditionFromLastElse);
             SetIsEnabled(RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives, RemoveDirectiveAndRelatedDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveEmptyLines, RemoveEmptyLines);
+            SetIsEnabled(RefactoringIdentifiers.RemoveInterpolation, RemoveInterpolation);
             SetIsEnabled(RefactoringIdentifiers.RemoveMember, RemoveMember);
             SetIsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations, RemoveMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
@@ -1153,6 +1155,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected lines")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveEmptyLines
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove interpolation")]
+        [Description("Syntax: string interpolation\r\nScope: opening or closing brace")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveInterpolation
         {
             get;
             set;

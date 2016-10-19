@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Refactorings\SwapExpressionsRefactoring.cs" />
     <Compile Include="Refactorings\MemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertySyntaxRewriter.cs" />
+    <Compile Include="Refactorings\RemoveInterpolationRefactoring.cs" />
     <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

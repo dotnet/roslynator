@@ -92,6 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RemoveConditionFromLastElse = "RemoveConditionFromLastElse";
         public const string RemoveDirectiveAndRelatedDirectives = "RemoveDirectiveAndRelatedDirectives";
         public const string RemoveEmptyLines = "RemoveEmptyLines";
+        public const string RemoveInterpolation = "RemoveInterpolation";
         public const string RemoveMember = "RemoveMember";
         public const string RemoveMemberDeclarations = "RemoveMemberDeclarations";
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";

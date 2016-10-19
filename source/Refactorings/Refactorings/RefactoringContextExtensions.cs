@@ -103,6 +103,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             bool fIdentifierName = false;
             bool fInitializerExpression = false;
             bool fInterpolatedStringExpression = false;
+            bool fInterpolation = false;
             bool fInvocationExpression = false;
             bool fLambdaExpression = false;
             bool fLiteralExpression = false;
@@ -220,6 +221,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         InterpolatedStringTextRefactoring.ComputeRefactorings(context, (InterpolatedStringTextSyntax)node);
                         fInterpolatedStringText = true;
+                        continue;
+                    }
+
+                    if (!fInterpolation
+                        && kind == SyntaxKind.Interpolation)
+                    {
+                        InterpolationRefactoring.ComputeRefactorings(context, (InterpolationSyntax)node);
+                        fInterpolation = true;
                         continue;
                     }
 

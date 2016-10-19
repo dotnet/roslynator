@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="RemoveInterpolationRefactoring.cs" />
     <Compile Include="RemoveStatementRefactoring.cs" />
     <Compile Include="DuplicateStatementRefactoring.cs" />
     <Compile Include="ExtractTypeDeclarationToNewFile\ExtractTypeDeclarationToNewFile.cs" />
