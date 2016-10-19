@@ -471,6 +471,12 @@
 
 ![Parenthesize expression](../../images/refactorings/ParenthesizeExpression.png)
 
+#### Promote local to parameter
+
+* **Syntax**: local declaration in method
+
+![Promote local to parameter](../../images/refactorings/PromoteLocalToParameter.png)
+
 #### Remove all comments
 
 * **Syntax**: singleline/multiline comment, singleline/multiline documentation documentation comment
@@ -568,6 +574,13 @@
 * **Syntax**: selected lines
 
 ![Remove empty lines](../../images/refactorings/RemoveEmptyLines.png)
+
+#### Remove interpolation
+
+* **Syntax**: string interpolation
+* **Scope**: opening or closing brace
+
+![Remove interpolation](../../images/refactorings/RemoveInterpolation.png)
 
 #### Remove member
 
