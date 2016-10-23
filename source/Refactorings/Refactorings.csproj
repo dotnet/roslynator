@@ -41,6 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\InlineMethod\IdentifierNameSyntaxRewriter.cs" />
+    <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
@@ -79,7 +81,7 @@
     <Compile Include="Refactorings\MergeIfStatementsRefactoring.cs" />
     <Compile Include="Refactorings\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultValueToReturnStatementRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethodRefactoring.cs" />
+    <Compile Include="Refactorings\InlineMethod\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromIfConditionRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.InlineMethod;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {

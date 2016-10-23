@@ -1,1 +1,5 @@
-﻿
+﻿#### Refactorings
+
+##### Improvements
+
+* InlineMethod - void method with multiple statements can be inlined.

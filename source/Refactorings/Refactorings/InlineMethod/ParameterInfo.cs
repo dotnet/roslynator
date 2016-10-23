@@ -1,0 +1,20 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.InlineMethod
+{
+    internal struct ParameterInfo
+    {
+        public ParameterInfo(IParameterSymbol parameterSymbol, ExpressionSyntax expression)
+        {
+            Expression = expression;
+            ParameterSymbol = parameterSymbol;
+        }
+
+        public ExpressionSyntax Expression { get; }
+
+        public IParameterSymbol ParameterSymbol { get; }
+    }
+}

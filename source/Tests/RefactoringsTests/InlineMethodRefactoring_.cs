@@ -9,13 +9,23 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
             /// <summary>
             /// 
             /// </summary>
-            /// <param name="p1"></param>
-            /// <param name="p2"></param>
             /// <returns></returns>
             public static Entity Method2(Entity p1, Entity p2)
             {
 #if DEBUG
                 return p1 + p2 + p2;
+            }
+#endif
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
+            public static void VoidMethod2(Entity p1, Entity p2)
+            {
+#if DEBUG
+                var a = p1 + p2 + p2;
+                var b = p1 + p2 + p2;
             }
 #endif
         }
@@ -26,9 +36,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="ep1"></param>
-        /// <param name="ep2"></param>
         /// <returns></returns>
         public static InlineMethodRefactoring.Entity ExtensionMethod2(
             this InlineMethodRefactoring.Entity entity,
