@@ -3,3 +3,4 @@
 ##### Improvements
 
 * InlineMethod - void method with multiple statements can be inlined.
+* CheckParameterForNull - refactoring can be applied to multiple parameters at once.

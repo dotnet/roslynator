@@ -1,13 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -15,34 +20,62 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
-                && parameter.Identifier.Span.Contains(context.Span)
-                && await CanRefactorAsync(context, parameter).ConfigureAwait(false))
+            if (parameter.Identifier.Span.Contains(context.Span)
+                && IsValid(parameter))
             {
-                context.RegisterRefactoring(
-                    $"Check '{parameter.Identifier.ValueText}' for null",
-                    cancellationToken => RefactorAsync(
-                        context.Document,
-                        parameter,
-                        cancellationToken));
+                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+                if (CanRefactor(parameter, semanticModel, context.CancellationToken))
+                    RegisterRefactoring(context, parameter);
             }
         }
 
-        public static async Task<bool> CanRefactorAsync(RefactoringContext context, ParameterSyntax parameter)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterListSyntax parameterList)
         {
-            if (!parameter.Identifier.IsMissing)
+            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+
+            ParameterSyntax[] parameters = GetSelectedParameters(parameterList, context.Span)
+                .Where(parameter => IsValid(parameter) && CanRefactor(parameter, semanticModel, context.CancellationToken))
+                .ToArray();
+
+            if (parameters.Length == 1)
             {
-                BlockSyntax body = GetBody(parameter);
+                RegisterRefactoring(context, parameters[0]);
+            }
+            else if (parameters.Length > 0)
+            {
+                RegisterRefactoring(context, parameters.ToImmutableArray(), "parameters");
+            }
+        }
 
-                if (body != null)
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        private static void RegisterRefactoring(RefactoringContext context, ParameterSyntax parameter)
+        {
+            RegisterRefactoring(context, ImmutableArray.Create(parameter), $"'{parameter.Identifier.ValueText}'");
+        }
 
-                    IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+        private static void RegisterRefactoring(RefactoringContext context, ImmutableArray<ParameterSyntax> parameters, string name)
+        {
+                context.RegisterRefactoring(
+                $"Check {name} for null",
+                cancellationToken => RefactorAsync(
+                    context.Document,
+                    parameters,
+                    cancellationToken));
+        }
 
-                    return parameterSymbol?.Type?.IsReferenceType == true
-                        && !ContainsParameterNullCheck(body, parameter, semanticModel, context.CancellationToken);
-                }
+        public static bool CanRefactor(
+            ParameterSyntax parameter,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            BlockSyntax body = GetBody(parameter);
+
+            if (body != null)
+            {
+                IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
+
+                return parameterSymbol?.Type?.IsReferenceType == true
+                    && !ContainsNullCheck(body, parameter, semanticModel, cancellationToken);
             }
 
             return false;
@@ -50,72 +83,86 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            ParameterSyntax parameter,
+            ImmutableArray<ParameterSyntax> parameters,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            BlockSyntax body = GetBody(parameter);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
+            BlockSyntax body = GetBody(parameters[0]);
+
             int index = body.Statements
-                .TakeWhile(f => IsParameterNullCheck(f, null, semanticModel, cancellationToken))
+                .TakeWhile(f => IsNullCheck(f, semanticModel, cancellationToken))
                 .Count();
 
-            IfStatementSyntax argumentNullCheck = IfNullThrowArgumentNullException(parameter.Identifier.ToString());
+            List<IfStatementSyntax> ifStatements = CreateNullChecks(parameters);
 
             if (index > 0)
-                argumentNullCheck = argumentNullCheck.WithLeadingTrivia(CSharpFactory.NewLine);
-
-            argumentNullCheck = argumentNullCheck.WithTrailingTrivia(CSharpFactory.NewLine, CSharpFactory.NewLine);
+                ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLine);
 
             BlockSyntax newBody = body
-                .WithStatements(body.Statements.Insert(index, argumentNullCheck))
+                .WithStatements(body.Statements.InsertRange(index, ifStatements))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(body, newBody);
+            SyntaxNode newRoot = root.ReplaceNode(body, newBody);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static IfStatementSyntax IfNullThrowArgumentNullException(string identifier)
+        private static List<IfStatementSyntax> CreateNullChecks(ImmutableArray<ParameterSyntax> parameters)
+        {
+            var ifStatements = new List<IfStatementSyntax>();
+
+            bool isFirst = true;
+
+            foreach (ParameterSyntax parameter in parameters)
+            {
+                IfStatementSyntax ifStatement = CreateNullCheck(parameter.Identifier.ValueText);
+
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    ifStatement = ifStatement.WithLeadingTrivia(NewLine);
+                }
+
+                ifStatements.Add(ifStatement);
+            }
+
+            ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLine, NewLine);
+
+            return ifStatements;
+        }
+
+        private static IfStatementSyntax CreateNullCheck(string identifier)
         {
             return IfStatement(
-                BinaryExpression(
-                    SyntaxKind.EqualsExpression,
+                EqualsExpression(
                     IdentifierName(identifier),
-                    LiteralExpression(SyntaxKind.NullLiteralExpression)),
-                ThrowArgumentNullException(identifier));
+                    NullLiteralExpression()),
+                ThrowStatement(
+                    ObjectCreationExpression(
+                        type: ParseName("System.ArgumentNullException").WithSimplifierAnnotation(),
+                        argumentList: ArgumentList(Argument(NameOf(identifier))),
+                        initializer: null)));
         }
 
-        private static ThrowStatementSyntax ThrowArgumentNullException(string identifier)
-        {
-            NameSyntax type = ParseName("System.ArgumentNullException")
-                .WithSimplifierAnnotation();
-
-            ArgumentListSyntax argumentList =
-                ArgumentList(
-                    SingletonSeparatedList(
-                        Argument(CSharpFactory.NameOf(identifier))));
-
-            return ThrowStatement(ObjectCreationExpression(
-                type: type,
-                argumentList: argumentList,
-                initializer: null));
-        }
-
-        private static bool ContainsParameterNullCheck(
+        private static bool ContainsNullCheck(
             BlockSyntax body,
             ParameterSyntax parameter,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            for (int i = 0; i < body.Statements.Count; i++)
+            SyntaxList<StatementSyntax> statements = body.Statements;
+
+            for (int i = 0; i < statements.Count; i++)
             {
-                if (IsParameterNullCheck(body.Statements[i], null, semanticModel, cancellationToken))
+                if (IsNullCheck(statements[i], semanticModel, cancellationToken))
                 {
-                    if (IsParameterNullCheck(body.Statements[i], parameter.Identifier.ToString()))
+                    if (IsNullCheck(statements[i], parameter.Identifier.ToString()))
                         return true;
                 }
                 else
@@ -127,7 +174,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return false;
         }
 
-        private static bool IsParameterNullCheck(StatementSyntax statement, string identifier)
+        private static bool IsNullCheck(StatementSyntax statement, string identifier)
         {
             var ifStatement = (IfStatementSyntax)statement;
             var binaryExpression = (BinaryExpressionSyntax)ifStatement.Condition;
@@ -136,63 +183,59 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return string.Equals(identifier, identifierName.Identifier.ToString(), StringComparison.Ordinal);
         }
 
-        private static bool IsParameterNullCheck(StatementSyntax statement, string identifier, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
+        private static bool IsNullCheck(
+            StatementSyntax statement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
+            if (statement.IsKind(SyntaxKind.IfStatement))
+            {
+                var ifStatement = (IfStatementSyntax)statement;
 
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
+                var binaryExpression = ifStatement.Condition as BinaryExpressionSyntax;
 
-            if (!statement.IsKind(SyntaxKind.IfStatement))
-                return false;
+                if (binaryExpression?.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                {
+                    ExpressionSyntax left = binaryExpression.Left;
 
-            var ifStatement = (IfStatementSyntax)statement;
+                    if (left.IsKind(SyntaxKind.IdentifierName))
+                    {
+                        var throwStatement = GetSingleStatementOrDefault(ifStatement) as ThrowStatementSyntax;
 
-            var binaryExpression = ifStatement.Condition as BinaryExpressionSyntax;
-            if (binaryExpression == null)
-                return false;
+                        if (throwStatement?.Expression?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
+                        {
+                            var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
 
-            if (!binaryExpression.Left.IsKind(SyntaxKind.IdentifierName))
-                return false;
+                            INamedTypeSymbol exceptionType = semanticModel.Compilation.GetTypeByMetadataName("System.ArgumentNullException");
 
-            var identifierName = (IdentifierNameSyntax)binaryExpression.Left;
-            if (!string.IsNullOrEmpty(identifier) && !string.Equals(identifier, identifierName.Identifier.ToString(), StringComparison.Ordinal))
-                return false;
+                            ISymbol type = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol;
 
-            if (!binaryExpression.Right.IsKind(SyntaxKind.NullLiteralExpression))
-                return false;
+                            return type?.Equals(exceptionType) == true;
+                        }
+                    }
+                }
+            }
 
-            var throwStatement = SingleStatementOrDefault(ifStatement) as ThrowStatementSyntax;
-            if (throwStatement == null)
-                return false;
-
-            if (!throwStatement.Expression.IsKind(SyntaxKind.ObjectCreationExpression))
-                return false;
-
-            var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
-
-            INamedTypeSymbol argumentNullExceptionType = semanticModel.Compilation.GetTypeByMetadataName("System.ArgumentNullException");
-
-            var type = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol as INamedTypeSymbol;
-
-            return type?.Equals(argumentNullExceptionType) == true;
+            return false;
         }
 
-        private static StatementSyntax SingleStatementOrDefault(IfStatementSyntax ifStatement)
+        private static StatementSyntax GetSingleStatementOrDefault(IfStatementSyntax ifStatement)
         {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
+            StatementSyntax statement = ifStatement.Statement;
 
-            if (!ifStatement.Statement.IsKind(SyntaxKind.Block))
-                return ifStatement.Statement;
+            if (statement.IsKind(SyntaxKind.Block))
+            {
+                var block = (BlockSyntax)statement;
 
-            var block = (BlockSyntax)ifStatement.Statement;
+                SyntaxList<StatementSyntax> statements = block.Statements;
 
-            if (block.Statements.Count == 1)
-                return block.Statements[0];
+                if (statements.Count == 1)
+                    return statements[0];
 
-            return null;
+                return null;
+            }
+
+            return statement;
         }
 
         private static BlockSyntax GetBody(ParameterSyntax parameter)
@@ -209,10 +252,29 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         return ((MethodDeclarationSyntax)parent).Body;
                     case SyntaxKind.ConstructorDeclaration:
                         return ((ConstructorDeclarationSyntax)parent).Body;
+                    default:
+                        {
+                            Debug.Assert(false, parent?.Kind().ToString());
+                            break;
+                        }
                 }
             }
 
             return null;
+        }
+
+        private static bool IsValid(ParameterSyntax parameter)
+        {
+            return parameter.Type != null
+                && !parameter.Identifier.IsMissing
+                && parameter.Parent?.IsKind(SyntaxKind.ParameterList) == true;
+        }
+
+        private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)
+        {
+            return parameterList.Parameters
+                .SkipWhile(f => span.Start > f.Span.Start)
+                .TakeWhile(f => span.End >= f.Span.End);
         }
     }
 }

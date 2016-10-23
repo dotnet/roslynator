@@ -195,7 +195,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (!fParameterList
                         && kind == SyntaxKind.ParameterList)
                     {
-                        ParameterListRefactoring.ComputeRefactorings(context, (ParameterListSyntax)node);
+                        await ParameterListRefactoring.ComputeRefactoringsAsync(context, (ParameterListSyntax)node);
                         fParameterList = true;
                         continue;
                     }
