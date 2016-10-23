@@ -4,3 +4,4 @@
 
 * InlineMethod - void method with multiple statements can be inlined.
 * CheckParameterForNull - refactoring can be applied to multiple parameters at once.
+* AddBraces - braces can be added to if statement in last else-if.

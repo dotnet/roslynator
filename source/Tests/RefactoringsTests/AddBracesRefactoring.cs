@@ -10,6 +10,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
 
             if (value == null)
                 value = Initialize();
+
+
+            if (value != null)
+            {
+            }
+            else if (value == null)
+            {
+            }
         }
 
         private string Initialize()

@@ -27,6 +27,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             cancellationToken);
                     });
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBraces)
+                && elseClause.Statement?.IsKind(SyntaxKind.IfStatement) == true)
+            {
+                var ifStatement = (IfStatementSyntax)elseClause.Statement;
+
+                if (ifStatement.Else == null
+                    && (ifStatement.IfKeyword.Span.Contains(context.Span)
+                        || context.Span.IsBetweenSpans(ifStatement)))
+                {
+                    AddBracesRefactoring.RegisterRefactoring(context, ifStatement);
+                }
+            }
         }
 
         private static async Task<Document> RemoveConditionFromLastElseAsync(

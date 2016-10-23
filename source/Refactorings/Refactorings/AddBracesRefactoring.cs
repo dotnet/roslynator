@@ -22,9 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBraces))
                 {
-                    context.RegisterRefactoring(
-                        "Add braces",
-                        cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
+                    RegisterRefactoring(context, statement);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
@@ -46,6 +44,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
+        {
+            context.RegisterRefactoring(
+                "Add braces",
+                cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
         }
 
         private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
