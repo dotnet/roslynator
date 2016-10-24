@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -378,6 +379,55 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
                 Literal(value));
         }
 
+        public static LiteralExpressionSyntax NumericLiteralExpression(uint value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(sbyte value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(decimal value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(double value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(float value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(long value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
+        public static LiteralExpressionSyntax NumericLiteralExpression(ulong value)
+        {
+            return LiteralExpression(
+                SyntaxKind.NumericLiteralExpression,
+                Literal(value));
+        }
+
         public static LiteralExpressionSyntax ZeroLiteralExpression()
         {
             return NumericLiteralExpression(0);
@@ -604,6 +654,21 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand)
         {
             return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand);
+        }
+
+        public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax argumentList = null)
+        {
+            return ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, argumentList);
+        }
+
+        public static ConstructorInitializerSyntax ThisConstructorInitializer(ArgumentListSyntax argumentList = null)
+        {
+            return ConstructorInitializer(SyntaxKind.ThisConstructorInitializer, argumentList);
+        }
+
+        public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> parameters)
+        {
+            return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
     }
 }

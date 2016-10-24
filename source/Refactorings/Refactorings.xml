@@ -339,6 +339,12 @@
       <Image>FormatAllParametersOnSingleLine</Image>
     </Images>
   </Refactoring>
+  <Refactoring Id="GenerateBaseConstructors" Title="Generate base constructors" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>class declaration</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
   <Refactoring Id="GenerateSwitchSections" Title="Generate switch sections" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>switch statement (that is empty or contains only default section)</Syntax>

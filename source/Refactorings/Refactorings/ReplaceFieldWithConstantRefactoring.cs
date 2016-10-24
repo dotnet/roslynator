@@ -25,8 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                 return typeSymbol != null
-                    && typeSymbol.SpecialType != SpecialType.System_Object
-                    && typeSymbol.IsPredefinedType();
+                    && typeSymbol.CanBeConstantValue();
             }
 
             return false;

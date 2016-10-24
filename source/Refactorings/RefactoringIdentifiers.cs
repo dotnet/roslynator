@@ -55,6 +55,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string FormatExpressionChain = "FormatExpressionChain";
         public const string FormatInitializer = "FormatInitializer";
         public const string FormatParameterList = "FormatParameterList";
+        public const string GenerateBaseConstructors = "GenerateBaseConstructors";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
         public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
         public const string InlineMethod = "InlineMethod";

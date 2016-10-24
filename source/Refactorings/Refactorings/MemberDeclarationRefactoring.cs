@@ -80,7 +80,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 case SyntaxKind.ClassDeclaration:
                     {
-                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (ClassDeclarationSyntax)member);
+                        var classDeclaration = (ClassDeclarationSyntax)member;
+
+                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, classDeclaration);
+
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateBaseConstructors))
+                            await GenerateBaseConstructorsRefactoring.ComputeRefactoringAsync(context, classDeclaration);
+
                         break;
                     }
                 case SyntaxKind.StructDeclaration:

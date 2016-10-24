@@ -61,6 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             FormatExpressionChain = true;
             FormatInitializer = true;
             FormatParameterList = true;
+            GenerateBaseConstructors = true;
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
             InlineMethod = true;
@@ -206,6 +207,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatExpressionChain, FormatExpressionChain);
             SetIsEnabled(RefactoringIdentifiers.FormatInitializer, FormatInitializer);
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
+            SetIsEnabled(RefactoringIdentifiers.GenerateBaseConstructors, GenerateBaseConstructors);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
@@ -785,6 +787,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter list")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool FormatParameterList
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Generate base constructors")]
+        [Description("Syntax: class declaration\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool GenerateBaseConstructors
         {
             get;
             set;
