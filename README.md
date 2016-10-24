@@ -165,6 +165,7 @@
 * [Format expression chain](source/Refactorings/README.md#format-expression-chain)
 * [Format initializer](source/Refactorings/README.md#format-initializer)
 * [Format parameter list](source/Refactorings/README.md#format-parameter-list)
+* [Generate base constructors](source/Refactorings/README.md#generate-base-constructors)
 * [Generate switch sections](source/Refactorings/README.md#generate-switch-sections)
 * [Initialize local with default value](source/Refactorings/README.md#initialize-local-with-default-value)
 * [Inline method](source/Refactorings/README.md#inline-method)

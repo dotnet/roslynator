@@ -340,6 +340,13 @@
 
 ![Format parameter list](../../images/refactorings/FormatAllParametersOnSingleLine.png)
 
+#### Generate base constructors
+
+* **Syntax**: class declaration
+* **Scope**: identifier
+
+![Generate base constructors](../../images/refactorings/GenerateBaseConstructors.png)
+
 #### Generate switch sections
 
 * **Syntax**: switch statement (that is empty or contains only default section)
