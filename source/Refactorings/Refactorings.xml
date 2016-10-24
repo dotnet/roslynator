@@ -339,7 +339,7 @@
       <Image>FormatAllParametersOnSingleLine</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="GenerateBaseConstructors" Title="Generate base constructors" ExtensionVersion="0.0.0">
+  <Refactoring Id="GenerateBaseConstructors" Title="Generate base constructors" ExtensionVersion="1.0.5">
     <Syntaxes>
       <Syntax>class declaration</Syntax>
     </Syntaxes>
@@ -513,7 +513,7 @@
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="PromoteLocalToParameter" Title="Promote local to parameter" ExtensionVersion="0.0.0">
+  <Refactoring Id="PromoteLocalToParameter" Title="Promote local to parameter" ExtensionVersion="1.0.4">
     <Syntaxes>
       <Syntax>local declaration in method</Syntax>
     </Syntaxes>
@@ -617,7 +617,7 @@
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveInterpolation" Title="Remove interpolation" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveInterpolation" Title="Remove interpolation" ExtensionVersion="1.0.4">
     <Syntaxes>
       <Syntax>string interpolation</Syntax>
     </Syntaxes>
