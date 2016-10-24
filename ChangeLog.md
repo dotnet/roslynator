@@ -1,3 +1,17 @@
+### 1.0.5 (2016-10-24)
+
+#### Refactorings
+
+##### Improvements
+
+* InlineMethod - void method with multiple statements can be inlined.
+* CheckParameterForNull - refactoring can be applied to multiple parameters at once.
+* AddBraces - braces can be added to if statement in last else-if.
+
+##### New Refactorings
+
+* GenerateBaseConstructors
+
 ### 1.0.4 (2016-10-20)
 
 #### Refactorings
