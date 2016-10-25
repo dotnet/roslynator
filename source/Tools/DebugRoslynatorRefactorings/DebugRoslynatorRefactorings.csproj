@@ -20,7 +20,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio.Refactorings</AssemblyName>
+    <AssemblyName>Roslynator.VisualStudio.Refactorings.Debug</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

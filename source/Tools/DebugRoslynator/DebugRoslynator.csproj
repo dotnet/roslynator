@@ -24,7 +24,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio</AssemblyName>
+    <AssemblyName>Roslynator.VisualStudio.Debug</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
