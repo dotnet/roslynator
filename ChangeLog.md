@@ -1,3 +1,17 @@
+### 1.0.6 (2016-10-26)
+
+#### Analyzers
+
+##### New Analyzers
+
+* RemoveEmptyRegion
+
+#### Refactorings
+
+##### New Refactorings
+
+* GenerateOnEventMethod
+
 ### 1.0.5 (2016-10-24)
 
 #### Refactorings
