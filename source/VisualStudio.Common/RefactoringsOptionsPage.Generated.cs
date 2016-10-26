@@ -62,6 +62,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             FormatInitializer = true;
             FormatParameterList = true;
             GenerateBaseConstructors = true;
+            GenerateOnEventMethod = true;
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
             InlineMethod = true;
@@ -208,6 +209,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatInitializer, FormatInitializer);
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
             SetIsEnabled(RefactoringIdentifiers.GenerateBaseConstructors, GenerateBaseConstructors);
+            SetIsEnabled(RefactoringIdentifiers.GenerateOnEventMethod, GenerateOnEventMethod);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
@@ -797,6 +799,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: class declaration\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool GenerateBaseConstructors
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Generate 'OnEvent' method")]
+        [Description("Syntax: event\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool GenerateOnEventMethod
         {
             get;
             set;

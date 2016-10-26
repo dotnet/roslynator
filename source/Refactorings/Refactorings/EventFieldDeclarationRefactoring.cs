@@ -1,12 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class EventFieldDeclarationRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && eventFieldDeclaration.Span.Contains(context.Span)
@@ -17,6 +18,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
 
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateOnEventMethod)
+                && context.SupportsSemanticModel)
+            {
+                await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)

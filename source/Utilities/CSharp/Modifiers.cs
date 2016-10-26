@@ -56,6 +56,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return TokenList(ProtectedToken());
         }
 
+        public static SyntaxTokenList ProtectedVirtual()
+        {
+            return TokenList(ProtectedToken(), VirtualToken());
+        }
+
         public static SyntaxTokenList ProtectedInternal()
         {
             return TokenList(ProtectedToken(), InternalToken());

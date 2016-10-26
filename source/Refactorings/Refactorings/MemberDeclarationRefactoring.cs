@@ -146,12 +146,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     }
                 case SyntaxKind.EventDeclaration:
                     {
-                        ComputeRefactorings(context, (EventDeclarationSyntax)member);
+                        EventDeclarationRefactoring.ComputeRefactorings(context, (EventDeclarationSyntax)member);
                         break;
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
-                        EventFieldDeclarationRefactoring.ComputeRefactorings(context, (EventFieldDeclarationSyntax)member);
+                        await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member);
                         break;
                     }
             }
@@ -194,20 +194,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Use expression-bodied member",
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken));
-            }
-        }
-
-        private static void ComputeRefactorings(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
-        {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && eventDeclaration.Span.Contains(context.Span)
-                && MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark event as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventDeclaration, cancellationToken));
-
-                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventDeclaration.Parent);
             }
         }
 

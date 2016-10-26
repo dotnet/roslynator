@@ -41,6 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
+    <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />

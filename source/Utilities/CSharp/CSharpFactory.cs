@@ -119,6 +119,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
         }
 
+        public static IEnumerable<ParameterSyntax> Parameter()
+        {
+            throw new NotImplementedException();
+        }
+
         public static InvocationExpressionSyntax InvocationExpression(string name)
         {
             return SyntaxFactory.InvocationExpression(IdentifierName(name));
@@ -351,6 +356,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static SyntaxToken PartialToken()
         {
             return Token(SyntaxKind.PartialKeyword);
+        }
+
+        public static SyntaxToken VirtualToken()
+        {
+            return Token(SyntaxKind.VirtualKeyword);
         }
 
         public static IdentifierNameSyntax Var()
@@ -667,6 +677,16 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         }
 
         public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> parameters)
+        {
+            return SyntaxFactory.ParameterList(SeparatedList(parameters));
+        }
+
+        public static ParameterListSyntax ParameterList(ParameterSyntax parameter)
+        {
+            return SyntaxFactory.ParameterList(SingletonSeparatedList(parameter));
+        }
+
+        public static ParameterListSyntax ParameterList(params ParameterSyntax[] parameters)
         {
             return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
