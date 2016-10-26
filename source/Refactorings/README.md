@@ -347,6 +347,13 @@
 
 ![Generate base constructors](../../images/refactorings/GenerateBaseConstructors.png)
 
+#### Generate 'OnEvent' method
+
+* **Syntax**: event
+* **Scope**: identifier
+
+![Generate 'OnEvent' method](../../images/refactorings/GenerateOnEventMethod.png)
+
 #### Generate switch sections
 
 * **Syntax**: switch statement (that is empty or contains only default section)

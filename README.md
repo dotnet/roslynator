@@ -113,6 +113,7 @@
 * RCS1088 - Avoid usage of tab
 * RCS1089 - Use postfix unary operator instead of assignment
 * RCS1090 - Add 'ConfigureAwait(false)' to awaitable expression
+* RCS1091 - Remove empty region
 
 ### List of Refactorings
 
@@ -166,6 +167,7 @@
 * [Format initializer](source/Refactorings/README.md#format-initializer)
 * [Format parameter list](source/Refactorings/README.md#format-parameter-list)
 * [Generate base constructors](source/Refactorings/README.md#generate-base-constructors)
+* [Generate 'OnEvent' method](source/Refactorings/README.md#generate-onevent-method)
 * [Generate switch sections](source/Refactorings/README.md#generate-switch-sections)
 * [Initialize local with default value](source/Refactorings/README.md#initialize-local-with-default-value)
 * [Inline method](source/Refactorings/README.md#inline-method)
