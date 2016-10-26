@@ -38,6 +38,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
     <Compile Include="UsePostfixUnaryOperatorInsteadOfAssignment.cs" />
     <Compile Include="AddConfigureAwait.cs" />

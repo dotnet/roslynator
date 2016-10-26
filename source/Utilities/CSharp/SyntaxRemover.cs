@@ -110,6 +110,45 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return document.WithText(newSourceText);
         }
 
+        public static async Task<Document> RemoveRegionAsync(
+            Document document,
+            RegionDirectiveTriviaSyntax regionDirective,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (regionDirective == null)
+                throw new ArgumentNullException(nameof(regionDirective));
+
+            List<DirectiveTriviaSyntax> list = regionDirective.GetRelatedDirectives();
+
+            if (list.Count == 2
+                && list[1].IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+            {
+                var endRegionDirective = (EndRegionDirectiveTriviaSyntax)list[1];
+
+                SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+                int startLine = regionDirective.GetSpanStartLine();
+                int endLine = endRegionDirective.GetSpanEndLine();
+
+                TextLineCollection lines = sourceText.Lines;
+
+                TextSpan span = TextSpan.FromBounds(
+                    lines[startLine].Start,
+                    lines[endLine].EndIncludingLineBreak);
+
+                var textChange = new TextChange(span, string.Empty);
+
+                SourceText newSourceText = sourceText.WithChanges(textChange);
+
+                return document.WithText(newSourceText);
+            }
+
+            return document;
+        }
+
         public static SourceText RemoveDirectives(
             SourceText sourceText,
             ImmutableArray<DirectiveTriviaSyntax> directives)

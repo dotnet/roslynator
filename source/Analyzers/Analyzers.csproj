@@ -48,6 +48,8 @@
     <Compile Include="Analyzers\MergeIfStatementWithNestedIfStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />

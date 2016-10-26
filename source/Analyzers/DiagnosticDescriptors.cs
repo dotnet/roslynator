@@ -862,5 +862,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
          );
+
+        public static readonly DiagnosticDescriptor RemoveEmptyRegion = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.RemoveEmptyRegion,
+             title: "Remove empty region.",
+             messageFormat: "Consider removing empty region.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Info,
+             isEnabledByDefault: true
+         );
     }
 }

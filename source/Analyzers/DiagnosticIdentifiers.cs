@@ -96,5 +96,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AvoidUsageOfTab = Prefix + "1088";
         public const string UsePostfixUnaryOperatorInsteadOfAssignment = Prefix + "1089";
         public const string AddConfigureAwait = Prefix + "1090";
+        public const string RemoveEmptyRegion = Prefix + "1091";
     }
 }
