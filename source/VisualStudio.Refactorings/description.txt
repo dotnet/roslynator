@@ -267,6 +267,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-member-declarations">Remove all member declarations</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-preprocessor-directives">Remove all preprocessor directives</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-region-directives">Remove all region directives</a>
         </li>
         <li>

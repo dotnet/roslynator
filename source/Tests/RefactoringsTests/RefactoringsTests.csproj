@@ -38,6 +38,7 @@
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="RefactoringsTests\ClassName.cs" />
+    <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="RemoveInterpolationRefactoring.cs" />
     <Compile Include="RemoveStatementRefactoring.cs" />
     <Compile Include="DuplicateStatementRefactoring.cs" />

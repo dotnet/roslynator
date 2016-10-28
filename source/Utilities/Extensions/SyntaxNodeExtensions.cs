@@ -15,15 +15,32 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static IEnumerable<DirectiveTriviaSyntax> DescendantDirectives(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            foreach (SyntaxTrivia trivia in node.DescendantTrivia(descendIntoTrivia: true))
+            {
+                if (trivia.IsDirective && trivia.HasStructure)
+                {
+                    var directive = trivia.GetStructure() as DirectiveTriviaSyntax;
+
+                    if (directive != null)
+                        yield return directive;
+                }
+            }
+        }
+
         public static IEnumerable<DirectiveTriviaSyntax> DescendantRegionDirectives(this SyntaxNode node)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            foreach (SyntaxNode descentant in node.DescendantNodesAndSelf(descendIntoTrivia: true))
+            foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(descendIntoTrivia: true))
             {
-                if (descentant.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia))
-                    yield return (DirectiveTriviaSyntax)descentant;
+                if (descendant.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia))
+                    yield return (DirectiveTriviaSyntax)descendant;
             }
         }
 

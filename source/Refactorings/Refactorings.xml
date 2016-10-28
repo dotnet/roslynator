@@ -549,6 +549,11 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
+  <Refactoring Id="RemoveAllPreprocessorDirectives" Title="Remove all preprocessor directives" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>preprocessor directive</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveAllRegionDirectives" Title="Remove all region directives" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>region directive</Syntax>

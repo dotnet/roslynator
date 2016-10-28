@@ -83,6 +83,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RemoveAllCommentsExceptDocumentationComments = "RemoveAllCommentsExceptDocumentationComments";
         public const string RemoveAllDocumentationComments = "RemoveAllDocumentationComments";
         public const string RemoveAllMemberDeclarations = "RemoveAllMemberDeclarations";
+        public const string RemoveAllPreprocessorDirectives = "RemoveAllPreprocessorDirectives";
         public const string RemoveAllRegionDirectives = "RemoveAllRegionDirectives";
         public const string RemoveAllStatements = "RemoveAllStatements";
         public const string RemoveAllSwitchSections = "RemoveAllSwitchSections";

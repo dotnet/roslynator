@@ -1,1 +1,6 @@
-﻿
+﻿#### Refactorings
+
+##### New Refactorings
+
+* RemoveAllPreprocessorDirectives
+

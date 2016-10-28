@@ -384,6 +384,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return syntaxTree.WithChangedText(newSourceText);
         }
 
+        public static async Task<SyntaxTree> RemoveDirectivesAsync(
+            SyntaxTree syntaxTree,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
+            SyntaxNode root = await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText sourceText = await syntaxTree.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = RemoveDirectives(sourceText, root.DescendantDirectives());
+
+            return syntaxTree.WithChangedText(newSourceText);
+        }
+
         public static async Task<Document> RemoveDirectivesAsync(
             Document document,
             ImmutableArray<DirectiveTriviaSyntax> directives,
@@ -395,6 +411,22 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             SourceText newSourceText = RemoveDirectives(sourceText, directives);
+
+            return document.WithText(newSourceText);
+        }
+
+        public static async Task<Document> RemoveDirectivesAsync(
+            Document document,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = RemoveDirectives(sourceText, root.DescendantDirectives());
 
             return document.WithText(newSourceText);
         }
@@ -440,7 +472,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
         public static SourceText RemoveDirectives(
             SourceText sourceText,
-            ImmutableArray<DirectiveTriviaSyntax> directives)
+            IEnumerable<DirectiveTriviaSyntax> directives)
         {
             if (sourceText == null)
                 throw new ArgumentNullException(nameof(sourceText));

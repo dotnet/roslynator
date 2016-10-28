@@ -89,6 +89,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemoveAllCommentsExceptDocumentationComments = true;
             RemoveAllDocumentationComments = false;
             RemoveAllMemberDeclarations = true;
+            RemoveAllPreprocessorDirectives = true;
             RemoveAllRegionDirectives = true;
             RemoveAllStatements = true;
             RemoveAllSwitchSections = true;
@@ -236,6 +237,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments, RemoveAllCommentsExceptDocumentationComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments, RemoveAllDocumentationComments);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations, RemoveAllMemberDeclarations);
+            SetIsEnabled(RefactoringIdentifiers.RemoveAllPreprocessorDirectives, RemoveAllPreprocessorDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives, RemoveAllRegionDirectives);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllStatements, RemoveAllStatements);
             SetIsEnabled(RefactoringIdentifiers.RemoveAllSwitchSections, RemoveAllSwitchSections);
@@ -1069,6 +1071,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: namespace, class, struct, interface\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveAllMemberDeclarations
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove all preprocessor directives")]
+        [Description("Syntax: preprocessor directive")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveAllPreprocessorDirectives
         {
             get;
             set;

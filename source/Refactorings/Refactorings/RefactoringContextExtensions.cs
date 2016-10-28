@@ -567,6 +567,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
                             }
 
+                            RemoveAllPreprocessorDirectivesRefactoring.ComputeRefactorings(context);
+
                             fDirectiveTrivia = true;
                         }
                     }
