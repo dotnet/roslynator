@@ -95,7 +95,7 @@
     <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
-    <Compile Include="CSharp\Refactorings\TypeSyntaxRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
     <Compile Include="CSharp\SyntaxRewriters\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />

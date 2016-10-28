@@ -40,7 +40,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 if (typeSymbol != null)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Change type to '{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                         cancellationToken => ChangeTypeAsync(context.Document, forEachStatement.Type, typeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
 
@@ -57,7 +57,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
+            TypeSyntax newType = CSharpFactory.Type(typeSymbol)
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 

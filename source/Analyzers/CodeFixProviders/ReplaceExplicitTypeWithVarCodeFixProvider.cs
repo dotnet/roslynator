@@ -33,7 +33,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Change type to 'var'",
-                    cancellationToken => TypeSyntaxRefactoring.ChangeTypeToVarAsync(context.Document, variableDeclaration.Type, cancellationToken),
+                    cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, variableDeclaration.Type, cancellationToken),
                     DiagnosticIdentifiers.UseVarInsteadOfExplicitType + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);

@@ -138,7 +138,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             ITypeSymbol eventArgsSymbol,
             bool supportCSharp6)
         {
-            TypeSyntax eventArgsType = TypeSyntaxRefactoring.CreateTypeSyntax(eventArgsSymbol).WithSimplifierAnnotation();
+            TypeSyntax eventArgsType = Type(eventArgsSymbol).WithSimplifierAnnotation();
 
             return MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -175,7 +175,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 yield return LocalDeclarationStatement(
                     VariableDeclaration(
-                        TypeSyntaxRefactoring.CreateTypeSyntax(eventSymbol.Type).WithSimplifierAnnotation(),
+                        Type(eventSymbol.Type).WithSimplifierAnnotation(),
                         VariableDeclarator(
                             Identifier(HandlerIdentifier),
                             default(BracketedArgumentListSyntax),

@@ -40,8 +40,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                                 if (typeSymbol?.SupportsExplicitDeclaration() == true)
-                                    {
-                                    type = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol);
+                                {
+                                    type = Type(typeSymbol);
                                 }
                                 else
                                 {

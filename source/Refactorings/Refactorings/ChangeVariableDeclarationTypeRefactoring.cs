@@ -75,7 +75,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         "Change type to 'var'",
                         cancellationToken =>
                         {
-                            return TypeSyntaxRefactoring.ChangeTypeToVarAsync(
+                            return ChangeTypeRefactoring.ChangeTypeToVarAsync(
                                 context.Document,
                                 variableDeclaration.Type,
                                 cancellationToken);
@@ -116,7 +116,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     ITypeSymbol typeArgumentType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeArgumentType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}' and insert 'await'",
+                        $"Change type to '{typeArgumentType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}' and insert 'await'",
                         c =>
                         {
                             return ChangeTypeAndAddAwaitAsync(
@@ -129,10 +129,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
 
             context.RegisterRefactoring(
-                $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                $"Change type to '{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                 c =>
                 {
-                    return TypeSyntaxRefactoring.ChangeTypeAsync(
+                    return ChangeTypeRefactoring.ChangeTypeAsync(
                         context.Document,
                         type,
                         typeSymbol,
@@ -157,7 +157,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             newNode = newNode
                 .WithType(
-                    TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
+                    CSharpFactory.Type(typeSymbol)
                         .WithTriviaFrom(variableDeclaration.Type)
                         .WithSimplifierAnnotation());
 

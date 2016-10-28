@@ -105,10 +105,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType)
         {
             context.RegisterRefactoring(
-            $"Change {GetText(member)} type to '{newType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+            $"Change {GetText(member)} type to '{newType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
             cancellationToken =>
             {
-                return TypeSyntaxRefactoring.ChangeTypeAsync(
+                return ChangeTypeRefactoring.ChangeTypeAsync(
                     context.Document,
                     type,
                     newType,

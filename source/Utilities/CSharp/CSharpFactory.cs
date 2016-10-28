@@ -12,11 +12,34 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 {
     public static class CSharpFactory
     {
+        private static readonly SymbolDisplayFormat _typeSyntaxSymbolDisplayFormat = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+
         public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");
 
         public static SyntaxTrivia EmptyWhitespaceTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
 
         public static SyntaxTrivia NewLine { get; } = CreateNewLine();
+
+        public static TypeSyntax Type(ITypeSymbol typeSymbol)
+        {
+            return Type(typeSymbol, _typeSyntaxSymbolDisplayFormat);
+        }
+
+        public static TypeSyntax Type(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (symbolDisplayFormat == null)
+                throw new ArgumentNullException(nameof(symbolDisplayFormat));
+
+            string s = typeSymbol.ToDisplayString(symbolDisplayFormat);
+
+            return ParseTypeName(s);
+        }
 
         internal static SyntaxTokenList TokenList(params SyntaxKind[] kinds)
         {

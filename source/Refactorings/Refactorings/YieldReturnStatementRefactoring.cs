@@ -57,13 +57,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                             Identifier("IEnumerable"),
                                             TypeArgumentList(
                                                 SingletonSeparatedList(
-                                                    TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)))));
+                                                    CSharpFactory.Type(typeSymbol)))));
 
                                     context.RegisterRefactoring(
-                                        $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}>'",
+                                        $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}>'",
                                         cancellationToken =>
                                         {
-                                            return TypeSyntaxRefactoring.ChangeTypeAsync(
+                                            return ChangeTypeRefactoring.ChangeTypeAsync(
                                                 context.Document,
                                                 memberType,
                                                 newType,

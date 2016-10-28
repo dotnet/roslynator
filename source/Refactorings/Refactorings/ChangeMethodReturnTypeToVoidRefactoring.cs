@@ -32,7 +32,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             "Change return type to 'void'",
                             cancellationToken =>
                             {
-                                return TypeSyntaxRefactoring.ChangeTypeAsync(
+                                return ChangeTypeRefactoring.ChangeTypeAsync(
                                     context.Document,
                                     methodDeclaration.ReturnType,
                                     CSharpFactory.VoidType(),

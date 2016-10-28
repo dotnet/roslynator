@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                 if (namedTypeSymbol?.IsPredefinedType() == true)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                         cancellationToken => RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax newType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
+            TypeSyntax newType = CSharpFactory.Type(typeSymbol)
                 .WithTriviaFrom(node)
                 .WithFormatterAnnotation();
 

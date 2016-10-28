@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Change type to 'var'",
-                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
+                        cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
                 }
             }
             else if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
@@ -71,8 +71,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
-                        cancellationToken => TypeSyntaxRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
+                        $"Change type to '{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
         }
@@ -127,10 +127,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{info.ElementType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            $"Change type to '{info.ElementType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                             cancellationToken =>
                             {
-                                return TypeSyntaxRefactoring.ChangeTypeAsync(
+                                return ChangeTypeRefactoring.ChangeTypeAsync(
                                     context.Document,
                                     forEachStatement.Type,
                                     info.ElementType,

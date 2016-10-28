@@ -179,7 +179,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 {
                     localDeclaration = localDeclaration.ReplaceNode(
                         localDeclaration.Declaration.Type,
-                        TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol).WithSimplifierAnnotation());
+                        Type(typeSymbol).WithSimplifierAnnotation());
                 }
             }
 

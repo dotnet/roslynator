@@ -41,12 +41,12 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
                 if (typeSymbol?.ElementType?.IsErrorType() == false)
                 {
-                    var arrayType = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol) as ArrayTypeSyntax;
+                    var arrayType = CSharpFactory.Type(typeSymbol) as ArrayTypeSyntax;
 
                     if (arrayType != null)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            $"Declare explicit type '{typeSymbol.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                            $"Declare explicit type '{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                             cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
                             DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 

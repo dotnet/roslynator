@@ -27,7 +27,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (conversion.IsExplicit)
                 {
                     context.RegisterRefactoring(
-                        $"Cast to '{newType.ToDisplayString(TypeSyntaxRefactoring.SymbolDisplayFormat)}'",
+                        $"Cast to '{newType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                         cancellationToken =>
                         {
                             return RefactorAsync(
@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = TypeSyntaxRefactoring.CreateTypeSyntax(typeSymbol)
+            TypeSyntax type = CSharpFactory.Type(typeSymbol)
                 .WithSimplifierAnnotation();
 
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, expression)

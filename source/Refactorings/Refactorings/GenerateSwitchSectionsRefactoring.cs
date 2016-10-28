@@ -88,7 +88,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             var sections = new List<SwitchSectionSyntax>(members.Length);
 
-            TypeSyntax enumType = TypeSyntaxRefactoring.CreateTypeSyntax(enumTypeSymbol);
+            TypeSyntax enumType = CSharpFactory.Type(enumTypeSymbol);
 
             if (members.Length <= 128)
                 enumType = enumType.WithSimplifierAnnotation();

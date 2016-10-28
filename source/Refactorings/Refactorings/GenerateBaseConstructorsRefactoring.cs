@@ -104,7 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
                     Modifiers.FromAccessibility(parameterSymbol.DeclaredAccessibility),
-                    TypeSyntaxRefactoring.CreateTypeSyntax(parameterSymbol.Type).WithSimplifierAnnotation(),
+                    Type(parameterSymbol.Type).WithSimplifierAnnotation(),
                     Identifier(parameterSymbol.Name),
                     @default));
 
