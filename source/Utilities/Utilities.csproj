@@ -51,7 +51,6 @@
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\Extensions\BlockSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\VariableDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\MemberRemover.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Extensions\AccessorDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\Extensions\AccessorListSyntaxExtensions.cs" />

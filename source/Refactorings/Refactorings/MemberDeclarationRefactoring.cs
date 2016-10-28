@@ -43,7 +43,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
-                                        cancellationToken => MemberRemover.RemoveAsync(context.Document, member, cancellationToken));
+                                        cancellationToken => SyntaxRemover.RemoveMemberAsync(context.Document, member, cancellationToken));
                                 }
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
