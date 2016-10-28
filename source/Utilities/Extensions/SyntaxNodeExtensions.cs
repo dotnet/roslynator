@@ -15,6 +15,18 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static IEnumerable<DirectiveTriviaSyntax> DescendantRegionDirectives(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            foreach (SyntaxNode descentant in node.DescendantNodesAndSelf(descendIntoTrivia: true))
+            {
+                if (descentant.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia))
+                    yield return (DirectiveTriviaSyntax)descentant;
+            }
+        }
+
         public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxNode node)
         {
             if (node == null)

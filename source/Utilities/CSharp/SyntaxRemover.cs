@@ -468,7 +468,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             SyntaxNode root = await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
+            ImmutableArray<DirectiveTriviaSyntax> directives = root.DescendantRegionDirectives().ToImmutableArray();
 
             return await RemoveDirectivesAsync(syntaxTree, directives, cancellationToken).ConfigureAwait(false);
         }
@@ -482,7 +482,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<DirectiveTriviaSyntax> directives = SyntaxUtility.GetRegionDirectives(root).ToImmutableArray();
+            ImmutableArray<DirectiveTriviaSyntax> directives = root.DescendantRegionDirectives().ToImmutableArray();
 
             return await RemoveDirectivesAsync(document, directives, cancellationToken).ConfigureAwait(false);
         }
