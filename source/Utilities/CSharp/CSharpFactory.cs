@@ -142,11 +142,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
         }
 
-        public static IEnumerable<ParameterSyntax> Parameter()
-        {
-            throw new NotImplementedException();
-        }
-
         public static InvocationExpressionSyntax InvocationExpression(string name)
         {
             return SyntaxFactory.InvocationExpression(IdentifierName(name));
