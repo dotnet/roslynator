@@ -84,7 +84,7 @@
     </Syntaxes>
     <Scope>missing identifier</Scope>
   </Refactoring>
-  <Refactoring Id="AddToMethodInvocation" Title="Add 'To...' method invocation" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddToMethodInvocation" Title="Add 'To...' method invocation" ExtensionVersion="1.0.7">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -557,7 +557,7 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
-  <Refactoring Id="RemoveAllPreprocessorDirectives" Title="Remove all preprocessor directives" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveAllPreprocessorDirectives" Title="Remove all preprocessor directives" ExtensionVersion="1.0.7">
     <Syntaxes>
       <Syntax>preprocessor directive</Syntax>
     </Syntaxes>
