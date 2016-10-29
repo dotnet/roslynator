@@ -11,10 +11,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
-    public static class ArgumentSyntaxExtensions
+    internal static class DetermineParameterHelper
     {
         public static IParameterSymbol DetermineParameter(
-            this ArgumentSyntax argument,
+            ArgumentSyntax argument,
             SemanticModel semanticModel,
             bool allowParams = false,
             bool allowCandidate = false,
@@ -90,7 +90,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         }
 
         public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
-            this ArgumentSyntax argument,
+            ArgumentSyntax argument,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -192,14 +192,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             }
 
             return typeSymbol;
-        }
-
-        public static ArgumentSyntax WithoutNameColon(this ArgumentSyntax argument)
-        {
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
-
-            return argument.WithNameColon(null);
         }
     }
 }

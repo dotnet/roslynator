@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
@@ -49,32 +50,11 @@
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
-    <Compile Include="CSharp\Extensions\BlockSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\VariableDeclarationSyntaxExtensions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
-    <Compile Include="CSharp\Extensions\AccessorDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\AccessorListSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\AttributeArgumentSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ArgumentSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\AttributeSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\InterfaceDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ConversionOperatorDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ConstructorDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\InvocationExpressionSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\OperatorDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\EventDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\StructDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\NamespaceDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ClassDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\CSharpSyntaxNodeExtensions.cs" />
-    <Compile Include="CSharp\Extensions\ExpressionSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\MemberDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\SimpleNameSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\SyntaxListExtensions.cs" />
-    <Compile Include="CSharp\Extensions\TypeSyntaxExtensions.cs" />
+    <Compile Include="CSharp\DetermineParameterHelper.cs" />
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
     <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
-    <Compile Include="CSharp\Extensions\YieldStatementSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxExtensions.cs" />
     <Compile Include="CSharp\PropertyKind.cs" />
     <Compile Include="CSharp\Refactorings\AddConfigureAwaitRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
@@ -101,11 +81,7 @@
     <Compile Include="CSharp\SyntaxRemover.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
-    <Compile Include="Extensions\INamedTypeSymbolExtensions.cs" />
-    <Compile Include="Extensions\IMethodSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
-    <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
     <Compile Include="ModifierUtility.cs" />
     <Compile Include="CSharp\Modifiers.cs" />
@@ -116,15 +92,6 @@
     <Compile Include="CSharp\StatementContainer.cs" />
     <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierComparer.cs" />
-    <Compile Include="CSharp\Extensions\AttributeListSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\CompilationUnitSyntaxExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\INamespaceSymbolExtensions.cs" />
-    <Compile Include="CSharp\Extensions\IndexerDeclarationSyntaxExtensions.cs" />
-    <Compile Include="Extensions\ITypeSymbolExtensions.cs" />
-    <Compile Include="CSharp\Extensions\LiteralExpressionSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\MethodDeclarationSyntaxExtensions.cs" />
-    <Compile Include="CSharp\Extensions\PropertyDeclarationSyntaxExtensions.cs" />
     <Compile Include="Extensions\SymbolInfoExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeOrTokenExtensions.cs" />

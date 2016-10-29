@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 using Pihrtsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis
 {
@@ -161,6 +162,11 @@ namespace Pihrtsoft.CodeAnalysis
         public static SyntaxToken WithRenameAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(RenameAnnotation.Create());
+        }
+
+        public static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
+        {
+            return TokenList(tokens);
         }
     }
 }

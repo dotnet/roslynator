@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 using Microsoft.CodeAnalysis.Text;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Pihrtsoft.CodeAnalysis
 {
@@ -586,6 +587,16 @@ namespace Pihrtsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithAdditionalAnnotations(Simplifier.Annotation);
+        }
+
+        public static SyntaxList<TNode> ToSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        {
+            return List(nodes);
+        }
+
+        public static SeparatedSyntaxList<TNode> ToSeparatedSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
+        {
+            return SeparatedList(nodes);
         }
     }
 }
