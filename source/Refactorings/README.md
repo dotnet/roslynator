@@ -85,6 +85,12 @@
 
 ![Add parameter name to parameter](../../images/refactorings/AddParameterNameToParameter.png)
 
+#### Add 'To...' method invocation
+
+* **Syntax**: argument, assignment expression, return statement, variable declaration
+
+![Add 'To...' method invocation](../../images/refactorings/AddToMethodInvocation.png)
+
 #### Add using directive
 
 * **Syntax**: qualified name
@@ -515,6 +521,12 @@
 * **Scope**: opening or closing brace
 
 ![Remove all member declarations](../../images/refactorings/RemoveAllMemberDeclarations.png)
+
+#### Remove all preprocessor directives
+
+* **Syntax**: preprocessor directive
+
+![Remove all preprocessor directives](../../images/refactorings/RemoveAllPreprocessorDirectives.png)
 
 #### Remove all region directives
 
