@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                     {
                         SyntaxTrivia trivia = region.ParentTrivia;
 
-                        SyntaxTriviaList list = trivia.GetContainingTrivia();
+                        SyntaxTriviaList list = trivia.GetContainingList();
 
                         if (list.Any())
                         {

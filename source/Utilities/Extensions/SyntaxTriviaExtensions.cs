@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTriviaExtensions
     {
-        public static SyntaxTriviaList GetContainingTrivia(this SyntaxTrivia trivia)
+        public static SyntaxTriviaList GetContainingList(this SyntaxTrivia trivia)
         {
             SyntaxToken token = trivia.Token;
 
