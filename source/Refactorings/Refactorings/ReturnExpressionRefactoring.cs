@@ -16,7 +16,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (expression != null
                 && context.SupportsSemanticModel)
             {
-                MemberDeclarationSyntax declaration = GetContainingMember(expression);
+                MemberDeclarationSyntax declaration = GetContainingMethodOrPropertyOrIndexer(expression);
 
                 if (declaration != null)
                 {
@@ -240,7 +240,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             }
         }
 
-        internal static MemberDeclarationSyntax GetContainingMember(ExpressionSyntax expression)
+        internal static MemberDeclarationSyntax GetContainingMethodOrPropertyOrIndexer(ExpressionSyntax expression)
         {
             foreach (SyntaxNode ancestor in expression.Ancestors())
             {

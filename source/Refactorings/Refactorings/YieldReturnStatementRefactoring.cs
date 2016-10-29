@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.AddToMethodInvocation))
                 {
-                    MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMember(yieldStatement.Expression);
+                    MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMethodOrPropertyOrIndexer(yieldStatement.Expression);
 
                     if (containingMember != null)
                     {
