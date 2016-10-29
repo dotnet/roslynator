@@ -171,7 +171,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.InlineMethod
                     }
                     else
                     {
-                        TypeDeclarationSyntax containingType = SyntaxUtility.GetContainingType(invocation);
+                        TypeDeclarationSyntax containingType = invocation.GetContainingType();
 
                         if (containingType != null)
                         {

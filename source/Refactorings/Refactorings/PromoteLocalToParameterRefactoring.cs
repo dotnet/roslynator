@@ -15,7 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
-            SyntaxNode method = SyntaxUtility.GetContainingMethod(localDeclaration);
+            SyntaxNode method = localDeclaration.GetContainingMethod();
 
             if (method?.IsKind(SyntaxKind.MethodDeclaration) == true)
             {

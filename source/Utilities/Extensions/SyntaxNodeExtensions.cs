@@ -16,6 +16,58 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxNodeExtensions
     {
+        public static TypeDeclarationSyntax GetContainingType(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            foreach (SyntaxNode ancestor in node.Ancestors())
+            {
+                switch (ancestor.Kind())
+                {
+                    case SyntaxKind.ClassDeclaration:
+                    case SyntaxKind.InterfaceDeclaration:
+                    case SyntaxKind.StructDeclaration:
+                        return (TypeDeclarationSyntax)ancestor;
+                }
+            }
+
+            return null;
+        }
+
+        public static SyntaxNode GetContainingMethod(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            foreach (SyntaxNode ancestor in node.Ancestors())
+            {
+                switch (ancestor.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                    case SyntaxKind.SimpleLambdaExpression:
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                    case SyntaxKind.AnonymousMethodExpression:
+                        {
+                            return ancestor;
+                        }
+                    case SyntaxKind.PropertyDeclaration:
+                    case SyntaxKind.IndexerDeclaration:
+                    case SyntaxKind.ConstructorDeclaration:
+                    case SyntaxKind.DestructorDeclaration:
+                    case SyntaxKind.EventDeclaration:
+                    case SyntaxKind.ConversionOperatorDeclaration:
+                    case SyntaxKind.OperatorDeclaration:
+                    case SyntaxKind.IncompleteMember:
+                        {
+                            break;
+                        }
+                }
+            }
+
+            return null;
+        }
+
         public static IEnumerable<DirectiveTriviaSyntax> DescendantDirectives(this SyntaxNode node)
         {
             if (node == null)

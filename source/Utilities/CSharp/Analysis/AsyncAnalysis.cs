@@ -35,7 +35,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            SyntaxNode method = SyntaxUtility.GetContainingMethod(node);
+            SyntaxNode method = node.GetContainingMethod();
 
             switch (method?.Kind())
             {

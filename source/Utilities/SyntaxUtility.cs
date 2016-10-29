@@ -118,58 +118,6 @@ namespace Pihrtsoft.CodeAnalysis
             return newName;
         }
 
-        public static TypeDeclarationSyntax GetContainingType(SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            foreach (SyntaxNode ancestor in node.Ancestors())
-            {
-                switch (ancestor.Kind())
-                {
-                    case SyntaxKind.ClassDeclaration:
-                    case SyntaxKind.InterfaceDeclaration:
-                    case SyntaxKind.StructDeclaration:
-                        return (TypeDeclarationSyntax)ancestor;
-                }
-            }
-
-            return null;
-        }
-
-        public static SyntaxNode GetContainingMethod(SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            foreach (SyntaxNode ancestor in node.Ancestors())
-            {
-                switch (ancestor.Kind())
-                {
-                    case SyntaxKind.MethodDeclaration:
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                        {
-                            return ancestor;
-                        }
-                    case SyntaxKind.PropertyDeclaration:
-                    case SyntaxKind.IndexerDeclaration:
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.DestructorDeclaration:
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.ConversionOperatorDeclaration:
-                    case SyntaxKind.OperatorDeclaration:
-                    case SyntaxKind.IncompleteMember:
-                        {
-                            break;
-                        }
-                }
-            }
-
-            return null;
-        }
-
         public static bool IsUsingStaticDirectiveInScope(
             SyntaxNode node,
             INamedTypeSymbol namedTypeSymbol,
