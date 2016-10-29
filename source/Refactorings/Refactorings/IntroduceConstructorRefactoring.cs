@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,9 +136,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (fieldDeclaration.Declaration != null
                 && fieldDeclaration.Declaration.Variables.Count == 1)
             {
-                MemberDeclarationSyntax parentDeclaration = GetContainingDeclaration(fieldDeclaration);
+                MemberDeclarationSyntax parentMember = GetContainingMember(fieldDeclaration);
 
-                if (parentDeclaration != null)
+                if (parentMember != null)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -145,7 +146,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                     return symbol != null
                         && !symbol.IsStatic
-                        && !parentDeclaration
+                        && !parentMember
                             .GetMembers()
                             .Any(member => IsBackingField(member, symbol, context, semanticModel));
                 }
@@ -230,18 +231,18 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            MemberDeclarationSyntax parentDeclaration = GetContainingDeclaration(declaration);
+            MemberDeclarationSyntax parentMember = GetContainingMember(declaration);
 
-            SyntaxList<MemberDeclarationSyntax> members = parentDeclaration.GetMembers();
+            SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members.Insert(
                 IndexOfLastConstructorOrField(members) + 1,
-                CreateConstructor(GetConstructorIdentifierText(parentDeclaration), assignableMembers));
+                CreateConstructor(GetConstructorIdentifierText(parentMember), assignableMembers));
 
-            MemberDeclarationSyntax newNode = parentDeclaration.SetMembers(newMembers)
+            MemberDeclarationSyntax newNode = parentMember.SetMembers(newMembers)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parentDeclaration, newNode);
+            SyntaxNode newRoot = oldRoot.ReplaceNode(parentMember, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -259,7 +260,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return null;
         }
 
-        private static MemberDeclarationSyntax GetContainingDeclaration(MemberDeclarationSyntax declaration)
+        private static MemberDeclarationSyntax GetContainingMember(MemberDeclarationSyntax declaration)
         {
             switch (declaration.Kind())
             {
@@ -267,7 +268,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 case SyntaxKind.StructDeclaration:
                     return declaration;
                 default:
-                    return (MemberDeclarationSyntax)declaration.Parent;
+                    {
+                        Debug.Assert(declaration.Parent is MemberDeclarationSyntax, "Parent is not MemberDeclarationSyntax");
+                        return declaration.Parent as MemberDeclarationSyntax;
+                    }
             }
         }
 
