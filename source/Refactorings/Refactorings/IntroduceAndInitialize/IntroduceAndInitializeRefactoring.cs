@@ -114,7 +114,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize
 
             ConstructorDeclarationSyntax constructor = Constructor;
 
-            MemberDeclarationSyntax containingMember = constructor.GetContainingMember();
+            MemberDeclarationSyntax containingMember = constructor.GetParentMember();
 
             SyntaxList<MemberDeclarationSyntax> members = containingMember.GetMembers();
 

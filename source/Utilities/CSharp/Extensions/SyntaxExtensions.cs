@@ -837,7 +837,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             return declaration;
         }
 
-        public static MemberDeclarationSyntax GetContainingMember(this MemberDeclarationSyntax member)
+        public static MemberDeclarationSyntax GetParentMember(this MemberDeclarationSyntax member)
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
