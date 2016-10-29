@@ -1,3 +1,12 @@
+### 1.0.7 (2016-10-29)
+
+#### Refactorings
+
+##### New Refactorings
+
+* RemoveAllPreprocessorDirectives
+* AddToMethodInvocation
+
 ### 1.0.6 (2016-10-26)
 
 #### Analyzers
