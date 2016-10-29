@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
 {
-    internal class AddCastExpressionRefactoring
+    internal class AddToMethodInvocationRefactoring
     {
         private class Foo
         {
-            public void SomeMethod()
+            public void Bar()
             {
                 object value = GetObject();
 
@@ -33,25 +32,32 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
             private void ProcessValue(int index)
             {
             }
+
+            private void ProcessArray(string[] items)
+            {
+                IEnumerable<string> enumerable = items;
+
+                ProcessArray(enumerable);
+            }
+
+            private void ProcessList(List<string> items)
+            {
+                IEnumerable<string> enumerable = items;
+
+                ProcessList(enumerable);
+            }
         }
 
         private class AddCastExpressionToAssignmentExpressionRefactoring
         {
-            public string SomeMethod()
+            public void Foo()
             {
                 string s = null;
 
-                object value = GetObject();
-
-                s = value;
-
-                return s;
+                s = GetObject();
             }
 
-            private object GetObject()
-            {
-                return string.Empty;
-            }
+            private object GetObject() => null;
         }
 
         public class AddCastExpressionToReturnStatementRefactoring
@@ -63,23 +69,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
                 return value;
             }
 
-            private object GetObject()
-            {
-                return string.Empty;
-            }
-
-            private async Task<int> Method4Async()
-            {
-                bool f = false;
-                if (f)
-                {
-                    return await Task.FromResult(new object());
-                }
-                else
-                {
-                    return new object();
-                }
-            }
+            private object GetObject() => null;
         }
 
         private class AddCastExpressionToVariableDeclarationRefactoring
@@ -89,12 +79,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
                 string value = GetObject();
             }
 
-            private object GetObject()
-            {
-                string s = "";
-
-                return s;
-            }
+            private object GetObject() => null;
         }
     }
 }

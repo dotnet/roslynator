@@ -81,14 +81,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                     }
                                 }
 
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
                                     && !memberTypeSymbol.IsErrorType())
                                 {
                                     ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
                                     if (castTypeSymbol != null)
                                     {
-                                        AddCastExpressionRefactoring.RegisterRefactoring(
+                                        ModifyExpressionRefactoring.ComputeRefactoring(
                                            context,
                                            expression,
                                            castTypeSymbol,

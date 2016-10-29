@@ -3,4 +3,4 @@
 ##### New Refactorings
 
 * RemoveAllPreprocessorDirectives
-
+* AddToMethodInvocation

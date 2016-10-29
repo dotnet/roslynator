@@ -13,50 +13,37 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public static void RegisterRefactoring(
             RefactoringContext context,
             ExpressionSyntax expression,
-            ITypeSymbol newType,
-            SemanticModel semanticModel)
+            ITypeSymbol destinationType)
         {
-            if (!newType.IsErrorType()
-                && !newType.IsVoid())
-            {
-                Conversion conversion = semanticModel.ClassifyConversion(
-                    expression,
-                    newType,
-                    isExplicitInSource: false);
-
-                if (conversion.IsExplicit)
+            context.RegisterRefactoring(
+                $"Cast to '{destinationType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                cancellationToken =>
                 {
-                    context.RegisterRefactoring(
-                        $"Cast to '{newType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                expression,
-                                newType,
-                                cancellationToken);
-                        });
-                }
-            }
+                    return RefactorAsync(
+                        context.Document,
+                        expression,
+                        destinationType,
+                        cancellationToken);
+                });
         }
 
         public static async Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
-            ITypeSymbol typeSymbol,
+            ITypeSymbol destinationType,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = CSharpFactory.Type(typeSymbol)
+            TypeSyntax type = CSharpFactory.Type(destinationType)
                 .WithSimplifierAnnotation();
 
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, expression)
                 .WithTriviaFrom(expression);
 
-            root = root.ReplaceNode(expression, castExpression);
+            SyntaxNode newRoot = root.ReplaceNode(expression, castExpression);
 
-            return document.WithSyntaxRoot(root);
+            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

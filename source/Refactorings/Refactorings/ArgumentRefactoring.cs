@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -10,7 +12,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
                 && argument.Expression?.IsMissing == false
                 && context.SupportsSemanticModel)
             {
@@ -20,17 +22,11 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
-                    foreach (ITypeSymbol parameterTypeSymbol in argument.DetermineParameterTypes(semanticModel, context.CancellationToken))
-                    {
-                        if (!typeSymbol.Equals(parameterTypeSymbol))
-                        {
-                            AddCastExpressionRefactoring.RegisterRefactoring(
-                                context,
-                                argument.Expression,
-                                parameterTypeSymbol,
-                                semanticModel);
-                        }
-                    }
+                    IEnumerable<ITypeSymbol> newTypes = argument
+                        .DetermineParameterTypes(semanticModel, context.CancellationToken)
+                        .Where(f => !typeSymbol.Equals(f));
+
+                    ModifyExpressionRefactoring.ComputeRefactoring(context, argument.Expression, newTypes, semanticModel);
                 }
             }
         }

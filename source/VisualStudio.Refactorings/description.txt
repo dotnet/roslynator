@@ -72,6 +72,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-to-method-invocation">Add 'To...' method invocation</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-using-directive">Add using directive</a>
         </li>
         <li>

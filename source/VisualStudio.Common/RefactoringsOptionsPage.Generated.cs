@@ -24,6 +24,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             AddIdentifierToVariableDeclaration = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
+            AddToMethodInvocation = true;
             AddUsingDirective = true;
             AddUsingStaticDirective = true;
             ChangeExplicitTypeToVar = true;
@@ -172,6 +173,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
+            SetIsEnabled(RefactoringIdentifiers.AddToMethodInvocation, AddToMethodInvocation);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
             SetIsEnabled(RefactoringIdentifiers.AddUsingStaticDirective, AddUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
@@ -421,6 +423,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: parameter\r\nScope: missing identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddParameterNameToParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add 'To...' method invocation")]
+        [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddToMethodInvocation
         {
             get;
             set;

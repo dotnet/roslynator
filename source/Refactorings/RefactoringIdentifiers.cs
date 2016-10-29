@@ -18,6 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
+        public const string AddToMethodInvocation = "AddToMethodInvocation";
         public const string AddUsingDirective = "AddUsingDirective";
         public const string AddUsingStaticDirective = "AddUsingStaticDirective";
         public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";

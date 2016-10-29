@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, CaseSwitchLabelSyntax caseLabel)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
                 && caseLabel.Value?.Span.Contains(context.Span) == true)
             {
                 var switchStatement = caseLabel.Parent?.Parent as SwitchStatementSyntax;
@@ -25,7 +25,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         .Type;
 
                     if (typeSymbol?.IsErrorType() == false)
-                        AddCastExpressionRefactoring.RegisterRefactoring(context, caseLabel.Value, typeSymbol, semanticModel);
+                        ModifyExpressionRefactoring.ComputeRefactoring(context, caseLabel.Value, typeSymbol, semanticModel);
                 }
             }
         }

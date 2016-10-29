@@ -16,7 +16,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (context.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.AddBooleanComparison,
                         RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                        RefactoringIdentifiers.AddCastExpression))
+                        RefactoringIdentifiers.AddCastExpression,
+                        RefactoringIdentifiers.AddToMethodInvocation))
                     {
                         await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }

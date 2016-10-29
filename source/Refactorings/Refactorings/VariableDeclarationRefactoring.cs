@@ -20,7 +20,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                 await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation))
                     await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
             }
 
@@ -131,7 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (expressionType?.IsErrorType() == false
                             && !declarationType.Equals(expressionType))
                         {
-                            AddCastExpressionRefactoring.RegisterRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
+                            ModifyExpressionRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
                         }
                     }
                 }

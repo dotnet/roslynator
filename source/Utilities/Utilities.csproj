@@ -105,6 +105,7 @@
     <Compile Include="Extensions\IMethodSymbolExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\UsingStatementSyntaxExtensions.cs" />
+    <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
     <Compile Include="ModifierUtility.cs" />
     <Compile Include="CSharp\Modifiers.cs" />

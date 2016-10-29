@@ -26,7 +26,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     });
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
                 && assignmentExpression.Left?.IsMissing == false
                 && assignmentExpression.Right?.IsMissing == false
@@ -44,7 +44,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (rightSymbol?.IsErrorType() == false
                         && !leftSymbol.Equals(rightSymbol))
                     {
-                        AddCastExpressionRefactoring.RegisterRefactoring(context, assignmentExpression.Right, leftSymbol, semanticModel);
+                        ModifyExpressionRefactoring.ComputeRefactoring(context, assignmentExpression.Right, leftSymbol, semanticModel);
                     }
                 }
             }

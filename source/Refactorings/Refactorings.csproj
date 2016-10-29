@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
+    <Compile Include="Refactorings\AddToMethodInvocationRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\IdentifierNameSyntaxRewriter.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Refactorings\NodeInList\NodeSyntaxRewriter.cs" />
     <Compile Include="Refactorings\NodeInList\ParameterSyntaxRewriter.cs" />
     <Compile Include="Refactorings\NodeInList\ArgumentSyntaxRewriter.cs" />
+    <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

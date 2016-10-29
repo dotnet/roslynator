@@ -13,7 +13,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression)
+                    RefactoringIdentifiers.AddCastExpression,
+                    RefactoringIdentifiers.AddToMethodInvocation)
                 && context.SupportsSemanticModel)
             {
                 await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression).ConfigureAwait(false);

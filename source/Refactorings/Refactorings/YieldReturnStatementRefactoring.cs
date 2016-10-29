@@ -15,6 +15,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
+                    RefactoringIdentifiers.AddToMethodInvocation,
                     RefactoringIdentifiers.CreateConditionFromBooleanExpression)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
@@ -22,7 +23,8 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             {
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression))
+                    RefactoringIdentifiers.AddCastExpression,
+                    RefactoringIdentifiers.AddToMethodInvocation))
                 {
                     MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMember(yieldStatement.Expression);
 
@@ -71,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                                         });
                                 }
 
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
                                     && yieldStatement.Expression.Span.Contains(context.Span)
                                     && memberTypeSymbol?.IsNamedType() == true)
                                 {
@@ -83,7 +85,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
                                         if (argumentSymbol != typeSymbol)
                                         {
-                                            AddCastExpressionRefactoring.RegisterRefactoring(
+                                            ModifyExpressionRefactoring.ComputeRefactoring(
                                                context,
                                                yieldStatement.Expression,
                                                argumentSymbol,
