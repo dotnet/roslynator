@@ -54,13 +54,14 @@ namespace CodeGenerator
                     Block(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
-                            InvocationExpression("SetIsEnabled")
-                                .WithArgumentList(
+                            InvocationExpression(
+                                "SetIsEnabled",
+                                ArgumentList(
                                     Argument(
                                         SimpleMemberAccessExpression(
                                             IdentifierName("RefactoringIdentifiers"),
                                             IdentifierName(refactoring.Identifier))),
-                                    Argument(refactoring.Identifier)));
+                                    Argument(refactoring.Identifier))));
                     })));
 
             foreach (RefactoringInfo info in refactorings)

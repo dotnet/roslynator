@@ -114,7 +114,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             ExpressionStatement(
                                 InvocationExpression(
                                     "OnPropertyChanged",
-                                    Argument(argumentExpression)))))));
+                                    ArgumentList(Argument(argumentExpression))))))));
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)
