@@ -122,7 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         var ifStatement = (IfStatementSyntax)parent;
 
-                        if (IfElseChainAnalysis.IsTopmostIf(ifStatement)
+                        if (IfElseAnalysis.IsTopmostIf(ifStatement)
                             && block.OpenBraceToken.Span.Contains(context.Span))
                         {
                             return ifStatement;
@@ -141,7 +141,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         var elseClause = (ElseClauseSyntax)parent;
 
                         if (block.CloseBraceToken.Span.Contains(context.Span))
-                            return IfElseChainAnalysis.GetTopmostIf(elseClause);
+                            return IfElseAnalysis.GetTopmostIf(elseClause);
 
                         break;
                     }

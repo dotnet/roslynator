@@ -14,7 +14,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChainAnalysis.IsIsolatedIf(ifStatement)
+            if (IfElseAnalysis.IsIsolatedIf(ifStatement)
                 && ConditionAllowsMerging(ifStatement.Condition))
             {
                 IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);

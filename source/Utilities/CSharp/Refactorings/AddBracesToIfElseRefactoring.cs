@@ -51,7 +51,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (node == null)
                     throw new ArgumentNullException(nameof(node));
 
-                if (_previousIf == null || _previousIf.Equals(IfElseChainAnalysis.GetPreviousIf(node)))
+                if (_previousIf == null || _previousIf.Equals(IfElseAnalysis.GetPreviousIf(node)))
                 {
                     if (node.Statement != null
                         && !node.Statement.IsKind(SyntaxKind.Block))

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
 {
-    public static class IfElseChainAnalysis
+    public static class IfElseAnalysis
     {
         public static IEnumerable<SyntaxNode> GetChain(IfStatementSyntax ifStatement)
         {

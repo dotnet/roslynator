@@ -27,10 +27,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 {
                     var ifStatement = (IfStatementSyntax)first;
 
-                    if (IfElseChainAnalysis.IsTopmostIf(ifStatement)
+                    if (IfElseAnalysis.IsTopmostIf(ifStatement)
                         && CanBeReplacedWithSwitch(ifStatement))
                     {
-                        string title = (IfElseChainAnalysis.IsIsolatedIf(ifStatement))
+                        string title = (IfElseAnalysis.IsIsolatedIf(ifStatement))
                             ? "Replace if with switch"
                             : "Replace if-else with switch";
 
@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static bool CanBeReplacedWithSwitch(IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in IfElseChainAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
             {
                 if (node.IsKind(SyntaxKind.IfStatement))
                 {
@@ -142,7 +142,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in IfElseChainAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
             {
                 if (node.IsKind(SyntaxKind.IfStatement))
                 {

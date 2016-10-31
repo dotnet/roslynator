@@ -238,7 +238,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
                     {
                         var elseClause = (ElseClauseSyntax)node;
 
-                        if (IfElseChainAnalysis.IsEndOfChain(elseClause))
+                        if (IfElseAnalysis.IsEndOfChain(elseClause))
                             return elseClause.Statement;
 
                         break;

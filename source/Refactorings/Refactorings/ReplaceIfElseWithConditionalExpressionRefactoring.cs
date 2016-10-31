@@ -17,7 +17,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChainAnalysis.IsTopmostIf(ifStatement))
+            if (IfElseAnalysis.IsTopmostIf(ifStatement))
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 

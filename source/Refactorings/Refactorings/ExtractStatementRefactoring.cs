@@ -42,7 +42,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (node.IsKind(SyntaxKind.ElseClause))
             {
-                return IfElseChainAnalysis.GetTopmostIf((ElseClauseSyntax)node)?.Parent;
+                return IfElseAnalysis.GetTopmostIf((ElseClauseSyntax)node)?.Parent;
             }
             else
             {
@@ -67,9 +67,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 case SyntaxKind.UncheckedStatement:
                     return true;
                 case SyntaxKind.IfStatement:
-                    return IfElseChainAnalysis.IsTopmostIf((IfStatementSyntax)node);
+                    return IfElseAnalysis.IsTopmostIf((IfStatementSyntax)node);
                 case SyntaxKind.ElseClause:
-                    return IfElseChainAnalysis.IsEndOfChain((ElseClauseSyntax)node);
+                    return IfElseAnalysis.IsEndOfChain((ElseClauseSyntax)node);
             }
 
             return false;
@@ -107,7 +107,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
-                IfStatementSyntax ifStatement = IfElseChainAnalysis.GetTopmostIf((ElseClauseSyntax)statement.Parent);
+                IfStatementSyntax ifStatement = IfElseAnalysis.GetTopmostIf((ElseClauseSyntax)statement.Parent);
                 var block = (BlockSyntax)ifStatement.Parent;
                 int index = block.Statements.IndexOf(ifStatement);
 

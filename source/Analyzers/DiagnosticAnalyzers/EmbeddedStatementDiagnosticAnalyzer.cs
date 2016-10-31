@@ -49,7 +49,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
             AnalyzeEmbeddedStatement(context);
 
             if (context.Node.IsKind(SyntaxKind.IfStatement)
-                && !IfElseChainAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
+                && !IfElseAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
             {
                 return;
             }

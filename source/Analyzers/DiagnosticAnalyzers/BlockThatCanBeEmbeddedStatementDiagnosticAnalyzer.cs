@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
                 return;
 
             if (!context.Node.IsKind(SyntaxKind.IfStatement)
-                || IfElseChainAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
+                || IfElseAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
             {
                 BlockSyntax block = EmbeddedStatementAnalysis.GetBlockThatCanBeEmbeddedStatement(context.Node);
 

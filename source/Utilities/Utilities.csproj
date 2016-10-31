@@ -53,7 +53,7 @@
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\DetermineParameterHelper.cs" />
     <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
-    <Compile Include="CSharp\Analysis\IfElseChainAnalysis.cs" />
+    <Compile Include="CSharp\Analysis\IfElseAnalysis.cs" />
     <Compile Include="CSharp\Extensions\SyntaxExtensions.cs" />
     <Compile Include="CSharp\PropertyKind.cs" />
     <Compile Include="CSharp\Refactorings\AddConfigureAwaitRefactoring.cs" />

@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
 
             if (ifStatement.Else != null)
             {
-                var result = new IfElseChainAnalysisResult(ifStatement);
+                var result = new IfElseAnalysisResult(ifStatement);
 
                 if (result.AddBraces)
                 {

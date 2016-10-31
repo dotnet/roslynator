@@ -13,7 +13,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.SwapStatementsInIfElse,
                     RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression)
-                && IfElseChainAnalysis.IsTopmostIf(ifStatement)
+                && IfElseAnalysis.IsTopmostIf(ifStatement)
                 && context.Span.IsBetweenSpans(ifStatement))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression))

@@ -8,9 +8,9 @@ using Pihrtsoft.CodeAnalysis.CSharp.Analysis;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp
 {
-    internal class IfElseChainAnalysisResult
+    internal class IfElseAnalysisResult
     {
-        internal IfElseChainAnalysisResult(IfStatementSyntax ifStatement)
+        internal IfElseAnalysisResult(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
@@ -21,7 +21,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
 
             int cnt = 0;
 
-            foreach (SyntaxNode node in IfElseChainAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
             {
                 cnt++;
 
