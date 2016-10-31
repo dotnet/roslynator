@@ -114,6 +114,7 @@
 * RCS1089 - Use postfix unary operator instead of assignment
 * RCS1090 - Add 'ConfigureAwait(false)' to awaitable expression
 * RCS1091 - Remove empty region
+* RCS1092 - Add empty line after last statement in do statement
 
 ### List of Refactorings
 
@@ -233,6 +234,7 @@
 * [Replace foreach statement with for statement](source/Refactorings/README.md#replace-foreach-statement-with-for-statement)
 * [Replace 'HasFlag' with bitwise operation](source/Refactorings/README.md#replace-hasflag-with-bitwise-operation)
 * [Replace if-else with conditional expression](source/Refactorings/README.md#replace-if-else-with-conditional-expression)
+* [Replace if-else with switch](source/Refactorings/README.md#replace-if-else-with-switch)
 * [Replace increment operator with decrement operator](source/Refactorings/README.md#replace-increment-operator-with-decrement-operator)
 * [Replace interpolated string with string literal](source/Refactorings/README.md#replace-interpolated-string-with-string-literal)
 * [Replace method invocation with '[]'](source/Refactorings/README.md#replace-method-invocation-with-)

@@ -770,6 +770,12 @@
 
 ![Replace if-else with conditional expression](../../images/refactorings/ReplaceIfElseWithConditionalExpression.png)
 
+#### Replace if-else with switch
+
+* **Syntax**: if statement
+
+![Replace if-else with switch](../../images/refactorings/ReplaceIfElseWithSwitch.png)
+
 #### Replace increment operator with decrement operator
 
 * **Syntax**: prefix/postfix unary expression
