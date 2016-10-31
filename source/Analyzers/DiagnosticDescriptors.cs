@@ -871,5 +871,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
          );
+
+        public static readonly DiagnosticDescriptor AddEmptyLineAfterLastStatementInDoStatement = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
+             title: "Add empty line after last statement in do statement.",
+             messageFormat: "Consider adding empty line after last statement in do statement.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Info,
+             isEnabledByDefault: false
+         );
     }
 }

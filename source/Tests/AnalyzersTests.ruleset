@@ -252,5 +252,6 @@
     <Rule Id="RCS1088" Action="Warning" />
     <Rule Id="RCS1089" Action="Warning" />
     <Rule Id="RCS1090" Action="Warning" />
+    <Rule Id="RCS1092" Action="Warning" />
   </Rules>
 </RuleSet>
