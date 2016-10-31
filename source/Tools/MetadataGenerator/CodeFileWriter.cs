@@ -25,7 +25,7 @@ namespace MetadataGenerator
             }
             else
             {
-                Console.WriteLine("file unchanged");
+                Console.WriteLine($"file unchanged: '{path}'");
             }
         }
     }
