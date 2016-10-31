@@ -803,7 +803,7 @@
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceIfElseWithSwitch" Title="Replace if-else with switch" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceIfElseWithSwitch" Title="Replace if-else with switch" ExtensionVersion="1.0.8">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>

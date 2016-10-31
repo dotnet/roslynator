@@ -801,7 +801,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement" ExtensionVersion="1.0.8" NuGetVersion="0.0.0">
     <Id>RCS1092</Id>
     <Title>Add empty line after last statement in do statement.</Title>
     <Category>General</Category>
