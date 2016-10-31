@@ -1,3 +1,17 @@
+### 1.0.8 (2016-10-31)
+
+#### Analyzers
+
+##### New Analyzers
+
+* AddEmptyLineAfterLastStatementInDoStatement
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceIfElseWithSwitch
+
 ### 1.0.7 (2016-10-29)
 
 #### Refactorings

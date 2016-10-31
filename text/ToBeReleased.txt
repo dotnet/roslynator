@@ -1,5 +1,1 @@
-﻿#### Analyzers
-
-##### New Analyzers
-
-* AddEmptyLineAfterLastStatementInDoStatement
+﻿
