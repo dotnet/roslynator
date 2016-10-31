@@ -38,6 +38,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynator", "source\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "source\Tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
+	ProjectSection(SolutionItems) = preProject
+		text\ReadMe.txt = text\ReadMe.txt
+		text\ReleaseCheckList.txt = text\ReleaseCheckList.txt
+		text\RoslynatorDescription.txt = text\RoslynatorDescription.txt
+		text\RoslynatorRefactoringsDescription.txt = text\RoslynatorRefactoringsDescription.txt
+		text\ToBeReleased.txt = text\ToBeReleased.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
