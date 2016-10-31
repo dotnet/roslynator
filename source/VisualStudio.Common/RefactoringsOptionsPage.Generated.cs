@@ -1471,7 +1471,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace if-else with switch")]
+        [DisplayName("Replace if-else with switch statement")]
         [Description("Syntax: if statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIfElseWithSwitch
