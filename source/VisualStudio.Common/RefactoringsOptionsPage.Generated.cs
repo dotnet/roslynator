@@ -128,6 +128,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceForWithForEach = true;
             ReplaceHasFlagWithBitwiseOperation = true;
             ReplaceIfElseWithConditionalExpression = true;
+            ReplaceIfElseWithSwitch = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
@@ -277,6 +278,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression, ReplaceIfElseWithConditionalExpression);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
@@ -1463,6 +1465,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: conditional expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIfElseWithConditionalExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace if-else with switch")]
+        [Description("Syntax: if statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceIfElseWithSwitch
         {
             get;
             set;

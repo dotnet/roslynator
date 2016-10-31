@@ -384,6 +384,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-conditional-expression">Replace if-else with conditional expression</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-switch">Replace if-else with switch</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
         </li>
         <li>

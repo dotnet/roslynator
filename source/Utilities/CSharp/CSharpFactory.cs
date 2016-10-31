@@ -713,5 +713,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         {
             return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
+
+        public static SwitchSectionSyntax DefaultSwitchSection(StatementSyntax statement)
+        {
+            return DefaultSwitchSection(SingletonList(statement));
+        }
+
+        public static SwitchSectionSyntax DefaultSwitchSection(SyntaxList<StatementSyntax> statements)
+        {
+            return SwitchSection(
+                SingletonList<SwitchLabelSyntax>(DefaultSwitchLabel()),
+                statements);
+        }
     }
 }

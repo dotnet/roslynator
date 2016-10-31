@@ -803,6 +803,11 @@
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceIfElseWithSwitch" Title="Replace if-else with switch" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceIncrementOperatorWithDecrementOperator" Title="Replace increment operator with decrement operator" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>

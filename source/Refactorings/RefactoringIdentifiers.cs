@@ -122,6 +122,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ReplaceForWithForEach = "ReplaceForWithForEach";
         public const string ReplaceHasFlagWithBitwiseOperation = "ReplaceHasFlagWithBitwiseOperation";
         public const string ReplaceIfElseWithConditionalExpression = "ReplaceIfElseWithConditionalExpression";
+        public const string ReplaceIfElseWithSwitch = "ReplaceIfElseWithSwitch";
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
         public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";
