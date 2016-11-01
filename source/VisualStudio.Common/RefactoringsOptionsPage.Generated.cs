@@ -117,6 +117,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RenamePropertyAccordingToTypeName = true;
             ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
+            ReplaceAsWithCast = true;
             ReplaceConditionalExpressionWithExpression = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
@@ -267,6 +268,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, RenamePropertyAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceAsWithCast, ReplaceAsWithCast);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, ReplaceConditionalExpressionWithExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
@@ -1355,6 +1357,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceAnyWithAllOrAllWithAny
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace as expression with cast expression")]
+        [Description("Syntax: as expression\r\nScope: operator")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceAsWithCast
         {
             get;
             set;

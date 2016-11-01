@@ -99,6 +99,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                             cancellationToken);
                     });
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast))
+                ReplaceAsWithCastRefactoring.ComputeRefactoring(context, binaryExpression);
         }
     }
 }
