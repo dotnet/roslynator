@@ -98,5 +98,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public const string AddConfigureAwait = Prefix + "1090";
         public const string RemoveEmptyRegion = Prefix + "1091";
         public const string AddEmptyLineAfterLastStatementInDoStatement = Prefix + "1092";
+        public const string RemoveFileWithNoCode = Prefix + "1093";
     }
 }
