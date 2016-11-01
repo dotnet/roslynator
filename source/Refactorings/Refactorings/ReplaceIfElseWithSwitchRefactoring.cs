@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
             {
                 return switchExpression == null
-                    || binaryExpression.Left?.IsEquivalentTo(switchExpression) == true;
+                    || binaryExpression.Left?.IsEquivalentTo(switchExpression, topLevel: false) == true;
             }
             else if (binaryExpression.IsKind(SyntaxKind.LogicalOrExpression))
             {
@@ -87,7 +87,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     if (switchExpression == null)
                         switchExpression = equalsExpression.Left;
 
-                    if (equalsExpression.Left?.IsEquivalentTo(switchExpression) == true)
+                    if (equalsExpression.Left?.IsEquivalentTo(switchExpression, topLevel: false) == true)
                     {
                         binaryExpression = binaryExpression.Left as BinaryExpressionSyntax;
 
