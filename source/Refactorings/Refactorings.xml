@@ -701,6 +701,12 @@
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveUsingAliasDirective" Title="Remove using alias directive" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>using alias directive</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
   <Refactoring Id="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>field identifier inside property declaration</Syntax>

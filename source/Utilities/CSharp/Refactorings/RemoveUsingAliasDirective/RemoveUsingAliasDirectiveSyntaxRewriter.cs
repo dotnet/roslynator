@@ -10,14 +10,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.RemoveUsingAliasDirective
 {
-    public class UsingAliasDirectiveSyntaxRewriter : CSharpSyntaxRewriter
+    public class RemoveUsingAliasDirectiveSyntaxRewriter : CSharpSyntaxRewriter
     {
         private readonly UsingDirectiveSyntax _usingDirective;
         private readonly IdentifierNameSyntax[] _identifierNames;
 
-        public UsingAliasDirectiveSyntaxRewriter(UsingDirectiveSyntax usingDirective, IdentifierNameSyntax[] identifierNames)
+        public RemoveUsingAliasDirectiveSyntaxRewriter(UsingDirectiveSyntax usingDirective, IdentifierNameSyntax[] identifierNames)
         {
             if (usingDirective == null)
                 throw new ArgumentNullException(nameof(usingDirective));
@@ -29,11 +29,17 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
             _identifierNames = identifierNames;
         }
 
-        public static async Task<Document> RewriteAsync(
+        public static async Task<Document> VisitAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (usingDirective == null)
+                throw new ArgumentNullException(nameof(usingDirective));
+
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
@@ -59,7 +65,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
                 }
             }
 
-            var rewriter = new UsingAliasDirectiveSyntaxRewriter(usingDirective, identifierNames.ToArray());
+            var rewriter = new RemoveUsingAliasDirectiveSyntaxRewriter(usingDirective, identifierNames.ToArray());
 
             SyntaxNode newRoot = rewriter.Visit(root);
 
@@ -90,7 +96,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             if (Array.IndexOf(_identifierNames, node) != -1)
-                return _usingDirective.Name.WithTriviaFrom(node);
+                return _usingDirective.Name
+                    .WithTriviaFrom(node)
+                    .WithSimplifierAnnotation();
 
             return base.VisitIdentifierName(node);
         }

@@ -330,6 +330,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-statements-from-switch-sections">Remove statements from switch sections</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-using-alias-directive">Remove using alias directive</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
         </li>
         <li>

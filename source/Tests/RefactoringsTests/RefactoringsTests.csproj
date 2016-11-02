@@ -53,6 +53,7 @@
     <Compile Include="RemoveAllStatementsRefactoring.cs" />
     <Compile Include="IntroduceAndInitializeRefactoring.cs" />
     <Compile Include="RemoveDirectiveAndRelatedDirectivesRefactoring.cs" />
+    <Compile Include="RemoveUsingAliasDirectiveRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />

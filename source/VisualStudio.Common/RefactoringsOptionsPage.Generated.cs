@@ -110,6 +110,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             RemovePropertyInitializer = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
+            RemoveUsingAliasDirective = true;
             RenameBackingFieldAccordingToPropertyName = true;
             RenameIdentifierAccordingToTypeName = true;
             RenameMethodAccordingToTypeName = true;
@@ -260,6 +261,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
+            SetIsEnabled(RefactoringIdentifiers.RemoveUsingAliasDirective, RemoveUsingAliasDirective);
             SetIsEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName, RenameBackingFieldAccordingToPropertyName);
             SetIsEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName, RenameIdentifierAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName, RenameMethodAccordingToTypeName);
@@ -1285,6 +1287,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: selected switch sections")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveStatementsFromSwitchSections
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove using alias directive")]
+        [Description("Syntax: using alias directive\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveUsingAliasDirective
         {
             get;
             set;

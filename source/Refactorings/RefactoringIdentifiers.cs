@@ -104,6 +104,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";
+        public const string RemoveUsingAliasDirective = "RemoveUsingAliasDirective";
         public const string RenameBackingFieldAccordingToPropertyName = "RenameBackingFieldAccordingToPropertyName";
         public const string RenameIdentifierAccordingToTypeName = "RenameIdentifierAccordingToTypeName";
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";

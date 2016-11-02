@@ -243,6 +243,7 @@
     <Compile Include="Refactorings\NodeInList\ParameterSyntaxRewriter.cs" />
     <Compile Include="Refactorings\NodeInList\ArgumentSyntaxRewriter.cs" />
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

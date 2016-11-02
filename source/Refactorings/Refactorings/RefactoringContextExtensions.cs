@@ -92,6 +92,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             bool fInterpolatedStringText = false;
             bool fElseClause = false;
             bool fCaseSwitchLabel = false;
+            bool fUsingDirective = false;
 
             bool fExpression = false;
             bool fAnonymousMethod = false;
@@ -245,6 +246,14 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                     {
                         await CaseSwitchLabelRefactoring.ComputeRefactoringsAsync(context, (CaseSwitchLabelSyntax)node).ConfigureAwait(false);
                         fCaseSwitchLabel = true;
+                        continue;
+                    }
+
+                    if (!fUsingDirective
+                        && kind == SyntaxKind.UsingDirective)
+                    {
+                        UsingDirectiveRefactoring.ComputeRefactoring(context, (UsingDirectiveSyntax)node);
+                        fUsingDirective = true;
                         continue;
                     }
 
