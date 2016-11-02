@@ -84,7 +84,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (singleline)
             {
                 accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
-                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine));
+                    .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
             }
 
             return accessorList;

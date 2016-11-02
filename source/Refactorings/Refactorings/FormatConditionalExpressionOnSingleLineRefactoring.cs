@@ -50,7 +50,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             return Token(
                 TriviaList(),
                 kind,
-                TriviaList(CSharpFactory.NewLine));
+                TriviaList(CSharpFactory.NewLineTrivia()));
         }
     }
 }

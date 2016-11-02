@@ -146,7 +146,7 @@ namespace Pihrtsoft.CodeAnalysis
 
         public static SyntaxToken WithTrailingNewLine(this SyntaxToken token)
         {
-            return token.WithTrailingTrivia(CSharpFactory.NewLine);
+            return token.WithTrailingTrivia(CSharpFactory.NewLineTrivia());
         }
 
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)

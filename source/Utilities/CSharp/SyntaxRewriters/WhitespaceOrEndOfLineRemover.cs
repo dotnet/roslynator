@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
             if (trivia.IsWhitespaceOrEndOfLineTrivia()
                 && (_span == null || _span.Value.Contains(trivia.Span)))
             {
-                return CSharpFactory.EmptyWhitespaceTrivia;
+                return CSharpFactory.EmptyWhitespaceTrivia();
             }
 
             return base.VisitTrivia(trivia);

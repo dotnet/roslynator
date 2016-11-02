@@ -81,7 +81,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
             if (accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
                 SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
-                    .Add(CSharpFactory.NewLine);
+                    .Add(CSharpFactory.NewLineTrivia());
 
                 return SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(triviaList));

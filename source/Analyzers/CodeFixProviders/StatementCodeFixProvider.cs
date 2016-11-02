@@ -59,7 +59,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
 
             int index = trailingTrivia.IndexOf(SyntaxKind.EndOfLineTrivia);
 
-            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLine);
+            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLineTrivia());
 
             StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
 

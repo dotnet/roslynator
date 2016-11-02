@@ -17,11 +17,28 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-        public static SyntaxTrivia IndentTrivia { get; } = Whitespace("    ");
+        public static SyntaxTrivia IndentTrivia()
+        {
+            return Whitespace("    ");
+        }
 
-        public static SyntaxTrivia EmptyWhitespaceTrivia { get; } = SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
+        public static SyntaxTrivia EmptyWhitespaceTrivia()
+        {
+            return SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
+        }
 
-        public static SyntaxTrivia NewLine { get; } = CreateNewLine();
+        public static SyntaxTrivia NewLineTrivia()
+        {
+            switch (Environment.NewLine)
+            {
+                case "\r":
+                    return CarriageReturn;
+                case "\n":
+                    return LineFeed;
+                default:
+                    return CarriageReturnLineFeed;
+            }
+        }
 
         public static TypeSyntax Type(ITypeSymbol typeSymbol)
         {
@@ -639,19 +656,6 @@ namespace Pihrtsoft.CodeAnalysis.CSharp
         public static YieldStatementSyntax YieldBreakStatement()
         {
             return YieldStatement(SyntaxKind.YieldBreakStatement);
-        }
-
-        private static SyntaxTrivia CreateNewLine()
-        {
-            switch (Environment.NewLine)
-            {
-                case "\r":
-                    return CarriageReturn;
-                case "\n":
-                    return LineFeed;
-                default:
-                    return CarriageReturnLineFeed;
-            }
         }
 
         public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, ArgumentListSyntax argumentList)

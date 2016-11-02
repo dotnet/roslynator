@@ -46,7 +46,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.Refactoring
                 .WithLeadingTrivia(
                     compilationUnit
                         .GetLeadingTrivia()
-                        .Insert(0, CSharpFactory.NewLine)
+                        .Insert(0, CSharpFactory.NewLineTrivia())
                         .Insert(0, HeaderTrivia));
 
             root = root.ReplaceNode(compilationUnit, newNode);

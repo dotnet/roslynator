@@ -48,7 +48,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
                         }
 
                         return parent.WithMembers(parent.Members.Insert(index + 1, member));
@@ -61,7 +61,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
                         }
 
                         return parent.WithMembers(parent.Members.Insert(index + 1, member));
@@ -74,7 +74,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
                         }
 
                         return parent.WithMembers(parent.Members.Insert(index + 1, member));
@@ -87,7 +87,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
                         }
 
                         return parent.WithMembers(parent.Members.Insert(index + 1, member));

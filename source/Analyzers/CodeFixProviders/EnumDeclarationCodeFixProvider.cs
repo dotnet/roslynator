@@ -73,7 +73,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
                     SyntaxTriviaList triviaList = token.TrailingTrivia;
 
                     if (!triviaList.Contains(SyntaxKind.EndOfLineTrivia))
-                        return token.WithTrailingTrivia(triviaList.TrimEnd().Add(CSharpFactory.NewLine));
+                        return token.WithTrailingTrivia(triviaList.TrimEnd().Add(CSharpFactory.NewLineTrivia()));
                 }
 
                 return base.VisitToken(token);

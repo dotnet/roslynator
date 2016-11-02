@@ -61,9 +61,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLine)
+            SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLineTrivia())
                 .AddRange(SyntaxUtility.GetIndentTrivia(condition))
-                .Add(CSharpFactory.IndentTrivia);
+                .Add(CSharpFactory.IndentTrivia());
 
             var rewriter = new BinaryExpressioneSyntaxRewriter(triviaList);
 

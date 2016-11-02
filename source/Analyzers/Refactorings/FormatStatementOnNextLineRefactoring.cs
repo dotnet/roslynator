@@ -18,7 +18,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             StatementSyntax newStatement = statement
-                .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine))
+                .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()))
                 .WithFormatterAnnotation();
 
             if (statement.Parent.IsKind(SyntaxKind.Block))
@@ -28,7 +28,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 if (block.IsSingleLine(includeExteriorTrivia: false))
                 {
                     SyntaxTriviaList triviaList = block.CloseBraceToken.LeadingTrivia
-                        .Add(CSharpFactory.NewLine);
+                        .Add(CSharpFactory.NewLineTrivia());
 
                     BlockSyntax newBlock = block
                         .WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(triviaList))

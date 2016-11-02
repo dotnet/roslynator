@@ -207,7 +207,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (index == 0
                 && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
             {
-                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine));
+                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
             }
 
             BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));

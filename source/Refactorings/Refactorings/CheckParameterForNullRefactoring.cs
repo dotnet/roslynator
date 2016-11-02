@@ -99,7 +99,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             List<IfStatementSyntax> ifStatements = CreateNullChecks(parameters);
 
             if (index > 0)
-                ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLine);
+                ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLineTrivia());
 
             BlockSyntax newBody = body
                 .WithStatements(body.Statements.InsertRange(index, ifStatements))
@@ -126,13 +126,13 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 }
                 else
                 {
-                    ifStatement = ifStatement.WithLeadingTrivia(NewLine);
+                    ifStatement = ifStatement.WithLeadingTrivia(NewLineTrivia());
                 }
 
                 ifStatements.Add(ifStatement);
             }
 
-            ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLine, NewLine);
+            ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLineTrivia(), NewLineTrivia());
 
             return ifStatements;
         }

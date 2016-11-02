@@ -130,7 +130,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
                 list = new List<SyntaxTrivia>();
-                list.Add(CSharpFactory.NewLine);
+                list.Add(CSharpFactory.NewLineTrivia());
             }
             else
             {

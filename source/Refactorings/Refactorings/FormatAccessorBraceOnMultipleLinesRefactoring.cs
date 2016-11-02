@@ -22,7 +22,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithBody(
                     accessor.Body.WithCloseBraceToken(
                         closeBrace.WithLeadingTrivia(
-                            closeBrace.LeadingTrivia.Add(CSharpFactory.NewLine))))
+                            closeBrace.LeadingTrivia.Add(CSharpFactory.NewLineTrivia()))))
                 .WithFormatterAnnotation();
 
             root = root.ReplaceNode(accessor, newAccessor);

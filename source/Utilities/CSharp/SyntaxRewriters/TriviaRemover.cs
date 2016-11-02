@@ -11,7 +11,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
-            return CSharpFactory.EmptyWhitespaceTrivia;
+            return CSharpFactory.EmptyWhitespaceTrivia();
         }
     }
 }

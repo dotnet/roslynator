@@ -61,9 +61,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
             MemberAccessExpressionSyntax expression = expressions[0];
 
-            SyntaxTriviaList triviaList = SyntaxUtility.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia);
+            SyntaxTriviaList triviaList = SyntaxUtility.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia());
 
-            triviaList = triviaList.Insert(0, CSharpFactory.NewLine);
+            triviaList = triviaList.Insert(0, CSharpFactory.NewLineTrivia());
 
             var rewriter = new ExpressionChainSyntaxRewriter(expressions, triviaList);
 
