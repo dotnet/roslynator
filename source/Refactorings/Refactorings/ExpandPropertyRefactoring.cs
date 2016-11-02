@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System.Collections.Generic;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
@@ -40,12 +41,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 
         private static PropertyDeclarationSyntax ExpandProperty(PropertyDeclarationSyntax propertyDeclaration)
         {
-            AccessorListSyntax accessorList = AccessorList(
-                List(propertyDeclaration
-                    .AccessorList
-                    .Accessors.Select(accessor => accessor
-                        .WithBody(Block())
-                        .WithoutSemicolonToken())));
+            AccessorListSyntax accessorList = AccessorList(List(CreateAccessors(propertyDeclaration)));
 
             accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
@@ -54,6 +50,25 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
                 .WithoutInitializer()
                 .WithoutSemicolonToken()
                 .WithAccessorList(accessorList);
+        }
+
+        private static IEnumerable<AccessorDeclarationSyntax> CreateAccessors(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
+            {
+                if (accessor.IsGetter())
+                {
+                    ExpressionSyntax value = propertyDeclaration.Initializer?.Value;
+
+                    if (value != null)
+                    {
+                        yield return accessor.WithBody(Block(ReturnStatement(value))).WithoutSemicolonToken();
+                        continue;
+                    }
+                }
+
+                yield return accessor.WithBody(Block()).WithoutSemicolonToken();
+            }
         }
     }
 }
