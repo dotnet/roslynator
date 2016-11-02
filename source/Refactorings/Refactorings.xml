@@ -701,7 +701,7 @@
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveUsingAliasDirective" Title="Remove using alias directive" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveUsingAliasDirective" Title="Remove using alias directive" ExtensionVersion="1.0.9">
     <Syntaxes>
       <Syntax>using alias directive</Syntax>
     </Syntaxes>
@@ -819,7 +819,7 @@
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceInterpolatedStringWithInterpolationExpression" Title="Replace interpolated string with interpolation expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceInterpolatedStringWithInterpolationExpression" Title="Replace interpolated string with interpolation expression" ExtensionVersion="1.0.9">
     <Syntaxes>
       <Syntax>interpolated string with single interpolation and no text</Syntax>
     </Syntaxes>
