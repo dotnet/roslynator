@@ -131,6 +131,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             ReplaceIfElseWithConditionalExpression = true;
             ReplaceIfElseWithSwitch = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
+            ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
             ReplaceMethodWithProperty = false;
@@ -282,6 +283,7 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression, ReplaceIfElseWithConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty, ReplaceMethodWithProperty);
@@ -1497,6 +1499,16 @@ namespace Pihrtsoft.CodeAnalysis.VisualStudio
         [Description("Syntax: prefix/postfix unary expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIncrementOperatorWithDecrementOperator
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace interpolated string with interpolation expression")]
+        [Description("Syntax: interpolated string with single interpolation and no text\r\nScope: interpolation")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceInterpolatedStringWithInterpolationExpression
         {
             get;
             set;

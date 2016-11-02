@@ -819,6 +819,12 @@
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceInterpolatedStringWithInterpolationExpression" Title="Replace interpolated string with interpolation expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>interpolated string with single interpolation and no text</Syntax>
+    </Syntaxes>
+    <Scope>interpolation</Scope>
+  </Refactoring>
   <Refactoring Id="ReplaceInterpolatedStringWithStringLiteral" Title="Replace interpolated string with string literal" ExtensionVersion="0.9.2">
     <Syntaxes>
       <Syntax>Interpolated string without any interpolation</Syntax>

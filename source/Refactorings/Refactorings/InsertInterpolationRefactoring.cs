@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -11,6 +12,39 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
 {
     internal static class InsertInterpolationRefactoring
     {
+        public static bool CanRefactor(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            int i = 0;
+            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+            foreach (InterpolatedStringContentSyntax content in contents)
+            {
+                SyntaxKind kind = content.Kind();
+                TextSpan span = content.Span;
+
+                if (kind == SyntaxKind.InterpolatedStringText)
+                {
+                    if (span.End == context.Span.End)
+                        return true;
+                }
+                else if (kind == SyntaxKind.Interpolation)
+                {
+                    if (span.Start == context.Span.End)
+                        return true;
+
+                    if (span.End == context.Span.Start
+                        && (i == contents.Count - 1 || !contents[i + 1].IsKind(SyntaxKind.InterpolatedStringText)))
+                    {
+                        return true;
+                    }
+                }
+
+                i++;
+            }
+
+            return false;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             InterpolatedStringExpressionSyntax interpolatedString,

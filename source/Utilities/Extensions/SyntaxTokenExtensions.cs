@@ -16,6 +16,14 @@ namespace Pihrtsoft.CodeAnalysis
 {
     public static class SyntaxTokenExtensions
     {
+        public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
+        {
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return token.WithLeadingTrivia(trivia.Concat(token.TrailingTrivia));
+        }
+
         public static SyntaxToken AppendTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)

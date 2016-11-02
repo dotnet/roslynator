@@ -125,6 +125,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
         public const string ReplaceIfElseWithConditionalExpression = "ReplaceIfElseWithConditionalExpression";
         public const string ReplaceIfElseWithSwitch = "ReplaceIfElseWithSwitch";
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
+        public const string ReplaceInterpolatedStringWithInterpolationExpression = "ReplaceInterpolatedStringWithInterpolationExpression";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
         public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";
         public const string ReplaceMethodWithProperty = "ReplaceMethodWithProperty";

@@ -105,6 +105,17 @@ namespace Pihrtsoft.CodeAnalysis
             return node.GetLeadingTrivia().Concat(node.GetTrailingTrivia());
         }
 
+        public static TNode PrependLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return node.WithLeadingTrivia(trivia.Concat(node.GetLeadingTrivia()));
+        }
+
         public static TNode AppendTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
         {
             if (node == null)
