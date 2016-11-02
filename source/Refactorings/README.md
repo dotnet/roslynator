@@ -653,6 +653,13 @@
 
 ![Remove statements from switch sections](../../images/refactorings/RemoveStatementsFromSwitchSections.png)
 
+#### Remove using alias directive
+
+* **Syntax**: using alias directive
+* **Scope**: identifier
+
+![Remove using alias directive](../../images/refactorings/RemoveUsingAliasDirective.png)
+
 #### Rename backing field according to property name
 
 * **Syntax**: field identifier inside property declaration
@@ -770,17 +777,24 @@
 
 ![Replace if-else with conditional expression](../../images/refactorings/ReplaceIfElseWithConditionalExpression.png)
 
-#### Replace if-else with switch
+#### Replace if-else with switch statement
 
 * **Syntax**: if statement
 
-![Replace if-else with switch](../../images/refactorings/ReplaceIfElseWithSwitch.png)
+![Replace if-else with switch statement](../../images/refactorings/ReplaceIfElseWithSwitch.png)
 
 #### Replace increment operator with decrement operator
 
 * **Syntax**: prefix/postfix unary expression
 
 ![Replace increment operator with decrement operator](../../images/refactorings/ReplaceIncrementOperatorWithDecrementOperator.png)
+
+#### Replace interpolated string with interpolation expression
+
+* **Syntax**: interpolated string with single interpolation and no text
+* **Scope**: interpolation
+
+![Replace interpolated string with interpolation expression](../../images/refactorings/ReplaceInterpolatedStringWithInterpolationExpression.png)
 
 #### Replace interpolated string with string literal
 
