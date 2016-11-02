@@ -1,3 +1,12 @@
+### 1.0.9 (2016-11-02)
+
+#### Refactorings
+
+##### New Refactorings
+
+* RemoveUsingAliasDirective
+* ReplaceInterpolatedStringWithInterpolationExpression
+
 ### 1.0.8 (2016-10-31)
 
 #### Analyzers

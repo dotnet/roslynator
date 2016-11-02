@@ -1,6 +1,1 @@
-﻿#### Refactorings
-
-##### New Refactorings
-
-* RemoveUsingAliasDirective
-* ReplaceInterpolatedStringWithInterpolationExpression
+﻿
