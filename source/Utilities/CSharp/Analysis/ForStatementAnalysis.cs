@@ -4,7 +4,7 @@ using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis
 {
     public static class ForStatementAnalysis
     {

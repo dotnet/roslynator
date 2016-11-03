@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements
+namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
     internal abstract class WrapStatementsRefactoring<TStatement> where TStatement : StatementSyntax
     {

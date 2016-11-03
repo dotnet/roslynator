@@ -23,7 +23,7 @@
     <ProjectGuid>{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio</RootNamespace>
+    <RootNamespace>Roslynator.VisualStudio</RootNamespace>
     <AssemblyName>Roslynator.VisualStudio.Refactorings</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>

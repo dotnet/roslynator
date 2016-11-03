@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class RemoveStatementsFromSwitchSectionsRefactoring
     {

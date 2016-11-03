@@ -4,7 +4,7 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public static class SyntaxTreeExtensions
     {

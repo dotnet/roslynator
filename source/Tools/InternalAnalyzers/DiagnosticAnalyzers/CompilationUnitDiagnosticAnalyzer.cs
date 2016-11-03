@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.CSharp.Internal.Refactoring;
+using Roslynator.CSharp.Internal.Refactoring;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
+namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class CompilationUnitDiagnosticAnalyzer : DiagnosticAnalyzer

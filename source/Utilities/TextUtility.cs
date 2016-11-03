@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public static class TextUtility
     {

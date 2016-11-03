@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Pihrtsoft.CodeAnalysis.Metadata
+namespace Roslynator.Metadata
 {
     public class AnalyzerInfo
     {

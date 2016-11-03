@@ -11,8 +11,8 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
-using Pihrtsoft.CodeAnalysis.CSharp;
-using Pihrtsoft.CodeAnalysis.Metadata;
+using Roslynator.CSharp;
+using Roslynator.Metadata;
 
 namespace MetadataGenerator
 {

@@ -5,9 +5,9 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp;
+using Roslynator.CSharp;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public static class ModifierUtility
     {

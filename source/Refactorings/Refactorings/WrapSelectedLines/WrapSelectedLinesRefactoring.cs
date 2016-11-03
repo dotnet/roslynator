@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapSelectedLines
+namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
     internal abstract class WrapSelectedLinesRefactoring : SelectedLinesRefactoring
     {

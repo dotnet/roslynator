@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers
+namespace Roslynator.CSharp.Analyzers
 {
     internal static class FormatEachStatementOnSeparateLineAnalyzer
     {

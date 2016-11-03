@@ -3,7 +3,7 @@ using x = System;
 using xx = System.Collections.Generic;
 using xxx = System.String;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Analyzers.Tests
 {
     public class AvoidUsageOfUsingAliasDirective
     {

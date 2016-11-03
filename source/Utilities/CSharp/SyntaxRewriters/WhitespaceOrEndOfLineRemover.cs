@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters
 {
     public sealed class WhitespaceOrEndOfLineRemover : CSharpSyntaxRewriter
     {

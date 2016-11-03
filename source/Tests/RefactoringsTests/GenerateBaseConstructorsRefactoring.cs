@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class AddBaseConstructorsRefactoring
     {

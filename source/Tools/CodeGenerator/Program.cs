@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using Pihrtsoft.CodeAnalysis.Metadata;
+using Roslynator.Metadata;
 
 namespace CodeGenerator
 {

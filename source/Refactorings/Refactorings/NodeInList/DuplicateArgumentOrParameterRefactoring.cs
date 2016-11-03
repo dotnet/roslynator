@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList
 {
     internal abstract class DuplicateArgumentOrParameterRefactoring<TSyntax, TListSyntax> : NodeInListRefactoring<TSyntax, TListSyntax>
         where TSyntax : SyntaxNode

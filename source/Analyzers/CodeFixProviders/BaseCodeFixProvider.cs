@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixProviders
 {
     public abstract class BaseCodeFixProvider : CodeFixProvider
     {

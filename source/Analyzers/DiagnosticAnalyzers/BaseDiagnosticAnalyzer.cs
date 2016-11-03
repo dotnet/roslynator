@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
+namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     public abstract class BaseDiagnosticAnalyzer : DiagnosticAnalyzer
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.RemoveUsingAliasDirective
+namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
 {
     public static class RemoveUsingAliasDirectiveRefactoring
     {

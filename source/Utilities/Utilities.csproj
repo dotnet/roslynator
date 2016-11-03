@@ -8,7 +8,7 @@
     <ProjectGuid>{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis</RootNamespace>
+    <RootNamespace>Roslynator</RootNamespace>
     <AssemblyName>Roslynator.Utilities</AssemblyName>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>

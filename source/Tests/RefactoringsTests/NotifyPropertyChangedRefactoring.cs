@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class NotifyPropertyChangedRefactoring
     {

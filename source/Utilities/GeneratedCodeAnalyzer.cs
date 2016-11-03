@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public class GeneratedCodeAnalyzer : IGeneratedCodeAnalyzer
     {

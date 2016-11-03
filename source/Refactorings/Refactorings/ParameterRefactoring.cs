@@ -2,9 +2,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize;
+using Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings
 {
     internal static class ParameterRefactoring
     {

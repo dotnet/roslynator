@@ -19,8 +19,8 @@
     <ProjectGuid>{63A791CC-BD7C-4608-A4D9-9379B0C42F38}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.VisualStudio.Analyzers</RootNamespace>
-    <AssemblyName>Pihrtsoft.CodeAnalysis.VisualStudio.Analyzers</AssemblyName>
+    <RootNamespace>Roslynator.VisualStudio.Analyzers</RootNamespace>
+    <AssemblyName>Roslynator.VisualStudio.Analyzers</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

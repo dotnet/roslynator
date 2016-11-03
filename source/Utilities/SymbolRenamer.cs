@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Rename;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public static class SymbolRenamer
     {

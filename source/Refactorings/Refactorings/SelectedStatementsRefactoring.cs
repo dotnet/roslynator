@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapStatements;
+using Roslynator.CSharp.Refactorings.WrapStatements;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings
 {
     internal static class SelectedStatementsRefactoring
     {

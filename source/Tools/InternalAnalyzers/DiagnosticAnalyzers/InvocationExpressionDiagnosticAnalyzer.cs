@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
+namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InvocationExpressionDiagnosticAnalyzer : DiagnosticAnalyzer
@@ -109,7 +109,7 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.DiagnosticAnalyzers
         {
             if (typeSymbol != null)
             {
-                INamedTypeSymbol newExtensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName($"Pihrtsoft.CodeAnalysis.{typeSymbol.Name}Extensions");
+                INamedTypeSymbol newExtensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName($"Roslynator.{typeSymbol.Name}Extensions");
 
                 if (newExtensionsClassSymbol != null
                     && NewExtensionMethodExists(elementName, typeSymbol, newExtensionsClassSymbol))

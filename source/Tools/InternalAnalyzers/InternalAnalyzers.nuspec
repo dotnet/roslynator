@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Pihrtsoft.CodeAnalysis.CSharp.InternalAnalyzers</id>
+    <id>Roslynator.CSharp.InternalAnalyzers</id>
     <version>0.1.0.0</version>
     <description>Analyzers for Roslynator</description>
     <authors>Josef Pihrt</authors>

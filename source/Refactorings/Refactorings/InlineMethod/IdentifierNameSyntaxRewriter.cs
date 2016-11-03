@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.InlineMethod
+namespace Roslynator.CSharp.Refactorings.InlineMethod
 {
     internal class IdentifierNameSyntaxRewriter : CSharpSyntaxRewriter
     {

@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplacePropertyWithMethod
+namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 {
     internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
     {

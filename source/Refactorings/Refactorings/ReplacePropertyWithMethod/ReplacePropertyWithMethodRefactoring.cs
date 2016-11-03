@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ReplacePropertyWithMethod
+namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 {
     internal static class ReplacePropertyWithMethodRefactoring
     {

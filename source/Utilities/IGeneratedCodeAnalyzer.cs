@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public interface IGeneratedCodeAnalyzer
     {

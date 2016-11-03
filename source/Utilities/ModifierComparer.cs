@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public sealed class ModifierComparer : IComparer<SyntaxToken>
     {

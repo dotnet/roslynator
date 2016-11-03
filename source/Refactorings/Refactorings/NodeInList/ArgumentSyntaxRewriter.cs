@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList
 {
     internal class ArgumentSyntaxRewriter : NodeSyntaxRewriter<ArgumentSyntax>
     {

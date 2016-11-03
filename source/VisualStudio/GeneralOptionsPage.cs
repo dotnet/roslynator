@@ -2,10 +2,10 @@
 
 using System.ComponentModel;
 using Microsoft.VisualStudio.Shell;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings;
-using Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters;
+using Roslynator.CSharp.Refactorings;
+using Roslynator.VisualStudio.TypeConverters;
 
-namespace Pihrtsoft.CodeAnalysis.VisualStudio
+namespace Roslynator.VisualStudio
 {
     public partial class GeneralOptionsPage : DialogPage
     {

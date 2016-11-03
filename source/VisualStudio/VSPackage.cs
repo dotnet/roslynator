@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 
-namespace Pihrtsoft.CodeAnalysis.VisualStudio
+namespace Roslynator.VisualStudio
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.

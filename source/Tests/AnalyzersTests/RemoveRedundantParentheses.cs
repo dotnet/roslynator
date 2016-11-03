@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class RemoveRedundantParentheses
     {

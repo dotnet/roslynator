@@ -8,7 +8,7 @@
     <ProjectGuid>{3AD7B124-7B99-440D-84A1-858BE5AE268B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.CSharp.Refactorings</RootNamespace>
+    <RootNamespace>Roslynator.CSharp.Refactorings</RootNamespace>
     <AssemblyName>Roslynator.CSharp.Refactorings</AssemblyName>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>

@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList
 {
     internal class RewriterInfo<TSyntax> where TSyntax : SyntaxNode
     {

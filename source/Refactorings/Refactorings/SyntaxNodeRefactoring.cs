@@ -2,9 +2,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapSelectedLines;
+using Roslynator.CSharp.Refactorings.WrapSelectedLines;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings
 {
     internal static class SyntaxNodeRefactoring
     {

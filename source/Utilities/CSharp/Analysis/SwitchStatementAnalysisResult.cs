@@ -3,7 +3,7 @@
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis
 {
     public class SwitchStatementAnalysisResult
     {

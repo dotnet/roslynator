@@ -2,7 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Analyzers.Tests
 {
     interface InterfaceName123
     {

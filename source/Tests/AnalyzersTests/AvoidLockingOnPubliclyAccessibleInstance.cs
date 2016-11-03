@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Analyzers.Tests
 {
     public class AvoidLockingOnPubliclyAccessibleInstance
     {

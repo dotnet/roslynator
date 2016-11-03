@@ -3,10 +3,10 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.IntroduceAndInitialize;
-using Pihrtsoft.CodeAnalysis.CSharp.Refactorings.NodeInList;
+using Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+using Roslynator.CSharp.Refactorings.NodeInList;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings
 {
     internal static class ParameterListRefactoring
     {

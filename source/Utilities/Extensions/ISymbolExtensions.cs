@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public static class ISymbolExtensions
     {

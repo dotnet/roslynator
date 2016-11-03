@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.InlineMethod
+namespace Roslynator.CSharp.Refactorings.InlineMethod
 {
     internal static class InlineMethodRefactoring
     {

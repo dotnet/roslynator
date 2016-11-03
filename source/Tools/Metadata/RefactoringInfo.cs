@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Pihrtsoft.CodeAnalysis.Metadata
+namespace Roslynator.Metadata
 {
     public class RefactoringInfo
     {

@@ -2,7 +2,7 @@
 using System;
 using s = System.String;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Analyzers.Tests
 {
     internal static class UsePredefinedType
     {

@@ -8,7 +8,7 @@
     <ProjectGuid>{7F6F6533-E406-4225-A435-DEE22C717F48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Pihrtsoft.CodeAnalysis.Metadata</RootNamespace>
+    <RootNamespace>Roslynator.Metadata</RootNamespace>
     <AssemblyName>Roslynator.Metadata</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>

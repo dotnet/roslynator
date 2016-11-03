@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.WrapSelectedLines
+namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
     internal abstract class SelectedLinesRefactoring
     {

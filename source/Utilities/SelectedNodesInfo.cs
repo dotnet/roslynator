@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public class SelectedNodesInfo<TNode> where TNode : SyntaxNode
     {

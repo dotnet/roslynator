@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class RenameMethodAccordingToTypeNameRefactoring
     {

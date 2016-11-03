@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using listOfString = System.Collections.Generic.List<string>;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class RemoveUsingAliasDirectiveRefactoring
     {

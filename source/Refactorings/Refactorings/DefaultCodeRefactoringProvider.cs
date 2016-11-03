@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings
 {
     [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(DefaultCodeRefactoringProvider))]
     public class DefaultCodeRefactoringProvider : CodeRefactoringProvider

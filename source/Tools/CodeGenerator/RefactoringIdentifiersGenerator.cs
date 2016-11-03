@@ -2,11 +2,11 @@
 
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis;
-using Pihrtsoft.CodeAnalysis.CSharp;
-using Pihrtsoft.CodeAnalysis.Metadata;
+using Roslynator;
+using Roslynator.CSharp;
+using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Pihrtsoft.CodeAnalysis.CSharp.CSharpFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace CodeGenerator
 {

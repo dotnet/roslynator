@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Pihrtsoft.CodeAnalysis.CSharp.Refactorings.ExtractTypeDeclarationToNewDocumentRefactoring;
+using static Roslynator.CSharp.Refactorings.ExtractTypeDeclarationToNewDocumentRefactoring;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.DiagnosticAnalyzers
+namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class CompilationUnitDiagnosticAnalyzer : BaseDiagnosticAnalyzer

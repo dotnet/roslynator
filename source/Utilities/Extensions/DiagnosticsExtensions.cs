@@ -6,7 +6,7 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     [DebuggerStepThrough]
     public static class DiagnosticsExtensions

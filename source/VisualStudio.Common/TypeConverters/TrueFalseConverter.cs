@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Pihrtsoft.CodeAnalysis.VisualStudio.TypeConverters
+namespace Roslynator.VisualStudio.TypeConverters
 {
     public abstract class TrueFalseConverter : BooleanConverter
     {

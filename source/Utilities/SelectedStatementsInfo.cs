@@ -4,9 +4,9 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Pihrtsoft.CodeAnalysis.CSharp;
+using Roslynator.CSharp;
 
-namespace Pihrtsoft.CodeAnalysis
+namespace Roslynator
 {
     public class SelectedStatementsInfo : SelectedNodesInfo<StatementSyntax>
     {

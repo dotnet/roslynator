@@ -2,7 +2,7 @@
 
 using System.Linq;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class ExpandLambdaExpressionBodyRefactoring
     {

@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Pihrtsoft.CodeAnalysis.CSharp.Internal.Refactoring;
+using Roslynator.CSharp.Internal.Refactoring;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Internal.CodeFixProviders
+namespace Roslynator.CSharp.Internal.CodeFixProviders
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CompilationUnitCodeFixProvider))]
     [Shared]

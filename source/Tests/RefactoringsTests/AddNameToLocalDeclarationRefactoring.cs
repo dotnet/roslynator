@@ -2,7 +2,7 @@
 
 using System.Xml;
 
-namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class AddNameToLocalDeclarationRefactoring
     {
