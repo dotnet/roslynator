@@ -39,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
+    <Compile Include="AvoidUsageOfUsingDirectiveInsideNamespaceDeclaration.cs" />
+    <Compile Include="AvoidUsageOfUsingDirectiveInsideNamespaceDeclaration2.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
     <Compile Include="UsePostfixUnaryOperatorInsteadOfAssignment.cs" />

@@ -880,5 +880,14 @@ namespace Roslynator.CSharp
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: false
          );
+
+        public static readonly DiagnosticDescriptor AvoidUsageOfUsingDirectiveInsideNamespaceDeclaration = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.AvoidUsageOfUsingDirectiveInsideNamespaceDeclaration,
+             title: "Avoid usage of using directive inside namespace declaration.",
+             messageFormat: "Consider declaring using directive on document level.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: false
+         );
     }
 }
