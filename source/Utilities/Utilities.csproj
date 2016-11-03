@@ -126,7 +126,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Roslynator.Utilities.snk" />
-    <None Include="Pihrtsoft.Roslynator.nuspec" />
+    <None Include="Roslynator.Utilities.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeAnalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
