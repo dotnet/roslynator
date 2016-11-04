@@ -714,6 +714,13 @@
 
 ![Replace 'Any/All' with 'All/Any'](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
+#### Replace as expression with cast expression
+
+* **Syntax**: as expression
+* **Scope**: operator
+
+![Replace as expression with cast expression](../../images/refactorings/ReplaceAsWithCast.png)
+
 #### Replace conditional expression with expression
 
 * **Syntax**: conditional expression
@@ -746,6 +753,13 @@
 * **Scope**: do keyword
 
 ![Replace do statement with while statement](../../images/refactorings/ReplaceDoStatementWithWhileStatement.png)
+
+#### Replace equals expression with string.Equals
+
+* **Syntax**: equals expression
+* **Scope**: operator
+
+![Replace equals expression with string.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
 
 #### Replace field with constant
 
