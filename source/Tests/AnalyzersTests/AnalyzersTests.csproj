@@ -41,6 +41,7 @@
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
+    <Compile Include="UseCSharp6DictionaryInitializer.cs" />
     <Compile Include="UsePostfixUnaryOperatorInsteadOfAssignment.cs" />
     <Compile Include="AddConfigureAwait.cs" />
     <Compile Include="AvoidUsageOfUsingAliasDirective.cs" />

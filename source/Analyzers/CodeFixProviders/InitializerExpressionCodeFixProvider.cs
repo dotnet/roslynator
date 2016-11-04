@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,15 +11,23 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InitializerExpressionCodeFixProvider))]
     [Shared]
-    public class InitializerCodeFixProvider : BaseCodeFixProvider
+    public class InitializerExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCommaInInitializer);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.RemoveRedundantCommaInInitializer,
+                    DiagnosticIdentifiers.UseCSharp6DictionaryInitializer);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -28,15 +37,37 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<InitializerExpressionSyntax>();
 
+            Debug.Assert(initializer != null, $"{nameof(initializer)} is null");
+
             if (initializer == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove redundant comma",
-                cancellationToken => RemoveRedundantCommaAsync(context.Document, initializer, cancellationToken),
-                DiagnosticIdentifiers.RemoveRedundantCommaInInitializer + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.RemoveRedundantCommaInInitializer:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant comma",
+                                cancellationToken => RemoveRedundantCommaAsync(context.Document, initializer, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseCSharp6DictionaryInitializer:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use C# 6.0 dictionary initializer",
+                                cancellationToken => UseCSharp6DictionaryInitializerRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
 
         private static async Task<Document> RemoveRedundantCommaAsync(

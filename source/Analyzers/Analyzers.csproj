@@ -50,6 +50,8 @@
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
+    <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\ComplexElementInitializerDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
@@ -102,7 +104,7 @@
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEnumDefaultBaseTypeCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\InitializerCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\InitializerExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ElseClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EmptyStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumDeclarationCodeFixProvider.cs" />
