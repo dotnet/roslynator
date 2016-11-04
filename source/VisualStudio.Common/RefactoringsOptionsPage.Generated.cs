@@ -125,6 +125,7 @@ namespace Roslynator.VisualStudio
             ReplaceCountWithLengthOrLengthWithCount = true;
             ReplaceDoStatementWithWhileStatement = true;
             ReplaceEmptyStringLiteralWithStringEmpty = true;
+            ReplaceEqualsExpressionWithStringEquals = true;
             ReplaceFieldWithConstant = true;
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
@@ -278,6 +279,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceCountWithLengthOrLengthWithCount, ReplaceCountWithLengthOrLengthWithCount);
             SetIsEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement, ReplaceDoStatementWithWhileStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty, ReplaceEmptyStringLiteralWithStringEmpty);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals, ReplaceEqualsExpressionWithStringEquals);
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
@@ -1441,6 +1443,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: empty string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEmptyStringLiteralWithStringEmpty
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace equals expression with string.Equals")]
+        [Description("Syntax: equals expression\r\nScope: operator")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceEqualsExpressionWithStringEquals
         {
             get;
             set;

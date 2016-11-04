@@ -38,7 +38,6 @@
     <Compile Include="AddToMethodInvocationRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
-    <Compile Include="RefactoringsTests\ClassName.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="RemoveInterpolationRefactoring.cs" />
     <Compile Include="RemoveStatementRefactoring.cs" />
@@ -56,6 +55,7 @@
     <Compile Include="RemoveUsingAliasDirectiveRefactoring.cs" />
     <Compile Include="ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
+    <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />

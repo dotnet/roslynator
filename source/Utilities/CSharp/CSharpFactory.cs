@@ -159,28 +159,34 @@ namespace Roslynator.CSharp
             return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
         }
 
-        public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name)
-        {
-            return SyntaxFactory.InvocationExpression(SimpleMemberAccessExpression(expression, name));
-        }
-
         public static InvocationExpressionSyntax InvocationExpression(string name)
         {
             return SyntaxFactory.InvocationExpression(IdentifierName(name));
         }
 
-        public static InvocationExpressionSyntax InvocationExpression(string name, ArgumentSyntax argument)
+        public static InvocationExpressionSyntax InvocationExpression(string name, ArgumentListSyntax argumentList)
         {
-            return SyntaxFactory.InvocationExpression(
-                IdentifierName(name),
-                ArgumentList(argument));
+            return SyntaxFactory.InvocationExpression(IdentifierName(name), argumentList);
         }
 
-        public static InvocationExpressionSyntax InvocationExpression(string name, params ArgumentSyntax[] arguments)
+        public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax expression, string name)
         {
-            return SyntaxFactory.InvocationExpression(
-                IdentifierName(name),
-                ArgumentList(arguments));
+            return InvocationExpression(expression, IdentifierName(name));
+        }
+
+        public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name)
+        {
+            return SyntaxFactory.InvocationExpression(SimpleMemberAccessExpression(expression, name));
+        }
+
+        public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax expression, string name, ArgumentListSyntax argumentList)
+        {
+            return InvocationExpression(expression, IdentifierName(name), argumentList);
+        }
+
+        public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentListSyntax argumentList)
+        {
+            return SyntaxFactory.InvocationExpression(SimpleMemberAccessExpression(expression, name), argumentList);
         }
 
         public static AccessorDeclarationSyntax Getter(BlockSyntax body = null)
@@ -528,6 +534,11 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
         }
 
+        public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand);
+        }
+
         public static AttributeSyntax Attribute(string name, AttributeArgumentSyntax argument)
         {
             return Attribute(IdentifierName(name), argument);
@@ -558,7 +569,7 @@ namespace Roslynator.CSharp
         {
             return InvocationExpression(
                 "nameof",
-                Argument(identifier));
+                ArgumentList(Argument(identifier)));
         }
 
         public static UsingDirectiveSyntax UsingStaticDirective(string name)
