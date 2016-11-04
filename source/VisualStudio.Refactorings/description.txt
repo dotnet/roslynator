@@ -357,6 +357,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-as-expression-with-cast-expression">Replace as expression with cast expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-conditional-expression-with-expression">Replace conditional expression with expression</a>
         </li>
         <li>

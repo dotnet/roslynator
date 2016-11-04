@@ -112,6 +112,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RenamePropertyAccordingToTypeName = "RenamePropertyAccordingToTypeName";
         public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
+        public const string ReplaceAsWithCast = "ReplaceAsWithCast";
         public const string ReplaceConditionalExpressionWithExpression = "ReplaceConditionalExpressionWithExpression";
         public const string ReplaceConditionalExpressionWithIfElse = "ReplaceConditionalExpressionWithIfElse";
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";

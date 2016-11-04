@@ -236,6 +236,7 @@
     <Compile Include="Refactorings\RemoveInterpolationRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
