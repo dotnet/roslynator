@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             if (type.IsVar)
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 

@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
                     && context.SupportsSemanticModel)
                 {
-                    await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info);
+                    await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))

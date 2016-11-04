@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             var textChange = new TextChange(span, new string(' ', span.Length * 4));
 

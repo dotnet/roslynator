@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!fParameterList
                         && kind == SyntaxKind.ParameterList)
                     {
-                        await ParameterListRefactoring.ComputeRefactoringsAsync(context, (ParameterListSyntax)node);
+                        await ParameterListRefactoring.ComputeRefactoringsAsync(context, (ParameterListSyntax)node).ConfigureAwait(false);
                         fParameterList = true;
                         continue;
                     }
@@ -303,7 +303,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fQualifiedName
                             && kind == SyntaxKind.QualifiedName)
                         {
-                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression);
+                            await QualifiedNameRefactoring.ComputeRefactoringsAsync(context, (QualifiedNameSyntax)expression).ConfigureAwait(false);
                             fQualifiedName = true;
                         }
 

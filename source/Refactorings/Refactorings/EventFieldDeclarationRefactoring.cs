@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateOnEventMethod)
                 && context.SupportsSemanticModel)
             {
-                await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration);
+                await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)

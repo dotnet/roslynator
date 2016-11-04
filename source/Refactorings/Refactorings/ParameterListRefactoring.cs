@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
-                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameterList);
+                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameterList).ConfigureAwait(false);
 
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.IntroduceAndInitializeField,

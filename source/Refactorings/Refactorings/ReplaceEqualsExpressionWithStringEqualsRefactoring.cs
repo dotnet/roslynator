@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             INamedTypeSymbol symbol = semanticModel.Compilation.GetTypeByMetadataName("System.StringComparison");
 

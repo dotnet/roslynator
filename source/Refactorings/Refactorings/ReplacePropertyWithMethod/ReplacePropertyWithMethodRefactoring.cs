@@ -65,11 +65,11 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
         {
             Solution solution = document.Project.Solution;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, cancellationToken);
 
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(propertySymbol, solution, cancellationToken);
+            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(propertySymbol, solution, cancellationToken).ConfigureAwait(false);
 
             ReferenceLocation[] locations = referencedSymbols
                 .SelectMany(f => f.Locations)
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             {
                 Document document2 = solution.GetDocument(grouping.Key);
 
-                SyntaxNode root = await document2.GetSyntaxRootAsync(cancellationToken);
+                SyntaxNode root = await document2.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
                 TextSpan[] spans = grouping.Select(f => f.Location.SourceSpan).ToArray();
 
@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             {
                 document = solution.GetDocument(document.Id);
 
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
                 var rewriter = new ReplacePropertyWithMethodSyntaxRewriter(new TextSpan[0], methodName, property);
 

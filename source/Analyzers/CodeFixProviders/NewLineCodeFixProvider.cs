@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             string newLine,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken);
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             var textChange = new TextChange(span, newLine);
 

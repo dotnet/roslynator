@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter)
                 && context.SupportsSemanticModel)
             {
-                await PromoteLocalToParameterRefactoring.ComputeRefactoringAsync(context, localDeclaration);
+                await PromoteLocalToParameterRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
             }
         }
     }

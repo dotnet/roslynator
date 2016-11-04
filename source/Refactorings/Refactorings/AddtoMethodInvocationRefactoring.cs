@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newRoot = root.ReplaceNode(expression, invocation);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             if (methodSymbol.IsExtensionMethod)
             {

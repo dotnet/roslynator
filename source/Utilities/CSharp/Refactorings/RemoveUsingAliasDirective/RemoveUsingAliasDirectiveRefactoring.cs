@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await RemoveUsingAliasDirectiveSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken);
+            return await RemoveUsingAliasDirectiveSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
         }
     }
 }

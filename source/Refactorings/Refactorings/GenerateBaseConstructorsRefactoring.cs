@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (classDeclaration.Identifier.Span.Contains(context.Span))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 

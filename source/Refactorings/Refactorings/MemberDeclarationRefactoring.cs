@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                         ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, classDeclaration);
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateBaseConstructors))
-                            await GenerateBaseConstructorsRefactoring.ComputeRefactoringAsync(context, classDeclaration);
+                            await GenerateBaseConstructorsRefactoring.ComputeRefactoringAsync(context, classDeclaration).ConfigureAwait(false);
 
                         break;
                     }
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
-                        await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member);
+                        await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
             }

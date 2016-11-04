@@ -249,7 +249,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 parameterInfos,
                 statements,
                 document.Project.Solution,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
             statements[0] = statements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
@@ -300,7 +300,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 Solution solution = document.Project.Solution;
 
-                document = await InlineMethodAsync(document, invocation, expression, parameterInfos, cancellationToken);
+                document = await InlineMethodAsync(document, invocation, expression, parameterInfos, cancellationToken).ConfigureAwait(false);
 
                 DocumentId documentId = solution.GetDocumentId(methodDeclaration.SyntaxTree);
 
@@ -356,7 +356,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 Solution solution = document.Project.Solution;
 
-                document = await InlineMethodAsync(document, expressionStatement, statements, parameterInfos, cancellationToken);
+                document = await InlineMethodAsync(document, expressionStatement, statements, parameterInfos, cancellationToken).ConfigureAwait(false);
 
                 DocumentId documentId = solution.GetDocumentId(methodDeclaration.SyntaxTree);
 
@@ -387,7 +387,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             Solution solution,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken);
+            ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
 
             if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(invocation))
             {

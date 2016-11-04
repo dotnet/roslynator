@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (parameter.Identifier.Span.Contains(context.Span)
                 && IsValid(parameter))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync();
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 if (CanRefactor(parameter, semanticModel, context.CancellationToken))
                     RegisterRefactoring(context, parameter);
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterListSyntax parameterList)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync();
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ParameterSyntax[] parameters = GetSelectedParameters(parameterList, context.Span)
                 .Where(parameter => IsValid(parameter) && CanRefactor(parameter, semanticModel, context.CancellationToken))
