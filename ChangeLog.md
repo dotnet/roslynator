@@ -1,3 +1,12 @@
+### 1.1.0 (2016-11-04)
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceAsWithCast
+* ReplaceEqualsExpressionWithStringEquals
+
 ### 1.0.9 (2016-11-02)
 
 #### Refactorings
