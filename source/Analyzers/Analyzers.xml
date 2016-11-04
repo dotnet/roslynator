@@ -747,7 +747,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
     <Id>RCS1086</Id>
     <Title>Use linefeed as newline.</Title>
     <Category>General</Category>
@@ -756,7 +756,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
     <Id>RCS1087</Id>
     <Title>Use carriage return + linefeed as newline.</Title>
     <Category>General</Category>
@@ -765,7 +765,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfTab" ExtensionVersion="1.0.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidUsageOfTab" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
     <Id>RCS1088</Id>
     <Title>Avoid usage of tab.</Title>
     <Category>General</Category>
@@ -774,7 +774,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment" ExtensionVersion="1.0.3" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
     <Id>RCS1089</Id>
     <Title>Use postfix unary operator instead of assignment.</Title>
     <Category>General</Category>
@@ -783,7 +783,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddConfigureAwait" ExtensionVersion="1.0.3" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddConfigureAwait" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
     <Id>RCS1090</Id>
     <Title>Add 'ConfigureAwait(false)' to awaitable expression.</Title>
     <Category>General</Category>
@@ -792,7 +792,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyRegion" ExtensionVersion="1.0.6" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveEmptyRegion" ExtensionVersion="1.0.6" NuGetVersion="1.1.0">
     <Id>RCS1091</Id>
     <Title>Remove empty region.</Title>
     <Category>General</Category>
@@ -801,7 +801,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement" ExtensionVersion="1.0.8" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement" ExtensionVersion="1.0.8" NuGetVersion="1.1.0">
     <Id>RCS1092</Id>
     <Title>Add empty line after last statement in do statement.</Title>
     <Category>General</Category>
