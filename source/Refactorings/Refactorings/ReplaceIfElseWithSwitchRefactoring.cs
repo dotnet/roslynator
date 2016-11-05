@@ -58,8 +58,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     var condition = ifStatement.Condition as BinaryExpressionSyntax;
 
-                    if (condition != null
-                        && !IsValidCondition(condition, null))
+                    if (condition == null
+                        || !IsValidCondition(condition, null))
                     {
                         return false;
                     }
