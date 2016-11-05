@@ -21,7 +21,7 @@ namespace Roslynator
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
 
-            return token.WithLeadingTrivia(trivia.Concat(token.TrailingTrivia));
+            return token.WithLeadingTrivia(trivia.Concat(token.LeadingTrivia));
         }
 
         public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
