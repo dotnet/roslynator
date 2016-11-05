@@ -24,12 +24,22 @@ namespace Roslynator
             return token.WithLeadingTrivia(trivia.Concat(token.TrailingTrivia));
         }
 
+        public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        {
+            return token.WithLeadingTrivia(token.LeadingTrivia.Insert(0, trivia));
+        }
+
         public static SyntaxToken AppendTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
 
             return token.WithTrailingTrivia(token.TrailingTrivia.AddRange(trivia));
+        }
+
+        public static SyntaxToken AppendTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        {
+            return token.WithTrailingTrivia(token.TrailingTrivia.Add(trivia));
         }
 
         public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxToken token)

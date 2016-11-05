@@ -116,6 +116,14 @@ namespace Roslynator
             return node.WithLeadingTrivia(trivia.Concat(node.GetLeadingTrivia()));
         }
 
+        public static TNode PrependLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithLeadingTrivia(node.GetLeadingTrivia().Insert(0, trivia));
+        }
+
         public static TNode AppendTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
         {
             if (node == null)
@@ -125,6 +133,14 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(trivia));
 
             return node.WithTrailingTrivia(node.GetTrailingTrivia().AddRange(trivia));
+        }
+
+        public static TNode AppendTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithTrailingTrivia(node.GetTrailingTrivia().Add(trivia));
         }
 
         public static bool IsDescendantOf(this SyntaxNode node, SyntaxKind kind)
