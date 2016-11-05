@@ -54,7 +54,12 @@ namespace Roslynator
                 case SyntaxKind.Interpolation:
                     return true;
                 case SyntaxKind.ForEachStatement:
-                    return expression == ((ForEachStatementSyntax)parent).Expression;
+                    {
+                        var forEachStatement = (ForEachStatementSyntax)parent;
+
+                        return expression == forEachStatement.Expression
+                            || expression == forEachStatement.Type;
+                    }
                 case SyntaxKind.WhileStatement:
                     return expression == ((WhileStatementSyntax)parent).Condition;
                 case SyntaxKind.DoStatement:
