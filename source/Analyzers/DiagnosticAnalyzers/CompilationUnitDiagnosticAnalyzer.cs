@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using static Roslynator.CSharp.Refactorings.ExtractTypeDeclarationToNewDocumentRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -17,7 +17,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareEachTypeInSeparateFile); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.DeclareEachTypeInSeparateFile,
+                    DiagnosticDescriptors.RemoveFileWithNoCode);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -52,11 +57,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             do
                             {
                                 ReportDiagnostic(context, en.Current);
-                            }
-                            while (en.MoveNext());
+
+                            } while (en.MoveNext());
                         }
                     }
                 }
+            }
+
+            if (compilationUnit.Span == compilationUnit.EndOfFileToken.Span)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveFileWithNoCode,
+                    Location.Create(compilationUnit.SyntaxTree, new TextSpan(0, 0)));
             }
         }
 

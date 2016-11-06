@@ -48,6 +48,7 @@
     <Compile Include="Analyzers\MergeIfStatementWithNestedIfStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />

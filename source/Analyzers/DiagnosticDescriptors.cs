@@ -880,5 +880,14 @@ namespace Roslynator.CSharp
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: false
          );
+
+        public static readonly DiagnosticDescriptor RemoveFileWithNoCode = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.RemoveFileWithNoCode,
+             title: "Remove file with no code.",
+             messageFormat: "Consider removing file with no code.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Info,
+             isEnabledByDefault: true
+         );
     }
 }
