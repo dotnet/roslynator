@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             string name = usingDirective.Alias.Name.Identifier.ValueText;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Remove alias '{name}'",
+                "Inline alias expression",
                 cancellationToken => RemoveUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, cancellationToken),
                 DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective + EquivalenceKeySuffix);
 

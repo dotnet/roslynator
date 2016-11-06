@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (name != null && context.Span.IsContainedInSpanOrBetweenSpans(name))
                     {
                         context.RegisterRefactoring(
-                            $"Remove alias '{name.Identifier.ValueText}'",
+                            "Inline alias expression",
                             cancellationToken =>
                             {
                                 return RemoveUsingAliasDirectiveRefactoring.RefactorAsync(
