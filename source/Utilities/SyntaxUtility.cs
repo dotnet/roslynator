@@ -95,6 +95,10 @@ namespace Roslynator
                     if (parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
                         return true;
                 }
+                else if (parent?.IsKind(SyntaxKind.Parameter) == true)
+                {
+                    return true;
+                }
             }
 
             return false;
