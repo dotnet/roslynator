@@ -889,5 +889,14 @@ namespace Roslynator.CSharp
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
          );
-    }
+
+        public static readonly DiagnosticDescriptor DeclareUsingDirectiveOnTopLevel = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel,
+             title: "Declare using directive on top level.",
+             messageFormat: "Consider declaring using directive on top level.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: false
+         );
+     }
 }

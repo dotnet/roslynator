@@ -1,4 +1,10 @@
-﻿#### Refactorings
+﻿#### Analyzers
+
+##### New Analyzers
+
+* DeclareUsingDirectiveOnTopLevel
+
+#### Refactorings
 
 ##### New Refactorings
 

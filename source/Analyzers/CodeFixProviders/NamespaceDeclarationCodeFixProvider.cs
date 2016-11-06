@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -17,7 +19,14 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class NamespaceDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration,
+                    DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -25,19 +34,45 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .GetSyntaxRootAsync(context.CancellationToken)
                 .ConfigureAwait(false);
 
-            NamespaceDeclarationSyntax declaration = root
+            NamespaceDeclarationSyntax namespaceDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<NamespaceDeclarationSyntax>();
 
-            if (declaration == null)
+            Debug.Assert(namespaceDeclaration != null, $"{nameof(namespaceDeclaration)} is null");
+
+            if (namespaceDeclaration == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove empty namespace declaration",
-                cancellationToken => RemoveEmptyNamespaceDeclarationAsync(context.Document, declaration, cancellationToken),
-                DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove empty namespace declaration",
+                                cancellationToken => RemoveEmptyNamespaceDeclarationAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel:
+                        {
+                            string title = (namespaceDeclaration.Usings.Count == 1)
+                                ? "Move using to top level"
+                                : "Move usings to top level";
+
+                            CodeAction codeAction = CodeAction.Create(
+                                title,
+                                cancellationToken => MoveUsingDirectiveToTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
 
         private static async Task<Document> RemoveEmptyNamespaceDeclarationAsync(

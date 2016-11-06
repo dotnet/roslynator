@@ -14,7 +14,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class NamespaceDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,
+                    DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -40,6 +47,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,
                     declaration.GetLocation());
+            }
+
+            SyntaxList<UsingDirectiveSyntax> usings = declaration.Usings;
+
+            if (usings.Any())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel,
+                    Location.Create(declaration.SyntaxTree, usings.Span));
             }
         }
     }

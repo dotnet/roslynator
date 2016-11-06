@@ -15,7 +15,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    public static class SyntaxExtensions
+    public static class co
     {
         public static bool IsGetter(this AccessorDeclarationSyntax accessorDeclaration)
         {
@@ -370,6 +370,17 @@ namespace Roslynator.CSharp
             UsingDirectiveSyntax usingDirective = UsingDirective(ParseName(namespaceSymbol.ToString()));
 
             return compilationUnit.AddUsings(usingDirective);
+        }
+
+        public static CompilationUnitSyntax AddUsings(this CompilationUnitSyntax compilationUnit, IEnumerable<UsingDirectiveSyntax> usings)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            if (usings == null)
+                throw new ArgumentNullException(nameof(usings));
+
+            return compilationUnit.WithUsings(compilationUnit.Usings.AddRange(usings));
         }
 
         public static ConstructorDeclarationSyntax WithBody(
