@@ -131,7 +131,7 @@
         <li>RCS1091 - Remove empty region.</li>
         <li>RCS1092 - Add empty line after last statement in do statement.</li>
         <li>RCS1093 - Remove file with no code.</li>
-        <li>RCS1094 - Avoid usage of using directive inside namespace declaration.</li>
+        <li>RCS1094 - Declare using directive on top level.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
