@@ -1,3 +1,18 @@
+### 1.1.1 (2016-11-06)
+
+#### Analyzers
+
+##### New Analyzers
+
+* RemoveFileWithNoCode
+* DeclareUsingDirectiveOnTopLevel
+
+#### Refactorings
+
+##### New Refactorings
+
+* RemoveRegion
+
 ### 1.1.0 (2016-11-04)
 
 #### Refactorings
