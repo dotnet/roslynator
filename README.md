@@ -115,6 +115,8 @@
 * RCS1090 - Add 'ConfigureAwait(false)' to awaitable expression
 * RCS1091 - Remove empty region
 * RCS1092 - Add empty line after last statement in do statement
+* RCS1093 - Remove file with no code
+* RCS1094 - Declare using directive on top level
 
 ### List of Refactorings
 
@@ -214,6 +216,7 @@
 * [Remove parameter name from argument](source/Refactorings/README.md#remove-parameter-name-from-argument)
 * [Remove parentheses](source/Refactorings/README.md#remove-parentheses)
 * [Remove property initializer](source/Refactorings/README.md#remove-property-initializer)
+* [Remove region](source/Refactorings/README.md#remove-region)
 * [Remove statement](source/Refactorings/README.md#remove-statement)
 * [Remove statements from switch sections](source/Refactorings/README.md#remove-statements-from-switch-sections)
 * [Remove using alias directive](source/Refactorings/README.md#remove-using-alias-directive)

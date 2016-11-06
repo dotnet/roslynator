@@ -640,6 +640,12 @@
 
 ![Remove property initializer](../../images/refactorings/RemovePropertyInitializer.png)
 
+#### Remove region
+
+* **Syntax**: region directive
+
+![Remove region](../../images/refactorings/RemoveRegion.png)
+
 #### Remove statement
 
 * **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
