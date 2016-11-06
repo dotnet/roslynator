@@ -678,7 +678,7 @@
       <Syntax>property initializer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RemoveRegion" Title="Remove region" ExtensionVersion="0.0.0">
+  <Refactoring Id="RemoveRegion" Title="Remove region" ExtensionVersion="1.1.1">
     <Syntaxes>
       <Syntax>region directive</Syntax>
     </Syntaxes>

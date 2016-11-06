@@ -810,7 +810,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveFileWithNoCode" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveFileWithNoCode" ExtensionVersion="1.1.1" NuGetVersion="0.0.0">
     <Id>RCS1093</Id>
     <Title>Remove file with no code.</Title>
     <Category>General</Category>
@@ -819,7 +819,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareUsingDirectiveOnTopLevel" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DeclareUsingDirectiveOnTopLevel" ExtensionVersion="1.1.1" NuGetVersion="0.0.0">
     <Id>RCS1094</Id>
     <Title>Declare using directive on top level.</Title>
     <Category>General</Category>
