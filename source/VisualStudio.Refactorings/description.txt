@@ -324,6 +324,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-property-initializer">Remove property initializer</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-region">Remove region</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-statement">Remove statement</a>
         </li>
         <li>

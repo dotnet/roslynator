@@ -102,6 +102,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveParameterNameFromArgument = "RemoveParameterNameFromArgument";
         public const string RemoveParentheses = "RemoveParentheses";
         public const string RemovePropertyInitializer = "RemovePropertyInitializer";
+        public const string RemoveRegion = "RemoveRegion";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";
         public const string RemoveUsingAliasDirective = "RemoveUsingAliasDirective";

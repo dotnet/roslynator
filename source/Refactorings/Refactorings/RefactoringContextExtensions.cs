@@ -569,14 +569,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             DirectiveTriviaRefactoring.ComputeRefactorings(context, directiveTrivia);
 
-                            if (node.IsKind(
-                                SyntaxKind.RegionDirectiveTrivia,
-                                SyntaxKind.EndRegionDirectiveTrivia))
-                            {
+                            if (node.IsKind(SyntaxKind.RegionDirectiveTrivia,SyntaxKind.EndRegionDirectiveTrivia))
                                 RegionDirectiveTriviaRefactoring.ComputeRefactorings(context);
-                            }
 
                             RemoveAllPreprocessorDirectivesRefactoring.ComputeRefactorings(context);
+
+                            if (node.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia))
+                                RegionDirectiveTriviaRefactoring.ComputeRefactorings(context, (RegionDirectiveTriviaSyntax)node);
 
                             fDirectiveTrivia = true;
                         }

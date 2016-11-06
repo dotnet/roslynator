@@ -678,6 +678,11 @@
       <Syntax>property initializer</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RemoveRegion" Title="Remove region" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>region directive</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="RemoveStatement" Title="Remove statement" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>do statement</Syntax>

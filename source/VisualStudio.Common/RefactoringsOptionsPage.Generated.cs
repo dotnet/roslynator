@@ -108,6 +108,7 @@ namespace Roslynator.VisualStudio
             RemoveParameterNameFromArgument = true;
             RemoveParentheses = true;
             RemovePropertyInitializer = true;
+            RemoveRegion = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
             RemoveUsingAliasDirective = true;
@@ -262,6 +263,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument, RemoveParameterNameFromArgument);
             SetIsEnabled(RefactoringIdentifiers.RemoveParentheses, RemoveParentheses);
             SetIsEnabled(RefactoringIdentifiers.RemovePropertyInitializer, RemovePropertyInitializer);
+            SetIsEnabled(RefactoringIdentifiers.RemoveRegion, RemoveRegion);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.RemoveUsingAliasDirective, RemoveUsingAliasDirective);
@@ -1273,6 +1275,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: property initializer")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemovePropertyInitializer
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Remove region")]
+        [Description("Syntax: region directive")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool RemoveRegion
         {
             get;
             set;
