@@ -754,15 +754,24 @@ namespace Roslynator.CSharp
                 && literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal);
         }
 
-        //TODO: 
-        public static bool IsTypeDeclaration(this MemberDeclarationSyntax memberDeclaration)
+        public static SyntaxTrivia GetSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
         {
-            return SyntaxNodeExtensions.IsKind(memberDeclaration,
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.EnumDeclaration,
-                SyntaxKind.DelegateDeclaration);
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            return memberDeclaration
+                .GetLeadingTrivia()
+                .FirstOrDefault(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
+        }
+
+        public static bool HasSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            return memberDeclaration
+                .GetLeadingTrivia()
+                .Any(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
         }
 
         public static SyntaxTokenList GetModifiers(this MemberDeclarationSyntax declaration)
