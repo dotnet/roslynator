@@ -18,11 +18,13 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax left = binaryExpression.Left;
 
-                if (left?.IsMissing == false)
+                if (left?.IsMissing == false
+                    && !left.IsKind(SyntaxKind.NullLiteralExpression))
                 {
                     ExpressionSyntax right = binaryExpression.Right;
 
-                    if (right?.IsMissing == false)
+                    if (right?.IsMissing == false
+                        && !right.IsKind(SyntaxKind.NullLiteralExpression))
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
