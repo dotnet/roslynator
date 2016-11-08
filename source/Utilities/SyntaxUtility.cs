@@ -21,12 +21,12 @@ namespace Roslynator
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-        public static bool AreParenthesesRedundantOrInvalid(ExpressionSyntax expression)
+        public static bool AreParenthesesRedundantOrInvalid(SyntaxNode node)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
 
-            switch (expression.Kind())
+            switch (node.Kind())
             {
                 case SyntaxKind.ParenthesizedExpression:
                 case SyntaxKind.Argument:
@@ -34,7 +34,7 @@ namespace Roslynator
                     return true;
             }
 
-            SyntaxNode parent = expression.Parent;
+            SyntaxNode parent = node.Parent;
 
             switch (parent?.Kind())
             {
@@ -42,7 +42,7 @@ namespace Roslynator
                 case SyntaxKind.Argument:
                 case SyntaxKind.AttributeArgument:
                 case SyntaxKind.QualifiedName:
-                case SyntaxKind.SimpleMemberAccessExpression:
+                //case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.InvocationExpression:
                 case SyntaxKind.ConditionalAccessExpression:
                 case SyntaxKind.ReturnStatement:
@@ -57,27 +57,27 @@ namespace Roslynator
                     {
                         var forEachStatement = (ForEachStatementSyntax)parent;
 
-                        return expression == forEachStatement.Expression
-                            || expression == forEachStatement.Type;
+                        return node == forEachStatement.Expression
+                            || node == forEachStatement.Type;
                     }
                 case SyntaxKind.WhileStatement:
-                    return expression == ((WhileStatementSyntax)parent).Condition;
+                    return node == ((WhileStatementSyntax)parent).Condition;
                 case SyntaxKind.DoStatement:
-                    return expression == ((DoStatementSyntax)parent).Condition;
+                    return node == ((DoStatementSyntax)parent).Condition;
                 case SyntaxKind.UsingStatement:
-                    return expression == ((UsingStatementSyntax)parent).Expression;
+                    return node == ((UsingStatementSyntax)parent).Expression;
                 case SyntaxKind.LockStatement:
-                    return expression == ((LockStatementSyntax)parent).Expression;
+                    return node == ((LockStatementSyntax)parent).Expression;
                 case SyntaxKind.IfStatement:
-                    return expression == ((IfStatementSyntax)parent).Condition;
+                    return node == ((IfStatementSyntax)parent).Condition;
                 case SyntaxKind.SwitchStatement:
-                    return expression == ((SwitchStatementSyntax)parent).Expression;
+                    return node == ((SwitchStatementSyntax)parent).Expression;
                 case SyntaxKind.ConditionalExpression:
                     {
                         var conditionalExpression = (ConditionalExpressionSyntax)parent;
 
-                        return expression == conditionalExpression.WhenTrue
-                            || expression == conditionalExpression.WhenFalse;
+                        return node == conditionalExpression.WhenTrue
+                            || node == conditionalExpression.WhenFalse;
                     }
             }
 

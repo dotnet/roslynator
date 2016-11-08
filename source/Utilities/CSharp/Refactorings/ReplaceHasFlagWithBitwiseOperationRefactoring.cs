@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,24 +11,29 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceHasFlagWithBitwiseOperationRefactoring
+    public static class ReplaceHasFlagWithBitwiseOperationRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
+        public const string Title = "Replace 'HasFlag' with bitwise operation";
+
+        public static bool CanRefactor(
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation)
-                && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
-                && invocation.ArgumentList?.Arguments.Count == 1
-                && context.SupportsSemanticModel)
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+                && invocation.ArgumentList?.Arguments.Count == 1)
             {
                 MemberAccessExpressionSyntax memberAccess = GetTopmostMemberAccessExpression((MemberAccessExpressionSyntax)invocation.Expression);
 
                 if (memberAccess.Name.Identifier.ValueText == "HasFlag")
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    ISymbol symbol = semanticModel
-                        .GetSymbolInfo(memberAccess, context.CancellationToken)
-                        .Symbol;
+                    ISymbol symbol = semanticModel.GetSymbol(memberAccess, cancellationToken);
 
                     if (symbol?.IsMethod() == true)
                     {
@@ -40,52 +46,69 @@ namespace Roslynator.CSharp.Refactorings
                             && methodSymbol.Parameters[0].Type.SpecialType == SpecialType.System_Enum
                             && methodSymbol.ContainingType?.SpecialType == SpecialType.System_Enum)
                         {
-                            context.RegisterRefactoring("Replace 'HasFlag' with bitwise operation",
-                                cancellationToken =>
-                                {
-                                    return RefactorAsync(
-                                        context.Document,
-                                        invocation,
-                                        cancellationToken);
-                                });
+                            return true;
                         }
                     }
                 }
             }
+
+            return false;
         }
 
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
 
-            ParenthesizedExpressionSyntax bitwiseAnd = ParenthesizedExpression(
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression,
                     invocation.ArgumentList.Arguments[0].Expression));
 
             if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
             {
-                ExpressionSyntax newNode = EqualsExpression(bitwiseAnd, ZeroLiteralExpression())
+                ExpressionSyntax newNode = EqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation.Parent)
                     .WithFormatterAnnotation();
 
-                SyntaxNode newRoot = oldRoot.ReplaceNode(invocation.Parent, newNode);
+                newNode = AddParenthesesIfNecessary(invocation.Parent, newNode);
+
+                SyntaxNode newRoot = root.ReplaceNode(invocation.Parent, newNode);
 
                 return document.WithSyntaxRoot(newRoot);
             }
             else
             {
-                ExpressionSyntax newNode = NotEqualsExpression(bitwiseAnd, ZeroLiteralExpression())
+                ExpressionSyntax newNode = NotEqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation)
                     .WithFormatterAnnotation();
 
-                SyntaxNode newRoot = oldRoot.ReplaceNode(invocation, newNode);
+                newNode = AddParenthesesIfNecessary(invocation, newNode);
+
+                SyntaxNode newRoot = root.ReplaceNode(invocation, newNode);
 
                 return document.WithSyntaxRoot(newRoot);
             }
+        }
+
+        private static ExpressionSyntax AddParenthesesIfNecessary(SyntaxNode node, ExpressionSyntax expression)
+        {
+            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(node))
+            {
+                expression = expression
+                   .WithoutTrivia()
+                   .Parenthesize(cutCopyTrivia: true);
+            }
+
+            return expression;
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

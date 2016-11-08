@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
@@ -21,7 +22,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLinqMethodChain,
                     DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty,
-                    DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty);
+                    DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty,
+                    DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlag);
             }
         }
 
@@ -52,6 +54,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty:
                         {
                             ReplaceCountMethodWithCountOrLengthPropertyRefactoring.RegisterCodeFix(context, diagnostic, invocation);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlag:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                ReplaceHasFlagWithBitwiseOperationRefactoring.Title,
+                                cancellationToken =>
+                                {
+                                    return ReplaceHasFlagWithBitwiseOperationRefactoring.RefactorAsync(
+                                        context.Document,
+                                        invocation,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

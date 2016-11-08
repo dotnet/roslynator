@@ -861,7 +861,7 @@ namespace Roslynator.CSharp
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
-         );
+        );
 
         public static readonly DiagnosticDescriptor RemoveEmptyRegion = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.RemoveEmptyRegion,
@@ -870,7 +870,7 @@ namespace Roslynator.CSharp
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
-         );
+        );
 
         public static readonly DiagnosticDescriptor AddEmptyLineAfterLastStatementInDoStatement = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
@@ -879,7 +879,7 @@ namespace Roslynator.CSharp
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: false
-         );
+        );
 
         public static readonly DiagnosticDescriptor RemoveFileWithNoCode = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.RemoveFileWithNoCode,
@@ -888,7 +888,7 @@ namespace Roslynator.CSharp
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
-         );
+        );
 
         public static readonly DiagnosticDescriptor DeclareUsingDirectiveOnTopLevel = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel,
@@ -897,6 +897,15 @@ namespace Roslynator.CSharp
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: false
-         );
-     }
+        );
+
+        public static readonly DiagnosticDescriptor UseBitwiseOperationInsteadOfHasFlag = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlag,
+            title: "Use bitwise operation instead of 'HasFlag' method.",
+            messageFormat: "Consider using bitwise operation instead of 'HasFlag' method.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+    }
 }
