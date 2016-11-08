@@ -50,5 +50,14 @@ namespace Roslynator.CSharp.Internal
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: true
          );
+
+        public static readonly DiagnosticDescriptor SimplifyGetTypeInfoInvocation = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.SimplifyGetTypeInfoInvocation,
+             title: "Simplify 'GetTypeInfo' method invocation'.",
+             messageFormat: "Consider simplifying 'GetTypeInfo' method invocation.",
+             category: DiagnosticCategories.General,
+             defaultSeverity: DiagnosticSeverity.Warning,
+             isEnabledByDefault: true
+         );
     }
 }

@@ -11,5 +11,6 @@ namespace Roslynator.CSharp.Internal
         public const string AddDiagnosticAnalyzerSuffix = Prefix + "9003";
         public const string AddCodeFixProviderSuffix = Prefix + "9004";
         public const string AddCodeRefactoringProviderSuffix = Prefix + "9005";
+        public const string SimplifyGetTypeInfoInvocation = Prefix + "9006";
     }
 }
