@@ -20,7 +20,7 @@ namespace Roslynator.CSharp
                 .Symbol;
         }
 
-        public static ITypeSymbol GetType(
+        public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp
                 .Type;
         }
 
-        public static ITypeSymbol GetConvertedType(
+        public static ITypeSymbol GetConvertedTypeSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
