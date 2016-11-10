@@ -166,7 +166,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (innerXml != null)
                 {
-                    string text = AddSlashes(innerXml);
+                    string text = AddSlashes(innerXml.TrimEnd());
 
                     SyntaxTriviaList triviaList = SyntaxFactory.ParseLeadingTrivia(text);
 
@@ -189,10 +189,19 @@ namespace Roslynator.CSharp.Refactorings
                 using (XmlReader reader = XmlReader.Create(sr, settings))
                 {
                     if (reader.Read()
-                        && reader.NodeType == XmlNodeType.Element
-                        && reader.Name == "member")
+                        && reader.NodeType == XmlNodeType.Element)
                     {
-                        return reader.ReadInnerXml();
+                        switch (reader.Name)
+                        {
+                            case "member":
+                            case "doc":
+                                return reader.ReadInnerXml();
+                            default:
+                                {
+                                    Debug.Assert(false, reader.Name);
+                                    break;
+                                }
+                        }
                     }
                 }
             }
