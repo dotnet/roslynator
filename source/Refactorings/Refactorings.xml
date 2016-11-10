@@ -142,7 +142,7 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
-  <Refactoring Id="CopyDocumentationCommentFromBaseMember" Title="Copy documentation comment from base member" ExtensionVersion="0.0.0">
+  <Refactoring Id="CopyDocumentationCommentFromBaseMember" Title="Copy documentation comment from base member" ExtensionVersion="1.1.2">
     <Syntaxes>
       <Syntax>constructor</Syntax>
       <Syntax>method</Syntax>
