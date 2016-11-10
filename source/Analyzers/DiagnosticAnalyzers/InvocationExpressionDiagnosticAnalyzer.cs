@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -29,7 +30,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
                     DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
                     DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
-                    DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod);
+                    DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,
+                    DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod);
             }
         }
 
@@ -81,6 +83,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             break;
                         }
                 }
+            }
+
+            if (ReplaceHasFlagWithBitwiseOperationRefactoring.CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod,
+                    invocation.GetLocation());
             }
         }
 

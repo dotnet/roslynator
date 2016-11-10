@@ -39,7 +39,24 @@ namespace Roslynator.CSharp.Refactorings
                 await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
             }
 
-            await ReplaceHasFlagWithBitwiseOperationRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation)
+                && context.SupportsSemanticModel)
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (ReplaceHasFlagWithBitwiseOperationRefactoring.CanRefactor(invocationExpression, semanticModel, context.CancellationToken))
+                {
+                    context.RegisterRefactoring(
+                        ReplaceHasFlagWithBitwiseOperationRefactoring.Title,
+                        cancellationToken =>
+                        {
+                            return ReplaceHasFlagWithBitwiseOperationRefactoring.RefactorAsync(
+                                context.Document,
+                                invocationExpression,
+                                cancellationToken);
+                        });
+                }
+            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod)
                 && context.SupportsSemanticModel)
