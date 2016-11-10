@@ -173,6 +173,12 @@
 
 ![Comment out statement](../../images/refactorings/CommentOutStatement.png)
 
+#### Copy documentation comment from base member
+
+* **Syntax**: constructor, method, property, indexer, event
+
+![Copy documentation comment from base member](../../images/refactorings/CopyDocumentationCommentFromBaseMember.png)
+
 #### Create condition from boolean expression
 
 * **Syntax**: return statement, yield return statement, expression statement

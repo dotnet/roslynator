@@ -117,6 +117,8 @@
 * RCS1092 - Add empty line after last statement in do statement
 * RCS1093 - Remove file with no code
 * RCS1094 - Declare using directive on top level
+* RCS1095 - Use C# 6.0 dictionary initializer
+* RCS1096 - Use bitwise operation instead of 'HasFlag' method
 
 ### List of Refactorings
 
@@ -145,6 +147,7 @@
 * [Collapse to initalizer](source/Refactorings/README.md#collapse-to-initalizer)
 * [Comment out member](source/Refactorings/README.md#comment-out-member)
 * [Comment out statement](source/Refactorings/README.md#comment-out-statement)
+* [Copy documentation comment from base member](source/Refactorings/README.md#copy-documentation-comment-from-base-member)
 * [Create condition from boolean expression](source/Refactorings/README.md#create-condition-from-boolean-expression)
 * [Duplicate argument](source/Refactorings/README.md#duplicate-argument)
 * [Duplicate member](source/Refactorings/README.md#duplicate-member)
