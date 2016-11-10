@@ -18,7 +18,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
         {
             return methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.ParameterList?.Parameters.Count == 0
-                && methodDeclaration.TypeParameterList == null;
+                && methodDeclaration.TypeParameterList == null
+                && !methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword);
         }
 
         public static async Task<Solution> RefactorAsync(
