@@ -78,6 +78,11 @@ namespace Roslynator.CSharp
             return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right);
         }
 
+        public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, operatorToken, right);
+        }
+
         public static ExpressionStatementSyntax SimpleAssignmentExpressionStatement(ExpressionSyntax left, ExpressionSyntax right)
         {
             return ExpressionStatement(SimpleAssignmentExpression(left, right));
@@ -287,6 +292,36 @@ namespace Roslynator.CSharp
         public static SyntaxToken ConstToken()
         {
             return Token(SyntaxKind.ConstKeyword);
+        }
+
+        public static SyntaxToken EqualsToken()
+        {
+            return Token(SyntaxKind.EqualsToken);
+        }
+
+        public static SyntaxToken ExclamationEqualsToken()
+        {
+            return Token(SyntaxKind.ExclamationEqualsToken);
+        }
+
+        public static SyntaxToken OpenBraceToken()
+        {
+            return Token(SyntaxKind.OpenBraceToken);
+        }
+
+        public static SyntaxToken CloseBraceToken()
+        {
+            return Token(SyntaxKind.CloseBraceToken);
+        }
+
+        public static SyntaxToken OpenBracketToken()
+        {
+            return Token(SyntaxKind.OpenBracketToken);
+        }
+
+        public static SyntaxToken CloseBracketToken()
+        {
+            return Token(SyntaxKind.CloseBracketToken);
         }
 
         private static SyntaxToken Token(SyntaxKind syntaxKind)
@@ -739,6 +774,13 @@ namespace Roslynator.CSharp
             return SwitchSection(
                 SingletonList<SwitchLabelSyntax>(DefaultSwitchLabel()),
                 statements);
+        }
+
+        public static ImplicitElementAccessSyntax ImplicitElementAccess(ExpressionSyntax expression)
+        {
+            return SyntaxFactory.ImplicitElementAccess(
+                BracketedArgumentList(
+                    SingletonSeparatedList(SyntaxFactory.Argument(expression))));
         }
     }
 }

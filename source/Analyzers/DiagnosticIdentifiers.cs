@@ -100,5 +100,6 @@ namespace Roslynator.CSharp
         public const string AddEmptyLineAfterLastStatementInDoStatement = Prefix + "1092";
         public const string RemoveFileWithNoCode = Prefix + "1093";
         public const string DeclareUsingDirectiveOnTopLevel = Prefix + "1094";
+        public const string UseCSharp6DictionaryInitializer = Prefix + "1095";
     }
 }

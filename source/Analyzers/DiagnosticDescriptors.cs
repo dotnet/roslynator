@@ -898,5 +898,14 @@ namespace Roslynator.CSharp
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: false
          );
+
+        public static readonly DiagnosticDescriptor UseCSharp6DictionaryInitializer = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCSharp6DictionaryInitializer,
+            title: "Use C# 6.0 dictionary initializer.",
+            messageFormat: "Consider using C# 6.0 dictionary initializer.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
      }
 }
