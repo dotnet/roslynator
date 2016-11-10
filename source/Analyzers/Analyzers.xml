@@ -828,4 +828,22 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="UseCSharp6DictionaryInitializer" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1095</Id>
+    <Title>Use C# 6.0 dictionary initializer.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseBitwiseOperationInsteadOfHasFlagMethod" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1096</Id>
+    <Title>Use bitwise operation instead of 'HasFlag' method.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>

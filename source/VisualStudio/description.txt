@@ -132,6 +132,8 @@
         <li>RCS1092 - Add empty line after last statement in do statement.</li>
         <li>RCS1093 - Remove file with no code.</li>
         <li>RCS1094 - Declare using directive on top level.</li>
+        <li>RCS1095 - Use C# 6.0 dictionary initializer.</li>
+        <li>RCS1096 - Use bitwise operation instead of 'HasFlag' method.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
