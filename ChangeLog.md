@@ -1,3 +1,18 @@
+### 1.1.2 (2016-11-10)
+
+#### Analyzers
+
+##### New Analyzers
+
+* UseCSharp6DictionaryInitializer
+* UseBitwiseOperationInsteadOfHasFlagMethod
+
+#### Refactorings
+
+##### New Refactorings
+
+* CopyDocumentationCommentFromBaseMember
+
 ### 1.1.1 (2016-11-06)
 
 #### Analyzers

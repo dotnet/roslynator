@@ -1,6 +1,1 @@
-﻿#### Analyzers
-
-##### New Analyzers
-
-* UseCSharp6DictionaryInitializer
-* UseBitwiseOperationInsteadOfHasFlagMethod
+﻿
