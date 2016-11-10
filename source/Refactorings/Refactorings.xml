@@ -142,6 +142,15 @@
     </Syntaxes>
     <Scope>opening or closing brace</Scope>
   </Refactoring>
+  <Refactoring Id="CopyDocumentationCommentFromBaseMember" Title="Copy documentation comment from base member" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>constructor</Syntax>
+      <Syntax>method</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+      <Syntax>event</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="CreateConditionFromBooleanExpression" Title="Create condition from boolean expression" ExtensionVersion="0.94.0">
     <Syntaxes>
       <Syntax>return statement</Syntax>

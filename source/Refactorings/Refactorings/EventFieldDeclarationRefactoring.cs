@@ -41,6 +41,12 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken);
                     });
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+                && eventFieldDeclaration.Span.Contains(context.Span))
+            {
+                await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
+            }
         }
     }
 }

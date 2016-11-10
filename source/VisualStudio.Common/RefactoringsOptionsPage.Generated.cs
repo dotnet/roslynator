@@ -37,6 +37,7 @@ namespace Roslynator.VisualStudio
             CollapseToInitializer = true;
             CommentOutMember = true;
             CommentOutStatement = true;
+            CopyDocumentationCommentFromBaseMember = true;
             CreateConditionFromBooleanExpression = true;
             DuplicateArgument = true;
             DuplicateMember = true;
@@ -192,6 +193,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.CollapseToInitializer, CollapseToInitializer);
             SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
             SetIsEnabled(RefactoringIdentifiers.CommentOutStatement, CommentOutStatement);
+            SetIsEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember, CopyDocumentationCommentFromBaseMember);
             SetIsEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression, CreateConditionFromBooleanExpression);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
@@ -565,6 +567,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement\r\nScope: opening or closing brace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CommentOutStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Copy documentation comment from base member")]
+        [Description("Syntax: constructor, method, property, indexer, event")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CopyDocumentationCommentFromBaseMember
         {
             get;
             set;

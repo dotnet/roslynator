@@ -106,6 +106,12 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, propertyDeclaration).ConfigureAwait(false);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)
                 && context.SupportsSemanticModel
                 && propertyDeclaration.Type != null

@@ -111,6 +111,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#comment-out-statement">Comment out statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#copy-documentation-comment-from-base-member">Copy documentation comment from base member</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#create-condition-from-boolean-expression">Create condition from boolean expression</a>
         </li>
         <li>

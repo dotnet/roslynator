@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -55,6 +56,12 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Make method abstract",
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+                && methodDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
             await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration).ConfigureAwait(false);

@@ -31,6 +31,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CollapseToInitializer = "CollapseToInitializer";
         public const string CommentOutMember = "CommentOutMember";
         public const string CommentOutStatement = "CommentOutStatement";
+        public const string CopyDocumentationCommentFromBaseMember = "CopyDocumentationCommentFromBaseMember";
         public const string CreateConditionFromBooleanExpression = "CreateConditionFromBooleanExpression";
         public const string DuplicateArgument = "DuplicateArgument";
         public const string DuplicateMember = "DuplicateMember";

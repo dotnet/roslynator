@@ -41,6 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="Refactorings\AddToMethodInvocationRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />

@@ -116,12 +116,12 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
-                        ComputeRefactorings(context, (ConstructorDeclarationSyntax)member);
+                        await ConstructorDeclarationRefactoring.ComputeRefactoringsAsync(context, (ConstructorDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        IndexerDeclarationRefactoring.ComputeRefactorings(context, (IndexerDeclarationSyntax)member);
+                        await IndexerDeclarationRefactoring.ComputeRefactoringsAsync(context, (IndexerDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.PropertyDeclaration:
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.EventDeclaration:
                     {
-                        EventDeclarationRefactoring.ComputeRefactorings(context, (EventDeclarationSyntax)member);
+                        await EventDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.EventFieldDeclaration:
@@ -154,20 +154,6 @@ namespace Roslynator.CSharp.Refactorings
                         await EventFieldDeclarationRefactoring.ComputeRefactoringsAsync(context, (EventFieldDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
-            }
-        }
-
-        private static void ComputeRefactorings(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && constructorDeclaration.Span.Contains(context.Span)
-                && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark constructor as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, constructorDeclaration, cancellationToken));
-
-                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)constructorDeclaration.Parent);
             }
         }
 
