@@ -403,6 +403,18 @@ namespace Roslynator.CSharp
                 constructorDeclaration.ParameterList?.Span.End ?? constructorDeclaration.Identifier.Span.End);
         }
 
+        public static TextSpan HeaderSpanIncludingInitializer(this ConstructorDeclarationSyntax constructorDeclaration)
+        {
+            if (constructorDeclaration == null)
+                throw new ArgumentNullException(nameof(constructorDeclaration));
+
+            return TextSpan.FromBounds(
+                constructorDeclaration.Span.Start,
+                constructorDeclaration.Initializer?.Span.End
+                    ?? constructorDeclaration.ParameterList?.Span.End
+                    ?? constructorDeclaration.Identifier.Span.End);
+        }
+
         public static TextSpan HeaderSpan(this ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
             if (operatorDeclaration == null)

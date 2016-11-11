@@ -106,8 +106,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ConstructorInitializerSyntax initializer = constructorDeclaration.Initializer;
 
-                if (initializer?.IsKind(SyntaxKind.BaseConstructorInitializer) == true
-                    && initializer.Span.Contains(context.Span))
+                if (initializer?.IsKind(SyntaxKind.BaseConstructorInitializer) == true)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
