@@ -119,6 +119,9 @@
 * RCS1094 - Declare using directive on top level
 * RCS1095 - Use C# 6.0 dictionary initializer
 * RCS1096 - Use bitwise operation instead of 'HasFlag' method
+* RCS1097 - Remove redundant 'ToString' call
+* RCS1098 - Avoid 'null' on the left side of a binary expression
+* RCS1099 - Default label should be last label in switch section
 
 ### List of Refactorings
 
@@ -182,6 +185,7 @@
 * [Introduce and initialize field](source/Refactorings/README.md#introduce-and-initialize-field)
 * [Introduce and initialize property](source/Refactorings/README.md#introduce-and-initialize-property)
 * [Introduce constructor](source/Refactorings/README.md#introduce-constructor)
+* [Introduce field to lock on](source/Refactorings/README.md#introduce-field-to-lock-on)
 * [Make member abstract](source/Refactorings/README.md#make-member-abstract)
 * [Mark all members as static](source/Refactorings/README.md#mark-all-members-as-static)
 * [Mark member as static](source/Refactorings/README.md#mark-member-as-static)

@@ -411,6 +411,13 @@
 
 ![Introduce constructor](../../images/refactorings/IntroduceConstructor.png)
 
+#### Introduce field to lock on
+
+* **Syntax**: lock statement
+* **Scope**: missing expression
+
+![Introduce field to lock on](../../images/refactorings/IntroduceFieldToLockOn.png)
+
 #### Make member abstract
 
 * **Syntax**: non-abstract indexer/method/property in abstract class
