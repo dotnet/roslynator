@@ -457,7 +457,7 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
-  <Refactoring Id="IntroduceFieldToLockOn" Title="Introduce field to lock on" ExtensionVersion="0.0.0">
+  <Refactoring Id="IntroduceFieldToLockOn" Title="Introduce field to lock on" ExtensionVersion="1.1.3">
     <Syntaxes>
       <Syntax>lock statement</Syntax>
     </Syntaxes>

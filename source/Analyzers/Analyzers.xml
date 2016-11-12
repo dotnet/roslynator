@@ -846,7 +846,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantToStringCall" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantToStringCall" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
     <Id>RCS1097</Id>
     <Title>Remove redundant 'ToString' call.</Title>
     <Category>General</Category>
@@ -855,7 +855,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
     <Id>RCS1098</Id>
     <Title>Avoid 'null' on the left side of a binary expression.</Title>
     <Category>General</Category>
@@ -864,7 +864,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DefaultLabelShouldBeLastLabelInSwitchSection" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DefaultLabelShouldBeLastLabelInSwitchSection" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
     <Id>RCS1099</Id>
     <Title>Default label should be last label in switch section.</Title>
     <Category>General</Category>
