@@ -16,6 +16,11 @@ namespace Roslynator
 {
     public static class SyntaxNodeExtensions
     {
+        public static bool IsNoneKind(this SyntaxNode node)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.None);
+        }
+
         public static TypeDeclarationSyntax GetContainingType(this SyntaxNode node)
         {
             if (node == null)

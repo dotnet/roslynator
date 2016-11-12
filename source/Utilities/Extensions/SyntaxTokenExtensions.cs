@@ -16,6 +16,11 @@ namespace Roslynator
 {
     public static class SyntaxTokenExtensions
     {
+        public static bool IsNoneKind(this SyntaxToken token)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(token, SyntaxKind.None);
+        }
+
         public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)
