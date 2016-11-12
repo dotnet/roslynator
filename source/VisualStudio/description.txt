@@ -134,6 +134,9 @@
         <li>RCS1094 - Declare using directive on top level.</li>
         <li>RCS1095 - Use C# 6.0 dictionary initializer.</li>
         <li>RCS1096 - Use bitwise operation instead of 'HasFlag' method.</li>
+        <li>RCS1097 - Remove redundant 'ToString' call.</li>
+        <li>RCS1098 - Avoid 'null' on the left side of a binary expression.</li>
+        <li>RCS1099 - Default label should be last label in switch section.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
