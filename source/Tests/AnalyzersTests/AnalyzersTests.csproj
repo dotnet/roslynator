@@ -41,6 +41,7 @@
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
+    <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="UseBitwiseOperationInsteadOfHasFlag.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
     <Compile Include="UseCSharp6DictionaryInitializer.cs" />

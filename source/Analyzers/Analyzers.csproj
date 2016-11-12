@@ -49,6 +49,7 @@
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
+    <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
     <Compile Include="Refactorings\MoveUsingDirectiveToTopLevelRefactoring.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />

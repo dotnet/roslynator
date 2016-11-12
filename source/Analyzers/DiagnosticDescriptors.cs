@@ -916,5 +916,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantToStringCall = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantToStringCall,
+            title: "Remove redundant 'ToString' call.",
+            messageFormat: "Consider removing redundant 'ToString' call.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

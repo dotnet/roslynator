@@ -102,5 +102,6 @@ namespace Roslynator.CSharp
         public const string DeclareUsingDirectiveOnTopLevel = Prefix + "1094";
         public const string UseCSharp6DictionaryInitializer = Prefix + "1095";
         public const string UseBitwiseOperationInsteadOfHasFlagMethod = Prefix + "1096";
+        public const string RemoveRedundantToStringCall = Prefix + "1097";
     }
 }

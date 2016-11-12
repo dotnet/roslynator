@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.SimplifyLinqMethodChain,
                     DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty,
                     DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty,
-                    DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod);
+                    DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod,
+                    DiagnosticIdentifiers.RemoveRedundantToStringCall);
             }
         }
 
@@ -63,6 +64,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 cancellationToken =>
                                 {
                                     return ReplaceHasFlagWithBitwiseOperationRefactoring.RefactorAsync(
+                                        context.Document,
+                                        invocation,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantToStringCall:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant 'ToString' call",
+                                cancellationToken =>
+                                {
+                                    return RemoveRedundantToStringCallRefactoring.RefactorAsync(
                                         context.Document,
                                         invocation,
                                         cancellationToken);

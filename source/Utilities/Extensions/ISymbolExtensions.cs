@@ -405,6 +405,11 @@ namespace Roslynator
             return typeSymbol?.SpecialType == SpecialType.System_String;
         }
 
+        public static bool IsObject(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_Object;
+        }
+
         public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
