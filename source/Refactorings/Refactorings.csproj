@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\LockStatementRefactoring.cs" />
     <Compile Include="Refactorings\CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="Refactorings\AddToMethodInvocationRefactoring.cs" />

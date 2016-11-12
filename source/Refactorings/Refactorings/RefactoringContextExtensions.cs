@@ -127,6 +127,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fUsingStatement = false;
             bool fWhileStatement = false;
             bool fYieldReturnStatement = false;
+            bool fLockStatement = false;
             bool fBlock = false;
             bool fStatementRefactoring = false;
 
@@ -504,6 +505,13 @@ namespace Roslynator.CSharp.Refactorings
                                 await YieldReturnStatementRefactoring.ComputeRefactoringsAsync(context, yieldStatement).ConfigureAwait(false);
                                 fYieldReturnStatement = true;
                             }
+                        }
+
+                        if (!fLockStatement
+                            && kind == SyntaxKind.LockStatement)
+                        {
+                            LockStatementRefactoring.ComputeRefactorings(context, (LockStatementSyntax)node);
+                            fLockStatement = true;
                         }
 
                         if (!fBlock

@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="AddToMethodInvocationRefactoring.cs" />
     <Compile Include="CopyCommentFromBaseRefactoring.cs" />
+    <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />

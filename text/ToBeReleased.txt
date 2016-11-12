@@ -5,3 +5,9 @@
 * RemoveRedundantToStringCall
 * AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression
 * DefaultLabelShouldBeLastLabelInSwitchSection
+
+#### Refactorings
+
+##### New Refactorings
+
+* IntroduceFieldToLockOn

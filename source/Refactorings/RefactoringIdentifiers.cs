@@ -66,6 +66,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string IntroduceAndInitializeField = "IntroduceAndInitializeField";
         public const string IntroduceAndInitializeProperty = "IntroduceAndInitializeProperty";
         public const string IntroduceConstructor = "IntroduceConstructor";
+        public const string IntroduceFieldToLockOn = "IntroduceFieldToLockOn";
         public const string MakeMemberAbstract = "MakeMemberAbstract";
         public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";

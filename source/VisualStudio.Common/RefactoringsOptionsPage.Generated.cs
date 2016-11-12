@@ -72,6 +72,7 @@ namespace Roslynator.VisualStudio
             IntroduceAndInitializeField = true;
             IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
+            IntroduceFieldToLockOn = true;
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
@@ -228,6 +229,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField, IntroduceAndInitializeField);
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn, IntroduceFieldToLockOn);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
@@ -917,6 +919,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: field, property")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceConstructor
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Introduce field to lock on")]
+        [Description("Syntax: lock statement\r\nScope: missing expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool IntroduceFieldToLockOn
         {
             get;
             set;

@@ -457,6 +457,12 @@
     </Syntaxes>
     <Scope></Scope>
   </Refactoring>
+  <Refactoring Id="IntroduceFieldToLockOn" Title="Introduce field to lock on" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>lock statement</Syntax>
+    </Syntaxes>
+    <Scope>missing expression</Scope>
+  </Refactoring>
   <Refactoring Id="MakeMemberAbstract" Title="Make member abstract" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>non-abstract indexer/method/property in abstract class</Syntax>

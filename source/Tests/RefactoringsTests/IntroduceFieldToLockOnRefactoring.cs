@@ -3,12 +3,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Roslynator.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class AvoidLockingOnPubliclyAccessibleInstance
+    public class AvoidLockingOnPubliclyAIntroduceFieldToLockOnRefactoring
     {
-        public void MethodName()
+        public void Foo()
         {
+            lock ()
+            {
+            }
+
             lock (this)
             {
             }
@@ -17,7 +21,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             IEnumerable<object> q = items.Select(f =>
             {
-                lock (this)
+                lock ()
                 {
                 }
 
@@ -25,9 +29,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
             });
         }
 
-        public static void StaticMethodName()
+        public static void StaticFoo()
         {
-            lock (typeof(object))
+            lock ()
             {
             }
         }
