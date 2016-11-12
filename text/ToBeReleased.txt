@@ -1,13 +1,1 @@
-﻿#### Analyzers
-
-##### New Analyzers
-
-* RemoveRedundantToStringCall
-* AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression
-* DefaultLabelShouldBeLastLabelInSwitchSection
-
-#### Refactorings
-
-##### New Refactorings
-
-* IntroduceFieldToLockOn
+﻿

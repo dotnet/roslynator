@@ -1,3 +1,19 @@
+### 1.1.3 (2016-11-12)
+
+#### Analyzers
+
+##### New Analyzers
+
+* RemoveRedundantToStringCall
+* AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression
+* DefaultLabelShouldBeLastLabelInSwitchSection
+
+#### Refactorings
+
+##### New Refactorings
+
+* IntroduceFieldToLockOn
+
 ### 1.1.2 (2016-11-10)
 
 #### Analyzers
