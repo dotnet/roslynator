@@ -104,5 +104,6 @@ namespace Roslynator.CSharp
         public const string UseBitwiseOperationInsteadOfHasFlagMethod = Prefix + "1096";
         public const string RemoveRedundantToStringCall = Prefix + "1097";
         public const string AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = Prefix  + "1098";
+        public const string DefaultLabelShouldBeLastLabelInSwitchSection = Prefix + "1099";
     }
 }

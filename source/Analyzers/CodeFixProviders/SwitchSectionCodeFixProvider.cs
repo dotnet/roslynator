@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -17,7 +18,14 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class SwitchSectionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                  DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
+                  DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,18 +40,70 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (switchSection == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove redundant switch section",
-                cancellationToken =>
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
                 {
-                    return RemoveRedundantSwitchSectionAsync(
-                        context.Document,
-                        switchSection,
-                        cancellationToken);
-                },
-                DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection + EquivalenceKeySuffix);
+                    case DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant switch section",
+                                cancellationToken =>
+                                {
+                                    return RemoveRedundantSwitchSectionAsync(
+                                        context.Document,
+                                        switchSection,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Move default label to the last position",
+                                cancellationToken =>
+                                {
+                                    return MoveDefaultLabelToLastPositionAsync(
+                                        context.Document,
+                                        switchSection,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static async Task<Document> MoveDefaultLabelToLastPositionAsync(
+            Document document,
+            SwitchSectionSyntax switchSection,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
+
+            SwitchLabelSyntax defaultLabel = labels.First(f => f.IsKind(SyntaxKind.DefaultSwitchLabel));
+
+            int index = labels.IndexOf(defaultLabel);
+
+            SwitchLabelSyntax lastLabel = labels.Last();
+
+            labels = labels.Replace(lastLabel, defaultLabel.WithTriviaFrom(lastLabel));
+
+            labels = labels.Replace(labels[index], lastLabel.WithTriviaFrom(defaultLabel));
+
+            SwitchSectionSyntax newSwitchSection = switchSection.WithLabels(labels);
+
+            SyntaxNode newRoot = root.ReplaceNode(switchSection, newSwitchSection);
+
+            return document.WithSyntaxRoot(newRoot);
         }
 
         private static async Task<Document> RemoveRedundantSwitchSectionAsync(

@@ -4,3 +4,4 @@
 
 * RemoveRedundantToStringCall
 * AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression
+* DefaultLabelShouldBeLastLabelInSwitchSection
