@@ -14,7 +14,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class BinaryExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.FormatBinaryOperatorOnNextLine);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
+                    DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -51,18 +58,31 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
-            if (binaryExpression.Left != null
-                && binaryExpression.Right != null
-                && !binaryExpression.Left.IsMissing
-                && !binaryExpression.Right.IsMissing
-                && !IsStringConcatenation(context, binaryExpression)
-                && binaryExpression.Left.GetTrailingTrivia().All(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
-                && CheckOperatorTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia)
-                && binaryExpression.Right.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            ExpressionSyntax left = binaryExpression.Left;
+            ExpressionSyntax right = binaryExpression.Right;
+
+            if (left?.IsMissing == false
+                && right?.IsMissing == false)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
-                    binaryExpression.OperatorToken.GetLocation());
+                if (!IsStringConcatenation(context, binaryExpression)
+                    && left.GetTrailingTrivia().All(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                    && CheckOperatorTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia)
+                    && right.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
+                        binaryExpression.OperatorToken.GetLocation());
+                }
+
+                if (binaryExpression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression)
+                    && left.IsKind(SyntaxKind.NullLiteralExpression)
+                    && !right.IsKind(SyntaxKind.NullLiteralExpression)
+                    && !binaryExpression.SpanContainsDirectives())
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
+                        left.GetLocation());
+                }
             }
         }
 

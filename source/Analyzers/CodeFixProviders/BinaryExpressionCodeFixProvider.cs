@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
-                    DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod);
+                    DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
+                    DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression);
             }
         }
 
@@ -66,6 +67,17 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod:
                         {
                             ReplaceCountMethodWithAnyMethodRefactoring.RegisterCodeFix(context, diagnostic, binaryExpression);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Swap '{binaryExpression.Left}' and '{binaryExpression.Right}'",
+                                cancellationToken => SwapExpressionsInBinaryExpressionRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+
                             break;
                         }
                 }

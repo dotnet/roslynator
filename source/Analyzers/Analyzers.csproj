@@ -54,6 +54,7 @@
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
     <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
+    <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ComplexElementInitializerDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
