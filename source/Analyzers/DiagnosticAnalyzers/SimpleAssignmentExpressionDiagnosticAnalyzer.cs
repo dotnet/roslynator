@@ -46,7 +46,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (left?.IsMissing == false
                 && right?.IsMissing == false)
             {
-                if (SupportsCompoundAssignment(right))
+                if (!assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
+                    && SupportsCompoundAssignment(right))
                 {
                     var binaryExpression = (BinaryExpressionSyntax)right;
                     ExpressionSyntax binaryLeft = binaryExpression.Left;
