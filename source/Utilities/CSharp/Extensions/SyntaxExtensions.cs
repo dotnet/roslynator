@@ -739,6 +739,14 @@ namespace Roslynator.CSharp
                 interfaceDeclaration.Identifier.Span.End);
         }
 
+        public static bool IsVerbatim(this InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            if (interpolatedString == null)
+                throw new ArgumentNullException(nameof(interpolatedString));
+
+            return interpolatedString.StringStartToken.ValueText.Contains("@");
+        }
+
         public static InvocationExpressionSyntax WithArgumentList(
             this InvocationExpressionSyntax invocationExpression,
             params ArgumentSyntax[] arguments)

@@ -543,5 +543,32 @@ namespace Roslynator
 
             return null;
         }
+
+        public static string GetStringLiteralInnerText(LiteralExpressionSyntax literalExpression)
+        {
+            if (literalExpression == null)
+                throw new ArgumentNullException(nameof(literalExpression));
+
+            string s = literalExpression.Token.Text;
+
+            if (s.StartsWith("@", StringComparison.Ordinal))
+            {
+                if (s.StartsWith("@\"", StringComparison.Ordinal))
+                    s = s.Substring(2);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+            else
+            {
+                if (s.StartsWith("\"", StringComparison.Ordinal))
+                    s = s.Substring(1);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+
+            return s;
+        }
     }
 }

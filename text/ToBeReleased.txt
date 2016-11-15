@@ -5,3 +5,10 @@
 * FormatDocumentationSummaryOnSingleLine
 * FormatDocumentationSummaryOnMultipleLines
 * MarkClassAsStatic
+* MergeInterpolationIntoInterpolatedString
+
+#### Refactorings
+
+##### New Refactorings
+
+* MergeInterpolationIntoInterpolatedString

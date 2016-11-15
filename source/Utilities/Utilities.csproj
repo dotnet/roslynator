@@ -43,6 +43,7 @@
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RemoveUsingAliasDirective\RemoveUsingAliasDirectiveRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />

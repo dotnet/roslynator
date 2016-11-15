@@ -342,6 +342,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-if-statements">Merge if statements</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-interpolation-into-interpolated-string">Merge interpolation into interpolated string</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-local-declarations">Merge local declarations</a>
         </li>
         <li>

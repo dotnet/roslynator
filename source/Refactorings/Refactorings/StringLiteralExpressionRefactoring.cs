@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.Span.IsBetweenSpans(literalExpression))
             {
-                string text = GetTextWithoutEnclosingChars(literalExpression);
+                string text = SyntaxUtility.GetStringLiteralInnerText(literalExpression);
 
                 if (literalExpression.IsVerbatimStringLiteral())
                 {
@@ -129,30 +129,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return -1;
-        }
-
-        private static string GetTextWithoutEnclosingChars(LiteralExpressionSyntax literalExpression)
-        {
-            string s = literalExpression.Token.Text;
-
-            if (s.StartsWith("@", StringComparison.Ordinal))
-            {
-                if (s.StartsWith("@\"", StringComparison.Ordinal))
-                    s = s.Substring(2);
-
-                if (s.EndsWith("\"", StringComparison.Ordinal))
-                    s = s.Remove(s.Length - 1);
-            }
-            else
-            {
-                if (s.StartsWith("\"", StringComparison.Ordinal))
-                    s = s.Substring(1);
-
-                if (s.EndsWith("\"", StringComparison.Ordinal))
-                    s = s.Remove(s.Length - 1);
-            }
-
-            return s;
         }
     }
 }

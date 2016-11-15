@@ -989,5 +989,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MergeInterpolationIntoInterpolatedString = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString,
+            title: "Merge interpolation into interpolated string.",
+            messageFormat: "Consider merging interpolation into interpolated string.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

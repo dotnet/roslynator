@@ -40,6 +40,7 @@
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
+    <Compile Include="MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="RemoveInterpolationRefactoring.cs" />
     <Compile Include="RemoveRegionRefactoring.cs" />

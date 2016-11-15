@@ -73,6 +73,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeAssignmentExpressionWithReturnStatement = "MergeAssignmentExpressionWithReturnStatement";
         public const string MergeAttributes = "MergeAttributes";
         public const string MergeIfStatements = "MergeIfStatements";
+        public const string MergeInterpolationIntoInterpolatedString = "MergeInterpolationIntoInterpolatedString";
         public const string MergeLocalDeclarations = "MergeLocalDeclarations";
         public const string MergeStringLiterals = "MergeStringLiterals";
         public const string MergeStringLiteralsIntoMultilineStringLiteral = "MergeStringLiteralsIntoMultilineStringLiteral";

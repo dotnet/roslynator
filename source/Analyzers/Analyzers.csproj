@@ -51,6 +51,8 @@
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
+    <Compile Include="CodeFixProviders\InterpolationCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\InterpolationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnMultipleLinesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnSingleLineDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\FormatSummary\FormatSummaryOnMultipleLinesRefactoring.cs" />

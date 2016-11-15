@@ -8,6 +8,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolationSyntax interpolation)
         {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString)
+                && MergeInterpolationIntoInterpolatedStringRefactoring.CanRefactor(interpolation))
+            {
+                string innerText = SyntaxUtility.GetStringLiteralInnerText((LiteralExpressionSyntax)interpolation.Expression);
+
+                context.RegisterRefactoring(
+                    $"Merge '{innerText}' into interpolated string",
+                    cancellationToken => MergeInterpolationIntoInterpolatedStringRefactoring.RefactorAsync(context.Document, interpolation, cancellationToken));
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveInterpolation)
                 && (interpolation.OpenBraceToken.Span.Contains(context.Span)
                     || interpolation.CloseBraceToken.Span.Contains(context.Span)))
