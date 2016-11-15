@@ -455,6 +455,12 @@
 
 ![Merge if statements](../../images/refactorings/MergeIfStatements.png)
 
+#### Merge interpolation into interpolated string
+
+* **Syntax**: interpolation
+
+![Merge interpolation into interpolated string](../../images/refactorings/MergeInterpolationIntoInterpolatedString.png)
+
 #### Merge local declarations
 
 * **Syntax**: local declarations with same type

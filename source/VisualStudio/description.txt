@@ -137,6 +137,12 @@
         <li>RCS1097 - Remove redundant 'ToString' call.</li>
         <li>RCS1098 - Avoid 'null' on the left side of a binary expression.</li>
         <li>RCS1099 - Default label should be last label in switch section.</li>
+        <li>RCS1100 - Format documentation summary on a single line.</li>
+        <li>RCS1101 - Format documentation summary on multiple lines.</li>
+        <li>RCS1102 - Mark class as static.</li>
+        <li>RCS1103 - Simplify if-else statement.</li>
+        <li>RCS1104 - Simplify conditional expression.</li>
+        <li>RCS1105 - Merge interpolation into interpolated string.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>

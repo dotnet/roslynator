@@ -122,6 +122,12 @@
 * RCS1097 - Remove redundant 'ToString' call
 * RCS1098 - Avoid 'null' on the left side of a binary expression
 * RCS1099 - Default label should be last label in switch section
+* RCS1100 - Format documentation summary on a single line
+* RCS1101 - Format documentation summary on multiple lines
+* RCS1102 - Mark class as static
+* RCS1103 - Simplify if-else statement
+* RCS1104 - Simplify conditional expression
+* RCS1105 - Merge interpolation into interpolated string
 
 ### List of Refactorings
 
@@ -192,6 +198,7 @@
 * [Merge assignment expression with return statement](source/Refactorings/README.md#merge-assignment-expression-with-return-statement)
 * [Merge attributes](source/Refactorings/README.md#merge-attributes)
 * [Merge if statements](source/Refactorings/README.md#merge-if-statements)
+* [Merge interpolation into interpolated string](source/Refactorings/README.md#merge-interpolation-into-interpolated-string)
 * [Merge local declarations](source/Refactorings/README.md#merge-local-declarations)
 * [Merge string literals](source/Refactorings/README.md#merge-string-literals)
 * [Merge string literals into multiline string literal](source/Refactorings/README.md#merge-string-literals-into-multiline-string-literal)

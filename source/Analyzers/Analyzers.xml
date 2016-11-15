@@ -873,4 +873,58 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="FormatDocumentationSummaryOnSingleLine" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1100</Id>
+    <Title>Format documentation summary on a single line.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="FormatDocumentationSummaryOnMultipleLines" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1101</Id>
+    <Title>Format documentation summary on multiple lines.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MarkClassAsStatic" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1102</Id>
+    <Title>Mark class as static.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyIfElseStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1103</Id>
+    <Title>Simplify if-else statement.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyConditionalExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1104</Id>
+    <Title>Simplify conditional expression.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MergeInterpolationIntoInterpolatedString" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1105</Id>
+    <Title>Merge interpolation into interpolated string.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
