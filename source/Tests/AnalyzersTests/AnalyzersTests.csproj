@@ -42,6 +42,8 @@
     <Compile Include="DefaultSwitchLabelShouldBeLastLabelInSection.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
+    <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
+    <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="SimplifyAssignmentExpression.cs" />

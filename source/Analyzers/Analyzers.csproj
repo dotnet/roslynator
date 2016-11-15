@@ -50,6 +50,12 @@
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\FormatSummaryOnMultipleLinesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\FormatSummaryOnSingleLineDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\FormatSummary\FormatSummaryOnMultipleLinesRefactoring.cs" />
+    <Compile Include="Refactorings\FormatSummary\FormatSummaryOnSingleLineRefactoring.cs" />
+    <Compile Include="Refactorings\FormatSummary\FormatSummaryRefactoring.cs" />
+    <Compile Include="CodeFixProviders\SingleLineDocumentationCommentTriviaCodeFixProvider.cs" />
     <Compile Include="Refactorings\MoveUsingDirectiveToTopLevelRefactoring.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />

@@ -944,5 +944,23 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
+            title: "Format documentation summary on a single line.",
+            messageFormat: "Consider formatting documentation summary on a single line.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
+
+        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
+            title: "Format documentation summary on multiple lines.",
+            messageFormat: "Consider formatting documentation summary on multiple lines.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
