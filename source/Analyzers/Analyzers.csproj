@@ -60,6 +60,7 @@
     <Compile Include="Refactorings\MoveUsingDirectiveToTopLevelRefactoring.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
+    <Compile Include="Refactorings\SimplifyIfElseStatementRefactoring.cs" />
     <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ComplexElementInitializerDiagnosticAnalyzer.cs" />

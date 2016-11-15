@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analyzers;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -24,7 +25,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
                     DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut);
+                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut,
+                    DiagnosticDescriptors.SimplifyIfElseStatement);
             }
         }
 
@@ -70,6 +72,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             MergeIfStatementWithNestedIfStatementAnalyzer.Analyze(context, ifStatement);
 
             SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
+
+            if (SimplifyIfElseStatementRefactoring.CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
+                && !ifStatement.SpanContainsDirectives())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyIfElseStatement,
+                    ifStatement.GetLocation());
+            }
         }
 
         private static void RemoveBracesFromIfElseFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)

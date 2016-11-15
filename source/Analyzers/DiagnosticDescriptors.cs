@@ -971,5 +971,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor SimplifyIfElseStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SimplifyIfElseStatement,
+            title: "Simplify if-else statement.",
+            messageFormat: "Consider simplifying if-else statement.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

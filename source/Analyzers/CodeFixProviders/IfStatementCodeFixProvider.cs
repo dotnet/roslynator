@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -17,7 +18,14 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class IfStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
+                    DiagnosticIdentifiers.SimplifyIfElseStatement);
+            }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -30,18 +38,44 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (ifStatement == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Merge if with nested if",
-                cancellationToken =>
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
                 {
-                    return MergeIfStatementWithNestedIfStatementAsync(
-                        context.Document,
-                        ifStatement,
-                        cancellationToken);
-                },
-                DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement + EquivalenceKeySuffix);
+                    case DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Merge if with nested if",
+                                cancellationToken =>
+                                {
+                                    return MergeIfStatementWithNestedIfStatementAsync(
+                                        context.Document,
+                                        ifStatement,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.SimplifyIfElseStatement:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Simplify if-else",
+                                cancellationToken =>
+                                {
+                                    return SimplifyIfElseStatementRefactoring.RefactorAsync(
+                                        context.Document,
+                                        ifStatement,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
 
         private static async Task<Document> MergeIfStatementWithNestedIfStatementAsync(
