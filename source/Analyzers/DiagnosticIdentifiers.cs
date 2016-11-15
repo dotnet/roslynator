@@ -107,5 +107,6 @@ namespace Roslynator.CSharp
         public const string DefaultLabelShouldBeLastLabelInSwitchSection = Prefix + "1099";
         public const string FormatDocumentationSummaryOnSingleLine = Prefix + "1100";
         public const string FormatDocumentationSummaryOnMultipleLines = Prefix + "1101";
+        public const string MarkClassAsStatic = Prefix + "1102";
     }
 }

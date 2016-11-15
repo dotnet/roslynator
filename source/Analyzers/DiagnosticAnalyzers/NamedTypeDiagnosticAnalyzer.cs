@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -15,7 +16,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                    DiagnosticDescriptors.MarkClassAsStatic);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -39,11 +45,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 || kind == TypeKind.Struct
                 || kind == TypeKind.Interface)
             {
-                ImmutableArray<SyntaxReference> syntaxReference = symbol.DeclaringSyntaxReferences;
+                ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
 
-                if (syntaxReference.Length == 1)
+                if (syntaxReferences.Length == 1)
                 {
-                    var declaration = syntaxReference[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
+                    var declaration = syntaxReferences[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
 
                     if (declaration != null)
                     {
@@ -56,6 +62,23 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                 DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
                                 partialToken.GetLocation());
                         }
+                    }
+                }
+            }
+
+            if (MarkClassAsStaticRefactoring.CanRefactor(symbol))
+            {
+                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
+                {
+                    var classDeclaration = syntaxReference.GetSyntax(context.CancellationToken) as ClassDeclarationSyntax;
+
+                    if (classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == false)
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.MarkClassAsStatic,
+                            classDeclaration.Identifier.GetLocation());
+
+                        break;
                     }
                 }
             }

@@ -4,3 +4,4 @@
 
 * FormatDocumentationSummaryOnSingleLine
 * FormatDocumentationSummaryOnMultipleLines
+* MarkClassAsStatic

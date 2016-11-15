@@ -49,6 +49,7 @@
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnMultipleLinesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnSingleLineDiagnosticAnalyzer.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ComplexElementInitializerDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\MarkClassAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />

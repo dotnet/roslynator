@@ -962,5 +962,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor MarkClassAsStatic = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkClassAsStatic,
+            title: "Mark class as static.",
+            messageFormat: "Consider marking class as static.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }
