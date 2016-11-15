@@ -1,3 +1,22 @@
+### 1.1.4 (2016-11-15)
+
+#### Analyzers
+
+##### New Analyzers
+
+* FormatDocumentationSummaryOnSingleLine
+* FormatDocumentationSummaryOnMultipleLines
+* MarkClassAsStatic
+* SimplifyIfElseStatement
+* SimplifyConditionalExpression
+* MergeInterpolationIntoInterpolatedString
+
+#### Refactorings
+
+##### New Refactorings
+
+* MergeInterpolationIntoInterpolatedString
+
 ### 1.1.3 (2016-11-12)
 
 #### Analyzers
