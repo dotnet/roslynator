@@ -109,5 +109,6 @@ namespace Roslynator.CSharp
         public const string FormatDocumentationSummaryOnMultipleLines = Prefix + "1101";
         public const string MarkClassAsStatic = Prefix + "1102";
         public const string SimplifyIfElseStatement = Prefix + "1103";
+        public const string SimplifyConditionalExpression = Prefix + "1104";
     }
 }

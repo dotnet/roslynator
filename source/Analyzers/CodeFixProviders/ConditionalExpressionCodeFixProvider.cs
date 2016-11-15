@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -22,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses,
-                    DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression);
+                    DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression,
+                    DiagnosticIdentifiers.SimplifyConditionalExpression);
             }
         }
 
@@ -30,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            ConditionalExpressionSyntax node = root
+            ConditionalExpressionSyntax conditionalExpression = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ConditionalExpressionSyntax>();
 
@@ -42,11 +44,10 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Wrap condition in parentheses",
-                                cancellationToken => AddParenthesesToConditionAsync(context.Document, node, cancellationToken),
+                                cancellationToken => AddParenthesesToConditionAsync(context.Document, conditionalExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-
                             break;
                         }
                     case DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression:
@@ -57,13 +58,28 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 {
                                     return UseCoalesceExpressionInsteadOfConditionalExpressionAsync(
                                         context.Document,
-                                        node,
+                                        conditionalExpression,
                                         cancellationToken);
                                 },
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.SimplifyConditionalExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Simplify conditional expression",
+                                cancellationToken =>
+                                {
+                                    return SimplifyConditionalExpressionRefactoring.RefactorAsync(
+                                        context.Document,
+                                        conditionalExpression,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

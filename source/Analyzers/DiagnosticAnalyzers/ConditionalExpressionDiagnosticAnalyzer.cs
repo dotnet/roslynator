@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -19,7 +20,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.WrapConditionalExpressionConditionInParentheses,
-                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression);
+                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
+                    DiagnosticDescriptors.SimplifyConditionalExpression);
             }
         }
 
@@ -53,6 +55,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
+                    conditionalExpression.GetLocation());
+            }
+
+            if (SimplifyConditionalExpressionRefactoring.CanRefactor(conditionalExpression, context.SemanticModel, context.CancellationToken)
+                && !conditionalExpression.SpanContainsDirectives())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyConditionalExpression,
                     conditionalExpression.GetLocation());
             }
         }
