@@ -494,7 +494,7 @@
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" ExtensionVersion="0.0.0">
+  <Refactoring Id="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" ExtensionVersion="1.1.4">
     <Syntaxes>
       <Syntax>interpolation</Syntax>
     </Syntaxes>
