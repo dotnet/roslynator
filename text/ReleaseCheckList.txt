@@ -1,7 +1,7 @@
 ﻿Run tools.cmd
-Update Analyzers.xml
 Change number of refactorings and/or analyzers
-Update changelog
+Update Analyzers.xml
+Update ChangeLog.md
 Change version
 Change configuration to "Release"
 Build
