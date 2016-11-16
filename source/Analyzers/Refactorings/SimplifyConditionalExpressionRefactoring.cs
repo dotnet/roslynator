@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Roslynator.CSharp.CSharpFactory;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -48,20 +50,26 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax condition = conditionalExpression.Condition;
 
-            ExpressionSyntax newNode = condition.AppendTrailingTrivia(conditionalExpression.GetTrailingTrivia());
+            ExpressionSyntax newNode = (conditionalExpression.WhenTrue.IsKind(SyntaxKind.TrueLiteralExpression))
+                ? condition
+                : condition.Negate();
 
-            if (condition.IsKind(SyntaxKind.ParenthesizedExpression)
-                && SyntaxUtility.AreParenthesesRedundantOrInvalid(conditionalExpression))
+            TextSpan span = TextSpan.FromBounds(
+                conditionalExpression.Condition.Span.End,
+                conditionalExpression.FullSpan.End);
+
+            IEnumerable<SyntaxTrivia> trivia = conditionalExpression.DescendantTrivia(span);
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                newNode = ((ParenthesizedExpressionSyntax)condition).Expression.WithTriviaFrom(newNode);
+                newNode = newNode.WithTrailingTrivia(trivia);
+            }
+            else
+            {
+                newNode = newNode.WithoutTrailingTrivia();
             }
 
-            if (conditionalExpression.WhenTrue.IsKind(SyntaxKind.FalseLiteralExpression))
-                newNode = LogicalNotExpression(newNode).WithTriviaFrom(newNode);
-
-            SyntaxNode newRoot = root.ReplaceNode(
-                conditionalExpression,
-                newNode.WithFormatterAnnotation());
+            SyntaxNode newRoot = root.ReplaceNode(conditionalExpression, newNode);
 
             return document.WithSyntaxRoot(newRoot);
         }
