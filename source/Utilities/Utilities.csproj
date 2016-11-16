@@ -84,6 +84,7 @@
     <Compile Include="CSharp\SyntaxRewriters\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
+    <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />

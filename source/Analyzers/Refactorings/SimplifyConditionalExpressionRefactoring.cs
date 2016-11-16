@@ -46,8 +46,6 @@ namespace Roslynator.CSharp.Refactorings
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax condition = conditionalExpression.Condition;
 
             ExpressionSyntax newNode = (conditionalExpression.WhenTrue.IsKind(SyntaxKind.TrueLiteralExpression))
@@ -69,9 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithoutTrailingTrivia();
             }
 
-            SyntaxNode newRoot = root.ReplaceNode(conditionalExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode).ConfigureAwait(false);
         }
     }
 }
