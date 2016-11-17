@@ -5,15 +5,17 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class WrapExpressionInParenthesesRefactoring
+    internal static class ParenthesizeExpressionRefactoring
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(expression))
+            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(expression)
+                && !expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 try
                 {
@@ -23,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
-                    Debug.Assert(false, $"{nameof(WrapExpressionInParenthesesRefactoring)}\r\n{expression.Kind().ToString()}");
+                    Debug.Assert(false, $"{nameof(ParenthesizeExpressionRefactoring)}\r\n{expression.Kind().ToString()}");
                 }
             }
 

@@ -16,11 +16,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ParenthesizeExpression)
                 && context.Span.IsBetweenSpans(expression)
-                && WrapExpressionInParenthesesRefactoring.CanRefactor(context, expression))
+                && ParenthesizeExpressionRefactoring.CanRefactor(context, expression))
             {
                 context.RegisterRefactoring(
                     $"Parenthesize '{expression.ToString()}'",
-                    cancellationToken => WrapExpressionInParenthesesRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
+                    cancellationToken => ParenthesizeExpressionRefactoring.RefactorAsync(context.Document, expression, cancellationToken));
             }
 
             if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
