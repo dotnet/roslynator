@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -14,6 +16,9 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
                 ProcessString(value);
                 ProcessValue(value);
+
+                RegexOptions options = RegexOptions.None;
+                Debug.Assert(false, options);
             }
 
             private object GetObject()

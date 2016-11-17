@@ -23,6 +23,11 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
                     AddCastExpressionRefactoring.RegisterRefactoring(context, expression, destinationType);
             }
+            else if (destinationType.IsString())
+            {
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddToMethodInvocation))
+                    AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+            }
         }
 
         public static void ComputeRefactoring(
@@ -31,22 +36,37 @@ namespace Roslynator.CSharp.Refactorings
             IEnumerable<ITypeSymbol> destinationTypes,
             SemanticModel semanticModel)
         {
-            destinationTypes = destinationTypes
+            ITypeSymbol[] convertibleDestinationTypes = destinationTypes
                 .Where(destinationType => semanticModel.IsExplicitConversion(expression, destinationType))
                 .ToArray();
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddToMethodInvocation))
             {
-                foreach (ITypeSymbol destinationType in destinationTypes)
+                bool fString = false;
+
+                foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
                 {
                     if (AddToMethodInvocation(context, expression, destinationType, semanticModel))
+                    {
+                        if (destinationType.IsString())
+                            fString = true;
+
                         break;
+                    }
+                }
+
+                if (!fString)
+                {
+                    ITypeSymbol stringType = destinationTypes.FirstOrDefault(f => f.IsString());
+
+                    if (stringType != null)
+                        AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, stringType, "ToString");
                 }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
             {
-                foreach (ITypeSymbol destinationType in destinationTypes)
+                foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
                     AddCastExpressionRefactoring.RegisterRefactoring(context, expression, destinationType);
             }
         }
