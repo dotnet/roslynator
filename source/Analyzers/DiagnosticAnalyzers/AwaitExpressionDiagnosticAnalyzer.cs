@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
-            if (AddConfigureAwaitRefactoring.CanRefactor(awaitExpression, context.SemanticModel, context.CancellationToken))
+            if (CallConfigureAwaitRefactoring.CanRefactor(awaitExpression, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddConfigureAwait,

@@ -165,9 +165,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-cast-expression">Add cast expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-configureawaitfalse">Add 'ConfigureAwait(false)'</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-default-value-to-parameter">Add default value to parameter</a>
         </li>
         <li>
@@ -183,13 +180,16 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-to-method-invocation">Add 'To...' method invocation</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-using-directive">Add using directive</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-using-static-directive">Add using static directive</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-configureawaitfalse">Call 'ConfigureAwait(false)'</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-to-method">Call 'To...' method</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-explicit-type-to-var">Change explicit type to 'var'</a>

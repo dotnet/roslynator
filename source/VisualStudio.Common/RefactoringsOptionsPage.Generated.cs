@@ -18,15 +18,15 @@ namespace Roslynator.VisualStudio
             AddBracesToSwitchSection = true;
             AddBracesToSwitchSections = true;
             AddCastExpression = true;
-            AddConfigureAwait = true;
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
             AddIdentifierToVariableDeclaration = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
-            AddToMethodInvocation = true;
             AddUsingDirective = true;
             AddUsingStaticDirective = true;
+            CallConfigureAwait = true;
+            CallToMethod = true;
             ChangeExplicitTypeToVar = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
             ChangeMemberTypeAccordingToYieldReturnExpression = true;
@@ -176,15 +176,15 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddBracesToSwitchSection, AddBracesToSwitchSection);
             SetIsEnabled(RefactoringIdentifiers.AddBracesToSwitchSections, AddBracesToSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.AddCastExpression, AddCastExpression);
-            SetIsEnabled(RefactoringIdentifiers.AddConfigureAwait, AddConfigureAwait);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
-            SetIsEnabled(RefactoringIdentifiers.AddToMethodInvocation, AddToMethodInvocation);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
             SetIsEnabled(RefactoringIdentifiers.AddUsingStaticDirective, AddUsingStaticDirective);
+            SetIsEnabled(RefactoringIdentifiers.CallConfigureAwait, CallConfigureAwait);
+            SetIsEnabled(RefactoringIdentifiers.CallToMethod, CallToMethod);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
@@ -387,16 +387,6 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add 'ConfigureAwait(false)'")]
-        [Description("Syntax: awaitable method invocation\r\nScope: method name")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddConfigureAwait
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Add default value to parameter")]
         [Description("Syntax: parameter without default value\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -447,16 +437,6 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Add 'To...' method invocation")]
-        [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool AddToMethodInvocation
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Add using directive")]
         [Description("Syntax: qualified name\r\nScope: selected namespace")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -471,6 +451,26 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: member access expression (public or internal static class)\r\nScope: selected class name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddUsingStaticDirective
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Call 'ConfigureAwait(false)'")]
+        [Description("Syntax: awaitable method invocation\r\nScope: method name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CallConfigureAwait
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Call 'To...' method")]
+        [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CallToMethod
         {
             get;
             set;

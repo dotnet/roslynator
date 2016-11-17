@@ -51,12 +51,6 @@
       <Image>AddCastExpressionToVariableDeclaration</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="AddConfigureAwait" Title="Add 'ConfigureAwait(false)'" ExtensionVersion="0.95.0">
-    <Syntaxes>
-      <Syntax>awaitable method invocation</Syntax>
-    </Syntaxes>
-    <Scope>method name</Scope>
-  </Refactoring>
   <Refactoring Id="AddDefaultValueToParameter" Title="Add default value to parameter" ExtensionVersion="0.92.0">
     <Syntaxes>
       <Syntax>parameter without default value</Syntax>
@@ -84,14 +78,6 @@
     </Syntaxes>
     <Scope>missing identifier</Scope>
   </Refactoring>
-  <Refactoring Id="AddToMethodInvocation" Title="Add 'To...' method invocation" ExtensionVersion="1.0.7">
-    <Syntaxes>
-      <Syntax>argument</Syntax>
-      <Syntax>assignment expression</Syntax>
-      <Syntax>return statement</Syntax>
-      <Syntax>variable declaration</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>qualified name</Syntax>
@@ -103,6 +89,20 @@
       <Syntax>member access expression (public or internal static class)</Syntax>
     </Syntaxes>
     <Scope>selected class name</Scope>
+  </Refactoring>
+  <Refactoring Id="CallConfigureAwait" Title="Call 'ConfigureAwait(false)'" ExtensionVersion="0.95.0">
+    <Syntaxes>
+      <Syntax>awaitable method invocation</Syntax>
+    </Syntaxes>
+    <Scope>method name</Scope>
+  </Refactoring>
+  <Refactoring Id="CallToMethod" Title="Call 'To...' method" ExtensionVersion="1.0.7">
+    <Syntaxes>
+      <Syntax>argument</Syntax>
+      <Syntax>assignment expression</Syntax>
+      <Syntax>return statement</Syntax>
+      <Syntax>variable declaration</Syntax>
+    </Syntaxes>
   </Refactoring>
   <Refactoring Id="CollapseToInitializer" Title="Collapse to initalizer" ExtensionVersion="0.98.0">
     <Syntaxes>

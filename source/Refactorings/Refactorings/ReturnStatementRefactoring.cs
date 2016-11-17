@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
                         RefactoringIdentifiers.AddBooleanComparison,
                         RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                         RefactoringIdentifiers.AddCastExpression,
-                        RefactoringIdentifiers.AddToMethodInvocation))
+                        RefactoringIdentifiers.CallToMethod))
                     {
                         await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
                     }

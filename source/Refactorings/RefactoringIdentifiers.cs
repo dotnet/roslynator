@@ -12,15 +12,15 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddBracesToSwitchSection = "AddBracesToSwitchSection";
         public const string AddBracesToSwitchSections = "AddBracesToSwitchSections";
         public const string AddCastExpression = "AddCastExpression";
-        public const string AddConfigureAwait = "AddConfigureAwait";
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddDefaultValueToReturnStatement = "AddDefaultValueToReturnStatement";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";
-        public const string AddToMethodInvocation = "AddToMethodInvocation";
         public const string AddUsingDirective = "AddUsingDirective";
         public const string AddUsingStaticDirective = "AddUsingStaticDirective";
+        public const string CallConfigureAwait = "CallConfigureAwait";
+        public const string CallToMethod = "CallToMethod";
         public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = "ChangeMemberTypeAccordingToYieldReturnExpression";

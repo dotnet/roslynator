@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                     });
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
                 && assignmentExpression.Left?.IsMissing == false
                 && assignmentExpression.Right?.IsMissing == false

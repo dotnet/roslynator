@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (semanticModel.IsExplicitConversion(expression, destinationType))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddToMethodInvocation))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                     AddToMethodInvocation(context, expression, destinationType, semanticModel);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.Refactorings
             }
             else if (destinationType.IsString())
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddToMethodInvocation))
-                    AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
+                    CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
             }
         }
 
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Where(destinationType => semanticModel.IsExplicitConversion(expression, destinationType))
                 .ToArray();
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddToMethodInvocation))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
             {
                 bool fString = false;
 
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol stringType = destinationTypes.FirstOrDefault(f => f.IsString());
 
                     if (stringType != null)
-                        AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, stringType, "ToString");
+                        CallToMethodRefactoring.ComputeRefactoring(context, expression, stringType, "ToString");
                 }
             }
 
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (destinationType.IsString())
             {
-                AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+                CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
                 return true;
             }
             else if (destinationType.IsArrayType())
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                     INamedTypeSymbol enumerable = semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable");
 
                     if (enumerable != null)
-                        AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, enumerable, "ToArray");
+                        CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToArray");
                 }
             }
         }
@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamedTypeSymbol enumerable = semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable");
 
                 if (enumerable != null)
-                    AddToMethodInvocationRefactoring.ComputeRefactoring(context, expression, enumerable, "ToList");
+                    CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToList");
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.AddToMethodInvocation,
+                    RefactoringIdentifiers.CallToMethod,
                     RefactoringIdentifiers.CreateConditionFromBooleanExpression)
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null
@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.AddToMethodInvocation))
+                    RefactoringIdentifiers.CallToMethod))
                 {
                     MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMethodOrPropertyOrIndexer(yieldStatement.Expression);
 
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                                         });
                                 }
 
-                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation)
+                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
                                     && yieldStatement.Expression.Span.Contains(context.Span)
                                     && memberTypeSymbol?.IsNamedType() == true)
                                 {

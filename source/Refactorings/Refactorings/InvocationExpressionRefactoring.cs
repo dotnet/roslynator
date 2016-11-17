@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
-                    RefactoringIdentifiers.AddConfigureAwait)
+                    RefactoringIdentifiers.CallConfigureAwait)
                 && invocationExpression.Expression != null
                 && invocationExpression.ArgumentList != null
                 && context.SupportsSemanticModel)

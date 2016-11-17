@@ -45,7 +45,7 @@
     <Compile Include="Refactorings\LockStatementRefactoring.cs" />
     <Compile Include="Refactorings\CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
-    <Compile Include="Refactorings\AddToMethodInvocationRefactoring.cs" />
+    <Compile Include="Refactorings\CallToMethodRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\IdentifierNameSyntaxRewriter.cs" />

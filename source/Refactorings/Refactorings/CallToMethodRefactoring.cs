@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AddToMethodInvocationRefactoring
+    internal static class CallToMethodRefactoring
     {
         public static void ComputeRefactoring(
             RefactoringContext context,
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol != null)
             {
                 context.RegisterRefactoring(
-                    $"Add '{methodSymbol.Name}()'",
+                    $"Call '{methodSymbol.Name}()'",
                     cancellationToken =>
                     {
                         return RefactorAsync(

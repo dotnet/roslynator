@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.AddToMethodInvocation))
+                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
                     await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
             }
 
