@@ -67,8 +67,8 @@ namespace Roslynator.CSharp.Refactorings
                                         ComputeRefactoring(
                                            context,
                                            ifStatement,
-                                           (ExpressionStatementSyntax)statement2,
-                                           (ExpressionStatementSyntax)statement1);
+                                           (ExpressionStatementSyntax)statement1,
+                                           (ExpressionStatementSyntax)statement2);
                                     }
                                 }
                             }
