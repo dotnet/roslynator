@@ -449,7 +449,7 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.VirtualKeyword);
         }
 
-        public static IdentifierNameSyntax Var()
+        public static IdentifierNameSyntax VarType()
         {
             return IdentifierName("var");
         }

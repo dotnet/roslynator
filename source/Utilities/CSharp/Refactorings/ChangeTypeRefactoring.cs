@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            IdentifierNameSyntax newType = Var().WithTriviaFrom(type);
+            IdentifierNameSyntax newType = VarType().WithTriviaFrom(type);
 
             SyntaxNode newRoot = root.ReplaceNode(type, newType);
 
