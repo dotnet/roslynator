@@ -33,13 +33,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             AssignmentExpressionSyntax trueExpression = GetSimpleAssignmentExpression(ifStatement.Statement);
 
-                            ExpressionSyntax trueRight = trueExpression.Right;
+                            ExpressionSyntax trueRight = trueExpression?.Right;
 
                             if (trueRight?.IsBooleanLiteralExpression() == true)
                             {
                                 AssignmentExpressionSyntax falseExpression = GetSimpleAssignmentExpression(elseClause.Statement);
 
-                                ExpressionSyntax falseRight = falseExpression.Right;
+                                ExpressionSyntax falseRight = falseExpression?.Right;
 
                                 if (falseRight?.IsBooleanLiteralExpression() == true)
                                 {
