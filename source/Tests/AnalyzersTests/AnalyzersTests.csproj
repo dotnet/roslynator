@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
+    <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
     <Compile Include="DefaultSwitchLabelShouldBeLastLabelInSection.cs" />
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
+    <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="SimplifyAssignmentExpression.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />

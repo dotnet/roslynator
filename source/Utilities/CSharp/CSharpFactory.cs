@@ -787,5 +787,10 @@ namespace Roslynator.CSharp
                 BracketedArgumentList(
                     SingletonSeparatedList(SyntaxFactory.Argument(expression))));
         }
+
+        public static SyntaxToken WhileKeyword()
+        {
+            return SyntaxFactory.Token(SyntaxKind.WhileKeyword);
+        }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -13,7 +14,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class ForStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop);
+        {
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop,
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut);
+            }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,11 +42,26 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (forStatement.Declaration == null
                 && forStatement.Condition == null
                 && forStatement.Incrementors.Count == 0
-                && forStatement.Initializers.Count == 0)
+                && forStatement.Initializers.Count == 0
+                && !forStatement.ContainsDirectives(
+                    TextSpan.FromBounds(
+                        forStatement.OpenParenToken.Span.End,
+                        forStatement.CloseParenToken.Span.Start)))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop,
                     forStatement.ForKeyword.GetLocation());
+            }
+
+            if (forStatement.Condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
+                    forStatement.Condition.GetLocation());
+
+                context.FadeOutNode(
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut,
+                    forStatement.Condition);
             }
         }
     }
