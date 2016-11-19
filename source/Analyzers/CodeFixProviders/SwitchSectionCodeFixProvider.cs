@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -22,8 +24,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                  DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
-                  DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection);
+                    DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
+                    DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
+                    DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements);
             }
         }
 
@@ -37,6 +40,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<SwitchSectionSyntax>();
 
+            Debug.Assert(switchSection != null, $"{nameof(switchSection)} is null");
+
             if (switchSection == null)
                 return;
 
@@ -48,13 +53,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant switch section",
-                                cancellationToken =>
-                                {
-                                    return RemoveRedundantSwitchSectionAsync(
-                                        context.Document,
-                                        switchSection,
-                                        cancellationToken);
-                                },
+                                cancellationToken => RemoveRedundantSwitchSectionAsync(context.Document, switchSection, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -64,13 +63,17 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Move default label to the last position",
-                                cancellationToken =>
-                                {
-                                    return MoveDefaultLabelToLastPositionAsync(
-                                        context.Document,
-                                        switchSection,
-                                        cancellationToken);
-                                },
+                                cancellationToken => MoveDefaultLabelToLastPositionAsync(context.Document, switchSection, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                AddBracesToSwitchSectionRefactoring.Title,
+                                cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

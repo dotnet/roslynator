@@ -116,5 +116,6 @@ namespace Roslynator.CSharp
         public const string AddStaticModifierToAllPartialClassDeclarations = Prefix + "1108";
         public const string UseCastMethodInsteadOfSelectMethod = Prefix + "1109";
         public const string DeclareTypeInsideNamespace = Prefix + "1110";
+        public const string AddBracesToSwitchSectionWithMultipleStatements = Prefix + "1111";
     }
 }

@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
                     DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
                     DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
-                    DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection);
+                    DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
+                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements);
             }
         }
 
@@ -43,7 +44,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var switchSection = (SwitchSectionSyntax)context.Node;
 
-            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, switchSection.Statements);
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, statements);
 
             if (switchSection.Parent?.IsKind(SyntaxKind.SwitchStatement) == true)
             {
@@ -55,6 +58,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             AnalyzeFirstStatement(context, switchSection);
 
             AnalyzeDefaultSection(context, switchSection);
+
+            if (statements.Count > 1)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
+                    Location.Create(switchSection.SyntaxTree, statements.Span));
+            }
         }
 
         private static void AnalyzeRedundantDefaultSwitchSection(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
