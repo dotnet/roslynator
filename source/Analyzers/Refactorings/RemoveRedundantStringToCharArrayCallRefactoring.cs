@@ -3,21 +3,21 @@
 using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveRedundantToStringCallRefactoring
+    internal static class RemoveRedundantStringToCharArrayCallRefactoring
     {
         public static bool CanRefactor(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (invocation.ArgumentList?.Arguments.Any() == false)
+            if (ParentIsElementAccessOrForEachExpression(invocation)
+                && invocation.ArgumentList?.Arguments.Any() == false)
             {
                 ExpressionSyntax expression = invocation.Expression;
 
@@ -25,44 +25,46 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    if (memberAccess.Name?.Identifier.ValueText.Equals("ToString", StringComparison.Ordinal) == true)
+                    if (memberAccess.Name?.Identifier.ValueText.Equals("ToCharArray", StringComparison.Ordinal) == true)
                     {
                         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-                        if (methodSymbol.Name?.Equals("ToString", StringComparison.Ordinal) == true
+                        if (string.Equals(methodSymbol.Name, "ToCharArray", StringComparison.Ordinal)
                             && !methodSymbol.IsGenericMethod
                             && !methodSymbol.IsExtensionMethod
                             && methodSymbol.IsPublic()
                             && !methodSymbol.IsStatic
                             && !methodSymbol.Parameters.Any()
-                            && methodSymbol.ReturnType?.IsString() == true)
+                            && methodSymbol.ContainingType?.IsString() == true)
                         {
-                            if (methodSymbol.ContainingType?.IsString() == true)
+                            ITypeSymbol returnType = methodSymbol.ReturnType;
+
+                            if (returnType?.IsArrayType() == true)
                             {
-                                return true;
-                            }
-                            else if (invocation.IsParentKind(SyntaxKind.Interpolation))
-                            {
-                                if (methodSymbol.ContainingType?.IsObject() == true)
-                                {
+                                var arrayType = (IArrayTypeSymbol)returnType;
+
+                                if (arrayType.ElementType?.IsChar() == true)
                                     return true;
-                                }
-                                else if (methodSymbol.IsOverride)
-                                {
-                                    IMethodSymbol overridenMethod = methodSymbol.OverriddenMethod;
-
-                                    while (overridenMethod != null)
-                                    {
-                                        if (overridenMethod.ContainingType?.IsObject() == true)
-                                            return true;
-
-                                        overridenMethod = overridenMethod.OverriddenMethod;
-                                    }
-                                }
                             }
                         }
                     }
                 }
+            }
+
+            return false;
+        }
+
+        private static bool ParentIsElementAccessOrForEachExpression(InvocationExpressionSyntax invocation)
+        {
+            if (invocation.IsParentKind(SyntaxKind.ElementAccessExpression))
+                return true;
+
+            if (invocation.IsParentKind(SyntaxKind.ForEachStatement))
+            {
+                var forEachStatement = (ForEachStatementSyntax)invocation.Parent;
+
+                if (invocation.Equals(forEachStatement.Expression))
+                    return true;
             }
 
             return false;

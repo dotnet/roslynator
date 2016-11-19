@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
                     DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,
                     DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod,
-                    DiagnosticDescriptors.RemoveRedundantToStringCall);
+                    DiagnosticDescriptors.RemoveRedundantToStringCall,
+                    DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall);
             }
         }
 
@@ -103,6 +104,20 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveRedundantToStringCall,
+                        Location.Create(invocation.SyntaxTree, span));
+                }
+            }
+
+            if (RemoveRedundantStringToCharArrayCallRefactoring.CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.Span.Start, invocation.Span.End);
+
+                if (!invocation.ContainsDirectives(span))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
                         Location.Create(invocation.SyntaxTree, span));
                 }
             }

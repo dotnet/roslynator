@@ -1008,5 +1008,15 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantStringToCharArrayCall = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
+            title: "Remove redundant 'ToCharArray' call.",
+            messageFormat: "Consider removing redundant 'ToCharArray' call.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

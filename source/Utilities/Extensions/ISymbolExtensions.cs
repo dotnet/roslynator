@@ -410,6 +410,11 @@ namespace Roslynator
             return typeSymbol?.SpecialType == SpecialType.System_Object;
         }
 
+        public static bool IsChar(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_Char;
+        }
+
         public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)

@@ -50,6 +50,7 @@
     <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
+    <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="SimplifyAssignmentExpression.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />
