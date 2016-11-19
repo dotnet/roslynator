@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
+    <Compile Include="AddStaticModifierToAllPartialClassDeclarations.cs" />
     <Compile Include="DefaultSwitchLabelShouldBeLastLabelInSection.cs" />
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />

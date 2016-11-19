@@ -113,5 +113,6 @@ namespace Roslynator.CSharp
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "1105";
         public const string RemoveEmptyDestructor = Prefix + "1106";
         public const string RemoveRedundantStringToCharArrayCall = Prefix + "1107";
+        public const string AddStaticModifierToAllPartialClassDeclarations = Prefix + "1108";
     }
 }

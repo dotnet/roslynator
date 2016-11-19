@@ -1018,5 +1018,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor AddStaticModifierToAllPartialClassDeclarations = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
+            title: "Add static modifier to all partial class declarations.",
+            messageFormat: "Consider adding static modifier to all partial class declarations.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

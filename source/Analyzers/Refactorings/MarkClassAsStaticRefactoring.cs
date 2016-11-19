@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -84,44 +83,7 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxTokenList modifiers = classDeclaration.Modifiers;
-
-            ClassDeclarationSyntax newClassDeclaration = classDeclaration;
-
-            if (modifiers.Any())
-            {
-                int partialIndex = modifiers.IndexOf(SyntaxKind.PartialKeyword);
-
-                if (partialIndex != -1)
-                {
-                    SyntaxToken partialToken = modifiers[partialIndex];
-
-                    modifiers = modifiers
-                        .ReplaceAt(partialIndex, partialToken.WithoutLeadingTrivia())
-                        .Insert(
-                            partialIndex,
-                            StaticToken()
-                                .WithLeadingTrivia(partialToken.LeadingTrivia)
-                                .WithTrailingTrivia(SpaceTrivia()));
-
-                    newClassDeclaration = classDeclaration.WithModifiers(modifiers);
-                }
-                else
-                {
-                    newClassDeclaration = classDeclaration
-                        .AddModifiers(StaticToken().WithLeadingTrivia(SpaceTrivia()));
-                }
-            }
-            else
-            {
-                newClassDeclaration = classDeclaration.AddModifiers(StaticToken());
-            }
-
-            SyntaxNode newRoot = root.ReplaceNode(classDeclaration, newClassDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await AddModifierRefactoring.RefactorAsync(document, classDeclaration, SyntaxKind.StaticKeyword, cancellationToken).ConfigureAwait(false);
         }
     }
 }

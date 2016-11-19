@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -18,7 +19,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkClassAsStatic); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.MarkClassAsStatic,
+                    DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -36,18 +42,45 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (classDeclaration == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Mark class as static",
-                cancellationToken =>
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
                 {
-                    return MarkClassAsStaticRefactoring.RefactorAsync(
-                        context.Document,
-                        classDeclaration,
-                        cancellationToken);
-                },
-                DiagnosticIdentifiers.MarkClassAsStatic + EquivalenceKeySuffix);
+                    case DiagnosticIdentifiers.MarkClassAsStatic:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Mark class as static",
+                                cancellationToken =>
+                                {
+                                    return MarkClassAsStaticRefactoring.RefactorAsync(
+                                        context.Document,
+                                        classDeclaration,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add static modifier",
+                                cancellationToken =>
+                                {
+                                    return AddModifierRefactoring.RefactorAsync(
+                                        context.Document,
+                                        classDeclaration,
+                                        SyntaxKind.StaticKeyword,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
     }
 }

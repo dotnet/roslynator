@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -20,7 +22,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                    DiagnosticDescriptors.MarkClassAsStatic);
+                    DiagnosticDescriptors.MarkClassAsStatic,
+                    DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations);
             }
         }
 
@@ -79,6 +82,56 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             classDeclaration.Identifier.GetLocation());
 
                         break;
+                    }
+                }
+            }
+
+            if (kind == TypeKind.Class
+                && symbol.IsStatic
+                && !symbol.IsImplicitClass
+                && !symbol.IsImplicitlyDeclared)
+            {
+                ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+                if (syntaxReferences.Length > 1)
+                {
+                    bool isStatic = false;
+                    List<ClassDeclarationSyntax> classDeclarations = null;
+
+                    foreach (SyntaxReference syntaxReference in syntaxReferences)
+                    {
+                        SyntaxNode node = syntaxReference.GetSyntax(context.CancellationToken);
+
+                        Debug.Assert(node.IsKind(SyntaxKind.ClassDeclaration), node.Kind().ToString());
+
+                        if (node.IsKind(SyntaxKind.ClassDeclaration))
+                        {
+                            var classDeclaration = (ClassDeclarationSyntax)node;
+                            SyntaxTokenList modifiers = classDeclaration.Modifiers;
+
+                            if (modifiers.Contains(SyntaxKind.StaticKeyword))
+                            {
+                                isStatic = true;
+                            }
+                            else if (!classDeclaration.ContainsDirectives(modifiers.Span))
+                            {
+                                if (classDeclarations == null)
+                                    classDeclarations = new List<ClassDeclarationSyntax>();
+
+                                classDeclarations.Add(classDeclaration);
+                            }
+                        }
+                    }
+
+                    if (isStatic
+                        && classDeclarations != null)
+                    {
+                        foreach (ClassDeclarationSyntax classDeclaration in classDeclarations)
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
+                                classDeclaration.Identifier.GetLocation());
+                        }
                     }
                 }
             }

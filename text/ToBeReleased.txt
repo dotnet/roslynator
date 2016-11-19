@@ -3,3 +3,5 @@
 ##### New Analyzers
 
 * RemoveEmptyDestructor
+* RemoveRedundantStringToCharArrayCall
+* AddStaticModifierToAllPartialClassDeclarations
