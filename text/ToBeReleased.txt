@@ -5,3 +5,4 @@
 * RemoveEmptyDestructor
 * RemoveRedundantStringToCharArrayCall
 * AddStaticModifierToAllPartialClassDeclarations
+* UseCastMethodInsteadOfSelectMethod

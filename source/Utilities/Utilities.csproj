@@ -74,6 +74,7 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
+    <Compile Include="CSharp\SyntaxAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\RemoveUsingAliasDirective\RemoveUsingAliasDirectiveSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
+    <Compile Include="Extensions\SemanticModelExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
     <Compile Include="ModifierUtility.cs" />
     <Compile Include="CSharp\Modifiers.cs" />

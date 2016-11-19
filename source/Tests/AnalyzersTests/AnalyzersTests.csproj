@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
@@ -53,8 +54,13 @@
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
+    <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />
+    <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
+    <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="SimplifyAssignmentExpression.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />
+    <Compile Include="SimplifyLinqMethodChain.cs" />
+    <Compile Include="UseCastMethodInsteadOfSelectMethod.cs" />
     <Compile Include="SimplifyIfElseWithBooleanAssignment.cs" />
     <Compile Include="UseBitwiseOperationInsteadOfHasFlag.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
@@ -73,6 +79,12 @@
     <Compile Include="FormatDeclarationBraces.cs" />
     <Compile Include="RemoveRedundantParentheses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

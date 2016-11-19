@@ -3,56 +3,62 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.CodeFixProviders;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class SimplifyLinqMethodChainRefactoring
     {
-        public static void RegisterCodeFix(
-            CodeFixContext context,
-            Diagnostic diagnostic,
-            InvocationExpressionSyntax invocation)
+        public static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            InvocationExpressionSyntax invocation,
+            MemberAccessExpressionSyntax memberAccess,
+            string methodName)
         {
-            CodeAction codeAction = CodeAction.Create(
-                "Simplify method chain",
-                cancellationToken =>
-                {
-                    return RefactorAsync(
-                        context.Document,
-                        invocation,
-                        cancellationToken);
-                },
-                diagnostic.Id + BaseCodeFixProvider.EquivalenceKeySuffix);
+            if (memberAccess.Expression?.IsKind(SyntaxKind.InvocationExpression) == true)
+            {
+                var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
 
-            context.RegisterCodeFix(codeAction, diagnostic);
+                if (invocation2.ArgumentList?.Arguments.Count == 1
+                    && invocation2.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                {
+                    var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
+
+                    if (memberAccess2.Name?.Identifier.ValueText == "Where"
+                        && SyntaxAnalyzer.IsEnumerableExtensionMethod(invocation, methodName, 1, context.SemanticModel, context.CancellationToken)
+                        && (SyntaxAnalyzer.IsEnumerableWhereOrImmutableArrayWhereMethod(invocation2, context.SemanticModel, context.CancellationToken)))
+                    {
+                        TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
+
+                        if (!invocation.ContainsDirectives(span))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.SimplifyLinqMethodChain,
+                                Location.Create(invocation.SyntaxTree, span));
+                        }
+                    }
+                }
+            }
         }
 
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            var invocation2 = (InvocationExpressionSyntax)invocation.Parent.Parent;
+            var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
 
             var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
-            memberAccess = memberAccess
-                .WithName(memberAccess2.Name.WithTriviaFrom(memberAccess.Name));
+            InvocationExpressionSyntax newInvocation = invocation2.WithExpression(
+                memberAccess2.WithName(memberAccess.Name.WithTriviaFrom(memberAccess2.Name)));
 
-            invocation = invocation.WithExpression(memberAccess)
-                .WithTrailingTrivia(invocation2.GetTrailingTrivia());
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(invocation2, invocation);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
         }
     }
 }

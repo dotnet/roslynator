@@ -67,6 +67,9 @@
     <Compile Include="Refactorings\MoveUsingDirectiveToTopLevelRefactoring.cs" />
     <Compile Include="CodeFixProviders\StatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RegionDirectiveTriviaCodeFixProvider.cs" />
+    <Compile Include="Refactorings\ReplaceCountMethod\ReplaceCountMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceSelectWithCastRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceWhereAndCastWithOfTypeRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyIfElseStatementRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
@@ -98,8 +101,8 @@
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
     <Compile Include="Refactorings\SimplifyLinqMethodChainRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceCountMethodWithAnyMethodRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceCountMethodWithCountOrLengthPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceCountMethod\ReplaceCountMethodWithAnyMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceCountMethod\ReplaceCountMethodWithCountOrLengthPropertyRefactoring.cs" />
     <Compile Include="CodeFixProviders\ConstructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclarationCodeFixProvider.cs" />

@@ -109,12 +109,12 @@ namespace Roslynator.CSharp.Refactorings
                 .Type;
 
             if (typeSymbol?.IsErrorType() == false
-                && !typeSymbol.IsGenericIEnumerable())
+                && !SyntaxAnalyzer.IsGenericIEnumerable(typeSymbol))
             {
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
 
-                if (typeSymbol.IsGenericImmutableArray(semanticModel))
+                if (SyntaxAnalyzer.IsGenericImmutableArray(typeSymbol, semanticModel))
                     return "Length";
 
                 ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
@@ -154,7 +154,7 @@ namespace Roslynator.CSharp.Refactorings
                 return methodSymbol.MetadataName == methodName
                     && methodSymbol.Parameters.Length == 1
                     && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
-                    && methodSymbol.Parameters[0].Type.IsGenericIEnumerable();
+                    && SyntaxAnalyzer.IsGenericIEnumerable(methodSymbol.Parameters[0].Type);
             }
 
             return false;
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Refactorings
                 return methodSymbol.MetadataName == methodName
                     && methodSymbol.Parameters.Length == 1
                     && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
-                    && methodSymbol.Parameters[0].Type.IsGenericImmutableArray(semanticModel);
+                    && SyntaxAnalyzer.IsGenericImmutableArray(methodSymbol.Parameters[0].Type, semanticModel);
             }
 
             return false;
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Refactorings
                 return methodSymbol.MetadataName == "ElementAt"
                     && methodSymbol.Parameters.Length == 2
                     && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
-                    && methodSymbol.Parameters[0].Type.IsGenericIEnumerable()
+                    && SyntaxAnalyzer.IsGenericIEnumerable(methodSymbol.Parameters[0].Type)
                     && methodSymbol.Parameters[1].Type.IsInt32();
             }
 
@@ -217,7 +217,7 @@ namespace Roslynator.CSharp.Refactorings
                 return methodSymbol.MetadataName == "ElementAt"
                     && methodSymbol.Parameters.Length == 2
                     && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
-                    && methodSymbol.Parameters[0].Type.IsGenericImmutableArray(semanticModel)
+                    && SyntaxAnalyzer.IsGenericImmutableArray(methodSymbol.Parameters[0].Type, semanticModel)
                     && methodSymbol.Parameters[1].Type.IsInt32();
             }
 

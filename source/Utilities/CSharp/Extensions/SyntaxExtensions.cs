@@ -774,6 +774,15 @@ namespace Roslynator.CSharp
                 && literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal);
         }
 
+        public static bool IsZeroLiteralExpression(this LiteralExpressionSyntax literalExpression)
+        {
+            if (literalExpression == null)
+                throw new ArgumentNullException(nameof(literalExpression));
+
+            return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
+                && string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
+        }
+
         public static SyntaxTrivia GetSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)

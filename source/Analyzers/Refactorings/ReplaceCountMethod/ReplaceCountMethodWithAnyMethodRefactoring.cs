@@ -3,37 +3,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.CodeFixProviders;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
 {
     internal static class ReplaceCountMethodWithAnyMethodRefactoring
     {
-        public static void RegisterCodeFix(
-            CodeFixContext context,
-            Diagnostic diagnostic,
-            BinaryExpressionSyntax binaryExpression)
-        {
-            CodeAction codeAction = CodeAction.Create(
-                "Replace 'Count()' with 'Any()'",
-                cancellationToken =>
-                {
-                    return RefactorAsync(
-                        context.Document,
-                        binaryExpression,
-                        cancellationToken);
-                },
-                diagnostic.Id + BaseCodeFixProvider.EquivalenceKeySuffix);
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
-
-        private static async Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))

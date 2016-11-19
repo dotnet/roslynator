@@ -184,36 +184,6 @@ namespace Roslynator
             }
         }
 
-        public static bool IsGenericIEnumerable(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return symbol?.IsNamedType() == true
-                && ((INamedTypeSymbol)symbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
-        }
-
-        public static bool IsGenericImmutableArray(this ISymbol symbol, SemanticModel semanticModel)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (symbol?.IsNamedType() == true)
-            {
-                INamedTypeSymbol namedTypeSymbol = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName("System.Collections.Immutable.ImmutableArray`1");
-
-                return namedTypeSymbol != null
-                    && ((INamedTypeSymbol)symbol).ConstructedFrom.Equals(namedTypeSymbol);
-            }
-
-            return false;
-        }
-
         [DebuggerStepThrough]
         public static bool IsPublic(this ISymbol symbol)
         {

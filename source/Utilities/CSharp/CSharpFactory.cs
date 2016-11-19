@@ -792,5 +792,10 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.Token(SyntaxKind.WhileKeyword);
         }
+
+        public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
+        {
+            return SyntaxFactory.GenericName(identifier, TypeArgumentList(SingletonSeparatedList(typeArgument)));
+        }
     }
 }

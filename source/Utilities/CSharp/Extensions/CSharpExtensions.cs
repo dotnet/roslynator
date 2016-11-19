@@ -22,12 +22,62 @@ namespace Roslynator.CSharp
 
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
+            AttributeSyntax attribute,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, attribute, cancellationToken)
+                .Type;
+        }
+
+        public static ITypeSymbol GetTypeSymbol(
+            this SemanticModel semanticModel,
+            ConstructorInitializerSyntax constructorInitializer,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, constructorInitializer, cancellationToken)
+                .Type;
+        }
+
+        public static ITypeSymbol GetTypeSymbol(
+            this SemanticModel semanticModel,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, expression, cancellationToken)
                 .Type;
+        }
+
+        public static ITypeSymbol GetTypeSymbol(
+            this SemanticModel semanticModel,
+            SelectOrGroupClauseSyntax selectOrGroupClause,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, selectOrGroupClause, cancellationToken)
+                .Type;
+        }
+
+        public static ITypeSymbol GetConvertedTypeSymbol(
+            this SemanticModel semanticModel,
+            AttributeSyntax attribute,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, attribute, cancellationToken)
+                .ConvertedType;
+        }
+
+        public static ITypeSymbol GetConvertedTypeSymbol(
+            this SemanticModel semanticModel,
+            ConstructorInitializerSyntax constructorInitializer,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, constructorInitializer, cancellationToken)
+                .ConvertedType;
         }
 
         public static ITypeSymbol GetConvertedTypeSymbol(
@@ -37,6 +87,16 @@ namespace Roslynator.CSharp
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, expression, cancellationToken)
+                .ConvertedType;
+        }
+
+        public static ITypeSymbol GetConvertedTypeSymbol(
+            this SemanticModel semanticModel,
+            SelectOrGroupClauseSyntax selectOrGroupClause,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
+                .GetTypeInfo(semanticModel, selectOrGroupClause, cancellationToken)
                 .ConvertedType;
         }
 

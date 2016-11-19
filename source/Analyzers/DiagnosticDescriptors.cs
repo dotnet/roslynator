@@ -739,8 +739,7 @@ namespace Roslynator.CSharp
             messageFormat: "Consider simplifying LINQ method chain.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor ReplaceStringEmptyWithEmptyStringLiteral = new DiagnosticDescriptor(
@@ -1023,6 +1022,15 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
             title: "Add static modifier to all partial class declarations.",
             messageFormat: "Consider adding static modifier to all partial class declarations.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseCastMethodInsteadOfSelectMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
+            title: "Use 'Cast' method instead of 'Select' method.",
+            messageFormat: "Consider using 'Cast' method instead of 'Select' method.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
