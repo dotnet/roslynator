@@ -927,7 +927,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyDestructor" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveEmptyDestructor" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1106</Id>
     <Title>Remove empty destructor.</Title>
     <Category>General</Category>
@@ -936,7 +936,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantStringToCharArrayCall" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantStringToCharArrayCall" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1107</Id>
     <Title>Remove redundant 'ToCharArray' call.</Title>
     <Category>General</Category>
@@ -945,7 +945,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1108</Id>
     <Title>Add static modifier to all partial class declarations.</Title>
     <Category>General</Category>
@@ -954,7 +954,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCastMethodInsteadOfSelectMethod" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCastMethodInsteadOfSelectMethod" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1109</Id>
     <Title>Use 'Cast' method instead of 'Select' method.</Title>
     <Category>General</Category>
@@ -963,7 +963,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareTypeInsideNamespace" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DeclareTypeInsideNamespace" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1110</Id>
     <Title>Declare type inside namespace.</Title>
     <Category>General</Category>
@@ -972,7 +972,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddBracesToSwitchSectionWithMultipleStatements" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddBracesToSwitchSectionWithMultipleStatements" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
     <Id>RCS1111</Id>
     <Title>Add braces to switch section with multiple statements.</Title>
     <Category>General</Category>

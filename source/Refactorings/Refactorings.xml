@@ -822,14 +822,14 @@
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty" ExtensionVersion="1.1.5">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace" ExtensionVersion="1.1.5">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
