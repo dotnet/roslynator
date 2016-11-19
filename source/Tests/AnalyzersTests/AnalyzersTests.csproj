@@ -47,6 +47,7 @@
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
+    <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />

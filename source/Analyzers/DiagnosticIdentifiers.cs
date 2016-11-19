@@ -111,5 +111,6 @@ namespace Roslynator.CSharp
         public const string SimplifyIfElseStatement = Prefix + "1103";
         public const string SimplifyConditionalExpression = Prefix + "1104";
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "1105";
+        public const string RemoveEmptyDestructor = Prefix + "1106";
     }
 }

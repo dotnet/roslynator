@@ -998,5 +998,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveEmptyDestructor = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveEmptyDestructor,
+            title: "Remove empty destructor.",
+            messageFormat: "Consider removing empty destructor.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
