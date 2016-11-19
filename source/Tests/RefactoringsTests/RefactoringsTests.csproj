@@ -60,6 +60,7 @@
     <Compile Include="ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
+    <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />

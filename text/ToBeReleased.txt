@@ -8,3 +8,10 @@
 * UseCastMethodInsteadOfSelectMethod
 * DeclareTypeInsideNamespace
 * AddBracesToSwitchSectionWithMultipleStatements
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceEqualsExpressionWithStringIsNullOrEmpty
+* ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace

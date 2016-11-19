@@ -501,6 +501,12 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringequals">Replace equals expression with string.Equals</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorempty">Replace equals expression with string.IsNullOrEmpty</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with string.IsNullOrWhiteSpace</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
