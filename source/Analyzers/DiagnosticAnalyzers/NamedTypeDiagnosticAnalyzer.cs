@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
                     DiagnosticDescriptors.MarkClassAsStatic,
-                    DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations);
+                    DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
+                    DiagnosticDescriptors.DeclareTypeInsideNamespace);
             }
         }
 
@@ -134,6 +135,51 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         }
                     }
                 }
+            }
+
+            if (symbol.ContainingNamespace?.IsGlobalNamespace == true)
+            {
+                ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                {
+                    SyntaxNode node = syntaxReference.GetSyntax(context.CancellationToken);
+
+                    if (node != null)
+                    {
+                        SyntaxToken identifier = GetDeclarationIdentifier(kind, node);
+
+                        if (!identifier.IsKind(SyntaxKind.None))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.DeclareTypeInsideNamespace,
+                                identifier.GetLocation(),
+                                identifier.ValueText);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static SyntaxToken GetDeclarationIdentifier(TypeKind kind, SyntaxNode node)
+        {
+            switch (kind)
+            {
+                case TypeKind.Class:
+                    return ((ClassDeclarationSyntax)node).Identifier;
+                case TypeKind.Struct:
+                    return ((StructDeclarationSyntax)node).Identifier;
+                case TypeKind.Interface:
+                    return ((InterfaceDeclarationSyntax)node).Identifier;
+                case TypeKind.Delegate:
+                    return ((DelegateDeclarationSyntax)node).Identifier;
+                case TypeKind.Enum:
+                    return ((EnumDeclarationSyntax)node).Identifier;
+                default:
+                    {
+                        Debug.Assert(false, kind.ToString());
+                        return default(SyntaxToken);
+                    }
             }
         }
     }

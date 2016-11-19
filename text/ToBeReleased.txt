@@ -6,3 +6,4 @@
 * RemoveRedundantStringToCharArrayCall
 * AddStaticModifierToAllPartialClassDeclarations
 * UseCastMethodInsteadOfSelectMethod
+* DeclareTypeInsideNamespace

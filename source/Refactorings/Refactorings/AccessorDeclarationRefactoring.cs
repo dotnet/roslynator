@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -21,12 +22,17 @@ namespace Roslynator.CSharp.Refactorings
                         "Format braces on multiple lines",
                         cancellationToken => FormatAccessorBraceOnMultipleLinesRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
                 }
-                else if (body.Statements.Count == 1
-                    && body.Statements[0].IsSingleLine())
+                else
                 {
-                    context.RegisterRefactoring(
-                        "Format braces on a single line",
-                        cancellationToken => FormatAccessorBraceOnSingleLineRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                    SyntaxList<StatementSyntax> statements = body.Statements;
+
+                    if (statements.Count == 1
+                        && statements[0].IsSingleLine())
+                    {
+                        context.RegisterRefactoring(
+                            "Format braces on a single line",
+                            cancellationToken => FormatAccessorBraceOnSingleLineRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                    }
                 }
             }
         }
