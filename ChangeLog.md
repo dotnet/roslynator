@@ -1,3 +1,23 @@
+### 1.1.5 (2016-11-19)
+
+#### Analyzers
+
+##### New Analyzers
+
+* RemoveEmptyDestructor
+* RemoveRedundantStringToCharArrayCall
+* AddStaticModifierToAllPartialClassDeclarations
+* UseCastMethodInsteadOfSelectMethod
+* DeclareTypeInsideNamespace
+* AddBracesToSwitchSectionWithMultipleStatements
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceEqualsExpressionWithStringIsNullOrEmpty
+* ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace
+
 ### 1.1.4 (2016-11-15)
 
 #### Analyzers
