@@ -46,13 +46,6 @@
 
 ![Add cast expression](../../images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
-#### Add 'ConfigureAwait(false)'
-
-* **Syntax**: awaitable method invocation
-* **Scope**: method name
-
-![Add 'ConfigureAwait(false)'](../../images/refactorings/AddConfigureAwait.png)
-
 #### Add default value to parameter
 
 * **Syntax**: parameter without default value
@@ -85,12 +78,6 @@
 
 ![Add parameter name to parameter](../../images/refactorings/AddParameterNameToParameter.png)
 
-#### Add 'To...' method invocation
-
-* **Syntax**: argument, assignment expression, return statement, variable declaration
-
-![Add 'To...' method invocation](../../images/refactorings/AddToMethodInvocation.png)
-
 #### Add using directive
 
 * **Syntax**: qualified name
@@ -104,6 +91,19 @@
 * **Scope**: selected class name
 
 ![Add using static directive](../../images/refactorings/AddUsingStaticDirective.png)
+
+#### Call 'ConfigureAwait(false)'
+
+* **Syntax**: awaitable method invocation
+* **Scope**: method name
+
+![Call 'ConfigureAwait(false)'](../../images/refactorings/CallConfigureAwait.png)
+
+#### Call 'To...' method
+
+* **Syntax**: argument, assignment expression, return statement, variable declaration
+
+![Call 'To...' method](../../images/refactorings/CallToMethod.png)
 
 #### Change explicit type to 'var'
 
@@ -781,10 +781,24 @@
 
 #### Replace equals expression with string.Equals
 
-* **Syntax**: equals expression
+* **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
 ![Replace equals expression with string.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
+
+#### Replace equals expression with string.IsNullOrEmpty
+
+* **Syntax**: equals expression, not equals expression
+* **Scope**: operator
+
+![Replace equals expression with string.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
+
+#### Replace equals expression with string.IsNullOrWhiteSpace
+
+* **Syntax**: equals expression, not equals expression
+* **Scope**: operator
+
+![Replace equals expression with string.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
 #### Replace field with constant
 

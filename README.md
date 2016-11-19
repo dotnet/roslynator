@@ -128,6 +128,12 @@
 * RCS1103 - Simplify if-else statement
 * RCS1104 - Simplify conditional expression
 * RCS1105 - Merge interpolation into interpolated string
+* RCS1106 - Remove empty destructor
+* RCS1107 - Remove redundant 'ToCharArray' call
+* RCS1108 - Add static modifier to all partial class declarations
+* RCS1109 - Use 'Cast' method instead of 'Select' method
+* RCS1110 - Declare type inside namespace
+* RCS1111 - Add braces to switch section with multiple statements
 
 ### List of Refactorings
 
@@ -137,15 +143,15 @@
 * [Add braces to switch section](source/Refactorings/README.md#add-braces-to-switch-section)
 * [Add braces to switch sections](source/Refactorings/README.md#add-braces-to-switch-sections)
 * [Add cast expression](source/Refactorings/README.md#add-cast-expression)
-* [Add 'ConfigureAwait(false)'](source/Refactorings/README.md#add-configureawaitfalse)
 * [Add default value to parameter](source/Refactorings/README.md#add-default-value-to-parameter)
 * [Add default value to return statement](source/Refactorings/README.md#add-default-value-to-return-statement)
 * [Add identifier to variable declaration](source/Refactorings/README.md#add-identifier-to-variable-declaration)
 * [Add parameter name to argument](source/Refactorings/README.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](source/Refactorings/README.md#add-parameter-name-to-parameter)
-* [Add 'To...' method invocation](source/Refactorings/README.md#add-to-method-invocation)
 * [Add using directive](source/Refactorings/README.md#add-using-directive)
 * [Add using static directive](source/Refactorings/README.md#add-using-static-directive)
+* [Call 'ConfigureAwait(false)'](source/Refactorings/README.md#call-configureawaitfalse)
+* [Call 'To...' method](source/Refactorings/README.md#call-to-method)
 * [Change explicit type to 'var'](source/Refactorings/README.md#change-explicit-type-to-var)
 * [Change method return type to 'void'](source/Refactorings/README.md#change-method-return-type-to-void)
 * [Change method/property/indexer type according to return expression](source/Refactorings/README.md#change-methodpropertyindexer-type-according-to-return-expression)
@@ -249,6 +255,8 @@
 * [Replace 'Count/Length' with 'Length/Count'](source/Refactorings/README.md#replace-countlength-with-lengthcount)
 * [Replace do statement with while statement](source/Refactorings/README.md#replace-do-statement-with-while-statement)
 * [Replace equals expression with string.Equals](source/Refactorings/README.md#replace-equals-expression-with-stringequals)
+* [Replace equals expression with string.IsNullOrEmpty](source/Refactorings/README.md#replace-equals-expression-with-stringisnullorempty)
+* [Replace equals expression with string.IsNullOrWhiteSpace](source/Refactorings/README.md#replace-equals-expression-with-stringisnullorwhitespace)
 * [Replace field with constant](source/Refactorings/README.md#replace-field-with-constant)
 * [Replace for statement with foreach statement](source/Refactorings/README.md#replace-for-statement-with-foreach-statement)
 * [Replace foreach statement with for statement](source/Refactorings/README.md#replace-foreach-statement-with-for-statement)

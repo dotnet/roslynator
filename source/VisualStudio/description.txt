@@ -143,6 +143,12 @@
         <li>RCS1103 - Simplify if-else statement.</li>
         <li>RCS1104 - Simplify conditional expression.</li>
         <li>RCS1105 - Merge interpolation into interpolated string.</li>
+        <li>RCS1106 - Remove empty destructor.</li>
+        <li>RCS1107 - Remove redundant 'ToCharArray' call.</li>
+        <li>RCS1108 - Add static modifier to all partial class declarations.</li>
+        <li>RCS1109 - Use 'Cast' method instead of 'Select' method.</li>
+        <li>RCS1110 - Declare type inside namespace.</li>
+        <li>RCS1111 - Add braces to switch section with multiple statements.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
