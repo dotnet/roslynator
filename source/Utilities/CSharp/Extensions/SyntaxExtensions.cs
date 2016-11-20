@@ -15,7 +15,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    public static class co
+    public static class SyntaxExtensions
     {
         public static bool IsGetter(this AccessorDeclarationSyntax accessorDeclaration)
         {
