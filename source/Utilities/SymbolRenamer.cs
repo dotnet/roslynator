@@ -16,11 +16,14 @@ namespace Roslynator
             string newName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
+            if (newName == null)
+                throw new ArgumentNullException(nameof(newName));
 
             Solution solution = document.Project.Solution;
 
