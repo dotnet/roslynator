@@ -383,6 +383,62 @@ namespace Roslynator.CSharp
             return compilationUnit.WithUsings(compilationUnit.Usings.AddRange(usings));
         }
 
+        public static CompilationUnitSyntax AddUsings(this CompilationUnitSyntax compilationUnit, bool keepSingleLineCommentsOnTop, params UsingDirectiveSyntax[] usings)
+        {
+            if (compilationUnit == null)
+                throw new ArgumentNullException(nameof(compilationUnit));
+
+            if (usings == null)
+                throw new ArgumentNullException(nameof(usings));
+
+            if (keepSingleLineCommentsOnTop
+                && usings.Length > 0
+                && !compilationUnit.Usings.Any())
+            {
+                SyntaxTriviaList leadingTrivia = compilationUnit.GetLeadingTrivia();
+
+                SyntaxTrivia[] topTrivia = GetTopSingleLineComments(leadingTrivia).ToArray();
+
+                if (topTrivia.Length > 0)
+                {
+                    compilationUnit = compilationUnit.WithoutLeadingTrivia();
+
+                    usings[0] = usings[0].WithLeadingTrivia(topTrivia);
+
+                    usings[usings.Length - 1] = usings[usings.Length - 1].WithTrailingTrivia(leadingTrivia.Skip(topTrivia.Length));
+                }
+            }
+
+            return compilationUnit.AddUsings(usings);
+        }
+
+        private static IEnumerable<SyntaxTrivia> GetTopSingleLineComments(SyntaxTriviaList triviaList)
+        {
+            SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                if (en.Current.IsSingleLineCommentTrivia())
+                {
+                    SyntaxTrivia trivia = en.Current;
+
+                    if (en.MoveNext() && en.Current.IsEndOfLineTrivia())
+                    {
+                        yield return trivia;
+                        yield return en.Current;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         public static ConstructorDeclarationSyntax WithBody(
             this ConstructorDeclarationSyntax constructorDeclaration,
             IEnumerable<StatementSyntax> statements)

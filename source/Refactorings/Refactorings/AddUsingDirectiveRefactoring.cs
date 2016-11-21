@@ -57,10 +57,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            root = root.ReplaceNode(node.Parent, GetNewNode(node));
+            UsingDirectiveSyntax usingDirective = UsingDirective(ParseName(namespaceSymbol.ToString()));
 
             CompilationUnitSyntax newRoot = ((CompilationUnitSyntax)root)
-                .AddUsings(UsingDirective(ParseName(namespaceSymbol.ToString())));
+                .ReplaceNode(node.Parent, GetNewNode(node))
+                .AddUsings(keepSingleLineCommentsOnTop: true, usings: usingDirective);
 
             return document.WithSyntaxRoot(newRoot);
         }
