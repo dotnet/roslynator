@@ -15,7 +15,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                    DiagnosticDescriptors.RemoveRedundantDelegateCreation,
+                    DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -51,6 +57,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(assignment));
                 }
             }
+
+            RemoveRedundantDelegateCreationRefactoring.Analyze(context, assignment);
         }
     }
 }

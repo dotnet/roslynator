@@ -4,3 +4,4 @@
 
 * CombineEnumerableWhereMethodChain
 * UseStringIsNullOrEmptyMethod
+* RemoveRedundantDelegateCreation

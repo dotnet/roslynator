@@ -58,6 +58,48 @@ namespace Roslynator.CSharp
             return false;
         }
 
+        public static bool IsEventHandlerOrGenericEventHandler(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (typeSymbol?.IsErrorType() == false)
+            {
+                if (typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler")))
+                    return true;
+
+                if (typeSymbol.IsNamedType()
+                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler`1")) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsEvent(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol?.Kind == SymbolKind.Event;
+        }
+
         public static bool IsImmutableArrayExtensionMethod(
             InvocationExpressionSyntax invocation,
             string methodName,
