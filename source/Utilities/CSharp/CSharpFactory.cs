@@ -559,6 +559,62 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.LogicalAndExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right, bool addParenthesesIfNecessary)
+        {
+            if (addParenthesesIfNecessary)
+            {
+                return LogicalAndExpression(
+                    (AreParenthesesNecessaryInLogicalAndExpression(left))
+                        ? left.Parenthesize(cutCopyTrivia: true)
+                        : left,
+                    (AreParenthesesNecessaryInLogicalAndExpression(right))
+                        ? right.Parenthesize(cutCopyTrivia: true)
+                        : right);
+            }
+            else
+            {
+                return LogicalAndExpression(left, right);
+            }
+        }
+
+        private static bool AreParenthesesNecessaryInLogicalAndExpression(ExpressionSyntax expression)
+        {
+            switch (expression.Kind())
+            {
+                case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.InvocationExpression:
+                case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.ElementAccessExpression:
+                case SyntaxKind.LogicalNotExpression:
+                case SyntaxKind.CastExpression:
+                case SyntaxKind.MultiplyExpression:
+                case SyntaxKind.DivideExpression:
+                case SyntaxKind.ModuloExpression:
+                case SyntaxKind.AddExpression:
+                case SyntaxKind.SubtractExpression:
+                case SyntaxKind.LeftShiftExpression:
+                case SyntaxKind.RightShiftExpression:
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                case SyntaxKind.IsExpression:
+                case SyntaxKind.AsExpression:
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                case SyntaxKind.ExclusiveOrExpression:
+                case SyntaxKind.LogicalAndExpression:
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
         public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);

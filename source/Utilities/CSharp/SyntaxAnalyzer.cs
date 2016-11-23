@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -47,16 +46,13 @@ namespace Roslynator.CSharp
             methodSymbol = methodSymbol?.ReducedFrom;
 
             if (methodSymbol != null
-                && NameEquals(methodSymbol.MetadataName, methodName))
+                && NameEquals(methodSymbol.Name, methodName))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-                if (parameters.Length == parameterCount
+                return parameters.Length == parameterCount
                     && IsContainedInEnumerable(methodSymbol, semanticModel)
-                    && IsGenericIEnumerable(parameters[0].Type))
-                {
-                    return true;
-                }
+                    && IsGenericIEnumerable(parameters[0].Type);
             }
 
             return false;
@@ -86,16 +82,13 @@ namespace Roslynator.CSharp
             methodSymbol = methodSymbol?.ReducedFrom;
 
             if (methodSymbol != null
-                && NameEquals(methodSymbol.MetadataName, methodName))
+                && NameEquals(methodSymbol.Name, methodName))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-                if (parameters.Length == parameterCount
+                return parameters.Length == parameterCount
                     && IsContainedInImmutableArrayExtensions(methodSymbol, semanticModel)
-                    && IsGenericImmutableArray(parameters[0].Type, semanticModel))
-                {
-                    return true;
-                }
+                    && IsGenericImmutableArray(parameters[0].Type, semanticModel);
             }
 
             return false;
@@ -123,19 +116,55 @@ namespace Roslynator.CSharp
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-            methodSymbol = methodSymbol?.ReducedFrom;
-
-            if (methodSymbol != null
-                && NameEquals(methodSymbol.MetadataName, "Where"))
+            if (methodSymbol != null)
             {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
-                if (parameters.Length == 2
-                    && IsContainedInEnumerable(methodSymbol, semanticModel)
-                    && IsGenericIEnumerable(parameters[0].Type)
-                    && IsPredicate(parameters[1].Type, semanticModel))
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "Where"))
                 {
-                    return true;
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInEnumerable(reducedFrom, semanticModel)
+                        && IsGenericIEnumerable(reducedFrom.Parameters.First().Type)
+                        && IsPredicateFunc(parameters[0].Type, methodSymbol.TypeArguments[0], semanticModel);
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsEnumerableWhereMethodWithIndex(
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+
+            if (methodSymbol != null)
+            {
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
+
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "Where"))
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInEnumerable(reducedFrom, semanticModel)
+                        && IsGenericIEnumerable(reducedFrom.Parameters.First().Type)
+                        && IsPredicateFunc(
+                            parameters[0].Type,
+                            methodSymbol.TypeArguments[0],
+                            semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
+                            semanticModel);
                 }
             }
 
@@ -155,19 +184,19 @@ namespace Roslynator.CSharp
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-            methodSymbol = methodSymbol?.ReducedFrom;
-
-            if (methodSymbol != null
-                && NameEquals(methodSymbol.MetadataName, "Where"))
+            if (methodSymbol != null)
             {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
-                if (parameters.Length == 2
-                    && IsContainedInImmutableArrayExtensions(methodSymbol, semanticModel)
-                    && IsGenericImmutableArray(parameters[0].Type, semanticModel)
-                    && IsPredicate(parameters[1].Type, semanticModel))
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "Where"))
                 {
-                    return true;
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInImmutableArrayExtensions(reducedFrom, semanticModel)
+                        && IsGenericImmutableArray(reducedFrom.Parameters.First().Type, semanticModel)
+                        && IsPredicateFunc(parameters[0].Type, methodSymbol.TypeArguments[0], semanticModel);
                 }
             }
 
@@ -187,18 +216,18 @@ namespace Roslynator.CSharp
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-            methodSymbol = methodSymbol?.ReducedFrom;
-
-            if (methodSymbol != null
-                && NameEquals(methodSymbol.MetadataName, "Cast"))
+            if (methodSymbol != null)
             {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
-                if (parameters.Length == 1
-                    && IsContainedInEnumerable(methodSymbol, semanticModel)
-                    && IsIEnumerable(parameters[0].Type))
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "Cast"))
                 {
-                    return true;
+                    ImmutableArray<IParameterSymbol> parameters = reducedFrom.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInEnumerable(methodSymbol, semanticModel)
+                        && IsIEnumerable(parameters[0].Type);
                 }
             }
 
@@ -244,31 +273,156 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        private static bool IsPredicate(ISymbol symbol, SemanticModel semanticModel)
+        public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
+
+            if (parameter1 == null)
+                throw new ArgumentNullException(nameof(parameter1));
+
+            if (parameter2 == null)
+                throw new ArgumentNullException(nameof(parameter2));
 
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             if (symbol.IsNamedType())
             {
-                INamedTypeSymbol func2Symbol = semanticModel.Compilation.GetTypeByMetadataName("System.Func`2");
+                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Func`2");
 
-                return ((INamedTypeSymbol)symbol).ConstructedFrom.Equals(func2Symbol);
+                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+
+                if (namedTypeSymbol.ConstructedFrom.Equals(funcSymbol))
+                {
+                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                    return typeArguments.Length == 2
+                        && typeArguments[0].Equals(parameter1)
+                        && typeArguments[1].Equals(parameter2);
+                }
             }
 
             return false;
         }
 
-        private static bool IsContainedInEnumerable(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, ITypeSymbol parameter3, SemanticModel semanticModel)
         {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (parameter1 == null)
+                throw new ArgumentNullException(nameof(parameter1));
+
+            if (parameter2 == null)
+                throw new ArgumentNullException(nameof(parameter2));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (symbol.IsNamedType())
+            {
+                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Func`3");
+
+                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+
+                if (namedTypeSymbol.ConstructedFrom.Equals(funcSymbol))
+                {
+                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                    return typeArguments.Length == 3
+                        && typeArguments[0].Equals(parameter1)
+                        && typeArguments[1].Equals(parameter2)
+                        && typeArguments[2].Equals(parameter3);
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter, SemanticModel semanticModel)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (parameter == null)
+                throw new ArgumentNullException(nameof(parameter));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (symbol.IsNamedType())
+            {
+                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Func`2");
+
+                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+
+                if (namedTypeSymbol.ConstructedFrom.Equals(funcSymbol))
+                {
+                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                    return typeArguments.Length == 2
+                        && typeArguments[0].Equals(parameter)
+                        && typeArguments[1].IsBoolean();
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (parameter1 == null)
+                throw new ArgumentNullException(nameof(parameter1));
+
+            if (parameter2 == null)
+                throw new ArgumentNullException(nameof(parameter2));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (symbol.IsNamedType())
+            {
+                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Func`3");
+
+                var namedTypeSymbol = (INamedTypeSymbol)symbol;
+
+                if (namedTypeSymbol.ConstructedFrom.Equals(funcSymbol))
+                {
+                    ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
+
+                    return typeArguments.Length == 3
+                        && typeArguments[0].Equals(parameter1)
+                        && typeArguments[1].Equals(parameter2)
+                        && typeArguments[2].IsBoolean();
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsContainedInEnumerable(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             return methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true;
         }
 
-        private static bool IsContainedInImmutableArrayExtensions(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        public static bool IsContainedInImmutableArrayExtensions(IMethodSymbol methodSymbol, SemanticModel semanticModel)
         {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             return methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true;
         }
 

@@ -117,5 +117,6 @@ namespace Roslynator.CSharp
         public const string UseCastMethodInsteadOfSelectMethod = Prefix + "1109";
         public const string DeclareTypeInsideNamespace = Prefix + "1110";
         public const string AddBracesToSwitchSectionWithMultipleStatements = Prefix + "1111";
+        public const string CombineEnumerableWhereMethodChain = Prefix + "1112";
     }
 }

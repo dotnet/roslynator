@@ -29,7 +29,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod,
                     DiagnosticIdentifiers.RemoveRedundantToStringCall,
                     DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
-                    DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod);
+                    DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
+                    DiagnosticIdentifiers.CombineEnumerableWhereMethodChain);
             }
         }
 
@@ -49,25 +50,40 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                            if (string.Equals(memberAccess.Name.Identifier.ValueText, "Cast", StringComparison.Ordinal))
+                            switch (memberAccess.Name.Identifier.ValueText)
                             {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Simplify method chain",
-                                    cancellationToken => ReplaceWhereAndCastWithOfTypeRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                    diagnostic.Id + EquivalenceKeySuffix);
+                                case "Cast":
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Simplify method chain",
+                                            cancellationToken => ReplaceWhereAndCastWithOfTypeRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                            diagnostic.Id + EquivalenceKeySuffix);
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Simplify method chain",
+                                            cancellationToken => SimplifyLinqMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                            diagnostic.Id + EquivalenceKeySuffix);
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
                             }
-                            else
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Simplify method chain",
-                                    cancellationToken => SimplifyLinqMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                    diagnostic.Id + EquivalenceKeySuffix);
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
+                            break;
+                        }
+                    case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Combine 'Where' method chain",
+                                cancellationToken => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                     case DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty:

@@ -53,6 +53,7 @@
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\DestructorDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\CombineEnumerableWhereMethodChainRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantStringToCharArrayCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />

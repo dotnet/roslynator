@@ -27,7 +27,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
-                    DiagnosticDescriptors.UseCastMethodInsteadOfSelectMethod);
+                    DiagnosticDescriptors.UseCastMethodInsteadOfSelectMethod,
+                    DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
+                    DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut);
             }
         }
 
@@ -52,49 +54,63 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                string methodName = memberAccess.Name?.Identifier.ValueText;
+                ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-                switch (methodName)
+                if (argumentList?.IsMissing == false)
                 {
-                    case "Select":
-                        {
-                            ReplaceSelectWithCastRefactoring.Analyze(context, invocation, memberAccess);
-                            break;
-                        }
-                }
+                    int argumentCount = argumentList.Arguments.Count;
 
-                if (invocation.ArgumentList?.Arguments.Count == 0)
-                {
-                    switch (methodName)
+                    string methodName = memberAccess.Name?.Identifier.ValueText;
+
+                    if (argumentCount == 0)
                     {
-                        case "Any":
-                            {
-                                SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.Analyze(context, invocation, memberAccess);
-                                break;
-                            }
-                        case "Cast":
-                            {
-                                ReplaceWhereAndCastWithOfTypeRefactoring.Analyze(context, invocation);
-                                break;
-                            }
-                        case "Count":
-                            {
-                                SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                ReplaceCountMethodRefactoring.Analyze(context, invocation, memberAccess);
-                                break;
-                            }
-                        case "First":
-                        case "FirstOrDefault":
-                        case "Last":
-                        case "LastOrDefault":
-                        case "LongCount":
-                        case "Single":
-                        case "SingleOrDefault":
-                            {
-                                SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                break;
-                            }
+                        switch (methodName)
+                        {
+                            case "Any":
+                                {
+                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
+                                    ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
+                            case "Cast":
+                                {
+                                    ReplaceWhereAndCastWithOfTypeRefactoring.Analyze(context, invocation);
+                                    break;
+                                }
+                            case "Count":
+                                {
+                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
+                                    ReplaceCountMethodRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
+                            case "First":
+                            case "FirstOrDefault":
+                            case "Last":
+                            case "LastOrDefault":
+                            case "LongCount":
+                            case "Single":
+                            case "SingleOrDefault":
+                                {
+                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
+                                    break;
+                                }
+                        }
+                    }
+                    else if (argumentCount == 1)
+                    {
+                        switch (methodName)
+                        {
+                            case "Select":
+                                {
+                                    ReplaceSelectWithCastRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
+                            case "Where":
+                                {
+                                    CombineEnumerableWhereMethodChainRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
+                        }
                     }
                 }
             }

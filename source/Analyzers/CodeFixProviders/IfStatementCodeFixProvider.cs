@@ -87,10 +87,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
 
-            BinaryExpressionSyntax newCondition = SyntaxFactory.BinaryExpression(
-                SyntaxKind.LogicalAndExpression,
-                AddParenthesesIfNecessary(ifStatement.Condition),
-                AddParenthesesIfNecessary(nestedIf.Condition));
+            BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(
+                ifStatement.Condition,
+                nestedIf.Condition,
+                addParenthesesIfNecessary: true);
 
             IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
                 .WithCondition(newCondition)
@@ -128,47 +128,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                     return (IfStatementSyntax)((BlockSyntax)ifStatement.Statement).Statements[0];
                 default:
                     return (IfStatementSyntax)ifStatement.Statement;
-            }
-        }
-
-        private static ExpressionSyntax AddParenthesesIfNecessary(ExpressionSyntax expression)
-        {
-            switch (expression.Kind())
-            {
-                case SyntaxKind.ParenthesizedExpression:
-                case SyntaxKind.TrueLiteralExpression:
-                case SyntaxKind.FalseLiteralExpression:
-                case SyntaxKind.IdentifierName:
-                case SyntaxKind.InvocationExpression:
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.ElementAccessExpression:
-                case SyntaxKind.LogicalNotExpression:
-                case SyntaxKind.CastExpression:
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                case SyntaxKind.LessThanExpression:
-                case SyntaxKind.GreaterThanExpression:
-                case SyntaxKind.LessThanOrEqualExpression:
-                case SyntaxKind.GreaterThanOrEqualExpression:
-                case SyntaxKind.IsExpression:
-                case SyntaxKind.AsExpression:
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.LogicalAndExpression:
-                    return expression;
-                default:
-                    {
-                        return SyntaxFactory.ParenthesizedExpression(expression.WithoutTrivia())
-                           .WithTriviaFrom(expression);
-                    }
             }
         }
     }

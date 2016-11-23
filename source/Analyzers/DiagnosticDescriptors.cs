@@ -1053,5 +1053,16 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChain = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
+            title: "Combine 'Enumerable.Where' method chain.",
+            messageFormat: "Consider combining 'Enumerable.Where' method chain.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChainFadeOut = CombineEnumerableWhereMethodChain.CreateFadeOut();
     }
 }
