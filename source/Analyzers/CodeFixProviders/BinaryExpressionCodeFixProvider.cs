@@ -21,7 +21,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
                     DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression);
@@ -43,17 +42,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.RemoveRedundantBooleanLiteral:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant boolean literal",
-                                cancellationToken => RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-
-                            break;
-                        }
                     case DiagnosticIdentifiers.SimplifyBooleanComparison:
                         {
                             CodeAction codeAction = CodeAction.Create(

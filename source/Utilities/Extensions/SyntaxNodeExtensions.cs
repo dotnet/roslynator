@@ -232,8 +232,7 @@ namespace Roslynator
 
         public static bool IsBooleanLiteralExpression(this SyntaxNode node)
         {
-            return node.IsKind(SyntaxKind.TrueLiteralExpression)
-                || node.IsKind(SyntaxKind.FalseLiteralExpression);
+            return node.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression);
         }
 
         public static bool IsNumericLiteralExpression(this SyntaxNode node, int value)

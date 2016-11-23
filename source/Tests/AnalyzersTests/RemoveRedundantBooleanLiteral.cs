@@ -9,6 +9,29 @@ namespace Roslynator.CSharp.Analyzers.Tests
             for (int i = 0; true; i++)
             {
             }
+
+            bool f = false;
+
+            if (f && true) { }
+
+            if (f || false) { }
+
+            if (f == true) { }
+
+            if (f != false) { }
+
+            if (true && f) { }
+
+            if (false || f) { }
+
+            if (true == f) { }
+
+            if (false != f) { }
+
+            if (f
+#if DEBUG
+                && true) { }
+#endif
         }
     }
 }

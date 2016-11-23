@@ -23,12 +23,7 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop,
-                    DiagnosticIdentifiers.RemoveRedundantBooleanLiteral);
-            }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -55,22 +50,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 cancellationToken =>
                                 {
                                     return ConvertForStatementToWhileStatementAsync(
-                                        context.Document,
-                                        forStatement,
-                                        cancellationToken);
-                                },
-                                diagnostic.Id + EquivalenceKeySuffix);
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveRedundantBooleanLiteral:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant boolean literal",
-                                cancellationToken =>
-                                {
-                                    return RemoveTrueLiteralFromForStatementConditionAsync(
                                         context.Document,
                                         forStatement,
                                         cancellationToken);
@@ -112,37 +91,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(forStatement, whileStatement, cancellationToken).ConfigureAwait(false);
-        }
-
-        private async Task<Document> RemoveTrueLiteralFromForStatementConditionAsync(
-            Document document,
-            ForStatementSyntax forStatement,
-            CancellationToken cancellationToken)
-        {
-            ForStatementSyntax newForStatement = forStatement;
-
-            if (forStatement
-                .DescendantTrivia(TextSpan.FromBounds(forStatement.FirstSemicolonToken.Span.End, forStatement.SecondSemicolonToken.Span.Start))
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                newForStatement = forStatement.Update(
-                    forStatement.ForKeyword,
-                    forStatement.OpenParenToken,
-                    forStatement.Declaration,
-                    forStatement.Initializers,
-                    forStatement.FirstSemicolonToken.WithTrailingTrivia(SpaceTrivia()),
-                    default(ExpressionSyntax),
-                    forStatement.SecondSemicolonToken.WithoutLeadingTrivia(),
-                    forStatement.Incrementors,
-                    forStatement.CloseParenToken,
-                    forStatement.Statement);
-            }
-            else
-            {
-                newForStatement = forStatement.RemoveNode(forStatement.Condition, SyntaxRemoveOptions.KeepExteriorTrivia);
-            }
-
-            return await document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }
