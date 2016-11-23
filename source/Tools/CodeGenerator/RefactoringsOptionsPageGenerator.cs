@@ -61,7 +61,7 @@ namespace CodeGenerator
                                         SimpleMemberAccessExpression(
                                             IdentifierName("RefactoringIdentifiers"),
                                             IdentifierName(refactoring.Identifier))),
-                                    Argument(refactoring.Identifier))));
+                                    Argument(IdentifierName(refactoring.Identifier)))));
                     })));
 
             foreach (RefactoringInfo info in refactorings)

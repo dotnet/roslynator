@@ -71,6 +71,7 @@
     <Compile Include="Refactorings\ReplaceCountMethod\ReplaceCountMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceSelectWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceWhereAndCastWithOfTypeRefactoring.cs" />
+    <Compile Include="Refactorings\UseStringIsNullOrEmptyMethodRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyIfElseStatementRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />

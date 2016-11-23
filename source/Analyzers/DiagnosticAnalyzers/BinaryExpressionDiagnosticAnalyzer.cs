@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -19,7 +20,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
-                    DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression);
+                    DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
+                    DiagnosticDescriptors.UseStringIsNullOrEmptyMethod);
             }
         }
 
@@ -82,6 +84,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                         left.GetLocation());
+                }
+
+                if (UseStringIsNullOrEmptyMethodRefactoring.CanRefactor(binaryExpression, left, right, context.SemanticModel, context.CancellationToken)
+                    && !binaryExpression.SpanContainsDirectives())
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.UseStringIsNullOrEmptyMethod,
+                        binaryExpression.GetLocation());
                 }
             }
         }

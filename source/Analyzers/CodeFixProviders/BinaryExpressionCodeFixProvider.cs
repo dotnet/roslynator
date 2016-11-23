@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
                     DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
-                    DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression);
+                    DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
+                    DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod);
             }
         }
 
@@ -71,7 +72,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use 'string.IsNullOrEmpty' method",
+                                cancellationToken => UseStringIsNullOrEmptyMethodRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

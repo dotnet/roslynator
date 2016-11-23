@@ -1064,5 +1064,14 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChainFadeOut = CombineEnumerableWhereMethodChain.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor UseStringIsNullOrEmptyMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
+            title: "Use 'string.IsNullOrEmpty' method.",
+            messageFormat: "Consider using 'string.IsNullOrEmpty' method.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -3,3 +3,4 @@
 ##### New Analyzers
 
 * CombineEnumerableWhereMethodChain
+* UseStringIsNullOrEmptyMethod

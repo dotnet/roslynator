@@ -144,11 +144,6 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ArgumentList(SeparatedList(arguments));
         }
 
-        public static ArgumentSyntax Argument(string name)
-        {
-            return SyntaxFactory.Argument(IdentifierName(name));
-        }
-
         public static AttributeSyntax Attribute(string name)
         {
             return SyntaxFactory.Attribute(IdentifierName(name));
@@ -665,7 +660,8 @@ namespace Roslynator.CSharp
         {
             return InvocationExpression(
                 "nameof",
-                ArgumentList(Argument(identifier)));
+                ArgumentList(
+                    SyntaxFactory.Argument(IdentifierName(identifier))));
         }
 
         public static UsingDirectiveSyntax UsingStaticDirective(string name)
