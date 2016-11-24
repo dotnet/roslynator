@@ -899,6 +899,11 @@
     </Syntaxes>
     <Scope>method header</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceNullLiteralExpressionWithDefaultExpression" Title="Replace null literal expression with default expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>argument</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplacePrefixOperatorWithPostfixOperator" Title="Replace prefix operator to postfix operator" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>

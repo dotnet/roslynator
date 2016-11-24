@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -12,21 +13,25 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                && argument.Expression?.IsMissing == false
-                && context.SupportsSemanticModel)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                ExpressionSyntax expression = argument.Expression;
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(argument.Expression).ConvertedType;
-
-                if (typeSymbol?.IsErrorType() == false)
+                if (expression?.IsMissing == false
+                    && context.SupportsSemanticModel)
                 {
-                    IEnumerable<ITypeSymbol> newTypes = argument
-                        .DetermineParameterTypes(semanticModel, context.CancellationToken)
-                        .Where(f => !typeSymbol.Equals(f));
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ModifyExpressionRefactoring.ComputeRefactoring(context, argument.Expression, newTypes, semanticModel);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).ConvertedType;
+
+                    if (typeSymbol?.IsErrorType() == false)
+                    {
+                        IEnumerable<ITypeSymbol> newTypes = argument
+                            .DetermineParameterTypes(semanticModel, context.CancellationToken)
+                            .Where(f => !typeSymbol.Equals(f));
+
+                        ModifyExpressionRefactoring.ComputeRefactoring(context, expression, newTypes, semanticModel);
+                    }
                 }
             }
         }

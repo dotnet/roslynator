@@ -11,3 +11,4 @@
 ##### New Refactorings
 
 * AddExceptionToDocumentationComment
+* ReplaceNullLiteralExpressionWithDefaultExpression

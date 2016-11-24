@@ -432,6 +432,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-with-property">Replace method with property</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-null-literal-expression-with-default-expression">Replace null literal expression with default expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-prefix-operator-to-postfix-operator">Replace prefix operator to postfix operator</a>
         </li>
         <li>

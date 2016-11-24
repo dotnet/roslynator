@@ -144,6 +144,7 @@ namespace Roslynator.VisualStudio
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodInvocationWithElementAccess = true;
             ReplaceMethodWithProperty = false;
+            ReplaceNullLiteralExpressionWithDefaultExpression = true;
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
@@ -305,6 +306,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty, ReplaceMethodWithProperty);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression, ReplaceNullLiteralExpressionWithDefaultExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
@@ -1647,6 +1649,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: method\r\nScope: method header")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceMethodWithProperty
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace null literal expression with default expression")]
+        [Description("Syntax: argument")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceNullLiteralExpressionWithDefaultExpression
         {
             get;
             set;

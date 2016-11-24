@@ -264,7 +264,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (!fExpression)
                         {
-                            ExpressionRefactoring.ComputeRefactorings(context, expression);
+                            await ExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
                             fExpression = true;
                         }
 
