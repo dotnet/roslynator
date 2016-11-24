@@ -1,3 +1,20 @@
+### 1.1.6 (2016-11-24)
+
+#### Analyzers
+
+##### New Analyzers
+
+* CombineEnumerableWhereMethodChain
+* UseStringIsNullOrEmptyMethod
+* RemoveRedundantDelegateCreation
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddExceptionToDocumentationComment
+* ReplaceNullLiteralExpressionWithDefaultExpression
+
 ### 1.1.5 (2016-11-19)
 
 #### Analyzers

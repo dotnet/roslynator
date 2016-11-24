@@ -1,14 +1,1 @@
-﻿#### Analyzers
-
-##### New Analyzers
-
-* CombineEnumerableWhereMethodChain
-* UseStringIsNullOrEmptyMethod
-* RemoveRedundantDelegateCreation
-
-#### Refactorings
-
-##### New Refactorings
-
-* AddExceptionToDocumentationComment
-* ReplaceNullLiteralExpressionWithDefaultExpression
+﻿
