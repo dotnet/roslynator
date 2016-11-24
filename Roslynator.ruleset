@@ -220,6 +220,7 @@
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Warning" />
+    <Rule Id="RCS1025" Action="Info" />
     <Rule Id="RCS1026" Action="Warning" />
     <Rule Id="RCS1027" Action="Warning" />
     <Rule Id="RCS1028" Action="Warning" />
