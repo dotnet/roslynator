@@ -72,12 +72,12 @@ namespace Roslynator.CSharp.Refactorings
                                                 if (enumerableSymbol != null
                                                     && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
                                                 {
-                                                    RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()));
+                                                    RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
                                                 }
                                             }
                                         }
 
-                                        RegisterChangeType(context, declaration, memberType, newType);
+                                        RegisterChangeType(context, declaration, memberType, newType, semanticModel);
                                     }
                                 }
 
@@ -102,10 +102,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType)
+        private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
         {
             context.RegisterRefactoring(
-            $"Change {GetText(member)} type to '{newType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+            $"Change {GetText(member)} type to '{newType.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
             cancellationToken =>
             {
                 return ChangeTypeRefactoring.ChangeTypeAsync(

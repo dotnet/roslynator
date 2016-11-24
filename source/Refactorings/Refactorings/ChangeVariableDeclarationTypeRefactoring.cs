@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeArgumentType = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeArgumentType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}' and insert 'await'",
+                        $"Change type to '{typeArgumentType.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}' and insert 'await'",
                         c =>
                         {
                             return ChangeTypeAndAddAwaitAsync(
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             context.RegisterRefactoring(
-                $"Change type to '{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
                 c =>
                 {
                     return ChangeTypeRefactoring.ChangeTypeAsync(

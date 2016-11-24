@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                                                     CSharpFactory.Type(typeSymbol)))));
 
                                     context.RegisterRefactoring(
-                                        $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}>'",
+                                        $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToMinimalDisplayString(semanticModel, memberType.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}>'",
                                         cancellationToken =>
                                         {
                                             return ChangeTypeRefactoring.ChangeTypeAsync(
