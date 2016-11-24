@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="e397c3de-8e13-4bf9-8500-a0688602757d" Version="0.0.1" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>Roslynator</DisplayName>
-    <Description xml:space="preserve">Roslyn-based extension that offers 100+ analyzers and 150+ refactorings for C#.</Description>
+    <Description xml:space="preserve">Roslyn-based extension that offers 110+ analyzers and 150+ refactorings for C#.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md</ReleaseNotes>

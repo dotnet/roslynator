@@ -59,6 +59,12 @@
 
 ![Add default value to return statement](../../images/refactorings/AddDefaultValueToReturnStatement.png)
 
+#### Add exception to documentation comment
+
+* **Syntax**: throw statement
+
+![Add exception to documentation comment](../../images/refactorings/AddExceptionToDocumentationComment.png)
+
 #### Add identifier to variable declaration
 
 * **Syntax**: variable declaration
@@ -868,6 +874,12 @@
 * **Scope**: method header
 
 ![Replace method with property](../../images/refactorings/ReplaceMethodWithProperty.png)
+
+#### Replace null literal expression with default expression
+
+* **Syntax**: argument
+
+![Replace null literal expression with default expression](../../images/refactorings/ReplaceNullLiteralExpressionWithDefaultExpression.png)
 
 #### Replace prefix operator to postfix operator
 

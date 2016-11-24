@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 100+ analyzers and 150+ refactorings for C#, powered by Roslyn.
+* A collection of 110+ analyzers and 150+ refactorings for C#, powered by Roslyn.
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
 
 ### Documentation
@@ -134,6 +134,9 @@
 * RCS1109 - Use 'Cast' method instead of 'Select' method
 * RCS1110 - Declare type inside namespace
 * RCS1111 - Add braces to switch section with multiple statements
+* RCS1112 - Combine 'Enumerable.Where' method chain
+* RCS1113 - Use 'string.IsNullOrEmpty' method
+* RCS1114 - Remove redundant delegate creation
 
 ### List of Refactorings
 
@@ -145,6 +148,7 @@
 * [Add cast expression](source/Refactorings/README.md#add-cast-expression)
 * [Add default value to parameter](source/Refactorings/README.md#add-default-value-to-parameter)
 * [Add default value to return statement](source/Refactorings/README.md#add-default-value-to-return-statement)
+* [Add exception to documentation comment](source/Refactorings/README.md#add-exception-to-documentation-comment)
 * [Add identifier to variable declaration](source/Refactorings/README.md#add-identifier-to-variable-declaration)
 * [Add parameter name to argument](source/Refactorings/README.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](source/Refactorings/README.md#add-parameter-name-to-parameter)
@@ -268,6 +272,7 @@
 * [Replace interpolated string with string literal](source/Refactorings/README.md#replace-interpolated-string-with-string-literal)
 * [Replace method invocation with '[]'](source/Refactorings/README.md#replace-method-invocation-with-)
 * [Replace method with property](source/Refactorings/README.md#replace-method-with-property)
+* [Replace null literal expression with default expression](source/Refactorings/README.md#replace-null-literal-expression-with-default-expression)
 * [Replace prefix operator to postfix operator](source/Refactorings/README.md#replace-prefix-operator-to-postfix-operator)
 * [Replace property with method](source/Refactorings/README.md#replace-property-with-method)
 * [Replace regular string literal with verbatim string literal](source/Refactorings/README.md#replace-regular-string-literal-with-verbatim-string-literal)
