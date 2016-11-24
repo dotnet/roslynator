@@ -14,6 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddCastExpression = "AddCastExpression";
         public const string AddDefaultValueToParameter = "AddDefaultValueToParameter";
         public const string AddDefaultValueToReturnStatement = "AddDefaultValueToReturnStatement";
+        public const string AddExceptionToDocumentationComment = "AddExceptionToDocumentationComment";
         public const string AddIdentifierToVariableDeclaration = "AddIdentifierToVariableDeclaration";
         public const string AddParameterNameToArgument = "AddParameterNameToArgument";
         public const string AddParameterNameToParameter = "AddParameterNameToParameter";

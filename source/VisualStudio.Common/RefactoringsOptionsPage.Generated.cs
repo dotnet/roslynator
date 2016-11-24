@@ -20,6 +20,7 @@ namespace Roslynator.VisualStudio
             AddCastExpression = true;
             AddDefaultValueToParameter = true;
             AddDefaultValueToReturnStatement = true;
+            AddExceptionToDocumentationComment = true;
             AddIdentifierToVariableDeclaration = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
@@ -180,6 +181,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddCastExpression, AddCastExpression);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter, AddDefaultValueToParameter);
             SetIsEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement, AddDefaultValueToReturnStatement);
+            SetIsEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment, AddExceptionToDocumentationComment);
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
@@ -405,6 +407,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: return statement without expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddDefaultValueToReturnStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add exception to documentation comment")]
+        [Description("Syntax: throw statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddExceptionToDocumentationComment
         {
             get;
             set;

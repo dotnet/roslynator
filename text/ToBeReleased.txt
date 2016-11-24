@@ -5,3 +5,9 @@
 * CombineEnumerableWhereMethodChain
 * UseStringIsNullOrEmptyMethod
 * RemoveRedundantDelegateCreation
+
+#### Refactorings
+
+##### New Refactorings
+
+* AddExceptionToDocumentationComment

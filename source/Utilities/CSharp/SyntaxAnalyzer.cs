@@ -22,6 +22,28 @@ namespace Roslynator.CSharp
                 || IsImmutableArrayExtensionMethod(invocation, methodName, parameterCount, semanticModel, cancellationToken);
         }
 
+        public static bool IsException(
+            ITypeSymbol typeSymbol,
+            SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (typeSymbol.IsClass())
+            {
+                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Exception");
+
+                return typeSymbol
+                    .BaseTypesAndSelf()
+                    .Any(f => f.Equals(exceptionSymbol));
+            }
+
+            return false;
+        }
+
         public static bool IsEnumerableExtensionMethod(
             InvocationExpressionSyntax invocation,
             string methodName,

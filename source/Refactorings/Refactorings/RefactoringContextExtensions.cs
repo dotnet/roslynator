@@ -130,6 +130,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fLockStatement = false;
             bool fBlock = false;
             bool fStatementRefactoring = false;
+            bool fThrowStatement = false;
 
             SyntaxNode firstNode = node;
 
@@ -519,6 +520,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             await BlockRefactoring.ComputeRefactoringAsync(context, (BlockSyntax)node).ConfigureAwait(false);
                             fBlock = true;
+                        }
+
+                        if (!fThrowStatement
+                            && kind == SyntaxKind.ThrowStatement)
+                        {
+                            await ThrowStatementRefactoring.ComputeRefactoringAsync(context, (ThrowStatementSyntax)node).ConfigureAwait(false);
+                            fThrowStatement = true;
                         }
 
                         if (!fStatement)

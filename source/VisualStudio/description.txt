@@ -177,6 +177,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-default-value-to-return-statement">Add default value to return statement</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-exception-to-documentation-comment">Add exception to documentation comment</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
         </li>
         <li>

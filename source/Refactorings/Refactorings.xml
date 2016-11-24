@@ -62,6 +62,11 @@
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="AddExceptionToDocumentationComment" Title="Add exception to documentation comment" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>throw statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" ExtensionVersion="0.93.0">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>

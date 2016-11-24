@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddToMethodInvocationRefactoring.cs" />
     <Compile Include="CopyCommentFromBaseRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />

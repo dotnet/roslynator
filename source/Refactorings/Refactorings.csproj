@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LockStatementRefactoring.cs" />
     <Compile Include="Refactorings\CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Refactorings\NodeInList\ArgumentSyntaxRewriter.cs" />
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
+    <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
