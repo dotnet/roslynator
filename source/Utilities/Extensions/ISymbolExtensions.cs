@@ -413,7 +413,7 @@ namespace Roslynator
             }
         }
 
-        public static bool IsPredefinedType(this ITypeSymbol typeSymbol)
+        public static bool SupportsPredefinedType(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));

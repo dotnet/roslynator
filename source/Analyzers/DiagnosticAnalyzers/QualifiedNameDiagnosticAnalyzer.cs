@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (namedTypeSymbol != null)
                 {
-                    if (namedTypeSymbol.IsPredefinedType())
+                    if (namedTypeSymbol.SupportsPredefinedType())
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UsePredefinedType,

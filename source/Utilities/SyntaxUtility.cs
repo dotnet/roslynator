@@ -424,7 +424,7 @@ namespace Roslynator
             {
                 return null;
             }
-            else if (typeSymbol.IsPredefinedType())
+            else if (typeSymbol.SupportsPredefinedType())
             {
                 return null;
             }

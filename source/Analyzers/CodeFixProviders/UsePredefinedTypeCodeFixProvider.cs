@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     .GetSymbolInfo(node, context.CancellationToken)
                     .Symbol as INamedTypeSymbol;
 
-                if (namedTypeSymbol?.IsPredefinedType() == true)
+                if (namedTypeSymbol?.SupportsPredefinedType() == true)
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Use predefined type '{namedTypeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",

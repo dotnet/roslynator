@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         .GetSymbolInfo(expression, context.CancellationToken)
                         .Symbol as INamedTypeSymbol;
 
-                    if (namedTypeSymbol?.IsPredefinedType() == true)
+                    if (namedTypeSymbol?.SupportsPredefinedType() == true)
                     {
                         IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(expression, context.CancellationToken);
 
