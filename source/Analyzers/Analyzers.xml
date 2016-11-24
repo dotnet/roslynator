@@ -981,7 +981,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CombineEnumerableWhereMethodChain" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="CombineEnumerableWhereMethodChain" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
     <Id>RCS1112</Id>
     <Title>Combine 'Enumerable.Where' method chain.</Title>
     <Category>General</Category>
@@ -990,7 +990,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseStringIsNullOrEmptyMethod" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseStringIsNullOrEmptyMethod" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
     <Id>RCS1113</Id>
     <Title>Use 'string.IsNullOrEmpty' method.</Title>
     <Category>General</Category>
@@ -999,7 +999,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantDelegateCreation" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantDelegateCreation" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
     <Id>RCS1114</Id>
     <Title>Remove redundant delegate creation.</Title>
     <Category>General</Category>

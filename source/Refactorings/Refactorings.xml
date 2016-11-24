@@ -62,7 +62,7 @@
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="AddExceptionToDocumentationComment" Title="Add exception to documentation comment" ExtensionVersion="0.0.0">
+  <Refactoring Id="AddExceptionToDocumentationComment" Title="Add exception to documentation comment" ExtensionVersion="1.1.6">
     <Syntaxes>
       <Syntax>throw statement</Syntax>
     </Syntaxes>
@@ -899,7 +899,7 @@
     </Syntaxes>
     <Scope>method header</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceNullLiteralExpressionWithDefaultExpression" Title="Replace null literal expression with default expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceNullLiteralExpressionWithDefaultExpression" Title="Replace null literal expression with default expression" ExtensionVersion="1.1.6">
     <Syntaxes>
       <Syntax>argument</Syntax>
     </Syntaxes>
