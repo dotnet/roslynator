@@ -33,9 +33,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var ifStatement = (IfStatementSyntax)elseClause.Statement;
 
-                if (ifStatement.Else == null
-                    && (ifStatement.IfKeyword.Span.Contains(context.Span)
-                        || context.Span.IsBetweenSpans(ifStatement)))
+                if (ifStatement.IfKeyword.Span.Contains(context.Span)
+                        || context.Span.IsBetweenSpans(ifStatement))
                 {
                     AddBracesRefactoring.RegisterRefactoring(context, ifStatement);
                 }
