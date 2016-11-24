@@ -35,13 +35,15 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, context.CancellationToken).Type;
+                TypeSyntax type = forEachStatement.Type;
+
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                 if (typeSymbol != null)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, forEachStatement.Type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
-                        cancellationToken => ChangeTypeAsync(context.Document, forEachStatement.Type, typeSymbol, cancellationToken),
+                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        cancellationToken => ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
 
                     context.RegisterCodeFix(codeAction, context.Diagnostics);

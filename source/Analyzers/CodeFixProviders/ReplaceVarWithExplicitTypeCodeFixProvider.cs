@@ -37,16 +37,18 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (variableDeclaration == null)
                 return;
 
-            if (variableDeclaration.Type.IsVar
+            TypeSyntax type = variableDeclaration.Type;
+
+            if (type.IsVar
                 && context.Document.SupportsSemanticModel)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).Type;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).Type;
 
                 CodeAction codeAction = CodeAction.Create(
-                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, variableDeclaration.Type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
-                    cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, variableDeclaration.Type, typeSymbol, cancellationToken),
+                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                    cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
