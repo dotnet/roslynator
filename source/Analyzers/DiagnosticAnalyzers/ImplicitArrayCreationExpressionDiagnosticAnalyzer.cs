@@ -41,11 +41,16 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 && !openBracket.IsMissing
                 && !closeBracket.IsMissing)
             {
-                TextSpan span = TextSpan.FromBounds(newKeyword.Span.Start, closeBracket.Span.End);
+                var typeSymbol = context.SemanticModel.GetTypeSymbol(expression) as IArrayTypeSymbol;
 
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidImplicitlyTypedArray,
-                    Location.Create(expression.SyntaxTree, span));
+                if (typeSymbol?.ElementType?.IsErrorType() == false)
+                {
+                    TextSpan span = TextSpan.FromBounds(newKeyword.Span.Start, closeBracket.Span.End);
+
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AvoidImplicitlyTypedArray,
+                        Location.Create(expression.SyntaxTree, span));
+                }
             }
         }
     }
