@@ -17,8 +17,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (symbol.TypeKind == TypeKind.Class
                 && !symbol.IsStatic
+                && !symbol.IsAbstract
                 && !symbol.IsImplicitClass
-                && !symbol.IsImplicitlyDeclared)
+                && !symbol.IsImplicitlyDeclared
+                && symbol.BaseType?.IsObject() == true)
             {
                 ImmutableArray<ISymbol> members = symbol.GetMembers();
 
