@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective;
+using Roslynator.CSharp.Refactorings.InlineAliasExpression;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, UsingDirectiveSyntax usingDirective)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveUsingAliasDirective))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineAliasExpression))
             {
                 NameEqualsSyntax alias = usingDirective.Alias;
 
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Inline alias expression",
                             cancellationToken =>
                             {
-                                return RemoveUsingAliasDirectiveRefactoring.RefactorAsync(
+                                return InlineAliasExpressionRefactoring.RefactorAsync(
                                     context.Document,
                                     usingDirective,
                                     cancellationToken);

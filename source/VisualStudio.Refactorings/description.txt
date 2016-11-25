@@ -204,6 +204,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#initialize-local-with-default-value">Initialize local with default value</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#inline-alias-expression">Inline alias expression</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#inline-method">Inline method</a>
         </li>
         <li>
@@ -343,9 +346,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-statements-from-switch-sections">Remove statements from switch sections</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-using-alias-directive">Remove using alias directive</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>

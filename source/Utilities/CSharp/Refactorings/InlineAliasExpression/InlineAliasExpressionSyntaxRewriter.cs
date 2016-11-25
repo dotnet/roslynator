@@ -10,14 +10,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
+namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 {
-    public class RemoveUsingAliasDirectiveSyntaxRewriter : CSharpSyntaxRewriter
+    public class InlineAliasExpressionSyntaxRewriter : CSharpSyntaxRewriter
     {
         private readonly UsingDirectiveSyntax _usingDirective;
         private readonly IdentifierNameSyntax[] _identifierNames;
 
-        public RemoveUsingAliasDirectiveSyntaxRewriter(UsingDirectiveSyntax usingDirective, IdentifierNameSyntax[] identifierNames)
+        public InlineAliasExpressionSyntaxRewriter(UsingDirectiveSyntax usingDirective, IdentifierNameSyntax[] identifierNames)
         {
             if (usingDirective == null)
                 throw new ArgumentNullException(nameof(usingDirective));
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
                 }
             }
 
-            var rewriter = new RemoveUsingAliasDirectiveSyntaxRewriter(usingDirective, identifierNames.ToArray());
+            var rewriter = new InlineAliasExpressionSyntaxRewriter(usingDirective, identifierNames.ToArray());
 
             SyntaxNode newRoot = rewriter.Visit(root);
 

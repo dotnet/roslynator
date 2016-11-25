@@ -45,7 +45,7 @@
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
-    <Compile Include="CSharp\Refactorings\RemoveUsingAliasDirective\RemoveUsingAliasDirectiveRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\SyntaxAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
-    <Compile Include="CSharp\Refactorings\RemoveUsingAliasDirective\RemoveUsingAliasDirectiveSyntaxRewriter.cs" />
+    <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />

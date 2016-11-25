@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
+namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 {
-    public static class RemoveUsingAliasDirectiveRefactoring
+    public static class InlineAliasExpressionRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await RemoveUsingAliasDirectiveSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
+            return await InlineAliasExpressionSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
         }
     }
 }

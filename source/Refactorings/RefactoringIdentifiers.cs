@@ -62,6 +62,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string GenerateOnEventMethod = "GenerateOnEventMethod";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
         public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
+        public const string InlineAliasExpression = "InlineAliasExpression";
         public const string InlineMethod = "InlineMethod";
         public const string InsertStringInterpolation = "InsertStringInterpolation";
         public const string IntroduceAndInitializeField = "IntroduceAndInitializeField";
@@ -109,7 +110,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveRegion = "RemoveRegion";
         public const string RemoveStatement = "RemoveStatement";
         public const string RemoveStatementsFromSwitchSections = "RemoveStatementsFromSwitchSections";
-        public const string RemoveUsingAliasDirective = "RemoveUsingAliasDirective";
         public const string RenameBackingFieldAccordingToPropertyName = "RenameBackingFieldAccordingToPropertyName";
         public const string RenameIdentifierAccordingToTypeName = "RenameIdentifierAccordingToTypeName";
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";

@@ -385,6 +385,13 @@
 
 ![Initialize local with default value](../../images/refactorings/InitializeLocalWithDefaultValue.png)
 
+#### Inline alias expression
+
+* **Syntax**: using alias directive
+* **Scope**: identifier
+
+![Inline alias expression](../../images/refactorings/InlineAliasExpression.png)
+
 #### Inline method
 
 * **Syntax**: static/extension method invocation
@@ -683,13 +690,6 @@
 * **Syntax**: selected switch sections
 
 ![Remove statements from switch sections](../../images/refactorings/RemoveStatementsFromSwitchSections.png)
-
-#### Remove using alias directive
-
-* **Syntax**: using alias directive
-* **Scope**: identifier
-
-![Remove using alias directive](../../images/refactorings/RemoveUsingAliasDirective.png)
 
 #### Rename backing field according to property name
 

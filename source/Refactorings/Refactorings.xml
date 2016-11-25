@@ -430,6 +430,12 @@
     </Syntaxes>
     <Scope>identifier</Scope>
   </Refactoring>
+  <Refactoring Id="InlineAliasExpression" Title="Inline alias expression" ExtensionVersion="1.0.9">
+    <Syntaxes>
+      <Syntax>using alias directive</Syntax>
+    </Syntaxes>
+    <Scope>identifier</Scope>
+  </Refactoring>
   <Refactoring Id="InlineMethod" Title="Inline method" ExtensionVersion="0.96.0">
     <Syntaxes>
       <Syntax>static/extension method invocation</Syntax>
@@ -730,12 +736,6 @@
     <Syntaxes>
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="RemoveUsingAliasDirective" Title="Remove using alias directive" ExtensionVersion="1.0.9">
-    <Syntaxes>
-      <Syntax>using alias directive</Syntax>
-    </Syntaxes>
-    <Scope>identifier</Scope>
   </Refactoring>
   <Refactoring Id="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name" ExtensionVersion="0.9.0">
     <Syntaxes>

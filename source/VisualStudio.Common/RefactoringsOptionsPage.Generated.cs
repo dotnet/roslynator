@@ -68,6 +68,7 @@ namespace Roslynator.VisualStudio
             GenerateOnEventMethod = true;
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
+            InlineAliasExpression = true;
             InlineMethod = true;
             InsertStringInterpolation = true;
             IntroduceAndInitializeField = true;
@@ -115,7 +116,6 @@ namespace Roslynator.VisualStudio
             RemoveRegion = true;
             RemoveStatement = true;
             RemoveStatementsFromSwitchSections = true;
-            RemoveUsingAliasDirective = true;
             RenameBackingFieldAccordingToPropertyName = true;
             RenameIdentifierAccordingToTypeName = true;
             RenameMethodAccordingToTypeName = true;
@@ -230,6 +230,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.GenerateOnEventMethod, GenerateOnEventMethod);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
+            SetIsEnabled(RefactoringIdentifiers.InlineAliasExpression, InlineAliasExpression);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
             SetIsEnabled(RefactoringIdentifiers.InsertStringInterpolation, InsertStringInterpolation);
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField, IntroduceAndInitializeField);
@@ -277,7 +278,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.RemoveRegion, RemoveRegion);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatement, RemoveStatement);
             SetIsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, RemoveStatementsFromSwitchSections);
-            SetIsEnabled(RefactoringIdentifiers.RemoveUsingAliasDirective, RemoveUsingAliasDirective);
             SetIsEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName, RenameBackingFieldAccordingToPropertyName);
             SetIsEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName, RenameIdentifierAccordingToTypeName);
             SetIsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName, RenameMethodAccordingToTypeName);
@@ -895,6 +895,16 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Inline alias expression")]
+        [Description("Syntax: using alias directive\r\nScope: identifier")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool InlineAliasExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Inline method")]
         [Description("Syntax: static/extension method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1359,16 +1369,6 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: selected switch sections")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool RemoveStatementsFromSwitchSections
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Remove using alias directive")]
-        [Description("Syntax: using alias directive\r\nScope: identifier")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool RemoveUsingAliasDirective
         {
             get;
             set;
