@@ -10,6 +10,11 @@ namespace Roslynator.CSharp
 {
     public static class Modifiers
     {
+        public static SyntaxTokenList None()
+        {
+            return TokenList();
+        }
+
         public static SyntaxTokenList Public()
         {
             return TokenList(PublicToken());
