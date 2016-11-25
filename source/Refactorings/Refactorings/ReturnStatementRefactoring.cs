@@ -9,7 +9,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ReturnStatementSyntax returnStatement)
         {
-            if (returnStatement.Expression != null)
+            ExpressionSyntax expression = returnStatement.Expression;
+
+            if (expression != null)
             {
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBooleanComparison,
@@ -17,11 +19,11 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.CallToMethod))
                 {
-                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
+                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
-                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression).ConfigureAwait(false);
+                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
             }
             else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
             {
