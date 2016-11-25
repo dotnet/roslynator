@@ -47,6 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
                                     && typeSymbol?.IsErrorType() == false
+                                    && !typeSymbol.IsVoid()
                                     && (memberTypeSymbol == null
                                         || memberTypeSymbol.IsErrorType()
                                         || !SyntaxAnalyzer.IsGenericIEnumerable(memberTypeSymbol)
