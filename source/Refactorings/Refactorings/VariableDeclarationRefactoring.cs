@@ -13,16 +13,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            if (context.SupportsSemanticModel)
-            {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
-                    await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
+            await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
-                    await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
-            }
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
+                await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
                 && SplitVariableDeclarationRefactoring.CanRefactor(variableDeclaration))

@@ -15,8 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             var expression = lambda.Body as ExpressionSyntax;
 
             return expression != null
-                && expression.Span.Contains(context.Span)
-                && context.SupportsSemanticModel;
+                && expression.Span.Contains(context.Span);
         }
 
         public static async Task<Document> RefactorAsync(

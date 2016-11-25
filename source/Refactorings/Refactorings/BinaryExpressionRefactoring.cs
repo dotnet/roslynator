@@ -29,8 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
                 && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false
-                && context.SupportsSemanticModel)
+                && binaryExpression.Right?.IsMissing == false)
             {
                 if (binaryExpression.Left.Span.Contains(context.Span))
                 {

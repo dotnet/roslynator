@@ -28,12 +28,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             SyntaxNode node = root.FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true);
 
-            if (node != null
-                && node.IsKind(
+            if (node?.IsKind(
                     SyntaxKind.QualifiedName,
                     SyntaxKind.IdentifierName,
-                    SyntaxKind.SimpleMemberAccessExpression)
-                && context.Document.SupportsSemanticModel)
+                    SyntaxKind.SimpleMemberAccessExpression) == true)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 

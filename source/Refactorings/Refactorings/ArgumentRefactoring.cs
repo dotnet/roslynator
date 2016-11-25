@@ -17,8 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax expression = argument.Expression;
 
-                if (expression?.IsMissing == false
-                    && context.SupportsSemanticModel)
+                if (expression?.IsMissing == false)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

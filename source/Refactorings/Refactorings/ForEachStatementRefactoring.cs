@@ -13,29 +13,26 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForEachStatementSyntax forEachStatement)
         {
-            if (context.SupportsSemanticModel)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                await ChangeTypeAccordingToExpressionAsync(context, forEachStatement).ConfigureAwait(false);
+
+            if (context.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.ChangeExplicitTypeToVar,
+                RefactoringIdentifiers.ChangeVarToExplicitType))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
-                    await ChangeTypeAccordingToExpressionAsync(context, forEachStatement).ConfigureAwait(false);
+                await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
+            }
 
-                if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeExplicitTypeToVar,
-                    RefactoringIdentifiers.ChangeVarToExplicitType))
-                {
-                    await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
-                }
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+                await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
-                    await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
-                    && context.Span.IsEmpty
-                    && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
-                {
-                    context.RegisterRefactoring(
-                        "Replace foreach with for",
-                        cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
-                }
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
+                && context.Span.IsEmpty
+                && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
+            {
+                context.RegisterRefactoring(
+                    "Replace foreach with for",
+                    cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
             }
         }
 

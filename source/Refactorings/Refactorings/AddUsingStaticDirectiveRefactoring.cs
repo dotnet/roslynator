@@ -14,8 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingStaticDirective)
                 && memberAccess.Expression?.IsMissing == false
-                && memberAccess.Name?.IsMissing == false
-                && context.SupportsSemanticModel)
+                && memberAccess.Name?.IsMissing == false)
             {
                 memberAccess = GetTopmostMemberAccessExpression(memberAccess);
 

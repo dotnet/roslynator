@@ -23,8 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)
-                && fieldDeclaration.Span.Contains(context.Span)
-                && context.SupportsSemanticModel)
+                && fieldDeclaration.Span.Contains(context.Span))
             {
                 if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, fieldDeclaration).ConfigureAwait(false))
                 {

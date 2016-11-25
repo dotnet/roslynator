@@ -12,17 +12,11 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
                 await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue))
                 await InitializeLocalWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
-            }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter))
                 await PromoteLocalToParameterRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
-            }
         }
     }
 }

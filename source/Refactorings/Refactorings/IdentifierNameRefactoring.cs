@@ -12,15 +12,11 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName))
                 await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
-            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
-                && context.Span.IsEmpty
-                && context.SupportsSemanticModel)
+                && context.Span.IsEmpty)
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
             }

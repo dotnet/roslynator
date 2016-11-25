@@ -17,11 +17,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
                 await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral))
                 await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);
-            }
         }
 
         private static async Task ConvertStringEmptyToEmptyStringLiteralAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)

@@ -16,8 +16,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberDeclarationSyntax declaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor)
-                && context.SupportsSemanticModel)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor))
             {
                 List<MemberDeclarationSyntax> members = await GetAssignableMembersAsync(context, declaration).ConfigureAwait(false);
 

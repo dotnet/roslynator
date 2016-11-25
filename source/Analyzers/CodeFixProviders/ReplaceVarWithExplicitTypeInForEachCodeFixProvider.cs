@@ -31,23 +31,20 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (forEachStatement == null)
                 return;
 
-            if (context.Document.SupportsSemanticModel)
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+            TypeSyntax type = forEachStatement.Type;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+
+            if (typeSymbol != null)
             {
-                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                CodeAction codeAction = CodeAction.Create(
+                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                    cancellationToken => ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
 
-                TypeSyntax type = forEachStatement.Type;
-
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
-
-                if (typeSymbol != null)
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
-                        cancellationToken => ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                        DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
-
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
             }
         }
 

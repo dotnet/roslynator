@@ -10,7 +10,6 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
-                && context.SupportsSemanticModel
                 && context.Span.IsEmpty
                 && forStatement.Span.Contains(context.Span)
                 && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement).ConfigureAwait(false)))

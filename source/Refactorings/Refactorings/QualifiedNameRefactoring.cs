@@ -13,7 +13,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
                 && context.Span.IsEmpty
-                && context.SupportsSemanticModel
                 && qualifiedName.DotToken.Span.Start == context.Span.Start
                 && qualifiedName.Left?.IsKind(SyntaxKind.IdentifierName) == true)
             {

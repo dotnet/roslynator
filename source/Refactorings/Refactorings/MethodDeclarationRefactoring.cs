@@ -72,7 +72,6 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax methodDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)
-                && context.SupportsSemanticModel
                 && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Identifier.Span.Contains(context.Span))
             {

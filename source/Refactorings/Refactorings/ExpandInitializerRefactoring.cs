@@ -86,8 +86,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var implicitElementAccess = (ImplicitElementAccessSyntax)assignment.Left;
 
-                        if (implicitElementAccess.ArgumentList?.Arguments.Count > 0
-                            && context.SupportsSemanticModel)
+                        if (implicitElementAccess.ArgumentList?.Arguments.Count > 0)
                         {
                             return await HasPublicWritableIndexerAsync(
                                 context,
@@ -104,8 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var initializerExpression = (InitializerExpressionSyntax)expression;
 
-                    if (initializerExpression.Expressions.Count > 0
-                        && context.SupportsSemanticModel)
+                    if (initializerExpression.Expressions.Count > 0)
                     {
                         return await HasPublicWritableIndexerAsync(
                             context,
@@ -113,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                             objectCreationExpression).ConfigureAwait(false);
                     }
                 }
-                else if (context.SupportsSemanticModel)
+                else
                 {
                     return await HasPublicAddMethodAsync(
                         context,

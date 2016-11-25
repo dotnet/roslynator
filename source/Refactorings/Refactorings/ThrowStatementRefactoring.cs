@@ -9,11 +9,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ThrowStatementSyntax throwStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment))
                 await AddExceptionToDocumentationCommentRefactoring.ComputeRefactoringAsync(context, throwStatement).ConfigureAwait(false);
-            }
         }
     }
 }

@@ -36,20 +36,19 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
-            if (declaration != null
-                && context.Document.SupportsSemanticModel)
-            {
-                var accessModifier = (AccessModifier)Enum.Parse(
-                    typeof(AccessModifier),
-                    context.Diagnostics[0].Properties[nameof(AccessModifier)]);
+            if (declaration == null)
+                return;
 
-                CodeAction codeAction = CodeAction.Create(
-                    "Add default access modifier",
-                    cancellationToken => RefactorAsync(context.Document, declaration, accessModifier, cancellationToken),
-                    DiagnosticIdentifiers.AddDefaultAccessModifier + EquivalenceKeySuffix);
+            var accessModifier = (AccessModifier)Enum.Parse(
+                typeof(AccessModifier),
+                context.Diagnostics[0].Properties[nameof(AccessModifier)]);
 
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
+            CodeAction codeAction = CodeAction.Create(
+                "Add default access modifier",
+                cancellationToken => RefactorAsync(context.Document, declaration, accessModifier, cancellationToken),
+                DiagnosticIdentifiers.AddDefaultAccessModifier + EquivalenceKeySuffix);
+
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
         internal static async Task<Document> RefactorAsync(

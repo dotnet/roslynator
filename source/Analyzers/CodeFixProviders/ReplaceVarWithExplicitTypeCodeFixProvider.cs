@@ -39,8 +39,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             TypeSyntax type = variableDeclaration.Type;
 
-            if (type.IsVar
-                && context.Document.SupportsSemanticModel)
+            if (type.IsVar)
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 

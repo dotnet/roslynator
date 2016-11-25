@@ -13,8 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            if (context.SupportsSemanticModel
-                && variableDeclaration.Type?.Span.Contains(context.Span) == true)
+            if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
                     await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration).ConfigureAwait(false);

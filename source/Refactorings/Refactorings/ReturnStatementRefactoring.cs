@@ -9,26 +9,23 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ReturnStatementSyntax returnStatement)
         {
-            if (context.SupportsSemanticModel)
+            if (returnStatement.Expression != null)
             {
-                if (returnStatement.Expression != null)
+                if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.AddBooleanComparison,
+                    RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
+                    RefactoringIdentifiers.AddCastExpression,
+                    RefactoringIdentifiers.CallToMethod))
                 {
-                    if (context.IsAnyRefactoringEnabled(
-                        RefactoringIdentifiers.AddBooleanComparison,
-                        RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                        RefactoringIdentifiers.AddCastExpression,
-                        RefactoringIdentifiers.CallToMethod))
-                    {
-                        await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
-                    }
+                    await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, returnStatement.Expression).ConfigureAwait(false);
+                }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
-                        await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression).ConfigureAwait(false);
-                }
-                else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
-                {
-                    await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement).ConfigureAwait(false);
-                }
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression))
+                    await CreateConditionFromBooleanExpressionRefactoring.ComputeRefactoringAsync(context, returnStatement.Expression).ConfigureAwait(false);
+            }
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
+            {
+                await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement).ConfigureAwait(false);
             }
         }
     }

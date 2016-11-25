@@ -14,8 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             if (expression?.IsKind(SyntaxKind.NullLiteralExpression) == true
-                && context.Span.IsContainedInSpanOrBetweenSpans(expression)
-                && context.SupportsSemanticModel)
+                && context.Span.IsContainedInSpanOrBetweenSpans(expression))
             {
                 TextSpan span = context.Span;
 

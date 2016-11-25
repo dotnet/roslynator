@@ -30,28 +30,27 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ImplicitArrayCreationExpressionSyntax>();
 
-            if (expression != null
-                && context.Document.SupportsSemanticModel)
+            if (expression == null)
+                return;
+
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+            var typeSymbol = semanticModel
+                .GetTypeInfo(expression, context.CancellationToken)
+                .Type as IArrayTypeSymbol;
+
+            if (typeSymbol?.ElementType?.IsErrorType() == false)
             {
-                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+                var arrayType = CSharpFactory.Type(typeSymbol) as ArrayTypeSyntax;
 
-                var typeSymbol = semanticModel
-                    .GetTypeInfo(expression, context.CancellationToken)
-                    .Type as IArrayTypeSymbol;
-
-                if (typeSymbol?.ElementType?.IsErrorType() == false)
+                if (arrayType != null)
                 {
-                    var arrayType = CSharpFactory.Type(typeSymbol) as ArrayTypeSyntax;
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
+                        DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 
-                    if (arrayType != null)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
-                            cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
-                            DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
-
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    }
+                    context.RegisterCodeFix(codeAction, context.Diagnostics);
                 }
             }
         }

@@ -17,8 +17,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
                     RefactoringIdentifiers.CallConfigureAwait)
                 && invocationExpression.Expression != null
-                && invocationExpression.ArgumentList != null
-                && context.SupportsSemanticModel)
+                && invocationExpression.ArgumentList != null)
             {
                 ExpressionSyntax expression = invocationExpression.Expression;
 
@@ -39,8 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                 await ReplaceStringFormatWithInterpolatedStringRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation)
-                && context.SupportsSemanticModel)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -58,11 +56,8 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineMethod))
                 await InlineMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
-            }
         }
     }
 }

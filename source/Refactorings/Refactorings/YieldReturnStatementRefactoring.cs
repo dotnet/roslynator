@@ -18,8 +18,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.CallToMethod,
                     RefactoringIdentifiers.CreateConditionFromBooleanExpression)
                 && yieldStatement.IsYieldReturn()
-                && yieldStatement.Expression != null
-                && context.SupportsSemanticModel)
+                && yieldStatement.Expression != null)
             {
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,

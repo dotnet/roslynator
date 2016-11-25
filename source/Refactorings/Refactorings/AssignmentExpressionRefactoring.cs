@@ -30,8 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
                 && assignmentExpression.Left?.IsMissing == false
                 && assignmentExpression.Right?.IsMissing == false
-                && assignmentExpression.Right.Span.Contains(context.Span)
-                && context.SupportsSemanticModel)
+                && assignmentExpression.Right.Span.Contains(context.Span))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

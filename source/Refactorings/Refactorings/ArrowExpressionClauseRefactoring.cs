@@ -14,8 +14,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.CallToMethod)
-                && context.SupportsSemanticModel)
+                    RefactoringIdentifiers.CallToMethod))
             {
                 await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression).ConfigureAwait(false);
             }

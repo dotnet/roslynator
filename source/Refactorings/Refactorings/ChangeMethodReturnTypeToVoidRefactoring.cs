@@ -16,8 +16,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
                 && methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.Body?.Statements.Count > 0
-                && !methodDeclaration.IsIterator()
-                && context.SupportsSemanticModel)
+                && !methodDeclaration.IsIterator())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

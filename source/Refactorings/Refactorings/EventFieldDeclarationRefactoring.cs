@@ -20,15 +20,11 @@ namespace Roslynator.CSharp.Refactorings
                 MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateOnEventMethod)
-                && context.SupportsSemanticModel)
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateOnEventMethod))
                 await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
-            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)
                 && eventFieldDeclaration.Span.Contains(context.Span)
-                && context.SupportsSemanticModel
                 && ExpandEventRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(

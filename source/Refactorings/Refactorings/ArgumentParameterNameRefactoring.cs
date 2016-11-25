@@ -23,8 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddParameterNameToArgument,
                     RefactoringIdentifiers.RemoveParameterNameFromArgument)
-                && !context.Span.IsEmpty
-                && context.SupportsSemanticModel)
+                && !context.Span.IsEmpty)
             {
                 List<ArgumentSyntax> arguments = null;
 

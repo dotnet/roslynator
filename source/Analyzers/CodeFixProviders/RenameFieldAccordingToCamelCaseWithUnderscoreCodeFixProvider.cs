@@ -29,21 +29,18 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (declarator == null)
                 return;
 
-            if (context.Document.SupportsSemanticModel)
-            {
-                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-                string newName = TextUtility.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
+            string newName = TextUtility.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
 
-                CodeAction codeAction = CodeAction.Create(
-                    $"Rename field to '{newName}'",
-                    cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),
-                    DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
+            CodeAction codeAction = CodeAction.Create(
+                $"Rename field to '{newName}'",
+                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),
+                DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
 
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
     }
 }

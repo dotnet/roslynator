@@ -46,13 +46,9 @@ namespace Roslynator.CSharp.Refactorings
 
                     int index = members.IndexOf(containingMember);
 
-                    string name = LockObjectName;
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    if (document.SupportsSemanticModel)
-                    {
-                        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-                        name = SyntaxUtility.GetUniqueName(name, semanticModel, lockStatement.Expression.Span.Start);
-                    }
+                    string name = SyntaxUtility.GetUniqueName(LockObjectName, semanticModel, lockStatement.Expression.Span.Start);
 
                     LockStatementSyntax newLockStatement = lockStatement
                         .WithExpression(IdentifierName(name));

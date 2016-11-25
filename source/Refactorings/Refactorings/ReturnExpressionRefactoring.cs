@@ -13,8 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression != null
-                && context.SupportsSemanticModel)
+            if (expression != null)
             {
                 MemberDeclarationSyntax declaration = GetContainingMethodOrPropertyOrIndexer(expression);
 

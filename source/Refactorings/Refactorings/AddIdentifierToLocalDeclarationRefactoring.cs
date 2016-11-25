@@ -16,42 +16,39 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
-            if (context.SupportsSemanticModel)
+            TypeSyntax type = localDeclaration.Declaration?.Type;
+
+            if (type?.IsVar == false)
             {
-                TypeSyntax type = localDeclaration.Declaration?.Type;
+                VariableDeclaratorSyntax declarator = localDeclaration.Declaration.Variables.FirstOrDefault();
 
-                if (type?.IsVar == false)
+                if (declarator != null
+                    && context.Span.Start >= type.Span.Start)
                 {
-                    VariableDeclaratorSyntax declarator = localDeclaration.Declaration.Variables.FirstOrDefault();
+                    SyntaxTriviaList triviaList = type.GetTrailingTrivia();
 
-                    if (declarator != null
-                        && context.Span.Start >= type.Span.Start)
+                    if (triviaList.Any())
                     {
-                        SyntaxTriviaList triviaList = type.GetTrailingTrivia();
+                        SyntaxTrivia trivia = triviaList
+                            .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                            .FirstOrDefault();
 
-                        if (triviaList.Any())
+                        if (trivia.IsKind(SyntaxKind.EndOfLineTrivia)
+                            && context.Span.End <= trivia.Span.Start)
                         {
-                            SyntaxTrivia trivia = triviaList
-                                .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
-                                .FirstOrDefault();
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (trivia.IsKind(SyntaxKind.EndOfLineTrivia)
-                                && context.Span.End <= trivia.Span.Start)
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+
+                            if (typeSymbol?.IsErrorType() == false)
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
 
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
-
-                                if (typeSymbol?.IsErrorType() == false)
+                                if (!string.IsNullOrEmpty(name))
                                 {
-                                    string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
-
-                                    if (!string.IsNullOrEmpty(name))
-                                    {
-                                        context.RegisterRefactoring(
-                                            $"Add identifier '{name}'",
-                                            c => RefactorAsync(context.Document, declarator, type, name, c));
-                                    }
+                                    context.RegisterRefactoring(
+                                        $"Add identifier '{name}'",
+                                        c => RefactorAsync(context.Document, declarator, type, name, c));
                                 }
                             }
                         }
@@ -62,27 +59,24 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
         {
-            if (context.SupportsSemanticModel)
+            var expression = expressionStatement.Expression as TypeSyntax;
+
+            if (expression != null)
             {
-                var expression = expressionStatement.Expression as TypeSyntax;
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (expression != null)
+                ITypeSymbol typeSymbol = semanticModel
+                    .GetTypeInfo(expression, context.CancellationToken).Type;
+
+                if (typeSymbol?.IsErrorType() == false)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
 
-                    ITypeSymbol typeSymbol = semanticModel
-                        .GetTypeInfo(expression, context.CancellationToken).Type;
-
-                    if (typeSymbol?.IsErrorType() == false)
+                    if (!string.IsNullOrEmpty(name))
                     {
-                        string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
-
-                        if (!string.IsNullOrEmpty(name))
-                        {
-                            context.RegisterRefactoring(
-                                $"Add identifier '{name}'",
-                                c => RefactorAsync(context.Document, expressionStatement, name, c));
-                        }
+                        context.RegisterRefactoring(
+                            $"Add identifier '{name}'",
+                            c => RefactorAsync(context.Document, expressionStatement, name, c));
                     }
                 }
             }

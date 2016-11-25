@@ -11,8 +11,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
                 && doStatement.Condition != null
-                && doStatement.Condition.Span.Contains(context.Span)
-                && context.SupportsSemanticModel)
+                && doStatement.Condition.Span.Contains(context.Span))
             {
                 await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition).ConfigureAwait(false);
             }

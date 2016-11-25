@@ -10,22 +10,19 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (context.SupportsSemanticModel)
+            await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
+                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
+
+            if (context.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.IntroduceAndInitializeField,
+                RefactoringIdentifiers.IntroduceAndInitializeProperty))
             {
-                await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
-                    await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
-
-                if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.IntroduceAndInitializeField,
-                    RefactoringIdentifiers.IntroduceAndInitializeProperty))
-                {
-                    IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameter);
-                }
-
-                await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
+                IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameter);
             }
+
+            await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
         }
     }
 }

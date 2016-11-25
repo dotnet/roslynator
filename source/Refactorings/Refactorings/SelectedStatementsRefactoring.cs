@@ -22,8 +22,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (info.IsAnySelected)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
-                    && context.SupportsSemanticModel)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
                 {
                     var refactoring = new WrapInUsingStatementRefactoring();
                     await refactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
@@ -38,11 +37,8 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch))
                     ReplaceIfElseWithSwitchRefactoring.ComputeRefactoring(context, info);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
-                    && context.SupportsSemanticModel)
-                {
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
                     await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);
-                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
                     MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);
