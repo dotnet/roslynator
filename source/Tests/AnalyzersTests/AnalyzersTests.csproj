@@ -46,6 +46,7 @@
     <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
     <Compile Include="AddStaticModifierToAllPartialClassDeclarations.cs" />
     <Compile Include="DefaultSwitchLabelShouldBeLastLabelInSection.cs" />
+    <Compile Include="FormatEmptyBlock.cs" />
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />

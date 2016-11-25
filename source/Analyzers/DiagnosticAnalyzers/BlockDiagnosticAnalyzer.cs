@@ -46,7 +46,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, statements);
 
-            if (!statements.Any())
+            if (!statements.Any()
+                && !(block.Parent is AccessorDeclarationSyntax))
             {
                 int startLine = block.OpenBraceToken.GetSpanStartLine();
                 int endLine = block.CloseBraceToken.GetSpanEndLine();
