@@ -71,9 +71,27 @@ namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
 
             usingDirective = (UsingDirectiveSyntax)newRoot.FindNode(usingDirective.Span);
 
-            newRoot = newRoot.RemoveNode(usingDirective, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            newRoot = newRoot.RemoveNode(usingDirective, GetRemoveOptions(usingDirective));
 
             return document.WithSyntaxRoot(newRoot);
+        }
+
+        internal static SyntaxRemoveOptions GetRemoveOptions(UsingDirectiveSyntax usingDirective)
+        {
+            SyntaxRemoveOptions removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
+
+            if (!usingDirective.HasLeadingTrivia)
+                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+
+            SyntaxTriviaList trailingTrivia = usingDirective.GetTrailingTrivia();
+
+            if (trailingTrivia.Count == 1
+                && trailingTrivia.First().IsEndOfLineTrivia())
+            {
+                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+            }
+
+            return removeOptions;
         }
 
         private static IEnumerable<TextSpan> GetSymbolSpans(IEnumerable<ReferencedSymbol> referencedSymbols, SyntaxTree syntaxTree)
@@ -96,9 +114,11 @@ namespace Roslynator.CSharp.Refactorings.RemoveUsingAliasDirective
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
             if (Array.IndexOf(_identifierNames, node) != -1)
+            {
                 return _usingDirective.Name
-                    .WithTriviaFrom(node)
-                    .WithSimplifierAnnotation();
+                   .WithTriviaFrom(node)
+                   .WithSimplifierAnnotation();
+            }
 
             return base.VisitIdentifierName(node);
         }

@@ -1,4 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using x = System;
 using xx = System.Collections.Generic;
 using xxx = System.String;
