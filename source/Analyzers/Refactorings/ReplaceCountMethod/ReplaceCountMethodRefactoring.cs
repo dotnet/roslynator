@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            if (SyntaxAnalyzer.IsEnumerableExtensionMethod(invocation, "Count", 1, context.SemanticModel, context.CancellationToken))
+            if (SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, "Count", 1, context.SemanticModel, context.CancellationToken))
             {
                 string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: true, cancellationToken: context.CancellationToken);
 

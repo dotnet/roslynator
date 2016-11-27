@@ -51,24 +51,24 @@ namespace Roslynator.CSharp.Refactorings
                                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
                                 if (parameters.Length == 1
-                                    && SyntaxAnalyzer.IsContainedInEnumerable(reducedFrom, semanticModel)
-                                    && SyntaxAnalyzer.IsGenericIEnumerable(reducedFrom.Parameters.First().Type))
+                                    && SemanticAnalyzer.IsContainedInEnumerable(reducedFrom, semanticModel)
+                                    && reducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
                                 {
-                                    if (SyntaxAnalyzer.IsPredicateFunc(
+                                    if (SemanticAnalyzer.IsPredicateFunc(
                                         parameters[0].Type,
                                         methodSymbol.TypeArguments[0],
                                         semanticModel))
                                     {
-                                        if (SyntaxAnalyzer.IsEnumerableWhereMethod(invocation, semanticModel, cancellationToken))
+                                        if (SemanticAnalyzer.IsEnumerableWhereMethod(invocation, semanticModel, cancellationToken))
                                             Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                     }
-                                    else if (SyntaxAnalyzer.IsPredicateFunc(
+                                    else if (SemanticAnalyzer.IsPredicateFunc(
                                         parameters[0].Type,
                                         methodSymbol.TypeArguments[0],
                                         semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
                                         semanticModel))
                                     {
-                                        if (SyntaxAnalyzer.IsEnumerableWhereMethodWithIndex(invocation, semanticModel, cancellationToken))
+                                        if (SemanticAnalyzer.IsEnumerableWhereMethodWithIndex(invocation, semanticModel, cancellationToken))
                                             Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                     }
                                 }

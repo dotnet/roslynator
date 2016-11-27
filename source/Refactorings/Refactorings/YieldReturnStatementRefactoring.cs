@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                                     && !typeSymbol.IsVoid()
                                     && (memberTypeSymbol == null
                                         || memberTypeSymbol.IsErrorType()
-                                        || !SyntaxAnalyzer.IsGenericIEnumerable(memberTypeSymbol)
+                                        || !memberTypeSymbol.IsConstructedFromIEnumerableOfT()
                                         || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
                                 {
                                     TypeSyntax newType = QualifiedName(

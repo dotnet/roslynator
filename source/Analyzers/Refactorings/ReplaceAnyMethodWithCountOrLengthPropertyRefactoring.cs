@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
             if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
-                && SyntaxAnalyzer.IsEnumerableExtensionMethod(invocation, "Any", 1, context.SemanticModel, context.CancellationToken))
+                && SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, "Any", 1, context.SemanticModel, context.CancellationToken))
             {
                 string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: false, cancellationToken: context.CancellationToken);
 

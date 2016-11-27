@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
-                    && SyntaxAnalyzer.IsException(typeSymbol, semanticModel))
+                    && typeSymbol.IsException(semanticModel))
                 {
                     MemberDeclarationSyntax member = GetContainingMember(throwStatement);
 

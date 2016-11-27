@@ -20,13 +20,13 @@ namespace Roslynator.CSharp
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol?.IsErrorType() == false
-                && !SyntaxAnalyzer.IsGenericIEnumerable(typeSymbol))
+                && !typeSymbol.IsConstructedFromIEnumerableOfT())
             {
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
 
                 if (allowImmutableArray
-                    && SyntaxAnalyzer.IsGenericImmutableArray(typeSymbol, semanticModel))
+                    && typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
                 {
                     return "Length";
                 }

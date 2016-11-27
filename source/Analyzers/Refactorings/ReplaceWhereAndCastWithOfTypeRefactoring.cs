@@ -40,8 +40,8 @@ namespace Roslynator.CSharp.Refactorings
                             SemanticModel semanticModel = context.SemanticModel;
                             CancellationToken cancellationToken = context.CancellationToken;
 
-                            if (SyntaxAnalyzer.IsEnumerableCastMethod(invocation, semanticModel, cancellationToken)
-                                && (SyntaxAnalyzer.IsEnumerableWhereMethod(invocation2, semanticModel, cancellationToken)))
+                            if (SemanticAnalyzer.IsEnumerableCastMethod(invocation, semanticModel, cancellationToken)
+                                && (SemanticAnalyzer.IsEnumerableWhereMethod(invocation2, semanticModel, cancellationToken)))
                             {
                                 BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);
 

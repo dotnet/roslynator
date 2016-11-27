@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -533,6 +535,95 @@ namespace Roslynator
         public static bool IsEnum(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Enum;
+        }
+
+        public static bool IsConstructedFrom(this ITypeSymbol typeSymbol, SpecialType specialType)
+        {
+            return typeSymbol?.IsNamedType() == true
+                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.SpecialType == specialType;
+        }
+
+        public static bool IsConstructedFrom(this ITypeSymbol typeSymbol, ISymbol symbol)
+        {
+            return typeSymbol?.IsNamedType() == true
+                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(symbol) == true;
+        }
+
+        public static bool IsConstructedFrom(this ITypeSymbol typeSymbol, string fullyQualifiedMetadataName, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (typeSymbol.IsNamedType())
+            {
+                INamedTypeSymbol namedTypeSymbol = semanticModel
+                    .Compilation
+                    .GetTypeByMetadataName(fullyQualifiedMetadataName);
+
+                return namedTypeSymbol != null
+                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(namedTypeSymbol) == true;
+            }
+
+            return false;
+        }
+
+        public static bool IsIEnumerable(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_Collections_IEnumerable;
+        }
+
+        public static bool IsConstructedFromIEnumerableOfT(this ITypeSymbol typeSymbol)
+        {
+            return IsConstructedFrom(typeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T);
+        }
+
+        public static bool IsIEnumerableOrConstructedFromIEnumerableOfT(this ITypeSymbol typeSymbol)
+        {
+            return IsIEnumerable(typeSymbol)
+                || IsConstructedFromIEnumerableOfT(typeSymbol);
+        }
+
+        public static bool IsConstructedFromImmutableArrayOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            return IsConstructedFrom(typeSymbol, "System.Collections.Immutable.ImmutableArray`1", semanticModel);
+        }
+
+        public static bool IsEventHandlerOrConstructedFromEventHandlerOfT(
+            this ITypeSymbol typeSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler"))
+                || typeSymbol.IsConstructedFrom(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler`1"));
+        }
+
+        public static bool IsException(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (typeSymbol.IsClass())
+            {
+                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Exception");
+
+                return typeSymbol
+                    .BaseTypesAndSelf()
+                    .Any(f => f.Equals(exceptionSymbol));
+            }
+
+            return false;
         }
     }
 }

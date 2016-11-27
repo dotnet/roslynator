@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = context.SemanticModel;
                 CancellationToken cancellationToken = context.CancellationToken;
 
-                if (SyntaxAnalyzer.IsEventHandlerOrGenericEventHandler(objectCreation, semanticModel, cancellationToken))
+                if (semanticModel
+                    .GetTypeSymbol(objectCreation, cancellationToken)?
+                    .IsEventHandlerOrConstructedFromEventHandlerOfT(semanticModel, cancellationToken) == true)
                 {
                     ArgumentListSyntax argumentList = objectCreation.ArgumentList;
 
@@ -47,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                                     ExpressionSyntax left = assignment.Left;
 
                                     if (left?.IsMissing == false
-                                        && SyntaxAnalyzer.IsEvent(left, semanticModel, cancellationToken)
+                                        && semanticModel.GetSymbol(left, cancellationToken)?.IsEvent() == true
                                         && !objectCreation.SpanContainsDirectives())
                                     {
                                         context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right.GetLocation());

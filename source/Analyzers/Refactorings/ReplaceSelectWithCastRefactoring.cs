@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (SyntaxAnalyzer.IsEnumerableExtensionOrImmutableArrayExtensionMethod(invocation, "Select", 2, semanticModel, cancellationToken))
+            if (SemanticAnalyzer.IsEnumerableExtensionOrImmutableArrayExtensionMethod(invocation, "Select", 2, semanticModel, cancellationToken))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public static class SyntaxAnalyzer
+    public static class SemanticAnalyzer
     {
         public static bool IsEnumerableExtensionOrImmutableArrayExtensionMethod(
             InvocationExpressionSyntax invocation,
@@ -20,28 +20,6 @@ namespace Roslynator.CSharp
         {
             return IsEnumerableExtensionMethod(invocation, methodName, parameterCount, semanticModel, cancellationToken)
                 || IsImmutableArrayExtensionMethod(invocation, methodName, parameterCount, semanticModel, cancellationToken);
-        }
-
-        public static bool IsException(
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (typeSymbol.IsClass())
-            {
-                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Exception");
-
-                return typeSymbol
-                    .BaseTypesAndSelf()
-                    .Any(f => f.Equals(exceptionSymbol));
-            }
-
-            return false;
         }
 
         public static bool IsEnumerableExtensionMethod(
@@ -74,52 +52,10 @@ namespace Roslynator.CSharp
 
                 return parameters.Length == parameterCount
                     && IsContainedInEnumerable(methodSymbol, semanticModel)
-                    && IsGenericIEnumerable(parameters[0].Type);
+                    && parameters[0].Type.IsConstructedFromIEnumerableOfT();
             }
 
             return false;
-        }
-
-        public static bool IsEventHandlerOrGenericEventHandler(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            if (typeSymbol?.IsErrorType() == false)
-            {
-                if (typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler")))
-                    return true;
-
-                if (typeSymbol.IsNamedType()
-                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler`1")) == true)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static bool IsEvent(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol?.Kind == SymbolKind.Event;
         }
 
         public static bool IsImmutableArrayExtensionMethod(
@@ -152,7 +88,7 @@ namespace Roslynator.CSharp
 
                 return parameters.Length == parameterCount
                     && IsContainedInImmutableArrayExtensions(methodSymbol, semanticModel)
-                    && IsGenericImmutableArray(parameters[0].Type, semanticModel);
+                    && parameters[0].Type.IsConstructedFromImmutableArrayOfT(semanticModel);
             }
 
             return false;
@@ -191,7 +127,7 @@ namespace Roslynator.CSharp
 
                     return parameters.Length == 1
                         && IsContainedInEnumerable(reducedFrom, semanticModel)
-                        && IsGenericIEnumerable(reducedFrom.Parameters.First().Type)
+                        && reducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT()
                         && IsPredicateFunc(parameters[0].Type, methodSymbol.TypeArguments[0], semanticModel);
                 }
             }
@@ -223,7 +159,7 @@ namespace Roslynator.CSharp
 
                     return parameters.Length == 1
                         && IsContainedInEnumerable(reducedFrom, semanticModel)
-                        && IsGenericIEnumerable(reducedFrom.Parameters.First().Type)
+                        && reducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT()
                         && IsPredicateFunc(
                             parameters[0].Type,
                             methodSymbol.TypeArguments[0],
@@ -259,7 +195,7 @@ namespace Roslynator.CSharp
 
                     return parameters.Length == 1
                         && IsContainedInImmutableArrayExtensions(reducedFrom, semanticModel)
-                        && IsGenericImmutableArray(reducedFrom.Parameters.First().Type, semanticModel)
+                        && reducedFrom.Parameters.First().Type.IsConstructedFromImmutableArrayOfT(semanticModel)
                         && IsPredicateFunc(parameters[0].Type, methodSymbol.TypeArguments[0], semanticModel);
                 }
             }
@@ -291,47 +227,8 @@ namespace Roslynator.CSharp
 
                     return parameters.Length == 1
                         && IsContainedInEnumerable(methodSymbol, semanticModel)
-                        && IsIEnumerable(parameters[0].Type);
+                        && parameters[0].Type.IsIEnumerable();
                 }
-            }
-
-            return false;
-        }
-
-        public static bool IsIEnumerable(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            return typeSymbol.IsNamedType()
-                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_IEnumerable;
-        }
-
-        public static bool IsGenericIEnumerable(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            return typeSymbol.IsNamedType()
-                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
-        }
-
-        public static bool IsGenericImmutableArray(ISymbol symbol, SemanticModel semanticModel)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (symbol.IsNamedType())
-            {
-                INamedTypeSymbol immutableArraySymbol = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName("System.Collections.Immutable.ImmutableArray`1");
-
-                return immutableArraySymbol != null
-                    && ((INamedTypeSymbol)symbol).ConstructedFrom.Equals(immutableArraySymbol);
             }
 
             return false;

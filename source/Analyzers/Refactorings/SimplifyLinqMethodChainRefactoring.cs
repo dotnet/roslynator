@@ -28,8 +28,8 @@ namespace Roslynator.CSharp.Refactorings
                     var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
                     if (memberAccess2.Name?.Identifier.ValueText == "Where"
-                        && SyntaxAnalyzer.IsEnumerableExtensionMethod(invocation, methodName, 1, context.SemanticModel, context.CancellationToken)
-                        && (SyntaxAnalyzer.IsEnumerableWhereOrImmutableArrayWhereMethod(invocation2, context.SemanticModel, context.CancellationToken)))
+                        && SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, methodName, 1, context.SemanticModel, context.CancellationToken)
+                        && (SemanticAnalyzer.IsEnumerableWhereOrImmutableArrayWhereMethod(invocation2, context.SemanticModel, context.CancellationToken)))
                     {
                         TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
 
