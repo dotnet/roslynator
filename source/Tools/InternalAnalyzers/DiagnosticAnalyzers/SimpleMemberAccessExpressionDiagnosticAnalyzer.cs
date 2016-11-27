@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 var propertySymbol = semanticModel.GetSymbol(memberAccess, cancellationToken) as IPropertySymbol;
 
                 if ((propertySymbol.Name == "Type" || propertySymbol.Name == "ConvertedType")
-                    && propertySymbol?.Type == semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.ITypeSymbol"))
+                    && propertySymbol?.Type == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_ITypeSymbol))
                 {
                     ExpressionSyntax expression = memberAccess.Expression;
 
@@ -52,12 +52,12 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                         if (methodSymbol?.Name == "GetTypeInfo"
                             && methodSymbol.IsExtensionMethod
                             && methodSymbol.MethodKind == MethodKind.ReducedExtension
-                            && methodSymbol.ReturnType == semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.TypeInfo"))
+                            && methodSymbol.ReturnType == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_TypeInfo))
                         {
                             ImmutableArray<IParameterSymbol> parameters = methodSymbol.ReducedFrom.Parameters;
 
                             if (parameters.Length == 3
-                                && parameters[0].Type == semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SemanticModel"))
+                                && parameters[0].Type == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SemanticModel))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.SimplifyGetTypeInfoInvocation,

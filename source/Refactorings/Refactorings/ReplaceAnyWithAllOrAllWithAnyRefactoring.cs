@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol == null)
                 return;
 
-            INamedTypeSymbol enumerable = semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable");
+            INamedTypeSymbol enumerable = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable);
 
             if (enumerable == null)
                 return;

@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            INamedTypeSymbol symbol = semanticModel.Compilation.GetTypeByMetadataName("System.StringComparison");
+            INamedTypeSymbol symbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_StringComparison);
 
             IFieldSymbol fieldSymbol = GetDefaultFieldSymbol(symbol);
 
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                     Argument(binaryExpression.Right),
                     Argument(
                         SimpleMemberAccessExpression(
-                            ParseName("System.StringComparison").WithSimplifierAnnotation(),
+                            ParseName(MetadataNames.System_StringComparison).WithSimplifierAnnotation(),
                             IdentifierName(fieldSymbol.Name)))));
 
             if (binaryExpression.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))

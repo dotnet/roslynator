@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
                 Block(statements),
                 CatchClause(
                     CatchDeclaration(
-                        ParseName("System.Exception").WithSimplifierAnnotation(),
+                        ParseName(MetadataNames.System_Exception).WithSimplifierAnnotation(),
                         Identifier("ex")),
                     null,
                     Block()));

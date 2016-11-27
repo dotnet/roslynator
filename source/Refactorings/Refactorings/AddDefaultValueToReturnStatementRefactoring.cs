@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         INamedTypeSymbol taskOfTSymbol = semanticModel
                             .Compilation
-                            .GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                            .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                         if (methodSymbol.ReturnType.IsNamedType())
                         {

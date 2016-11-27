@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     INamedTypeSymbol configuredTaskSymbol = semanticModel
                         .Compilation
-                        .GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1");
+                        .GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T);
 
                     if (configuredTaskSymbol != null
                         && !symbol.Equals(configuredTaskSymbol))
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             INamedTypeSymbol taskSymbol = semanticModel
                 .Compilation
-                .GetTypeByMetadataName("System.Threading.Tasks.Task");
+                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
             if (taskSymbol != null)
             {

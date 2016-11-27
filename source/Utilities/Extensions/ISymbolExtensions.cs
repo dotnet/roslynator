@@ -588,7 +588,7 @@ namespace Roslynator
 
         public static bool IsConstructedFromImmutableArrayOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
         {
-            return IsConstructedFrom(typeSymbol, "System.Collections.Immutable.ImmutableArray`1", semanticModel);
+            return IsConstructedFrom(typeSymbol, MetadataNames.System_Collections_Immutable_ImmutableArray_T, semanticModel);
         }
 
         public static bool IsEventHandlerOrConstructedFromEventHandlerOfT(
@@ -602,8 +602,8 @@ namespace Roslynator
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            return typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler"))
-                || typeSymbol.IsConstructedFrom(semanticModel.Compilation.GetTypeByMetadataName("System.EventHandler`1"));
+            return typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler))
+                || typeSymbol.IsConstructedFrom(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler_T));
         }
 
         public static bool IsException(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
@@ -616,7 +616,7 @@ namespace Roslynator
 
             if (typeSymbol.IsClass())
             {
-                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Exception");
+                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Exception);
 
                 return typeSymbol
                     .BaseTypesAndSelf()

@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)
         {
-            INamedTypeSymbol stringType = semanticModel.Compilation.GetTypeByMetadataName("System.String");
+            INamedTypeSymbol stringType = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_String);
 
             if (stringType != null)
             {

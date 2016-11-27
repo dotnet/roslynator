@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                     if (typeSymbol != null)
                     {
-                        INamedTypeSymbol notImplementedExceptionSymbol = context.GetTypeByMetadataName("System.NotImplementedException");
+                        INamedTypeSymbol notImplementedExceptionSymbol = context.GetTypeByMetadataName(MetadataNames.System_NotImplementedException);
 
                         if (typeSymbol.Equals(notImplementedExceptionSymbol))
                         {

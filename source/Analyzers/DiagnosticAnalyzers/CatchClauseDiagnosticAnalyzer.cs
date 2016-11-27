@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (typeSymbol != null)
                 {
-                    INamedTypeSymbol exceptionTypeSymbol = context.GetTypeByMetadataName("System.Exception");
+                    INamedTypeSymbol exceptionTypeSymbol = context.GetTypeByMetadataName(MetadataNames.System_Exception);
 
                     if (typeSymbol.Equals(exceptionTypeSymbol))
                     {

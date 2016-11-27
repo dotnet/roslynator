@@ -79,11 +79,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             if (returnTypeSymbol != null)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                 if (taskSymbol?.Equals(returnTypeSymbol) == false)
                 {
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (taskOfTSymbol?.Equals(returnTypeSymbol.ConstructedFrom) == false)
                         return true;

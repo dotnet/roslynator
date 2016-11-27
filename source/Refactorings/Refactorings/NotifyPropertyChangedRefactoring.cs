@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             if (propertySymbol != null
                 && propertySymbol.ContainingType != null)
             {
-                INamedTypeSymbol inotifyPropertyChanged = semanticModel.Compilation.GetTypeByMetadataName("System.ComponentModel.INotifyPropertyChanged");
+                INamedTypeSymbol inotifyPropertyChanged = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ComponentModel_INotifyPropertyChanged);
 
                 if (inotifyPropertyChanged != null)
                     return propertySymbol.ContainingType.AllInterfaces.Contains(inotifyPropertyChanged);

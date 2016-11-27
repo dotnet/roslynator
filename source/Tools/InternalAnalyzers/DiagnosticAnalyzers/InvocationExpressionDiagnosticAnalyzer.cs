@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                     {
                         SemanticModel semanticModel = context.SemanticModel;
 
-                        INamedTypeSymbol syntaxKindSymbol = semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
+                        INamedTypeSymbol syntaxKindSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind);
 
                         if (syntaxKindSymbol != null)
                         {
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            INamedTypeSymbol syntaxNodeSymbol = semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxNode");
+            INamedTypeSymbol syntaxNodeSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode);
 
             if (CanRefactor(
                 methodName,
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 return true;
             }
 
-            INamedTypeSymbol syntaxTriviaSymbol = semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTrivia");
+            INamedTypeSymbol syntaxTriviaSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxTrivia);
 
             return CanRefactor(
                 methodName,
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                         && methodSymbol.ReducedFrom.Parameters[0].Type.Equals(typeSymbol)
                         && methodSymbol.ReducedFrom.Parameters[1].Type.Equals(syntaxKindSymbol))
                     {
-                        INamedTypeSymbol extensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharpExtensions");
+                        INamedTypeSymbol extensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_CSharpExtensions);
 
                         if (extensionsClassSymbol != null
                             && methodSymbol.ContainingType?.Equals(extensionsClassSymbol) == true)

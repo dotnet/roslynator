@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
                 && variableDeclaration.Variables[0].Initializer?.Value != null
                 && typeSymbol.IsNamedType())
             {
-                INamedTypeSymbol taskOfT = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                INamedTypeSymbol taskOfT = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                 if (((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(taskOfT)
                     && AsyncAnalysis.IsPartOfAsyncBlock(variableDeclaration, semanticModel, cancellationToken))

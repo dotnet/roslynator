@@ -23,7 +23,7 @@ namespace CodeGenerator
         {
             return CompilationUnit()
                 .WithUsings(
-                    UsingDirective(ParseName("System.ComponentModel")),
+                    UsingDirective(ParseName(MetadataNames.System_ComponentModel)),
                     UsingDirective(ParseName("Roslynator.CSharp.Refactorings")),
                     UsingDirective(ParseName("Roslynator.VisualStudio.TypeConverters"))
                     )

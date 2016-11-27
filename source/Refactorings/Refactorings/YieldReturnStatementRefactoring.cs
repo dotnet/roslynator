@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                                         || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
                                 {
                                     TypeSyntax newType = QualifiedName(
-                                        ParseName("System.Collections.Generic"),
+                                        ParseName(MetadataNames.System_Collections_Generic),
                                         GenericName(
                                             Identifier("IEnumerable"),
                                             TypeArgumentList(

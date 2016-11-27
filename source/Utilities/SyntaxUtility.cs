@@ -406,7 +406,7 @@ namespace Roslynator
 
         private static bool ImplementsIDictionary(INamedTypeSymbol namedTypeSymbol)
         {
-            return string.Equals(namedTypeSymbol.ContainingNamespace?.ToString(), "System.Collections", StringComparison.Ordinal)
+            return string.Equals(namedTypeSymbol.ContainingNamespace?.ToString(), MetadataNames.System_Collections, StringComparison.Ordinal)
                 && string.Equals(namedTypeSymbol.MetadataName, "IDictionary", StringComparison.Ordinal);
         }
 

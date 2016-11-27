@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 INamedTypeSymbol taskSymbol = semanticModel
                     .Compilation
-                    .GetTypeByMetadataName("System.Threading.Tasks.Task");
+                    .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                 return methodSymbol.ReturnType.Equals(taskSymbol);
             }

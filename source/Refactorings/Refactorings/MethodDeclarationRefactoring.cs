@@ -112,14 +112,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (returnTypeSymbol != null)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                 if (taskSymbol != null)
                 {
                     if (returnTypeSymbol.Equals(taskSymbol))
                         return null;
 
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (taskOfTSymbol != null
                         && returnTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol))

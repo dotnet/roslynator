@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 return methodSymbol.MetadataName == methodName
                     && methodSymbol.Parameters.Length == 1
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
+                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
                     && methodSymbol.Parameters[0].Type.IsConstructedFromIEnumerableOfT();
             }
 
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 return methodSymbol.MetadataName == methodName
                     && methodSymbol.Parameters.Length == 1
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
+                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true
                     && methodSymbol.Parameters[0].Type.IsConstructedFromImmutableArrayOfT(semanticModel);
             }
 
@@ -194,7 +194,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 return methodSymbol.MetadataName == "ElementAt"
                     && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.Enumerable")) == true
+                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
                     && methodSymbol.Parameters[0].Type.IsConstructedFromIEnumerableOfT()
                     && methodSymbol.Parameters[1].Type.IsInt32();
             }
@@ -216,7 +216,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 return methodSymbol.MetadataName == "ElementAt"
                     && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName("System.Linq.ImmutableArrayExtensions")) == true
+                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true
                     && methodSymbol.Parameters[0].Type.IsConstructedFromImmutableArrayOfT(semanticModel)
                     && methodSymbol.Parameters[1].Type.IsInt32();
             }

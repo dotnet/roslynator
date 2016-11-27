@@ -62,11 +62,11 @@ namespace Roslynator.CSharp.Refactorings
                                         {
                                             var newNamedType = (INamedTypeSymbol)newType;
 
-                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Linq.IOrderedEnumerable`1");
+                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
 
                                             if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
                                             {
-                                                INamedTypeSymbol enumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
+                                                INamedTypeSymbol enumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
 
                                                 if (enumerableSymbol != null
                                                     && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             INamedTypeSymbol taskOfTSymbol = semanticModel
                                 .Compilation
-                                .GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                             if (awaitableSymbol.ConstructedFrom.Equals(taskOfTSymbol))
                                 return awaitableSymbol;
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     INamedTypeSymbol taskOfTSymbol = semanticModel
                         .Compilation
-                        .GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                        .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom.Equals(taskOfTSymbol))
                     {
@@ -162,7 +162,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         INamedTypeSymbol taskSymbol = semanticModel
                             .Compilation
-                            .GetTypeByMetadataName("System.Threading.Tasks.Task");
+                            .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                         if (expressionSymbol.Equals(taskSymbol))
                             return null;
@@ -191,7 +191,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
 
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (taskOfTSymbol != null
                         && namedTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol)

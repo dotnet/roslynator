@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeArguments.Length == 0)
             {
-                return semanticModel.Compilation.GetTypeByMetadataName("System.EventArgs");
+                return semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
             }
             else if (typeArguments.Length == 1)
             {

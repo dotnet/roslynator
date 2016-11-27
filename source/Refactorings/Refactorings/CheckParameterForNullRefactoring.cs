@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings
                     NullLiteralExpression()),
                 ThrowStatement(
                     ObjectCreationExpression(
-                        type: ParseName("System.ArgumentNullException").WithSimplifierAnnotation(),
+                        type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
                         argumentList: ArgumentList(Argument(NameOf(identifier))),
                         initializer: null)));
         }
@@ -206,7 +206,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
 
-                            INamedTypeSymbol exceptionType = semanticModel.Compilation.GetTypeByMetadataName("System.ArgumentNullException");
+                            INamedTypeSymbol exceptionType = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
 
                             ISymbol type = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol;
 
