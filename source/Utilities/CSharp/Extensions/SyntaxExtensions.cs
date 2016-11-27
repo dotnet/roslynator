@@ -1214,9 +1214,29 @@ namespace Roslynator.CSharp
             return list.LastIndexOf(f => f.IsKind(kind));
         }
 
+        public static int LastIndexOf<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
+        {
+            return list.LastIndexOf(f => f.IsKind(kind));
+        }
+
         public static bool Contains<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
         {
             return list.IndexOf(kind) != -1;
+        }
+
+        public static bool Contains<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
+        {
+            return list.IndexOf(kind) != -1;
+        }
+
+        public static SyntaxList<TNode> ReplaceAt<TNode>(this SyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
+        {
+            return list.Replace(list[index], newNode);
+        }
+
+        public static SeparatedSyntaxList<TNode> ReplaceAt<TNode>(this SeparatedSyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
+        {
+            return list.Replace(list[index], newNode);
         }
 
         public static bool IsVoid(this TypeSyntax type)

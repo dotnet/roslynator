@@ -324,6 +324,16 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.CloseBracketToken);
         }
 
+        public static SyntaxToken WhileKeyword()
+        {
+            return Token(SyntaxKind.WhileKeyword);
+        }
+
+        public static SyntaxToken ReturnKeyword()
+        {
+            return Token(SyntaxKind.ReturnKeyword);
+        }
+
         private static SyntaxToken Token(SyntaxKind syntaxKind)
         {
             return SyntaxFactory.Token(syntaxKind);
@@ -838,11 +848,6 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ImplicitElementAccess(
                 BracketedArgumentList(
                     SingletonSeparatedList(SyntaxFactory.Argument(expression))));
-        }
-
-        public static SyntaxToken WhileKeyword()
-        {
-            return SyntaxFactory.Token(SyntaxKind.WhileKeyword);
         }
 
         public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
