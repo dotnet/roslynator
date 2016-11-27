@@ -62,6 +62,7 @@
     <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
+    <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
     <Compile Include="SimplifyAssignmentExpression.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />

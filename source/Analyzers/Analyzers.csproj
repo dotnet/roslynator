@@ -81,7 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\MarkClassAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
-    <Compile Include="Analyzers\SimplifyIfStatementToReturnStatementAnalyzer.cs" />
+    <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />

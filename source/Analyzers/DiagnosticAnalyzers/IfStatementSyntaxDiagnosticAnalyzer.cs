@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             MergeIfStatementWithNestedIfStatementAnalyzer.Analyze(context, ifStatement);
 
-            SimplifyIfStatementToReturnStatementAnalyzer.Analyze(context);
+            ReplaceIfStatementWithReturnStatementRefactoring.Analyze(context, ifStatement);
 
             if (SimplifyIfElseStatementRefactoring.CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
                 && !ifStatement.SpanContainsDirectives())
