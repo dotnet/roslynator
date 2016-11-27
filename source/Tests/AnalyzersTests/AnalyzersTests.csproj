@@ -71,7 +71,7 @@
     <Compile Include="UseStringIsNullOrEmptyMethod.cs" />
     <Compile Include="SimplifyLinqMethodChain.cs" />
     <Compile Include="UseCastMethodInsteadOfSelectMethod.cs" />
-    <Compile Include="SimplifyIfElseWithBooleanAssignment.cs" />
+    <Compile Include="ReplaceIfStatementWithAssignment.cs" />
     <Compile Include="UseBitwiseOperationInsteadOfHasFlag.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
     <Compile Include="UseCSharp6DictionaryInitializer.cs" />

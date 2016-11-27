@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class SimplifyIfElseWithBooleanAssignment
+    internal static class ReplaceIfStatementWithAssignment
     {
         public static void Foo()
         {

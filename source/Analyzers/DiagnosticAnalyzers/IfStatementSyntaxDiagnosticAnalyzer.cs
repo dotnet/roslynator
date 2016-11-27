@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
                     DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
                     DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut,
-                    DiagnosticDescriptors.SimplifyIfElseStatement);
+                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment);
             }
         }
 
@@ -72,11 +72,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             ReplaceIfStatementWithReturnStatementRefactoring.Analyze(context, ifStatement);
 
-            if (SimplifyIfElseStatementRefactoring.CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
+            if (ReplaceIfStatementWithAssignmentRefactoring.CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
                 && !ifStatement.SpanContainsDirectives())
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyIfElseStatement,
+                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment,
                     ifStatement.GetLocation());
             }
         }

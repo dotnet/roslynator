@@ -971,10 +971,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor SimplifyIfElseStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.SimplifyIfElseStatement,
-            title: "Simplify if-else statement.",
-            messageFormat: "Consider simplifying if-else statement.",
+        public static readonly DiagnosticDescriptor ReplaceIfStatementWithAssignment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
+            title: "Replace if statement with assignment.",
+            messageFormat: "Consider replacing if statement with assignment.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true

@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class SimplifyIfElseStatementRefactoring
+    internal static class ReplaceIfStatementWithAssignmentRefactoring
     {
         public static bool CanRefactor(
             IfStatementSyntax ifStatement,

@@ -108,7 +108,7 @@ namespace Roslynator.CSharp
         public const string FormatDocumentationSummaryOnSingleLine = Prefix + "1100";
         public const string FormatDocumentationSummaryOnMultipleLines = Prefix + "1101";
         public const string MarkClassAsStatic = Prefix + "1102";
-        public const string SimplifyIfElseStatement = Prefix + "1103";
+        public const string ReplaceIfStatementWithAssignment = Prefix + "1103";
         public const string SimplifyConditionalExpression = Prefix + "1104";
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "1105";
         public const string RemoveEmptyDestructor = Prefix + "1106";

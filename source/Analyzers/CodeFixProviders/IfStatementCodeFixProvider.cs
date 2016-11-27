@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
-                    DiagnosticIdentifiers.SimplifyIfElseStatement);
+                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment);
             }
         }
 
@@ -56,13 +56,13 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.SimplifyIfElseStatement:
+                    case DiagnosticIdentifiers.ReplaceIfStatementWithAssignment:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Simplify if-else",
+                                "Replace if with assignment",
                                 cancellationToken =>
                                 {
-                                    return SimplifyIfElseStatementRefactoring.RefactorAsync(
+                                    return ReplaceIfStatementWithAssignmentRefactoring.RefactorAsync(
                                         context.Document,
                                         ifStatement,
                                         cancellationToken);
