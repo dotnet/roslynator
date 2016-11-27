@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analyzers;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -69,7 +68,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 }
             }
 
-            MergeIfStatementWithNestedIfStatementAnalyzer.Analyze(context, ifStatement);
+            MergeIfStatementWithNestedIfStatementRefactoring.Analyze(context, ifStatement);
 
             ReplaceIfStatementWithReturnStatementRefactoring.Analyze(context, ifStatement);
 

@@ -50,6 +50,7 @@
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
+    <Compile Include="MergeIfStatementWithNestedIfStatement.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />

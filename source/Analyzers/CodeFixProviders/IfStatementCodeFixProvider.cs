@@ -2,12 +2,10 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -48,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 "Merge if with nested if",
                                 cancellationToken =>
                                 {
-                                    return MergeIfStatementWithNestedIfStatementAsync(
+                                    return MergeIfStatementWithNestedIfStatementRefactoring.RefactorAsync(
                                         context.Document,
                                         ifStatement,
                                         cancellationToken);
@@ -75,59 +73,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                             break;
                         }
                 }
-            }
-        }
-
-        private static async Task<Document> MergeIfStatementWithNestedIfStatementAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
-
-            BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(
-                ifStatement.Condition,
-                nestedIf.Condition,
-                addParenthesesIfNecessary: true);
-
-            IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
-                .WithCondition(newCondition)
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static IfStatementSyntax GetNewIfStatement(IfStatementSyntax ifStatement, IfStatementSyntax ifStatement2)
-        {
-            if (ifStatement.Statement.IsKind(SyntaxKind.Block))
-            {
-                if (ifStatement2.Statement.IsKind(SyntaxKind.Block))
-                {
-                    return ifStatement.ReplaceNode(ifStatement2, ((BlockSyntax)ifStatement2.Statement).Statements);
-                }
-                else
-                {
-                    return ifStatement.ReplaceNode(ifStatement2, ifStatement2.Statement);
-                }
-            }
-            else
-            {
-                return ifStatement.ReplaceNode(ifStatement.Statement, ifStatement2.Statement);
-            }
-        }
-
-        private static IfStatementSyntax GetNestedIfStatement(IfStatementSyntax ifStatement)
-        {
-            switch (ifStatement.Statement.Kind())
-            {
-                case SyntaxKind.Block:
-                    return (IfStatementSyntax)((BlockSyntax)ifStatement.Statement).Statements[0];
-                default:
-                    return (IfStatementSyntax)ifStatement.Statement;
             }
         }
     }
