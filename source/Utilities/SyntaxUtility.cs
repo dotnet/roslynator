@@ -570,5 +570,32 @@ namespace Roslynator
 
             return s;
         }
+
+        public static bool ContainsEmbeddableUsingStatement(UsingStatementSyntax usingStatement)
+        {
+            if (usingStatement == null)
+                throw new ArgumentNullException(nameof(usingStatement));
+
+            StatementSyntax statement = usingStatement.Statement;
+
+            if (statement?.IsKind(SyntaxKind.Block) == true)
+            {
+                var block = (BlockSyntax)statement;
+                SyntaxList<StatementSyntax> statements = block.Statements;
+
+                if (statements.Count == 1
+                    && statements[0].IsKind(SyntaxKind.UsingStatement))
+                {
+                    var usingStatement2 = (UsingStatementSyntax)statements[0];
+
+                    return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && usingStatement2.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && usingStatement2.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                }
+            }
+
+            return false;
+        }
     }
 }

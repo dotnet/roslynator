@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,11 +13,11 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(UsingStatementSyntax usingStatement)
         {
-            return UsingStatementAnalysis.ContainsEmbeddableUsingStatement(usingStatement)
+            return SyntaxUtility.ContainsEmbeddableUsingStatement(usingStatement)
                 && !usingStatement
                     .Ancestors()
                     .Any(f => f.IsKind(SyntaxKind.UsingStatement)
-                        && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                        && SyntaxUtility.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
         }
 
         public static async Task<Document> RefactorAsync(
@@ -47,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitUsingStatement(UsingStatementSyntax node)
             {
-                if (UsingStatementAnalysis.ContainsEmbeddableUsingStatement(node))
+                if (SyntaxUtility.ContainsEmbeddableUsingStatement(node))
                 {
                     var block = (BlockSyntax)node.Statement;
 

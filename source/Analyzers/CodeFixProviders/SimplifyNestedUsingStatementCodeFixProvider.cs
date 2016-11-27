@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -19,7 +18,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,22 +35,16 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             bool fMultiple = usingStatement.Statement
                 .DescendantNodes()
-                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && UsingStatementAnalysis.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && SyntaxUtility.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
-            string title = "Remove braces from 'using' statement";
+            string title = "Remove braces from using statement";
 
             if (fMultiple)
                 title += "s";
 
             CodeAction codeAction = CodeAction.Create(
                 title,
-                cancellationToken =>
-                {
-                    return RemoveBracesFromUsingStatementRefactoring.RefactorAsync(
-                        context.Document,
-                        usingStatement,
-                        cancellationToken);
-                },
+                cancellationToken => RemoveBracesFromUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, cancellationToken),
                 DiagnosticIdentifiers.SimplifyNestedUsingStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
