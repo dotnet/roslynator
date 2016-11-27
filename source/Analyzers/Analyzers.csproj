@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Refactorings\MergeIfStatementWithNestedIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatEachStatementOnSeparateLineRefactoring.cs" />
-    <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DestructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />

@@ -351,6 +351,23 @@ namespace Roslynator.CSharp
             return (TNode)TriviaRemover.Instance.Visit(node);
         }
 
+        public static async Task<Document> RemoveTriviaAsync(
+            Document document,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            var rewriter = new TriviaSyntaxRewriter(span);
+
+            SyntaxNode newRoot = rewriter.Visit(root);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
         public static TNode RemoveWhitespaceOrEndOfLine<TNode>(TNode node) where TNode : SyntaxNode
         {
             if (node == null)

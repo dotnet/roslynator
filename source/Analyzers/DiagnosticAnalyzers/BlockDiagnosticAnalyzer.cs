@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analyzers;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -41,7 +40,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var block = (BlockSyntax)context.Node;
 
-            RedundantEmptyLineAnalyzer.AnalyzeBlock(context, block);
+            RedundantEmptyLineDiagnosticAnalyzer.AnalyzeBlock(context, block);
 
             SyntaxList<StatementSyntax> statements = block.Statements;
 
