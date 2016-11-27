@@ -41,7 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Analyzers\FormatEachStatementOnSeparateLineAnalyzer.cs" />
+    <Compile Include="Refactorings\FormatEachStatementOnSeparateLineRefactoring.cs" />
     <Compile Include="Analyzers\MergeIfStatementWithNestedIfStatementAnalyzer.cs" />
     <Compile Include="Analyzers\MergeLocalDeclarationWithReturnStatementAnalyzer.cs" />
     <Compile Include="Analyzers\RedundantEmptyLineAnalyzer.cs" />
@@ -179,7 +179,6 @@
     <Compile Include="IfElseAnalysisResult.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
-    <Compile Include="Refactorings\FormatStatementOnNextLineRefactoring.cs" />
     <Compile Include="Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveModifierRefactoring.cs" />

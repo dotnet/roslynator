@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Format embedded statement on a separate line",
-                cancellationToken => FormatStatementOnNextLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                cancellationToken => FormatEachStatementOnSeparateLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

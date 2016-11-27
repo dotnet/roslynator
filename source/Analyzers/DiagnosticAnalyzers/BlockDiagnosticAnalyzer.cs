@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analyzers;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -44,7 +45,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             SyntaxList<StatementSyntax> statements = block.Statements;
 
-            FormatEachStatementOnSeparateLineAnalyzer.AnalyzeStatements(context, statements);
+            FormatEachStatementOnSeparateLineRefactoring.Analyze(context, statements);
 
             if (!statements.Any()
                 && !(block.Parent is AccessorDeclarationSyntax))

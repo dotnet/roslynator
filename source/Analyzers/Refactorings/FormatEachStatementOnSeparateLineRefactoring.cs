@@ -5,11 +5,40 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatStatementOnNextLineRefactoring
+    internal static class FormatEachStatementOnSeparateLineRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<StatementSyntax> statements)
+        {
+            if (statements.Count == 0)
+                return;
+
+            if (statements.Count == 1 && !statements[0].IsKind(SyntaxKind.Block))
+                return;
+
+            int previousIndex = statements[0].GetSpanEndLine();
+
+            for (int i = 1; i < statements.Count; i++)
+            {
+                if (!statements[i].IsKind(SyntaxKind.Block)
+                    && !statements[i].IsKind(SyntaxKind.EmptyStatement)
+                    && statements[i].GetSpanStartLine() == previousIndex)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
+                        statements[i].GetLocation());
+                }
+
+                if (statements[i].IsKind(SyntaxKind.Block))
+                    Analyze(context, ((BlockSyntax)statements[i]).Statements);
+
+                previousIndex = statements[i].GetSpanEndLine();
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
