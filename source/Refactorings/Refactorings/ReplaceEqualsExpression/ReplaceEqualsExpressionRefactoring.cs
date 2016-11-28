@@ -60,29 +60,6 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
         }
 
-        public async Task ComputeRefactoringAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
-        {
-            if (binaryExpression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression))
-            {
-                ExpressionSyntax left = binaryExpression.Left;
-
-                if (left?.IsKind(SyntaxKind.NullLiteralExpression) == false)
-                {
-                    ExpressionSyntax right = binaryExpression.Right;
-
-                    if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(left, context.CancellationToken).ConvertedType;
-
-                        if (leftSymbol?.IsString() == true)
-                            RegisterRefactoring(context, binaryExpression, binaryExpression.Left);
-                    }
-                }
-            }
-        }
-
         private async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
