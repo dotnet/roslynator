@@ -105,6 +105,12 @@
 
 ![Call 'ConfigureAwait(false)'](../../images/refactorings/CallConfigureAwait.png)
 
+#### Call extension method as instance method
+
+* **Syntax**: method invocation
+
+![Call extension method as instance method](../../images/refactorings/CallExtensionMethodAsInstanceMethod.png)
+
 #### Call 'To...' method
 
 * **Syntax**: argument, assignment expression, return statement, variable declaration
@@ -430,6 +436,12 @@
 * **Scope**: missing expression
 
 ![Introduce field to lock on](../../images/refactorings/IntroduceFieldToLockOn.png)
+
+#### Introduce local from statement that returns value
+
+* **Syntax**: expression statement
+
+![Introduce local from statement that returns value](../../images/refactorings/IntroduceLocalFromStatementThatReturnsValue.png)
 
 #### Make member abstract
 
@@ -830,6 +842,12 @@
 
 ![Replace 'HasFlag' with bitwise operation](../../images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
 
+#### Replace if statement with return statement
+
+* **Syntax**: if statement
+
+![Replace if statement with return statement](../../images/refactorings/ReplaceIfStatementWithReturnStatement.png)
+
 #### Replace if-else with conditional expression
 
 * **Syntax**: conditional expression
@@ -860,6 +878,12 @@
 * **Syntax**: Interpolated string without any interpolation
 
 ![Replace interpolated string with string literal](../../images/refactorings/ReplaceInterpolatedStringWithStringLiteral.png)
+
+#### Replace method group with lambda
+
+* **Syntax**: method group
+
+![Replace method group with lambda](../../images/refactorings/ReplaceMethodGroupWithLambda.png)
 
 #### Replace method invocation with '[]'
 
