@@ -101,7 +101,7 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="CallExtensionMethodAsInstanceMethod" Title="Call extension method as instance method" ExtensionVersion="0.0.0">
+  <Refactoring Id="CallExtensionMethodAsInstanceMethod" Title="Call extension method as instance method" ExtensionVersion="1.1.7">
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
@@ -479,7 +479,7 @@
     </Syntaxes>
     <Scope>missing expression</Scope>
   </Refactoring>
-  <Refactoring Id="IntroduceLocalFromStatementThatReturnsValue" Title="Introduce local from statement that returns value" ExtensionVersion="0.0.0">
+  <Refactoring Id="IntroduceLocalFromStatementThatReturnsValue" Title="Introduce local from statement that returns value" ExtensionVersion="1.1.7">
     <Syntaxes>
       <Syntax>expression statement</Syntax>
     </Syntaxes>
@@ -881,7 +881,7 @@
       <Syntax>if statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceIfStatementWithReturnStatement" Title="Replace if statement with return statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceIfStatementWithReturnStatement" Title="Replace if statement with return statement" ExtensionVersion="1.1.7">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -902,7 +902,7 @@
       <Syntax>Interpolated string without any interpolation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceMethodGroupWithLambda" Title="Replace method group with lambda" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceMethodGroupWithLambda" Title="Replace method group with lambda" ExtensionVersion="1.1.7">
     <Syntaxes>
       <Syntax>method group</Syntax>
     </Syntaxes>
