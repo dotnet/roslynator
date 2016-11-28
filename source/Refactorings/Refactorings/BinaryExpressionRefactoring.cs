@@ -103,12 +103,17 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast))
                 ReplaceAsWithCastRefactoring.ComputeRefactoring(context, binaryExpression);
 
-            if (context.Span.IsContainedInSpanOrBetweenSpans(binaryExpression.OperatorToken)
-                && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals,
-                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace))
+            if (context.Span.IsContainedInSpanOrBetweenSpans(binaryExpression.OperatorToken))
             {
-                await ReplaceEqualsExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals))
+                    await ReplaceEqualsExpressionWithStringEqualsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
+
+                if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty,
+                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace))
+                {
+                    await ReplaceEqualsExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
+                }
             }
         }
     }
