@@ -29,6 +29,9 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
                         await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))
+                        await CallExtensionMethodAsInstanceMethodRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
                 }
             }
 

@@ -27,6 +27,7 @@ namespace Roslynator.VisualStudio
             AddUsingDirective = true;
             AddUsingStaticDirective = true;
             CallConfigureAwait = true;
+            CallExtensionMethodAsInstanceMethod = true;
             CallToMethod = true;
             ChangeExplicitTypeToVar = true;
             ChangeMemberTypeAccordingToReturnExpression = true;
@@ -189,6 +190,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
             SetIsEnabled(RefactoringIdentifiers.AddUsingStaticDirective, AddUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.CallConfigureAwait, CallConfigureAwait);
+            SetIsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, CallExtensionMethodAsInstanceMethod);
             SetIsEnabled(RefactoringIdentifiers.CallToMethod, CallToMethod);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
@@ -479,6 +481,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: awaitable method invocation\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CallConfigureAwait
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Call extension method as instance method")]
+        [Description("Syntax: method invocation")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool CallExtensionMethodAsInstanceMethod
         {
             get;
             set;

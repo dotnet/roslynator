@@ -21,6 +21,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddUsingDirective = "AddUsingDirective";
         public const string AddUsingStaticDirective = "AddUsingStaticDirective";
         public const string CallConfigureAwait = "CallConfigureAwait";
+        public const string CallExtensionMethodAsInstanceMethod = "CallExtensionMethodAsInstanceMethod";
         public const string CallToMethod = "CallToMethod";
         public const string ChangeExplicitTypeToVar = "ChangeExplicitTypeToVar";
         public const string ChangeMemberTypeAccordingToReturnExpression = "ChangeMemberTypeAccordingToReturnExpression";

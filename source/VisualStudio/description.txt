@@ -201,6 +201,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-configureawaitfalse">Call 'ConfigureAwait(false)'</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-extension-method-as-instance-method">Call extension method as instance method</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-to-method">Call 'To...' method</a>
         </li>
         <li>

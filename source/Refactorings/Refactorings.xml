@@ -101,6 +101,11 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
+  <Refactoring Id="CallExtensionMethodAsInstanceMethod" Title="Call extension method as instance method" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method invocation</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="CallToMethod" Title="Call 'To...' method" ExtensionVersion="1.0.7">
     <Syntaxes>
       <Syntax>argument</Syntax>
