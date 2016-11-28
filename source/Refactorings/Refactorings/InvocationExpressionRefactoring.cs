@@ -15,20 +15,22 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
-                    RefactoringIdentifiers.CallConfigureAwait)
-                && invocationExpression.Expression != null
-                && invocationExpression.ArgumentList != null)
+                    RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))
             {
                 ExpressionSyntax expression = invocationExpression.Expression;
 
-                if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                    && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
+                if (expression != null
+                    && invocationExpression.ArgumentList != null)
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
-                        await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
+                    if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                        && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
+                    {
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
+                            await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
-                        await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
+                            await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+                    }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))
                         await CallExtensionMethodAsInstanceMethodRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);

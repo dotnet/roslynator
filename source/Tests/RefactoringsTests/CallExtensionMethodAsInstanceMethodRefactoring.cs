@@ -4,11 +4,12 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class CallExtensionMethodAsInstanceMethodRefactoring
     {
-        public static void ExtensionMethod(this string value, string value2)
+        public static void ExtensionMethod(this string parameter1, string parameter2)
         {
-            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(value, value2);
-            Roslynator.CSharp.Refactorings.Tests.CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(value, value2);
-            value.ExtensionMethod(value2);
+            ExtensionMethod(parameter1, parameter2);
+            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+            Roslynator.CSharp.Refactorings.Tests.CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+            parameter1.ExtensionMethod(parameter2);
         }
     }
 }
