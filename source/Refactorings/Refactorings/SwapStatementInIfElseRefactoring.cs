@@ -10,6 +10,16 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class SwapStatementInIfElseRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
+        {
+            if (CanRefactor(ifStatement))
+            {
+                context.RegisterRefactoring(
+                    "Swap statements in if-else",
+                    cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
+            }
+        }
+
         public static bool CanRefactor(IfStatementSyntax ifStatement)
         {
             if (ifStatement.Condition != null

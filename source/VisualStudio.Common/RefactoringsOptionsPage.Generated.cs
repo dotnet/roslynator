@@ -140,6 +140,7 @@ namespace Roslynator.VisualStudio
             ReplaceHasFlagWithBitwiseOperation = true;
             ReplaceIfElseWithConditionalExpression = true;
             ReplaceIfElseWithSwitch = true;
+            ReplaceIfStatementWithReturnStatement = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
@@ -304,6 +305,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression, ReplaceIfElseWithConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement, ReplaceIfStatementWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
@@ -1613,6 +1615,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: if statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIfElseWithSwitch
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace if statement with return statement")]
+        [Description("Syntax: if statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceIfStatementWithReturnStatement
         {
             get;
             set;

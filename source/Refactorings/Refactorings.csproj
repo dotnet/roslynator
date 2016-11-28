@@ -62,6 +62,7 @@
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrWhiteSpaceRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
