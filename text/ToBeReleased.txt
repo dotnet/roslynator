@@ -1,7 +1,1 @@
-﻿#### Refactorings
-
-##### New Refactorings
-
-* CallExtensionMethodAsInstanceMethod
-* ReplaceMethodGroupWithLambda
-* ReplaceIfStatementWithReturnStatement
+﻿

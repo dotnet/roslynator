@@ -1,3 +1,14 @@
+### 1.1.7 (2016-11-29)
+
+#### Refactorings
+
+##### New Refactorings
+
+* CallExtensionMethodAsInstanceMethod
+* ReplaceMethodGroupWithLambda
+* ReplaceIfStatementWithReturnStatement
+* IntroduceLocalFromExpressionStatementThatReturnsValue
+
 ### 1.1.6 (2016-11-24)
 
 #### Analyzers
