@@ -864,5 +864,22 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.GenericName(identifier, TypeArgumentList(SingletonSeparatedList(typeArgument)));
         }
+
+        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
+        {
+            return LocalDeclarationStatement(type, Identifier(identifier), value);
+        }
+
+        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+        {
+            VariableDeclaratorSyntax declarator = (value != null)
+                ? VariableDeclarator(identifier, default(BracketedArgumentListSyntax), EqualsValueClause(value))
+                : VariableDeclarator(identifier);
+
+            return SyntaxFactory.LocalDeclarationStatement(
+                SyntaxFactory.VariableDeclaration(
+                    type,
+                    SingletonSeparatedList(declarator)));
+        }
     }
 }

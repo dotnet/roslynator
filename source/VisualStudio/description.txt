@@ -348,6 +348,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-field-to-lock-on">Introduce field to lock on</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-local-from-statement-that-returns-value">Introduce local from statement that returns value</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#make-member-abstract">Make member abstract</a>
         </li>
         <li>

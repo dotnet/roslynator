@@ -76,6 +76,7 @@ namespace Roslynator.VisualStudio
             IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
             IntroduceFieldToLockOn = true;
+            IntroduceLocalFromStatementThatReturnsValue = true;
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
             MarkMemberAsStatic = true;
@@ -241,6 +242,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
             SetIsEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn, IntroduceFieldToLockOn);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue, IntroduceLocalFromStatementThatReturnsValue);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
@@ -975,6 +977,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: lock statement\r\nScope: missing expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool IntroduceFieldToLockOn
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Introduce local from statement that returns value")]
+        [Description("Syntax: expression statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool IntroduceLocalFromStatementThatReturnsValue
         {
             get;
             set;
