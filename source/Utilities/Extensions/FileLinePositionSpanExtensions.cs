@@ -25,5 +25,10 @@ namespace Roslynator
         {
             return !fileLinePositionSpan.IsMultiLine();
         }
+
+        public static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)
+        {
+            return fileLinePositionSpan.EndLine() - fileLinePositionSpan.StartLine() + 1;
+        }
     }
 }

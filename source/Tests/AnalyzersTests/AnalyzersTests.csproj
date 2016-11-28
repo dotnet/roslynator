@@ -59,6 +59,7 @@
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantDelegateCreation.cs" />
+    <Compile Include="RemoveRedundantEmptyLine.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />

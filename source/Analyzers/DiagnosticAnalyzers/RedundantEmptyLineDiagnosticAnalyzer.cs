@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -27,6 +28,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
         }
 
         public void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -87,10 +89,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxToken openBrace,
             SyntaxToken closeBrace)
         {
-            if (members.Count > 0)
+            if (members.Any())
             {
-                AnalyzeStart(context, members[0], openBrace);
-                AnalyzeEnd(context, members[members.Count - 1], closeBrace);
+                AnalyzeStart(context, members.First(), openBrace);
+                AnalyzeEnd(context, members.Last(), closeBrace);
             }
         }
 
@@ -98,29 +100,39 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNodeAnalysisContext context,
             NamespaceDeclarationSyntax declaration)
         {
-            if (declaration.Externs.Count > 0)
+            SyntaxList<MemberDeclarationSyntax> members = declaration.Members;
+            SyntaxList<ExternAliasDirectiveSyntax> externs = declaration.Externs;
+
+            if (externs.Any())
             {
-                AnalyzeStart(context, declaration.Externs[0], declaration.OpenBraceToken);
+                AnalyzeStart(context, externs.First(), declaration.OpenBraceToken);
             }
-            else if (declaration.Usings.Count > 0)
+            else
             {
-                AnalyzeStart(context, declaration.Usings[0], declaration.OpenBraceToken);
-            }
-            else if (declaration.Members.Count > 0)
-            {
-                AnalyzeStart(context, declaration.Members[0], declaration.OpenBraceToken);
+                SyntaxList<UsingDirectiveSyntax> usings = declaration.Usings;
+
+                if (usings.Any())
+                {
+                    AnalyzeStart(context, usings.First(), declaration.OpenBraceToken);
+                }
+                else if (members.Any())
+                {
+                    AnalyzeStart(context, members.First(), declaration.OpenBraceToken);
+                }
             }
 
-            if (declaration.Members.Count > 0)
-                AnalyzeEnd(context, declaration.Members.Last(), declaration.CloseBraceToken);
+            if (members.Any())
+                AnalyzeEnd(context, members.Last(), declaration.CloseBraceToken);
         }
 
         public static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
-            if (block.Statements.Count > 0)
+            SyntaxList<StatementSyntax> statements = block.Statements;
+
+            if (statements.Any())
             {
-                AnalyzeStart(context, block.Statements[0], block.OpenBraceToken);
-                AnalyzeEnd(context, block.Statements[block.Statements.Count - 1], block.CloseBraceToken);
+                AnalyzeStart(context, statements.First(), block.OpenBraceToken);
+                AnalyzeEnd(context, statements.Last(), block.CloseBraceToken);
             }
         }
 
@@ -227,6 +239,87 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
 
             return null;
+        }
+
+        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
+            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+            if (sections.Any())
+            {
+                AnalyzeStart(context, sections.First(), switchStatement.OpenBraceToken);
+                AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
+
+                if (sections.Count > 1)
+                {
+                    SwitchSectionSyntax prevSection = sections.First();
+
+                    for (int i = 1; i < sections.Count; i++)
+                    {
+                        if (prevSection.Statements.LastOrDefault()?.IsKind(SyntaxKind.Block) == true)
+                        {
+                            SwitchSectionSyntax section = sections[i];
+
+                            SyntaxTriviaList trailingTrivia = prevSection.GetTrailingTrivia();
+                            SyntaxTriviaList leadingTrivia = section.GetLeadingTrivia();
+
+                            if (!IsStandardTriviaBetweenSections(trailingTrivia, leadingTrivia)
+                                && switchStatement
+                                    .SyntaxTree
+                                    .GetLineSpan(TextSpan.FromBounds(prevSection.Span.End, section.Span.Start), context.CancellationToken)
+                                    .GetLineCount() == 3)
+                            {
+                                SyntaxTrivia trivia = leadingTrivia
+                                    .SkipWhile(f => f.IsWhitespaceTrivia())
+                                    .FirstOrDefault();
+
+                                if (trivia.IsEndOfLineTrivia()
+                                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                {
+                                    context.ReportDiagnostic(
+                                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                                        Location.Create(switchStatement.SyntaxTree, TextSpan.FromBounds(section.FullSpan.Start, trivia.Span.End)));
+                                }
+                            }
+                        }
+
+                        prevSection = sections[i];
+                    }
+                }
+            }
+        }
+
+        private static bool IsStandardTriviaBetweenSections(SyntaxTriviaList trailingTrivia, SyntaxTriviaList leadingTrivia)
+        {
+            if (leadingTrivia.Any()
+                && leadingTrivia.All(f => f.IsWhitespaceTrivia()))
+            {
+                SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
+
+                while (en.MoveNext())
+                {
+                    SyntaxKind kind = en.Current.Kind();
+
+                    if (kind == SyntaxKind.WhitespaceTrivia)
+                        continue;
+
+                    if (kind == SyntaxKind.EndOfLineTrivia
+                        && !en.MoveNext())
+                    {
+                        return true;
+                    }
+
+                    break;
+                }
+            }
+
+            return false;
         }
     }
 }
