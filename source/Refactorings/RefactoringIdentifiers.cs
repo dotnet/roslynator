@@ -137,6 +137,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = "ReplaceInterpolatedStringWithInterpolationExpression";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
+        public const string ReplaceMethodGroupWithLambda = "ReplaceMethodGroupWithLambda";
         public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";
         public const string ReplaceMethodWithProperty = "ReplaceMethodWithProperty";
         public const string ReplaceNullLiteralExpressionWithDefaultExpression = "ReplaceNullLiteralExpressionWithDefaultExpression";

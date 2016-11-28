@@ -549,6 +549,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-interpolated-string-with-string-literal">Replace interpolated string with string literal</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-group-with-lambda">Replace method group with lambda</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-invocation-with-">Replace method invocation with '[]'</a>
         </li>
         <li>

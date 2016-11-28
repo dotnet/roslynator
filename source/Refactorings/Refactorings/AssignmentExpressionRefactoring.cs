@@ -47,6 +47,12 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda)
+                && context.SupportsSemanticModel)
+            {
+                await ReplaceMethodGroupWithLambdaRefactoring.ComputeRefactoringAsync(context, assignmentExpression).ConfigureAwait(false);
+            }
         }
     }
 }

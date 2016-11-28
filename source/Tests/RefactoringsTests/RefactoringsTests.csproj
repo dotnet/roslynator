@@ -67,6 +67,7 @@
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
+    <Compile Include="ReplaceMethodGroupWithLambdaRefactoring.cs" />
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring2.cs" />
     <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring2.cs" />
