@@ -6,6 +6,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public static void Foo()
         {
+            int i;
+            i = 0;
+            i++;
+
             Execute();
 
             var x = GetValue();
