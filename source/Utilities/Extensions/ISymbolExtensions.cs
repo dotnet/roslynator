@@ -625,5 +625,27 @@ namespace Roslynator
 
             return false;
         }
+
+        public static bool IsTaskOrDerivedFromTask(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            INamedTypeSymbol taskSymbol = semanticModel
+                .Compilation
+                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+
+            if (typeSymbol.Equals(taskSymbol))
+                return true;
+
+            return typeSymbol.IsNamedType()
+                && ((INamedTypeSymbol)typeSymbol)
+                    .ConstructedFrom
+                    .BaseTypes()
+                    .Any(baseType => baseType.Equals(taskSymbol));
+        }
     }
 }

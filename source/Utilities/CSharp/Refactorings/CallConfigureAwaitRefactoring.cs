@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -25,46 +24,29 @@ namespace Roslynator.CSharp.Refactorings
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (awaitExpression.Expression?.IsKind(SyntaxKind.InvocationExpression) == true
-                && ReturnsTask((InvocationExpressionSyntax)awaitExpression.Expression, semanticModel, cancellationToken))
-            {
-                ISymbol symbol = semanticModel
-                    .GetSymbolInfo(awaitExpression.Expression, cancellationToken)
-                    .Symbol;
+            ExpressionSyntax expression = awaitExpression.Expression;
 
-                if (symbol?.IsErrorType() == false)
-                {
-                    INamedTypeSymbol configuredTaskSymbol = semanticModel
-                        .Compilation
-                        .GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T);
-
-                    if (configuredTaskSymbol != null
-                        && !symbol.Equals(configuredTaskSymbol))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return expression?.IsKind(SyntaxKind.InvocationExpression) == true
+                && semanticModel.GetMethodSymbol(expression, cancellationToken)?
+                    .ReturnType
+                    .IsTaskOrDerivedFromTask(semanticModel) == true
+                && semanticModel
+                    .Compilation
+                    .GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) != null;
         }
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            AwaitExpressionSyntax awaitExpressionSyntax,
+            AwaitExpressionSyntax awaitExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (awaitExpressionSyntax == null)
-                throw new ArgumentNullException(nameof(awaitExpressionSyntax));
+            if (awaitExpression == null)
+                throw new ArgumentNullException(nameof(awaitExpression));
 
-            SyntaxNode root = await document
-                .GetSyntaxRootAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            var invocation = (InvocationExpressionSyntax)awaitExpressionSyntax.Expression;
+            var invocation = (InvocationExpressionSyntax)awaitExpression.Expression;
 
             InvocationExpressionSyntax newInvocation = InvocationExpression(
                 SimpleMemberAccessExpression(invocation.WithoutTrailingTrivia(), IdentifierName("ConfigureAwait")),
@@ -72,43 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newInvocation = newInvocation.WithTrailingTrivia(invocation.GetTrailingTrivia());
 
-            root = root.ReplaceNode(invocation, newInvocation);
-
-            return document.WithSyntaxRoot(root);
-        }
-
-        private static bool ReturnsTask(
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            INamedTypeSymbol taskSymbol = semanticModel
-                .Compilation
-                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-            if (taskSymbol != null)
-            {
-                ISymbol symbol = semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol;
-
-                if (symbol?.IsMethod() == true)
-                {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    if (methodSymbol.ReturnType.Equals(taskSymbol))
-                        return true;
-
-                    if (methodSymbol.ReturnType.IsNamedType()
-                        && ((INamedTypeSymbol)methodSymbol.ReturnType)
-                            .ConstructedFrom
-                            .BaseTypes()
-                            .Any(baseType => baseType.Equals(taskSymbol)))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
         }
     }
 }

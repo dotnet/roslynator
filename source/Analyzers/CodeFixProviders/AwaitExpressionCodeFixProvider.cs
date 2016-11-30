@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddConfigureAwait); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.CallConfigureAwait); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,9 +29,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FirstAncestorOrSelf<AwaitExpressionSyntax>();
 
             CodeAction codeAction = CodeAction.Create(
-                "Add 'ConfigureAwait(false)'",
+                "Call 'ConfigureAwait(false)'",
                 cancellationToken => CallConfigureAwaitRefactoring.RefactorAsync(context.Document, awaitExpression, cancellationToken),
-                DiagnosticIdentifiers.AddConfigureAwait + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.CallConfigureAwait + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

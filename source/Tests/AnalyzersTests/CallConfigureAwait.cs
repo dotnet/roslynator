@@ -4,17 +4,27 @@ using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal class AddConfigureAwait
+    internal static class CallConfigureAwait
     {
         public static async Task GetValueAsync()
         {
+            await GetValueAsync();
             object result = await GetValueAsync2();
-            object result2 = await GetValueAsync2();
+
+            await GetValue();
+            await GetValueAsync().ConfigureAwait(false);
+            result = await GetValueAsync2().ConfigureAwait(false);
+            result = GetValue();
         }
 
         private static Task<object> GetValueAsync2()
         {
             return Task.FromResult(new object());
+        }
+
+        public static object GetValue()
+        {
+            return null;
         }
     }
 }

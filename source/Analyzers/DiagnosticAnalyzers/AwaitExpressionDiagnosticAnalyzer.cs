@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddConfigureAwait); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.CallConfigureAwait); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (CallConfigureAwaitRefactoring.CanRefactor(awaitExpression, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddConfigureAwait,
+                    DiagnosticDescriptors.CallConfigureAwait,
                     awaitExpression.Expression.GetLocation());
             }
         }

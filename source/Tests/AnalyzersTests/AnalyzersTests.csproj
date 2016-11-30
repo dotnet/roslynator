@@ -77,7 +77,7 @@
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
     <Compile Include="UseCSharp6DictionaryInitializer.cs" />
     <Compile Include="UsePostfixUnaryOperatorInsteadOfAssignment.cs" />
-    <Compile Include="AddConfigureAwait.cs" />
+    <Compile Include="CallConfigureAwait.cs" />
     <Compile Include="AvoidUsageOfUsingAliasDirective.cs" />
     <Compile Include="AvoidLockingOnPubliclyAccessibleInstance.cs" />
     <Compile Include="DeclareEachTypeInSeparateFile\DeclareEachTypeInSeparateFile.cs" />

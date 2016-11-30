@@ -853,10 +853,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor AddConfigureAwait = new DiagnosticDescriptor(
-             id: DiagnosticIdentifiers.AddConfigureAwait,
-             title: "Add 'ConfigureAwait(false)' to awaitable expression.",
-             messageFormat: "Consider adding 'ConfigureAwait(false) to awaitable expression.",
+        public static readonly DiagnosticDescriptor CallConfigureAwait = new DiagnosticDescriptor(
+             id: DiagnosticIdentifiers.CallConfigureAwait,
+             title: "Call 'ConfigureAwait(false)'.",
+             messageFormat: "Consider calling 'ConfigureAwait(false).",
              category: DiagnosticCategories.General,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
