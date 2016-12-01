@@ -16,10 +16,20 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
     {
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
-            return methodDeclaration.ReturnType?.IsVoid() == false
+            if (methodDeclaration.ReturnType?.IsVoid() == false
                 && methodDeclaration.ParameterList?.Parameters.Count == 0
-                && methodDeclaration.TypeParameterList == null
-                && !methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword);
+                && methodDeclaration.TypeParameterList == null)
+            {
+                SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+
+                if (!modifiers.Contains(SyntaxKind.OverrideKeyword)
+                    && !modifiers.Contains(SyntaxKind.AsyncKeyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static async Task<Solution> RefactorAsync(
