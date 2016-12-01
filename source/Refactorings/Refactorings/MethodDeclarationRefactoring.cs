@@ -64,39 +64,54 @@ namespace Roslynator.CSharp.Refactorings
                 await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
-            await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName))
+                await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration).ConfigureAwait(false);
         }
 
         private static async Task RenameMethodAccoringToTypeNameAsync(
             RefactoringContext context,
             MethodDeclarationSyntax methodDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)
-                && methodDeclaration.ReturnType?.IsVoid() == false
-                && methodDeclaration.Identifier.Span.Contains(context.Span))
+            TypeSyntax returnType = methodDeclaration.ReturnType;
+
+            if (returnType?.IsVoid() == false)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SyntaxToken identifier = methodDeclaration.Identifier;
 
-                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-                ITypeSymbol typeSymbol = GetType(methodDeclaration.ReturnType, semanticModel, context.CancellationToken);
-
-                if (typeSymbol != null)
+                if (context.Span.IsEmptyOrBetweenSpans(identifier))
                 {
-                    string newName = SyntaxUtility.CreateIdentifier(typeSymbol);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    if (!string.IsNullOrEmpty(newName))
+                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                    ITypeSymbol typeSymbol = GetType(returnType, semanticModel, context.CancellationToken);
+
+                    if (typeSymbol != null)
                     {
-                        newName = "Get" + newName;
+                        string newName = NameGenerator.GenerateIdentifier(typeSymbol);
 
-                        if (methodSymbol.IsAsync)
-                            newName += "Async";
-
-                        if (!string.Equals(newName, methodDeclaration.Identifier.ValueText, StringComparison.Ordinal))
+                        if (!string.IsNullOrEmpty(newName))
                         {
-                            context.RegisterRefactoring(
-                                $"Rename method to '{newName}'",
-                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken));
+                            newName = "Get" + newName;
+
+                            if (methodSymbol.IsAsync)
+                                newName += "Async";
+
+                            if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
+                            {
+                                bool isUnique = await NameGenerator.IsUniqueMemberNameAsync(
+                                    methodSymbol,
+                                    newName,
+                                    context.Solution,
+                                    context.CancellationToken).ConfigureAwait(false);
+
+                                if (isUnique)
+                                {
+                                    context.RegisterRefactoring(
+                                       $"Rename method to '{newName}'",
+                                       cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken));
+                                }
+                            }
                         }
                     }
                 }

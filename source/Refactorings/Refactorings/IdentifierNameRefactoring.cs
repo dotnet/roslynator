@@ -45,24 +45,24 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (propertySymbol != null
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
-                            && object.Equals(fieldSymbol.ContainingType, propertySymbol.ContainingType))
+                            && fieldSymbol.ContainingType == propertySymbol.ContainingType)
                         {
                             string newName = TextUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
-                            if (!string.Equals(newName, fieldSymbol.Name, StringComparison.Ordinal))
+                            if (!string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal))
                             {
-                                string fieldName = identifierName.Identifier.ValueText;
+                                bool isUnique = await NameGenerator.IsUniqueMemberNameAsync(
+                                    fieldSymbol,
+                                    newName,
+                                    context.Solution,
+                                    context.CancellationToken).ConfigureAwait(false);
 
-                                context.RegisterRefactoring(
-                                    $"Rename field to '{newName}'",
-                                    cancellationToken =>
-                                    {
-                                        return SymbolRenamer.RenameAsync(
-                                            context.Document,
-                                            fieldSymbol,
-                                            newName,
-                                            cancellationToken);
-                                    });
+                                if (isUnique)
+                                {
+                                    context.RegisterRefactoring(
+                                        $"Rename field to '{newName}'",
+                                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, fieldSymbol, newName, cancellationToken));
+                                }
                             }
                         }
                     }

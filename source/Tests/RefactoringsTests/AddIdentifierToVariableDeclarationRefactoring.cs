@@ -4,13 +4,16 @@ using System.Xml;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class AddNameToLocalDeclarationRefactoring
+    internal static class AddIdentifierToVariableDeclarationRefactoring
     {
-        public object GetValue()
+        public static void GetValue()
         {
-            XmlReader 
+            XmlReader
 
-            return null;
+            object x = null;
+
+            XmlReader xmlReader;
+            XmlReader xmlReader2;
         }
 
     }

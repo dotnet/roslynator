@@ -50,8 +50,11 @@ namespace Roslynator.CSharp.Refactorings
                                     if (eventArgsSymbol != null
                                         && !MethodExists(eventSymbol, containingType, eventArgsSymbol))
                                     {
+                                        string methodName = "On" + eventSymbol.Name;
+                                        methodName = NameGenerator.GenerateUniqueMemberName(methodName, containingType, semanticModel, context.CancellationToken);
+
                                         context.RegisterRefactoring(
-                                            $"Generate 'On{eventSymbol.Name}' method",
+                                            $"Generate '{methodName}' method",
                                             cancellationToken =>
                                             {
                                                 return RefactorAsync(

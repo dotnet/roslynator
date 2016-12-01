@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
                 .Where(f => !f.IsCandidateLocation && !f.IsImplicit)
                 .ToArray();
 
-            string propertyName = GetPropertyName(methodDeclaration);
+            string propertyName = methodDeclaration.Identifier.ValueText;
 
             bool isMethodReplaced = false;
 
@@ -82,20 +82,6 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
             }
 
             return solution;
-        }
-
-        private static string GetPropertyName(MethodDeclarationSyntax methodDeclaration)
-        {
-            string methodName = methodDeclaration.Identifier.ValueText;
-
-            if (TextUtility.HasPrefix(methodName, "Get"))
-            {
-                return methodName.Substring(3);
-            }
-            else
-            {
-                return methodName;
-            }
         }
     }
 }

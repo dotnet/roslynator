@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
+                                string name = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true);
+                                name = NameGenerator.GenerateUniqueLocalName(name, declarator.SpanStart, semanticModel, context.CancellationToken);
 
                                 if (!string.IsNullOrEmpty(name))
                                 {
@@ -70,7 +71,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
-                    string name = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true);
+                    string name = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true);
+                    name = NameGenerator.GenerateUniqueLocalName(name, expression.SpanStart, semanticModel, context.CancellationToken);
 
                     if (!string.IsNullOrEmpty(name))
                     {

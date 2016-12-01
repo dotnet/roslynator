@@ -41,9 +41,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string identifier = SyntaxUtility.CreateIdentifier(typeSymbol, firstCharToLower: true) ?? "x";
+            string identifier = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true) ?? "x";
 
-            identifier = SyntaxUtility.GetUniqueName(identifier, semanticModel, expressionStatement.Span.Start);
+            identifier = NameGenerator.GenerateUniqueLocalName(identifier, expressionStatement.SpanStart, semanticModel, cancellationToken);
 
             LocalDeclarationStatementSyntax newNode = LocalDeclarationStatement(
                 VarType(),

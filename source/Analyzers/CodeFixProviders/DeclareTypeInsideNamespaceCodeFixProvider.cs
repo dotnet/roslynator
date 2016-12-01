@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System.Collections.Generic;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -50,7 +52,11 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                string name = SyntaxUtility.GetUniqueName("Namespace", semanticModel, member.Span.Start);
+                IEnumerable<string> reservedNames = semanticModel
+                    .LookupNamespacesAndTypes(member.SpanStart)
+                    .Select(f => f.Name);
+
+                string name = NameGenerator.EnsureUniqueName("Namespace", reservedNames);
 
                 NamespaceDeclarationSyntax namespaceDeclaration = NamespaceDeclaration(
                     IdentifierName(Identifier(name).WithRenameAnnotation()),

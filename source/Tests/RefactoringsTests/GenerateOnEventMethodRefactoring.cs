@@ -10,6 +10,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
         private class Foo
         {
             public event EventHandler Changed;
+
+            private void OnChanged()
+            {
+            }
         }
 
         private class Foo2

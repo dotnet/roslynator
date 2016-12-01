@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -30,7 +32,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            Document document = context.Document;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             MethodDeclarationSyntax methodDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
@@ -39,9 +44,11 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (methodDeclaration == null)
                 return;
 
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+
+            Debug.Assert(methodSymbol != null, $"{nameof(methodSymbol)} is null");
 
             if (methodSymbol != null)
             {
@@ -50,43 +57,44 @@ namespace Roslynator.CSharp.CodeFixProviders
                     switch (diagnostic.Id)
                     {
                         case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
-                        case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
                             {
-                                string name = methodDeclaration.Identifier.ValueText;
-                                string newName = GetNewName(methodDeclaration, diagnostic);
+                                string newName = methodDeclaration.Identifier.ValueText;
+
+                                newName = await NameGenerator.GenerateUniqueAsyncMethodNameAsync(
+                                    methodSymbol,
+                                    newName,
+                                    document.Project.Solution,
+                                    cancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename method to '{newName}'",
-                                    cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken),
+                                    c => SymbolRenamer.RenameAsync(document, methodSymbol, newName, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
+                                break;
+                            }
+                        case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
+                            {
+                                string name = methodDeclaration.Identifier.ValueText;
+                                string newName = name.Remove(name.Length - AsyncSuffix.Length);
 
+                                newName = await NameGenerator.GenerateUniqueMemberNameAsync(
+                                    methodSymbol,
+                                    newName,
+                                    document.Project.Solution,
+                                    cancellationToken).ConfigureAwait(false);
+
+                                CodeAction codeAction = CodeAction.Create(
+                                    $"Rename method to '{newName}'",
+                                    c => SymbolRenamer.RenameAsync(document, methodSymbol, newName, c),
+                                    diagnostic.Id + EquivalenceKeySuffix);
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
                                 break;
                             }
                     }
                 }
-            }
-        }
-
-        private static string GetNewName(MethodDeclarationSyntax methodDeclaration, Diagnostic diagnostic)
-        {
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
-                    {
-                        return methodDeclaration.Identifier + AsyncSuffix;
-                    }
-                case DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync:
-                    {
-                        string name = methodDeclaration.Identifier.ValueText;
-                        return name.Remove(name.Length - AsyncSuffix.Length);
-                    }
-                default:
-                    {
-                        Debug.Assert(false, diagnostic.Id);
-                        return null;
-                    }
             }
         }
     }

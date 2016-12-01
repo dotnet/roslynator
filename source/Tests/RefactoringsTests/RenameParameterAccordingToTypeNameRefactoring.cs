@@ -4,8 +4,18 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class RenameParameterAccordingToTypeNameRefactoring
     {
-        public void SomeMethod(Entity value)
+        public void Foo(Entity value)
         {
+        }
+
+        public void Foo2(Entity value)
+        {
+            Entity entity = value;
+        }
+
+        public void Foo(Entity entity, Entity value)
+        {
+            entity = value;
         }
 
         public class Entity

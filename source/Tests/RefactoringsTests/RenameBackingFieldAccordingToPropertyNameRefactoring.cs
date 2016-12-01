@@ -6,11 +6,17 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         private class Entity
         {
+            private string _name;
             private string _value;
 
             public string Name
             {
                 get { return _value; }
+            }
+
+            public string Name2
+            {
+                get { return _name; }
             }
         }
     }

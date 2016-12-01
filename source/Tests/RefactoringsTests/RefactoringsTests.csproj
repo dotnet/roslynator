@@ -90,7 +90,7 @@
     <Compile Include="RemoveConditionFromLastElseRefactoring.cs" />
     <Compile Include="RemoveAllMemberDeclarationsRefactoring.cs" />
     <Compile Include="ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
-    <Compile Include="AddNameToLocalDeclarationRefactoring.cs" />
+    <Compile Include="AddIdentifierToVariableDeclarationRefactoring.cs" />
     <Compile Include="SplitLocalDeclarationRefactoring.cs" />
     <Compile Include="ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
     <Compile Include="ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />

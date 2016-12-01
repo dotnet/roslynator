@@ -78,29 +78,37 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             ForEachStatementSyntax forEachStatement)
         {
-            if (forEachStatement.Type != null
-                && forEachStatement.Identifier.Span.Contains(context.Span))
+            TypeSyntax type = forEachStatement.Type;
+
+            if (type != null)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SyntaxToken identifier = forEachStatement.Identifier;
 
-                string oldName = forEachStatement.Identifier.ValueText;
-
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type, context.CancellationToken).Type;
-
-                if (typeSymbol?.IsErrorType() == false)
+                if (identifier.Span.Contains(context.Span))
                 {
-                    string newName = SyntaxUtility.CreateIdentifier(
-                        typeSymbol,
-                        firstCharToLower: true);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    if (!string.IsNullOrEmpty(newName)
-                        && !string.Equals(newName, oldName, StringComparison.Ordinal))
+                    string oldName = identifier.ValueText;
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+
+                    if (typeSymbol?.IsErrorType() == false)
                     {
-                        ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+                        string newName = NameGenerator.GenerateIdentifier(
+                            typeSymbol,
+                            firstCharToLower: true);
 
-                        context.RegisterRefactoring(
-                            $"Rename variable to '{newName}'",
-                            cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                        if (!string.IsNullOrEmpty(newName)
+                            && !string.Equals(newName, oldName, StringComparison.Ordinal))
+                        {
+                            newName = NameGenerator.GenerateUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
+
+                            ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+
+                            context.RegisterRefactoring(
+                                $"Rename variable to '{newName}'",
+                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                        }
                     }
                 }
             }

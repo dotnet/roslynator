@@ -35,6 +35,8 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             string newName = TextUtility.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
 
+            newName = NameGenerator.GenerateUniqueMemberName(newName, declarator.Identifier.SpanStart, semanticModel, context.CancellationToken);
+
             CodeAction codeAction = CodeAction.Create(
                 $"Rename field to '{newName}'",
                 cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),

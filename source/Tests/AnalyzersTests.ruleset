@@ -238,6 +238,8 @@
     <Rule Id="RCS1042" Action="Info" />
     <Rule Id="RCS1043" Action="Info" />
     <Rule Id="RCS1045" Action="Warning" />
+    <Rule Id="RCS1046" Action="Warning" />
+    <Rule Id="RCS1047" Action="Warning" />
     <Rule Id="RCS1049" Action="Warning" />
     <Rule Id="RCS1050" Action="Info" />
     <Rule Id="RCS1052" Action="Info" />

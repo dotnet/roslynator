@@ -40,6 +40,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AsyncMethodNameGenerator.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
@@ -87,15 +88,18 @@
     <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
     <Compile Include="CSharp\SyntaxRewriters\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />
+    <Compile Include="UniqueNameGenerator.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="Extensions\SemanticModelExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
+    <Compile Include="IdentifierGenerator.cs" />
     <Compile Include="MetadataNames.cs" />
     <Compile Include="ModifierUtility.cs" />
     <Compile Include="CSharp\Modifiers.cs" />
+    <Compile Include="NameGenerator.cs" />
     <Compile Include="SelectedLinesInfo.cs" />
     <Compile Include="SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />

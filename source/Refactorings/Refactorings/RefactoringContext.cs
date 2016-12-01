@@ -42,6 +42,16 @@ namespace Roslynator.CSharp.Refactorings
             get { return BaseContext.Document; }
         }
 
+        public Project Project
+        {
+            get { return Document.Project; }
+        }
+
+        public Solution Solution
+        {
+            get { return Project.Solution; }
+        }
+
         public TextSpan Span
         {
             get { return BaseContext.Span; }

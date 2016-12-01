@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (span.Contains(context.Span))
                     {
-                        string name = SyntaxUtility.CreateIdentifier(parameterSymbol.Type, firstCharToLower: true);
+                        string name = NameGenerator.GenerateIdentifier(parameterSymbol.Type, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {
@@ -53,16 +53,16 @@ namespace Roslynator.CSharp.Refactorings
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string name = parameter.Identifier.ValueText;
-                string newName = SyntaxUtility.CreateIdentifier(parameterSymbol.Type, firstCharToLower: true);
+                string newName = NameGenerator.GenerateIdentifier(parameterSymbol.Type, firstCharToLower: true);
 
                 if (!string.IsNullOrEmpty(newName)
                     && !string.Equals(name, newName, StringComparison.Ordinal))
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+                    newName = await NameGenerator.GenerateUniqueParameterNameAsync(parameterSymbol, newName, context.Solution, context.CancellationToken).ConfigureAwait(false);
 
                     context.RegisterRefactoring(
                         $"Rename parameter to '{newName}'",
-                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, parameterSymbol, newName, cancellationToken));
                 }
             }
         }

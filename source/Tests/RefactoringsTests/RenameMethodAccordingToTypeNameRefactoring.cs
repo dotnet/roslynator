@@ -6,30 +6,25 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class RenameMethodAccordingToTypeNameRefactoring
     {
+        public Entity Foo() => Foo();
 
-        public Entity GetValue()
+        public Entity Foo2() => Foo2();
+
+        public Entity GetEntity2() => GetEntity2();
+
+        public async Task<Entity> Foo(object parameter)
         {
-
-
-
-
-
-
-
-
-            return null;
+            return await Task.FromResult(new Entity());
         }
 
-        public async Task<Entity> SomeMethod2()
+        public async Task Foo3()
         {
+            await Foo3();
         }
 
-        public async Task SomeMethod3()
+        public async void Foo4()
         {
-        }
-
-        public async void SomeMethod3()
-        {
+            Foo4();
         }
 
         public class Entity
