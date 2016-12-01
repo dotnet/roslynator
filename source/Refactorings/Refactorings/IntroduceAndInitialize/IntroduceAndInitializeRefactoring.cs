@@ -155,13 +155,17 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         private static bool IsValid(ParameterSyntax parameter)
         {
             if (parameter.Type != null
-                && !parameter.Identifier.IsMissing
-                && parameter.Parent?.IsKind(SyntaxKind.ParameterList) == true)
+                && !parameter.Identifier.IsMissing)
             {
                 SyntaxNode parent = parameter.Parent;
 
-                if (parent.Parent?.IsKind(SyntaxKind.ConstructorDeclaration) == true)
-                    return true;
+                if (parent?.IsKind(SyntaxKind.ParameterList) == true)
+                {
+                    parent = parent.Parent;
+
+                    return parent?.IsKind(SyntaxKind.ConstructorDeclaration) == true
+                        && !((ConstructorDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.StaticKeyword);
+                }
             }
 
             return false;

@@ -17,6 +17,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 if (value2 == null)
                     throw new ArgumentNullException(nameof(value2));
             }
+
+            static Entity(string value)
+            {
+            }
         }
     }
 }
