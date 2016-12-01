@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                     string name = SyntaxUtility.GetUniqueName(LockObjectName, semanticModel, lockStatement.Expression.Span.Start);
 
                     LockStatementSyntax newLockStatement = lockStatement
-                        .WithExpression(IdentifierName(name));
+                        .WithExpression(IdentifierName(Identifier(name).WithRenameAnnotation()));
 
                     MemberDeclarationSyntax newContainingMember = containingMember
                         .ReplaceNode(lockStatement, newLockStatement);
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
             return FieldDeclaration(
                 (isStatic) ? Modifiers.PrivateStaticReadOnly() : Modifiers.PrivateReadOnly(),
                 ObjectType(),
-                Identifier(name).WithRenameAnnotation(),
+                Identifier(name),
                 ObjectCreationExpression(ObjectType(), ArgumentList()));
         }
     }
