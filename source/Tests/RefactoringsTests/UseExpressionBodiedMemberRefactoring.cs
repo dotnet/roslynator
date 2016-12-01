@@ -2,18 +2,28 @@
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class UseExpressionBodiedMemberRefactoring
+    internal static class UseExpressionBodiedMemberRefactoring
     {
         private class Entity
         {
-            public string SomeMethod()
+            public string FooMethod()
             {
                 return null;
             }
 
-            public string PropertyName
+            public void FooVoidMethod()
+            {
+                FooMethod();
+            }
+
+            public string FooProperty
             {
                 get { return string.Empty; }
+            }
+
+            public string this[int index]
+            {
+                get { return null; }
             }
 
             public static explicit operator Entity(string value)

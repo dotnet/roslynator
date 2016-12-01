@@ -178,7 +178,6 @@
     <Compile Include="IfElseAnalysisResult.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
-    <Compile Include="Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBooleanLiteralRefactoring.cs" />

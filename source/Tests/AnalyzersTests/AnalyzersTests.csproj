@@ -69,6 +69,7 @@
     <Compile Include="SimplifyAssignmentExpression.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />
+    <Compile Include="UseExpressionBodiedMember.cs" />
     <Compile Include="UseStringIsNullOrEmptyMethod.cs" />
     <Compile Include="SimplifyLinqMethodChain.cs" />
     <Compile Include="UseCastMethodInsteadOfSelectMethod.cs" />

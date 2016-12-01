@@ -209,7 +209,6 @@
     <Compile Include="Refactorings\ExpandEventRefactoring.cs" />
     <Compile Include="Refactorings\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\StringLiteralExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="Refactorings\FormatExpressionChainRefactoring.cs" />
     <Compile Include="Refactorings\ExtractStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatBinaryExpressionRefactoring.cs" />
