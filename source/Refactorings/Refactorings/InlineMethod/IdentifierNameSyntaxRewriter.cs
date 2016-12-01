@@ -24,7 +24,14 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 _dic.Remove(node);
 
-                return expression;
+                if (SyntaxUtility.AreParenthesesRedundantOrInvalid(node, expression.Kind()))
+                {
+                    return expression;
+                }
+                else
+                {
+                    return expression.Parenthesize(cutCopyTrivia: true);
+                }
             }
             else
             {

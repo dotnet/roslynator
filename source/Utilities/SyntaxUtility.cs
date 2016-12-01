@@ -25,9 +25,27 @@ namespace Roslynator
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            switch (node.Kind())
+            return AreParenthesesRedundantOrInvalidPrivate(node, node.Kind());
+        }
+
+        public static bool AreParenthesesRedundantOrInvalid(SyntaxNode node, SyntaxKind replacementKind)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return AreParenthesesRedundantOrInvalidPrivate(node, replacementKind);
+        }
+
+        private static bool AreParenthesesRedundantOrInvalidPrivate(SyntaxNode node, SyntaxKind kind)
+        {
+            switch (kind)
             {
                 case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.ThisExpression:
                 case SyntaxKind.Argument:
                 case SyntaxKind.AttributeArgument:
                     return true;
