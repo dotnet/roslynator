@@ -21,14 +21,17 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                if (typeSymbol?.IsErrorType() == false
-                    && !typeSymbol.IsVoid())
+                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() == false)
                 {
-                    context.RegisterRefactoring(
-                        $"Introduce local for '{expression}'",
-                        cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, cancellationToken));
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                    if (typeSymbol?.IsErrorType() == false
+                        && !typeSymbol.IsVoid())
+                    {
+                        context.RegisterRefactoring(
+                            $"Introduce local for '{expression}'",
+                            cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, cancellationToken));
+                    }
                 }
             }
         }
