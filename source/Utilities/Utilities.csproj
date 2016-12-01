@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncMethodNameGenerator.cs" />
+    <Compile Include="CSharp\CSharpErrorCodes.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />

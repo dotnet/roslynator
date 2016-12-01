@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,37 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ExtractDeclarationFromUsingStatementRefactoring
     {
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, UsingStatementSyntax usingStatement)
+        {
+            VariableDeclarationSyntax declaration = usingStatement.Declaration;
+
+            if (declaration != null
+                && usingStatement.IsParentKind(SyntaxKind.Block))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (semanticModel.ContainsDiagnostic(
+                    declaration.Span,
+                    CSharpErrorCodes.TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable,
+                    context.CancellationToken))
+                {
+                    if (context.Span.IsContainedInSpanOrBetweenSpans(declaration))
+                        RegisterRefactoring(context, usingStatement);
+                }
+                else if (context.Span.IsBetweenSpans(declaration))
+                {
+                    RegisterRefactoring(context, usingStatement);
+                }
+            }
+        }
+
+        private static void RegisterRefactoring(RefactoringContext context, UsingStatementSyntax usingStatement)
+        {
+            context.RegisterRefactoring(
+                "Extract local declaration",
+                cancellationToken => RefactorAsync(context.Document, usingStatement, cancellationToken));
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             UsingStatementSyntax usingStatement,

@@ -3,11 +3,30 @@
 using System;
 using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
+using System.Collections.Immutable;
 
 namespace Roslynator
 {
     public static class SemanticModelExtensions
     {
+        public static bool ContainsDiagnostic(
+            this SemanticModel semanticModel,
+            TextSpan span,
+            string id,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ImmutableArray<Diagnostic> diagnostics = semanticModel.GetDiagnostics(span, cancellationToken);
+
+            for (int i = 0; i < diagnostics.Length; i++)
+            {
+                if (string.Equals(diagnostics[i].Id, id, StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static INamedTypeSymbol GetEnclosingNamedType(
             this SemanticModel semanticModel,
             int position,
