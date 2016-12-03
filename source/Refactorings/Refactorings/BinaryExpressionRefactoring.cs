@@ -86,18 +86,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
-                && SwapExpressionsRefactoring.CanRefactor(binaryExpression)
                 && context.Span.IsBetweenSpans(binaryExpression))
             {
-                context.RegisterRefactoring(
-                    "Swap expressions",
-                    cancellationToken =>
-                    {
-                        return SwapExpressionsRefactoring.RefactorAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
+                SwapExpressionsInBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast))

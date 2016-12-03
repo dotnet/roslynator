@@ -8,8 +8,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             bool expression = false;
             bool expression2 = false;
+            bool expression3 = false;
 
             if (expression && expression2)
+            {
+            }
+
+            if (expression && expression2 && expression3)
             {
             }
 

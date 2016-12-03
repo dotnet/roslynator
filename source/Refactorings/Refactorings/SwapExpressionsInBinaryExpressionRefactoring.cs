@@ -9,36 +9,53 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class SwapExpressionsRefactoring
+    internal static class SwapExpressionsInBinaryExpressionRefactoring
     {
-        public static bool CanRefactor(BinaryExpressionSyntax binaryExpression)
+        public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            return CanRefactor(binaryExpression.Kind())
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsKind(
-                    SyntaxKind.NullLiteralExpression,
-                    SyntaxKind.TrueLiteralExpression,
-                    SyntaxKind.FalseLiteralExpression) == false;
+            if (CanRefactor(binaryExpression))
+            {
+                context.RegisterRefactoring(
+                    "Swap expressions",
+                    cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+            }
         }
 
-        public static bool CanRefactor(SyntaxKind kind)
+        public static bool CanRefactor(BinaryExpressionSyntax binaryExpression)
         {
+            SyntaxKind kind = binaryExpression.Kind();
+
             switch (kind)
             {
                 case SyntaxKind.LogicalAndExpression:
                 case SyntaxKind.LogicalOrExpression:
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.MultiplyExpression:
+                    {
+                        return binaryExpression.Left?.IsKind(kind) == false
+                            && IsNullOrTrueOrFalseLiteral(binaryExpression.Right);
+                    }
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
-                    return true;
+                    {
+                        return binaryExpression?.IsMissing == false
+                            && IsNullOrTrueOrFalseLiteral(binaryExpression.Right);
+                    }
                 default:
                     return false;
             }
+        }
+
+        private static bool IsNullOrTrueOrFalseLiteral(ExpressionSyntax expression)
+        {
+            return expression?.IsKind(
+                SyntaxKind.NullLiteralExpression,
+                SyntaxKind.TrueLiteralExpression,
+                SyntaxKind.FalseLiteralExpression) == false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -46,8 +63,6 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
             SyntaxToken token = binaryExpression.OperatorToken;
@@ -58,9 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithLeft(right.WithTriviaFrom(left))
                 .WithRight(left.WithTriviaFrom(right));
 
-            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxKind GetOperatorTokenKind(SyntaxKind operatorKind)
