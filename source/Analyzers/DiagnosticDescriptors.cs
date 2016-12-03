@@ -276,9 +276,8 @@ namespace Roslynator.CSharp
             title: "Format binary operator on next line.",
             messageFormat: "Consider formatting binary operator on next line.",
             category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor AddEmptyLineAfterEmbeddedStatement = new DiagnosticDescriptor(
