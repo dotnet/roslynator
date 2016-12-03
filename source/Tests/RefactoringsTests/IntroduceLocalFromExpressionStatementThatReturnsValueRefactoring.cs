@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -21,6 +22,15 @@ namespace Roslynator.CSharp.Refactorings.Tests
             DateTime
         }
 
+        public static async Task ExecuteAsync() => ExecuteAsync();
+
+        private static async Task<Entity> GetValueAsync()
+        {
+            GetValueAsync();
+
+            return null;
+        }
+
         public static void Execute()
         {
         }
@@ -30,6 +40,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
             string s = null;
 
             return s;
+        }
+
+        private class Entity
+        {
         }
     }
 }

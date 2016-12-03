@@ -10,6 +10,13 @@ namespace Roslynator
 {
     public static class SemanticModelExtensions
     {
+        internal static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
+        {
+            return semanticModel
+                .Compilation
+                .GetTypeByMetadataName(fullyQualifiedMetadataName);
+        }
+
         public static bool ContainsDiagnostic(
             this SemanticModel semanticModel,
             TextSpan span,

@@ -647,5 +647,28 @@ namespace Roslynator
                     .BaseTypes()
                     .Any(baseType => baseType.Equals(taskSymbol));
         }
+
+        public static bool IsConstructedFromTaskOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            INamedTypeSymbol taskOfT = semanticModel
+                .Compilation
+                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+
+            if (typeSymbol.IsNamedType())
+            {
+                INamedTypeSymbol constructedFrom = ((INamedTypeSymbol)typeSymbol).ConstructedFrom;
+
+                return constructedFrom.Equals(taskOfT)
+                    || constructedFrom.BaseTypes().Any(f => f.Equals(taskOfT));
+            }
+
+            return false;
+        }
     }
 }
