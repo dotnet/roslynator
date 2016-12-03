@@ -250,7 +250,7 @@ namespace Roslynator.CSharp
 
             if (symbol.IsNamedType())
             {
-                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Func_T2);
+                INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Func_T2);
 
                 var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
@@ -283,7 +283,7 @@ namespace Roslynator.CSharp
 
             if (symbol.IsNamedType())
             {
-                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Func_T3);
+                INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Func_T3);
 
                 var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
@@ -314,7 +314,7 @@ namespace Roslynator.CSharp
 
             if (symbol.IsNamedType())
             {
-                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Func_T2);
+                INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Func_T2);
 
                 var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
@@ -347,7 +347,7 @@ namespace Roslynator.CSharp
 
             if (symbol.IsNamedType())
             {
-                INamedTypeSymbol funcSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Func_T3);
+                INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Func_T3);
 
                 var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
@@ -373,7 +373,7 @@ namespace Roslynator.CSharp
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            return methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true;
+            return methodSymbol.ContainingType?.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true;
         }
 
         public static bool IsContainedInImmutableArrayExtensions(IMethodSymbol methodSymbol, SemanticModel semanticModel)
@@ -384,7 +384,7 @@ namespace Roslynator.CSharp
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            return methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true;
+            return methodSymbol.ContainingType?.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true;
         }
 
         private static bool NameEquals(string name1, string name2)

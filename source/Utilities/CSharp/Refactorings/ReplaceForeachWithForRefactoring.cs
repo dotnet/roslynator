@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeSymbol.IsNamedType())
                 {
-                    INamedTypeSymbol immutableArraySymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Collections_Immutable_ImmutableArray_T);
+                    INamedTypeSymbol immutableArraySymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Immutable_ImmutableArray_T);
 
                     if (immutableArraySymbol != null
                         && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(immutableArraySymbol))

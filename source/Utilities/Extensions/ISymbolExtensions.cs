@@ -602,8 +602,8 @@ namespace Roslynator
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            return typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler))
-                || typeSymbol.IsConstructedFrom(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler_T));
+            return typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler))
+                || typeSymbol.IsConstructedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler_T));
         }
 
         public static bool IsException(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
@@ -616,7 +616,7 @@ namespace Roslynator
 
             if (typeSymbol.IsClass())
             {
-                INamedTypeSymbol exceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Exception);
+                INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Exception);
 
                 return typeSymbol
                     .BaseTypesAndSelf()

@@ -67,7 +67,7 @@ namespace Roslynator
             this SyntaxNodeAnalysisContext context,
             string fullyQualifiedMetadataName)
         {
-            return context.SemanticModel.Compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
+            return context.SemanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
     }
 }
