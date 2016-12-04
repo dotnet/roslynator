@@ -298,7 +298,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fConditionalExpression
                             && kind == SyntaxKind.ConditionalExpression)
                         {
-                            ConditionalExpressionRefactoring.ComputeRefactorings(context, (ConditionalExpressionSyntax)expression);
+                            await ConditionalExpressionRefactoring.ComputeRefactoringsAsync(context, (ConditionalExpressionSyntax)expression).ConfigureAwait(false);
                             fConditionalExpression = true;
                         }
 
@@ -503,7 +503,7 @@ namespace Roslynator.CSharp.Refactorings
                             var yieldStatement = node as YieldStatementSyntax;
                             if (yieldStatement != null)
                             {
-                                await YieldReturnStatementRefactoring.ComputeRefactoringsAsync(context, yieldStatement).ConfigureAwait(false);
+                                await YieldStatementRefactoring.ComputeRefactoringsAsync(context, yieldStatement).ConfigureAwait(false);
                                 fYieldReturnStatement = true;
                             }
                         }

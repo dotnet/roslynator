@@ -58,6 +58,11 @@ namespace Roslynator.CSharp
             if (symbolDisplayFormat == null)
                 throw new ArgumentNullException(nameof(symbolDisplayFormat));
 
+            Debug.Assert(typeSymbol.SupportsExplicitDeclaration(), typeSymbol.ToDisplayString(symbolDisplayFormat));
+
+            if (!typeSymbol.SupportsExplicitDeclaration())
+                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
+
             string s = typeSymbol.ToDisplayString(symbolDisplayFormat);
 
             return ParseTypeName(s);

@@ -34,7 +34,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string CommentOutMember = "CommentOutMember";
         public const string CommentOutStatement = "CommentOutStatement";
         public const string CopyDocumentationCommentFromBaseMember = "CopyDocumentationCommentFromBaseMember";
-        public const string CreateConditionFromBooleanExpression = "CreateConditionFromBooleanExpression";
         public const string DuplicateArgument = "DuplicateArgument";
         public const string DuplicateMember = "DuplicateMember";
         public const string DuplicateParameter = "DuplicateParameter";
@@ -146,6 +145,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplacePrefixOperatorWithPostfixOperator = "ReplacePrefixOperatorWithPostfixOperator";
         public const string ReplacePropertyWithMethod = "ReplacePropertyWithMethod";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
+        public const string ReplaceStatementWithIfStatement = "ReplaceStatementWithIfStatement";
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";

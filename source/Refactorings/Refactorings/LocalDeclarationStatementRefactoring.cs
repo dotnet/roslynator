@@ -17,6 +17,12 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter))
                 await PromoteLocalToParameterRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement)
+                && context.Span.IsBetweenSpans(localDeclaration))
+            {
+                await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+            }
         }
     }
 }

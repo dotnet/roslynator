@@ -66,6 +66,9 @@
     <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceExpressionStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />
@@ -102,7 +105,7 @@
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInTryCatchRefactoring.cs" />
-    <Compile Include="Refactorings\CreateConditionFromBooleanExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="Refactorings\SyntaxNodeRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultValueToParameterRefactoring.cs" />
@@ -169,7 +172,7 @@
     <Compile Include="Refactorings\RefactoringContext.cs" />
     <Compile Include="Refactorings\InterpolatedStringRefactoring.cs" />
     <Compile Include="Refactorings\GenerateSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactorings\YieldReturnStatementRefactoring.cs" />
+    <Compile Include="Refactorings\YieldStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\ExpandLambdaExpressionBodyRefactoring.cs" />
     <Compile Include="Refactorings\InitializerExpressionRefactoring.cs" />

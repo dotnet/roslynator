@@ -40,7 +40,6 @@ namespace Roslynator.VisualStudio
             CommentOutMember = true;
             CommentOutStatement = true;
             CopyDocumentationCommentFromBaseMember = true;
-            CreateConditionFromBooleanExpression = true;
             DuplicateArgument = true;
             DuplicateMember = true;
             DuplicateParameter = true;
@@ -152,6 +151,7 @@ namespace Roslynator.VisualStudio
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
+            ReplaceStatementWithIfStatement = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceStringLiteralWithCharacterLiteral = true;
@@ -206,7 +206,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.CommentOutMember, CommentOutMember);
             SetIsEnabled(RefactoringIdentifiers.CommentOutStatement, CommentOutStatement);
             SetIsEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember, CopyDocumentationCommentFromBaseMember);
-            SetIsEnabled(RefactoringIdentifiers.CreateConditionFromBooleanExpression, CreateConditionFromBooleanExpression);
             SetIsEnabled(RefactoringIdentifiers.DuplicateArgument, DuplicateArgument);
             SetIsEnabled(RefactoringIdentifiers.DuplicateMember, DuplicateMember);
             SetIsEnabled(RefactoringIdentifiers.DuplicateParameter, DuplicateParameter);
@@ -318,6 +317,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement, ReplaceStatementWithIfStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, ReplaceStringLiteralWithCharacterLiteral);
@@ -617,16 +617,6 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: constructor, method, property, indexer, event")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CopyDocumentationCommentFromBaseMember
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Create condition from boolean expression")]
-        [Description("Syntax: return statement, yield return statement, expression statement\r\nScope: boolean expression")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool CreateConditionFromBooleanExpression
         {
             get;
             set;
@@ -1737,6 +1727,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: regular string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceRegularStringLiteralWithVerbatimStringLiteral
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace statement with if statement")]
+        [Description("Syntax: return statement, yield return statement, assignment statement, local declaration statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceStatementWithIfStatement
         {
             get;
             set;

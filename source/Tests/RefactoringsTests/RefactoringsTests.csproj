@@ -80,7 +80,7 @@
     <Compile Include="InlineMethodRefactoring.cs" />
     <Compile Include="AddConfigureAwaitRefactoring.cs" />
     <Compile Include="RemoveStatementsFromSwitchSectionsRefactoring.cs" />
-    <Compile Include="CreateConditionFromBooleanExpressionRefactoring.cs" />
+    <Compile Include="ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="CommentOutStatementRefactoring.cs" />
     <Compile Include="CommentOutMemberRefactoring.cs" />

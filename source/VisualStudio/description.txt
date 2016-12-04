@@ -240,9 +240,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#copy-documentation-comment-from-base-member">Copy documentation comment from base member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#create-condition-from-boolean-expression">Create condition from boolean expression</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#duplicate-argument">Duplicate argument</a>
         </li>
         <li>
@@ -574,6 +571,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-statement-with-if-statement">Replace statement with if statement</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>

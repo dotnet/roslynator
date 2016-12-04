@@ -161,14 +161,6 @@
       <Syntax>event</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="CreateConditionFromBooleanExpression" Title="Create condition from boolean expression" ExtensionVersion="0.94.0">
-    <Syntaxes>
-      <Syntax>return statement</Syntax>
-      <Syntax>yield return statement</Syntax>
-      <Syntax>expression statement</Syntax>
-    </Syntaxes>
-    <Scope>boolean expression</Scope>
-  </Refactoring>
   <Refactoring Id="DuplicateArgument" Title="Duplicate argument" ExtensionVersion="0.9.60">
     <Syntaxes>
       <Syntax>missing argument</Syntax>
@@ -939,6 +931,17 @@
     <Syntaxes>
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="ReplaceStatementWithIfStatement" Title="Replace statement with if statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>return statement</Syntax>
+      <Syntax>yield return statement</Syntax>
+      <Syntax>assignment statement</Syntax>
+      <Syntax>local declaration statement</Syntax>
+    </Syntaxes>
+    <Images>
+      <Image>ReplaceReturnStatementWithIfStatement</Image>
+    </Images>
   </Refactoring>
   <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace 'string.Empty' with &quot;&quot;" ExtensionVersion="0.9.0">
     <Syntaxes>

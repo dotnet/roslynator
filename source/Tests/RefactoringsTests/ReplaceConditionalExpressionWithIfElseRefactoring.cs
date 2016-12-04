@@ -1,16 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class ReplaceConditionalExpressionWithIfElseRefactoring
+    internal static class ReplaceConditionalExpressionWithIfElseRefactoring
     {
-        public bool SomeMethod()
+        public static bool Foo(bool f)
         {
-            bool condition = false;
+            var value = (f) ? true : false;
 
-            return (condition) ? true : false;
+            return value;
         }
     }
 }
