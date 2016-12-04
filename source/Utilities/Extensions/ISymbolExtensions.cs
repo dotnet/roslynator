@@ -241,13 +241,6 @@ namespace Roslynator
         }
 
         [DebuggerStepThrough]
-        public static bool IsEnumField(this ISymbol symbol)
-        {
-            return symbol?.Kind == SymbolKind.Field
-                && symbol.ContainingType?.TypeKind == TypeKind.Enum;
-        }
-
-        [DebuggerStepThrough]
         public static bool IsLocal(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Local;
@@ -656,13 +649,13 @@ namespace Roslynator
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            INamedTypeSymbol taskOfT = semanticModel
-                .Compilation
-                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
             if (typeSymbol.IsNamedType())
             {
                 INamedTypeSymbol constructedFrom = ((INamedTypeSymbol)typeSymbol).ConstructedFrom;
+
+                INamedTypeSymbol taskOfT = semanticModel
+                    .Compilation
+                    .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                 return constructedFrom.Equals(taskOfT)
                     || constructedFrom.BaseTypes().Any(f => f.Equals(taskOfT));

@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -31,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            TypeAnalysisResult result = ForEachStatementAnalysis.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
+            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
 
             if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {

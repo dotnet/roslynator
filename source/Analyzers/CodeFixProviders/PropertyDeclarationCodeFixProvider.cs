@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -80,18 +79,11 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             int fieldIndex = members.IndexOf((FieldDeclarationSyntax)variableDeclaration.Parent);
 
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
+            var newParentMember = (MemberDeclarationSyntax)parentMember.ReplaceNodes(
                 fieldSymbol,
-                document.Project.Solution,
-                cancellationToken).ConfigureAwait(false);
-
-            ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxUtility
-                .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)
-                .ToImmutableArray();
-
-            var rewriter = new IdentifierNameSyntaxRewriter(identifierNames, Identifier(property.Identifier.ValueText));
-
-            var newParentMember = (MemberDeclarationSyntax)rewriter.Visit(parentMember);
+                IdentifierName(property.Identifier),
+                semanticModel,
+                cancellationToken);
 
             members = newParentMember.GetMembers();
 

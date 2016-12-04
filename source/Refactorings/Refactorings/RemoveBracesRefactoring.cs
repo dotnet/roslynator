@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -77,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     continue;
                 }
-                else if (EmbeddedStatementAnalysis.IsEmbeddableBlock(block))
+                else if (EmbeddedStatement.IsEmbeddableBlock(block))
                 {
                     success = true;
                 }
@@ -93,9 +92,9 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
             if (context.Span.IsEmptyOrBetweenSpans(block)
-                && EmbeddedStatementAnalysis.IsEmbeddableBlock(block))
+                && EmbeddedStatement.IsEmbeddableBlock(block))
             {
-                StatementSyntax statement = EmbeddedStatementAnalysis.GetEmbeddedStatement(block.Statements[0]);
+                StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(block.Statements[0]);
 
                 return statement == null
                     || !statement.FullSpan.Contains(context.Span);
@@ -106,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<BlockSyntax> GetBlocks(IfStatementSyntax topmostIf)
         {
-            foreach (SyntaxNode node in IfElseAnalysis.GetChain(topmostIf))
+            foreach (SyntaxNode node in IfElseChain.GetChain(topmostIf))
             {
                 switch (node.Kind())
                 {
@@ -143,9 +142,9 @@ namespace Roslynator.CSharp.Refactorings
             switch (parent?.Kind())
             {
                 case SyntaxKind.IfStatement:
-                    return IfElseAnalysis.GetTopmostIf((IfStatementSyntax)parent);
+                    return IfElseChain.GetTopmostIf((IfStatementSyntax)parent);
                 case SyntaxKind.ElseClause:
-                    return IfElseAnalysis.GetTopmostIf((ElseClauseSyntax)parent);
+                    return IfElseChain.GetTopmostIf((ElseClauseSyntax)parent);
                 default:
                     return null;
             }

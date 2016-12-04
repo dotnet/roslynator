@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             bool fMultiple = usingStatement.Statement
                 .DescendantNodes()
-                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && SyntaxUtility.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && RemoveBracesFromUsingStatementRefactoring.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
             string title = "Remove braces from using statement";
 

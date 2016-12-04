@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -56,12 +55,12 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
         {
             return context.Span.IsEmptyOrBetweenSpans(statement)
-                && EmbeddedStatementAnalysis.IsEmbeddedStatement(statement);
+                && EmbeddedStatement.IsEmbeddedStatement(statement);
         }
 
         private static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax topmostIf)
         {
-            foreach (SyntaxNode node in IfElseAnalysis.GetChain(topmostIf))
+            foreach (SyntaxNode node in IfElseChain.GetChain(topmostIf))
             {
                 switch (node.Kind())
                 {
@@ -99,14 +98,14 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (parent.IsKind(SyntaxKind.ElseClause))
                 {
-                    return IfElseAnalysis.GetTopmostIf((ElseClauseSyntax)parent);
+                    return IfElseChain.GetTopmostIf((ElseClauseSyntax)parent);
                 }
                 else
                 {
                     var parentStatement = parent as IfStatementSyntax;
 
                     if (parentStatement != null)
-                        return IfElseAnalysis.GetTopmostIf(parentStatement);
+                        return IfElseChain.GetTopmostIf(parentStatement);
                 }
             }
 

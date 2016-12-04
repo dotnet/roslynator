@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -45,15 +46,15 @@ namespace Roslynator.CSharp.Refactorings
                     constModifier,
                     new SyntaxToken[]
                     {
-                        SyntaxFactory.Token(SyntaxKind.StaticKeyword).WithLeadingTrivia(constModifier.LeadingTrivia),
-                        SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword).WithTrailingTrivia(constModifier.TrailingTrivia)
+                        StaticToken().WithLeadingTrivia(constModifier.LeadingTrivia),
+                        ReadOnlyToken().WithTrailingTrivia(constModifier.TrailingTrivia)
                     });
             }
             else
             {
                 return field.Modifiers.Replace(
                     constModifier,
-                    SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword).WithTriviaFrom(constModifier));
+                    ReadOnlyToken().WithTriviaFrom(constModifier));
             }
         }
     }

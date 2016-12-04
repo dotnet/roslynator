@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -21,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseAnalysis.IsIsolatedIf(ifStatement)
+            if (!IfElseChain.IsPartOfChain(ifStatement)
                 && CheckCondition(ifStatement.Condition))
             {
                 IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);

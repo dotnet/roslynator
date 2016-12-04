@@ -171,31 +171,5 @@ namespace Roslynator
                 SyntaxKind.MultiLineCommentTrivia,
                 SyntaxKind.MultiLineDocumentationCommentTrivia);
         }
-
-        public static bool ContainsEndOfLine(this IEnumerable<SyntaxTrivia> collection)
-        {
-            if (collection == null)
-                throw new ArgumentNullException(nameof(collection));
-
-            foreach (SyntaxTrivia trivia in collection)
-            {
-                switch (trivia.Kind())
-                {
-                    case SyntaxKind.MultiLineCommentTrivia:
-                        {
-                            if (trivia.ToString().Contains("\n"))
-                                return true;
-
-                            break;
-                        }
-                    case SyntaxKind.EndOfLineTrivia:
-                        {
-                            return true;
-                        }
-                }
-            }
-
-            return false;
-        }
     }
 }

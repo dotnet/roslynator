@@ -5,7 +5,6 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -31,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context.Node.Parent == null)
                 return;
 
-            if (EmbeddedStatementAnalysis.SupportsEmbeddedStatement(context.Node.Parent))
+            if (EmbeddedStatement.CanContainEmbeddedStatement(context.Node.Parent))
                 return;
 
             Diagnostic diagnostic = Diagnostic.Create(

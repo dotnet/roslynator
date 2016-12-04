@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp
 {
-    public static class VariableDeclarationAnalysis
+    public static class TypeAnalyzer
     {
         public static TypeAnalysisResult AnalyzeType(
             VariableDeclarationSyntax variableDeclaration,
@@ -34,44 +34,27 @@ namespace Roslynator.CSharp.Analysis
 
                     if (expression != null)
                     {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
                         if (typeSymbol?.SupportsExplicitDeclaration() == true)
                         {
-                            bool isVar = type.IsVar;
-
                             if (variables.Count > 1)
                             {
-                                if (isVar)
-                                {
-                                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
-                                }
-                                else
-                                {
-                                    return TypeAnalysisResult.None;
-                                }
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                    : TypeAnalysisResult.None;
                             }
                             else if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
                             {
-                                if (isVar)
-                                {
-                                    return TypeAnalysisResult.Implicit;
-                                }
-                                else
-                                {
-                                    return TypeAnalysisResult.ExplicitButShouldBeImplicit;
-                                }
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.Implicit
+                                    : TypeAnalysisResult.ExplicitButShouldBeImplicit;
                             }
                             else
                             {
-                                if (isVar)
-                                {
-                                    return TypeAnalysisResult.ImplicitButShouldBeExplicit;
-                                }
-                                else
-                                {
-                                    return TypeAnalysisResult.Explicit;
-                                }
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                    : TypeAnalysisResult.Explicit;
                             }
                         }
                     }
@@ -96,20 +79,16 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.ThisExpression:
                 case SyntaxKind.DefaultExpression:
                     {
-                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
-
-                        return expressionTypeSymbol == typeSymbol;
+                        return typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken));
                     }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
-                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).Type;
-
-                        if (expressionTypeSymbol == typeSymbol)
+                        if (typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken)))
                         {
-                            ISymbol symbol = semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol;
+                            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                            if (symbol.IsEnumField())
-                                return true;
+                            return symbol?.Kind == SymbolKind.Field
+                                && symbol.ContainingType?.TypeKind == TypeKind.Enum;
                         }
 
                         break;
@@ -117,6 +96,35 @@ namespace Roslynator.CSharp.Analysis
             }
 
             return false;
+        }
+
+        public static TypeAnalysisResult AnalyzeType(
+            ForEachStatementSyntax forEachStatement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (forEachStatement == null)
+                throw new ArgumentNullException(nameof(forEachStatement));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            TypeSyntax type = forEachStatement.Type;
+
+            if (type == null)
+                return TypeAnalysisResult.None;
+
+            if (!type.IsVar)
+                return TypeAnalysisResult.Explicit;
+
+            if (semanticModel
+                .GetTypeSymbol(type, cancellationToken)?
+                .SupportsExplicitDeclaration() == true)
+            {
+                return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+            }
+
+            return TypeAnalysisResult.Implicit;
         }
     }
 }

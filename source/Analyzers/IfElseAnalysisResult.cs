@@ -4,7 +4,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp
 {
@@ -21,7 +20,7 @@ namespace Roslynator.CSharp
 
             int cnt = 0;
 
-            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
             {
                 cnt++;
 

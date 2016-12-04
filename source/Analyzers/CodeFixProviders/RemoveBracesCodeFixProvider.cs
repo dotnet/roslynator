@@ -2,12 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class RemoveBracesCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveBraces);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBraces); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -31,26 +33,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces",
-                cancellationToken => RemoveBracesAsync(context.Document, block, cancellationToken),
+                cancellationToken => RemoveBracesRefactoring.RefactorAsync(context.Document, block, cancellationToken),
                 DiagnosticIdentifiers.RemoveBraces + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> RemoveBracesAsync(
-            Document document,
-            BlockSyntax block,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            StatementSyntax statement = block.Statements[0].TrimLeadingTrivia();
-
-            statement = statement.WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(block, statement);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

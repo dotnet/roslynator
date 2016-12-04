@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -16,6 +17,47 @@ namespace Roslynator
 {
     public static class SyntaxNodeExtensions
     {
+        public static SyntaxNode ReplaceNodes<TNode>(
+            this SyntaxNode node,
+            ISymbol symbol,
+            TNode newNode,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (newNode == null)
+                throw new ArgumentNullException(nameof(newNode));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            List<TNode> identifierNames = null;
+
+            SyntaxKind kind = newNode.Kind();
+
+            foreach (SyntaxNode descendant in node.DescendantNodes())
+            {
+                if (descendant.IsKind(kind)
+                    && symbol.Equals(semanticModel.GetSymbol(descendant, cancellationToken)))
+                {
+                    if (identifierNames == null)
+                        identifierNames = new List<TNode>();
+
+                    identifierNames.Add((TNode)descendant);
+                }
+            }
+
+            if (identifierNames != null)
+                return node.ReplaceNodes(identifierNames, (f, g) => newNode.WithTriviaFrom(f));
+
+            return node;
+        }
+
         public static bool IsNoneKind(this SyntaxNode node)
         {
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node, SyntaxKind.None);
@@ -594,7 +636,10 @@ namespace Roslynator
                 case SyntaxKind.IncompleteMember:
                     return true;
                 default:
-                    return false;
+                    {
+                        Debug.Assert(!(node is MemberDeclarationSyntax), node.Kind().ToString());
+                        return false;
+                    }
             }
         }
 

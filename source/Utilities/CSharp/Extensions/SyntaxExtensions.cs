@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Internal;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -805,6 +806,22 @@ namespace Roslynator.CSharp
                 SyntaxKind.PostDecrementExpression);
         }
 
+        public static TextSpan ParenthesesSpan(this ForEachStatementSyntax forEachStatement)
+        {
+            if (forEachStatement == null)
+                throw new ArgumentNullException(nameof(forEachStatement));
+
+            return TextSpan.FromBounds(forEachStatement.OpenParenToken.Span.Start, forEachStatement.CloseParenToken.Span.End);
+        }
+
+        public static TextSpan ParenthesesSpan(this ForStatementSyntax forStatement)
+        {
+            if (forStatement == null)
+                throw new ArgumentNullException(nameof(forStatement));
+
+            return TextSpan.FromBounds(forStatement.OpenParenToken.Span.Start, forStatement.CloseParenToken.Span.End);
+        }
+
         public static TextSpan HeaderSpan(this IndexerDeclarationSyntax indexerDeclaration)
         {
             if (indexerDeclaration == null)
@@ -889,6 +906,33 @@ namespace Roslynator.CSharp
 
             return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
                 && string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
+        }
+
+        public static string GetStringLiteralInnerText(this LiteralExpressionSyntax literalExpression)
+        {
+            if (literalExpression == null)
+                throw new ArgumentNullException(nameof(literalExpression));
+
+            string s = literalExpression.Token.Text;
+
+            if (s.StartsWith("@", StringComparison.Ordinal))
+            {
+                if (s.StartsWith("@\"", StringComparison.Ordinal))
+                    s = s.Substring(2);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+            else
+            {
+                if (s.StartsWith("\"", StringComparison.Ordinal))
+                    s = s.Substring(1);
+
+                if (s.EndsWith("\"", StringComparison.Ordinal))
+                    s = s.Remove(s.Length - 1);
+            }
+
+            return s;
         }
 
         public static SyntaxTrivia GetSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)

@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -32,7 +31,9 @@ namespace Roslynator.CSharp.Refactorings
                         && !typeSymbol.IsVoid())
                     {
                         if (typeSymbol.IsConstructedFromTaskOfT(semanticModel)
-                            && AsyncAnalysis.IsPartOfAsyncBlock(expressionStatement, semanticModel, context.CancellationToken))
+                            && semanticModel
+                                .GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken)?
+                                .IsAsyncMethod() == true)
                         {
                             context.RegisterRefactoring(
                                 GetTitle(expression),

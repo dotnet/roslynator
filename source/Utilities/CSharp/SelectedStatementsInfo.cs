@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator
+namespace Roslynator.CSharp
 {
     public class SelectedStatementsInfo : SelectedNodesInfo<StatementSyntax>
     {

@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString)
                 && MergeInterpolationIntoInterpolatedStringRefactoring.CanRefactor(interpolation))
             {
-                string innerText = SyntaxUtility.GetStringLiteralInnerText((LiteralExpressionSyntax)interpolation.Expression);
+                string innerText = ((LiteralExpressionSyntax)interpolation.Expression).GetStringLiteralInnerText();
 
                 context.RegisterRefactoring(
                     $"Merge '{innerText}' into interpolated string",

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -29,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Select(section =>
                 {
                     if ((sections == null || Array.IndexOf(sections, section) != -1)
-                        && SwitchStatementAnalysis.CanRemoveBraces(section))
+                        && RemoveBracesFromSwitchSectionRefactoring.CanRemoveBraces(section))
                     {
                         var block = (BlockSyntax)section.Statements[0];
                         return section.WithStatements(block.Statements);

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -15,39 +14,36 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
-            if (localDeclaration.Declaration?.Variables.Count > 0)
+            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+            if (declaration != null)
             {
-                VariableDeclaratorSyntax declarator = localDeclaration
-                    .Declaration
-                    .Variables
-                    .FirstOrDefault(f => f.FullSpan.Contains(context.Span));
+                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
 
-                if (declarator != null
-                    && !declarator.Identifier.IsMissing
-                    && (declarator.Initializer == null
-                        || declarator.Initializer.IsMissing
-                        || declarator.Initializer.Value == null
-                        || declarator.Initializer.Value.IsMissing))
+                if (variables.Any())
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    VariableDeclaratorSyntax declarator = variables.FirstOrDefault(f => f.FullSpan.Contains(context.Span));
 
-                    ITypeSymbol typeSymbol = semanticModel
-                        .GetTypeInfo(localDeclaration.Declaration.Type, context.CancellationToken)
-                        .Type;
-
-                    if (typeSymbol?.IsErrorType() == false)
+                    if (declarator?.Identifier.IsMissing == false)
                     {
-                        context.RegisterRefactoring(
-                            $"Initialize '{declarator.Identifier.ValueText}' with default value",
-                            cancellationToken =>
+                        EqualsValueClauseSyntax initializer = declarator.Initializer;
+
+                        if (initializer == null
+                            || initializer.IsMissing
+                            || initializer.Value == null
+                            || initializer.Value.IsMissing)
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, context.CancellationToken);
+
+                            if (typeSymbol?.IsErrorType() == false)
                             {
-                                return RefactorAsync(
-                                    context.Document,
-                                    localDeclaration,
-                                    declarator,
-                                    typeSymbol,
-                                    cancellationToken);
-                            });
+                                context.RegisterRefactoring(
+                                    $"Initialize '{declarator.Identifier.ValueText}' with default value",
+                                    cancellationToken => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, cancellationToken));
+                            }
+                        }
                     }
                 }
             }
@@ -60,8 +56,6 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(
                 declarator,
                 localDeclaration.Declaration.Type.WithoutTrivia(),
@@ -75,9 +69,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithSemicolonToken(SemicolonToken().WithTrailingTrivia(newDeclarator.GetTrailingTrivia()));
             }
 
-            root = root.ReplaceNode(localDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static VariableDeclaratorSyntax GetNewDeclarator(
@@ -85,20 +77,21 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax type,
             ITypeSymbol typeSymbol)
         {
-            ExpressionSyntax value = SyntaxUtility.CreateDefaultValue(typeSymbol, type);
+            ExpressionSyntax value = CSharpFactory.DefaultValue(typeSymbol, type);
 
-            EqualsValueClauseSyntax @default = EqualsValueClause(value);
+            EqualsValueClauseSyntax initializer = declarator.Initializer;
+            EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
 
-            if (declarator.Initializer == null || declarator.Initializer.IsMissing)
+            if (initializer == null || initializer.IsMissing)
             {
                 return declarator
                     .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())
-                    .WithInitializer(@default.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
+                    .WithInitializer(newInitializer.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
             }
             else
             {
                 return declarator
-                    .WithInitializer(@default.WithTriviaFrom(declarator.Initializer.EqualsToken));
+                    .WithInitializer(newInitializer.WithTriviaFrom(initializer.EqualsToken));
             }
         }
     }

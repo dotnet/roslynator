@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (typeSymbol?.IsStaticClass() == true
                         && (typeSymbol.IsPublic() || typeSymbol.IsInternal())
-                        && !SyntaxUtility.IsUsingStaticDirectiveInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
+                        && !SyntaxAnalyzer.IsUsingStaticDirectiveInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
                         context.RegisterRefactoring($"using static {typeSymbol.ToString()};",
                             cancellationToken =>
@@ -56,8 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(memberAccess, newNode);
 
-            newRoot = ((CompilationUnitSyntax)newRoot)
-                .AddUsings(CSharpFactory.UsingStaticDirective(name));
+            newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(CSharpFactory.UsingStaticDirective(name));
 
             return document.WithSyntaxRoot(newRoot);
         }

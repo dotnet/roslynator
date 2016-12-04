@@ -13,11 +13,35 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(UsingStatementSyntax usingStatement)
         {
-            return SyntaxUtility.ContainsEmbeddableUsingStatement(usingStatement)
+            return ContainsEmbeddableUsingStatement(usingStatement)
                 && !usingStatement
                     .Ancestors()
                     .Any(f => f.IsKind(SyntaxKind.UsingStatement)
-                        && SyntaxUtility.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                        && ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+        }
+
+        public static bool ContainsEmbeddableUsingStatement(UsingStatementSyntax usingStatement)
+        {
+            StatementSyntax statement = usingStatement.Statement;
+
+            if (statement?.IsKind(SyntaxKind.Block) == true)
+            {
+                var block = (BlockSyntax)statement;
+                SyntaxList<StatementSyntax> statements = block.Statements;
+
+                if (statements.Count == 1
+                    && statements[0].IsKind(SyntaxKind.UsingStatement))
+                {
+                    var usingStatement2 = (UsingStatementSyntax)statements[0];
+
+                    return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && usingStatement2.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && usingStatement2.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                }
+            }
+
+            return false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -25,28 +49,19 @@ namespace Roslynator.CSharp.Refactorings
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var rewriter = new SyntaxRewriter();
 
-            UsingStatementSyntax newNode = SyntaxRewriter.VisitNode(usingStatement)
+            var newNode = (UsingStatementSyntax)rewriter.Visit(usingStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(usingStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(usingStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter
         {
-            private static readonly SyntaxRewriter _instance = new SyntaxRewriter();
-
-            public static UsingStatementSyntax VisitNode(UsingStatementSyntax usingStatement)
-            {
-                return (UsingStatementSyntax)_instance.Visit(usingStatement);
-            }
-
             public override SyntaxNode VisitUsingStatement(UsingStatementSyntax node)
             {
-                if (SyntaxUtility.ContainsEmbeddableUsingStatement(node))
+                if (ContainsEmbeddableUsingStatement(node))
                 {
                     var block = (BlockSyntax)node.Statement;
 

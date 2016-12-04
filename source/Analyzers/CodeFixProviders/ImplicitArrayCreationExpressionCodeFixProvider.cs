@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 if (arrayType != null)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
                         cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
                         DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 

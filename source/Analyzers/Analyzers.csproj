@@ -52,6 +52,7 @@
     <Compile Include="DiagnosticAnalyzers\DestructorDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereMethodChainRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationWithReturnStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantDelegateCreationRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantStringToCharArrayCallRefactoring.cs" />
@@ -234,7 +235,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DiagnosticAnalyzers\BlockThatCanBeEmbeddedStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveBracesDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\VariableDeclarationDiagnosticAnalyzer.cs" />

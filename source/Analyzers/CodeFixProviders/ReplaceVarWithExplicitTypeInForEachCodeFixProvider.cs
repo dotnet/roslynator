@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (typeSymbol != null)
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
                     cancellationToken => ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
 

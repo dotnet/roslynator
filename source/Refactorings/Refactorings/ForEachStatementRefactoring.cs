@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisResult result = ForEachStatementAnalysis.AnalyzeType(
+            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
                 forEachStatement,
                 semanticModel,
                 context.CancellationToken);
@@ -68,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
                         cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
@@ -132,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{info.ElementType.ToMinimalDisplayString(semanticModel, forEachStatement.Type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                            $"Change type to '{info.ElementType.ToMinimalDisplayString(semanticModel, forEachStatement.Type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
                             cancellationToken =>
                             {
                                 return ChangeTypeRefactoring.ChangeTypeAsync(

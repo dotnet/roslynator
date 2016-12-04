@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal class UseCSharp6DictionaryInitializer
+    internal static class UseCSharp6DictionaryInitializer
     {
         public static void GetValue()
         {

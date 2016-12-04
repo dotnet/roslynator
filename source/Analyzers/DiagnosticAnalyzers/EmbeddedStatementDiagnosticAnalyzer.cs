@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -48,21 +48,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             AnalyzeEmbeddedStatement(context);
 
-            if (context.Node.IsKind(SyntaxKind.IfStatement)
-                && !IfElseAnalysis.IsIsolatedIf((IfStatementSyntax)context.Node))
-            {
-                return;
-            }
-
-            StatementSyntax statement = EmbeddedStatementAnalysis.GetEmbeddedStatementThatShouldBeInsideBlock(context.Node);
-
-            if (statement != null)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddBraces,
-                    statement.GetLocation(),
-                    SyntaxHelper.GetNodeTitle(context.Node));
-            }
+            AddBracesRefactoring.Analyze(context);
         }
 
         private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context)

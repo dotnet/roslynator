@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -30,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (ifStatement == null)
                 return;
 
-            ifStatement = IfElseAnalysis.GetTopmostIf(ifStatement);
+            ifStatement = IfElseChain.GetTopmostIf(ifStatement);
 
             CodeAction codeAction = CodeAction.Create(
                 "Add braces to if-else",

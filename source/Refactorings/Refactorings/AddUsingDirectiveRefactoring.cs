@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node = identifierName;
             SyntaxNode prevNode = null;
 
-            while (node?.Parent?.IsKind(SyntaxKind.QualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true)
+            while (node?.Parent?.IsKind(SyntaxKind.QualifiedName, SyntaxKind.AliasQualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true)
             {
                 ISymbol symbol = semanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol;
 
@@ -39,9 +39,9 @@ namespace Roslynator.CSharp.Refactorings
 
             node = prevNode;
 
-            if (node?.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true
+            if (node?.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.AliasQualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true
                 && !node.IsDescendantOf(SyntaxKind.UsingDirective)
-                && !SyntaxUtility.IsUsingDirectiveInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
+                && !SyntaxAnalyzer.IsUsingDirectiveInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
                     $"using {namespaceSymbol.ToString()};",

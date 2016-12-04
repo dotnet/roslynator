@@ -16,8 +16,10 @@ namespace Roslynator.CSharp
 {
     public static class SyntaxRemover
     {
-        public static SyntaxRemoveOptions DefaultMemberRemoveOptions { get; }
-            = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
+        public static SyntaxRemoveOptions DefaultMemberRemoveOptions
+        {
+            get { return SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives; }
+        }
 
         public static async Task<Document> RemoveMemberAsync(
             Document document,

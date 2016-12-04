@@ -39,6 +39,7 @@
     <Compile Include="AddToMethodInvocationRefactoring.cs" />
     <Compile Include="CopyCommentFromBaseRefactoring.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethodRefactoring.cs" />
+    <Compile Include="ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />

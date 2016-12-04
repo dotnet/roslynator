@@ -10,13 +10,6 @@ namespace Roslynator
 {
     public static class SemanticModelExtensions
     {
-        internal static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
-        {
-            return semanticModel
-                .Compilation
-                .GetTypeByMetadataName(fullyQualifiedMetadataName);
-        }
-
         public static bool ContainsDiagnostic(
             this SemanticModel semanticModel,
             TextSpan span,
@@ -73,16 +66,6 @@ namespace Roslynator
                 .Symbol;
         }
 
-        public static IParameterSymbol GetParameterSymbol(
-            this SemanticModel semanticModel,
-            SyntaxNode node,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.ModelExtensions
-                .GetSymbolInfo(semanticModel, node, cancellationToken)
-                .Symbol as IParameterSymbol;
-        }
-
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             SyntaxNode node,
@@ -101,6 +84,13 @@ namespace Roslynator
             return Microsoft.CodeAnalysis.ModelExtensions
                 .GetTypeInfo(semanticModel, node, cancellationToken)
                 .ConvertedType;
+        }
+
+        internal static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
+        {
+            return semanticModel
+                .Compilation
+                .GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
     }
 }

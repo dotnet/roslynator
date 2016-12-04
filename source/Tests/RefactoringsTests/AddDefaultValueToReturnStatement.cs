@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -25,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return;
             });
 
-            q = items.Select<string, bool>((f) =>
+            q = items.Select<string, bool>(delegate
             {
                 return;
             });
@@ -33,14 +36,9 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         public async Task<bool> GetValue3()
         {
-            var x = await GetValue4();
+            var x = await GetValue3();
 
             return;
-        }
-
-        public Task<bool> GetValue4()
-        {
-            return Task.FromResult(false);
         }
 
         public string PropertyName
@@ -48,9 +46,14 @@ namespace Roslynator.CSharp.Refactorings.Tests
             get { return; }
         }
 
-        public string this[int value]
+        public DateTime this[int value]
         {
             get { return; }
+        }
+
+        public static explicit operator DateTime(AddDefaultValueToReturnStatement x)
+        {
+            return;
         }
     }
 }

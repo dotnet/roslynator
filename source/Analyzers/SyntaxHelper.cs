@@ -11,6 +11,62 @@ namespace Roslynator.CSharp
 {
     internal static class SyntaxHelper
     {
+        public static bool IsEligibleToContainEmbeddedStatement(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    {
+                        return ((IfStatementSyntax)node).Condition?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.ElseClause:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.DoStatement:
+                    {
+                        return ((DoStatementSyntax)node).Condition?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.ForEachStatement:
+                    {
+                        var forEachStatement = (ForEachStatementSyntax)node;
+
+                        return forEachStatement.SyntaxTree.IsSingleLineSpan(forEachStatement.ParenthesesSpan());
+                    }
+                case SyntaxKind.ForStatement:
+                    {
+                        var forStatement = (ForStatementSyntax)node;
+
+                        return forStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true
+                            || forStatement.SyntaxTree.IsSingleLineSpan(forStatement.ParenthesesSpan());
+                    }
+                case SyntaxKind.UsingStatement:
+                    {
+                        return ((UsingStatementSyntax)node).DeclarationOrExpression()?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.WhileStatement:
+                    {
+                        var whileStatement = (WhileStatementSyntax)node;
+
+                        return whileStatement.Condition?.IsMultiLine() != true
+                            || whileStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true;
+                    }
+                case SyntaxKind.LockStatement:
+                    {
+                        return ((LockStatementSyntax)node).Expression?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.FixedStatement:
+                    {
+                        return ((FixedStatementSyntax)node).Declaration?.IsMultiLine() != true;
+                    }
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return false;
+                    }
+            }
+        }
+
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
@@ -57,23 +113,23 @@ namespace Roslynator.CSharp
             switch (node.Kind())
             {
                 case SyntaxKind.IfStatement:
-                    return "'if' statement";
+                    return "if statement";
                 case SyntaxKind.ElseClause:
-                    return "'else' clause";
+                    return "else clause";
                 case SyntaxKind.DoStatement:
-                    return "'do' statement";
+                    return "do statement";
                 case SyntaxKind.ForEachStatement:
-                    return "'foreach' statement";
+                    return "foreach statement";
                 case SyntaxKind.ForStatement:
-                    return "'for' statement";
+                    return "for statement";
                 case SyntaxKind.UsingStatement:
-                    return "'using' statement";
+                    return "using statement";
                 case SyntaxKind.WhileStatement:
-                    return "'while' statement";
+                    return "while statement";
                 case SyntaxKind.LockStatement:
-                    return "'lock' statement";
+                    return "lock statement";
                 case SyntaxKind.FixedStatement:
-                    return "'fixed' statement";
+                    return "fixed statement";
             }
 
             Debug.Assert(false, node.Kind().ToString());

@@ -52,16 +52,11 @@
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
-    <Compile Include="CSharp\Analysis\AsyncAnalysis.cs" />
-    <Compile Include="CSharp\Analysis\ForStatementAnalysis.cs" />
-    <Compile Include="CSharp\Analysis\SwitchSectionAnalysisResult.cs" />
-    <Compile Include="CSharp\Analysis\SwitchStatementAnalysis.cs" />
-    <Compile Include="CSharp\Analysis\SwitchStatementAnalysisResult.cs" />
+    <Compile Include="CSharp\SwitchSectionAnalysisResult.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
-    <Compile Include="CSharp\DetermineParameterHelper.cs" />
-    <Compile Include="CSharp\Analysis\ForEachStatementAnalysis.cs" />
-    <Compile Include="CSharp\Analysis\IfElseAnalysis.cs" />
+    <Compile Include="CSharp\Internal\DetermineParameterHelper.cs" />
+    <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\Extensions\SyntaxExtensions.cs" />
     <Compile Include="CSharp\PropertyKind.cs" />
     <Compile Include="CSharp\Refactorings\CallConfigureAwaitRefactoring.cs" />
@@ -79,16 +74,16 @@
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\SemanticAnalyzer.cs" />
+    <Compile Include="CSharp\SyntaxAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
     <Compile Include="CSharp\SyntaxRewriters\TriviaSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
-    <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
+    <Compile Include="CSharp\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
-    <Compile Include="CSharp\Analysis\VariableDeclarationAnalysis.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />
+    <Compile Include="CSharp\TypeAnalyzer.cs" />
     <Compile Include="UniqueNameGenerator.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
@@ -102,7 +97,7 @@
     <Compile Include="CSharp\Modifiers.cs" />
     <Compile Include="NameGenerator.cs" />
     <Compile Include="SelectedLinesInfo.cs" />
-    <Compile Include="SelectedStatementsInfo.cs" />
+    <Compile Include="CSharp\SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />
     <Compile Include="CSharp\BlockContainer.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
@@ -116,7 +111,7 @@
     <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaListExtensions.cs" />
-    <Compile Include="CSharp\Analysis\EmbeddedStatementAnalysis.cs" />
+    <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="GeneratedCodeAnalyzer.cs" />
     <Compile Include="IGeneratedCodeAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,7 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SyntaxUtility.cs" />
+    <Compile Include="DefaultSymbolDisplayFormat.cs" />
     <Compile Include="TextUtility.cs" />
   </ItemGroup>
   <ItemGroup>

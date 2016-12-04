@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -51,7 +50,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 if (methodSymbol.IsAsync)
                 {
                     if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
-                        && AsyncAnalysis.ContainsAwait(methodDeclaration))
+                        && SyntaxAnalyzer.ContainsAwait(methodDeclaration))
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,

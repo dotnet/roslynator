@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -29,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                switch (SwitchStatementAnalysis.AnalyzeSection(switchSection))
+                switch (SyntaxAnalyzer.AnalyzeSwitchSection(switchSection))
                 {
                     case SwitchSectionAnalysisResult.AddBraces:
                         {
@@ -41,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                             }
 
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections)
-                                && sections.Any(f => f != switchSection && SwitchStatementAnalysis.CanAddBraces(f)))
+                                && sections.Any(f => f != switchSection && AddBracesToSwitchSectionRefactoring.CanAddBraces(f)))
                             {
                                 context.RegisterRefactoring(
                                     AddBracesToSwitchSectionsRefactoring.Title,
@@ -60,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                             }
 
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections)
-                                && sections.Any(f => f != switchSection && SwitchStatementAnalysis.CanRemoveBraces(f)))
+                                && sections.Any(f => f != switchSection && RemoveBracesFromSwitchSectionRefactoring.CanRemoveBraces(f)))
                             {
                                 context.RegisterRefactoring(
                                     RemoveBracesFromSwitchSectionsRefactoring.Title,

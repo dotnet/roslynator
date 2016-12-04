@@ -6,9 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp
 {
-    public static class IfElseAnalysis
+    public static class IfElseChain
     {
         public static IEnumerable<SyntaxNode> GetChain(IfStatementSyntax ifStatement)
         {
@@ -77,46 +77,6 @@ namespace Roslynator.CSharp.Analysis
             return ifStatement.Parent?.IsKind(SyntaxKind.ElseClause) != true;
         }
 
-        private static IEnumerable<IfStatementSyntax> PrecedingIfStatements(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
-
-            while (true)
-            {
-                ifStatement = GetPreviousIf(ifStatement);
-
-                if (ifStatement != null)
-                {
-                    yield return ifStatement;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        private static IEnumerable<IfStatementSyntax> FollowingIfStatements(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
-
-            while (true)
-            {
-                ifStatement = GetNextIf(ifStatement);
-
-                if (ifStatement != null)
-                {
-                    yield return ifStatement;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
         public static IfStatementSyntax GetNextIf(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
@@ -142,18 +102,13 @@ namespace Roslynator.CSharp.Analysis
             return null;
         }
 
-        public static bool IsIsolatedIf(IfStatementSyntax ifStatement)
+        public static bool IsPartOfChain(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            if (ifStatement.Parent?.IsKind(SyntaxKind.ElseClause) == true)
-                return false;
-
-            if (ifStatement.Else != null)
-                return false;
-
-            return true;
+            return ifStatement.Else != null
+                || ifStatement.IsParentKind(SyntaxKind.ElseClause);
         }
 
         public static bool IsEndOfChain(ElseClauseSyntax elseClause)
@@ -162,28 +117,6 @@ namespace Roslynator.CSharp.Analysis
                 throw new ArgumentNullException(nameof(elseClause));
 
             return elseClause.Statement?.IsKind(SyntaxKind.IfStatement) != true;
-        }
-
-        public static bool IsEndOfChain(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
-
-            return ifStatement.Else == null;
-        }
-
-        public static IfStatementSyntax GetNextIf(ElseClauseSyntax elseClause)
-        {
-            if (elseClause == null)
-                throw new ArgumentNullException(nameof(elseClause));
-
-            if (elseClause.Statement == null)
-                return null;
-
-            if (!elseClause.Statement.IsKind(SyntaxKind.IfStatement))
-                return null;
-
-            return (IfStatementSyntax)elseClause.Statement;
         }
     }
 }

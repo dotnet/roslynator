@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (typeSymbol?.SupportsExplicitDeclaration() == true)
                     {
                         context.RegisterRefactoring(
-                            $"Replace 'null' with 'default({typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)})'",
+                            $"Replace 'null' with 'default({typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)})'",
                             cancellationToken =>
                             {
                                 return RefactorAsync(

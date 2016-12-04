@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -42,7 +41,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (variableDeclaration.Variables.Count != 1)
                 return;
 
-            TypeAnalysisResult result = VariableDeclarationAnalysis.AnalyzeType(
+            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
                 variableDeclaration,
                 context.SemanticModel,
                 context.CancellationToken);

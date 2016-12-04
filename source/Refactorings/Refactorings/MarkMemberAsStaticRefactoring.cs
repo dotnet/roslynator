@@ -224,7 +224,7 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxTokenList AddStaticModifier(SyntaxTokenList modifiers)
         {
             return TokenList(
-                modifiers.Add(Token(SyntaxKind.StaticKeyword))
+                modifiers.Add(CSharpFactory.StaticToken())
                     .OrderBy(f => f, ModifierComparer.Instance));
         }
     }

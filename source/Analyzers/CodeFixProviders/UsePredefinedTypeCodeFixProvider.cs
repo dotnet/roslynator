@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 if (namedTypeSymbol?.SupportsPredefinedType() == true)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
                         cancellationToken => RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 

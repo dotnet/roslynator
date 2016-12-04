@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -54,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var ifStatement = (IfStatementSyntax)statements[0];
 
-                    if (IfElseAnalysis.IsIsolatedIf(ifStatement))
+                    if (!IfElseChain.IsPartOfChain(ifStatement))
                     {
                         ExpressionSyntax returnExpression = GetReturnExpression(ifStatement.Statement);
 

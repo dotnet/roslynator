@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -17,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (IfElseAnalysis.IsTopmostIf(ifStatement))
+            if (IfElseChain.IsTopmostIf(ifStatement))
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 

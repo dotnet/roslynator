@@ -1,13 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -22,11 +19,13 @@ namespace Roslynator.CSharp.Refactorings
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             string fieldName = TextUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            fieldName = NameGenerator.GenerateUniqueMemberName(fieldName, propertyDeclaration.SpanStart, semanticModel, cancellationToken);
 
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
                 .WithFormatterAnnotation();
@@ -42,33 +41,24 @@ namespace Roslynator.CSharp.Refactorings
 
             if (propertyDeclaration.IsReadOnlyAutoProperty())
             {
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
-                    semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken),
-                    document.Project.Solution,
-                    cancellationToken).ConfigureAwait(false);
-
-                ImmutableArray<IdentifierNameSyntax> identifierNames = SyntaxUtility
-                    .FindNodes<IdentifierNameSyntax>(oldRoot, referencedSymbols)
-                    .ToImmutableArray();
-
-                var rewriter = new IdentifierNameSyntaxRewriter(identifierNames, Identifier(fieldName));
-
-                var newParentMember = (MemberDeclarationSyntax)rewriter.Visit(parentMember);
+                var newParentMember = (MemberDeclarationSyntax)parentMember.ReplaceNodes(
+                    propertySymbol,
+                    IdentifierName(fieldName),
+                    semanticModel,
+                    cancellationToken);
 
                 members = newParentMember.GetMembers();
             }
 
-            int indexOfLastField = members.LastIndexOf(f => f.IsKind(SyntaxKind.FieldDeclaration));
+            int indexOfLastField = members.LastIndexOf(SyntaxKind.FieldDeclaration);
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members
-                .Replace(members[propertyIndex], newPropertyDeclaration)
+                .ReplaceAt(propertyIndex, newPropertyDeclaration)
                 .Insert(indexOfLastField + 1, fieldDeclaration);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parentMember, parentMember.SetMembers(newMembers));
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
 
         private static PropertyDeclarationSyntax ExpandPropertyAndAddBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
@@ -103,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             AccessorListSyntax accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(propertyDeclaration.AccessorList)
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
 
             return propertyDeclaration
                 .WithAccessorList(accessorList);
@@ -111,10 +101,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            SyntaxTokenList modifiers = TokenList(Token(SyntaxKind.PrivateKeyword));
+            SyntaxTokenList modifiers = TokenList(PrivateToken());
 
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.StaticKeyword));
+                modifiers = modifiers.Add(StaticToken());
 
             return FieldDeclaration(modifiers, propertyDeclaration.Type, name, propertyDeclaration.Initializer);
         }

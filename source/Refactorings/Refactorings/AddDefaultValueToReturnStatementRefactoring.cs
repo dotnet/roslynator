@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -14,81 +15,58 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ISymbol symbol = GetMethodOrLambdaSymbol(returnStatement, semanticModel, context.CancellationToken);
+            IMethodSymbol methodSymbol = GetContainingSymbol(returnStatement, semanticModel, context.CancellationToken);
 
-            if (symbol?.IsErrorType() == false)
+            if (methodSymbol?.ReturnsVoid == false)
             {
-                ITypeSymbol typeSymbol = GetTypeSymbol(symbol, semanticModel);
+                ITypeSymbol typeSymbol = GetTypeSymbol(methodSymbol, semanticModel);
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
                     context.RegisterRefactoring(
                         "Return default value",
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                returnStatement,
-                                typeSymbol,
-                                symbol,
-                                cancellationToken);
-                        });
+                        cancellationToken => RefactorAsync(context.Document, returnStatement, typeSymbol, cancellationToken));
                 }
             }
         }
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ReturnStatementSyntax returnStatement,
-            ITypeSymbol typeSymbol,
-            ISymbol symbol,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            ExpressionSyntax expression = SyntaxUtility.CreateDefaultValue(typeSymbol);
-
-            root = root.ReplaceNode(
-                returnStatement,
-                returnStatement.WithExpression(expression));
-
-            return document.WithSyntaxRoot(root);
-        }
-
-        private static ISymbol GetMethodOrLambdaSymbol(
+        private static IMethodSymbol GetContainingSymbol(
             SyntaxNode node,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (SyntaxNode ancestor in node.Ancestors())
+            ISymbol symbol = semanticModel.GetEnclosingSymbol(node.SpanStart, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
             {
-                switch (ancestor.Kind())
+                var methodSymbol = (IMethodSymbol)symbol;
+
+                switch (methodSymbol.MethodKind)
                 {
-                    case SyntaxKind.MethodDeclaration:
+                    case MethodKind.LambdaMethod:
+                    case MethodKind.Ordinary:
+                    case MethodKind.PropertyGet:
+                    case MethodKind.UserDefinedOperator:
+                    case MethodKind.Conversion:
+                        return methodSymbol;
+                    case MethodKind.Constructor:
+                    case MethodKind.DelegateInvoke:
+                    case MethodKind.Destructor:
+                    case MethodKind.EventAdd:
+                    case MethodKind.EventRaise:
+                    case MethodKind.EventRemove:
+                    case MethodKind.ExplicitInterfaceImplementation:
+                    case MethodKind.StaticConstructor:
+                    case MethodKind.PropertySet:
+                    case MethodKind.DeclareMethod:
+                    case MethodKind.ReducedExtension:
+                    case MethodKind.BuiltinOperator:
+                        break;
+                    default:
                         {
-                            return semanticModel.GetDeclaredSymbol((MethodDeclarationSyntax)ancestor, cancellationToken);
+                            Debug.Assert(false, methodSymbol.MethodKind.ToString());
+                            break;
                         }
-                    case SyntaxKind.PropertyDeclaration:
-                        {
-                            return semanticModel.GetDeclaredSymbol((PropertyDeclarationSyntax)ancestor, cancellationToken);
-                        }
-                    case SyntaxKind.IndexerDeclaration:
-                        {
-                            return semanticModel.GetDeclaredSymbol((IndexerDeclarationSyntax)ancestor, cancellationToken);
-                        }
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                        {
-                            return semanticModel.GetSymbolInfo(ancestor, cancellationToken).Symbol;
-                        }
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.DestructorDeclaration:
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.ConversionOperatorDeclaration:
-                    case SyntaxKind.OperatorDeclaration:
-                    case SyntaxKind.IncompleteMember:
-                        return null;
                 }
             }
 
@@ -96,41 +74,35 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static ITypeSymbol GetTypeSymbol(
-            ISymbol symbol,
+            IMethodSymbol methodSymbol,
             SemanticModel semanticModel)
         {
-            if (symbol.IsProperty())
+            ITypeSymbol returnType = methodSymbol.ReturnType;
+
+            if (methodSymbol.IsAsync)
             {
-                return ((IPropertySymbol)symbol).Type;
+                if (returnType.IsConstructedFromTaskOfT(semanticModel))
+                    return ((INamedTypeSymbol)returnType).TypeArguments.First();
             }
-            else if (symbol.IsMethod())
+            else if (!returnType.IsIEnumerableOrConstructedFromIEnumerableOfT())
             {
-                var methodSymbol = (IMethodSymbol)symbol;
-
-                if (!methodSymbol.ReturnsVoid)
-                {
-                    if (methodSymbol.IsAsync)
-                    {
-                        INamedTypeSymbol taskOfTSymbol = semanticModel
-                            .Compilation
-                            .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                        if (methodSymbol.ReturnType.IsNamedType())
-                        {
-                            var returnType = (INamedTypeSymbol)methodSymbol.ReturnType;
-
-                            if (returnType.ConstructedFrom.Equals(taskOfTSymbol))
-                                return returnType.TypeArguments[0];
-                        }
-                    }
-                    else
-                    {
-                        return methodSymbol.ReturnType;
-                    }
-                }
+                return returnType;
             }
 
             return null;
+        }
+
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            ReturnStatementSyntax returnStatement,
+            ITypeSymbol typeSymbol,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ExpressionSyntax expression = CSharpFactory.DefaultValue(typeSymbol);
+
+            ReturnStatementSyntax newReturnStatement = returnStatement.WithExpression(expression);
+
+            return await document.ReplaceNodeAsync(returnStatement, newReturnStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

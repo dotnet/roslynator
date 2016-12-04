@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -27,12 +26,12 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var ifStatement = (IfStatementSyntax)first;
 
-                    if (IfElseAnalysis.IsTopmostIf(ifStatement)
+                    if (IfElseChain.IsTopmostIf(ifStatement)
                         && CanBeReplacedWithSwitch(ifStatement))
                     {
-                        string title = (IfElseAnalysis.IsIsolatedIf(ifStatement))
-                            ? "Replace if with switch"
-                            : "Replace if-else with switch";
+                        string title = (IfElseChain.IsPartOfChain(ifStatement))
+                            ? "Replace if-else with switch"
+                            : "Replace if with switch";
 
                         context.RegisterRefactoring(
                             title,
@@ -50,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanBeReplacedWithSwitch(IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
             {
                 if (node.IsKind(SyntaxKind.IfStatement))
                 {
@@ -142,7 +141,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in IfElseAnalysis.GetChain(ifStatement))
+            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
             {
                 if (node.IsKind(SyntaxKind.IfStatement))
                 {

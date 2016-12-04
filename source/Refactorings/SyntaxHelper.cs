@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,6 +11,42 @@ namespace Roslynator.CSharp
 {
     internal static class SyntaxHelper
     {
+        public static SyntaxTriviaList GetIndentTrivia(SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTriviaList triviaList = GetNodeForLeadingTrivia(node).GetLeadingTrivia();
+
+            return SyntaxFactory.TriviaList(
+                triviaList
+                    .Reverse()
+                    .TakeWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia)));
+        }
+
+        private static SyntaxNode GetNodeForLeadingTrivia(this SyntaxNode node)
+        {
+            foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
+            {
+                if (ancestor.IsKind(SyntaxKind.IfStatement))
+                {
+                    var parentElse = ancestor.Parent as ElseClauseSyntax;
+
+                    return parentElse ?? ancestor;
+                }
+                else if (ancestor.IsMemberDeclaration())
+                {
+                    return ancestor;
+                }
+                else if (ancestor.IsStatement())
+                {
+                    return ancestor;
+                }
+            }
+
+            return node;
+        }
+
         public static string GetSyntaxNodeTitle(SyntaxNode node)
         {
             switch (node.Kind())

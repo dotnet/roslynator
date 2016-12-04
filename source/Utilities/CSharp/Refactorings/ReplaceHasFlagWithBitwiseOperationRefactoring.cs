@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax AddParenthesesIfNecessary(SyntaxNode node, ExpressionSyntax expression)
         {
-            if (!SyntaxUtility.AreParenthesesRedundantOrInvalid(node))
+            if (!SyntaxAnalyzer.AreParenthesesRedundantOrInvalid(node))
             {
                 expression = expression
                    .WithoutTrivia()

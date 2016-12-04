@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ConditionalExpressionSyntax CreateMultilineConditionalExpression(ConditionalExpressionSyntax conditionalExpression)
         {
-            SyntaxTriviaList triviaList = SyntaxUtility.GetIndentTrivia(conditionalExpression.Parent).Add(CSharpFactory.IndentTrivia());
+            SyntaxTriviaList triviaList = SyntaxHelper.GetIndentTrivia(conditionalExpression.Parent).Add(CSharpFactory.IndentTrivia());
 
             triviaList = triviaList.Insert(0, CSharpFactory.NewLineTrivia());
 

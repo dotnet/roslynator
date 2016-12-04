@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLineTrivia())
-                .AddRange(SyntaxUtility.GetIndentTrivia(condition))
+                .AddRange(SyntaxHelper.GetIndentTrivia(condition))
                 .Add(CSharpFactory.IndentTrivia());
 
             var rewriter = new BinaryExpressioneSyntaxRewriter(triviaList);

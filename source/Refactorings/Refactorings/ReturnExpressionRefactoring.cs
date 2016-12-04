@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
         {
             context.RegisterRefactoring(
-            $"Change {GetText(member)} type to '{newType.ToMinimalDisplayString(semanticModel, type.Span.Start, SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+            $"Change {GetText(member)} type to '{newType.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
             cancellationToken =>
             {
                 return ChangeTypeRefactoring.ChangeTypeAsync(

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType)
         {
             context.RegisterRefactoring(
-                $"Cast to '{destinationType.ToDisplayString(SyntaxUtility.DefaultSymbolDisplayFormat)}'",
+                $"Cast to '{destinationType.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
                 cancellationToken =>
                 {
                     return RefactorAsync(

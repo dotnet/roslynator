@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -15,30 +14,25 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (parameter.Type != null
                 && !parameter.Identifier.IsMissing
-                && context.Span.Start >= parameter.Identifier.Span.Start
-                && (parameter.Default == null
-                    || parameter.Default.IsMissing
-                    || parameter.Default.Value == null
-                    || parameter.Default.Value.IsMissing))
+                && context.Span.Start >= parameter.Identifier.Span.Start)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                EqualsValueClauseSyntax @default = parameter.Default;
 
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(parameter.Type, context.CancellationToken)
-                    .Type;
-
-                if (typeSymbol?.IsErrorType() == false)
+                if (@default == null
+                    || @default.IsMissing
+                    || @default.Value == null
+                    || @default.Value.IsMissing)
                 {
-                    context.RegisterRefactoring(
-                        "Add default value",
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                parameter,
-                                typeSymbol,
-                                cancellationToken);
-                        });
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(parameter.Type, context.CancellationToken);
+
+                    if (typeSymbol?.IsErrorType() == false)
+                    {
+                        context.RegisterRefactoring(
+                            "Add default value",
+                            cancellationToken => RefactorAsync(context.Document, parameter, typeSymbol, cancellationToken));
+                    }
                 }
             }
         }
@@ -49,20 +43,16 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ParameterSyntax newParameter = GetNewParameter(parameter, typeSymbol);
 
-            root = root.ReplaceNode(parameter, newParameter);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(parameter, newParameter, cancellationToken).ConfigureAwait(false);
         }
 
         private static ParameterSyntax GetNewParameter(
             ParameterSyntax parameter,
             ITypeSymbol typeSymbol)
         {
-            ExpressionSyntax value = SyntaxUtility.CreateDefaultValue(
+            ExpressionSyntax value = CSharpFactory.DefaultValue(
                 typeSymbol,
                 parameter.Type.WithoutTrivia());
 

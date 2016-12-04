@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -12,13 +13,29 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Add braces to section";
 
+        public static bool CanAddBraces(SwitchSectionSyntax section)
+        {
+            SyntaxList<StatementSyntax> statements = section.Statements;
+
+            if (statements.Count > 1)
+            {
+                return true;
+            }
+            else if (statements.Count == 1 && !statements[0].IsKind(SyntaxKind.Block))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SwitchSectionSyntax newNode = switchSection
                 .WithStatements(
                     List<StatementSyntax>(
@@ -26,9 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                             Block(switchSection.Statements))))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(switchSection, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(switchSection, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

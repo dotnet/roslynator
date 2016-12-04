@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithFormatterAnnotation();
             }
 
-            SyntaxTriviaList indent = SyntaxUtility.GetIndentTrivia(initializer);
+            SyntaxTriviaList indent = SyntaxHelper.GetIndentTrivia(initializer);
             SyntaxTriviaList indent2 = indent.Add(CSharpFactory.IndentTrivia());
 
             indent = indent.Insert(0, CSharpFactory.NewLineTrivia());

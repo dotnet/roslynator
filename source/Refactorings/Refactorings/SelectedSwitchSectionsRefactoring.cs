@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -39,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                                     break;
                                 }
 
-                                switch (SwitchStatementAnalysis.AnalyzeSection(section))
+                                switch (SyntaxAnalyzer.AnalyzeSwitchSection(section))
                                 {
                                     case SwitchSectionAnalysisResult.AddBraces:
                                         {

@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<SyntaxNodeOrToken> CreateMultilineNodesAndTokens(AttributeArgumentListSyntax argumentList)
         {
-            SyntaxTriviaList trivia = SyntaxUtility.GetIndentTrivia(argumentList.Parent).Add(CSharpFactory.IndentTrivia());
+            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(argumentList.Parent).Add(CSharpFactory.IndentTrivia());
 
             SeparatedSyntaxList<AttributeArgumentSyntax>.Enumerator en = argumentList.Arguments.GetEnumerator();
 

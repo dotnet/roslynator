@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (statement != null)
                 {
-                    if (!EmbeddedStatementAnalysis.IsEmbeddedStatement(statement)
+                    if (!EmbeddedStatement.IsEmbeddedStatement(statement)
                         && statement.Parent?.IsKind(SyntaxKind.Block) == true)
                     {
                         RegisterRefactoring(context, statement);
@@ -122,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var ifStatement = (IfStatementSyntax)parent;
 
-                        if (IfElseAnalysis.IsTopmostIf(ifStatement)
+                        if (IfElseChain.IsTopmostIf(ifStatement)
                             && block.OpenBraceToken.Span.Contains(context.Span))
                         {
                             return ifStatement;
@@ -141,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                         var elseClause = (ElseClauseSyntax)parent;
 
                         if (block.CloseBraceToken.Span.Contains(context.Span))
-                            return IfElseAnalysis.GetTopmostIf(elseClause);
+                            return IfElseChain.GetTopmostIf(elseClause);
 
                         break;
                     }
