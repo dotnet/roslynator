@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
 
             InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, expression.Negate())
+                .ReplaceNode(expression, expression.LogicallyNegate())
                 .WithExpression(newMemberAccessExpression);
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(invocationExpression, newNode);

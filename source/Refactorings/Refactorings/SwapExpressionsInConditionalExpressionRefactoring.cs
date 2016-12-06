@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression
-                .WithCondition(conditionalExpression.Condition.Negate())
+                .WithCondition(conditionalExpression.Condition.LogicallyNegate())
                 .WithWhenTrue(conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue))
                 .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
                 .WithFormatterAnnotation();

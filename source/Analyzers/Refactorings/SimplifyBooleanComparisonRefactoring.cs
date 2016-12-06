@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
                     leadingTrivia = leadingTrivia.AddRange(trivia);
 
                 newNode = right
-                    .Negate()
+                    .LogicallyNegate()
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (right.IsBooleanLiteralExpression())
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                     trailingTrivia = trailingTrivia.InsertRange(0, trivia);
 
                 newNode = left
-                    .Negate()
+                    .LogicallyNegate()
                     .WithTrailingTrivia(trailingTrivia);
             }
 #if DEBUG

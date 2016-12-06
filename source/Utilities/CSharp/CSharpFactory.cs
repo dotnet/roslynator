@@ -390,6 +390,26 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.EqualsToken);
         }
 
+        public static SyntaxToken GreaterThanToken()
+        {
+            return Token(SyntaxKind.GreaterThanToken);
+        }
+
+        public static SyntaxToken GreaterThanEqualsToken()
+        {
+            return Token(SyntaxKind.GreaterThanEqualsToken);
+        }
+
+        public static SyntaxToken LessThanToken()
+        {
+            return Token(SyntaxKind.LessThanToken);
+        }
+
+        public static SyntaxToken LessThanEqualsToken()
+        {
+            return Token(SyntaxKind.LessThanEqualsToken);
+        }
+
         public static SyntaxToken ArrowToken()
         {
             return Token(SyntaxKind.EqualsGreaterThanToken);
@@ -423,6 +443,16 @@ namespace Roslynator.CSharp
         public static SyntaxToken AsyncToken()
         {
             return Token(SyntaxKind.AsyncKeyword);
+        }
+
+        public static SyntaxToken BarBarToken()
+        {
+            return Token(SyntaxKind.BarBarToken);
+        }
+
+        public static SyntaxToken AmpersandAmpersandToken()
+        {
+            return Token(SyntaxKind.AmpersandAmpersandToken);
         }
 
         public static SyntaxToken WhileKeyword()
@@ -655,14 +685,29 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, operatorToken, right);
+        }
+
         public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, operatorToken, right);
+        }
+
         public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.LogicalAndExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, operatorToken, right);
         }
 
         public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right, bool addParenthesesIfNecessary)
@@ -726,14 +771,29 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, operatorToken, right);
+        }
+
         public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.EqualsExpression, left, right);
         }
 
+        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.EqualsExpression, left, operatorToken, right);
+        }
+
         public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, operatorToken, right);
         }
 
         public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)

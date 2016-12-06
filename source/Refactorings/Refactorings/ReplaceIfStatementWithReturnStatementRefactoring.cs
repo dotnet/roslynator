@@ -185,11 +185,11 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return condition.Negate();
+                                return condition.LogicallyNegate();
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalOrExpression(condition.Negate(), expression2);
+                                return LogicalOrExpression(condition.LogicallyNegate(), expression2);
                         }
                     }
                 default:
@@ -197,7 +197,7 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(condition.Negate(), expression1);
+                                return LogicalOrExpression(condition.LogicallyNegate(), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1, addParenthesesIfNecessary: true);
                             default:

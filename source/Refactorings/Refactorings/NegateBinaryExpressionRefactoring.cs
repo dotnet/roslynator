@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newNode = binaryExpression.Negate()
+            ExpressionSyntax newNode = binaryExpression.LogicallyNegate()
                 .WithFormatterAnnotation();
 
             SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
