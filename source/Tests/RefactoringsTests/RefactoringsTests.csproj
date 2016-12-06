@@ -45,7 +45,6 @@
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="IntroduceLocalFromExpressionStatementThatReturnsValueRefactoring.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
-    <Compile Include="LogicallyNegateExpression.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="RemoveInterpolationRefactoring.cs" />
     <Compile Include="RemoveRegionRefactoring.cs" />

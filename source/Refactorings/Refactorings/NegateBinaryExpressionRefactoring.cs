@@ -13,9 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false)
+            if (CanRefactor(binaryExpression))
             {
                 binaryExpression = GetBinaryExpression(binaryExpression, context.Span);
 
@@ -26,6 +24,23 @@ namespace Roslynator.CSharp.Refactorings
                         cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
+        }
+
+        private static bool CanRefactor(SyntaxNode node)
+        {
+            if (node?.IsKind(
+                    SyntaxKind.LogicalAndExpression,
+                    SyntaxKind.LogicalOrExpression,
+                    SyntaxKind.BitwiseAndExpression,
+                    SyntaxKind.BitwiseOrExpression) == true)
+            {
+                var binaryExpression = (BinaryExpressionSyntax)node;
+
+                return binaryExpression.Left?.IsMissing == false
+                    && binaryExpression.Right?.IsMissing == false;
+            }
+
+            return false;
         }
 
         private static BinaryExpressionSyntax GetBinaryExpression(BinaryExpressionSyntax binaryExpression, TextSpan span)
@@ -39,44 +54,28 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
+        internal static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
+        {
+            SyntaxNode parent = binaryExpression.Parent;
+
+            while (CanRefactor(parent))
+            {
+                binaryExpression = (BinaryExpressionSyntax)parent;
+                parent = parent.Parent;
+            }
+
+            return binaryExpression;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax newNode = binaryExpression.LogicallyNegate()
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        internal static BinaryExpressionSyntax GetTopmostExpression(BinaryExpressionSyntax binaryExpression)
-        {
-            bool success = true;
-
-            while (success)
-            {
-                success = false;
-
-                if (binaryExpression.Parent != null
-                    && binaryExpression.Parent.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
-                {
-                    var parent = (BinaryExpressionSyntax)binaryExpression.Parent;
-
-                    if (parent.Left?.IsMissing == false
-                        && parent.Right?.IsMissing == false)
-                    {
-                        binaryExpression = parent;
-                        success = true;
-                    }
-                }
-            }
-
-            return binaryExpression;
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

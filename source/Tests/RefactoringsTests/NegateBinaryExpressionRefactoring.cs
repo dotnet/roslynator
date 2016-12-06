@@ -6,11 +6,36 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public void SomeMethod()
         {
-            bool expression = false;
-            bool expression2 = false;
-            bool expression3 = false;
+            bool a = false;
+            bool b = false;
+            bool c = false;
+            bool d = false;
 
-            if (expression && expression2 && expression3)
+            bool x = false;
+            bool y = false;
+            bool z = false;
+
+            if (x && y && z)
+            {
+            }
+
+            if (x & y & z)
+            {
+            }
+
+            if (x || y && z)
+            {
+            }
+
+            if (x && y || z)
+            {
+            }
+
+            if (a && b || c && d)
+            {
+            }
+
+            if (a || b && c && d)
             {
             }
         }
