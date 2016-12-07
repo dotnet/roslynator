@@ -105,6 +105,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-var-to-explicit-type">Change 'var' to explicit type</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#check-expression-for-null">Check expression for null</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#check-parameter-for-null">Check parameter for null</a>
         </li>
         <li>

@@ -29,6 +29,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ChangeMethodReturnTypeToVoid = "ChangeMethodReturnTypeToVoid";
         public const string ChangeTypeAccordingToExpression = "ChangeTypeAccordingToExpression";
         public const string ChangeVarToExplicitType = "ChangeVarToExplicitType";
+        public const string CheckExpressionForNull = "CheckExpressionForNull";
         public const string CheckParameterForNull = "CheckParameterForNull";
         public const string CollapseToInitializer = "CollapseToInitializer";
         public const string CommentOutMember = "CommentOutMember";

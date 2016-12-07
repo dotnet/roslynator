@@ -6,3 +6,4 @@
 * NegateIsExpression
 * ReplaceCastWithAs
 * SplitSwitchLabels
+* CheckExpressionForNull

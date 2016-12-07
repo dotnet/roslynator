@@ -415,6 +415,12 @@
     </Syntaxes>
     <Scope>type</Scope>
   </Refactoring>
+  <Refactoring Id="CheckExpressionForNull" Title="Check expression for null" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>local declaration (identifier)</Syntax>
+      <Syntax>assignment expression (left)</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="CheckParameterForNull" Title="Check parameter for null" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>parameter</Syntax>

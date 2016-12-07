@@ -27,8 +27,14 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression))
                 await ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
 
-            if (context.Settings.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
                 ReplaceConditionalExpressionWithExpressionRefactoring.ComputeRefactoring(context, expression);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
+                && context.Span.IsContainedInSpanOrBetweenSpans(expression))
+            {
+                await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
+            }
         }
     }
 }

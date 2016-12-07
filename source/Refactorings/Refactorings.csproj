@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceLocalFromStatementThatReturnsValueRefactoring.cs" />
     <Compile Include="Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
+    <Compile Include="VariableDeclaratorRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
