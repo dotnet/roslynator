@@ -82,6 +82,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeStringLiteralsIntoMultilineStringLiteral = "MergeStringLiteralsIntoMultilineStringLiteral";
         public const string NegateBinaryExpression = "NegateBinaryExpression";
         public const string NegateBooleanLiteral = "NegateBooleanLiteral";
+        public const string NegateIsExpression = "NegateIsExpression";
         public const string NegateOperator = "NegateOperator";
         public const string NotifyPropertyChanged = "NotifyPropertyChanged";
         public const string ParenthesizeExpression = "ParenthesizeExpression";

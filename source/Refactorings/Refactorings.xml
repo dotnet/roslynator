@@ -537,6 +537,12 @@
       <Syntax>boolean literal</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="NegateIsExpression" Title="Negate is expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>is expression</Syntax>
+    </Syntaxes>
+    <Scope>operator</Scope>
+  </Refactoring>
   <Refactoring Id="NegateOperator" Title="Negate operator" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>!=</Syntax>

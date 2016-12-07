@@ -94,6 +94,9 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast))
                 ReplaceAsWithCastRefactoring.ComputeRefactoring(context, binaryExpression);
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateIsExpression))
+                NegateIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
+
             if (context.Span.IsContainedInSpanOrBetweenSpans(binaryExpression.OperatorToken))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals))

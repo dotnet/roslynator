@@ -88,6 +88,7 @@ namespace Roslynator.VisualStudio
             MergeStringLiteralsIntoMultilineStringLiteral = true;
             NegateBinaryExpression = true;
             NegateBooleanLiteral = true;
+            NegateIsExpression = true;
             NegateOperator = true;
             NotifyPropertyChanged = true;
             ParenthesizeExpression = true;
@@ -254,6 +255,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral, MergeStringLiteralsIntoMultilineStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.NegateBooleanLiteral, NegateBooleanLiteral);
+            SetIsEnabled(RefactoringIdentifiers.NegateIsExpression, NegateIsExpression);
             SetIsEnabled(RefactoringIdentifiers.NegateOperator, NegateOperator);
             SetIsEnabled(RefactoringIdentifiers.NotifyPropertyChanged, NotifyPropertyChanged);
             SetIsEnabled(RefactoringIdentifiers.ParenthesizeExpression, ParenthesizeExpression);
@@ -1097,6 +1099,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: boolean literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool NegateBooleanLiteral
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Negate is expression")]
+        [Description("Syntax: is expression\r\nScope: operator")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool NegateIsExpression
         {
             get;
             set;
