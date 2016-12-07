@@ -63,6 +63,7 @@
     <Compile Include="RemoveDirectiveAndRelatedDirectivesRefactoring.cs" />
     <Compile Include="RemoveUsingAliasDirectiveRefactoring.cs" />
     <Compile Include="ReplaceAsWithCastRefactoring.cs" />
+    <Compile Include="ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />

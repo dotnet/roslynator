@@ -91,8 +91,11 @@ namespace Roslynator.CSharp.Refactorings
                 SwapExpressionsInBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast)
+                && context.Span.IsEmptyOrBetweenSpans(binaryExpression))
+            {
                 ReplaceAsWithCastRefactoring.ComputeRefactoring(context, binaryExpression);
+            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateIsExpression))
                 NegateIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);

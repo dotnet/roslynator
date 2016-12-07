@@ -126,6 +126,7 @@ namespace Roslynator.VisualStudio
             ReplaceAnonymousMethodWithLambdaExpression = true;
             ReplaceAnyWithAllOrAllWithAny = true;
             ReplaceAsWithCast = true;
+            ReplaceCastWithAs = true;
             ReplaceConditionalExpressionWithExpression = true;
             ReplaceConditionalExpressionWithIfElse = true;
             ReplaceConstantWithField = true;
@@ -293,6 +294,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnonymousMethodWithLambdaExpression, ReplaceAnonymousMethodWithLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, ReplaceAnyWithAllOrAllWithAny);
             SetIsEnabled(RefactoringIdentifiers.ReplaceAsWithCast, ReplaceAsWithCast);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceCastWithAs, ReplaceCastWithAs);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, ReplaceConditionalExpressionWithExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, ReplaceConditionalExpressionWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceConstantWithField, ReplaceConstantWithField);
@@ -1476,9 +1478,19 @@ namespace Roslynator.VisualStudio
 
         [Category(RefactoringCategory)]
         [DisplayName("Replace as expression with cast expression")]
-        [Description("Syntax: as expression\r\nScope: operator")]
+        [Description("Syntax: as expression")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceAsWithCast
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace cast expression with as expression")]
+        [Description("Syntax: cast expression")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceCastWithAs
         {
             get;
             set;

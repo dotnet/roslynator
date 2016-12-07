@@ -15,10 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (binaryExpression.IsKind(SyntaxKind.AsExpression))
             {
-                SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-                if (context.Span.IsContainedInSpanOrBetweenSpans(operatorToken)
-                    && binaryExpression.Left?.IsMissing == false
+                if (binaryExpression.Left?.IsMissing == false
                     && binaryExpression.Right is TypeSyntax)
                 {
                     context.RegisterRefactoring(

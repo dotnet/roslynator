@@ -793,7 +793,11 @@
     <Syntaxes>
       <Syntax>as expression</Syntax>
     </Syntaxes>
-    <Scope>operator</Scope>
+  </Refactoring>
+  <Refactoring Id="ReplaceCastWithAs" Title="Replace cast expression with as expression" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>cast expression</Syntax>
+    </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression" ExtensionVersion="0.99.0">
     <Syntaxes>

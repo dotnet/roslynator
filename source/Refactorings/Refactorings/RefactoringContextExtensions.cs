@@ -113,6 +113,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fPostfixUnaryExpression = false;
             bool fPrefixUnaryExpression = false;
             bool fAwaitExpression = false;
+            bool fCastExpression = false;
 
             bool fMemberDeclaration = false;
             bool fStatement = false;
@@ -408,6 +409,12 @@ namespace Roslynator.CSharp.Refactorings
                             fAwaitExpression = true;
                         }
 
+                        if (!fCastExpression
+                            && kind == SyntaxKind.CastExpression)
+                        {
+                            CastExpressionRefactoring.ComputeRefactorings(context, (CastExpressionSyntax)node);
+                            fCastExpression = true;
+                        }
                         continue;
                     }
 

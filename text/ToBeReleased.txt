@@ -4,3 +4,4 @@
 
 * ReplaceStatementWithIfStatement
 * NegateIsExpression
+* ReplaceCastWithAs

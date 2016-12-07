@@ -796,6 +796,16 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.NotEqualsExpression, left, operatorToken, right);
         }
 
+        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax expression, TypeSyntax type)
+        {
+            return BinaryExpression(SyntaxKind.AsExpression, expression, type);
+        }
+
+        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax expression, SyntaxToken operatorToken, TypeSyntax type)
+        {
+            return BinaryExpression(SyntaxKind.AsExpression, expression, operatorToken, type);
+        }
+
         public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)
         {
             return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand);
