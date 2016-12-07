@@ -1002,6 +1002,16 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
 
+        public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, StatementSyntax statement)
+        {
+            return SwitchSection(switchLabel, SingletonList(statement));
+        }
+
+        public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, SyntaxList<StatementSyntax> statements)
+        {
+            return SyntaxFactory.SwitchSection(SingletonList(switchLabel), statements);
+        }
+
         public static SwitchSectionSyntax DefaultSwitchSection(StatementSyntax statement)
         {
             return DefaultSwitchSection(SingletonList(statement));
@@ -1009,9 +1019,7 @@ namespace Roslynator.CSharp
 
         public static SwitchSectionSyntax DefaultSwitchSection(SyntaxList<StatementSyntax> statements)
         {
-            return SwitchSection(
-                SingletonList<SwitchLabelSyntax>(DefaultSwitchLabel()),
-                statements);
+            return SwitchSection(DefaultSwitchLabel(), statements);
         }
 
         public static ImplicitElementAccessSyntax ImplicitElementAccess(ExpressionSyntax expression)

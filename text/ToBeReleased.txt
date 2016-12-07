@@ -5,3 +5,4 @@
 * ReplaceStatementWithIfStatement
 * NegateIsExpression
 * ReplaceCastWithAs
+* SplitSwitchLabels

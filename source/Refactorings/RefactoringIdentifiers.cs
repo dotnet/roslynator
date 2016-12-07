@@ -158,6 +158,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReverseForLoop = "ReverseForLoop";
         public const string SimplifyLambdaExpression = "SimplifyLambdaExpression";
         public const string SplitAttributes = "SplitAttributes";
+        public const string SplitSwitchLabels = "SplitSwitchLabels";
         public const string SplitVariableDeclaration = "SplitVariableDeclaration";
         public const string SwapExpressionsInBinaryExpression = "SwapExpressionsInBinaryExpression";
         public const string SwapExpressionsInConditionalExpression = "SwapExpressionsInConditionalExpression";

@@ -1006,6 +1006,11 @@
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="SplitSwitchLabels" Title="Split switch labels" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>selected switch labels</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="SplitVariableDeclaration" Title="Split variable declaration" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>local declaration</Syntax>

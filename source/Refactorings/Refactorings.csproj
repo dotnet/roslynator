@@ -252,6 +252,7 @@
     <Compile Include="Refactorings\ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />
+    <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="StringLiteralChain.cs" />
     <Compile Include="SyntaxHelper.cs" />

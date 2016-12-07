@@ -76,6 +76,7 @@
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring2.cs" />
     <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring2.cs" />
+    <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />
     <Compile Include="InlineMethodRefactoring_.cs" />
