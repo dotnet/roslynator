@@ -415,7 +415,7 @@
     </Syntaxes>
     <Scope>type</Scope>
   </Refactoring>
-  <Refactoring Id="CheckExpressionForNull" Title="Check expression for null" ExtensionVersion="0.0.0">
+  <Refactoring Id="CheckExpressionForNull" Title="Check expression for null" ExtensionVersion="1.1.8">
     <Syntaxes>
       <Syntax>local declaration (identifier)</Syntax>
       <Syntax>assignment expression (left)</Syntax>
@@ -543,7 +543,7 @@
       <Syntax>boolean literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="NegateIsExpression" Title="Negate is expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="NegateIsExpression" Title="Negate is expression" ExtensionVersion="1.1.8">
     <Syntaxes>
       <Syntax>is expression</Syntax>
     </Syntaxes>
@@ -800,7 +800,7 @@
       <Syntax>as expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceCastWithAs" Title="Replace cast expression with as expression" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceCastWithAs" Title="Replace cast expression with as expression" ExtensionVersion="1.1.8">
     <Syntaxes>
       <Syntax>cast expression</Syntax>
     </Syntaxes>
@@ -948,7 +948,7 @@
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceStatementWithIfStatement" Title="Replace statement with if statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceStatementWithIfStatement" Title="Replace statement with if statement" ExtensionVersion="1.1.8">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
@@ -1012,7 +1012,7 @@
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="SplitSwitchLabels" Title="Split switch labels" ExtensionVersion="0.0.0">
+  <Refactoring Id="SplitSwitchLabels" Title="Split switch labels" ExtensionVersion="1.1.8">
     <Syntaxes>
       <Syntax>selected switch labels</Syntax>
     </Syntaxes>
