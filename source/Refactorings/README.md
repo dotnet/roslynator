@@ -158,6 +158,12 @@
 
 ![Change 'var' to explicit type](../../images/refactorings/ChangeVarToExplicitType.png)
 
+#### Check expression for null
+
+* **Syntax**: local declaration (identifier), assignment expression (left)
+
+![Check expression for null](../../images/refactorings/CheckExpressionForNull.png)
+
 #### Check parameter for null
 
 * **Syntax**: parameter
@@ -190,13 +196,6 @@
 * **Syntax**: constructor, method, property, indexer, event
 
 ![Copy documentation comment from base member](../../images/refactorings/CopyDocumentationCommentFromBaseMember.png)
-
-#### Create condition from boolean expression
-
-* **Syntax**: return statement, yield return statement, expression statement
-* **Scope**: boolean expression
-
-![Create condition from boolean expression](../../images/refactorings/CreateConditionFromBooleanExpression.png)
 
 #### Duplicate argument
 
@@ -516,6 +515,13 @@
 
 ![Negate boolean literal](../../images/refactorings/NegateBooleanLiteral.png)
 
+#### Negate is expression
+
+* **Syntax**: is expression
+* **Scope**: operator
+
+![Negate is expression](../../images/refactorings/NegateIsExpression.png)
+
 #### Negate operator
 
 * **Syntax**: !=, &&, ||, <, <=, ==, >, >=
@@ -760,9 +766,14 @@
 #### Replace as expression with cast expression
 
 * **Syntax**: as expression
-* **Scope**: operator
 
 ![Replace as expression with cast expression](../../images/refactorings/ReplaceAsWithCast.png)
+
+#### Replace cast expression with as expression
+
+* **Syntax**: cast expression
+
+![Replace cast expression with as expression](../../images/refactorings/ReplaceCastWithAs.png)
 
 #### Replace conditional expression with expression
 
@@ -924,6 +935,12 @@
 
 ![Replace regular string literal with verbatim string literal](../../images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
 
+#### Replace statement with if statement
+
+* **Syntax**: return statement, yield return statement, assignment statement, local declaration statement
+
+![Replace statement with if statement](../../images/refactorings/ReplaceReturnStatementWithIfStatement.png)
+
 #### Replace string literal with character literal
 
 * **Syntax**: string literal
@@ -986,6 +1003,12 @@
 * **Syntax**: selected attribute list
 
 ![Split attributes](../../images/refactorings/SplitAttributes.png)
+
+#### Split switch labels
+
+* **Syntax**: selected switch labels
+
+![Split switch labels](../../images/refactorings/SplitSwitchLabels.png)
 
 #### Split variable declaration
 
