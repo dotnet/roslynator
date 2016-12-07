@@ -1,9 +1,1 @@
-﻿#### Refactorings
-
-##### New Refactorings
-
-* ReplaceStatementWithIfStatement
-* NegateIsExpression
-* ReplaceCastWithAs
-* SplitSwitchLabels
-* CheckExpressionForNull
+﻿

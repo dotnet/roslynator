@@ -1,3 +1,15 @@
+### 1.1.8 (2016-12-07)
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceStatementWithIfStatement
+* NegateIsExpression
+* ReplaceCastWithAs
+* SplitSwitchLabels
+* CheckExpressionForNull
+
 ### 1.1.7 (2016-11-29)
 
 #### Refactorings
