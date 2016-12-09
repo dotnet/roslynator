@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Add argument list",
+                "Add parentheses",
                 cancellationToken => AddConstructorArgumentListRefactoring.RefactorAsync(context.Document, syntax, cancellationToken),
                 DiagnosticIdentifiers.AddConstructorArgumentList + EquivalenceKeySuffix);
 
