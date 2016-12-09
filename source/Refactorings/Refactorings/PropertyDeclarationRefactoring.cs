@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxToken identifier = propertyDeclaration.Identifier;
 
-                    if (context.Span.IsEmptyOrBetweenSpans(identifier))
+                    if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(identifier))
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

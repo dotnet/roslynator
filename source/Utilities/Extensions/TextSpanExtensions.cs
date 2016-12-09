@@ -70,24 +70,45 @@ namespace Roslynator
             return innerSpan.Contains(span) || span.IsBetweenSpans(innerSpan, token.FullSpan);
         }
 
-        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxNode node)
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxNode node)
         {
-            return span.IsEmpty || span.IsBetweenSpans(node);
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
         }
 
-        public static bool IsEmptyOrBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> node) where TNode : SyntaxNode
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> node) where TNode : SyntaxNode
         {
-            return span.IsEmpty || span.IsBetweenSpans(node);
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
         }
 
-        public static bool IsEmptyOrBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> node) where TNode : SyntaxNode
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> node) where TNode : SyntaxNode
         {
-            return span.IsEmpty || span.IsBetweenSpans(node);
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
         }
 
-        public static bool IsEmptyOrBetweenSpans(this TextSpan span, SyntaxToken token)
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxToken token)
         {
-            return span.IsEmpty || span.IsBetweenSpans(token);
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, token.Span, token.FullSpan);
+        }
+
+        private static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, TextSpan innerSpan, TextSpan outerSpan)
+        {
+            if (span.IsEmpty)
+            {
+                return innerSpan.Contains(span);
+            }
+            else
+            {
+                return span.IsBetweenSpans(innerSpan, outerSpan);
+            }
         }
     }
 }

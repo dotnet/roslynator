@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
         {
-            return context.Span.IsEmptyOrBetweenSpans(statement)
+            return context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(statement)
                 && EmbeddedStatement.IsEmbeddedStatement(statement);
         }
 

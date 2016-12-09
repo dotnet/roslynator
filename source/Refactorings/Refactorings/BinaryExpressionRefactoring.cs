@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast)
-                && context.Span.IsEmptyOrBetweenSpans(binaryExpression))
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(binaryExpression))
             {
                 ReplaceAsWithCastRefactoring.ComputeRefactoring(context, binaryExpression);
             }

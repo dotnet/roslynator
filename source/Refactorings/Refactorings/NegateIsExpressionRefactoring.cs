@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
             if (binaryExpression.IsKind(SyntaxKind.IsExpression)
-                && context.Span.IsEmptyOrBetweenSpans(binaryExpression))
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(binaryExpression))
             {
                 SyntaxNode parent = binaryExpression.Parent;
 

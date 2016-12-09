@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, CastExpressionSyntax castExpression)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCastWithAs)
-                && context.Span.IsEmptyOrBetweenSpans(castExpression))
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(castExpression))
             {
                 ReplaceCastWithAsRefactoring.ComputeRefactoring(context, castExpression);
             }

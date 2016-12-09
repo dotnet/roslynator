@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
-            if (context.Span.IsEmptyOrBetweenSpans(block)
+            if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(block)
                 && EmbeddedStatement.IsEmbeddableBlock(block))
             {
                 StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(block.Statements[0]);
