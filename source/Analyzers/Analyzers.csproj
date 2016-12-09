@@ -256,7 +256,6 @@
     <Compile Include="DiagnosticAnalyzers\GenericNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InitializerDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantSealedModifierDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\RemoveRedundantBracesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EmptyStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EnumDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ImplicitArrayCreationExpressionDiagnosticAnalyzer.cs" />

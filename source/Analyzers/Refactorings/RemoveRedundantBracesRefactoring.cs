@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,26 +15,12 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
-            SyntaxList<StatementSyntax> statements = block.Statements;
-
-            if (statements.Count == 1)
+            if (block.IsParentKind(SyntaxKind.Block)
+                && block.Statements.Any())
             {
-                StatementSyntax statement = statements.First();
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBraces, block.GetLocation());
 
-                if (statement.IsKind(SyntaxKind.Block))
-                {
-                    var innerBlock = (BlockSyntax)statement;
-
-                    if (block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && innerBlock.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && innerBlock.CloseBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBraces, innerBlock.GetLocation());
-
-                        context.FadeOutBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, innerBlock);
-                    }
-                }
+                context.FadeOutBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block);
             }
         }
 
@@ -42,12 +29,39 @@ namespace Roslynator.CSharp.Refactorings
             BlockSyntax block,
             CancellationToken cancellationToken)
         {
-            var parent = (BlockSyntax)block.Parent;
+            StatementSyntax[] statements = block.Statements.ToArray();
 
-            BlockSyntax newNode = parent.ReplaceNode(block, block.Statements)
-                .WithFormatterAnnotation();
+            SyntaxToken openBrace = block.OpenBraceToken;
+            SyntaxTriviaList leadingTrivia = openBrace.LeadingTrivia;
 
-            return await document.ReplaceNodeAsync(parent, newNode).ConfigureAwait(false);
+            AddIfNotWhiteSpaceOrEndOfLine(openBrace.TrailingTrivia, ref leadingTrivia);
+            AddIfNotWhiteSpaceOrEndOfLine(statements[0].GetLeadingTrivia(), ref leadingTrivia);
+
+            statements[0] = statements[0].WithLeadingTrivia(leadingTrivia);
+
+            SyntaxToken closeBrace = block.CloseBraceToken;
+            SyntaxTriviaList trailingTrivia = closeBrace.TrailingTrivia;
+
+            InsertIfNotWhiteSpaceOrEndOfLine(statements[statements.Length - 1].GetTrailingTrivia(), ref trailingTrivia);
+            InsertIfNotWhiteSpaceOrEndOfLine(closeBrace.LeadingTrivia, ref trailingTrivia);
+
+            statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(trailingTrivia);
+
+            IEnumerable<StatementSyntax> newStatements = statements.Select(f => f.WithFormatterAnnotation());
+
+            return await document.ReplaceNodeAsync(block, newStatements, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static void AddIfNotWhiteSpaceOrEndOfLine(IEnumerable<SyntaxTrivia> trivia, ref SyntaxTriviaList triviaList)
+        {
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                triviaList = triviaList.AddRange(trivia);
+        }
+
+        private static void InsertIfNotWhiteSpaceOrEndOfLine(IEnumerable<SyntaxTrivia> trivia, ref SyntaxTriviaList triviaList)
+        {
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                triviaList = triviaList.InsertRange(0, trivia);
         }
     }
 }

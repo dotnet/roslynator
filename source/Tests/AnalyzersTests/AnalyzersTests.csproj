@@ -66,6 +66,7 @@
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveFileWithNoCode.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
+    <Compile Include="RemoveRedundantBraces.cs" />
     <Compile Include="RemoveRedundantConstructor.cs" />
     <Compile Include="RemoveRedundantDelegateCreation.cs" />
     <Compile Include="RemoveRedundantEmptyLine.cs" />
