@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
 
         protected override string GetTitle(YieldStatementSyntax statement)
         {
-            return "Replace yield statement with if-else";
+            return "Replace yield return with if-else";
         }
     }
 }

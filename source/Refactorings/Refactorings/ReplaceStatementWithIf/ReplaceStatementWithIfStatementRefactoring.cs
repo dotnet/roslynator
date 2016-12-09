@@ -22,36 +22,39 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
         {
             ExpressionSyntax expression = GetExpression(statement);
 
-            switch (expression?.Kind())
+            if (expression != null)
             {
-                case SyntaxKind.TrueLiteralExpression:
-                case SyntaxKind.FalseLiteralExpression:
-                    {
-                        break;
-                    }
-                case SyntaxKind.ConditionalExpression:
-                    {
-                        context.RegisterRefactoring(
-                            GetTitle(statement),
-                            cancellationToken => RefactorAsync(context.Document, statement, (ConditionalExpressionSyntax)expression, cancellationToken));
-
-                        break;
-                    }
-                default:
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        if (semanticModel
-                            .GetConvertedTypeSymbol(expression, context.CancellationToken)?
-                            .IsBoolean() == true)
+                switch (expression.Kind())
+                {
+                    case SyntaxKind.TrueLiteralExpression:
+                    case SyntaxKind.FalseLiteralExpression:
+                        {
+                            break;
+                        }
+                    case SyntaxKind.ConditionalExpression:
                         {
                             context.RegisterRefactoring(
                                 GetTitle(statement),
-                                cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken));
-                        }
+                                cancellationToken => RefactorAsync(context.Document, statement, (ConditionalExpressionSyntax)expression, cancellationToken));
 
-                        break;
-                    }
+                            break;
+                        }
+                    default:
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (semanticModel
+                                .GetConvertedTypeSymbol(expression, context.CancellationToken)?
+                                .IsBoolean() == true)
+                            {
+                                context.RegisterRefactoring(
+                                    GetTitle(statement),
+                                    cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken));
+                            }
+
+                            break;
+                        }
+                }
             }
         }
 

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
 
         protected override string GetTitle(ReturnStatementSyntax statement)
         {
-            return "Replace return statement with if-else";
+            return "Replace return with if-else";
         }
     }
 }
