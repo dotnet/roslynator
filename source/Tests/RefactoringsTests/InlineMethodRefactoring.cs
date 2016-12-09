@@ -6,6 +6,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public void Method()
         {
+            Method();
+
             Entity x = null;
             Entity y = null;
             Entity z = null;

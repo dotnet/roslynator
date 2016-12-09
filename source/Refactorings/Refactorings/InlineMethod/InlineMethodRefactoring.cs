@@ -28,7 +28,8 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 {
                     MethodDeclarationSyntax method = await GetMethodAsync(methodSymbol, context.CancellationToken).ConfigureAwait(false);
 
-                    if (method != null)
+                    if (method != null
+                        && !invocation.Ancestors().Any(f => f == method))
                     {
                         ExpressionSyntax expression = GetMethodExpression(method);
 
@@ -42,12 +43,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                     "Inline method",
                                     c => InlineMethodAsync(context.Document, invocation, expression, parameterInfos.ToArray(), c));
 
-                                if (!method.Contains(invocation))
-                                {
-                                    context.RegisterRefactoring(
-                                        "Inline and remove method",
-                                        c => InlineAndRemoveMethodAsync(context.Document, invocation, method, expression, parameterInfos.ToArray(), c));
-                                }
+                                context.RegisterRefactoring(
+                                    "Inline and remove method",
+                                    c => InlineAndRemoveMethodAsync(context.Document, invocation, method, expression, parameterInfos.ToArray(), c));
                             }
                         }
                         else if (methodSymbol.ReturnsVoid
@@ -67,12 +65,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                         "Inline method",
                                         c => InlineMethodAsync(context.Document, expressionStatement, statements, parameterInfos.ToArray(), c));
 
-                                    if (!method.Contains(invocation))
-                                    {
-                                        context.RegisterRefactoring(
-                                            "Inline and remove method",
-                                            c => InlineAndRemoveMethodAsync(context.Document, expressionStatement, method, statements, parameterInfos.ToArray(), c));
-                                    }
+                                    context.RegisterRefactoring(
+                                        "Inline and remove method",
+                                        c => InlineAndRemoveMethodAsync(context.Document, expressionStatement, method, statements, parameterInfos.ToArray(), c));
                                 }
                             }
                         }
