@@ -57,7 +57,7 @@
 * RCS1031 - Remove redundant braces
 * RCS1032 - Remove redundant parentheses
 * RCS1033 - Remove redundant boolean literal
-* RCS1034 - Remove redundant 'sealed' modifier
+* RCS1034 - Remove redundant sealed modifier
 * RCS1035 - Remove redundant comma in initializer
 * RCS1036 - Remove redundant empty line
 * RCS1037 - Remove trailing white-space
@@ -66,7 +66,7 @@
 * RCS1040 - Remove empty else clause
 * RCS1041 - Remove empty initializer
 * RCS1042 - Remove enum default underlying type
-* RCS1043 - Remove 'partial' modifier from type with a single part
+* RCS1043 - Remove partial modifier from type with a single part
 * RCS1044 - Remove original exception from throw statement
 * RCS1045 - Rename private field according to camel case with underscore
 * RCS1046 - Asynchronous method name should end with 'Async'
@@ -80,7 +80,7 @@
 * RCS1055 - Avoid semicolon at the end of declaration
 * RCS1056 - Avoid usage of using alias directive
 * RCS1057 - Add empty line between declarations
-* RCS1058 - Simplify assignment expression
+* RCS1058 - Use compound assignment
 * RCS1059 - Avoid locking on publicly accessible instance
 * RCS1060 - Declare each type in separate file
 * RCS1061 - Merge if statement with nested if statement
@@ -112,7 +112,7 @@
 * RCS1087 - Use carriage return + linefeed as newline
 * RCS1088 - Avoid usage of tab
 * RCS1089 - Use postfix unary operator instead of assignment
-* RCS1090 - Add 'ConfigureAwait(false)' to awaitable expression
+* RCS1090 - Call 'ConfigureAwait(false)'
 * RCS1091 - Remove empty region
 * RCS1092 - Add empty line after last statement in do statement
 * RCS1093 - Remove file with no code
@@ -125,7 +125,7 @@
 * RCS1100 - Format documentation summary on a single line
 * RCS1101 - Format documentation summary on multiple lines
 * RCS1102 - Mark class as static
-* RCS1103 - Simplify if-else statement
+* RCS1103 - Replace if statement with assignment
 * RCS1104 - Simplify conditional expression
 * RCS1105 - Merge interpolation into interpolated string
 * RCS1106 - Remove empty destructor

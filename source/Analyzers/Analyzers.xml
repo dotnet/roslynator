@@ -247,9 +247,9 @@
     <Id>RCS1029</Id>
     <Title>Format binary operator on next line.</Title>
     <Category>General</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
@@ -290,7 +290,7 @@
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantSealedModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1034</Id>
-    <Title>Remove redundant 'sealed' modifier.</Title>
+    <Title>Remove redundant sealed modifier.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -371,7 +371,7 @@
   </Analyzer>
   <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1043</Id>
-    <Title>Remove 'partial' modifier from type with a single part.</Title>
+    <Title>Remove partial modifier from type with a single part.</Title>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -495,9 +495,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyAssignmentExpression" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="UseCompoundAssignment" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
     <Id>RCS1058</Id>
-    <Title>Simplify assignment expression.</Title>
+    <Title>Use compound assignment.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -781,11 +781,11 @@
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddConfigureAwait" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
+  <Analyzer Identifier="CallConfigureAwait" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
     <Id>RCS1090</Id>
-    <Title>Add 'ConfigureAwait(false)' to awaitable expression.</Title>
+    <Title>Call 'ConfigureAwait(false)'.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -900,9 +900,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyIfElseStatement" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ReplaceIfStatementWithAssignment" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
     <Id>RCS1103</Id>
-    <Title>Simplify if-else statement.</Title>
+    <Title>Replace if statement with assignment.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
