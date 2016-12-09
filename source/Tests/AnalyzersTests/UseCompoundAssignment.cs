@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class SimplifyAssignmentExpression
+    internal static class UseCompoundAssignment
     {
         private class Entity
         {
@@ -10,6 +10,15 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 int i = 0;
                 i = i + 10;
+                i = i - 10;
+                i = i * 10;
+                i = i / 10;
+                i = i % 10;
+                i = i << 10;
+                i = i >> 10;
+                i = i | 10;
+                i = i & 10;
+                i = i ^ 10;
 
                 Property = Property + 10;
 

@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.SimplifyAssignmentExpression,
+                    DiagnosticIdentifiers.UseCompoundAssignment,
                     DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment,
                     DiagnosticIdentifiers.RemoveRedundantDelegateCreation);
             }
@@ -42,11 +42,15 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.SimplifyAssignmentExpression:
+                    case DiagnosticIdentifiers.UseCompoundAssignment:
                         {
+                            var binaryExpression = (BinaryExpressionSyntax)assignment.Right;
+
+                            string operatorText = UseCompoundAssignmentRefactoring.GetCompoundOperatorText(binaryExpression);
+
                             CodeAction codeAction = CodeAction.Create(
-                                "Simplify assignment expression",
-                                cancellationToken => SimplifyAssignmentExpressionRefactoring.RefactorAsync(context.Document, assignment, cancellationToken),
+                                $"Use {operatorText} operator",
+                                cancellationToken => UseCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignment, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

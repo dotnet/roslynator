@@ -63,7 +63,7 @@
     <Compile Include="CSharp\Refactorings\ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToIfElseRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandAssignmentExpressionRefactoring.cs" />
-    <Compile Include="CSharp\Refactorings\SimplifyAssignmentExpressionRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\UseCompoundAssignmentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AttributeRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceForEachWithForRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceInterpolatedStringWithStringLiteralRefactoring.cs" />

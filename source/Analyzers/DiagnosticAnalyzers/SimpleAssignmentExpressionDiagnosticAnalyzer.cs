@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.SimplifyAssignmentExpression,
-                    DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut,
+                    DiagnosticDescriptors.UseCompoundAssignment,
+                    DiagnosticDescriptors.UseCompoundAssignmentFadeOut,
                     DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
                     DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut);
             }
@@ -40,10 +40,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
-            if (SimplifyAssignmentExpressionRefactoring.CanRefactor(assignment))
+            if (UseCompoundAssignmentRefactoring.CanRefactor(assignment))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyAssignmentExpression, assignment.GetLocation());
-                context.FadeOutNode(DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut, ((BinaryExpressionSyntax)assignment.Right).Left);
+                var binaryExpression = (BinaryExpressionSyntax)assignment.Right;
+
+                context.ReportDiagnostic(DiagnosticDescriptors.UseCompoundAssignment, assignment.GetLocation(), UseCompoundAssignmentRefactoring.GetCompoundOperatorText(binaryExpression));
+                context.FadeOutNode(DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
             }
 
             UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.Analyze(context, assignment);

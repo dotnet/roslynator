@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class SimplifyAssignmentExpressionRefactoring
+    public static class UseCompoundAssignmentRefactoring
     {
         public static bool CanRefactor(AssignmentExpressionSyntax assignment)
         {
@@ -56,31 +56,58 @@ namespace Roslynator.CSharp.Refactorings
             if (assignmentExpression == null)
                 throw new ArgumentNullException(nameof(assignmentExpression));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var binaryExpression = (BinaryExpressionSyntax)assignmentExpression.Right;
 
-            AssignmentExpressionSyntax newNode = Refactor(assignmentExpression)
+            AssignmentExpressionSyntax newNode = AssignmentExpression(
+                GetCompoundAssignmentKind(binaryExpression),
+                assignmentExpression.Left,
+                binaryExpression.Right);
+
+            newNode = newNode
                 .WithTriviaFrom(assignmentExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(assignmentExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(assignmentExpression, newNode).ConfigureAwait(false);
         }
 
-        private static AssignmentExpressionSyntax Refactor(AssignmentExpressionSyntax assignmentExpression)
+        public static string GetCompoundOperatorText(BinaryExpressionSyntax binaryExpression)
         {
-            if (assignmentExpression == null)
-                throw new ArgumentNullException(nameof(assignmentExpression));
-
-            var binaryExpression = (BinaryExpressionSyntax)assignmentExpression.Right;
-
-            return AssignmentExpression(
-                GetAssignmentExpressionKind(binaryExpression),
-                assignmentExpression.Left,
-                binaryExpression.Right);
+            return Token(GetCompoundOperatorKind(binaryExpression)).ToString();
         }
 
-        private static SyntaxKind GetAssignmentExpressionKind(BinaryExpressionSyntax binaryExpression)
+        private static SyntaxKind GetCompoundOperatorKind(BinaryExpressionSyntax binaryExpression)
+        {
+            switch (binaryExpression.Kind())
+            {
+                case SyntaxKind.AddExpression:
+                    return SyntaxKind.PlusEqualsToken;
+                case SyntaxKind.SubtractExpression:
+                    return SyntaxKind.MinusEqualsToken;
+                case SyntaxKind.MultiplyExpression:
+                    return SyntaxKind.AsteriskEqualsToken;
+                case SyntaxKind.DivideExpression:
+                    return SyntaxKind.SlashEqualsToken;
+                case SyntaxKind.ModuloExpression:
+                    return SyntaxKind.PercentEqualsToken;
+                case SyntaxKind.LeftShiftExpression:
+                    return SyntaxKind.LessThanLessThanEqualsToken;
+                case SyntaxKind.RightShiftExpression:
+                    return SyntaxKind.GreaterThanGreaterThanEqualsToken;
+                case SyntaxKind.BitwiseOrExpression:
+                    return SyntaxKind.BarEqualsToken;
+                case SyntaxKind.BitwiseAndExpression:
+                    return SyntaxKind.AmpersandEqualsToken;
+                case SyntaxKind.ExclusiveOrExpression:
+                    return SyntaxKind.CaretEqualsToken;
+                default:
+                    {
+                        Debug.Assert(false, binaryExpression.Kind().ToString());
+                        return SyntaxKind.EqualsToken;
+                    }
+            }
+        }
+
+        private static SyntaxKind GetCompoundAssignmentKind(BinaryExpressionSyntax binaryExpression)
         {
             switch (binaryExpression.Kind())
             {
@@ -104,10 +131,12 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.AndAssignmentExpression;
                 case SyntaxKind.ExclusiveOrExpression:
                     return SyntaxKind.ExclusiveOrAssignmentExpression;
+                default:
+                    {
+                        Debug.Assert(false, binaryExpression.Kind().ToString());
+                        return binaryExpression.Kind();
+                    }
             }
-
-            Debug.Assert(false, binaryExpression.Kind().ToString());
-            return SyntaxKind.None;
         }
     }
 }

@@ -547,16 +547,16 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor SimplifyAssignmentExpression = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.SimplifyAssignmentExpression,
-            title: "Simplify assignment expression.",
-            messageFormat: "Consider simplifying assignment expression.",
+        public static readonly DiagnosticDescriptor UseCompoundAssignment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCompoundAssignment,
+            title: "Use compound assignment.",
+            messageFormat: "Consider using {0} operator.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor SimplifyAssignmentExpressionFadeOut = SimplifyAssignmentExpression.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UseCompoundAssignmentFadeOut = UseCompoundAssignment.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor AvoidLockingOnPubliclyAccessibleInstance = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance,
