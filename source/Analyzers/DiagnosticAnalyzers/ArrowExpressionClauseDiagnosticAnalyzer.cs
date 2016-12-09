@@ -13,7 +13,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class ArrowExpressionClauseDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidMultilineExpressionBody);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidMultilineExpressionBody); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -32,15 +34,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
-            if (expression == null)
-                return;
-
-            if (expression.IsMultiLine())
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidMultilineExpressionBody,
-                    expression.GetLocation());
-            }
+            if (expression?.IsMultiLine() == true)
+                context.ReportDiagnostic(DiagnosticDescriptors.AvoidMultilineExpressionBody, expression.GetLocation());
         }
     }
 }

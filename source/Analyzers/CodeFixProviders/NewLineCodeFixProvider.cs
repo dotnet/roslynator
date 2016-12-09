@@ -2,12 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -35,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use linefeed as newline",
-                                cancellationToken => RefactorAsync(context.Document, context.Span, "\n", cancellationToken),
+                                cancellationToken => UseLinefeedAsNewLineRefactoring.RefactorAsync(context.Document, context.Span, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -45,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use carriage return + linefeed as newline",
-                                cancellationToken => RefactorAsync(context.Document, context.Span, "\r\n", cancellationToken),
+                                cancellationToken => UseCarriageReturnAndLinefeedAsNewLineRefactoring.RefactorAsync(context.Document, context.Span, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -61,20 +60,20 @@ namespace Roslynator.CSharp.CodeFixProviders
             return tcs.Task;
         }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            TextSpan span,
-            string newLine,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+        //private static async Task<Document> RefactorAsync(
+        //    Document document,
+        //    TextSpan span,
+        //    string newLine,
+        //    CancellationToken cancellationToken = default(CancellationToken))
+        //{
+        //    SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-            var textChange = new TextChange(span, newLine);
+        //    var textChange = new TextChange(span, newLine);
 
-            SourceText newSourceText = sourceText.WithChanges(textChange);
+        //    SourceText newSourceText = sourceText.WithChanges(textChange);
 
-            return document.WithText(newSourceText);
-        }
+        //    return document.WithText(newSourceText);
+        //}
     }
 }
 

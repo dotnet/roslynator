@@ -14,86 +14,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class UseExpressionBodiedMemberRefactoring
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationSyntax member,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            MemberDeclarationSyntax newMember = GetNewMember(member)
-                .WithTrailingTrivia(member.GetTrailingTrivia())
-                .WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(member, newMember, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static MemberDeclarationSyntax GetNewMember(MemberDeclarationSyntax declaration)
-        {
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        var methodDeclaration = (MethodDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetMethodExpression(methodDeclaration.Body);
-
-                        return methodDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
-                    }
-                case SyntaxKind.OperatorDeclaration:
-                    {
-                        var operatorDeclaration = (OperatorDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
-
-                        return operatorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
-                    }
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    {
-                        var operatorDeclaration = (ConversionOperatorDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
-
-                        return operatorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
-                    }
-                case SyntaxKind.PropertyDeclaration:
-                    {
-                        var propertyDeclaration = (PropertyDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpressionFast(propertyDeclaration.AccessorList);
-
-                        return propertyDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithAccessorList(null)
-                            .WithSemicolonToken(SemicolonToken());
-                    }
-                case SyntaxKind.IndexerDeclaration:
-                    {
-                        var indexerDeclaration = (IndexerDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpressionFast(indexerDeclaration.AccessorList);
-
-                        return indexerDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithAccessorList(null)
-                            .WithSemicolonToken(SemicolonToken());
-                    }
-                default:
-                    {
-                        Debug.Assert(false, declaration.Kind().ToString());
-                        return declaration;
-                    }
-            }
-        }
-
         public static bool CanRefactor(MethodDeclarationSyntax declaration)
         {
             if (declaration == null)
@@ -208,6 +128,86 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return default(ExpressionSyntax);
+        }
+
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            MemberDeclarationSyntax member,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            MemberDeclarationSyntax newMember = GetNewMember(member)
+                .WithTrailingTrivia(member.GetTrailingTrivia())
+                .WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(member, newMember, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static MemberDeclarationSyntax GetNewMember(MemberDeclarationSyntax declaration)
+        {
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        var methodDeclaration = (MethodDeclarationSyntax)declaration;
+                        ExpressionSyntax expression = GetMethodExpression(methodDeclaration.Body);
+
+                        return methodDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithBody(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        var operatorDeclaration = (OperatorDeclarationSyntax)declaration;
+                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
+
+                        return operatorDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithBody(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    {
+                        var operatorDeclaration = (ConversionOperatorDeclarationSyntax)declaration;
+                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
+
+                        return operatorDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithBody(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        var propertyDeclaration = (PropertyDeclarationSyntax)declaration;
+                        ExpressionSyntax expression = GetReturnExpressionFast(propertyDeclaration.AccessorList);
+
+                        return propertyDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithAccessorList(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        var indexerDeclaration = (IndexerDeclarationSyntax)declaration;
+                        ExpressionSyntax expression = GetReturnExpressionFast(indexerDeclaration.AccessorList);
+
+                        return indexerDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithAccessorList(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                default:
+                    {
+                        Debug.Assert(false, declaration.Kind().ToString());
+                        return declaration;
+                    }
+            }
         }
     }
 }

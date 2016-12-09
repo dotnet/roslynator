@@ -466,29 +466,6 @@ namespace Roslynator
                 && IsKind(node.Parent, kind1, kind2, kind3);
         }
 
-        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, params SyntaxKind[] kinds)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (kinds == null)
-                throw new ArgumentNullException(nameof(kinds));
-
-            do
-            {
-                for (int i = 0; i < kinds.Length; i++)
-                {
-                    if (node.IsKind(kinds[i]))
-                        return node;
-                }
-
-                node = node.Parent;
-
-            } while (node != null);
-
-            return null;
-        }
-
         public static bool IsSingleLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,

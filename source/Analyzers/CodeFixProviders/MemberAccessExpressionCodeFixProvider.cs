@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class MemberAccessExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

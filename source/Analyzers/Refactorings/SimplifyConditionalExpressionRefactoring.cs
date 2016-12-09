@@ -7,12 +7,24 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class SimplifyConditionalExpressionRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
+        {
+            if (CanRefactor(conditionalExpression, context.SemanticModel, context.CancellationToken)
+                && !conditionalExpression.SpanContainsDirectives())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyConditionalExpression,
+                    conditionalExpression.GetLocation());
+            }
+        }
+
         public static bool CanRefactor(
             ConditionalExpressionSyntax conditionalExpression,
             SemanticModel semanticModel,

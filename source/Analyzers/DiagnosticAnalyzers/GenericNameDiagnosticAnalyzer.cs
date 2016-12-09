@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -13,7 +14,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class GenericNameDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.SimplifyNullableOfT);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyNullableOfT); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -28,31 +31,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.Parent?.IsKind(SyntaxKind.QualifiedName) == true)
-                return;
+            var genericName = (GenericNameSyntax)context.Node;
 
-            if (context.Node.Parent?.IsKind(SyntaxKind.UsingDirective) == true)
-                return;
-
-            var type = (GenericNameSyntax)context.Node;
-
-            if (type.TypeArgumentList?.Arguments.Count != 1)
-                return;
-
-            if (type.TypeArgumentList.Arguments[0].IsKind(SyntaxKind.OmittedTypeArgument))
-                return;
-
-            var namedTypeSymbol = context.SemanticModel.GetSymbolInfo(type, context.CancellationToken).Symbol as INamedTypeSymbol;
-
-            if (namedTypeSymbol == null)
-                return;
-
-            if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyNullableOfT,
-                    context.Node.GetLocation());
-            }
+            SimplifyNullableOfTRefactoring.Analyze(context, genericName);
         }
     }
 }

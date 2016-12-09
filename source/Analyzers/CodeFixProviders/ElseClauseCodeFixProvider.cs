@@ -2,14 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -46,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty else clause",
-                                cancellationToken => RemoveEmptyElseClauseAsync(context.Document, elseClause, cancellationToken),
+                                cancellationToken => RemoveEmptyElseClauseRefactoring.RefactorAsync(context.Document, elseClause, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -56,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove braces",
-                                cancellationToken => RemoveBracesFromElseClauseAsync(context.Document, elseClause, cancellationToken),
+                                cancellationToken => MergeElseClauseWithNestedIfStatementRefactoring.RefactorAsync(context.Document, elseClause, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -64,58 +62,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private static async Task<Document> RemoveEmptyElseClauseAsync(
-            Document document,
-            ElseClauseSyntax elseClause,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = GetNewRoot(oldRoot, elseClause);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static async Task<Document> RemoveBracesFromElseClauseAsync(
-            Document document,
-            ElseClauseSyntax elseClause,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var block = (BlockSyntax)elseClause.Statement;
-
-            var ifStatement = (IfStatementSyntax)block.Statements[0];
-
-            ElseClauseSyntax newElseClause = elseClause
-                .WithStatement(ifStatement)
-                .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(elseClause, newElseClause);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SyntaxNode GetNewRoot(SyntaxNode oldRoot, ElseClauseSyntax elseClause)
-        {
-            if (elseClause.Parent?.IsKind(SyntaxKind.IfStatement) == true)
-            {
-                var ifStatement = (IfStatementSyntax)elseClause.Parent;
-
-                if (ifStatement.Statement?.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()) == true)
-                {
-                    IfStatementSyntax newIfStatement = ifStatement
-                        .WithStatement(ifStatement.Statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))
-                        .WithElse(null);
-
-                    return oldRoot.ReplaceNode(ifStatement, newIfStatement);
-                }
-            }
-
-            return oldRoot.RemoveNode(elseClause, SyntaxRemoveOptions.KeepExteriorTrivia);
         }
     }
 }

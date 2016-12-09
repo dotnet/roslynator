@@ -23,6 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
+        private static DiagnosticDescriptor DiagnosticDescriptor
+        {
+            get { return DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpressionFadeOut; }
+        }
+
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
@@ -42,7 +47,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpression,
-                    context.Node.GetLocation());
+                    anonymousMethod.GetLocation());
 
                 FadeOut(context, anonymousMethod);
             }
@@ -50,22 +55,23 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.ReplaceAnonymousMethodWithLambdaExpressionFadeOut;
-
-            context.FadeOutToken(descriptor, anonymousMethod.DelegateKeyword);
+            context.FadeOutToken(DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
 
             BlockSyntax block = anonymousMethod.Block;
 
-            if (block.Statements.Count == 1 && block.IsSingleLine())
+            SyntaxList<StatementSyntax> statements = block.Statements;
+
+            if (statements.Count == 1
+                && block.IsSingleLine())
             {
-                StatementSyntax statement = block.Statements[0];
+                StatementSyntax statement = statements[0];
 
                 if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
-                    context.FadeOutBraces(descriptor, block);
+                    context.FadeOutBraces(DiagnosticDescriptor, block);
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        context.FadeOutToken(descriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                        context.FadeOutToken(DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
                 }
             }
         }

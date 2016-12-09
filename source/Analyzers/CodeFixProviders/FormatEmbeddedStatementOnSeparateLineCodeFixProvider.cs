@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class FormatEmbeddedStatementOnSeparateLineCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

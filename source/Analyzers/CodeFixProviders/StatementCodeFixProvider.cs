@@ -2,13 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -38,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 "Add empty line",
                 cancellationToken =>
                 {
-                    return AddEmptyLineAsync(
+                    return AddEmptyLineAfterLastStatementInDoStatementRefactoring.RefactorAsync(
                         context.Document,
                         statement,
                         cancellationToken);
@@ -46,26 +45,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                 DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> AddEmptyLineAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
-
-            int index = trailingTrivia.IndexOf(SyntaxKind.EndOfLineTrivia);
-
-            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLineTrivia());
-
-            StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
-
-            SyntaxNode newRoot = root.ReplaceNode(statement, newStatement);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

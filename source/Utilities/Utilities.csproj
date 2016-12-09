@@ -41,6 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncMethodNameGenerator.cs" />
+    <Compile Include="CSharp\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Internal\LogicalNegationHelper.cs" />
@@ -49,11 +50,9 @@
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
-    <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
-    <Compile Include="CSharp\SwitchSectionAnalysisResult.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Internal\DetermineParameterHelper.cs" />

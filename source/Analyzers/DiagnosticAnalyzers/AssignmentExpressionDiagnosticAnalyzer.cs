@@ -19,6 +19,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut,
                     DiagnosticDescriptors.RemoveRedundantDelegateCreation,
                     DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut);
             }
@@ -40,23 +41,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
-            ExpressionSyntax left = assignment.Left;
-            ExpressionSyntax right = assignment.Right;
-
-            if (left?.IsMissing == false
-                && right?.IsNumericLiteralExpression(1) == true)
-            {
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(left, context.CancellationToken).Type;
-
-                if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
-                    && !assignment.SpanContainsDirectives())
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
-                        assignment.GetLocation(),
-                        UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(assignment));
-                }
-            }
+            UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.Analyze(context, assignment);
 
             RemoveRedundantDelegateCreationRefactoring.Analyze(context, assignment);
         }

@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -13,7 +14,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class WhileStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -30,12 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var whileStatement = (WhileStatementSyntax)context.Node;
 
-            if (whileStatement.Condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
-                    whileStatement.WhileKeyword.GetLocation());
-            }
+            AvoidUsageOfWhileStatementToCreateInfiniteLoopRefactoring.Analyze(context, whileStatement);
         }
     }
 }

@@ -46,13 +46,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify assignment expression",
-                                cancellationToken =>
-                                {
-                                    return SimplifyAssignmentExpressionRefactoring.RefactorAsync(
-                                        context.Document,
-                                        assignment,
-                                        cancellationToken);
-                                },
+                                cancellationToken => SimplifyAssignmentExpressionRefactoring.RefactorAsync(context.Document, assignment, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -66,14 +60,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use {operatorText} operator",
-                                cancellationToken =>
-                                {
-                                    return UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.RefactorAsync(
-                                        context.Document,
-                                        assignment,
-                                        kind,
-                                        cancellationToken);
-                                },
+                                c => UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.RefactorAsync(context.Document, assignment, kind, c),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

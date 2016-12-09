@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using static Roslynator.CSharp.Analyzers.Tests.NonAsynchronousMethodNameShouldNotEndWithAsync;
 
 namespace Roslynator.CSharp.Analyzers.Tests
@@ -10,12 +11,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
         }
 
-        public static void Foo2Async()
+        public static async Task<object> Foo2Async()
         {
-        }
-
-        public static void Foo()
-        {
+            return Foo2Async();
         }
     }
 

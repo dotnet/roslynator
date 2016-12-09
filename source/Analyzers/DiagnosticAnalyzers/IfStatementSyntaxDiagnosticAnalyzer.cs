@@ -42,54 +42,38 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.Parent?.IsKind(SyntaxKind.ElseClause) == true)
-                return;
-
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (ifStatement.Else != null)
-            {
-                var result = new IfElseAnalysisResult(ifStatement);
-
-                if (result.AddBraces)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddBracesToIfElse,
-                        ifStatement.GetLocation());
-                }
-
-                if (result.RemoveBraces)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveBracesFromIfElse,
-                        ifStatement.GetLocation());
-
-                    RemoveBracesFromIfElseFadeOut(context, ifStatement);
-                }
-            }
+            AnalyzeBraces(context, ifStatement);
 
             MergeIfStatementWithNestedIfStatementRefactoring.Analyze(context, ifStatement);
 
             ReplaceIfStatementWithReturnStatementRefactoring.Analyze(context, ifStatement);
 
-            if (ReplaceIfStatementWithAssignmentRefactoring.CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
-                && !ifStatement.SpanContainsDirectives())
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment,
-                    ifStatement.GetLocation());
-            }
+            ReplaceIfStatementWithAssignmentRefactoring.Analyze(context, ifStatement);
         }
 
-        private static void RemoveBracesFromIfElseFadeOut(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        private static void AnalyzeBraces(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in ifStatement.DescendantNodes())
+            if (!ifStatement.IsParentKind(SyntaxKind.ElseClause)
+                && ifStatement.Else != null)
             {
-                if (node.IsKind(SyntaxKind.Block))
+                BracesAnalysisResult result = IfElseAnalysis.Analyze(ifStatement);
+
+                if ((result & BracesAnalysisResult.AddBraces) != 0)
                 {
-                    context.FadeOutBraces(
-                        DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut,
-                        (BlockSyntax)node);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, ifStatement.GetLocation());
+                }
+
+                if ((result & BracesAnalysisResult.RemoveBraces) != 0)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement.GetLocation());
+
+                    foreach (SyntaxNode node in ifStatement.DescendantNodes())
+                    {
+                        if (node.IsKind(SyntaxKind.Block))
+                            context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, (BlockSyntax)node);
+                    }
                 }
             }
         }

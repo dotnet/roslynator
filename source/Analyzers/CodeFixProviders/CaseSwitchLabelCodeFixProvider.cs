@@ -2,13 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -17,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -36,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 "Remove unnecessary case label",
                 cancellationToken =>
                 {
-                    return RemoveCaseSwitchLabelAsync(
+                    return RemoveUnnecessaryCaseLabelRefactoring.RefactorAsync(
                         context.Document,
                         label,
                         cancellationToken);
@@ -44,34 +45,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                 DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> RemoveCaseSwitchLabelAsync(
-            Document document,
-            CaseSwitchLabelSyntax label,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var switchSection = (SwitchSectionSyntax)label.Parent;
-
-            SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchSection, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)
-        {
-            if (label.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && label.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                return SyntaxRemoveOptions.KeepNoTrivia;
-            }
-
-            return SyntaxRemoveOptions.KeepExteriorTrivia;
         }
     }
 }

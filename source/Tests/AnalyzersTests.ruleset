@@ -213,6 +213,12 @@
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1001" Action="Warning" />
+    <Rule Id="RCS1002" Action="Warning" />
+    <Rule Id="RCS1002FadeOut" Action="Hidden" />
+    <Rule Id="RCS1003" Action="Warning" />
+    <Rule Id="RCS1004" Action="Warning" />
+    <Rule Id="RCS1004FadeOut" Action="Hidden" />
     <Rule Id="RCS1006" Action="Info" />
     <Rule Id="RCS1008" Action="Info" />
     <Rule Id="RCS1009" Action="Info" />
@@ -250,6 +256,7 @@
     <Rule Id="RCS1061" Action="Warning" />
     <Rule Id="RCS1062" Action="Info" />
     <Rule Id="RCS1064" Action="Warning" />
+    <Rule Id="RCS1065" Action="Warning" />
     <Rule Id="RCS1066" Action="Info" />
     <Rule Id="RCS1069" Action="Info" />
     <Rule Id="RCS1070" Action="Info" />
@@ -257,9 +264,12 @@
     <Rule Id="RCS1073" Action="Warning" />
     <Rule Id="RCS1073FadeOut" Action="Hidden" />
     <Rule Id="RCS1074" Action="Info" />
+    <Rule Id="RCS1076" Action="Warning" />
     <Rule Id="RCS1077" Action="Warning" />
+    <Rule Id="RCS1079" Action="Warning" />
     <Rule Id="RCS1080" Action="Warning" />
     <Rule Id="RCS1081" Action="Warning" />
+    <Rule Id="RCS1087" Action="Warning" />
     <Rule Id="RCS1088" Action="Warning" />
     <Rule Id="RCS1089" Action="Warning" />
     <Rule Id="RCS1090" Action="Warning" />

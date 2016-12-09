@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -33,25 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 
-            SyntaxToken newKeyword = expression.NewKeyword;
-            SyntaxToken openBracket = expression.OpenBracketToken;
-            SyntaxToken closeBracket = expression.CloseBracketToken;
-
-            if (!newKeyword.IsMissing
-                && !openBracket.IsMissing
-                && !closeBracket.IsMissing)
-            {
-                var typeSymbol = context.SemanticModel.GetTypeSymbol(expression) as IArrayTypeSymbol;
-
-                if (typeSymbol?.ElementType?.IsErrorType() == false)
-                {
-                    TextSpan span = TextSpan.FromBounds(newKeyword.Span.Start, closeBracket.Span.End);
-
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidImplicitlyTypedArray,
-                        Location.Create(expression.SyntaxTree, span));
-                }
-            }
+            AvoidImplicitlyTypedArrayRefactoring.Analyze(context, expression);
         }
     }
 }

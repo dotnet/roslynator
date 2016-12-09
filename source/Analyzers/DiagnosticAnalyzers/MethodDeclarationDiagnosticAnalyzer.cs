@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -41,55 +41,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-            if (methodSymbol != null)
-            {
-                SyntaxToken identifier = methodDeclaration.Identifier;
-
-                if (methodSymbol.IsAsync)
-                {
-                    if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
-                        && SyntaxAnalyzer.ContainsAwait(methodDeclaration))
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
-                            identifier.GetLocation());
-                    }
-                }
-                else if (!methodSymbol.IsAbstract
-                    && methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
-                    && ShouldRemoveSuffix(methodSymbol, context.SemanticModel))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                        identifier.GetLocation());
-
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
-                        Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - AsyncSuffix.Length, identifier.Span.End)));
-                }
-            }
-        }
-
-        private static bool ShouldRemoveSuffix(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            var returnTypeSymbol = methodSymbol.ReturnType as INamedTypeSymbol;
-
-            if (returnTypeSymbol != null)
-            {
-                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-                if (taskSymbol?.Equals(returnTypeSymbol) == false)
-                {
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                    if (taskOfTSymbol?.Equals(returnTypeSymbol.ConstructedFrom) == false)
-                        return true;
-                }
-            }
-
-            return false;
+            AsynchronousMethodNameShouldEndWithAsyncRefactoring.Analyze(context, methodDeclaration);
+            NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.Analyze(context, methodDeclaration);
         }
     }
 }

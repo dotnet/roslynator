@@ -8,27 +8,102 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring
     {
+        private static DiagnosticDescriptor FadeOutDescriptor { get; } = DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut;
+
+        public static void Analyze(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment)
+        {
+            switch (assignment.Kind())
+            {
+                case SyntaxKind.AddAssignmentExpression:
+                case SyntaxKind.SubtractAssignmentExpression:
+                    {
+                        ExpressionSyntax left = assignment.Left;
+                        ExpressionSyntax right = assignment.Right;
+
+                        if (left?.IsMissing == false
+                            && right?.IsNumericLiteralExpression(1) == true)
+                        {
+                            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(left, context.CancellationToken).Type;
+
+                            if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
+                                && !assignment.SpanContainsDirectives())
+                            {
+                                ReportDiagnostic(context, assignment);
+
+                                SyntaxToken operatorToken = assignment.OperatorToken;
+
+                                if (operatorToken.Span.Length == 2)
+                                    context.ReportDiagnostic(FadeOutDescriptor, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)));
+
+                                context.FadeOutNode(FadeOutDescriptor, assignment.Right);
+                            }
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.SimpleAssignmentExpression:
+                    {
+                        ExpressionSyntax left = assignment.Left;
+                        ExpressionSyntax right = assignment.Right;
+
+                        if (left?.IsMissing == false
+                            && right?.IsMissing == false
+                            && right.IsKind(SyntaxKind.AddExpression, SyntaxKind.SubtractExpression))
+                        {
+                            var binaryExpression = (BinaryExpressionSyntax)right;
+                            ExpressionSyntax binaryLeft = binaryExpression.Left;
+                            ExpressionSyntax binaryRight = binaryExpression.Right;
+
+                            if (binaryLeft?.IsMissing == false
+                                && binaryRight?.IsNumericLiteralExpression(1) == true)
+                            {
+                                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
+
+                                if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
+                                    && left.IsEquivalentTo(binaryLeft, topLevel: false)
+                                    && !assignment.SpanContainsDirectives())
+                                {
+                                    ReportDiagnostic(context, assignment);
+
+                                    context.FadeOutToken(FadeOutDescriptor, assignment.OperatorToken);
+                                    context.FadeOutNode(FadeOutDescriptor, binaryLeft);
+                                    context.FadeOutNode(FadeOutDescriptor, binaryRight);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment)
+        {
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                assignment.GetLocation(),
+                GetOperatorText(assignment));
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignment,
             SyntaxKind kind,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             PostfixUnaryExpressionSyntax postfixUnary = PostfixUnaryExpression(kind, assignment.Left)
                 .WithTrailingTrivia(GetTrailingTrivia(assignment))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(assignment, postfixUnary);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(assignment, postfixUnary, cancellationToken).ConfigureAwait(false);
         }
 
         private static List<SyntaxTrivia> GetTrailingTrivia(AssignmentExpressionSyntax assignment)
@@ -100,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
             return SyntaxKind.None;
         }
 
-        public static string GetOperatorText(AssignmentExpressionSyntax assignment)
+        private static string GetOperatorText(AssignmentExpressionSyntax assignment)
         {
             return GetOperatorText(GetPostfixUnaryOperatorKind(assignment));
         }

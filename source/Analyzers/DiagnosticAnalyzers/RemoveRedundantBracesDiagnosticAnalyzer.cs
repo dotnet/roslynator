@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -38,31 +39,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var block = (BlockSyntax)context.Node;
 
-            if (block.Statements.Count != 1)
-                return;
-
-            if (!block.Statements[0].IsKind(SyntaxKind.Block))
-                return;
-
-            var block2 = (BlockSyntax)block.Statements[0];
-
-            if (block.OpenBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return;
-
-            if (block.CloseBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return;
-
-            if (block2.OpenBraceToken.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return;
-
-            if (block2.CloseBraceToken.TrailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                return;
-
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.RemoveRedundantBraces,
-                block2.GetLocation());
-
-            context.FadeOutBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block2);
+            RemoveRedundantBracesRefactoring.Analyze(context, block);
         }
     }
 }

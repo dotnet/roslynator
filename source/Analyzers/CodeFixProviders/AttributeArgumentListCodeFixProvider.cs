@@ -2,12 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class AttributeArgumentListCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -31,24 +33,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty argument list",
-                cancellationToken => RemoveEmptyAttributeArgumentListAsync(context.Document, attributeArgumentList, cancellationToken),
+                cancellationToken => RemoveEmptyAttributeArgumentListRefactoring.RefactorAsync(context.Document, attributeArgumentList, cancellationToken),
                 DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> RemoveEmptyAttributeArgumentListAsync(
-            Document document,
-            AttributeArgumentListSyntax attributeArgumentList,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = oldRoot.RemoveNode(
-                attributeArgumentList,
-                SyntaxRemoveOptions.KeepNoTrivia);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal class FormatSummaryElementOnSingleLine
+    internal static class FormatSummaryElementOnSingleLine
     {
         /// <summary>
         /// </summary>

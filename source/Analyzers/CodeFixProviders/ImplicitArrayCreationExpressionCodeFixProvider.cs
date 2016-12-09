@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -39,48 +38,12 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .GetTypeInfo(expression, context.CancellationToken)
                 .Type as IArrayTypeSymbol;
 
-            if (typeSymbol?.ElementType?.IsErrorType() == false)
-            {
-                var arrayType = CSharpFactory.Type(typeSymbol) as ArrayTypeSyntax;
+            CodeAction codeAction = CodeAction.Create(
+                $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
+                cancellationToken => AvoidImplicitlyTypedArrayRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
+                DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
 
-                if (arrayType != null)
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        $"Declare explicit type '{typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
-                        cancellationToken => RefactorAsync(context.Document, expression, arrayType, cancellationToken),
-                        DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
-
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                }
-            }
-        }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            ImplicitArrayCreationExpressionSyntax node,
-            ArrayTypeSyntax arrayType,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            ArrayCreationExpressionSyntax newNode = CreateArrayCreationExpression(node, arrayType)
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = root.ReplaceNode(node, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static ArrayCreationExpressionSyntax CreateArrayCreationExpression(
-            ImplicitArrayCreationExpressionSyntax node,
-            ArrayTypeSyntax arrayType)
-        {
-            return SyntaxFactory.ArrayCreationExpression(
-                node.NewKeyword,
-                arrayType
-                    .WithSimplifierAnnotation()
-                    .WithTrailingTrivia(node.CloseBracketToken.TrailingTrivia),
-                node.Initializer);
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
     }
 }

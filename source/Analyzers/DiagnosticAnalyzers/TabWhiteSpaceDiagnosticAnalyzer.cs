@@ -3,9 +3,8 @@
 using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -30,35 +29,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            SyntaxNode root;
-            if (!context.Tree.TryGetRoot(out root))
-                return;
-
-            foreach (SyntaxTrivia trivia in root.DescendantTrivia(descendIntoTrivia: true))
-            {
-                if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
-                {
-                    string text = trivia.ToString();
-
-                    for (int i = 0; i < text.Length; i++)
-                    {
-                        if (text[i] == '\t')
-                        {
-                            int index = i;
-
-                            do
-                            {
-                                i++;
-
-                            } while (i < text.Length && text[i] == '\t');
-
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.AvoidUsageOfTab,
-                                Location.Create(context.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
-                        }
-                    }
-                }
-            }
+            AvoidUsageOfTabRefactoring.Analyze(context);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -13,7 +14,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class ThrowStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.ThrowingOfNewNotImplementedException);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ThrowingOfNewNotImplementedException); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -30,30 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var throwStatement = (ThrowStatementSyntax)context.Node;
 
-            if (throwStatement.Expression?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
-            {
-                var objectCreationExpression = (ObjectCreationExpressionSyntax)throwStatement.Expression;
-
-                if (objectCreationExpression.Type != null)
-                {
-                    ITypeSymbol typeSymbol = context
-                        .SemanticModel
-                        .GetTypeInfo(objectCreationExpression, context.CancellationToken)
-                        .Type;
-
-                    if (typeSymbol != null)
-                    {
-                        INamedTypeSymbol notImplementedExceptionSymbol = context.GetTypeByMetadataName(MetadataNames.System_NotImplementedException);
-
-                        if (typeSymbol.Equals(notImplementedExceptionSymbol))
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.ThrowingOfNewNotImplementedException,
-                                throwStatement.GetLocation());
-                        }
-                    }
-                }
-            }
+            ThrowingOfNewNotImplementedExceptionRefactoring.Analyze(context, throwStatement);
         }
     }
 }

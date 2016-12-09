@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -68,10 +67,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 "Add static modifier",
                                 cancellationToken =>
                                 {
-                                    return AddModifierRefactoring.RefactorAsync(
+                                    return AddStaticModifierToAllPartialClassDeclarationsRefactoring.RefactorAsync(
                                         context.Document,
                                         classDeclaration,
-                                        SyntaxKind.StaticKeyword,
                                         cancellationToken);
                                 },
                                 diagnostic.Id + EquivalenceKeySuffix);

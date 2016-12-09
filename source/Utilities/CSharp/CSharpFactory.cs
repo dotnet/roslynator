@@ -455,6 +455,11 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.AmpersandAmpersandToken);
         }
 
+        public static SyntaxToken QuestionToken()
+        {
+            return Token(SyntaxKind.QuestionToken);
+        }
+
         public static SyntaxToken WhileKeyword()
         {
             return Token(SyntaxKind.WhileKeyword);

@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class SplitVariableDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.SplitVariableDeclaration);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.SplitVariableDeclaration); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -37,17 +39,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
-                TextSpan span = TextSpan.FromBounds(
-                    variables[1].Span.Start,
-                    variables.Last().Span.End);
+                TextSpan span = TextSpan.FromBounds(variables[1].Span.Start, variables.Last().Span.End);
 
                 if (context.Node
                     .DescendantTrivia(span)
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.SplitVariableDeclaration,
-                        variableDeclaration.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.SplitVariableDeclaration, variableDeclaration.GetLocation());
                 }
             }
         }

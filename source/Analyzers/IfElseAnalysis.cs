@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    internal class IfElseAnalysisResult
+    internal static class IfElseAnalysis
     {
-        internal IfElseAnalysisResult(IfStatementSyntax ifStatement)
+        public static BracesAnalysisResult Analyze(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
@@ -37,8 +37,7 @@ namespace Roslynator.CSharp
 
                 if (cnt > 1 && anyHasEmbedded && !allSupportsEmbedded)
                 {
-                    AddBraces = true;
-                    return;
+                    return BracesAnalysisResult.AddBraces;
                 }
             }
 
@@ -46,11 +45,17 @@ namespace Roslynator.CSharp
                 && allSupportsEmbedded
                 && anyHasBlock)
             {
-                RemoveBraces = true;
-
                 if (anyHasEmbedded)
-                    AddBraces = true;
+                {
+                    return BracesAnalysisResult.AddBraces | BracesAnalysisResult.RemoveBraces;
+                }
+                else
+                {
+                    return BracesAnalysisResult.RemoveBraces;
+                }
             }
+
+            return BracesAnalysisResult.None;
         }
 
         private static bool SupportsEmbedded(StatementSyntax statement)
@@ -87,9 +92,5 @@ namespace Roslynator.CSharp
                 return ((ElseClauseSyntax)node).Statement;
             }
         }
-
-        public bool AddBraces { get; }
-
-        public bool RemoveBraces { get; }
     }
 }

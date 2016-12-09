@@ -2,13 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -43,29 +41,12 @@ namespace Roslynator.CSharp.CodeFixProviders
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Use predefined type '{namedTypeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
-                        cancellationToken => RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
+                        cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 
                     context.RegisterCodeFix(codeAction, context.Diagnostics);
                 }
             }
-        }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            TypeSyntax newType = CSharpFactory.Type(typeSymbol)
-                .WithTriviaFrom(node)
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = root.ReplaceNode(node, newType);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Inline alias expression",
                             cancellationToken =>
                             {
-                                return InlineAliasExpressionRefactoring.RefactorAsync(
+                                return InlineAliasExpressionSyntaxRewriter.VisitAsync(
                                     context.Document,
                                     usingDirective,
                                     cancellationToken);

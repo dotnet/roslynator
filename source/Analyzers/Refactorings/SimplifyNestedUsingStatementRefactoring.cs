@@ -6,18 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveBracesFromUsingStatementRefactoring
+    internal static class SimplifyNestedUsingStatementRefactoring
     {
-        public static bool CanRefactor(UsingStatementSyntax usingStatement)
+        public static void Analyze(SyntaxNodeAnalysisContext context, UsingStatementSyntax usingStatement)
         {
-            return ContainsEmbeddableUsingStatement(usingStatement)
+            if (ContainsEmbeddableUsingStatement(usingStatement)
                 && !usingStatement
                     .Ancestors()
-                    .Any(f => f.IsKind(SyntaxKind.UsingStatement)
-                        && ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                    .Any(f => f.IsKind(SyntaxKind.UsingStatement) && ContainsEmbeddableUsingStatement((UsingStatementSyntax)f)))
+            {
+                var block = (BlockSyntax)usingStatement.Statement;
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.SimplifyNestedUsingStatement,
+                    block.GetLocation());
+
+                context.FadeOutBraces(DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut, block);
+            }
         }
 
         public static bool ContainsEmbeddableUsingStatement(UsingStatementSyntax usingStatement)

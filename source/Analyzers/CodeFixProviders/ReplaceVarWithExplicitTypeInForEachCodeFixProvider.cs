@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -18,7 +17,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class ReplaceVarWithExplicitTypeInForEachCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -40,29 +41,12 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (typeSymbol != null)
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
-                    cancellationToken => ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
+                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.SpanStart, DefaultSymbolDisplayFormat.Value)}'",
+                    cancellationToken => UseExplicitTypeInsteadOfVarRefactoring.RefactorAsync(context.Document, type, typeSymbol, cancellationToken),
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }
-        }
-
-        private static async Task<Document> ChangeTypeAsync(
-            Document document,
-            TypeSyntax type,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            TypeSyntax newType = CSharpFactory.Type(typeSymbol)
-                .WithTriviaFrom(type)
-                .WithSimplifierAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

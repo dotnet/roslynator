@@ -231,7 +231,7 @@ namespace Roslynator.CSharp
                 .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
 
-        public static SwitchSectionAnalysisResult AnalyzeSwitchSection(SwitchSectionSyntax section)
+        public static BracesAnalysisResult AnalyzeSwitchSection(SwitchSectionSyntax section)
         {
             if (section == null)
                 throw new ArgumentNullException(nameof(section));
@@ -240,21 +240,21 @@ namespace Roslynator.CSharp
 
             if (statements.Count > 1)
             {
-                return SwitchSectionAnalysisResult.AddBraces;
+                return BracesAnalysisResult.AddBraces;
             }
             else if (statements.Count == 1)
             {
                 if (statements[0].IsKind(SyntaxKind.Block))
                 {
-                    return SwitchSectionAnalysisResult.RemoveBraces;
+                    return BracesAnalysisResult.RemoveBraces;
                 }
                 else
                 {
-                    return SwitchSectionAnalysisResult.AddBraces;
+                    return BracesAnalysisResult.AddBraces;
                 }
             }
 
-            return SwitchSectionAnalysisResult.None;
+            return BracesAnalysisResult.None;
         }
     }
 }

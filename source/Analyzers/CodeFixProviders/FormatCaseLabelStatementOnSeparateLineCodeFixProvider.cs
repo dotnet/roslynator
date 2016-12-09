@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class FormatCaseLabelStatementOnSeparateLineCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

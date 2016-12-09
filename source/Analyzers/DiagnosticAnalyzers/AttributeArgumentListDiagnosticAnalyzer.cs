@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -13,7 +14,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class AttributeArgumentListDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -30,12 +33,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
-            if (attributeArgumentList.Arguments.Count == 0)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyAttributeArgumentList,
-                    attributeArgumentList.GetLocation());
-            }
+            if (RemoveEmptyAttributeArgumentListRefactoring.CanRefactor(attributeArgumentList))
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList, attributeArgumentList.GetLocation());
         }
     }
 }

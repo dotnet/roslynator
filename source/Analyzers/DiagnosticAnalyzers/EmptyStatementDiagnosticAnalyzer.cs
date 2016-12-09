@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -12,7 +13,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class EmptyStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyStatement);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyStatement); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -27,17 +30,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            if (context.Node.Parent == null)
-                return;
+            SyntaxNode emptyStatement = context.Node;
 
-            if (EmbeddedStatement.CanContainEmbeddedStatement(context.Node.Parent))
-                return;
-
-            Diagnostic diagnostic = Diagnostic.Create(
-                DiagnosticDescriptors.RemoveEmptyStatement,
-                context.Node.GetLocation());
-
-            context.ReportDiagnostic(diagnostic);
+            RemoveEmptyStatementRefactoring.Analyze(context, emptyStatement);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
     delegate void DelegateName123();
 
-    class AddDefaultAccessModifier
+    static class AddDefaultAccessModifier
     {
         interface InterfaceName
         {
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
     /*****/
 
-    partial class PartialClass2
+    static partial class PartialClass2
     {
     }
 

@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class VariableDeclarationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SplitVariableDeclaration);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SplitVariableDeclaration); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -28,13 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 SplitVariableDeclarationRefactoring.GetTitle(variableDeclaration),
-                cancellationToken =>
-                {
-                    return SplitVariableDeclarationRefactoring.RefactorAsync(
-                        context.Document,
-                        variableDeclaration,
-                        cancellationToken);
-                },
+                cancellationToken => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, cancellationToken),
                 DiagnosticIdentifiers.SplitVariableDeclaration + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

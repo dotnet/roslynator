@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -32,22 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var lockStatement = (LockStatementSyntax)context.Node;
 
-            ExpressionSyntax expression = lockStatement.Expression;
-
-            if (expression?.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression) == true)
-            {
-                ITypeSymbol typeSymbol = context.SemanticModel
-                    .GetTypeInfo(expression, context.CancellationToken)
-                    .Type;
-
-                if (typeSymbol?.IsPubliclyAccessible() == true)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
-                        expression.GetLocation(),
-                        expression.ToString());
-                }
-            }
+            AvoidLockingOnPubliclyAccessibleInstanceRefactoring.Analyze(context, lockStatement);
         }
     }
 }

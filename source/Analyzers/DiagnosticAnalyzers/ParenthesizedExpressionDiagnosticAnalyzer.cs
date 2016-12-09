@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -62,9 +63,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var parenthesizedExpression = (ParenthesizedExpressionSyntax)context.Node;
-
-            AnalyzeExpression(context, parenthesizedExpression.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ParenthesizedExpressionSyntax)context.Node);
         }
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
@@ -72,9 +71,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var whileStatement = (WhileStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, whileStatement.Condition);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (WhileStatementSyntax)context.Node);
         }
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
@@ -82,9 +79,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var doStatement = (DoStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, doStatement.Condition);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (DoStatementSyntax)context.Node);
         }
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
@@ -92,9 +87,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var usingStatement = (UsingStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, usingStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (UsingStatementSyntax)context.Node);
         }
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
@@ -102,9 +95,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var lockStatement = (LockStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, lockStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (LockStatementSyntax)context.Node);
         }
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
@@ -112,9 +103,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var ifStatement = (IfStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, ifStatement.Condition);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (IfStatementSyntax)context.Node);
         }
 
         private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -122,9 +111,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var switchStatement = (SwitchStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, switchStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
         }
 
         private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
@@ -132,9 +119,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var returnStatement = (ReturnStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, returnStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ReturnStatementSyntax)context.Node);
         }
 
         private void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
@@ -142,9 +127,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var yieldStatement = (YieldStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, yieldStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (YieldStatementSyntax)context.Node);
         }
 
         private void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
@@ -152,9 +135,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var expressionStatement = (ExpressionStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, expressionStatement.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ExpressionStatementSyntax)context.Node);
         }
 
         private void AnalyzeArgument(SyntaxNodeAnalysisContext context)
@@ -162,9 +143,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var argument = (ArgumentSyntax)context.Node;
-
-            AnalyzeExpression(context, argument.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ArgumentSyntax)context.Node);
         }
 
         private void AnalyzeAttributeArgument(SyntaxNodeAnalysisContext context)
@@ -172,9 +151,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var attributeArgument = (AttributeArgumentSyntax)context.Node;
-
-            AnalyzeExpression(context, attributeArgument.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (AttributeArgumentSyntax)context.Node);
         }
 
         private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
@@ -182,9 +159,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
-
-            AnalyzeExpression(context, equalsValueClause.Value);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (EqualsValueClauseSyntax)context.Node);
         }
 
         private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
@@ -192,39 +167,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var awaitExpression = (AwaitExpressionSyntax)context.Node;
-
-            AnalyzeExpression(context, awaitExpression.Expression);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (AwaitExpressionSyntax)context.Node);
         }
 
-        private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
+       private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var assignment = (AssignmentExpressionSyntax)context.Node;
-
-            AnalyzeExpression(context, assignment.Left);
-            AnalyzeExpression(context, assignment.Right);
-        }
-
-        private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
-        {
-            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
-            {
-                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
-
-                SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
-                SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
-
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantParentheses,
-                    openParen.GetLocation(),
-                    additionalLocations: new Location[] { closeParen.GetLocation() });
-
-                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
-            }
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (AssignmentExpressionSyntax)context.Node);
         }
     }
 }

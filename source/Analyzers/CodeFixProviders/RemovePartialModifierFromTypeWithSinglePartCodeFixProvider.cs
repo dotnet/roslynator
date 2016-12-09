@@ -7,34 +7,34 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantPartialModifierCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePartialModifierFromTypeWithSinglePartCodeFixProvider))]
     [Shared]
-    public class RemoveRedundantPartialModifierCodeFixProvider : BaseCodeFixProvider
+    public class RemovePartialModifierFromTypeWithSinglePartCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            SyntaxNode declaration = root
+            TypeDeclarationSyntax typeDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(
-                    SyntaxKind.ClassDeclaration,
-                    SyntaxKind.StructDeclaration,
-                    SyntaxKind.InterfaceDeclaration);
+                .FirstAncestorOrSelf<TypeDeclarationSyntax>();
 
-            if (declaration == null)
+            if (typeDeclaration == null)
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove 'partial' modifier",
-                cancellationToken => RemoveModifierRefactoring.RemovePartialModifierAsync(context.Document, declaration, cancellationToken),
+                "Remove partial modifier",
+                cancellationToken => RemovePartialModifierFromTypeWithSinglePartRefactoring.RefactorAsync(context.Document, typeDeclaration, cancellationToken),
                 DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

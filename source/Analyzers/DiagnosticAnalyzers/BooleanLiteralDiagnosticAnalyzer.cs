@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -30,14 +31,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsExpression(f),
+            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
                 SyntaxKind.EqualsExpression,
                 SyntaxKind.NotEqualsExpression,
                 SyntaxKind.LogicalAndExpression,
                 SyntaxKind.LogicalOrExpression);
         }
 
-        private void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        private void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
@@ -117,12 +118,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             if (leftKind == kind)
             {
-                if (IsBooleanExpressionButNotBooleanLiteral(context, right))
+                if (IsBooleanExpressionButNotBooleanLiteral(right, context.SemanticModel, context.CancellationToken))
                     SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression);
             }
             else if (leftKind == kind2)
             {
-                if (IsBooleanExpressionButNotBooleanLiteral(context, right))
+                if (IsBooleanExpressionButNotBooleanLiteral(right, context.SemanticModel, context.CancellationToken))
                     RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left);
             }
             else
@@ -131,12 +132,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (rightKind == kind)
                 {
-                    if (IsBooleanExpressionButNotBooleanLiteral(context, left))
+                    if (IsBooleanExpressionButNotBooleanLiteral(left, context.SemanticModel, context.CancellationToken))
                         SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression);
                 }
                 else if (rightKind == kind2)
                 {
-                    if (IsBooleanExpressionButNotBooleanLiteral(context, left))
+                    if (IsBooleanExpressionButNotBooleanLiteral(left, context.SemanticModel, context.CancellationToken))
                         RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, right);
                 }
             }
@@ -160,8 +161,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         }
 
         private static bool IsBooleanExpressionButNotBooleanLiteral(
-            SyntaxNodeAnalysisContext context,
-            ExpressionSyntax expression)
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             switch (expression.Kind())
             {
@@ -172,9 +174,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     return true;
                 default:
                     {
-                        return context
-                            .SemanticModel
-                            .GetTypeInfo(expression, context.CancellationToken)
+                        return semanticModel
+                            .GetTypeInfo(expression, cancellationToken)
                             .ConvertedType?
                             .IsBoolean() == true;
                     }

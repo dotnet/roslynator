@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseCSharp6DictionaryInitializerRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, InitializerExpressionSyntax initializer)
+        {
+            if (initializer.Expressions.Count == 2)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseCSharp6DictionaryInitializer,
+                    initializer.GetLocation());
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
             ImplicitElementAccessSyntax implicitElementAccess = ImplicitElementAccess(
@@ -35,9 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                     .AppendTrailingTrivia(initializer.CloseBraceToken.GetLeadingAndTrailingTrivia())
                     .WithFormatterAnnotation());
 
-            SyntaxNode newRoot = root.ReplaceNode(initializer, assignment);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(initializer, assignment).ConfigureAwait(false);
         }
     }
 }

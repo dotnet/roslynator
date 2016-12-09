@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -60,89 +59,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
+            FormatBinaryOperatorOnNextLineRefactoring.Analyze(context, binaryExpression);
 
-            if (left?.IsMissing == false
-                && right?.IsMissing == false)
-            {
-                if (!IsStringConcatenation(context, binaryExpression)
-                    && left.GetTrailingTrivia().All(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
-                    && CheckOperatorTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia)
-                    && right.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
-                        binaryExpression.OperatorToken.GetLocation());
-                }
+            AvoidNullLiteralExpressionOnLeftSideOfBinaryExpressionRefactoring.Analyze(context, binaryExpression);
 
-                if (binaryExpression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression)
-                    && left.IsKind(SyntaxKind.NullLiteralExpression)
-                    && !right.IsKind(SyntaxKind.NullLiteralExpression)
-                    && !binaryExpression.SpanContainsDirectives())
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
-                        left.GetLocation());
-                }
-
-                if (UseStringIsNullOrEmptyMethodRefactoring.CanRefactor(binaryExpression, left, right, context.SemanticModel, context.CancellationToken)
-                    && !binaryExpression.SpanContainsDirectives())
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseStringIsNullOrEmptyMethod,
-                        binaryExpression.GetLocation());
-                }
-            }
-        }
-
-        private static bool IsStringConcatenation(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
-        {
-            return binaryExpression.IsKind(SyntaxKind.AddExpression)
-                && (IsStringExpression(context, binaryExpression.Left) || IsStringExpression(context, binaryExpression.Right));
-        }
-
-        private static bool IsStringExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
-        {
-            if (expression.IsKind(SyntaxKind.StringLiteralExpression)
-                || expression.IsKind(SyntaxKind.InterpolatedStringExpression))
-            {
-                return true;
-            }
-
-            ITypeSymbol typeSymbol = context.SemanticModel
-                .GetTypeInfo(expression, context.CancellationToken)
-                .ConvertedType;
-
-            return typeSymbol?.IsNamedType() == true
-                && ((INamedTypeSymbol)typeSymbol).IsString();
-        }
-
-        private static bool CheckOperatorTrailingTrivia(SyntaxTriviaList triviaList)
-        {
-            bool result = false;
-
-            foreach (SyntaxTrivia trivia in triviaList)
-            {
-                switch (trivia.Kind())
-                {
-                    case SyntaxKind.WhitespaceTrivia:
-                        {
-                            continue;
-                        }
-                    case SyntaxKind.EndOfLineTrivia:
-                        {
-                            result = true;
-                            continue;
-                        }
-                    default:
-                        {
-                            return false;
-                        }
-                }
-            }
-
-            return result;
+            UseStringIsNullOrEmptyMethodRefactoring.Analyze(context, binaryExpression);
         }
     }
 }

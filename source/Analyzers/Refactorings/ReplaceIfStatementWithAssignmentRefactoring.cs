@@ -5,12 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceIfStatementWithAssignmentRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        {
+            if (CanRefactor(ifStatement, context.SemanticModel, context.CancellationToken)
+                && !ifStatement.SpanContainsDirectives())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment,
+                    ifStatement.GetLocation());
+            }
+        }
+
         public static bool CanRefactor(
             IfStatementSyntax ifStatement,
             SemanticModel semanticModel,

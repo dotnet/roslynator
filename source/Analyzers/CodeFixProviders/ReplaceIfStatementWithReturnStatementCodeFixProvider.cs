@@ -32,11 +32,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (ifStatement == null)
                 return;
 
-            ReturnStatementSyntax returnStatement = ReplaceIfStatementWithReturnStatementRefactoring.CreateReturnStatement(ifStatement);
-
             CodeAction codeAction = CodeAction.Create(
-                $"Replace if with '{returnStatement}'",
-                cancellationToken => ReplaceIfStatementWithReturnStatementRefactoring.RefactorAsync(context.Document, ifStatement, returnStatement, cancellationToken),
+                "Replace if with return",
+                cancellationToken => ReplaceIfStatementWithReturnStatementRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
                 DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

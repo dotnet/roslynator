@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,7 +20,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.SimplifyAssignmentExpression,
                     DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut,
-                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment);
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut);
             }
         }
 
@@ -40,82 +40,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
-            ExpressionSyntax left = assignment.Left;
-            ExpressionSyntax right = assignment.Right;
-
-            if (left?.IsMissing == false
-                && right?.IsMissing == false)
+            if (SimplifyAssignmentExpressionRefactoring.CanRefactor(assignment))
             {
-                if (!assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && SupportsCompoundAssignment(right))
-                {
-                    var binaryExpression = (BinaryExpressionSyntax)right;
-                    ExpressionSyntax binaryLeft = binaryExpression.Left;
-                    ExpressionSyntax binaryRight = binaryExpression.Right;
-
-                    if (binaryLeft?.IsMissing == false
-                        && binaryRight?.IsMissing == false
-                        && left.IsEquivalentTo(binaryLeft, topLevel: false)
-                        && ContainsOnlyWhitespaceOrEndOfLineTrivia(assignment))
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.SimplifyAssignmentExpression,
-                            assignment.GetLocation());
-
-                        context.FadeOutNode(DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut, binaryLeft);
-                    }
-                }
-
-                if (right.IsKind(SyntaxKind.AddExpression, SyntaxKind.SubtractExpression))
-                {
-                    var binaryExpression = (BinaryExpressionSyntax)right;
-                    ExpressionSyntax binaryLeft = binaryExpression.Left;
-                    ExpressionSyntax binaryRight = binaryExpression.Right;
-
-                    if (binaryLeft?.IsMissing == false
-                        && binaryRight?.IsNumericLiteralExpression(1) == true)
-                    {
-                        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(left, context.CancellationToken).Type;
-
-                        if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
-                            && left.IsEquivalentTo(binaryLeft, topLevel: false)
-                            && !assignment.SpanContainsDirectives())
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
-                                assignment.GetLocation(),
-                                UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(assignment));
-                        }
-                    }
-                }
+                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyAssignmentExpression, assignment.GetLocation());
+                context.FadeOutNode(DiagnosticDescriptors.SimplifyAssignmentExpressionFadeOut, ((BinaryExpressionSyntax)assignment.Right).Left);
             }
-        }
 
-        private static bool SupportsCompoundAssignment(ExpressionSyntax expression)
-        {
-            switch (expression.Kind())
-            {
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool ContainsOnlyWhitespaceOrEndOfLineTrivia(AssignmentExpressionSyntax assignment)
-        {
-            return assignment
-                .DescendantTrivia(assignment.Span)
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+            UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.Analyze(context, assignment);
         }
     }
 }

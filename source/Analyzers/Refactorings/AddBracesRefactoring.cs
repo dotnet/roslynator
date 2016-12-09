@@ -11,21 +11,19 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddBracesRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context)
+        public static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement)
         {
-            SyntaxNode node = context.Node;
-
-            if (!node.IsKind(SyntaxKind.IfStatement)
-                || !IfElseChain.IsPartOfChain((IfStatementSyntax)node))
+            if (!statement.IsKind(SyntaxKind.IfStatement)
+                || !IfElseChain.IsPartOfChain((IfStatementSyntax)statement))
             {
-                StatementSyntax statement = GetEmbeddedStatementThatShouldBeInsideBlock(node);
+                StatementSyntax embeddedStatement = GetEmbeddedStatementThatShouldBeInsideBlock(statement);
 
-                if (statement != null)
+                if (embeddedStatement != null)
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AddBraces,
-                        statement.GetLocation(),
-                        SyntaxHelper.GetNodeTitle(node));
+                        embeddedStatement.GetLocation(),
+                        SyntaxHelper.GetNodeTitle(statement));
                 }
             }
         }
@@ -36,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (statement?.IsKind(SyntaxKind.Block) == false)
             {
-                if (!statement.IsSingleLine() || !SyntaxHelper.IsEligibleToContainEmbeddedStatement(node))
+                if (!statement.IsSingleLine() || !EmbeddedStatement.FormatSupportsEmbeddedStatement(node))
                     return statement;
             }
 

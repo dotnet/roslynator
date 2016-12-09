@@ -11,31 +11,34 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class FormatEachStatementOnSeparateLineRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<StatementSyntax> statements)
+        public static void Analyze(SyntaxNodeAnalysisContext context, BlockSyntax block)
         {
-            if (statements.Count == 0)
-                return;
+            Analyze(context, block.Statements);
+        }
 
-            if (statements.Count == 1 && !statements[0].IsKind(SyntaxKind.Block))
-                return;
+        public static void Analyze(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
+        {
+            Analyze(context, switchSection.Statements);
+        }
 
-            int previousIndex = statements[0].GetSpanEndLine();
-
-            for (int i = 1; i < statements.Count; i++)
+        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<StatementSyntax> statements)
+        {
+            if (statements.Count > 1)
             {
-                if (!statements[i].IsKind(SyntaxKind.Block)
-                    && !statements[i].IsKind(SyntaxKind.EmptyStatement)
-                    && statements[i].GetSpanStartLine() == previousIndex)
+                int previousEndLine = statements[0].GetSpanEndLine();
+
+                for (int i = 1; i < statements.Count; i++)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
-                        statements[i].GetLocation());
+                    StatementSyntax statement = statements[i];
+
+                    if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
+                        && statement.GetSpanStartLine() == previousEndLine)
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.FormatEachStatementOnSeparateLine, statement.GetLocation());
+                    }
+
+                    previousEndLine = statement.GetSpanEndLine();
                 }
-
-                if (statements[i].IsKind(SyntaxKind.Block))
-                    Analyze(context, ((BlockSyntax)statements[i]).Statements);
-
-                previousIndex = statements[i].GetSpanEndLine();
             }
         }
 
@@ -44,13 +47,11 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             StatementSyntax newStatement = statement
                 .WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()))
                 .WithFormatterAnnotation();
 
-            if (statement.Parent.IsKind(SyntaxKind.Block))
+            if (statement.IsParentKind(SyntaxKind.Block))
             {
                 var block = (BlockSyntax)statement.Parent;
 
@@ -64,19 +65,17 @@ namespace Roslynator.CSharp.Refactorings
                         .WithStatements(block.Statements.Replace(statement, newStatement))
                         .WithFormatterAnnotation();
 
-                    root = root.ReplaceNode(block, newBlock);
+                    return await document.ReplaceNodeAsync(block, newBlock).ConfigureAwait(false);
                 }
                 else
                 {
-                    root = root.ReplaceNode(statement, newStatement);
+                    return await document.ReplaceNodeAsync(statement, newStatement).ConfigureAwait(false);
                 }
             }
             else
             {
-                root = root.ReplaceNode(statement, newStatement);
+                return await document.ReplaceNodeAsync(statement, newStatement).ConfigureAwait(false);
             }
-
-            return document.WithSyntaxRoot(root);
         }
     }
 }

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -40,26 +39,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var block = (BlockSyntax)context.Node;
 
-            RedundantEmptyLineDiagnosticAnalyzer.AnalyzeBlock(context, block);
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, block);
 
-            SyntaxList<StatementSyntax> statements = block.Statements;
+            FormatEachStatementOnSeparateLineRefactoring.Analyze(context, block);
 
-            FormatEachStatementOnSeparateLineRefactoring.Analyze(context, statements);
-
-            if (!statements.Any()
-                && !(block.Parent is AccessorDeclarationSyntax))
-            {
-                int startLine = block.OpenBraceToken.GetSpanStartLine();
-                int endLine = block.CloseBraceToken.GetSpanEndLine();
-
-                if ((endLine - startLine) != 1
-                    && block
-                        .DescendantTrivia(block.Span)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block.GetLocation());
-                }
-            }
+            FormatEmptyBlockRefactoring.Analyze(context, block);
         }
     }
 }

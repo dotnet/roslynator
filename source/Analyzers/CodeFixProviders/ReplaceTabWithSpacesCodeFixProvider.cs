@@ -2,12 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -24,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             CodeAction codeAction = CodeAction.Create(
                 "Replace tab with spaces",
-                cancellationToken => RefactorAsync(context.Document, context.Span, cancellationToken),
+                cancellationToken => AvoidUsageOfTabRefactoring.RefactorAsync(context.Document, context.Span, cancellationToken),
                 DiagnosticIdentifiers.AvoidUsageOfTab + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
@@ -34,20 +33,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             tcs.SetResult(null);
 
             return tcs.Task;
-        }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-            var textChange = new TextChange(span, new string(' ', span.Length * 4));
-
-            SourceText newSourceText = sourceText.WithChanges(textChange);
-
-            return document.WithText(newSourceText);
         }
     }
 }

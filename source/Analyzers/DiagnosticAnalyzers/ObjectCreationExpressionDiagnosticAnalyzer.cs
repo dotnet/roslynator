@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -40,42 +39,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreationExpression.Type == null || objectCreationExpression.Initializer == null)
-                return;
+            RemoveEmptyInitializerRefactoring.Analyze(context, objectCreationExpression);
 
-            InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
+            AddConstructorArgumentListRefactoring.Analyze(context, objectCreationExpression);
 
-            if (initializer.Expressions.Count == 0
-                && initializer.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && initializer.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyInitializer,
-                    initializer.GetLocation());
-            }
-
-            ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
-
-            if (argumentList == null)
-            {
-                Location location = Location.Create(
-                    context.Node.SyntaxTree,
-                    new TextSpan(objectCreationExpression.Type.Span.End, 1));
-
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddConstructorArgumentList,
-                    location);
-            }
-            else if (argumentList.Arguments.Count == 0
-                && !argumentList.OpenParenToken.IsMissing
-                && !argumentList.CloseParenToken.IsMissing
-                && argumentList.OpenParenToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && argumentList.CloseParenToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyArgumentList,
-                    argumentList.GetLocation());
-            }
+            RemoveEmptyArgumentListRefactoring.Analyze(context, objectCreationExpression);
         }
     }
 }

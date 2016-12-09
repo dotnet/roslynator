@@ -11,62 +11,6 @@ namespace Roslynator.CSharp
 {
     internal static class SyntaxHelper
     {
-        public static bool IsEligibleToContainEmbeddedStatement(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    {
-                        return ((IfStatementSyntax)node).Condition?.IsMultiLine() != true;
-                    }
-                case SyntaxKind.ElseClause:
-                    {
-                        return true;
-                    }
-                case SyntaxKind.DoStatement:
-                    {
-                        return ((DoStatementSyntax)node).Condition?.IsMultiLine() != true;
-                    }
-                case SyntaxKind.ForEachStatement:
-                    {
-                        var forEachStatement = (ForEachStatementSyntax)node;
-
-                        return forEachStatement.SyntaxTree.IsSingleLineSpan(forEachStatement.ParenthesesSpan());
-                    }
-                case SyntaxKind.ForStatement:
-                    {
-                        var forStatement = (ForStatementSyntax)node;
-
-                        return forStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true
-                            || forStatement.SyntaxTree.IsSingleLineSpan(forStatement.ParenthesesSpan());
-                    }
-                case SyntaxKind.UsingStatement:
-                    {
-                        return ((UsingStatementSyntax)node).DeclarationOrExpression()?.IsMultiLine() != true;
-                    }
-                case SyntaxKind.WhileStatement:
-                    {
-                        var whileStatement = (WhileStatementSyntax)node;
-
-                        return whileStatement.Condition?.IsMultiLine() != true
-                            || whileStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true;
-                    }
-                case SyntaxKind.LockStatement:
-                    {
-                        return ((LockStatementSyntax)node).Expression?.IsMultiLine() != true;
-                    }
-                case SyntaxKind.FixedStatement:
-                    {
-                        return ((FixedStatementSyntax)node).Declaration?.IsMultiLine() != true;
-                    }
-                default:
-                    {
-                        Debug.Assert(false, node.Kind().ToString());
-                        return false;
-                    }
-            }
-        }
-
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,

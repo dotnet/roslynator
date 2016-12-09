@@ -5,12 +5,44 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings.FormatSummary
 {
     internal static class FormatSummaryOnSingleLineRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
+        {
+            XmlElementSyntax summaryElement = FormatSummaryRefactoring.GetSummaryElement(documentationComment);
+
+            if (summaryElement != null)
+            {
+                XmlElementStartTagSyntax startTag = summaryElement?.StartTag;
+
+                if (startTag?.IsMissing == false)
+                {
+                    XmlElementEndTagSyntax endTag = summaryElement.EndTag;
+
+                    if (endTag?.IsMissing == false
+                        && startTag.GetSpanEndLine() < endTag.GetSpanStartLine())
+                    {
+                        Match match = FormatSummaryRefactoring.Regex.Match(
+                            summaryElement.ToString(),
+                            startTag.Span.End - summaryElement.Span.Start,
+                            endTag.Span.Start - startTag.Span.End);
+
+                        if (match.Success)
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.FormatDocumentationSummaryOnSingleLine,
+                                summaryElement.GetLocation());
+                        }
+                    }
+                }
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             DocumentationCommentTriviaSyntax documentationComment,

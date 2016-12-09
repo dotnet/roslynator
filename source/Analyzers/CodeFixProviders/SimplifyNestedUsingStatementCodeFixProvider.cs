@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             bool fMultiple = usingStatement.Statement
                 .DescendantNodes()
-                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && RemoveBracesFromUsingStatementRefactoring.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
+                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && SimplifyNestedUsingStatementRefactoring.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
 
             string title = "Remove braces from using statement";
 
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 title,
-                cancellationToken => RemoveBracesFromUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, cancellationToken),
+                cancellationToken => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, cancellationToken),
                 DiagnosticIdentifiers.SimplifyNestedUsingStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

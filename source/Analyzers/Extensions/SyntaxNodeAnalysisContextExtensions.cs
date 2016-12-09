@@ -8,6 +8,11 @@ namespace Roslynator.CSharp
 {
     internal static class SyntaxNodeAnalysisContextExtensions
     {
+        public static SyntaxTree SyntaxTree(this SyntaxNodeAnalysisContext context)
+        {
+            return context.Node.SyntaxTree;
+        }
+
         public static void FadeOutToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token)
         {
             if (!token.IsMissing)

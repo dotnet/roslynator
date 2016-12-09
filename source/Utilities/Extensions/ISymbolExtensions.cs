@@ -663,5 +663,36 @@ namespace Roslynator
 
             return false;
         }
+
+        public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            return typeSymbol.TypeKind == typeKind;
+        }
+
+        public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind1, TypeKind typeKind2)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            TypeKind typeKind = typeSymbol.TypeKind;
+
+            return typeKind == typeKind1
+                || typeKind == typeKind2;
+        }
+
+        public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind1, TypeKind typeKind2, TypeKind typeKind3)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            TypeKind typeKind = typeSymbol.TypeKind;
+
+            return typeKind == typeKind1
+                || typeKind == typeKind2
+                || typeKind == typeKind3;
+        }
     }
 }

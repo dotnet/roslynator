@@ -3,15 +3,29 @@
 using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantToStringCallRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        {
+            if (CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.Span.Start, invocation.Span.End);
+
+                if (!invocation.ContainsDirectives(span))
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantToStringCall, Location.Create(invocation.SyntaxTree, span));
+            }
+        }
+
         public static bool CanRefactor(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,

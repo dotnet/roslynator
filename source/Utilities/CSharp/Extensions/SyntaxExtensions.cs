@@ -681,11 +681,31 @@ namespace Roslynator.CSharp
 
         public static bool IsIncrementOrDecrementExpression(this ExpressionSyntax expression)
         {
-            return expression.IsKind(
+            return expression?.IsKind(
                 SyntaxKind.PreIncrementExpression,
                 SyntaxKind.PreDecrementExpression,
                 SyntaxKind.PostIncrementExpression,
-                SyntaxKind.PostDecrementExpression);
+                SyntaxKind.PostDecrementExpression) == true;
+        }
+
+        public static bool SupportsCompoundAssignment(this ExpressionSyntax expression)
+        {
+            switch (expression?.Kind())
+            {
+                case SyntaxKind.AddExpression:
+                case SyntaxKind.SubtractExpression:
+                case SyntaxKind.MultiplyExpression:
+                case SyntaxKind.DivideExpression:
+                case SyntaxKind.ModuloExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.ExclusiveOrExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                case SyntaxKind.LeftShiftExpression:
+                case SyntaxKind.RightShiftExpression:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public static TextSpan ParenthesesSpan(this ForEachStatementSyntax forEachStatement)
@@ -752,6 +772,19 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(interpolatedString));
 
             return interpolatedString.StringStartToken.ValueText.Contains("@");
+        }
+
+        public static TextSpan GetDollarSpan(this InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            if (interpolatedString == null)
+                throw new ArgumentNullException(nameof(interpolatedString));
+
+            SyntaxToken token = interpolatedString.StringStartToken;
+
+            if (token.Text.StartsWith("$"))
+                return new TextSpan(token.SpanStart, 1);
+
+            return new TextSpan(token.SpanStart, 0);
         }
 
         public static InvocationExpressionSyntax WithArgumentList(
@@ -875,7 +908,10 @@ namespace Roslynator.CSharp
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Modifiers;
                 default:
-                    return SyntaxFactory.TokenList();
+                    {
+                        Debug.Assert(false, declaration.Kind().ToString());
+                        return TokenList();
+                    }
             }
         }
 
@@ -913,11 +949,12 @@ namespace Roslynator.CSharp
                     return ((PropertyDeclarationSyntax)declaration).WithModifiers(modifiers);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).WithModifiers(modifiers);
+                default:
+                    {
+                        Debug.Assert(false, declaration.Kind().ToString());
+                        return declaration;
+                    }
             }
-
-            Debug.Assert(false, declaration.Kind().ToString());
-
-            return declaration;
         }
 
         public static MemberDeclarationSyntax GetParentMember(this MemberDeclarationSyntax member)

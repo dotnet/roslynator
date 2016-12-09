@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class ArrowExpressionClauseCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidMultilineExpressionBody);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidMultilineExpressionBody); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

@@ -2,13 +2,13 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -17,7 +17,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class SimplifyNullableOfTCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNullableOfT);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNullableOfT); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -34,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 $"Simplify name '{type.ToString()}'",
-                cancellationToken => SimplifyNullableOfTAsync(context.Document, type, nullableType, cancellationToken),
+                cancellationToken => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, cancellationToken),
                 DiagnosticIdentifiers.SimplifyNullableOfT + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
@@ -46,23 +48,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                 type = ((QualifiedNameSyntax)type).Right;
 
             return ((GenericNameSyntax)type).TypeArgumentList.Arguments[0];
-        }
-
-        private static async Task<Document> SimplifyNullableOfTAsync(
-            Document document,
-            TypeSyntax type,
-            TypeSyntax nullableType,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            TypeSyntax newType = SyntaxFactory.NullableType(nullableType.WithoutTrivia(), SyntaxFactory.Token(SyntaxKind.QuestionToken))
-                .WithTriviaFrom(type)
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

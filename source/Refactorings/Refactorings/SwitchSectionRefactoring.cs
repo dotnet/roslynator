@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 switch (SyntaxAnalyzer.AnalyzeSwitchSection(switchSection))
                 {
-                    case SwitchSectionAnalysisResult.AddBraces:
+                    case BracesAnalysisResult.AddBraces:
                         {
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSection))
                             {
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             break;
                         }
-                    case SwitchSectionAnalysisResult.RemoveBraces:
+                    case BracesAnalysisResult.RemoveBraces:
                         {
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSection))
                             {

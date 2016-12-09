@@ -2,12 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -16,41 +16,27 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class RemoveOriginalExceptionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            ThrowStatementSyntax node = root
+            ThrowStatementSyntax throwStatement = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ThrowStatementSyntax>();
 
-            if (node == null)
+            if (throwStatement == null)
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove original exception from throw statement",
-                cancellationToken => RemoveOriginalExceptionAsync(context.Document, node, cancellationToken),
+                cancellationToken => RemoveOriginalExceptionFromThrowStatementRefactoring.RefactorAsync(context.Document, throwStatement, cancellationToken),
                 DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> RemoveOriginalExceptionAsync(
-            Document document,
-            ThrowStatementSyntax throwStatement,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            ThrowStatementSyntax newThrowStatement = throwStatement
-                .RemoveNode(throwStatement.Expression, SyntaxRemoveOptions.KeepExteriorTrivia)
-                .WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(throwStatement, newThrowStatement);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -39,29 +39,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var forStatement = (ForStatementSyntax)context.Node;
 
-            if (forStatement.Declaration == null
-                && forStatement.Condition == null
-                && forStatement.Incrementors.Count == 0
-                && forStatement.Initializers.Count == 0
-                && !forStatement.ContainsDirectives(
-                    TextSpan.FromBounds(
-                        forStatement.OpenParenToken.Span.End,
-                        forStatement.CloseParenToken.Span.Start)))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop,
-                    forStatement.ForKeyword.GetLocation());
-            }
+            AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.Analyze(context, forStatement);
 
-            if (forStatement.Condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
-                    forStatement.Condition.GetLocation());
+            ExpressionSyntax condition = forStatement.Condition;
 
-                context.FadeOutNode(
-                    DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut,
-                    forStatement.Condition);
+            if (condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
+            {
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition.GetLocation());
+                context.FadeOutNode(DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut, condition);
             }
         }
     }

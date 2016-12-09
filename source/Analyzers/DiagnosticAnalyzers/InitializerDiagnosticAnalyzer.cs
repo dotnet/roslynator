@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -14,7 +14,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class InitializerDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantCommaInInitializer);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantCommaInInitializer); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -34,20 +36,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var initializer = (InitializerExpressionSyntax)context.Node;
 
-            if (initializer.Expressions.Count == 0)
-                return;
-
-            if (initializer.Expressions.Count == initializer.Expressions.SeparatorCount)
-            {
-                SyntaxToken token = initializer.Expressions.GetSeparators().Last();
-
-                if (!token.IsMissing)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantCommaInInitializer,
-                        token.GetLocation());
-                }
-            }
+            RemoveRedundantCommaInInitializerRefactoring.Analyze(context, initializer);
         }
     }
 }

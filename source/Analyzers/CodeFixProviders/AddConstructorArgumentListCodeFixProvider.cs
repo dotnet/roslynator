@@ -2,13 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -17,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class AddConstructorArgumentListCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AddConstructorArgumentList);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddConstructorArgumentList); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -32,28 +33,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Add argument list",
-                cancellationToken => AddEmptyArgumentListAsync(context.Document, syntax, cancellationToken),
+                cancellationToken => AddConstructorArgumentListRefactoring.RefactorAsync(context.Document, syntax, cancellationToken),
                 DiagnosticIdentifiers.AddConstructorArgumentList + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> AddEmptyArgumentListAsync(
-            Document document,
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            ObjectCreationExpressionSyntax newNode = objectCreationExpression
-                .WithType(objectCreationExpression.Type.WithoutTrailingTrivia())
-                .WithArgumentList(SyntaxFactory
-                    .ArgumentList()
-                    .WithTrailingTrivia(objectCreationExpression.Type.GetTrailingTrivia()));
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(objectCreationExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

@@ -3,8 +3,6 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -51,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty namespace declaration",
-                                cancellationToken => RemoveEmptyNamespaceDeclarationAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                cancellationToken => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -65,48 +63,13 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                             CodeAction codeAction = CodeAction.Create(
                                 title,
-                                cancellationToken => MoveUsingDirectiveToTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                cancellationToken => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }
-            }
-        }
-
-        private static async Task<Document> RemoveEmptyNamespaceDeclarationAsync(
-            Document document,
-            NamespaceDeclarationSyntax declaration,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = oldRoot.RemoveNode(declaration, GetRemoveOptions(declaration));
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SyntaxRemoveOptions GetRemoveOptions(NamespaceDeclarationSyntax declaration)
-        {
-            if (declaration.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    return SyntaxRemoveOptions.KeepNoTrivia;
-                }
-                else
-                {
-                    return SyntaxRemoveOptions.KeepTrailingTrivia;
-                }
-            }
-            else if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                return SyntaxRemoveOptions.KeepLeadingTrivia;
-            }
-            else
-            {
-                return SyntaxRemoveOptions.KeepExteriorTrivia;
             }
         }
     }

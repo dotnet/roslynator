@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class AvoidEmbeddedStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidEmbeddedStatement);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidEmbeddedStatement); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

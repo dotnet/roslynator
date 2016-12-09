@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -14,51 +14,34 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class RemoveRedundantSealedModifierDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantSealedModifier);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantSealedModifier); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f),
-                SyntaxKind.PropertyDeclaration,
-                SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var declaration = (MemberDeclarationSyntax)context.Node;
+            RemoveRedundantSealedModifierRefactoring.Analyze(context, (PropertyDeclarationSyntax)context.Node);
+        }
 
-            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
-
-            if (symbol == null)
+        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            var containingSymbol = symbol.ContainingSymbol as INamedTypeSymbol;
-
-            if (containingSymbol == null)
-                return;
-
-            if (containingSymbol.TypeKind != TypeKind.Class)
-                return;
-
-            if (!containingSymbol.IsSealed)
-                return;
-
-            SyntaxToken sealedKeyword = declaration
-                .GetModifiers()
-                .FirstOrDefault(f => f.IsKind(SyntaxKind.SealedKeyword));
-
-            if (sealedKeyword.IsKind(SyntaxKind.None))
-                return;
-
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.RemoveRedundantSealedModifier,
-                Location.Create(context.Node.SyntaxTree, sealedKeyword.Span));
+            RemoveRedundantSealedModifierRefactoring.Analyze(context, (MethodDeclarationSyntax)context.Node);
         }
     }
 }

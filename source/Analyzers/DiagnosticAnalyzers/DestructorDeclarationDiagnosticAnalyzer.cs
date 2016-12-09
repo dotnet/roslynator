@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -32,13 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var destructor = (DestructorDeclarationSyntax)context.Node;
 
-            if (destructor.Body?.Statements.Count == 0
-                && !destructor.SpanContainsDirectives())
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyDestructor,
-                    destructor.GetLocation());
-            }
+            RemoveEmptyDestructorRefactoring.Analyze(context, destructor);
         }
     }
 }

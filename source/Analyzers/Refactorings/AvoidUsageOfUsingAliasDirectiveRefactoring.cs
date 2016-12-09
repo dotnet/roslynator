@@ -4,11 +4,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings.InlineAliasExpression;
 
-namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
+namespace Roslynator.CSharp.Refactorings
 {
-    public static class InlineAliasExpressionRefactoring
+    internal static class AvoidUsageOfUsingAliasDirectiveRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, UsingDirectiveSyntax usingDirective)
+        {
+            if (usingDirective.Alias != null)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective,
+                    usingDirective.GetLocation());
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,

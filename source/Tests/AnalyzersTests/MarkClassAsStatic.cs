@@ -6,7 +6,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 {
     internal static class MarkClassAsStatic
     {
-        public class Foo
+        public static class Foo
         {
             public const string FooConst = "";
 
@@ -39,14 +39,14 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        class Foo2
+        static class Foo2
         {
             public static void Foo()
             {
             }
         }
 
-        public partial class Foo3
+        public static partial class Foo3
         {
             public static void Foo()
             {

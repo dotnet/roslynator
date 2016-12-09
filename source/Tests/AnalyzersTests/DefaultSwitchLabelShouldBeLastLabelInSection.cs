@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Pihrtsoft.CodeAnalysis.CSharp.Analyzers.Tests
 {
-    internal class DefaultSwitchLabelShouldBeLastLabelInSection
+    internal static class DefaultSwitchLabelShouldBeLastLabelInSection
     {
         public static void Foo()
         {

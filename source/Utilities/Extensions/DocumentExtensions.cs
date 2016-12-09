@@ -5,11 +5,79 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator
 {
     public static class DocumentExtensions
     {
+        public static async Task<Document> WithTextChange(
+            this Document document,
+            TextChange textChange,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = sourceText.WithChanges(new TextChange[] { textChange });
+
+            return document.WithText(newSourceText);
+        }
+
+        public static async Task<Document> WithTextChanges(
+            this Document document,
+            TextChange[] textChanges,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (textChanges == null)
+                throw new ArgumentNullException(nameof(textChanges));
+
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = sourceText.WithChanges(textChanges);
+
+            return document.WithText(newSourceText);
+        }
+
+        public static async Task<Document> WithTextChanges(
+            this Document document,
+            IEnumerable<TextChange> textChanges,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (textChanges == null)
+                throw new ArgumentNullException(nameof(textChanges));
+
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            SourceText newSourceText = sourceText.WithChanges(textChanges);
+
+            return document.WithText(newSourceText);
+        }
+
+        public static Task<Solution> RemoveFromSolutionAsync(
+            this Document document,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            var tcs = new TaskCompletionSource<Solution>();
+
+            Solution newSolution = document.Project.Solution.RemoveDocument(document.Id);
+
+            tcs.SetResult(newSolution);
+
+            return tcs.Task;
+        }
+
         public static async Task<Document> ReplaceNodeAsync(
             this Document document,
             SyntaxNode oldNode,
@@ -84,6 +152,44 @@ namespace Roslynator
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SyntaxNode newRoot = root.InsertNodesAfter(nodeInList, newNodes);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        public static async Task<Document> RemoveNodeAsync(
+            this Document document,
+            SyntaxNode node,
+            SyntaxRemoveOptions options,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.RemoveNode(node, options);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        public static async Task<Document> RemoveNodesAsync(
+            this Document document,
+            IEnumerable<SyntaxNode> nodes,
+            SyntaxRemoveOptions options,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (nodes == null)
+                throw new ArgumentNullException(nameof(nodes));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.RemoveNodes(nodes, options);
 
             return document.WithSyntaxRoot(newRoot);
         }

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -30,127 +29,109 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
-                SyntaxKind.IfStatement,
-                SyntaxKind.ForEachStatement,
-                SyntaxKind.ForStatement,
-                SyntaxKind.UsingStatement,
-                SyntaxKind.WhileStatement,
-                SyntaxKind.DoStatement,
-                SyntaxKind.LockStatement,
-                SyntaxKind.FixedStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
         }
 
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
+        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            AnalyzeEmbeddedStatement(context);
+            var ifStatement = (IfStatementSyntax)context.Node;
 
-            AddBracesRefactoring.Analyze(context);
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, ifStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, ifStatement);
+            AddBracesRefactoring.Analyze(context, ifStatement);
         }
 
-        private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context)
+        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            SyntaxToken token = GetToken(context.Node);
-
-            if (token.IsMissing)
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            StatementSyntax statement = GetStatement(context.Node);
+            var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            if (statement.IsKind(SyntaxKind.Block))
-                return;
-
-            if (statement.IsKind(SyntaxKind.EmptyStatement))
-                return;
-
-            if (token.GetSpanStartLine() == statement.GetSpanStartLine())
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
-                    statement.GetLocation());
-            }
-            else
-            {
-                var parentStatement = (StatementSyntax)context.Node;
-
-                var block = parentStatement.Parent as BlockSyntax;
-                if (block == null)
-                    return;
-
-                int index = block.Statements.IndexOf(parentStatement);
-
-                if (index == block.Statements.Count - 1)
-                    return;
-
-                int diff = block.Statements[index + 1].GetSpanStartLine() - statement.GetSpanEndLine();
-
-                if (diff < 2)
-                {
-                    SyntaxTrivia trivia = statement
-                        .GetTrailingTrivia()
-                        .FirstOrDefault(f => f.IsEndOfLineTrivia());
-
-                    if (trivia.IsEndOfLineTrivia())
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
-                            trivia.GetLocation());
-                    }
-                }
-            }
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, forEachStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, forEachStatement);
+            AddBracesRefactoring.Analyze(context, forEachStatement);
         }
 
-        private static SyntaxToken GetToken(SyntaxNode node)
+        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
-            switch (node.Kind())
-            {
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)node).DoKeyword;
-                case SyntaxKind.ForStatement:
-                    return ((ForStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.ForEachStatement:
-                    return ((ForEachStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.UsingStatement:
-                    return ((UsingStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.FixedStatement:
-                    return ((FixedStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.LockStatement:
-                    return ((LockStatementSyntax)node).CloseParenToken;
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)node).CloseParenToken;
-                default:
-                    return SyntaxFactory.Token(SyntaxKind.None);
-            }
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var forStatement = (ForStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, forStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, forStatement);
+            AddBracesRefactoring.Analyze(context, forStatement);
         }
 
-        private static StatementSyntax GetStatement(SyntaxNode node)
+        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
-            switch (node.Kind())
-            {
-                case SyntaxKind.WhileStatement:
-                    return ((WhileStatementSyntax)node).Statement;
-                case SyntaxKind.DoStatement:
-                    return ((DoStatementSyntax)node).Statement;
-                case SyntaxKind.ForStatement:
-                    return ((ForStatementSyntax)node).Statement;
-                case SyntaxKind.ForEachStatement:
-                    return ((ForEachStatementSyntax)node).Statement;
-                case SyntaxKind.UsingStatement:
-                    return ((UsingStatementSyntax)node).Statement;
-                case SyntaxKind.FixedStatement:
-                    return ((FixedStatementSyntax)node).Statement;
-                case SyntaxKind.LockStatement:
-                    return ((LockStatementSyntax)node).Statement;
-                case SyntaxKind.IfStatement:
-                    return ((IfStatementSyntax)node).Statement;
-                default:
-                    return null;
-            }
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var usingStatement = (UsingStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, usingStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, usingStatement);
+            AddBracesRefactoring.Analyze(context, usingStatement);
+        }
+
+        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var whileStatement = (WhileStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, whileStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, whileStatement);
+            AddBracesRefactoring.Analyze(context, whileStatement);
+        }
+
+        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var doStatement = (DoStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, doStatement);
+            AddBracesRefactoring.Analyze(context, doStatement);
+        }
+
+        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var lockStatement = (LockStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, lockStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, lockStatement);
+            AddBracesRefactoring.Analyze(context, lockStatement);
+        }
+
+        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            var fixedStatement = (FixedStatementSyntax)context.Node;
+
+            FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, fixedStatement);
+            AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, fixedStatement);
+            AddBracesRefactoring.Analyze(context, fixedStatement);
         }
     }
 }

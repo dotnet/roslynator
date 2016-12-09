@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class RemoveBracesFromIfElseCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElse);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElse); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

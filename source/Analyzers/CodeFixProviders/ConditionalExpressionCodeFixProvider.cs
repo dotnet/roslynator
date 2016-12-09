@@ -2,12 +2,10 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -44,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Wrap condition in parentheses",
-                                cancellationToken => AddParenthesesToConditionAsync(context.Document, conditionalExpression, cancellationToken),
+                                cancellationToken => WrapConditionalExpressionConditionInParenthesesRefactoring.RefactorAsync(context.Document, conditionalExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -56,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 "Replace ?: with ??",
                                 cancellationToken =>
                                 {
-                                    return UseCoalesceExpressionInsteadOfConditionalExpressionAsync(
+                                    return ReplaceConditionalExpressionWithCoalesceExpressionRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);
@@ -84,54 +82,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private static async Task<Document> AddParenthesesToConditionAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            ConditionalExpressionSyntax newNode = conditionalExpression
-                .WithCondition(
-                    SyntaxFactory.ParenthesizedExpression(
-                        conditionalExpression.Condition.WithoutTrivia()
-                    ).WithTriviaFrom(conditionalExpression.Condition)
-                ).WithFormatterAnnotation();
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(conditionalExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static async Task<Document> UseCoalesceExpressionInsteadOfConditionalExpressionAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.UnwrapParentheses();
-
-            ExpressionSyntax left = (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-                ? conditionalExpression.WhenFalse
-                : conditionalExpression.WhenTrue;
-
-            ExpressionSyntax right = (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-                ? conditionalExpression.WhenTrue
-                : conditionalExpression.WhenFalse;
-
-            BinaryExpressionSyntax newNode = SyntaxFactory.BinaryExpression(
-                SyntaxKind.CoalesceExpression,
-                left.WithoutTrivia(),
-                right.WithoutTrivia());
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
-                conditionalExpression,
-                newNode.WithTriviaFrom(conditionalExpression));
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

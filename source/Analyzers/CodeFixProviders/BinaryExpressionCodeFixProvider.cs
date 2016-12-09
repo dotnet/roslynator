@@ -12,7 +12,7 @@ using Roslynator.CSharp.Refactorings.ReplaceCountMethod;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeArgumentListCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BinaryExpressionCodeFixProvider))]
     [Shared]
     public class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
     {

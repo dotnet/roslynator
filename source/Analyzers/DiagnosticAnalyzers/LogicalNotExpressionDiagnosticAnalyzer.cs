@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -33,30 +33,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
 
-            switch (logicalNot.Operand?.Kind())
-            {
-                case SyntaxKind.TrueLiteralExpression:
-                case SyntaxKind.FalseLiteralExpression:
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.SimplifyLogicalNotExpression,
-                            logicalNot.GetLocation());
-
-                        break;
-                    }
-                case SyntaxKind.LogicalNotExpression:
-                    {
-                        var logicalNot2 = (PrefixUnaryExpressionSyntax)logicalNot.Operand;
-
-                        TextSpan span = TextSpan.FromBounds(logicalNot.OperatorToken.Span.Start, logicalNot2.OperatorToken.Span.End);
-
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.SimplifyLogicalNotExpression,
-                            Location.Create(logicalNot.SyntaxTree, span));
-
-                        break;
-                    }
-            }
+            SimplifyLogicalNotExpressionRefactoring.Analyze(context, logicalNot);
         }
     }
 }

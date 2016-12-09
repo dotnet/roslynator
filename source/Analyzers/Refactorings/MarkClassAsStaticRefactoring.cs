@@ -8,11 +8,32 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MarkClassAsStaticRefactoring
     {
+        public static void Analyze(SymbolAnalysisContext context, INamedTypeSymbol symbol)
+        {
+            if (CanRefactor(symbol))
+            {
+                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
+                {
+                    var classDeclaration = syntaxReference.GetSyntax(context.CancellationToken) as ClassDeclarationSyntax;
+
+                    if (classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == false)
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.MarkClassAsStatic,
+                            classDeclaration.Identifier.GetLocation());
+
+                        break;
+                    }
+                }
+            }
+        }
+
         public static bool CanRefactor(INamedTypeSymbol symbol)
         {
             if (symbol.TypeKind == TypeKind.Class

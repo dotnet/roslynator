@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -21,9 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document
-                .GetSyntaxRootAsync(context.CancellationToken)
-                .ConfigureAwait(false);
+            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
             RegionDirectiveTriviaSyntax region = root
                 .FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true)?
@@ -31,13 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty region",
-                cancellationToken =>
-                {
-                    return SyntaxRemover.RemoveRegionAsync(
-                        context.Document,
-                        region,
-                        cancellationToken);
-                },
+                cancellationToken => RemoveEmptyRegionRefactoring.RefactorAsync(context.Document, region, cancellationToken),
                 DiagnosticIdentifiers.RemoveEmptyRegion + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

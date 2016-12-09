@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class InterpolatedStringCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -30,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove '$'",
+                "Remove $",
                 cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation + EquivalenceKeySuffix);
 

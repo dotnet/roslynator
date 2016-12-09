@@ -3,13 +3,10 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -53,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant switch section",
-                                cancellationToken => RemoveRedundantSwitchSectionAsync(context.Document, switchSection, cancellationToken),
+                                cancellationToken => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -63,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Move default label to the last position",
-                                cancellationToken => MoveDefaultLabelToLastPositionAsync(context.Document, switchSection, cancellationToken),
+                                cancellationToken => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -81,88 +78,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private static async Task<Document> MoveDefaultLabelToLastPositionAsync(
-            Document document,
-            SwitchSectionSyntax switchSection,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
-
-            SwitchLabelSyntax defaultLabel = labels.First(f => f.IsKind(SyntaxKind.DefaultSwitchLabel));
-
-            int index = labels.IndexOf(defaultLabel);
-
-            SwitchLabelSyntax lastLabel = labels.Last();
-
-            labels = labels.Replace(lastLabel, defaultLabel.WithTriviaFrom(lastLabel));
-
-            labels = labels.Replace(labels[index], lastLabel.WithTriviaFrom(defaultLabel));
-
-            SwitchSectionSyntax newSwitchSection = switchSection.WithLabels(labels);
-
-            SyntaxNode newRoot = root.ReplaceNode(switchSection, newSwitchSection);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static async Task<Document> RemoveRedundantSwitchSectionAsync(
-            Document document,
-            SwitchSectionSyntax switchSection,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
-
-            SwitchStatementSyntax newSwitchStatement = GetNewSwitchStatement(switchSection, switchStatement);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchStatement, newSwitchStatement);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
-        {
-            if (switchSection.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                int index = switchStatement.Sections.IndexOf(switchSection);
-
-                if (index > 0)
-                {
-                    SwitchSectionSyntax previousSection = switchStatement.Sections[index - 1];
-
-                    if (previousSection.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        SwitchStatementSyntax newSwitchStatement = switchStatement.RemoveNode(
-                            switchSection,
-                            SyntaxRemoveOptions.KeepNoTrivia);
-
-                        previousSection = newSwitchStatement.Sections[index - 1];
-
-                        return newSwitchStatement.ReplaceNode(
-                            previousSection,
-                            previousSection.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
-                    }
-                }
-                else
-                {
-                    SyntaxToken openBrace = switchStatement.OpenBraceToken;
-
-                    if (!openBrace.IsMissing
-                        && openBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        return switchStatement
-                            .RemoveNode(switchSection, SyntaxRemoveOptions.KeepNoTrivia)
-                            .WithOpenBraceToken(openBrace.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
-                    }
-                }
-            }
-
-            return switchStatement.RemoveNode(switchSection, SyntaxRemoveOptions.KeepExteriorTrivia);
         }
     }
 }

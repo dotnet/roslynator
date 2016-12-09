@@ -22,27 +22,20 @@ namespace Roslynator.CSharp.Refactorings
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            var rewriter = new SyntaxRewriter();
 
-            IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement)
+            var newNode = (IfStatementSyntax)rewriter.Visit(ifStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, newNode).ConfigureAwait(false);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter
         {
             private IfStatementSyntax _previousIf;
 
-            private SyntaxRewriter()
+            public SyntaxRewriter()
             {
-            }
-
-            public static IfStatementSyntax VisitNode(IfStatementSyntax node)
-            {
-                return (IfStatementSyntax)new SyntaxRewriter().Visit(node);
             }
 
             public override SyntaxNode VisitIfStatement(IfStatementSyntax node)

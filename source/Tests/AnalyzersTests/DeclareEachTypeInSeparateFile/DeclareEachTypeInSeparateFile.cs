@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
     public delegate void DelegateName();
 
-    internal class DeclareEachTypeInSeparateFile
+    internal static class DeclareEachTypeInSeparateFile
     {
         public class ClassName
         {

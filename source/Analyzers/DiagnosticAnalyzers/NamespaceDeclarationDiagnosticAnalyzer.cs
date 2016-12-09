@@ -2,11 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -38,25 +38,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (NamespaceDeclarationSyntax)context.Node;
 
-            if (declaration.Members.Count == 0
-                && !declaration.OpenBraceToken.IsMissing
-                && !declaration.CloseBraceToken.IsMissing
-                && declaration.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && declaration.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,
-                    declaration.GetLocation());
-            }
+            RemoveEmptyNamespaceDeclarationRefactoring.Analyze(context, declaration);
 
-            SyntaxList<UsingDirectiveSyntax> usings = declaration.Usings;
-
-            if (usings.Any())
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel,
-                    Location.Create(declaration.SyntaxTree, usings.Span));
-            }
+            DeclareUsingDirectiveOnTopLevelRefactoring.Analyze(context, declaration);
         }
     }
 }

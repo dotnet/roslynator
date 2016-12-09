@@ -2,8 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -18,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class DeclareEachAttributeSeparatelyCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachAttributeSeparately);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachAttributeSeparately); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -33,25 +33,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Split attributes",
-                c => DeclareEachAttributeSeparatelyAsync(context.Document, attributeList, c),
+                cancellationToken => DeclareEachAttributeSeparatelyRefactoring.RefactorAsync(context.Document, attributeList, cancellationToken),
                 DiagnosticIdentifiers.DeclareEachAttributeSeparately + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
-
-        private static async Task<Document> DeclareEachAttributeSeparatelyAsync(
-            Document document,
-            AttributeListSyntax attributeList,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
-                attributeList,
-                AttributeRefactoring.SplitAttributes(attributeList)
-                    .Select(f => f.WithFormatterAnnotation()));
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }

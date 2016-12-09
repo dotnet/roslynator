@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    internal class DeclareUsingDirectiveOnTopLevel
+    internal static class DeclareUsingDirectiveOnTopLevel
     {
         public static void Foo()
         {

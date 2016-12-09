@@ -26,15 +26,11 @@ namespace Roslynator.CSharp.Refactorings
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             TypeSyntax newType = Type(typeSymbol)
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(type, newType);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
         }
 
         public static async Task<Document> ChangeTypeAsync(
@@ -52,15 +48,11 @@ namespace Roslynator.CSharp.Refactorings
             if (newType == null)
                 throw new ArgumentNullException(nameof(newType));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             newType = newType
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(type, newType);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
         }
 
         public static async Task<Document> ChangeTypeToVarAsync(
@@ -74,13 +66,9 @@ namespace Roslynator.CSharp.Refactorings
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             IdentifierNameSyntax newType = VarType().WithTriviaFrom(type);
 
-            SyntaxNode newRoot = root.ReplaceNode(type, newType);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
         }
     }
 }

@@ -38,45 +38,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var memberAccess = (MemberAccessExpressionSyntax)context.Node;
 
-            AnalyzePredefinedType(context, memberAccess);
+            UsePredefinedTypeRefactoring.Analyze(context, memberAccess);
 
             if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral,
-                    memberAccess.GetLocation());
-            }
-        }
-
-        private static void AnalyzePredefinedType(
-            SyntaxNodeAnalysisContext context,
-            MemberAccessExpressionSyntax memberAccess)
-        {
-            if (!memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-            {
-                ExpressionSyntax expression = memberAccess.Expression;
-
-                if (expression?.IsKind(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxKind.IdentifierName) == true)
-                {
-                    var namedTypeSymbol = context.SemanticModel
-                        .GetSymbolInfo(expression, context.CancellationToken)
-                        .Symbol as INamedTypeSymbol;
-
-                    if (namedTypeSymbol?.SupportsPredefinedType() == true)
-                    {
-                        IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(expression, context.CancellationToken);
-
-                        if (aliasSymbol == null)
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.UsePredefinedType,
-                                expression.GetLocation());
-                        }
-                    }
-                }
-            }
+                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral, memberAccess.GetLocation());
         }
     }
 }

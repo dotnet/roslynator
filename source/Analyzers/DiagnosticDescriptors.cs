@@ -324,8 +324,8 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor RemoveRedundantSealedModifier = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantSealedModifier,
-            title: "Remove redundant 'sealed' modifier.",
-            messageFormat: "Consider removing redundant 'sealed' modifier.",
+            title: "Remove redundant sealed modifier.",
+            messageFormat: "Consider removing redundant sealed modifier.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
@@ -412,8 +412,8 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor RemovePartialModifierFromTypeWithSinglePart = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart,
-            title: "Remove 'partial' modifier from type with a single part.",
-            messageFormat: "Consider removing 'partial' modifier from type with a single part.",
+            title: "Remove partial modifier from type with a single part.",
+            messageFormat: "Consider removing partial modifier from type with a single part.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
@@ -851,6 +851,8 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut = UsePostfixUnaryOperatorInsteadOfAssignment.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor CallConfigureAwait = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.CallConfigureAwait,

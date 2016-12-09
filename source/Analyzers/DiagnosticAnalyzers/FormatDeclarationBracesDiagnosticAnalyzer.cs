@@ -2,12 +2,11 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -36,8 +35,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (ClassDeclarationSyntax)context.Node;
 
-            if (!declaration.Members.Any())
-                AnalyzerBraces(context, declaration, declaration.OpenBraceToken, declaration.CloseBraceToken);
+            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
         }
 
         private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
@@ -47,8 +45,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (StructDeclarationSyntax)context.Node;
 
-            if (!declaration.Members.Any())
-                AnalyzerBraces(context, declaration, declaration.OpenBraceToken, declaration.CloseBraceToken);
+            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
         }
 
         private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -58,31 +55,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (InterfaceDeclarationSyntax)context.Node;
 
-            if (!declaration.Members.Any())
-                AnalyzerBraces(context, declaration, declaration.OpenBraceToken, declaration.CloseBraceToken);
-        }
-
-        private static void AnalyzerBraces(
-            SyntaxNodeAnalysisContext context,
-            MemberDeclarationSyntax declaration,
-            SyntaxToken openBrace,
-            SyntaxToken closeBrace)
-        {
-            if (!openBrace.IsMissing
-                && !closeBrace.IsMissing
-                && closeBrace.GetSpanStartLine() - openBrace.GetSpanEndLine() != 1)
-            {
-                TextSpan span = TextSpan.FromBounds(openBrace.Span.Start, closeBrace.Span.End);
-
-                if (declaration
-                    .DescendantTrivia(span)
-                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.FormatDeclarationBraces,
-                        Location.Create(declaration.SyntaxTree, span));
-                }
-            }
+            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
         }
     }
 }

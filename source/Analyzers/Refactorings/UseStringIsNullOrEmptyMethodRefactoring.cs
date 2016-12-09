@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -13,6 +14,22 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseStringIsNullOrEmptyMethodRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
+        {
+            ExpressionSyntax left = binaryExpression.Left;
+            ExpressionSyntax right = binaryExpression.Right;
+
+            if (left?.IsMissing == false
+                && right?.IsMissing == false
+                && CanRefactor(binaryExpression, left, right, context.SemanticModel, context.CancellationToken)
+                && !binaryExpression.SpanContainsDirectives())
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseStringIsNullOrEmptyMethod,
+                    binaryExpression.GetLocation());
+            }
+        }
+
         public static bool CanRefactor(
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax left,

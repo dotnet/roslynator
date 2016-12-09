@@ -72,7 +72,7 @@
         <li>RCS1031 - Remove redundant braces.</li>
         <li>RCS1032 - Remove redundant parentheses.</li>
         <li>RCS1033 - Remove redundant boolean literal.</li>
-        <li>RCS1034 - Remove redundant 'sealed' modifier.</li>
+        <li>RCS1034 - Remove redundant sealed modifier.</li>
         <li>RCS1035 - Remove redundant comma in initializer.</li>
         <li>RCS1036 - Remove redundant empty line.</li>
         <li>RCS1037 - Remove trailing white-space.</li>
@@ -81,7 +81,7 @@
         <li>RCS1040 - Remove empty else clause.</li>
         <li>RCS1041 - Remove empty initializer.</li>
         <li>RCS1042 - Remove enum default underlying type.</li>
-        <li>RCS1043 - Remove 'partial' modifier from type with a single part.</li>
+        <li>RCS1043 - Remove partial modifier from type with a single part.</li>
         <li>RCS1044 - Remove original exception from throw statement.</li>
         <li>RCS1045 - Rename private field according to camel case with underscore.</li>
         <li>RCS1046 - Asynchronous method name should end with 'Async'.</li>

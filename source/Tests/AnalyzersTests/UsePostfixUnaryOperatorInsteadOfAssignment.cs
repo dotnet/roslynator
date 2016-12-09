@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal class UsePostfixUnaryOperatorInsteadOfAssignment
+    internal static class UsePostfixUnaryOperatorInsteadOfAssignment
     {
         private static int _field;
 

@@ -6,11 +6,26 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantStringToCharArrayCallRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        {
+            if (CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.Span.Start, invocation.Span.End);
+
+                if (!invocation.ContainsDirectives(span))
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall, Location.Create(invocation.SyntaxTree, span));
+            }
+        }
+
         public static bool CanRefactor(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,

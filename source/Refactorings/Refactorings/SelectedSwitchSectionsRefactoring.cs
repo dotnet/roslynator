@@ -40,12 +40,12 @@ namespace Roslynator.CSharp.Refactorings
 
                                 switch (SyntaxAnalyzer.AnalyzeSwitchSection(section))
                                 {
-                                    case SwitchSectionAnalysisResult.AddBraces:
+                                    case BracesAnalysisResult.AddBraces:
                                         {
                                             addBraces.Add(section);
                                             break;
                                         }
-                                    case SwitchSectionAnalysisResult.RemoveBraces:
+                                    case BracesAnalysisResult.RemoveBraces:
                                         {
                                             removeBraces.Add(section);
                                             break;

@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -13,6 +14,37 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class SimplifyAssignmentExpressionRefactoring
     {
+        public static bool CanRefactor(AssignmentExpressionSyntax assignment)
+        {
+            if (assignment == null)
+                throw new ArgumentNullException(nameof(assignment));
+
+            if (assignment.IsKind(SyntaxKind.SimpleAssignmentExpression))
+            {
+                ExpressionSyntax left = assignment.Left;
+                ExpressionSyntax right = assignment.Right;
+
+                if (left?.IsMissing == false
+                    && right?.IsMissing == false
+                    && !assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
+                    && right.SupportsCompoundAssignment())
+                {
+                    var binaryExpression = (BinaryExpressionSyntax)right;
+                    ExpressionSyntax binaryLeft = binaryExpression.Left;
+                    ExpressionSyntax binaryRight = binaryExpression.Right;
+
+                    return binaryLeft?.IsMissing == false
+                        && binaryRight?.IsMissing == false
+                        && left.IsEquivalentTo(binaryLeft, topLevel: false)
+                        && (assignment
+                            .DescendantTrivia(assignment.Span)
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()));
+                }
+            }
+
+            return false;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignmentExpression,

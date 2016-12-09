@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -37,59 +38,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var catchClause = (CatchClauseSyntax)context.Node;
 
-            if (catchClause.Declaration == null || catchClause.Block == null)
-                return;
+            RemoveOriginalExceptionFromThrowStatementRefactoring.Analyze(context, catchClause);
 
-            ILocalSymbol symbol = context
-                .SemanticModel
-                .GetDeclaredSymbol(catchClause.Declaration, context.CancellationToken);
-
-            if (symbol != null)
-            {
-                foreach (SyntaxNode node in catchClause.Block.DescendantNodes(f => !f.IsKind(SyntaxKind.CatchClause)))
-                {
-                    if (node.IsKind(SyntaxKind.ThrowStatement))
-                    {
-                        var throwStatement = (ThrowStatementSyntax)node;
-                        if (throwStatement.Expression != null)
-                        {
-                            ISymbol expressionSymbol = context
-                                .SemanticModel
-                                .GetSymbolInfo(throwStatement.Expression, context.CancellationToken)
-                                .Symbol;
-
-                            if (expressionSymbol != null
-                                && symbol.Equals(expressionSymbol))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                                    throwStatement.Expression.GetLocation());
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (catchClause.Declaration.Type != null
-                && catchClause.Block.Statements.Count == 0)
-            {
-                ITypeSymbol typeSymbol = context
-                    .SemanticModel
-                    .GetTypeInfo(catchClause.Declaration.Type, context.CancellationToken)
-                    .Type;
-
-                if (typeSymbol != null)
-                {
-                    INamedTypeSymbol exceptionTypeSymbol = context.GetTypeByMetadataName(MetadataNames.System_Exception);
-
-                    if (typeSymbol.Equals(exceptionTypeSymbol))
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
-                            catchClause.CatchKeyword.GetLocation());
-                    }
-                }
-            }
+            AvoidEmptyCatchClauseThatCatchesSystemExceptionRefactoring.Analyze(context, catchClause);
         }
     }
 }

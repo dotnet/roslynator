@@ -166,9 +166,10 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            ReturnStatementSyntax newReturnStatement,
             CancellationToken cancellationToken)
         {
+            ReturnStatementSyntax newReturnStatement = CreateReturnStatement(ifStatement);
+
             if (ifStatement.Else != null)
             {
                 newReturnStatement = newReturnStatement.WithTriviaFrom(ifStatement);
@@ -196,7 +197,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static ReturnStatementSyntax CreateReturnStatement(IfStatementSyntax ifStatement)
+        private static ReturnStatementSyntax CreateReturnStatement(IfStatementSyntax ifStatement)
         {
             ExpressionSyntax expression = ifStatement.Condition;
 

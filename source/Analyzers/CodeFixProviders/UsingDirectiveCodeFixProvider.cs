@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings.InlineAliasExpression;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -31,11 +31,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (usingDirective == null)
                 return;
 
-            string name = usingDirective.Alias.Name.Identifier.ValueText;
-
             CodeAction codeAction = CodeAction.Create(
                 "Inline alias expression",
-                cancellationToken => InlineAliasExpressionRefactoring.RefactorAsync(context.Document, usingDirective, cancellationToken),
+                cancellationToken => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, cancellationToken),
                 DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

@@ -13,7 +13,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     public class AvoidEmbeddedStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.AvoidEmbeddedStatement);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidEmbeddedStatement); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {

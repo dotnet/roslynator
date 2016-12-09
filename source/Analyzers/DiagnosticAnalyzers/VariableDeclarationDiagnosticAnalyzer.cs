@@ -38,44 +38,39 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
-            if (variableDeclaration.Variables.Count != 1)
-                return;
-
-            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
-                variableDeclaration,
-                context.SemanticModel,
-                context.CancellationToken);
-
-            switch (result)
+            if (variableDeclaration.Variables.Count == 1)
             {
-                case TypeAnalysisResult.Explicit:
-                    {
-                        break;
-                    }
-                case TypeAnalysisResult.ExplicitButShouldBeImplicit:
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.UseVarInsteadOfExplicitType,
-                            variableDeclaration.Type.GetLocation());
+                switch (TypeAnalyzer.AnalyzeType(variableDeclaration, context.SemanticModel, context.CancellationToken))
+                {
+                    case TypeAnalysisResult.Explicit:
+                        {
+                            break;
+                        }
+                    case TypeAnalysisResult.ExplicitButShouldBeImplicit:
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UseVarInsteadOfExplicitType,
+                                variableDeclaration.Type.GetLocation());
 
-                        break;
-                    }
-                case TypeAnalysisResult.Implicit:
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
-                            variableDeclaration.Type.GetLocation());
+                            break;
+                        }
+                    case TypeAnalysisResult.Implicit:
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
+                                variableDeclaration.Type.GetLocation());
 
-                        break;
-                    }
-                case TypeAnalysisResult.ImplicitButShouldBeExplicit:
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
-                            variableDeclaration.Type.GetLocation());
+                            break;
+                        }
+                    case TypeAnalysisResult.ImplicitButShouldBeExplicit:
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
+                                variableDeclaration.Type.GetLocation());
 
-                        break;
-                    }
+                            break;
+                        }
+                }
             }
         }
     }

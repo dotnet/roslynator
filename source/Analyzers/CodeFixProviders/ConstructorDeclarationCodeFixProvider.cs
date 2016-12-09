@@ -2,13 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -47,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant base constructor call",
-                                cancellationToken => RemoveBaseConstructorCallAsync(context.Document, constructor, cancellationToken),
+                                cancellationToken => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -57,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant constructor",
-                                cancellationToken => SyntaxRemover.RemoveMemberAsync(context.Document, constructor, cancellationToken),
+                                cancellationToken => RemoveRedundantConstructorRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -65,30 +64,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private static async Task<Document> RemoveBaseConstructorCallAsync(
-            Document document,
-            ConstructorDeclarationSyntax constructor,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            if (constructor.ParameterList.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && constructor.Initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                ConstructorDeclarationSyntax newConstructor = constructor
-                    .WithParameterList(constructor.ParameterList.WithTrailingTrivia(constructor.Initializer.GetTrailingTrivia()))
-                    .WithInitializer(null);
-
-                root = root.ReplaceNode(constructor, newConstructor);
-            }
-            else
-            {
-                root = root.RemoveNode(constructor.Initializer, SyntaxRemoveOptions.KeepExteriorTrivia);
-            }
-
-            return document.WithSyntaxRoot(root);
         }
     }
 }

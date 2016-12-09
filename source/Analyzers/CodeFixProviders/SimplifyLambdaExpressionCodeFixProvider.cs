@@ -16,7 +16,9 @@ namespace Roslynator.CSharp.CodeFixProviders
     public class SimplifyLambdaExpressionCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLambdaExpression);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLambdaExpression); }
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

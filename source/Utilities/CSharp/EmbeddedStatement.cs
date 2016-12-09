@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -114,6 +115,62 @@ namespace Roslynator.CSharp
             }
 
             return null;
+        }
+
+        public static bool FormatSupportsEmbeddedStatement(SyntaxNode containingNode)
+        {
+            switch (containingNode.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    {
+                        return ((IfStatementSyntax)containingNode).Condition?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.ElseClause:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.DoStatement:
+                    {
+                        return ((DoStatementSyntax)containingNode).Condition?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.ForEachStatement:
+                    {
+                        var forEachStatement = (ForEachStatementSyntax)containingNode;
+
+                        return forEachStatement.SyntaxTree.IsSingleLineSpan(forEachStatement.ParenthesesSpan());
+                    }
+                case SyntaxKind.ForStatement:
+                    {
+                        var forStatement = (ForStatementSyntax)containingNode;
+
+                        return forStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true
+                            || forStatement.SyntaxTree.IsSingleLineSpan(forStatement.ParenthesesSpan());
+                    }
+                case SyntaxKind.UsingStatement:
+                    {
+                        return ((UsingStatementSyntax)containingNode).DeclarationOrExpression()?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.WhileStatement:
+                    {
+                        var whileStatement = (WhileStatementSyntax)containingNode;
+
+                        return whileStatement.Condition?.IsMultiLine() != true
+                            || whileStatement.Statement?.IsKind(SyntaxKind.EmptyStatement) == true;
+                    }
+                case SyntaxKind.LockStatement:
+                    {
+                        return ((LockStatementSyntax)containingNode).Expression?.IsMultiLine() != true;
+                    }
+                case SyntaxKind.FixedStatement:
+                    {
+                        return ((FixedStatementSyntax)containingNode).Declaration?.IsMultiLine() != true;
+                    }
+                default:
+                    {
+                        Debug.Assert(false, containingNode.Kind().ToString());
+                        return false;
+                    }
+            }
         }
     }
 }

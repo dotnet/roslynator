@@ -38,16 +38,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var usingStatement = (UsingStatementSyntax)context.Node;
 
-            if (RemoveBracesFromUsingStatementRefactoring.CanRefactor(usingStatement))
-            {
-                var block = (BlockSyntax)usingStatement.Statement;
-
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyNestedUsingStatement,
-                    block.GetLocation());
-
-                context.FadeOutBraces(DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut, block);
-            }
+            SimplifyNestedUsingStatementRefactoring.Analyze(context, usingStatement);
         }
     }
 }

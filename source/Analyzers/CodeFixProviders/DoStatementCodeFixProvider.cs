@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Use while statement to create an infinite loop",
+                "Use while to create an infinite loop",
                 cancellationToken =>
                 {
                     return ReplaceDoStatementWithWhileStatementRefactoring.RefactorAsync(
