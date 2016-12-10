@@ -993,7 +993,10 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)declaration).Members;
                 default:
-                    return default(SyntaxList<MemberDeclarationSyntax>);
+                    {
+                        Debug.Assert(false, declaration.Kind().ToString());
+                        return default(SyntaxList<MemberDeclarationSyntax>);
+                    }
             }
         }
 
@@ -1013,7 +1016,10 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)declaration).WithMembers(newMembers);
                 default:
-                    return declaration;
+                    {
+                        Debug.Assert(false, declaration.Kind().ToString());
+                        return declaration;
+                    }
             }
         }
 
