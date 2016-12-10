@@ -48,9 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             if (newType == null)
                 throw new ArgumentNullException(nameof(newType));
 
-            newType = newType
-                .WithTriviaFrom(type)
-                .WithSimplifierAnnotation();
+            newType = newType.WithTriviaFrom(type);
 
             return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
         }

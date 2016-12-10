@@ -50,8 +50,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = CSharpFactory.Type(typeSymbol)
-                .WithSimplifierAnnotation();
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            TypeSyntax type = CSharpFactory.Type(typeSymbol, semanticModel, expression.SpanStart);
 
             DefaultExpressionSyntax defaultExpression = SyntaxFactory.DefaultExpression(type)
                 .WithTriviaFrom(expression);

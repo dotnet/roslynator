@@ -44,18 +44,16 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            var arrayType = CSharpFactory.Type(typeSymbol) as ArrayTypeSyntax;
+            var arrayType = CSharpFactory.Type(typeSymbol, semanticModel, expression.SpanStart) as ArrayTypeSyntax;
 
             ArrayCreationExpressionSyntax newNode = SyntaxFactory.ArrayCreationExpression(
                 expression.NewKeyword,
-                arrayType
-                    .WithSimplifierAnnotation()
-                    .WithTrailingTrivia(expression.CloseBracketToken.TrailingTrivia),
+                arrayType.WithTrailingTrivia(expression.CloseBracketToken.TrailingTrivia),
                 expression.Initializer);
 
             newNode = newNode.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(expression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

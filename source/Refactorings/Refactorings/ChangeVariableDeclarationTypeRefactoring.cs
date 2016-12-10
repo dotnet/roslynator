@@ -129,6 +129,8 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            TypeSyntax type = variableDeclaration.Type;
+
             ExpressionSyntax value = variableDeclaration.Variables[0].Initializer.Value;
 
             AwaitExpressionSyntax newInitializerValue = SyntaxFactory.AwaitExpression(value)
@@ -136,11 +138,10 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclarationSyntax newNode = variableDeclaration.ReplaceNode(value, newInitializerValue);
 
-            newNode = newNode
-                .WithType(
-                    CSharpFactory.Type(typeSymbol)
-                        .WithTriviaFrom(variableDeclaration.Type)
-                        .WithSimplifierAnnotation());
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            newNode = newNode.WithType(
+                CSharpFactory.Type(typeSymbol, semanticModel, type.SpanStart).WithTriviaFrom(type));
 
             return await document.ReplaceNodeAsync(variableDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }

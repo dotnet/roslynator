@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -71,8 +72,10 @@ namespace Roslynator.CSharp.Refactorings
                 .GetTypeInfo(switchStatement.Expression, cancellationToken)
                 .ConvertedType as INamedTypeSymbol;
 
+            TypeSyntax enumType = CSharpFactory.Type(enumTypeSymbol, semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
+
             SwitchStatementSyntax newNode = switchStatement
-                .WithSections(List(CreateSwitchSections(enumTypeSymbol)))
+                .WithSections(List(CreateSwitchSections(enumTypeSymbol, enumType)))
                 .WithFormatterAnnotation();
 
             root = root.ReplaceNode(switchStatement, newNode);
@@ -80,18 +83,13 @@ namespace Roslynator.CSharp.Refactorings
             return document.WithSyntaxRoot(root);
         }
 
-        private static List<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol)
+        private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol, TypeSyntax enumType)
         {
             SyntaxList<StatementSyntax> statements = SingletonList<StatementSyntax>(BreakStatement());
 
             ImmutableArray<ISymbol> members = enumTypeSymbol.GetMembers();
 
             var sections = new List<SwitchSectionSyntax>(members.Length);
-
-            TypeSyntax enumType = CSharpFactory.Type(enumTypeSymbol);
-
-            if (members.Length <= 128)
-                enumType = enumType.WithSimplifierAnnotation();
 
             foreach (ISymbol memberSymbol in members)
             {

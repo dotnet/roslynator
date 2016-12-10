@@ -48,16 +48,15 @@ namespace Roslynator.CSharp.Refactorings
                                     || !memberTypeSymbol.IsConstructedFromIEnumerableOfT()
                                     || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
                             {
-                                TypeSyntax newType = QualifiedName(
-                                    ParseName(MetadataNames.System_Collections_Generic),
-                                    GenericName(
-                                        Identifier("IEnumerable"),
-                                        TypeArgumentList(
-                                            SingletonSeparatedList(
-                                                CSharpFactory.Type(typeSymbol)))));
+                                INamedTypeSymbol newTypeSymbol = semanticModel
+                                    .Compilation
+                                    .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
+                                    .Construct(typeSymbol);
+
+                                TypeSyntax newType = CSharpFactory.Type(newTypeSymbol, semanticModel, memberType.SpanStart);
 
                                 context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to 'IEnumerable<{typeSymbol.ToMinimalDisplayString(semanticModel, memberType.Span.Start, DefaultSymbolDisplayFormat.Value)}>'",
+                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{newTypeSymbol.ToMinimalDisplayString(semanticModel, memberType.SpanStart, DefaultSymbolDisplayFormat.Value)}'",
                                     cancellationToken =>
                                     {
                                         return ChangeTypeRefactoring.ChangeTypeAsync(

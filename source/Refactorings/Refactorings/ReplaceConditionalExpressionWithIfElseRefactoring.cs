@@ -65,9 +65,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
+            TypeSyntax type = localDeclaration.Declaration.Type;
+
             LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.RemoveNode(conditionalExpression.Parent, SyntaxRemoveOptions.KeepExteriorTrivia);
 
-            if (newLocalDeclaration.Declaration.Type.IsVar)
+            if (type.IsVar)
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(conditionalExpression);
 
@@ -75,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     newLocalDeclaration = newLocalDeclaration.ReplaceNode(
                         newLocalDeclaration.Declaration.Type,
-                        Type(typeSymbol).WithSimplifierAnnotation());
+                        Type(typeSymbol, semanticModel, type.SpanStart).WithSimplifierAnnotation());
                 }
             }
 
