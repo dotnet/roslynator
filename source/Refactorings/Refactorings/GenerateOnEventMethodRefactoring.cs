@@ -119,21 +119,16 @@ namespace Roslynator.CSharp.Refactorings
             bool supportsCSharp6,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var containingMember = (MemberDeclarationSyntax)eventFieldDeclaration.Parent;
 
             SyntaxList<MemberDeclarationSyntax> members = containingMember.GetMembers();
 
-            MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6);
+            MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6)
+                .WithFormatterAnnotation();
 
-            int index = members.LastIndexOf(SyntaxKind.MethodDeclaration);
+            SyntaxList<MemberDeclarationSyntax> newMembers = MemberInserter.InsertMember(members, method);
 
-            SyntaxNode newRoot = root.InsertNodesAfter(
-                (index == -1) ? eventFieldDeclaration : members[index],
-                new SyntaxNode[] { method.WithFormatterAnnotation() });
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(containingMember, containingMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
 
         private static MethodDeclarationSyntax CreateOnEventMethod(
