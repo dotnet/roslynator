@@ -84,6 +84,8 @@
     <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />
     <Compile Include="CSharp\TypeAnalyzer.cs" />
+    <Compile Include="CSharp\MemberDeclarationComparer.cs" />
+    <Compile Include="CSharp\MemberInserter.cs" />
     <Compile Include="UniqueNameGenerator.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />

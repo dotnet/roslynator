@@ -708,6 +708,11 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static bool IsConst(this FieldDeclarationSyntax fieldDeclaration)
+        {
+            return fieldDeclaration?.Modifiers.Contains(SyntaxKind.ConstKeyword) == true;
+        }
+
         public static TextSpan ParenthesesSpan(this ForEachStatementSyntax forEachStatement)
         {
             if (forEachStatement == null)
