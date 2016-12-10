@@ -11,7 +11,7 @@ namespace Roslynator
 {
     public static class DocumentExtensions
     {
-        public static async Task<Document> WithTextChange(
+        public static async Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -26,7 +26,7 @@ namespace Roslynator
             return document.WithText(newSourceText);
         }
 
-        public static async Task<Document> WithTextChanges(
+        public static async Task<Document> WithTextChangesAsync(
             this Document document,
             TextChange[] textChanges,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -44,7 +44,7 @@ namespace Roslynator
             return document.WithText(newSourceText);
         }
 
-        public static async Task<Document> WithTextChanges(
+        public static async Task<Document> WithTextChangesAsync(
             this Document document,
             IEnumerable<TextChange> textChanges,
             CancellationToken cancellationToken = default(CancellationToken))
