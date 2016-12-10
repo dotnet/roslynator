@@ -122,6 +122,40 @@ namespace Roslynator
             return document.WithSyntaxRoot(newRoot);
         }
 
+        public static async Task<Document> InsertNodeBeforeAsync(
+            this Document document,
+            SyntaxNode nodeInList,
+            SyntaxNode newNode,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (newNode == null)
+                throw new ArgumentNullException(nameof(newNode));
+
+            return await InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }).ConfigureAwait(false);
+        }
+
+        public static async Task<Document> InsertNodesBeforeAsync(
+            this Document document,
+            SyntaxNode nodeInList,
+            IEnumerable<SyntaxNode> newNodes,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (nodeInList == null)
+                throw new ArgumentNullException(nameof(nodeInList));
+
+            if (newNodes == null)
+                throw new ArgumentNullException(nameof(newNodes));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.InsertNodesBefore(nodeInList, newNodes);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
         public static async Task<Document> InsertNodeAfterAsync(
             this Document document,
             SyntaxNode nodeInList,
