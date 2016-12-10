@@ -175,27 +175,36 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<StatementSyntax> statements = block.Statements;
 
-                if (statements.Count == 0
-                    || !statements.Last().IsKind(SyntaxKind.ReturnStatement, SyntaxKind.BreakStatement))
+                if (statements.Any()
+                    && IsJumpStatement(statements.Last()))
                 {
-                    return SingletonList<StatementSyntax>(block.AddStatements(BreakStatement()));
+                    return SingletonList<StatementSyntax>(block);
                 }
                 else
                 {
-                    return SingletonList<StatementSyntax>(block);
+                    return SingletonList<StatementSyntax>(block.AddStatements(BreakStatement()));
                 }
             }
             else
             {
-                if (!statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.BreakStatement))
-                {
-                    return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
-                }
-                else
+                if (IsJumpStatement(statement))
                 {
                     return SingletonList(statement);
                 }
+                else
+                {
+                    return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
+                }
             }
+        }
+
+        private static bool IsJumpStatement(StatementSyntax statement)
+        {
+            return statement.IsKind(
+                SyntaxKind.BreakStatement,
+                SyntaxKind.GotoCaseStatement,
+                SyntaxKind.ReturnStatement,
+                SyntaxKind.ThrowStatement);
         }
 
         private static List<SwitchLabelSyntax> CreateSwitchLabels(BinaryExpressionSyntax binaryExpression, List<SwitchLabelSyntax> labels)
