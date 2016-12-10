@@ -159,6 +159,53 @@ namespace Roslynator.CSharp
             return null;
         }
 
+        public static ExpressionSyntax DefaultValue(object value)
+        {
+            if (value == null)
+                return NullLiteralExpression();
+
+            if (value is bool)
+                return ((bool)value) ? TrueLiteralExpression() : FalseLiteralExpression();
+
+            if (value is char)
+                return CharacterLiteralExpression((char)value);
+
+            if (value is sbyte)
+                return NumericLiteralExpression((sbyte)value);
+
+            if (value is byte)
+                return NumericLiteralExpression((byte)value);
+
+            if (value is short)
+                return NumericLiteralExpression((short)value);
+
+            if (value is ushort)
+                return NumericLiteralExpression((ushort)value);
+
+            if (value is int)
+                return NumericLiteralExpression((int)value);
+
+            if (value is uint)
+                return NumericLiteralExpression((uint)value);
+
+            if (value is long)
+                return NumericLiteralExpression((long)value);
+
+            if (value is ulong)
+                return NumericLiteralExpression((ulong)value);
+
+            if (value is decimal)
+                return NumericLiteralExpression((decimal)value);
+
+            if (value is float)
+                return NumericLiteralExpression((float)value);
+
+            if (value is double)
+                return NumericLiteralExpression((double)value);
+
+            return StringLiteralExpression(value.ToString());
+        }
+
         internal static SyntaxTokenList TokenList(params SyntaxKind[] kinds)
         {
             var tokens = new SyntaxToken[kinds.Length];

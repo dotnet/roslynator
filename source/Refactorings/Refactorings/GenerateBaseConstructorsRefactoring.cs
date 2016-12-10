@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
                 EqualsValueClauseSyntax @default = null;
 
                 if (parameterSymbol.HasExplicitDefaultValue)
-                    @default = EqualsValueClause(CreateDefaultExpression(parameterSymbol.ExplicitDefaultValue));
+                    @default = EqualsValueClause(DefaultValue(parameterSymbol.ExplicitDefaultValue));
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
@@ -127,75 +127,6 @@ namespace Roslynator.CSharp.Refactorings
                 Block());
 
             return constructor.WithFormatterAnnotation();
-        }
-
-        private static ExpressionSyntax CreateDefaultExpression(object value)
-        {
-            if (value == null)
-            {
-                return NullLiteralExpression();
-            }
-            else if (value is bool)
-            {
-                if ((bool)value)
-                {
-                    return TrueLiteralExpression();
-                }
-                else
-                {
-                    return FalseLiteralExpression();
-                }
-            }
-            else if (value is char)
-            {
-                return CharacterLiteralExpression((char)value);
-            }
-            else if (value is sbyte)
-            {
-                return NumericLiteralExpression((sbyte)value);
-            }
-            else if (value is byte)
-            {
-                return NumericLiteralExpression((byte)value);
-            }
-            else if (value is short)
-            {
-                return NumericLiteralExpression((short)value);
-            }
-            else if (value is ushort)
-            {
-                return NumericLiteralExpression((ushort)value);
-            }
-            else if (value is int)
-            {
-                return NumericLiteralExpression((int)value);
-            }
-            else if (value is uint)
-            {
-                return NumericLiteralExpression((uint)value);
-            }
-            else if (value is long)
-            {
-                return NumericLiteralExpression((long)value);
-            }
-            else if (value is ulong)
-            {
-                return NumericLiteralExpression((ulong)value);
-            }
-            else if (value is decimal)
-            {
-                return NumericLiteralExpression((decimal)value);
-            }
-            else if (value is float)
-            {
-                return NumericLiteralExpression((float)value);
-            }
-            else if (value is double)
-            {
-                return NumericLiteralExpression((double)value);
-            }
-
-            return StringLiteralExpression(value.ToString());
         }
 
         private class ConstructorComparer : EqualityComparer<IMethodSymbol>
