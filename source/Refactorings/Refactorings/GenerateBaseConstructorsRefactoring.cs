@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -74,22 +75,28 @@ namespace Roslynator.CSharp.Refactorings
             IMethodSymbol[] constructorSymbols,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxList<MemberDeclarationSyntax> members = classDeclaration.Members;
 
             string name = classDeclaration.Identifier.ValueText;
 
+            int insertIndex = MemberInserter.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
+
+            int position = (insertIndex == 0)
+                ? classDeclaration.OpenBraceToken.FullSpan.End
+                : members[insertIndex - 1].FullSpan.End;
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             IEnumerable<ConstructorDeclarationSyntax> constructors = constructorSymbols
-                .Select(f => CreateConstructor(f, name).WithFormatterAnnotation());
+                .Select(symbol => CreateConstructor(symbol, name, semanticModel, position));
 
             ClassDeclarationSyntax newClassDeclaration = classDeclaration
-                .WithMembers(classDeclaration.Members.InsertRange(FindIndex(classDeclaration), constructors));
+                .WithMembers(members.InsertRange(insertIndex, constructors));
 
-            SyntaxNode newRoot = root.ReplaceNode(classDeclaration, newClassDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ConstructorDeclarationSyntax CreateConstructor(IMethodSymbol methodSymbol, string name)
+        private static ConstructorDeclarationSyntax CreateConstructor(IMethodSymbol methodSymbol, string name, SemanticModel semanticModel, int position)
         {
             var parameters = new List<ParameterSyntax>();
             var arguments = new List<ArgumentSyntax>();
@@ -104,20 +111,22 @@ namespace Roslynator.CSharp.Refactorings
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
                     Modifiers.FromAccessibility(parameterSymbol.DeclaredAccessibility),
-                    Type(parameterSymbol.Type).WithSimplifierAnnotation(),
+                    Type(parameterSymbol.Type, semanticModel, position),
                     Identifier(parameterSymbol.Name),
                     @default));
 
                 arguments.Add(Argument(IdentifierName(parameterSymbol.Name)));
             }
 
-            return ConstructorDeclaration(
+            ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
                 Identifier(name),
                 ParameterList(parameters),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),
                 Block());
+
+            return constructor.WithFormatterAnnotation();
         }
 
         private static ExpressionSyntax CreateDefaultExpression(object value)
@@ -147,7 +156,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else if (value is byte)
             {
-                NumericLiteralExpression((byte)value);
+                return NumericLiteralExpression((byte)value);
             }
             else if (value is short)
             {
@@ -187,22 +196,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return StringLiteralExpression(value.ToString());
-        }
-
-        private static int FindIndex(ClassDeclarationSyntax classDeclaration)
-        {
-            SyntaxList<MemberDeclarationSyntax> members = classDeclaration.Members;
-
-            int index = members.LastIndexOf(SyntaxKind.ConstructorDeclaration);
-
-            if (index == -1)
-            {
-                return members
-                    .TakeWhile(f => f.IsKind(SyntaxKind.FieldDeclaration))
-                    .Count();
-            }
-
-            return index + 1;
         }
 
         private class ConstructorComparer : EqualityComparer<IMethodSymbol>

@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
         }
 
-        internal class FException : Exception
+        internal class FooException : Exception
         {
         }
     }
