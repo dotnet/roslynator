@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                                             context.Document,
                                             (MethodDeclarationSyntax)method,
                                             localDeclaration,
-                                            type.WithoutTrivia(),
+                                            type.WithoutTrivia().WithSimplifierAnnotation(),
                                             variable,
                                             cancellationToken);
                                     });
