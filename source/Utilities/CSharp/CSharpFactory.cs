@@ -12,7 +12,7 @@ namespace Roslynator.CSharp
 {
     public static class CSharpFactory
     {
-        private static readonly SymbolDisplayFormat _typeSyntaxSymbolDisplayFormat = new SymbolDisplayFormat(
+        private static readonly SymbolDisplayFormat _typeSymbolDisplayFormat = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
@@ -45,27 +45,32 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static TypeSyntax Type(ITypeSymbol typeSymbol)
+        public static TypeSyntax Type(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat = null)
         {
-            return Type(typeSymbol, _typeSyntaxSymbolDisplayFormat);
+            return Type(typeSymbol, default(SemanticModel), -1, symbolDisplayFormat);
         }
 
-        public static TypeSyntax Type(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat)
+        public static TypeSyntax Type(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             if (symbolDisplayFormat == null)
-                throw new ArgumentNullException(nameof(symbolDisplayFormat));
+                symbolDisplayFormat = _typeSymbolDisplayFormat;
 
             Debug.Assert(typeSymbol.SupportsExplicitDeclaration(), typeSymbol.ToDisplayString(symbolDisplayFormat));
 
             if (!typeSymbol.SupportsExplicitDeclaration())
                 throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
 
-            string s = typeSymbol.ToDisplayString(symbolDisplayFormat);
-
-            return ParseTypeName(s);
+            if (semanticModel != null)
+            {
+                return ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, symbolDisplayFormat));
+            }
+            else
+            {
+                return ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
+            }
         }
 
         public static ExpressionSyntax DefaultValue(ITypeSymbol typeSymbol, TypeSyntax type = null)
