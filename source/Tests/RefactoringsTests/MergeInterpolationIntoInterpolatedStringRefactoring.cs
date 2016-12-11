@@ -9,6 +9,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
             string s = null;
 
             s = $"a{"b"}c";
+            s = $"a{"{}"}c";
 
             s = $@"a{@"b"}c";
 

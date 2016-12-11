@@ -244,5 +244,12 @@ namespace Roslynator
 
             return value;
         }
+
+        public static string DoubleBraces(string value)
+        {
+            return value
+                .Replace("{", "{{")
+                .Replace("}", "}}");
+        }
     }
 }

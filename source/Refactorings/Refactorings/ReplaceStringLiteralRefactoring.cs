@@ -30,11 +30,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (interpolationStartIndex != -1)
             {
-                s = EscapeBraces(s.Substring(0, interpolationStartIndex)) +
+                s = TextUtility.DoubleBraces(s.Substring(0, interpolationStartIndex)) +
                    "{" +
                    s.Substring(interpolationStartIndex, interpolationLength) +
                    "}" +
-                   EscapeBraces(s.Substring(interpolationStartIndex + interpolationLength));
+                   TextUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength));
             }
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
@@ -43,13 +43,6 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, interpolatedString);
 
             return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static string EscapeBraces(string s)
-        {
-            return s
-                .Replace("{", "{{")
-                .Replace("}", "}}");
         }
 
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
