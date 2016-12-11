@@ -96,10 +96,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
                 return x;
             }
-            else
-            {
-                return x;
-            }
+
+            return !x;
         }
 
         private static bool GetValue()

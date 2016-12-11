@@ -14,19 +14,17 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceIfStatementWithReturnStatementRefactoring
     {
-        private const string Title = "Replace if with return statement";
-
         public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            ElseClauseSyntax @else = ifStatement.Else;
+            ElseClauseSyntax elseClause = ifStatement.Else;
 
-            if (@else != null)
+            if (elseClause != null)
             {
                 ExpressionSyntax expression1 = GetReturnExpression(ifStatement);
 
                 if (expression1 != null)
                 {
-                    ExpressionSyntax expression2 = GetReturnExpression(@else.Statement);
+                    ExpressionSyntax expression2 = GetReturnExpression(elseClause.Statement);
 
                     if (expression2 != null)
                     {
@@ -34,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                             || expression2.IsBooleanLiteralExpression())
                         {
                             context.RegisterRefactoring(
-                                Title,
+                                "Replace if-else with return",
                                 cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
                         }
                     }
@@ -64,12 +62,30 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (returnExpression2 != null)
                             {
+                                const string title = "Replace if-return with return";
+
                                 if (returnExpression.IsBooleanLiteralExpression()
                                     || returnExpression2.IsBooleanLiteralExpression())
                                 {
                                     context.RegisterRefactoring(
-                                        Title,
-                                        cancellationToken => RefactorAsync(context.Document, ifStatement, returnStatement, cancellationToken));
+                                        title,
+                                        cancellationToken => RefactorAsync(context.Document, info.Container, ifStatement, returnStatement, cancellationToken));
+                                }
+                                else
+                                {
+                                    context.RegisterRefactoring(
+                                        title,
+                                        cancellationToken =>
+                                        {
+                                            return RefactorAsync(
+                                                context.Document,
+                                                info.Container,
+                                                ifStatement,
+                                                returnStatement,
+                                                returnExpression,
+                                                returnExpression2,
+                                                cancellationToken);
+                                        });
                                 }
                             }
                         }
@@ -135,6 +151,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task<Document> RefactorAsync(
             Document document,
+            StatementContainer container,
             IfStatementSyntax ifStatement,
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken)
@@ -146,9 +163,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ReturnStatementSyntax newReturnStatement = ReturnStatement(expression);
 
-            var block = (BlockSyntax)ifStatement.Parent;
-
-            SyntaxList<StatementSyntax> statements = block.Statements;
+            SyntaxList<StatementSyntax> statements = container.Statements;
 
             int index = statements.IndexOf(ifStatement);
 
@@ -161,7 +176,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveAt(index)
                 .ReplaceAt(index, newReturnStatement);
 
-            return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements)).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements)).ConfigureAwait(false);
         }
 
         public static ExpressionSyntax GetExpression(ExpressionSyntax condition, ExpressionSyntax expression1, ExpressionSyntax expression2)
@@ -208,6 +223,44 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
             }
+        }
+
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            StatementContainer container,
+            IfStatementSyntax ifStatement,
+            ReturnStatementSyntax returnStatement,
+            ExpressionSyntax whenTrue,
+            ExpressionSyntax whenFalse,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxList<StatementSyntax> statements = container.Statements;
+
+            int index = statements.IndexOf(ifStatement);
+
+            ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(ifStatement.Condition, whenTrue, whenFalse);
+
+            ReturnStatementSyntax newReturnStatement = ReturnStatement(conditionalExpression)
+                .WithLeadingTrivia(ifStatement.GetLeadingTrivia())
+                .WithTrailingTrivia(returnStatement.GetTrailingTrivia())
+                .WithFormatterAnnotation();
+
+            SyntaxList<StatementSyntax> newStatements = statements
+                .Remove(returnStatement)
+                .ReplaceAt(index, newReturnStatement);
+
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+        }
+
+        private static ConditionalExpressionSyntax CreateConditionalExpression(ExpressionSyntax condition, ExpressionSyntax whenTrue, ExpressionSyntax whenFalse)
+        {
+            if (!condition.IsKind(SyntaxKind.ParenthesizedExpression))
+            {
+                condition = ParenthesizedExpression(condition.WithoutTrivia())
+                    .WithTriviaFrom(condition);
+            }
+
+            return ConditionalExpression(condition, whenTrue, whenFalse);
         }
     }
 }
