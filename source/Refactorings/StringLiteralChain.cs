@@ -23,9 +23,13 @@ namespace Roslynator.CSharp
             for (int i = 0; i < literals.Count; i++)
             {
                 if (literals[i].IsVerbatimStringLiteral())
+                {
                     IsAnyVerbatim = true;
+                }
                 else
+                {
                     IsAllVerbatim = false;
+                }
             }
 
             if (IsAllVerbatim)
@@ -48,9 +52,13 @@ namespace Roslynator.CSharp
                 literals.Add((LiteralExpressionSyntax)addExpression.Right);
 
                 if (addExpression.Left.IsKind(SyntaxKind.StringLiteralExpression))
+                {
                     literals.Add((LiteralExpressionSyntax)addExpression.Left);
+                }
                 else
+                {
                     addExpressions.Push((BinaryExpressionSyntax)addExpression.Left);
+                }
             }
 
             return literals;
@@ -69,7 +77,9 @@ namespace Roslynator.CSharp
             if (binaryExpression.IsKind(SyntaxKind.AddExpression)
                 && binaryExpression.Right?.IsKind(SyntaxKind.StringLiteralExpression) == true)
             {
-                switch (binaryExpression.Left?.Kind())
+                ExpressionSyntax left = binaryExpression.Left;
+
+                switch (left?.Kind())
                 {
                     case SyntaxKind.StringLiteralExpression:
                         return true;
@@ -81,13 +91,14 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        public LiteralExpressionSyntax Merge()
+        public LiteralExpressionSyntax ToStringLiteral()
         {
             var sb = new StringBuilder();
 
             for (int i = Literals.Length - 1; i >= 0; i--)
             {
-                if (IsAnyVerbatim && Literals[i].IsVerbatimStringLiteral())
+                if (IsAnyVerbatim
+                    && Literals[i].IsVerbatimStringLiteral())
                 {
                     sb.Append(EscapeQuotes(Literals[i].Token.ValueText));
                 }
@@ -100,7 +111,7 @@ namespace Roslynator.CSharp
             return ParseExpression(sb.ToString(), start: (IsAllVerbatim) ? AmpersandQuote : Quote);
         }
 
-        public LiteralExpressionSyntax MergeMultiline()
+        public LiteralExpressionSyntax ToMultilineStringLiteral()
         {
             var sb = new StringBuilder();
 
@@ -158,10 +169,9 @@ namespace Roslynator.CSharp
 
         private static string GetInnerText(string s)
         {
-            if (s[0] == '@')
-                return s.Substring(2, s.Length - 3);
-
-            return s.Substring(1, s.Length - 2);
+            return (s[0] == '@')
+                ? s.Substring(2, s.Length - 3)
+                : s.Substring(1, s.Length - 2);
         }
     }
 }

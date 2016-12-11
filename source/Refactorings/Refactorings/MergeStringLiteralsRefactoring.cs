@@ -28,8 +28,8 @@ namespace Roslynator.CSharp.Refactorings
             var chain = new StringLiteralChain(binaryExpression);
 
             LiteralExpressionSyntax newNode = (multiline)
-                ? chain.MergeMultiline()
-                : chain.Merge();
+                ? chain.ToMultilineStringLiteral()
+                : chain.ToStringLiteral();
 
             root = root.ReplaceNode(
                 binaryExpression,
