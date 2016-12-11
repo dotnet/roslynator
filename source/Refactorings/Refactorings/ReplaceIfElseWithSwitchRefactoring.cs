@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -14,40 +13,22 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceIfElseWithSwitchRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, SelectedStatementsInfo info)
+        public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (info.IsSingleSelected)
+            if (IfElseChain.IsTopmostIf(ifStatement)
+                && CanReplaceIfElseWithSwitch(ifStatement))
             {
-                StatementSyntax[] statements = info.SelectedNodes().ToArray();
+                string title = (IfElseChain.IsPartOfChain(ifStatement))
+                    ? "Replace if-else with switch"
+                    : "Replace if with switch";
 
-                StatementSyntax first = statements[0];
-
-                if (first.IsKind(SyntaxKind.IfStatement))
-                {
-                    var ifStatement = (IfStatementSyntax)first;
-
-                    if (IfElseChain.IsTopmostIf(ifStatement)
-                        && CanBeReplacedWithSwitch(ifStatement))
-                    {
-                        string title = (IfElseChain.IsPartOfChain(ifStatement))
-                            ? "Replace if-else with switch"
-                            : "Replace if with switch";
-
-                        context.RegisterRefactoring(
-                            title,
-                            cancellationToken =>
-                            {
-                                return RefactorAsync(
-                                    context.Document,
-                                    ifStatement,
-                                    cancellationToken);
-                            });
-                    }
-                }
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
             }
         }
 
-        private static bool CanBeReplacedWithSwitch(IfStatementSyntax ifStatement)
+        private static bool CanReplaceIfElseWithSwitch(IfStatementSyntax ifStatement)
         {
             foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
             {
@@ -110,19 +91,15 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SwitchStatementSyntax switchStatement = SwitchStatement(
                 GetSwitchExpression(ifStatement),
                 List(CreateSwitchSections(ifStatement)));
 
-            SyntaxNode newRoot = root.ReplaceNode(
-                ifStatement,
-                switchStatement
-                    .WithTriviaFrom(ifStatement)
-                    .WithFormatterAnnotation());
+            switchStatement = switchStatement
+                .WithTriviaFrom(ifStatement)
+                .WithFormatterAnnotation();
 
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, switchStatement).ConfigureAwait(false);
         }
 
         private static ExpressionSyntax GetSwitchExpression(IfStatementSyntax ifStatement)

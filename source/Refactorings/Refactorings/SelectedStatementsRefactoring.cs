@@ -15,7 +15,6 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement);
         }
 
@@ -34,9 +33,6 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                     MergeIfStatementsRefactoring.ComputeRefactorings(context, info);
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch))
-                    ReplaceIfElseWithSwitchRefactoring.ComputeRefactoring(context, info);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement))
                     ReplaceIfStatementWithReturnStatementRefactoring.ComputeRefactoring(context, info);

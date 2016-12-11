@@ -12,7 +12,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.SwapStatementsInIfElse,
                     RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression,
-                    RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement)
+                    RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement,
+                    RefactoringIdentifiers.ReplaceIfElseWithSwitch)
                 && IfElseChain.IsTopmostIf(ifStatement)
                 && context.Span.IsBetweenSpans(ifStatement))
             {
@@ -24,6 +25,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse))
                     SwapStatementInIfElseRefactoring.ComputeRefactoring(context, ifStatement);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch))
+                    ReplaceIfElseWithSwitchRefactoring.ComputeRefactoring(context, ifStatement);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
