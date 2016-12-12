@@ -268,7 +268,10 @@ namespace Roslynator
                 case SyntaxKind.CoalesceExpression:
                     return true;
                 default:
-                    return false;
+                    {
+                        Debug.Assert(!(node is BinaryExpressionSyntax), node.Kind().ToString());
+                        return false;
+                    }
             }
         }
 
