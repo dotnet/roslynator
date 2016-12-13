@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -13,77 +14,113 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceIfElseWithSwitchRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChain.IsTopmostIf(ifStatement)
-                && CanReplaceIfElseWithSwitch(ifStatement))
+            if (IfElseChain.IsTopmostIf(ifStatement))
             {
-                string title = (IfElseChain.IsPartOfChain(ifStatement))
-                    ? "Replace if-else with switch"
-                    : "Replace if with switch";
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
-            }
-        }
-
-        private static bool CanReplaceIfElseWithSwitch(IfStatementSyntax ifStatement)
-        {
-            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
-            {
-                if (node.IsKind(SyntaxKind.IfStatement))
+                if (IfElseChain.GetChain(ifStatement)
+                    .Where(f => f.IsKind(SyntaxKind.IfStatement))
+                    .All(f => IsValidIf((IfStatementSyntax)f, semanticModel, context.CancellationToken)))
                 {
-                    ifStatement = (IfStatementSyntax)node;
+                    string title = (IfElseChain.IsPartOfChain(ifStatement))
+                        ? "Replace if-else with switch"
+                        : "Replace if with switch";
 
-                    var condition = ifStatement.Condition as BinaryExpressionSyntax;
-
-                    if (condition == null
-                        || !IsValidCondition(condition, null))
-                    {
-                        return false;
-                    }
+                    context.RegisterRefactoring(
+                        title,
+                        cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
                 }
             }
-
-            return true;
         }
 
-        private static bool IsValidCondition(BinaryExpressionSyntax binaryExpression, ExpressionSyntax switchExpression)
+        private static bool IsValidIf(IfStatementSyntax ifStatement, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-            {
-                return switchExpression == null
-                    || binaryExpression.Left?.IsEquivalentTo(switchExpression, topLevel: false) == true;
-            }
-            else if (binaryExpression.IsKind(SyntaxKind.LogicalOrExpression))
-            {
-                ExpressionSyntax right = binaryExpression.Right;
+            ExpressionSyntax condition = ifStatement.Condition;
 
-                if (right?.IsKind(SyntaxKind.EqualsExpression) == true)
+            return condition.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.LogicalOrExpression)
+                && IsValidCondition((BinaryExpressionSyntax)condition, null, semanticModel, cancellationToken);
+        }
+
+        private static bool IsValidCondition(
+            BinaryExpressionSyntax binaryExpression,
+            ExpressionSyntax switchExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            bool success = true;
+
+            while (success)
+            {
+                success = false;
+
+                SyntaxKind kind = binaryExpression.Kind();
+
+                if (kind == SyntaxKind.LogicalOrExpression)
                 {
-                    var equalsExpression = (BinaryExpressionSyntax)right;
+                    ExpressionSyntax right = binaryExpression.Right;
 
-                    if (switchExpression == null)
-                        switchExpression = equalsExpression.Left;
-
-                    if (equalsExpression.Left?.IsEquivalentTo(switchExpression, topLevel: false) == true)
+                    if (right?.IsKind(SyntaxKind.EqualsExpression) == true)
                     {
-                        binaryExpression = binaryExpression.Left as BinaryExpressionSyntax;
+                        var equalsExpression = (BinaryExpressionSyntax)right;
 
-                        if (binaryExpression != null)
+                        if (IsValidEqualsExpression(equalsExpression, switchExpression, semanticModel, cancellationToken))
                         {
-                            return IsValidCondition(binaryExpression, switchExpression);
-                        }
-                        else
-                        {
-                            return false;
+                            if (switchExpression == null)
+                            {
+                                switchExpression = equalsExpression.Left;
+
+                                if (!semanticModel.IsValidSwitchExpression(switchExpression, cancellationToken))
+                                    return false;
+                            }
+
+                            ExpressionSyntax left = binaryExpression.Left;
+
+                            if (left?.IsKind(SyntaxKind.LogicalOrExpression, SyntaxKind.EqualsExpression) == true)
+                            {
+                                binaryExpression = (BinaryExpressionSyntax)left;
+                                success = true;
+                            }
                         }
                     }
+                }
+                else if (kind == SyntaxKind.EqualsExpression)
+                {
+                    return IsValidEqualsExpression(binaryExpression, switchExpression, semanticModel, cancellationToken);
                 }
             }
 
             return false;
+        }
+
+        private static bool IsValidEqualsExpression(
+            BinaryExpressionSyntax equalsExpression,
+            ExpressionSyntax switchExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ExpressionSyntax left = equalsExpression.Left;
+
+            if (IsValidSwitchExpression(left, semanticModel, cancellationToken))
+            {
+                ExpressionSyntax right = equalsExpression.Right;
+
+                if (IsValidSwitchExpression(right, semanticModel, cancellationToken)
+                    && semanticModel.GetConstantValue(right).HasValue)
+                {
+                    return switchExpression == null
+                        || left?.IsEquivalentTo(switchExpression, topLevel: false) == true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsValidSwitchExpression(ExpressionSyntax right, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return right != null
+                && semanticModel.IsValidSwitchExpression(right, cancellationToken);
         }
 
         private static async Task<Document> RefactorAsync(

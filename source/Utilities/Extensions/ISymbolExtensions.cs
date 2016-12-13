@@ -694,5 +694,10 @@ namespace Roslynator
                 || typeKind == typeKind2
                 || typeKind == typeKind3;
         }
+
+        public static bool IsSpecialType(this ITypeSymbol typeSymbol, SpecialType specialType)
+        {
+            return typeSymbol?.SpecialType == specialType;
+        }
     }
 }
