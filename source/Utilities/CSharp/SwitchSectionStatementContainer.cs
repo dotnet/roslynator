@@ -5,29 +5,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public class BlockContainer : StatementContainer
+    public class SwitchSectionStatementContainer : StatementContainer
     {
-        private readonly BlockSyntax _block;
+        private readonly SwitchSectionSyntax _switchSection;
 
-        public BlockContainer(BlockSyntax block)
-            : base(block)
+        public SwitchSectionStatementContainer(SwitchSectionSyntax switchSection)
+            : base(switchSection)
         {
-            _block = block;
+            _switchSection = switchSection;
         }
 
-        public override bool IsBlock
+        public override bool IsSwitchSection
         {
             get { return true; }
         }
 
         public override SyntaxList<StatementSyntax> Statements
         {
-            get { return _block.Statements; }
+            get { return _switchSection.Statements; }
         }
 
         public override SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements)
         {
-            return _block.WithStatements(statements);
+            return _switchSection.WithStatements(statements);
         }
     }
 }

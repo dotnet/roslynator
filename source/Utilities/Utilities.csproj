@@ -51,7 +51,7 @@
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
-    <Compile Include="CSharp\SwitchSectionContainer.cs" />
+    <Compile Include="CSharp\SwitchSectionStatementContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
@@ -101,7 +101,7 @@
     <Compile Include="SelectedLinesInfo.cs" />
     <Compile Include="CSharp\SelectedStatementsInfo.cs" />
     <Compile Include="SelectedNodesInfo.cs" />
-    <Compile Include="CSharp\BlockContainer.cs" />
+    <Compile Include="CSharp\BlockStatementContainer.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
     <Compile Include="SymbolRenamer.cs" />
     <Compile Include="ModifierComparer.cs" />

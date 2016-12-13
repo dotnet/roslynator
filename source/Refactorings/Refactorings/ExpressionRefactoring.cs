@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings.ExtractCondition;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -9,10 +10,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)
+                && context.Span.IsBetweenSpans(expression))
             {
-                ExtractExpressionFromIfConditionRefactoring.ComputeRefactoring(context, expression);
-                ExtractExpressionFromWhileConditionRefactoring.ComputeRefactoring(context, expression);
+                ExtractConditionRefactoring.ComputeRefactoring(context, expression);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ParenthesizeExpression)

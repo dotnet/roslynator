@@ -78,5 +78,15 @@ namespace Roslynator.CSharp
 
             return null;
         }
+
+        public string ExpressionsText
+        {
+            get
+            {
+                return BinaryExpression
+                    .ToFullString()
+                    .Substring(Span.Start - BinaryExpression.FullSpan.Start, Span.Length);
+            }
+        }
     }
 }

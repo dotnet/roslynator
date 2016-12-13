@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings.ExtractCondition;
 using Roslynator.CSharp.Refactorings.ReplaceEqualsExpression;
 
 namespace Roslynator.CSharp.Refactorings
@@ -111,6 +112,19 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     await ReplaceEqualsExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
                 }
+            }
+
+            if (!context.Span.IsBetweenSpans(binaryExpression)
+                && context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+            {
+                SelectedExpressions selectedExpressions = SelectedExpressions.TryCreate(binaryExpression, context.Span);
+#pragma warning disable RCS1061
+                if (selectedExpressions?.Expressions.Length > 1)
+                {
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+                        ExtractConditionRefactoring.ComputeRefactoring(context, selectedExpressions);
+                }
+#pragma warning restore RCS1061
             }
         }
     }

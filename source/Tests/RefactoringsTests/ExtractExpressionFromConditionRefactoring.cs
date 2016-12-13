@@ -57,7 +57,6 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         private static void Do()
         {
-            throw new NotImplementedException();
         }
     }
 }

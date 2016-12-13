@@ -21,7 +21,7 @@ namespace Roslynator.CSharp
             if (block == null)
                 throw new ArgumentNullException(nameof(block));
 
-            var container = new BlockContainer(block);
+            var container = new BlockStatementContainer(block);
 
             return new SelectedStatementsInfo(container, span);
         }
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp
             if (switchSection == null)
                 throw new ArgumentNullException(nameof(switchSection));
 
-            var container = new SwitchSectionContainer(switchSection);
+            var container = new SwitchSectionStatementContainer(switchSection);
 
             return new SelectedStatementsInfo(container, span);
         }

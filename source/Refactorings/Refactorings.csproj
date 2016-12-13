@@ -44,6 +44,9 @@
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToNestedIfRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToIfRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceLocalFromStatementThatReturnsValueRefactoring.cs" />
     <Compile Include="Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
     <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
@@ -73,7 +76,7 @@
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
-    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromConditionRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldInfo.cs" />
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeInfo.cs" />
@@ -86,7 +89,7 @@
     <Compile Include="Refactorings\NodeInList\RewriterInfo.cs" />
     <Compile Include="Refactorings\ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithConditionalExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromWhileConditionRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromWhileToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\SelectedSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingDirectiveRefactoring.cs" />
@@ -104,7 +107,7 @@
     <Compile Include="Refactorings\AddDefaultValueToReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\ExtractExpressionFromCondition\ExtractExpressionFromIfConditionRefactoring.cs" />
+    <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInTryCatchRefactoring.cs" />
