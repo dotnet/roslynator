@@ -14,46 +14,100 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            StatementSyntax statement = GetContainingStatement(expression);
+            SyntaxNode parent = expression.Parent;
 
-            if (statement != null
-                && !NullCheckExists(expression, statement))
+            if (parent != null)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                var assignment = parent as AssignmentExpressionSyntax;
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                if (assignment?.Left == expression
+                    && !RulesOutNullCheck(assignment.Right))
+                {
+                    parent = parent.Parent;
 
-                if (typeSymbol?.IsReferenceType == true)
-                    RegisterRefactoring(context, expression.WithoutTrivia(), statement);
+                    if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                    {
+                        var statement = (ExpressionStatementSyntax)parent;
+
+                        if (statement != null
+                            && !NullCheckExists(expression, statement))
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (semanticModel
+                                .GetTypeSymbol(expression, context.CancellationToken)?
+                                .IsReferenceType == true)
+                            {
+                                RegisterRefactoring(context, expression, statement);
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
+        internal static async Task ComputeRefactoringAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            SyntaxToken identifier = variableDeclarator.Identifier;
+            SyntaxNode parent = variableDeclaration.Parent;
 
-            StatementSyntax statement = GetContainingStatement(variableDeclarator);
-
-            if (statement != null)
+            if (parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
             {
-                IdentifierNameSyntax identifierName = IdentifierName(identifier.WithoutTrivia());
+                TypeSyntax type = variableDeclaration.Type;
 
-                if (!NullCheckExists(identifierName, statement))
+                if (type != null)
                 {
-                    var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+                    SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
-                    TypeSyntax type = variableDeclaration.Type;
-
-                    if (type != null)
+                    if (variables.Count == 1)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        VariableDeclaratorSyntax variableDeclarator = variables[0];
 
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                        if (!RulesOutNullCheck(variableDeclarator?.Initializer?.Value))
+                        {
+                            SyntaxToken identifier = variableDeclarator.Identifier;
 
-                        if (typeSymbol?.IsReferenceType == true)
-                            RegisterRefactoring(context, identifierName, statement);
+                            if (context.Span.IsContainedInSpanOrBetweenSpans(identifier))
+                            {
+                                IdentifierNameSyntax identifierName = IdentifierName(identifier);
+
+                                var localDeclaration = (StatementSyntax)parent;
+
+                                if (!NullCheckExists(identifierName, localDeclaration))
+                                {
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                    if (semanticModel
+                                        .GetTypeSymbol(type, context.CancellationToken)?
+                                        .IsReferenceType == true)
+                                    {
+                                        RegisterRefactoring(context, identifierName, localDeclaration);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+            }
+        }
+
+        private static bool RulesOutNullCheck(ExpressionSyntax expression)
+        {
+            switch (expression?.Kind())
+            {
+                case SyntaxKind.AnonymousObjectCreationExpression:
+                case SyntaxKind.ArrayCreationExpression:
+                case SyntaxKind.ImplicitArrayCreationExpression:
+                case SyntaxKind.ObjectCreationExpression:
+                case SyntaxKind.ThisExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                    return true;
+                default:
+                    return false;
             }
         }
 
@@ -61,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 $"Check '{expression}' for null",
-                cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression.WithoutTrivia(), statement, cancellationToken));
         }
 
         private static bool NullCheckExists(ExpressionSyntax expression, StatementSyntax statement)
@@ -106,41 +160,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        private static StatementSyntax GetContainingStatement(ExpressionSyntax expression)
-        {
-            SyntaxNode parent = expression.Parent;
-
-            if (parent != null)
-            {
-                var assignment = parent as AssignmentExpressionSyntax;
-
-                if (assignment?.Left?.Equals(expression) == true)
-                {
-                    parent = parent.Parent;
-
-                    if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
-                        return (StatementSyntax)parent;
-                }
-            }
-
-            return null;
-        }
-
-        private static StatementSyntax GetContainingStatement(VariableDeclaratorSyntax variableDeclarator)
-        {
-            SyntaxNode parent = variableDeclarator.Parent;
-
-            if (parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
-            {
-                parent = parent.Parent;
-
-                if (parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
-                    return (StatementSyntax)parent;
-            }
-
-            return null;
         }
 
         private static async Task<Document> RefactorAsync(

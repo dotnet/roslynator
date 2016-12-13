@@ -93,7 +93,6 @@ namespace Roslynator.CSharp.Refactorings
             bool fElseClause = false;
             bool fCaseSwitchLabel = false;
             bool fUsingDirective = false;
-            bool fVariableDeclarator = false;
 
             bool fExpression = false;
             bool fAnonymousMethod = false;
@@ -258,14 +257,6 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         UsingDirectiveRefactoring.ComputeRefactoring(context, (UsingDirectiveSyntax)node);
                         fUsingDirective = true;
-                        continue;
-                    }
-
-                    if (!fVariableDeclarator
-                        && kind == SyntaxKind.VariableDeclarator)
-                    {
-                        await VariableDeclaratorRefactoring.ComputeRefactoringAsync(context, (VariableDeclaratorSyntax)node).ConfigureAwait(false);
-                        fVariableDeclarator = true;
                         continue;
                     }
 

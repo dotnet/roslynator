@@ -269,7 +269,6 @@
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
-    <Compile Include="VariableDeclaratorRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

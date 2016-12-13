@@ -6,17 +6,19 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
     {
         public static void Foo()
         {
-            string s = GetValueOrDefault();
+            Entity x = GetValueOrDefault();
 
-            s = GetValueOrDefault();
+            x = GetValueOrDefault();
+
+            x = new Entity();
 
             int i = GetValue();
 
             if (true)
-                s = GetValueOrDefault();
+                x = GetValueOrDefault();
         }
 
-        private static string GetValueOrDefault()
+        private static Entity GetValueOrDefault()
         {
             return null;
         }
@@ -24,6 +26,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
         private static int GetValue()
         {
             return 0;
+        }
+
+        private class Entity
+        {
         }
     }
 }
