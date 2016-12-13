@@ -19,18 +19,18 @@ namespace Roslynator.CSharp
 
         public abstract SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements);
 
-        public static bool TryCreate(SyntaxNode node, out StatementContainer container)
+        public static bool TryCreate(SyntaxNode nodeWithStatements, out StatementContainer container)
         {
-            SyntaxKind kind = node.Kind();
+            SyntaxKind kind = nodeWithStatements.Kind();
 
             if (kind == SyntaxKind.Block)
             {
-                container =  new BlockStatementContainer((BlockSyntax)node);
+                container =  new BlockStatementContainer((BlockSyntax)nodeWithStatements);
                 return true;
             }
             else if (kind == SyntaxKind.SwitchSection)
             {
-                container = new SwitchSectionStatementContainer((SwitchSectionSyntax)node);
+                container = new SwitchSectionStatementContainer((SwitchSectionSyntax)nodeWithStatements);
                 return true;
             }
             else
@@ -38,6 +38,17 @@ namespace Roslynator.CSharp
                 container = null;
                 return false;
             }
+        }
+
+        public static bool TryCreate(StatementSyntax statement, out StatementContainer container)
+        {
+            SyntaxNode parent = statement.Parent;
+
+            if (parent != null)
+                return TryCreate(parent, out container);
+
+            container = null;
+            return false;
         }
 
         public virtual bool IsBlock

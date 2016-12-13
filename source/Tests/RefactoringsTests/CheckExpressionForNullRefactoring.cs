@@ -11,6 +11,9 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
             s = GetValueOrDefault();
 
             int i = GetValue();
+
+            if (true)
+                s = GetValueOrDefault();
         }
 
         private static string GetValueOrDefault()

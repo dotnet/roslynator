@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).Type;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsReferenceType == true)
                     RegisterRefactoring(context, expression.WithoutTrivia(), statement);
@@ -61,50 +61,44 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 $"Check '{expression}' for null",
-                cancellationToken =>
-                {
-                    return RefactorAsync(
-                        context.Document,
-                        expression,
-                        statement,
-                        cancellationToken);
-                });
+                cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken));
         }
 
         private static bool NullCheckExists(ExpressionSyntax expression, StatementSyntax statement)
         {
-            SyntaxNode parent = statement.Parent;
-
-            if (parent?.IsKind(SyntaxKind.Block) == true)
+            if (!EmbeddedStatement.IsEmbeddedStatement(statement))
             {
-                var block = (BlockSyntax)parent;
+                StatementContainer container;
 
-                SyntaxList<StatementSyntax> statements = block.Statements;
-
-                int index = statements.IndexOf(statement);
-
-                if (index < statements.Count - 1)
+                if (StatementContainer.TryCreate(statement, out container))
                 {
-                    StatementSyntax nextStatement = statements[index + 1];
+                    SyntaxList<StatementSyntax> statements = container.Statements;
 
-                    if (nextStatement.IsKind(SyntaxKind.IfStatement))
+                    int index = statements.IndexOf(statement);
+
+                    if (index < statements.Count - 1)
                     {
-                        var ifStatement = (IfStatementSyntax)nextStatement;
+                        StatementSyntax nextStatement = statements[index + 1];
 
-                        ExpressionSyntax condition = ifStatement.Condition;
-
-                        if (condition?.IsKind(SyntaxKind.NotEqualsExpression) == true)
+                        if (nextStatement.IsKind(SyntaxKind.IfStatement))
                         {
-                            var notEqualsExpression = (BinaryExpressionSyntax)condition;
+                            var ifStatement = (IfStatementSyntax)nextStatement;
 
-                            ExpressionSyntax left = notEqualsExpression.Left;
+                            ExpressionSyntax condition = ifStatement.Condition;
 
-                            if (left?.IsEquivalentTo(expression, topLevel: false) == true)
+                            if (condition?.IsKind(SyntaxKind.NotEqualsExpression) == true)
                             {
-                                ExpressionSyntax right = notEqualsExpression.Right;
+                                var notEqualsExpression = (BinaryExpressionSyntax)condition;
 
-                                if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
-                                    return true;
+                                ExpressionSyntax left = notEqualsExpression.Left;
+
+                                if (left?.IsEquivalentTo(expression, topLevel: false) == true)
+                                {
+                                    ExpressionSyntax right = notEqualsExpression.Right;
+
+                                    if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                                        return true;
+                                }
                             }
                         }
                     }
@@ -166,7 +160,14 @@ namespace Roslynator.CSharp.Refactorings
                 .WithLeadingTrivia(NewLineTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.InsertNodeAfterAsync(statement, ifStatement, cancellationToken).ConfigureAwait(false);
+            if (EmbeddedStatement.IsEmbeddedStatement(statement))
+            {
+                return await document.ReplaceNodeAsync(statement, Block(statement, ifStatement), cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                return await document.InsertNodeAfterAsync(statement, ifStatement, cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }
