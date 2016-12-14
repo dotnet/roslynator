@@ -56,6 +56,10 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringsAsync(this RefactoringContext context)
         {
+            Debug.WriteLine($"START {nameof(ComputeRefactoringsForTriviaInsideTrivia)}");
+            ComputeRefactoringsForTriviaInsideTrivia(context);
+            Debug.WriteLine($"END {nameof(ComputeRefactoringsForTriviaInsideTrivia)}");
+
             Debug.WriteLine($"START {nameof(ComputeRefactoringsForNodeInsideTrivia)}");
             ComputeRefactoringsForNodeInsideTrivia(context);
             Debug.WriteLine($"END {nameof(ComputeRefactoringsForNodeInsideTrivia)}");
@@ -655,18 +659,18 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            if (!trivia.IsCommentTrivia())
-            {
-                SyntaxTrivia trivia2 = context.FindTriviaInsideTrivia();
+            if (!trivia.IsPartOfStructuredTrivia())
+                CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
+        }
 
-                if (trivia.Span != trivia2.Span)
-                {
-                    trivia = trivia2;
-                    Debug.WriteLine(trivia.Kind().ToString());
-                }
-            }
+        public static void ComputeRefactoringsForTriviaInsideTrivia(this RefactoringContext context)
+        {
+            SyntaxTrivia trivia = context.FindTriviaInsideTrivia();
 
-            CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
+            Debug.WriteLine(trivia.Kind().ToString());
+
+            if (trivia.IsPartOfStructuredTrivia())
+                CommentTriviaRefactoring.ComputeRefactorings(context, trivia);
         }
     }
 }
