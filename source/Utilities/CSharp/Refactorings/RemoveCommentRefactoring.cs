@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,19 +11,18 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveCommentRefactoring
     {
-        public static async Task<Document> RemoveCommentAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             SyntaxTrivia comment,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
 
             SyntaxToken newToken = GetNewToken(comment.Token, comment)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceToken(comment.Token, newToken);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceTokenAsync(comment.Token, newToken).ConfigureAwait(false);
         }
 
         private static SyntaxToken GetNewToken(SyntaxToken token, SyntaxTrivia comment)

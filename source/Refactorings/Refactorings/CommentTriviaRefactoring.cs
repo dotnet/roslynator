@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove comment",
-                        c => RemoveCommentRefactoring.RemoveCommentAsync(context.Document, trivia, c));
+                        c => SyntaxRemover.RemoveCommentAsync(context.Document, trivia, c));
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllComments))

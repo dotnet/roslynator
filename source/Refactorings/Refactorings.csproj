@@ -142,7 +142,6 @@
     <Compile Include="Refactorings\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactorings\MergeStringLiteralsRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveCommentRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />

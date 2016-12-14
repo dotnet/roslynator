@@ -50,6 +50,7 @@
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\RemoveCommentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionStatementContainer.cs" />
     <Compile Include="CSharp\AccessModifier.cs" />

@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp
@@ -305,6 +306,14 @@ namespace Roslynator.CSharp
             }
 
             return member;
+        }
+
+        public static Task<Document> RemoveCommentAsync(
+            Document document,
+            SyntaxTrivia comment,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return RemoveCommentRefactoring.RefactorAsync(document, comment, cancellationToken);
         }
 
         public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
