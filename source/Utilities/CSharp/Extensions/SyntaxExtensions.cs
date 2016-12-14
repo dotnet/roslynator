@@ -708,6 +708,26 @@ namespace Roslynator.CSharp
             }
         }
 
+
+        public static bool IsLiteralExpression(this ExpressionSyntax expression)
+        {
+            switch (expression?.Kind())
+            {
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                    return true;
+                default:
+                    {
+                        Debug.Assert(expression == null || !(expression is LiteralExpressionSyntax), expression?.Kind().ToString());
+                        return false;
+                    }
+            }
+        }
+
         public static bool IsConst(this FieldDeclarationSyntax fieldDeclaration)
         {
             return fieldDeclaration?.Modifiers.Contains(SyntaxKind.ConstKeyword) == true;

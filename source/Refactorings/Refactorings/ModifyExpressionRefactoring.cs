@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             if (semanticModel.IsExplicitConversion(expression, destinationType))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
-                    AddToMethodInvocation(context, expression, destinationType, semanticModel);
+                    CallToMethod(context, expression, destinationType, semanticModel);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
                     AddCastExpressionRefactoring.RegisterRefactoring(context, expression, destinationType);
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             else if (destinationType.IsString())
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
-                    CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+                    CallToString(context, expression, destinationType);
             }
         }
 
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
                 {
-                    if (AddToMethodInvocation(context, expression, destinationType, semanticModel))
+                    if (CallToMethod(context, expression, destinationType, semanticModel))
                     {
                         if (destinationType.IsString())
                             fString = true;
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol stringType = destinationTypes.FirstOrDefault(f => f.IsString());
 
                     if (stringType != null)
-                        CallToMethodRefactoring.ComputeRefactoring(context, expression, stringType, "ToString");
+                        CallToString(context, expression, stringType);
                 }
             }
 
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool AddToMethodInvocation(
+        private static bool CallToMethod(
             RefactoringContext context,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
@@ -79,24 +79,30 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (destinationType.IsString())
             {
-                CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+                CallToString(context, expression, destinationType);
                 return true;
             }
             else if (destinationType.IsArrayType())
             {
-                AddToArray(context, expression, (IArrayTypeSymbol)destinationType, semanticModel);
+                CallToArray(context, expression, (IArrayTypeSymbol)destinationType, semanticModel);
                 return true;
             }
             else if (destinationType.IsNamedType())
             {
-                AddToList(context, expression, (INamedTypeSymbol)destinationType, semanticModel);
+                CallToList(context, expression, (INamedTypeSymbol)destinationType, semanticModel);
                 return true;
             }
 
             return false;
         }
 
-        private static void AddToArray(
+        private static void CallToString(RefactoringContext context, ExpressionSyntax expression, ITypeSymbol destinationType)
+        {
+            if (!expression.IsLiteralExpression())
+                CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
+        }
+
+        private static void CallToArray(
             RefactoringContext context,
             ExpressionSyntax expression,
             IArrayTypeSymbol arrayType,
@@ -119,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static void AddToList(
+        private static void CallToList(
             RefactoringContext context,
             ExpressionSyntax expression,
             INamedTypeSymbol destinationType,
