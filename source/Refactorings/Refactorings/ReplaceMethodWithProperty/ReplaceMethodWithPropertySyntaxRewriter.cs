@@ -87,8 +87,6 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
             return base.VisitMethodDeclaration(node);
         }
 
-        public string MethodName() => null;
-
         private static PropertyDeclarationSyntax ReplaceMethodWithProperty(MethodDeclarationSyntax methodDeclaration, string propertyName)
         {
             SyntaxToken identifier = Identifier(propertyName).WithTriviaFrom(methodDeclaration.Identifier);

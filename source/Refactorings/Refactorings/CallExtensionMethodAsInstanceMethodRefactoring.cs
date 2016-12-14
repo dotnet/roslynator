@@ -53,8 +53,10 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.SimpleMemberAccessExpression:
                     return ((MemberAccessExpressionSyntax)expression).Name;
                 default:
-                    Debug.Assert(false, expression.Kind().ToString());
-                    return null;
+                    {
+                        Debug.Assert(false, expression.Kind().ToString());
+                        return null;
+                    }
             }
         }
 

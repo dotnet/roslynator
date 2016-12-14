@@ -80,7 +80,8 @@ namespace Roslynator.CSharp.Refactorings
 
             return await document.ReplaceNodeAsync(
                 conditionalExpression,
-                newNode.WithTriviaFrom(conditionalExpression)).ConfigureAwait(false);
+                newNode.WithTriviaFrom(conditionalExpression),
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }

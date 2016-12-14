@@ -18,9 +18,8 @@ namespace Roslynator.CSharp.Refactorings
                 initializer = (InitializerExpressionSyntax)initializer.Parent;
             }
 
-            if (context.Span.IsEmpty
-                || context.Span.IsBetweenSpans(initializer)
-                || context.Span.IsBetweenSpans(initializer.Expressions))
+            if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer)
+                || context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer.Expressions))
             {
                 SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 

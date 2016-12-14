@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
             PrefixUnaryExpressionSyntax logicalNot,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await document.ReplaceNodeAsync(logicalNot, GetNewNode(logicalNot)).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(logicalNot, GetNewNode(logicalNot), cancellationToken).ConfigureAwait(false);
         }
 
         private static ExpressionSyntax GetNewNode(PrefixUnaryExpressionSyntax logicalNot)

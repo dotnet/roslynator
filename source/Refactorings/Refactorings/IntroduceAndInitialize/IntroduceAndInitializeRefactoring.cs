@@ -110,8 +110,6 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             Document document,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ConstructorDeclarationSyntax constructor = Constructor;
 
             MemberDeclarationSyntax containingMember = constructor.GetParentMember();
@@ -126,11 +124,10 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 GetDeclarationIndex(members),
                 CreateDeclarations());
 
-            SyntaxNode newRoot = root.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 containingMember,
-                containingMember.SetMembers(newMembers));
-
-            return document.WithSyntaxRoot(newRoot);
+                containingMember.SetMembers(newMembers),
+                cancellationToken).ConfigureAwait(false);
         }
 
         private IEnumerable<ExpressionStatementSyntax> CreateAssignments()

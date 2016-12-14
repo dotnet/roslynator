@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 try
                 {
-                    Refactor(expression, context.Root);
+                    Refactor(context.Root, expression);
                     return true;
                 }
                 catch (Exception ex)
@@ -39,12 +39,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = Refactor(expression, root);
+            SyntaxNode newRoot = Refactor(root, expression);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static SyntaxNode Refactor(ExpressionSyntax expression, SyntaxNode root)
+        private static SyntaxNode Refactor(SyntaxNode root, ExpressionSyntax expression)
         {
             return root.ReplaceNode(
                 expression,

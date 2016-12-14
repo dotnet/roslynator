@@ -55,15 +55,9 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
             SelectedLinesInfo info,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
             ImmutableArray<TextChange> textChanges = GetTextChanges(info.SelectedLines());
 
-            SourceText newSourceText = sourceText.WithChanges(textChanges);
-
-            return document.WithText(newSourceText);
+            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
         }
     }
 }

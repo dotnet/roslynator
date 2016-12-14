@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(objectCreationExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(objectCreationExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

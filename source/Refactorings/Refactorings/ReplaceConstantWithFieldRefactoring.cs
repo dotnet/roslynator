@@ -17,17 +17,13 @@ namespace Roslynator.CSharp.Refactorings
             FieldDeclarationSyntax field,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             FieldDeclarationSyntax newField = field
                 .WithModifiers(GetModifiers(field, semanticModel, cancellationToken))
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(field, newField);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(field, newField, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxTokenList GetModifiers(

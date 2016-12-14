@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode newNode = rewriter.Visit(enumDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private class EnumDeclarationSyntaxRewriter : CSharpSyntaxRewriter

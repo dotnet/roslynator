@@ -26,11 +26,11 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol?.IsErrorType() == false
                     && typeSymbol.IsException(semanticModel))
                 {
-                    MemberDeclarationSyntax member = GetContainingMember(throwStatement);
+                    MemberDeclarationSyntax containingMember = await GetContainingMemberAsync(throwStatement, semanticModel, context.CancellationToken).ConfigureAwait(false);
 
-                    if (member != null)
+                    if (containingMember != null)
                     {
-                        SyntaxTrivia trivia = member.GetSingleLineDocumentationComment();
+                        SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
 
                         if (trivia.IsSingleLineDocumentationCommentTrivia())
                         {
@@ -87,30 +87,34 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static MemberDeclarationSyntax GetContainingMember(this StatementSyntax statement)
+        internal static async Task<MemberDeclarationSyntax> GetContainingMemberAsync(
+            StatementSyntax statement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (SyntaxNode ancestor in statement.Ancestors())
+            ISymbol symbol = semanticModel.GetEnclosingSymbol(statement.SpanStart, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
             {
-                switch (ancestor.Kind())
+                var methodsymbol = (IMethodSymbol)symbol;
+
+                if (methodsymbol.MethodKind == MethodKind.Ordinary)
                 {
-                    case SyntaxKind.MethodDeclaration:
-                    case SyntaxKind.OperatorDeclaration:
-                    case SyntaxKind.ConversionOperatorDeclaration:
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.DestructorDeclaration:
-                    case SyntaxKind.PropertyDeclaration:
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.IndexerDeclaration:
-                        return (MemberDeclarationSyntax)ancestor;
-                    case SyntaxKind.IncompleteMember:
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                        return null;
+                    if (methodsymbol.PartialImplementationPart != null)
+                        symbol = methodsymbol.PartialImplementationPart;
+                }
+                else if (methodsymbol.AssociatedSymbol != null)
+                {
+                    symbol = methodsymbol.AssociatedSymbol;
                 }
             }
 
-            return null;
+            SyntaxNode node = await symbol
+                .DeclaringSyntaxReferences[0]
+                .GetSyntaxAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return node as MemberDeclarationSyntax;
         }
 
         private static async Task<Document> RefactorAsync(

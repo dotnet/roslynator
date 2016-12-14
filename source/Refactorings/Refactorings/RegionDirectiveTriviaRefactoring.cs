@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives)
-                && context.Root.IsKind(SyntaxKind.CompilationUnit))
+                && context.IsRootCompilationUnit)
             {
                 context.RegisterRefactoring(
                     "Remove all region directives",
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, RegionDirectiveTriviaSyntax regionDirective)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveRegion)
-                && context.Root.IsKind(SyntaxKind.CompilationUnit))
+                && context.IsRootCompilationUnit)
             {
                 context.RegisterRefactoring(
                     "Remove region",

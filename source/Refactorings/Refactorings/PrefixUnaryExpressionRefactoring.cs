@@ -96,56 +96,40 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> ChangePreIncrementToPostIncrementAsync(
+        private static Task<Document> ChangePreIncrementToPostIncrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax preIncrement,
             PostfixUnaryExpressionSyntax postIncrement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = root.ReplaceNode(preIncrement, postIncrement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.ReplaceNodeAsync(preIncrement, postIncrement, cancellationToken);
         }
 
-        private static async Task<Document> ChangePreIncrementToPreDecrementAsync(
+        private static Task<Document> ChangePreIncrementToPreDecrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax preIncrement,
             PrefixUnaryExpressionSyntax preDecrement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = root.ReplaceNode(preIncrement, preDecrement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.ReplaceNodeAsync(preIncrement, preDecrement, cancellationToken);
         }
 
-        private static async Task<Document> ChangePreDecrementToPostDecrementAsync(
+        private static Task<Document> ChangePreDecrementToPostDecrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax preDecrement,
             PostfixUnaryExpressionSyntax postDecrement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = root.ReplaceNode(preDecrement, postDecrement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.ReplaceNodeAsync(preDecrement, postDecrement, cancellationToken);
         }
 
-        private static async Task<Document> ChangePreDecrementToPreIncrementAsync(
+        private static Task<Document> ChangePreDecrementToPreIncrementAsync(
             Document document,
             PrefixUnaryExpressionSyntax preDecrement,
             PrefixUnaryExpressionSyntax preIncrement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = root.ReplaceNode(preDecrement, preIncrement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.ReplaceNodeAsync(preDecrement, preIncrement, cancellationToken);
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newLambda = newLambda.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(lambda, newLambda).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(lambda, newLambda, cancellationToken).ConfigureAwait(false);
         }
 
         private static SimpleLambdaExpressionSyntax ConvertParenthesizedLambdaToSimpleLambda(ParenthesizedLambdaExpressionSyntax lambda)

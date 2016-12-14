@@ -43,11 +43,11 @@ namespace Roslynator.CSharp.Refactorings
                     .WithParameterList(parameterList.WithTrailingTrivia(initializer.GetTrailingTrivia()))
                     .WithInitializer(null);
 
-                return await document.ReplaceNodeAsync(constructor, newConstructor).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(constructor, newConstructor, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                return await document.RemoveNodeAsync(initializer, SyntaxRemoveOptions.KeepExteriorTrivia).ConfigureAwait(false);
+                return await document.RemoveNodeAsync(initializer, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
             }
         }
     }

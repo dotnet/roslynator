@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             MemberDeclarationSyntax newMemberDeclaration = GetNewMemberDeclaration(memberDeclaration);
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax memberDeclaration)

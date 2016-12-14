@@ -66,8 +66,6 @@ namespace Roslynator.CSharp.Refactorings
             if (invocation == null)
                 throw new ArgumentNullException(nameof(invocation));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression,
@@ -81,9 +79,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 newNode = AddParenthesesIfNecessary(invocation.Parent, newNode);
 
-                SyntaxNode newRoot = root.ReplaceNode(invocation.Parent, newNode);
-
-                return document.WithSyntaxRoot(newRoot);
+                return await document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken).ConfigureAwait(false);
             }
             else
             {
@@ -93,9 +89,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 newNode = AddParenthesesIfNecessary(invocation, newNode);
 
-                SyntaxNode newRoot = root.ReplaceNode(invocation, newNode);
-
-                return document.WithSyntaxRoot(newRoot);
+                return await document.ReplaceNodeAsync(invocation, newNode, cancellationToken).ConfigureAwait(false);
             }
         }
 

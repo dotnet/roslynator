@@ -234,6 +234,70 @@ namespace Roslynator.CSharp
             return false;
         }
 
+        public static bool IsEnumerableElementAtMethod(
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+
+            if (methodSymbol != null)
+            {
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
+
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "ElementAt"))
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInEnumerable(reducedFrom, semanticModel)
+                        && reducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT()
+                        && parameters[0].Type.IsInt32();
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsImmutableArrayElementAtMethod(
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+
+            if (methodSymbol != null)
+            {
+                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
+
+                if (reducedFrom != null
+                    && NameEquals(reducedFrom.Name, "ElementAt"))
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    return parameters.Length == 1
+                        && IsContainedInImmutableArrayExtensions(reducedFrom, semanticModel)
+                        && reducedFrom.Parameters.First().Type.IsConstructedFromImmutableArrayOfT(semanticModel)
+                        && parameters[0].Type.IsInt32();
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)
         {
             if (symbol == null)

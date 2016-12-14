@@ -26,9 +26,15 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (index != -1)
                     {
-                        FileLinePositionSpan fileSpan = member.SyntaxTree.GetLineSpan(context.Span, context.CancellationToken);
-                        if (fileSpan.StartLine() > members[index].SyntaxTree.GetLineSpan(members[index].TrimmedSpan(), context.CancellationToken).EndLine()
-                            && fileSpan.EndLine() < members[index + 1].SyntaxTree.GetLineSpan(members[index + 1].TrimmedSpan(), context.CancellationToken).StartLine())
+                        SyntaxTree tree = member.SyntaxTree;
+
+                        FileLinePositionSpan fileLinePositionSpan = tree.GetLineSpan(context.Span, context.CancellationToken);
+
+                        int startLine = fileLinePositionSpan.StartLine();
+                        int endLine = fileLinePositionSpan.EndLine();
+
+                        if (startLine > tree.GetSpanEndLine(members[index].TrimmedSpan(), context.CancellationToken)
+                            && endLine < tree.GetSpanStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
                         {
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
                             {
@@ -111,8 +117,6 @@ namespace Roslynator.CSharp.Refactorings
             int index,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberDeclarationSyntax member = members[index];
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members
@@ -121,27 +125,23 @@ namespace Roslynator.CSharp.Refactorings
             newMembers = newMembers
                 .Replace(newMembers[index + 1], member);
 
-            root = root.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 parentMember,
-                parentMember.SetMembers(newMembers));
-
-            return document.WithSyntaxRoot(root);
+                parentMember.SetMembers(newMembers),
+                cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<Document> ReplaceMembersAsync(
+        private static Task<Document> ReplaceMembersAsync(
             Document document,
             MemberDeclarationSyntax parentMember,
             SyntaxList<MemberDeclarationSyntax> members,
             SyntaxList<MemberDeclarationSyntax> newMembers,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            root = root.ReplaceNode(
+            return document.ReplaceNodeAsync(
                 parentMember,
-                parentMember.SetMembers(newMembers));
-
-            return document.WithSyntaxRoot(root);
+                parentMember.SetMembers(newMembers),
+                cancellationToken);
         }
     }
 }

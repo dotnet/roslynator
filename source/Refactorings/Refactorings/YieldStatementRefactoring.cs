@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -20,7 +19,9 @@ namespace Roslynator.CSharp.Refactorings
                 && yieldStatement.IsYieldReturn()
                 && yieldStatement.Expression != null)
             {
-                MemberDeclarationSyntax containingMember = ReturnExpressionRefactoring.GetContainingMethodOrPropertyOrIndexer(yieldStatement.Expression);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                MemberDeclarationSyntax containingMember = await ReturnExpressionRefactoring.GetContainingMethodOrPropertyOrIndexerAsync(yieldStatement.Expression, semanticModel, context.CancellationToken).ConfigureAwait(false);
 
                 if (containingMember != null)
                 {
@@ -28,8 +29,6 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberType != null)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                         ITypeSymbol memberTypeSymbol = semanticModel
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;

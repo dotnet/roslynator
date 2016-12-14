@@ -387,6 +387,16 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static AccessorDeclarationSyntax AddAccessorDeclaration(BlockSyntax body = null)
+        {
+            return AccessorDeclaration(SyntaxKind.AddAccessorDeclaration, body);
+        }
+
+        public static AccessorDeclarationSyntax RemoveAccessorDeclaration(BlockSyntax body = null)
+        {
+            return AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, body);
+        }
+
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
         {
             return SyntaxFactory.VariableDeclaration(type, SingletonSeparatedList(variable));
@@ -472,6 +482,16 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.ExclamationEqualsToken);
         }
 
+        public static SyntaxToken OpenParenToken()
+        {
+            return Token(SyntaxKind.OpenParenToken);
+        }
+
+        public static SyntaxToken CloseParenToken()
+        {
+            return Token(SyntaxKind.CloseParenToken);
+        }
+
         public static SyntaxToken OpenBraceToken()
         {
             return Token(SyntaxKind.OpenBraceToken);
@@ -510,6 +530,11 @@ namespace Roslynator.CSharp
         public static SyntaxToken QuestionToken()
         {
             return Token(SyntaxKind.QuestionToken);
+        }
+
+        public static SyntaxToken ColonToken()
+        {
+            return Token(SyntaxKind.ColonToken);
         }
 
         public static SyntaxToken WhileKeyword()
@@ -640,6 +665,11 @@ namespace Roslynator.CSharp
         public static SyntaxToken VirtualToken()
         {
             return Token(SyntaxKind.VirtualKeyword);
+        }
+
+        public static SyntaxToken AbstractKeyword()
+        {
+            return Token(SyntaxKind.AbstractKeyword);
         }
 
         public static IdentifierNameSyntax VarType()
@@ -861,6 +891,26 @@ namespace Roslynator.CSharp
         public static BinaryExpressionSyntax AsExpression(ExpressionSyntax expression, SyntaxToken operatorToken, TypeSyntax type)
         {
             return BinaryExpression(SyntaxKind.AsExpression, expression, operatorToken, type);
+        }
+
+        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AddExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AddExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.SubtractExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.SubtractExpression, left, operatorToken, right);
         }
 
         public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)

@@ -15,6 +15,16 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         public void SomeMethod2() => 0;
 
+        public string FooProperty
+        {
+            get { return 0; }
+        }
+
+        public string this[int index]
+        {
+            get { return 0; }
+        }
+
         private async void MethodAsync()
         {
             return await Task.FromResult(false);

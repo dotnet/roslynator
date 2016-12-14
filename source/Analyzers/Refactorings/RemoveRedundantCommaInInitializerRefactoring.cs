@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax newInitializer = initializer
                 .WithExpressions(newExpressions);
 
-            return await document.ReplaceNodeAsync(initializer, newInitializer).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken).ConfigureAwait(false);
         }
     }
 }

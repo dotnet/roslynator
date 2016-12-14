@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = GetNewDeclaration(declaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(declaration, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(declaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static MemberDeclarationSyntax GetNewDeclaration(MemberDeclarationSyntax declaration)

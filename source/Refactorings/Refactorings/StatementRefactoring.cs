@@ -180,16 +180,12 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static async Task<Document> RemoveStatementAsync(
+        private static Task<Document> RemoveStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            root = root.RemoveNode(statement, GetRemoveOptions(statement));
-
-            return document.WithSyntaxRoot(root);
+            return document.RemoveNodeAsync(statement, GetRemoveOptions(statement), cancellationToken);
         }
 
         private static async Task<Document> DuplicateStatementAsync(
@@ -197,8 +193,6 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var block = (BlockSyntax)statement.Parent;
 
             int index = block.Statements.IndexOf(statement);
@@ -211,9 +205,7 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));
 
-            root = root.ReplaceNode(block, newBlock);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
@@ -234,15 +226,11 @@ namespace Roslynator.CSharp.Refactorings
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SwitchStatementSyntax newSwitchStatement = switchStatement
                 .WithSections(SyntaxFactory.List<SwitchSectionSyntax>())
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(switchStatement, newSwitchStatement);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

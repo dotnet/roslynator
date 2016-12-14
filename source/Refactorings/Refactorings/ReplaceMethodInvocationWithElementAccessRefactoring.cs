@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using System.Collections.Immutable;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -44,8 +45,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             if (invocation.ArgumentList.Arguments.Count == 0
-                && (IsEnumerableExtensionMethod(invocation, methodName, semanticModel)
-                    || IsImmutableArrayExtensionMethod(invocation, methodName, semanticModel)))
+                && SemanticAnalyzer.IsEnumerableExtensionOrImmutableArrayExtensionMethod(invocation, methodName, 1, semanticModel))
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
@@ -80,8 +80,8 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             if (invocation.ArgumentList?.Arguments.Count == 1
-                && (IsEnumerableElementAtMethod(invocation, semanticModel)
-                    || IsImmutableArrayElementAtMethod(invocation, semanticModel)))
+                && (SemanticAnalyzer.IsEnumerableElementAtMethod(invocation, semanticModel)
+                    || SemanticAnalyzer.IsImmutableArrayElementAtMethod(invocation, semanticModel)))
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
                     && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
                 {
                     context.RegisterRefactoring(
-                            "Replace 'ElementAt' with '[]'",
+                        "Replace 'ElementAt' with '[]'",
                         cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                 }
             }
@@ -138,100 +138,12 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static bool IsEnumerableExtensionMethod(
-            InvocationExpressionSyntax invocation,
-            string methodName,
-            SemanticModel semanticModel)
-        {
-            var methodSymbol = semanticModel
-                .GetSymbolInfo(invocation)
-                .Symbol as IMethodSymbol;
-
-            if (methodSymbol?.ReducedFrom != null)
-            {
-                methodSymbol = methodSymbol.ReducedFrom;
-
-                return methodSymbol.MetadataName == methodName
-                    && methodSymbol.Parameters.Length == 1
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
-                    && methodSymbol.Parameters[0].Type.IsConstructedFromIEnumerableOfT();
-            }
-
-            return false;
-        }
-
-        private static bool IsImmutableArrayExtensionMethod(
-            InvocationExpressionSyntax invocation,
-            string methodName,
-            SemanticModel semanticModel)
-        {
-            var methodSymbol = semanticModel
-                .GetSymbolInfo(invocation)
-                .Symbol as IMethodSymbol;
-
-            if (methodSymbol?.ReducedFrom != null)
-            {
-                methodSymbol = methodSymbol.ReducedFrom;
-
-                return methodSymbol.MetadataName == methodName
-                    && methodSymbol.Parameters.Length == 1
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true
-                    && methodSymbol.Parameters[0].Type.IsConstructedFromImmutableArrayOfT(semanticModel);
-            }
-
-            return false;
-        }
-
-        private static bool IsEnumerableElementAtMethod(
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel)
-        {
-            var methodSymbol = semanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
-
-            if (methodSymbol?.ReducedFrom != null)
-            {
-                methodSymbol = methodSymbol.ReducedFrom;
-
-                return methodSymbol.MetadataName == "ElementAt"
-                    && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
-                    && methodSymbol.Parameters[0].Type.IsConstructedFromIEnumerableOfT()
-                    && methodSymbol.Parameters[1].Type.IsInt32();
-            }
-
-            return false;
-        }
-
-        private static bool IsImmutableArrayElementAtMethod(
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel)
-        {
-            var methodSymbol = semanticModel
-                .GetSymbolInfo(invocation)
-                .Symbol as IMethodSymbol;
-
-            if (methodSymbol?.ReducedFrom != null)
-            {
-                methodSymbol = methodSymbol.ReducedFrom;
-
-                return methodSymbol.MetadataName == "ElementAt"
-                    && methodSymbol.Parameters.Length == 2
-                    && methodSymbol.ContainingType?.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)) == true
-                    && methodSymbol.Parameters[0].Type.IsConstructedFromImmutableArrayOfT(semanticModel)
-                    && methodSymbol.Parameters[1].Type.IsInt32();
-            }
-
-            return false;
-        }
-
         private static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
             ElementAccessExpressionSyntax elementAccess = ElementAccessExpression(
@@ -240,11 +152,10 @@ namespace Roslynator.CSharp.Refactorings
                     SingletonSeparatedList(
                         Argument(CreateArgumentExpression(invocation, memberAccess, propertyName)))));
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 invocation,
-                elementAccess.WithTriviaFrom(invocation));
-
-            return document.WithSyntaxRoot(newRoot);
+                elementAccess.WithTriviaFrom(invocation),
+                cancellationToken).ConfigureAwait(false);
         }
 
         private static ExpressionSyntax CreateArgumentExpression(
@@ -256,19 +167,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case "First":
                     {
-                        return LiteralExpression(
-                            SyntaxKind.NumericLiteralExpression,
-                            Literal(0));
+                        return NumericLiteralExpression(0);
                     }
                 case "Last":
                     {
-                        return BinaryExpression(
-                            SyntaxKind.SubtractExpression,
-                            MemberAccessExpression(
-                                SyntaxKind.SimpleMemberAccessExpression,
+                        return SubtractExpression(
+                            SimpleMemberAccessExpression(
                                 ProcessExpression(memberAccess.Expression),
                                 IdentifierName(propertyName)),
-                            LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1)));
+                            NumericLiteralExpression(1));
                     }
                 case "ElementAt":
                     {

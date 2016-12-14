@@ -55,11 +55,11 @@ namespace Roslynator.CSharp.Refactorings
                         .WithCatches(catches.Replace(lastCatch, lastCatch.WithTrailingTrivia(finallyClause.GetTrailingTrivia())))
                         .WithFinally(null);
 
-                    return await document.ReplaceNodeAsync(tryStatement, newTryStatement).ConfigureAwait(false);
+                    return await document.ReplaceNodeAsync(tryStatement, newTryStatement, cancellationToken).ConfigureAwait(false);
                 }
             }
 
-            return await document.RemoveNodeAsync(finallyClause, SyntaxRemoveOptions.KeepExteriorTrivia).ConfigureAwait(false);
+            return await document.RemoveNodeAsync(finallyClause, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
         }
     }
 }

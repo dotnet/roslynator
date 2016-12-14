@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -32,13 +31,9 @@ namespace Roslynator.CSharp.Refactorings
             FieldDeclarationSyntax fieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             FieldDeclarationSyntax newNode = AddStaticModifier(fieldDeclaration);
 
-            root = root.ReplaceNode(fieldDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
@@ -59,13 +54,9 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax methodDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MethodDeclarationSyntax newNode = AddStaticModifier(methodDeclaration);
 
-            root = root.ReplaceNode(methodDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
@@ -86,13 +77,9 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             PropertyDeclarationSyntax newNode = AddStaticModifier(propertyDeclaration);
 
-            root = root.ReplaceNode(propertyDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanRefactor(EventDeclarationSyntax eventDeclaration)
@@ -113,13 +100,9 @@ namespace Roslynator.CSharp.Refactorings
             EventDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             EventDeclarationSyntax newNode = AddStaticModifier(eventDeclaration);
 
-            root = root.ReplaceNode(eventDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanRefactor(EventFieldDeclarationSyntax eventFieldDeclaration)
@@ -140,13 +123,9 @@ namespace Roslynator.CSharp.Refactorings
             EventFieldDeclarationSyntax eventFieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             EventFieldDeclarationSyntax newNode = AddStaticModifier(eventFieldDeclaration);
 
-            root = root.ReplaceNode(eventFieldDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(eventFieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration)
@@ -167,13 +146,9 @@ namespace Roslynator.CSharp.Refactorings
             ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ConstructorDeclarationSyntax newNode = AddStaticModifier(constructorDeclaration);
 
-            root = root.ReplaceNode(constructorDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static FieldDeclarationSyntax AddStaticModifier(FieldDeclarationSyntax node)

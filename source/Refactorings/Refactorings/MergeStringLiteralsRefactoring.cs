@@ -23,19 +23,16 @@ namespace Roslynator.CSharp.Refactorings
             bool multiline = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var chain = new StringLiteralChain(binaryExpression);
 
             LiteralExpressionSyntax newNode = (multiline)
                 ? chain.ToMultilineStringLiteral()
                 : chain.ToStringLiteral();
 
-            root = root.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 binaryExpression,
-                newNode.WithFormatterAnnotation());
-
-            return document.WithSyntaxRoot(root);
+                newNode.WithFormatterAnnotation(),
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }

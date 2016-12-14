@@ -58,14 +58,12 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             ISymbol memberAccessSymbol = semanticModel
-                .GetSymbolInfo(memberAccess, cancellationToken)
-                .Symbol;
+                .GetSymbol(memberAccess, cancellationToken);
 
             if (memberAccessSymbol == null)
             {
                 ITypeSymbol expressionSymbol = semanticModel
-                    .GetTypeInfo(memberAccess.Expression, cancellationToken)
-                    .Type;
+                    .GetTypeSymbol(memberAccess.Expression, cancellationToken);
 
                 if (expressionSymbol != null)
                 {
@@ -94,15 +92,11 @@ namespace Roslynator.CSharp.Refactorings
             string newName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberAccessExpressionSyntax newNode = memberAccess
                 .WithName(SyntaxFactory.IdentifierName(newName))
                 .WithTriviaFrom(memberAccess.Name);
 
-            root = root.ReplaceNode(memberAccess, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(memberAccess, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

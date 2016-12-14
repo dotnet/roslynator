@@ -55,8 +55,6 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             INamedTypeSymbol symbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_StringComparison);
@@ -81,9 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static IFieldSymbol GetDefaultFieldSymbol(INamedTypeSymbol symbol)

@@ -14,25 +14,27 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
+            TextSpan span = context.Span;
+
             int i = 0;
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
             foreach (InterpolatedStringContentSyntax content in contents)
             {
                 SyntaxKind kind = content.Kind();
-                TextSpan span = content.Span;
+                TextSpan contentSpan = content.Span;
 
                 if (kind == SyntaxKind.InterpolatedStringText)
                 {
-                    if (span.End == context.Span.End)
+                    if (contentSpan.End == span.End)
                         return true;
                 }
                 else if (kind == SyntaxKind.Interpolation)
                 {
-                    if (span.Start == context.Span.End)
+                    if (contentSpan.Start == span.End)
                         return true;
 
-                    if (span.End == context.Span.Start
+                    if (contentSpan.End == span.Start
                         && (i == contents.Count - 1 || !contents[i + 1].IsKind(SyntaxKind.InterpolatedStringText)))
                     {
                         return true;
@@ -51,8 +53,6 @@ namespace Roslynator.CSharp.Refactorings
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             string s = interpolatedString.ToString();
 
             int startIndex = span.Start - interpolatedString.SpanStart;
@@ -66,9 +66,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (InterpolatedStringExpressionSyntax)ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            root = root.ReplaceNode(interpolatedString, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

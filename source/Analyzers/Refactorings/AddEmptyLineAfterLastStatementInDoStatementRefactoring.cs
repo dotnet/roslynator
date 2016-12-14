@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
 
-            return await document.ReplaceNodeAsync(statement, newStatement).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

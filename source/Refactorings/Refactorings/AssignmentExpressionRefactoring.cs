@@ -27,23 +27,28 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression)
-                && assignmentExpression.Left?.IsMissing == false
-                && assignmentExpression.Right?.IsMissing == false
-                && assignmentExpression.Right.Span.Contains(context.Span))
+                && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                ExpressionSyntax left = assignmentExpression.Left;
+                ExpressionSyntax right = assignmentExpression.Right;
 
-                ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(assignmentExpression.Left).Type;
-
-                if (leftSymbol?.IsErrorType() == false)
+                if (left?.IsMissing == false
+                    && right?.IsMissing == false
+                    && right.Span.Contains(context.Span))
                 {
-                    ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(assignmentExpression.Right).Type;
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    if (rightSymbol?.IsErrorType() == false
-                        && !leftSymbol.Equals(rightSymbol))
+                    ITypeSymbol leftSymbol = semanticModel.GetTypeSymbol(left, context.CancellationToken);
+
+                    if (leftSymbol?.IsErrorType() == false)
                     {
-                        ModifyExpressionRefactoring.ComputeRefactoring(context, assignmentExpression.Right, leftSymbol, semanticModel);
+                        ITypeSymbol rightSymbol = semanticModel.GetTypeSymbol(right, context.CancellationToken);
+
+                        if (rightSymbol?.IsErrorType() == false
+                            && !leftSymbol.Equals(rightSymbol))
+                        {
+                            ModifyExpressionRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
+                        }
                     }
                 }
             }

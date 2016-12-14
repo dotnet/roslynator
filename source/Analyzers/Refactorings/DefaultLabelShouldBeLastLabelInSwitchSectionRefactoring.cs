@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchSectionSyntax newSwitchSection = switchSection.WithLabels(labels);
 
-            return await document.ReplaceNodeAsync(switchSection, newSwitchSection).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken).ConfigureAwait(false);
         }
     }
 }

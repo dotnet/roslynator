@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newBinaryExpression).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken).ConfigureAwait(false);
         }
 
         private static BinaryExpressionSyntax GetNewBinaryExpression(BinaryExpressionSyntax binaryExpression)

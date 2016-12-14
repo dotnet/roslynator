@@ -166,7 +166,7 @@ namespace Roslynator
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
 
-            return await InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }).ConfigureAwait(false);
+            return await InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> InsertNodesBeforeAsync(
@@ -200,7 +200,7 @@ namespace Roslynator
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
 
-            return await InsertNodesAfterAsync(document, nodeInList, new SyntaxNode[] { newNode }).ConfigureAwait(false);
+            return await InsertNodesAfterAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> InsertNodesAfterAsync(

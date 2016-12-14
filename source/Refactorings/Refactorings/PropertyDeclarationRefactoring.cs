@@ -13,31 +13,25 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic, RefactoringIdentifiers.MarkAllMembersAsStatic)
                 && propertyDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
             {
-                context.RegisterRefactoring(
-                    "Mark property as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic))
+                {
+                    context.RegisterRefactoring(
+                        "Mark property as static",
+                        cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                }
 
-                MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
+                    MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
-                && propertyDeclaration.HeaderSpan().Contains(context.Span)
-                && ReplacePropertyWithMethodRefactoring.CanRefactor(context, propertyDeclaration))
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
-                string propertyName = propertyDeclaration.Identifier.ValueText;
-
-                string title = $"Replace '{propertyName}' with method";
-
-                if (propertyDeclaration.AccessorList.Accessors.Count > 1)
-                    title += "s";
-
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken => ReplacePropertyWithMethodRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                ReplacePropertyWithMethodRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)

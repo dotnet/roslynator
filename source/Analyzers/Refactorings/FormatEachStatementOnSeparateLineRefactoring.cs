@@ -65,16 +65,16 @@ namespace Roslynator.CSharp.Refactorings
                         .WithStatements(block.Statements.Replace(statement, newStatement))
                         .WithFormatterAnnotation();
 
-                    return await document.ReplaceNodeAsync(block, newBlock).ConfigureAwait(false);
+                    return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    return await document.ReplaceNodeAsync(statement, newStatement).ConfigureAwait(false);
+                    return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
                 }
             }
             else
             {
-                return await document.ReplaceNodeAsync(statement, newStatement).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
             }
         }
     }

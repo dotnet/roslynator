@@ -27,8 +27,6 @@ namespace Roslynator.CSharp.Refactorings
             if (lockStatement == null)
                 throw new ArgumentNullException(nameof(lockStatement));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberDeclarationSyntax containingMember = lockStatement.FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
             if (containingMember != null)
@@ -60,30 +58,17 @@ namespace Roslynator.CSharp.Refactorings
 
                     FieldDeclarationSyntax field = CreateFieldDeclaration(name, isStatic).WithFormatterAnnotation();
 
-                    SyntaxList<MemberDeclarationSyntax> newMembers = members
-                        .Replace(members[index], newContainingMember)
-                        .Insert(GetLastFieldIndex(members, index) + 1, field);
+                    SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(index, newContainingMember);
+
+                    newMembers = MemberInserter.InsertMember(newMembers, field);
 
                     MemberDeclarationSyntax newNode = containingDeclaration.SetMembers(newMembers);
 
-                    SyntaxNode newRoot = root.ReplaceNode(containingDeclaration, newNode);
-
-                    return document.WithSyntaxRoot(newRoot);
+                    return await document.ReplaceNodeAsync(containingDeclaration, newNode, cancellationToken).ConfigureAwait(false);
                 }
             }
 
             return document;
-        }
-
-        private static int GetLastFieldIndex(SyntaxList<MemberDeclarationSyntax> members, int index)
-        {
-            for (int i = index; i >= 0; i--)
-            {
-                if (members[i].IsKind(SyntaxKind.FieldDeclaration))
-                    return i;
-            }
-
-            return -1;
         }
 
         private static FieldDeclarationSyntax CreateFieldDeclaration(string name, bool isStatic)

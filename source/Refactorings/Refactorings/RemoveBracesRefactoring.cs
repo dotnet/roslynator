@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -155,8 +154,6 @@ namespace Roslynator.CSharp.Refactorings
             BlockSyntax block,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             StatementSyntax statement = block.Statements[0];
 
             if (block.Parent?.IsKind(SyntaxKind.ElseClause) == true
@@ -169,18 +166,14 @@ namespace Roslynator.CSharp.Refactorings
                     .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
                     .WithFormatterAnnotation();
 
-                SyntaxNode newRoot = oldRoot.ReplaceNode(elseClause, newElseClause);
-
-                return document.WithSyntaxRoot(newRoot);
+                return await document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 StatementSyntax newNode = statement.TrimLeadingTrivia()
                     .WithFormatterAnnotation();
 
-                SyntaxNode newRoot = oldRoot.ReplaceNode(block, newNode);
-
-                return document.WithSyntaxRoot(newRoot);
+                return await document.ReplaceNodeAsync(block, newNode, cancellationToken).ConfigureAwait(false);
             }
         }
     }

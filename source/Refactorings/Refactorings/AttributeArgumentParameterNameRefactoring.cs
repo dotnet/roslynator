@@ -85,16 +85,12 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentSyntax[] arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             AttributeArgumentListSyntax newArgumentList = AddParameterNameSyntaxRewriter.VisitNode(argumentList, arguments, semanticModel)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> RemoveParameterNameFromArgumentsAsync(
@@ -103,14 +99,10 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentSyntax[] arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             AttributeArgumentListSyntax newArgumentList = RemoveParameterNameSyntaxRewriter.VisitNode(argumentList, arguments)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
         }
 
         private static AttributeArgumentSyntax AddParameterName(

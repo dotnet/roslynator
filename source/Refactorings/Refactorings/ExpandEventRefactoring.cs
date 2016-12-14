@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -13,8 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
         {
-            return eventDeclaration.Parent != null
-                && eventDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+            return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && eventDeclaration.Declaration?.Variables.Count == 1;
         }
 
@@ -23,28 +23,21 @@ namespace Roslynator.CSharp.Refactorings
             EventFieldDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
                 .WithTriviaFrom(eventDeclaration)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(eventDeclaration, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static EventDeclarationSyntax ExpandEvent(EventFieldDeclarationSyntax eventDeclaration)
         {
             AccessorListSyntax accessorList = AccessorList(
-                List(new AccessorDeclarationSyntax[]
-                {
-                    AccessorDeclaration(SyntaxKind.AddAccessorDeclaration, Block()),
-                    AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, Block()),
-                }));
+                AddAccessorDeclaration(Block()),
+                RemoveAccessorDeclaration(Block()));
 
             accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
 
             VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];
 
@@ -52,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 eventDeclaration.AttributeLists,
                 eventDeclaration.Modifiers,
                 eventDeclaration.Declaration.Type,
-                null,
+                default(ExplicitInterfaceSpecifierSyntax),
                 declarator.Identifier,
                 accessorList);
         }

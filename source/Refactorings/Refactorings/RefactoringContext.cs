@@ -57,6 +57,11 @@ namespace Roslynator.CSharp.Refactorings
             get { return BaseContext.Span; }
         }
 
+        public bool IsRootCompilationUnit
+        {
+            get { return Root.IsKind(SyntaxKind.CompilationUnit); }
+        }
+
         public bool SupportsCSharp6
         {
             get

@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,13 +18,10 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 argumentList,
-                CreateMultilineList(argumentList));
-
-            return document.WithSyntaxRoot(newRoot);
+                CreateMultilineList(argumentList),
+                cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> FormatAllArgumentsOnSingleLineAsync(
@@ -31,22 +29,17 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             AttributeArgumentListSyntax newArgumentList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(argumentList)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(argumentList, newArgumentList);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
         }
 
         private static AttributeArgumentListSyntax CreateMultilineList(AttributeArgumentListSyntax argumentList)
         {
             SeparatedSyntaxList<AttributeArgumentSyntax> arguments = SeparatedList<AttributeArgumentSyntax>(CreateMultilineNodesAndTokens(argumentList));
 
-            SyntaxToken openParen = Token(SyntaxKind.OpenParenToken)
-                .WithTrailingNewLine();
+            SyntaxToken openParen = OpenParenToken().WithTrailingNewLine();
 
             return AttributeArgumentList(arguments)
                 .WithOpenParenToken(openParen)
@@ -55,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<SyntaxNodeOrToken> CreateMultilineNodesAndTokens(AttributeArgumentListSyntax argumentList)
         {
-            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(argumentList.Parent).Add(CSharpFactory.IndentTrivia());
+            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(argumentList.Parent).Add(IndentTrivia());
 
             SeparatedSyntaxList<AttributeArgumentSyntax>.Enumerator en = argumentList.Arguments.GetEnumerator();
 
@@ -67,8 +60,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 while (en.MoveNext())
                 {
-                    yield return Token(SyntaxKind.CommaToken)
-                        .WithTrailingNewLine();
+                    yield return CommaToken().WithTrailingNewLine();
 
                     yield return en.Current
                         .TrimTrailingTrivia()

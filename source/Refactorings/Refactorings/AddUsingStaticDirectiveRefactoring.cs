@@ -22,9 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    var typeSymbol = semanticModel
-                        .GetSymbolInfo(memberAccess.Expression, context.CancellationToken)
-                        .Symbol as INamedTypeSymbol;
+                    var typeSymbol = semanticModel.GetSymbol(memberAccess.Expression, context.CancellationToken) as INamedTypeSymbol;
 
                     if (typeSymbol?.IsStaticClass() == true
                         && (typeSymbol.IsPublic() || typeSymbol.IsInternal())

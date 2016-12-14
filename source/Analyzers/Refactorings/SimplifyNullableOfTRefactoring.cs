@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(type)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
         }
     }
 }

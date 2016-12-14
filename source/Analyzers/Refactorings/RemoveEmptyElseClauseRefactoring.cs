@@ -46,11 +46,11 @@ namespace Roslynator.CSharp.Refactorings
                         .WithStatement(statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))
                         .WithElse(null);
 
-                    return await document.ReplaceNodeAsync(ifStatement, newIfStatement).ConfigureAwait(false);
+                    return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
                 }
             }
 
-            return await document.RemoveNodeAsync(elseClause, SyntaxRemoveOptions.KeepExteriorTrivia).ConfigureAwait(false);
+            return await document.RemoveNodeAsync(elseClause, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
         }
     }
 }

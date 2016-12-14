@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ClassDeclarationSyntax newClassDeclaration = AddModifier(classDeclaration, modifierKind);
 
-            return await document.ReplaceNodeAsync(classDeclaration, newClassDeclaration).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static ClassDeclarationSyntax AddModifier(ClassDeclarationSyntax classDeclaration, SyntaxKind modifierKind)

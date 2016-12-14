@@ -36,8 +36,6 @@ namespace Roslynator.CSharp.Refactorings
             InterpolatedStringExpressionSyntax interpolatedString,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var interpolation = (InterpolationSyntax)interpolatedString.Contents[0];
 
             ExpressionSyntax newNode = interpolation.Expression;
@@ -48,9 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                 .AppendTrailingTrivia(interpolation.CloseBraceToken.LeadingTrivia
                     .Concat(interpolatedString.GetTrailingTrivia()));
 
-            SyntaxNode newRoot = root.ReplaceNode(interpolatedString, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

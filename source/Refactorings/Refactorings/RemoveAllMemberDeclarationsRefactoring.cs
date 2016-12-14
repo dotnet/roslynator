@@ -79,15 +79,11 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberDeclarationSyntax newNode = member
                 .SetMembers(List<MemberDeclarationSyntax>())
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(member, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(member, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

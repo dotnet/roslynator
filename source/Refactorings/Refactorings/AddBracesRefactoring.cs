@@ -117,14 +117,10 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             BlockSyntax block = SyntaxFactory.Block(statement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(statement, block);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(statement, block, cancellationToken).ConfigureAwait(false);
         }
     }
 }

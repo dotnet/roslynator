@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
                     default(SyntaxList<UsingDirectiveSyntax>),
                     SingletonList(member));
 
-                return await document.ReplaceNodeAsync(member, namespaceDeclaration.WithFormatterAnnotation()).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(member, namespaceDeclaration.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
             }
 
             return document;

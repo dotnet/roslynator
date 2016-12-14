@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithCloseBraceToken(block.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(block, newBlock).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
         }
     }
 }

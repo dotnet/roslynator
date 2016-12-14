@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             ArgumentListSyntax argumentList,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(argumentList, SyntaxRemoveOptions.KeepExteriorTrivia).ConfigureAwait(false);
+            return await document.RemoveNodeAsync(argumentList, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
         }
     }
 }

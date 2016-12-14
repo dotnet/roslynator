@@ -18,8 +18,6 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
             SelectedStatementsInfo info,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             StatementContainer container = info.Container;
 
             StatementSyntax[] statements = info.SelectedNodes().ToArray();
@@ -51,9 +49,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            root = root.ReplaceNode(container.Node, container.NodeWithStatements(newStatements));
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
         }
     }
 }

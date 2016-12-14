@@ -14,15 +14,11 @@ namespace Roslynator.CSharp.Refactorings
             AccessorDeclarationSyntax accessor,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             AccessorDeclarationSyntax newAccessor = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessor)
                 .WithTriviaFrom(accessor)
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(accessor, newAccessor);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken).ConfigureAwait(false);
         }
     }
 }

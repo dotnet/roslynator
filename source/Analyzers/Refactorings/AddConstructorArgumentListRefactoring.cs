@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                     .ArgumentList()
                     .WithTrailingTrivia(objectCreationExpression.Type.GetTrailingTrivia()));
 
-            return await document.ReplaceNodeAsync(objectCreationExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

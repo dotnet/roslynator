@@ -78,8 +78,6 @@ namespace Roslynator.CSharp.Refactorings
             VariableDeclaratorSyntax variable,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             int variableCount = localDeclaration.Declaration.Variables.Count;
             ExpressionSyntax initializerValue = variable.Initializer?.Value;
             SyntaxToken identifier = variable.Identifier.WithoutTrivia();
@@ -128,9 +126,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newMethod = newMethod.AddParameterListParameters(newParameter);
 
-            SyntaxNode newRoot = root.ReplaceNode(method, newMethod);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(method, newMethod, cancellationToken).ConfigureAwait(false);
         }
     }
 }

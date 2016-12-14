@@ -13,15 +13,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         internal static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (binaryExpression.IsKind(SyntaxKind.AsExpression))
+            if (binaryExpression.IsKind(SyntaxKind.AsExpression)
+                && binaryExpression.Left?.IsMissing == false
+                && binaryExpression.Right is TypeSyntax)
             {
-                if (binaryExpression.Left?.IsMissing == false
-                    && binaryExpression.Right is TypeSyntax)
-                {
-                    context.RegisterRefactoring(
-                        "Replace as with cast",
-                        cancellationToken => RefactorAsync(context.Document, binaryExpression, context.CancellationToken));
-                }
+                context.RegisterRefactoring(
+                    "Replace as with cast",
+                    cancellationToken => RefactorAsync(context.Document, binaryExpression, context.CancellationToken));
             }
         }
 
@@ -30,15 +28,11 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             CastExpressionSyntax castExpression = CastExpression((TypeSyntax)binaryExpression.Right, binaryExpression.Left)
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, castExpression);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(binaryExpression, castExpression, cancellationToken).ConfigureAwait(false);
         }
     }
 }

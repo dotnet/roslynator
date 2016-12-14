@@ -18,19 +18,30 @@ namespace Roslynator.CSharp.Refactorings
                 && context.Span.IsEmpty)
             {
                 if (!statement.IsKind(SyntaxKind.Block)
-                    || ((BlockSyntax)statement).Statements.Count > 0)
+                    || ((BlockSyntax)statement).Statements.Any())
                 {
-                    if (statement.Parent?.IsKind(SyntaxKind.Block) == true)
-                        statement = (BlockSyntax)statement.Parent;
+                    SyntaxNode parent = statement.Parent;
 
-                    if (statement.Parent != null
-                        && (CheckContainingNode(statement.Parent)
-                        && GetContainingBlock(statement.Parent)?.IsKind(SyntaxKind.Block) == true))
+                    if (parent?.IsKind(SyntaxKind.Block) == true)
                     {
-                        string s = (UsePlural(statement)) ? "s" : "";
+                        statement = (BlockSyntax)parent;
+                        parent = statement.Parent;
+                    }
+
+                    if (parent != null
+                        && (CheckContainingNode(parent)
+                        && GetContainingBlock(parent)?.IsKind(SyntaxKind.Block) == true))
+                    {
+                        string title = "Extract statement";
+
+                        if (statement.IsKind(SyntaxKind.Block)
+                            && ((BlockSyntax)statement).Statements.Count > 1)
+                        {
+                            title += "s";
+                        }
 
                         context.RegisterRefactoring(
-                            $"Extract statement{s}",
+                            title,
                             cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
                     }
                 }
@@ -74,36 +85,14 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool UsePlural(StatementSyntax statement)
-        {
-            if (statement.IsKind(SyntaxKind.Block))
-            {
-                var block = (BlockSyntax)statement;
-
-                if (block.Statements.Count > 1)
-                    return true;
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             IEnumerable<StatementSyntax> newNodes = GetNewNodes(statement)
                 .Select(f => f.WithFormatterAnnotation());
 
-            SyntaxNode newRoot = GetNewRoot(statement, oldRoot, newNodes);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-
-        private static SyntaxNode GetNewRoot(StatementSyntax statement, SyntaxNode oldRoot, IEnumerable<StatementSyntax> newNodes)
-        {
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
                 IfStatementSyntax ifStatement = IfElseChain.GetTopmostIf((ElseClauseSyntax)statement.Parent);
@@ -114,11 +103,11 @@ namespace Roslynator.CSharp.Refactorings
 
                 newBlock = newBlock.WithStatements(newBlock.Statements.InsertRange(index + 1, newNodes));
 
-                return oldRoot.ReplaceNode(block, newBlock);
+                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                return oldRoot.ReplaceNode(statement.Parent, newNodes);
+                return await document.ReplaceNodeAsync(statement.Parent, newNodes, cancellationToken).ConfigureAwait(false);
             }
         }
 

@@ -57,22 +57,18 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<MemberAccessExpressionSyntax> expressions,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberAccessExpressionSyntax expression = expressions[0];
 
             SyntaxTriviaList triviaList = SyntaxHelper.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia());
 
             triviaList = triviaList.Insert(0, CSharpFactory.NewLineTrivia());
 
-            var rewriter = new ExpressionChainSyntaxRewriter(expressions, triviaList);
+            var rewriter = new SyntaxRewriter(expressions, triviaList);
 
             SyntaxNode newNode = rewriter.Visit(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> FormatExpressionChainOnSingleLineAsync(
@@ -80,14 +76,10 @@ namespace Roslynator.CSharp.Refactorings
             MemberAccessExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxNode newNode = SyntaxRemover.RemoveWhitespaceOrEndOfLine(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static List<MemberAccessExpressionSyntax> GetChain(
@@ -114,18 +106,16 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-                switch (expression.Expression.Kind())
+            switch (expression.Expression.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
                         var memberAccess = (MemberAccessExpressionSyntax)expression.Expression;
 
-                        if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
+                        if (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
                             && memberAccess.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
                         {
-                            ISymbol symbol = semanticModel
-                                .GetSymbolInfo(memberAccess.Expression, cancellationToken)
-                                .Symbol;
+                            ISymbol symbol = semanticModel.GetSymbol(memberAccess.Expression, cancellationToken);
 
                             if (symbol?.IsNamespace() == true)
                                 return null;
@@ -175,9 +165,13 @@ namespace Roslynator.CSharp.Refactorings
                 MemberAccessExpressionSyntax parent = GetAncestor(expression);
 
                 if (parent != null)
+                {
                     expression = parent;
+                }
                 else
+                {
                     return expression;
+                }
             }
         }
 
@@ -205,7 +199,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var elementAccess = (ElementAccessExpressionSyntax)expression.Parent;
 
-                        if (elementAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                        if (elementAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                             return (MemberAccessExpressionSyntax)elementAccess.Parent;
 
                         break;
@@ -215,12 +209,12 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private class ExpressionChainSyntaxRewriter : CSharpSyntaxRewriter
+        private class SyntaxRewriter : CSharpSyntaxRewriter
         {
             private readonly ImmutableArray<MemberAccessExpressionSyntax> _expressions;
             private readonly SyntaxTriviaList _triviaList;
 
-            public ExpressionChainSyntaxRewriter(ImmutableArray<MemberAccessExpressionSyntax> expressions, SyntaxTriviaList triviaList)
+            public SyntaxRewriter(ImmutableArray<MemberAccessExpressionSyntax> expressions, SyntaxTriviaList triviaList)
             {
                 _expressions = expressions;
                 _triviaList = triviaList;

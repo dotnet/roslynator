@@ -30,24 +30,28 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
-            if (variableDeclaration.Type?.IsVar == false
-                && variableDeclaration.Variables.Count == 1)
+            TypeSyntax type = variableDeclaration.Type;
+
+            if (type?.IsVar == false)
             {
-                ExpressionSyntax initializerValue = variableDeclaration.Variables[0].Initializer?.Value;
+                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
-                if (initializerValue != null)
+                if (variables.Count == 1)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    ExpressionSyntax initializerValue = variables[0].Initializer?.Value;
 
-                    ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeInfo(initializerValue).Type;
-
-                    if (initializerTypeSymbol?.IsErrorType() == false)
+                    if (initializerValue != null)
                     {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(variableDeclaration.Type).ConvertedType;
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (!initializerTypeSymbol.Equals(typeSymbol))
+                        ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeSymbol(initializerValue);
+
+                        if (initializerTypeSymbol?.IsErrorType() == false)
                         {
-                            ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
+                            ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(type);
+
+                            if (!initializerTypeSymbol.Equals(typeSymbol))
+                                ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
                         }
                     }
                 }

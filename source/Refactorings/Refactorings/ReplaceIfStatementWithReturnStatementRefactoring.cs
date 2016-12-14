@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveAt(index)
                 .ReplaceAt(index, newReturnStatement);
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements)).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
         }
 
         public static ExpressionSyntax GetExpression(ExpressionSyntax condition, ExpressionSyntax expression1, ExpressionSyntax expression2)

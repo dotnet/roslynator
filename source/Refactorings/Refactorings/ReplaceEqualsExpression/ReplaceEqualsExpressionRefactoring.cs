@@ -65,8 +65,6 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax newNode = InvocationExpression(
                 StringType(),
                 MethodName,
@@ -79,9 +77,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

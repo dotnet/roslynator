@@ -22,17 +22,13 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             PropertyDeclarationSyntax newNode = propertyDeclaration
                 .WithInitializer(null)
                 .WithSemicolonToken(Token(SyntaxKind.None))
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

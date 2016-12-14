@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -52,11 +51,9 @@ namespace Roslynator.CSharp.Refactorings
                 members = newParentMember.GetMembers();
             }
 
-            int indexOfLastField = members.LastIndexOf(SyntaxKind.FieldDeclaration);
+            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = members
-                .ReplaceAt(propertyIndex, newPropertyDeclaration)
-                .Insert(indexOfLastField + 1, fieldDeclaration);
+            newMembers = MemberInserter.InsertMember(newMembers, fieldDeclaration);
 
             return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }

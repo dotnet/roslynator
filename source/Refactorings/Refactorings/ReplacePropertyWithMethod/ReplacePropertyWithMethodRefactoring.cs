@@ -27,6 +27,23 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             "Set"
         };
 
+        public static void ComputeRefactoring(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
+        {
+            if (CanRefactor(context, propertyDeclaration))
+            {
+                string propertyName = propertyDeclaration.Identifier.ValueText;
+
+                string title = $"Replace '{propertyName}' with method";
+
+                if (propertyDeclaration.AccessorList.Accessors.Count > 1)
+                    title += "s";
+
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken => RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+            }
+        }
+
         public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
             AccessorListSyntax accessorList = propertyDeclaration.AccessorList;

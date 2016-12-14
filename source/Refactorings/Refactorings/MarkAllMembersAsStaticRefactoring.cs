@@ -12,12 +12,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void RegisterRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
-            {
-                context.RegisterRefactoring(
-                    "Mark all members as static",
-                    cancellationToken => RefactorAsync(context.Document, classDeclaration, cancellationToken));
-            }
+            context.RegisterRefactoring(
+                "Mark all members as static",
+                cancellationToken => RefactorAsync(context.Document, classDeclaration, cancellationToken));
         }
 
         public static async Task<Document> RefactorAsync(
@@ -25,29 +22,27 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var rewriter = new SyntaxRewriter(classDeclaration);
 
             SyntaxNode newNode = rewriter.Visit(classDeclaration);
 
-            root = root.ReplaceNode(classDeclaration, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter
         {
             private readonly ClassDeclarationSyntax _classDeclaration;
+            private readonly SyntaxList<MemberDeclarationSyntax> _members;
 
             public SyntaxRewriter(ClassDeclarationSyntax classDeclaration)
             {
                 _classDeclaration = classDeclaration;
+                _members = _classDeclaration.Members;
             }
 
             public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitFieldDeclaration(node);
@@ -55,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitMethodDeclaration(node);
@@ -63,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitPropertyDeclaration(node);
@@ -71,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitEventDeclaration(EventDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitEventDeclaration(node);
@@ -79,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitEventFieldDeclaration(EventFieldDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitEventFieldDeclaration(node);
@@ -87,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
             {
-                if (_classDeclaration.Members.IndexOf(node) != -1)
+                if (_members.IndexOf(node) != -1)
                     return MarkMemberAsStaticRefactoring.AddStaticModifier(node);
 
                 return base.VisitConstructorDeclaration(node);

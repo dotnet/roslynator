@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    string title = arguments.Count == 1
+                    string title = (arguments.Count == 1)
                             ? "Format argument on a single line"
                             : "Format all arguments on a single line";
 

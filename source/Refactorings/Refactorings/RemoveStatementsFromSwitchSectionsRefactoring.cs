@@ -19,8 +19,6 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<SwitchSectionSyntax> sections,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             IEnumerable<SwitchSectionSyntax> newSections = switchStatement.Sections.Select(section =>
             {
                 if (sections.Contains(section))
@@ -31,9 +29,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(List(newSections));
 
-            root = root.ReplaceNode(switchStatement, newSwitchStatement);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

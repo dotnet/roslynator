@@ -17,13 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Generate sections",
-                    cancellationToken =>
-                    {
-                        return GenerateSwitchSectionsRefactoring.RefactorAsync(
-                            context.Document,
-                            switchStatement,
-                            cancellationToken);
-                    });
+                    cancellationToken => GenerateSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
             }
 
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);

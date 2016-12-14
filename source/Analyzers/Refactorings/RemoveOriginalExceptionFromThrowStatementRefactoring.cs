@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveNode(throwStatement.Expression, SyntaxRemoveOptions.KeepExteriorTrivia)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(throwStatement, newThrowStatement).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

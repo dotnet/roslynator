@@ -158,7 +158,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 var methodSymbol = (IMethodSymbol)symbol;
 
-                if (methodSymbol.IsOrdinary())
+                if (methodSymbol.MethodKind == MethodKind.Ordinary)
                 {
                     if (methodSymbol.IsStatic)
                     {
@@ -217,8 +217,6 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             ParameterInfo[] parameterInfos,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(
                 parameterInfos,
                 invocation,
@@ -226,9 +224,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = root.ReplaceNode(invocation, expression);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(invocation, expression, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> InlineMethodAsync(
@@ -238,8 +234,6 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             ParameterInfo[] parameterInfos,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             statements = await ReplaceParameterExpressionWithArgumentExpressionAsync(
                 parameterInfos,
                 statements,
@@ -249,22 +243,18 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             statements[0] = statements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-            SyntaxNode newRoot = null;
-
             if (expressionStatement.Parent?.IsKind(SyntaxKind.Block) == true)
             {
                 var block = (BlockSyntax)expressionStatement.Parent;
 
                 BlockSyntax newBlock = block.WithStatements(block.Statements.ReplaceRange(expressionStatement, statements));
 
-                newRoot = root.ReplaceNode(block, newBlock);
+                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                newRoot = root.ReplaceNode(expressionStatement, Block(statements));
+                return await document.ReplaceNodeAsync(expressionStatement, Block(statements), cancellationToken).ConfigureAwait(false);
             }
-
-            return document.WithSyntaxRoot(newRoot);
         }
 
         private static async Task<Solution> InlineAndRemoveMethodAsync(

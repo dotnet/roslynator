@@ -15,12 +15,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            return propertyDeclaration.Parent != null
-                && propertyDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
-                && propertyDeclaration.AccessorList != null
+            return propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && propertyDeclaration
-                    .AccessorList
-                    .Accessors.All(f => f.Body == null);
+                    .AccessorList?
+                    .Accessors.All(f => f.Body == null) == true;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -28,15 +26,11 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             PropertyDeclarationSyntax newPropertyDeclaration = ExpandProperty(propertyDeclaration)
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(propertyDeclaration, newPropertyDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(propertyDeclaration, newPropertyDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static PropertyDeclarationSyntax ExpandProperty(PropertyDeclarationSyntax propertyDeclaration)

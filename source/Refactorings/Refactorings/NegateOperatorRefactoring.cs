@@ -33,13 +33,13 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken operatorToken,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxToken newToken = SyntaxFactory.Token(GetNegatedOperatorKind(operatorToken))
+                .WithTriviaFrom(operatorToken);
 
-            SyntaxNode newRoot = oldRoot.ReplaceToken(
+            return await document.ReplaceTokenAsync(
                 operatorToken,
-                SyntaxFactory.Token(GetNegatedOperatorKind(operatorToken)).WithTriviaFrom(operatorToken));
-
-            return document.WithSyntaxRoot(newRoot);
+                newToken,
+                cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxKind GetNegatedOperatorKind(SyntaxToken operatorToken)

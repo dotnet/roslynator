@@ -28,17 +28,22 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false)
+                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
             {
-                if (binaryExpression.Left.Span.Contains(context.Span))
+                ExpressionSyntax left = binaryExpression.Left;
+                ExpressionSyntax right = binaryExpression.Right;
+
+                if (left?.IsMissing == false
+                    && right?.IsMissing == false)
                 {
-                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Left).ConfigureAwait(false);
-                }
-                else if (binaryExpression.Right.Span.Contains(context.Span))
-                {
-                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, binaryExpression.Right).ConfigureAwait(false);
+                    if (left.Span.Contains(context.Span))
+                    {
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, left).ConfigureAwait(false);
+                    }
+                    else if (right.Span.Contains(context.Span))
+                    {
+                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, right).ConfigureAwait(false);
+                    }
                 }
             }
 
@@ -49,18 +54,9 @@ namespace Roslynator.CSharp.Refactorings
                 NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
-                && binaryExpression.OperatorToken.Span.Contains(context.Span)
-                && ExpandCoalesceExpressionRefactoring.CanRefactor(binaryExpression))
+                && binaryExpression.OperatorToken.Span.Contains(context.Span))
             {
-                context.RegisterRefactoring(
-                    "Expand ??",
-                    cancellationToken =>
-                    {
-                        return ExpandCoalesceExpressionRefactoring.RefactorAsync(
-                            context.Document,
-                            binaryExpression,
-                            cancellationToken);
-                    });
+                ExpandCoalesceExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
             if (context.IsAnyRefactoringEnabled(

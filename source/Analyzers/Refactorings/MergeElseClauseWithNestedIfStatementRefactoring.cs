@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(elseClause, newElseClause).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken).ConfigureAwait(false);
         }
     }
 }

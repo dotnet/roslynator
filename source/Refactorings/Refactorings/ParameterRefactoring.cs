@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                 IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameter);
             }
 
-            await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToParameter))
+                await AddDefaultValueToParameterRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
         }
     }
 }

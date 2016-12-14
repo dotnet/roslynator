@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken newToken = GetNewToken(comment.Token, comment)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceTokenAsync(comment.Token, newToken).ConfigureAwait(false);
+            return await document.ReplaceTokenAsync(comment.Token, newToken, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxToken GetNewToken(SyntaxToken token, SyntaxTrivia comment)

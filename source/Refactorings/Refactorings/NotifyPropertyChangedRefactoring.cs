@@ -70,8 +70,6 @@ namespace Roslynator.CSharp.Refactorings
             bool supportsCSharp6,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             AccessorDeclarationSyntax setter = property.Setter();
 
             AccessorDeclarationSyntax newSetter = CreateSetter(
@@ -83,9 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(property)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(setter, newSetter);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(setter, newSetter, cancellationToken).ConfigureAwait(false);
         }
 
         private static AccessorDeclarationSyntax CreateSetter(IdentifierNameSyntax fieldIdentifierName, string propertyName, bool supportsCSharp6)

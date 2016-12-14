@@ -9,6 +9,22 @@ namespace Roslynator
 {
     public static class SyntaxTreeExtensions
     {
+        public static int GetSpanStartLine(
+            this SyntaxTree syntaxTree,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return syntaxTree.GetLineSpan(span, cancellationToken).StartLine();
+        }
+
+        public static int GetSpanEndLine(
+            this SyntaxTree syntaxTree,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return syntaxTree.GetLineSpan(span, cancellationToken).EndLine();
+        }
+
         public static bool IsMultiLineSpan(
             this SyntaxTree tree,
             TextSpan span,

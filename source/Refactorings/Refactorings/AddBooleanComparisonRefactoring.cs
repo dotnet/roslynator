@@ -19,9 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                var namedTypeSymbol = semanticModel
-                    .GetTypeInfo(expression2, context.CancellationToken)
-                    .ConvertedType as INamedTypeSymbol;
+                var namedTypeSymbol = semanticModel.GetConvertedTypeSymbol(expression2, context.CancellationToken) as INamedTypeSymbol;
 
                 if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
                     RegisterRefactoring(context, expression);
@@ -57,15 +55,11 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             BinaryExpressionSyntax newNode = CreateNewExpression(expression)
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(expression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)

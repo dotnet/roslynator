@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -82,9 +81,11 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var methodSymbol = (IMethodSymbol)member;
 
-                    if (methodSymbol.Parameters.Length == 1)
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    if (parameters.Length == 1)
                     {
-                        IParameterSymbol parameterSymbol = methodSymbol.Parameters[0];
+                        IParameterSymbol parameterSymbol = parameters[0];
 
                         if (eventArgsSymbol.Equals(parameterSymbol.Type))
                             return true;

@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await document.WithTextChangeAsync(new TextChange(span, "\n")).ConfigureAwait(false);
+            return await document.WithTextChangeAsync(new TextChange(span, "\n"), cancellationToken).ConfigureAwait(false);
         }
     }
 }

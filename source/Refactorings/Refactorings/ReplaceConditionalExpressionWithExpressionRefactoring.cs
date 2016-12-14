@@ -34,15 +34,11 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxNode parent = expression.Parent;
 
             ExpressionSyntax newNode = expression.WithTriviaFrom(parent);
 
-            SyntaxNode newRoot = root.ReplaceNode(parent, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

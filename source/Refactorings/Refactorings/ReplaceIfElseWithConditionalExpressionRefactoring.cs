@@ -184,8 +184,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax whenFalse,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ReturnStatementSyntax newNode = ReturnStatement(
                 CreateConditionalExpression(ifStatement, whenTrue, whenFalse));
 
@@ -193,9 +191,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> ReplaceIfElseWithYieldReturnStatementAsync(
@@ -205,8 +201,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax whenFalse,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             YieldStatementSyntax newNode = YieldReturnStatement(
                 CreateConditionalExpression(ifStatement, whenTrue, whenFalse));
 
@@ -214,9 +208,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> ReplaceIfElseWithAssignmentAsync(
@@ -227,8 +219,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax whenFalse,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionStatementSyntax newNode = ExpressionStatement(
                 SimpleAssignmentExpression(
                     left,
@@ -238,9 +228,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static ConditionalExpressionSyntax CreateConditionalExpression(

@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             EmptyStatementSyntax emptyStatement,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(emptyStatement, SyntaxRemoveOptions.KeepExteriorTrivia).ConfigureAwait(false);
+            return await document.RemoveNodeAsync(emptyStatement, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
         }
     }
 }

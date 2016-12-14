@@ -193,7 +193,7 @@ namespace Roslynator.CSharp.Refactorings
                     .RemoveAt(index)
                     .ReplaceAt(index, newReturnStatement);
 
-                return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements)).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken).ConfigureAwait(false);
             }
         }
 

@@ -31,8 +31,6 @@ namespace Roslynator.CSharp.Refactorings
             if (anonymousMethod == null)
                 throw new ArgumentNullException(nameof(anonymousMethod));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,
                 anonymousMethod.ParameterList,
@@ -43,9 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(anonymousMethod)
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(anonymousMethod, lambda);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(anonymousMethod, lambda, cancellationToken).ConfigureAwait(false);
         }
     }
 }

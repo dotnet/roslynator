@@ -12,14 +12,6 @@ namespace Roslynator
 {
     public static class ISymbolExtensions
     {
-        public static bool IsOrdinary(this IMethodSymbol methodSymbol)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            return methodSymbol.MethodKind == MethodKind.Ordinary;
-        }
-
         public static bool IsReducedExtension(this IMethodSymbol methodSymbol)
         {
             if (methodSymbol == null)
@@ -28,12 +20,32 @@ namespace Roslynator
             return methodSymbol.MethodKind == MethodKind.ReducedExtension;
         }
 
-        public static bool IsConstructor(this IMethodSymbol methodSymbol)
+        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind)
+        {
+            return methodSymbol?.MethodKind == methodKind;
+        }
+
+        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind1, MethodKind methodKind2)
         {
             if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
+                return false;
 
-            return methodSymbol.MethodKind == MethodKind.Constructor;
+            MethodKind methodKind = methodSymbol.MethodKind;
+
+            return methodKind == methodKind1
+                || methodKind == methodKind2;
+        }
+
+        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind1, MethodKind methodKind2, MethodKind methodKind3)
+        {
+            if (methodSymbol == null)
+                return false;
+
+            MethodKind methodKind = methodSymbol.MethodKind;
+
+            return methodKind == methodKind1
+                || methodKind == methodKind2
+                || methodKind == methodKind3;
         }
 
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
@@ -666,10 +678,7 @@ namespace Roslynator
 
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind)
         {
-            if (typeSymbol == null)
-                return false;
-
-            return typeSymbol.TypeKind == typeKind;
+            return typeSymbol?.TypeKind == typeKind;
         }
 
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind1, TypeKind typeKind2)

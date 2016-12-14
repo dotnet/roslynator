@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
                 .AppendTrailingTrivia(CSharpFactory.NewLineTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statement, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(statement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

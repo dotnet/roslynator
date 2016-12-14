@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -101,11 +102,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var newInterpolatedString = (InterpolatedStringExpressionSyntax)rewriter.Visit(interpolatedString);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = root.ReplaceNode(invocation, newInterpolatedString);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(invocation, newInterpolatedString, cancellationToken).ConfigureAwait(false);
         }
 
         private static IEnumerable<ExpressionSyntax> GetExpandedArguments(SeparatedSyntaxList<ArgumentSyntax> arguments, SemanticModel semanticModel)
@@ -125,10 +122,7 @@ namespace Roslynator.CSharp.Refactorings
             if (expression.IsKind(SyntaxKind.ParenthesizedExpression))
                 return expression;
 
-            return ParenthesizedExpression(
-                    Token(SyntaxTriviaList.Empty, SyntaxKind.OpenParenToken, SyntaxTriviaList.Empty),
-                    expression,
-                    Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty))
+            return ParenthesizedExpression(expression)
                 .WithSimplifierAnnotation();
         }
 
@@ -145,19 +139,16 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsValidFormatMethod(ISymbol symbol)
         {
-            if (!symbol.IsMethod())
-                return false;
+            if (symbol.IsMethod()
+                && symbol.IsStatic)
+            {
+                var methodSymbol = (IMethodSymbol)symbol;
 
-            if (!symbol.IsStatic)
-                return false;
+                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-            var methodSymbol = (IMethodSymbol)symbol;
-
-            if (methodSymbol.Parameters.Length == 0)
-                return false;
-
-            if (methodSymbol.Parameters[0]?.Name != "format")
-                return false;
+                return parameters.Any()
+                    && parameters[0].Name == "format";
+            }
 
             return true;
         }
@@ -178,7 +169,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 var literalExpression = node.Expression as LiteralExpressionSyntax;
 
-                if (literalExpression != null && literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+                if (literalExpression != null
+                    && literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
                 {
                     var index = (int)literalExpression.Token.Value;
 

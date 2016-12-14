@@ -9,11 +9,12 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, DoStatementSyntax doStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                && doStatement.Condition != null
-                && doStatement.Condition.Span.Contains(context.Span))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
             {
-                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, doStatement.Condition).ConfigureAwait(false);
+                ExpressionSyntax condition = doStatement.Condition;
+
+                if (condition?.Span.Contains(context.Span) == true)
+                    await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, condition).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceDoStatementWithWhileStatement)

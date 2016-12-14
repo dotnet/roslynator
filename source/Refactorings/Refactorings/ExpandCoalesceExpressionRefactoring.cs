@@ -6,15 +6,25 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class ExpandCoalesceExpressionRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
+        {
+            if (CanRefactor(binaryExpression))
+            {
+                context.RegisterRefactoring(
+                    "Expand ??",
+                    cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+            }
+        }
+
         public static bool CanRefactor(BinaryExpressionSyntax binaryExpression)
         {
             return binaryExpression.IsKind(SyntaxKind.CoalesceExpression)
-
                 && binaryExpression.Left?.IsMissing == false
                 && binaryExpression.Right?.IsMissing == false;
         }
@@ -24,17 +34,14 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax left = binaryExpression.Left.WithoutTrivia();
             ExpressionSyntax right = binaryExpression.Right.WithoutTrivia();
 
             SyntaxNode newNode = ConditionalExpression(
                 ParenthesizedExpression(
-                    BinaryExpression(
-                        SyntaxKind.NotEqualsExpression,
+                    NotEqualsExpression(
                         left,
-                        LiteralExpression(SyntaxKind.NullLiteralExpression))),
+                        NullLiteralExpression())),
                 left,
                 right);
 
@@ -42,9 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(binaryExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -39,7 +39,11 @@ namespace Roslynator.CSharp.Refactorings
             InterpolationSyntax interpolation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (interpolation == null)
+                throw new ArgumentNullException(nameof(interpolation));
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)interpolation.Parent;
 
@@ -54,9 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             var newInterpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            SyntaxNode newRoot = root.ReplaceNode(interpolatedString, newInterpolatedString);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(interpolatedString, newInterpolatedString, cancellationToken).ConfigureAwait(false);
         }
     }
 }

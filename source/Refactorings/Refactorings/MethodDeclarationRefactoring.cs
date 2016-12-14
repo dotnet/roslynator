@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -17,14 +16,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (methodDeclaration.Span.Contains(context.Span))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
+                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic, RefactoringIdentifiers.MarkAllMembersAsStatic)
                     && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
                 {
-                    context.RegisterRefactoring(
-                        "Mark method as static",
-                        cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic))
+                    {
+                        context.RegisterRefactoring(
+                       "Mark method as static",
+                       cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                    }
 
-                    MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
+                        MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
                 }
 
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);

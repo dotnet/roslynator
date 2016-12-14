@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, switchStatement).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(ifStatement, switchStatement, cancellationToken).ConfigureAwait(false);
         }
 
         private static ExpressionSyntax GetSwitchExpression(IfStatementSyntax ifStatement)

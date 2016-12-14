@@ -66,6 +66,7 @@
     <Compile Include="Refactorings\ExtractTypeDeclarationToNewFileRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\NegateIsExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveConditionFromLastElseRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrWhiteSpaceRefactoring.cs" />
@@ -248,7 +249,6 @@
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactorings\MemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertySyntaxRewriter.cs" />
-    <Compile Include="Refactorings\RemoveInterpolationRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />

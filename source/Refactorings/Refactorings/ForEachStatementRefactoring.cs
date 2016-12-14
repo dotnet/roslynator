@@ -117,8 +117,10 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             ForEachStatementSyntax forEachStatement)
         {
-            if (forEachStatement.Type?.IsVar == false
-                && forEachStatement.Type.Span.Contains(context.Span))
+            TypeSyntax type = forEachStatement.Type;
+
+            if (type?.IsVar == false
+                && type.Span.Contains(context.Span))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -126,17 +128,17 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (info.ElementType != null)
                 {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(forEachStatement.Type).ConvertedType;
+                    ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(type);
 
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{info.ElementType.ToMinimalDisplayString(semanticModel, forEachStatement.Type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
+                            $"Change type to '{info.ElementType.ToMinimalDisplayString(semanticModel, type.SpanStart, DefaultSymbolDisplayFormat.Value)}'",
                             cancellationToken =>
                             {
                                 return ChangeTypeRefactoring.ChangeTypeAsync(
                                     context.Document,
-                                    forEachStatement.Type,
+                                    type,
                                     info.ElementType,
                                     cancellationToken);
                             });

@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(assignmentExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(assignmentExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(assignmentExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static string GetCompoundOperatorText(BinaryExpressionSyntax binaryExpression)

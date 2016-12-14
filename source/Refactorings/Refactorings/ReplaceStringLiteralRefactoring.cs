@@ -24,8 +24,6 @@ namespace Roslynator.CSharp.Refactorings
             int interpolationLength = 0,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             string s = literalExpression.Token.Text.ToString();
 
             if (interpolationStartIndex != -1)
@@ -40,9 +38,7 @@ namespace Roslynator.CSharp.Refactorings
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
                 .WithTriviaFrom(literalExpression);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, interpolatedString);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(literalExpression, interpolatedString, cancellationToken).ConfigureAwait(false);
         }
 
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
@@ -56,8 +52,6 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberAccessExpressionSyntax newNode = MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
                     PredefinedType(Token(SyntaxKind.StringKeyword)),
@@ -65,9 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(literalExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> ReplaceWithRegularStringLiteralAsync(
@@ -75,16 +67,12 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             string s = CreateRegularStringLiteral(literalExpression.Token.ValueText);
 
             LiteralExpressionSyntax newNode = ParseRegularStringLiteral(s)
                 .WithTriviaFrom(literalExpression);
 
-            root = root.ReplaceNode(literalExpression, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> ReplaceWithRegularStringLiteralsAsync(
@@ -92,15 +80,11 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             BinaryExpressionSyntax newNode = CreateAddExpression(literalExpression.Token.ValueText)
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(literalExpression, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> ReplaceWithVerbatimStringLiteralAsync(
@@ -108,8 +92,6 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             string s = literalExpression.Token.ValueText;
 
             s = s.Replace(Quote, Quote + Quote);
@@ -117,9 +99,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (LiteralExpressionSyntax)ParseExpression(AmpersandQuote + s + Quote)
                 .WithTriviaFrom(literalExpression);
 
-            root = root.ReplaceNode(literalExpression, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static string CreateRegularStringLiteral(string text)

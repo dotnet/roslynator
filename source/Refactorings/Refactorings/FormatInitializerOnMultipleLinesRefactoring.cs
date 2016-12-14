@@ -17,14 +17,10 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             InitializerExpressionSyntax newInitializer = GetMultilineInitializer(initializer)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(initializer, newInitializer);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken).ConfigureAwait(false);
         }
 
         private static InitializerExpressionSyntax GetMultilineInitializer(InitializerExpressionSyntax initializer)

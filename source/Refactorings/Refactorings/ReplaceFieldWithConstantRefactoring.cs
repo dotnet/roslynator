@@ -36,8 +36,6 @@ namespace Roslynator.CSharp.Refactorings
             FieldDeclarationSyntax node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxTokenList modifiers = node.Modifiers;
 
             int index = modifiers.IndexOf(SyntaxKind.StaticKeyword);
@@ -55,9 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithModifiers(modifiers)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

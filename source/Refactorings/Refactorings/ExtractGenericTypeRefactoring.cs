@@ -32,16 +32,12 @@ namespace Roslynator.CSharp.Refactorings
             GenericNameSyntax genericName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             TypeSyntax typeSyntax = genericName
                 .TypeArgumentList
                 .Arguments[0]
                 .WithTriviaFrom(genericName);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(genericName, typeSyntax);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(genericName, typeSyntax, cancellationToken).ConfigureAwait(false);
         }
     }
 }

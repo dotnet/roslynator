@@ -27,16 +27,12 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (IfStatementSyntax)rewriter.Visit(ifStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter
         {
             private IfStatementSyntax _previousIf;
-
-            public SyntaxRewriter()
-            {
-            }
 
             public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
             {

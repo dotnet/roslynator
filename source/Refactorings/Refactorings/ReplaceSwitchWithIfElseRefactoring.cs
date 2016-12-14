@@ -16,15 +16,11 @@ namespace Roslynator.CSharp.Refactorings
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             IfStatementSyntax newNode = Refactor(switchStatement)
                 .WithTriviaFrom(switchStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(switchStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static IfStatementSyntax Refactor(SwitchStatementSyntax switchStatement)

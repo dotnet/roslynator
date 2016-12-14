@@ -73,16 +73,12 @@ namespace Roslynator.CSharp.Refactorings
             string name,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ParameterSyntax newParameter = parameter
                 .WithType(parameter.Type.WithoutTrailingTrivia())
                 .WithIdentifier(SyntaxFactory.Identifier(name).WithTrailingTrivia(parameter.Type.GetTrailingTrivia()))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parameter, newParameter);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(parameter, newParameter, cancellationToken).ConfigureAwait(false);
         }
     }
 }

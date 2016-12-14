@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(castExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(castExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(castExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

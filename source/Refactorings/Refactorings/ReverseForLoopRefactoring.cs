@@ -37,8 +37,6 @@ namespace Roslynator.CSharp.Refactorings
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             VariableDeclarationSyntax declaration = forStatement.Declaration;
 
             var incrementor = (PostfixUnaryExpressionSyntax)forStatement.Incrementors[0];
@@ -64,9 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithCondition(newCondition)
                 .WithIncrementors(newIncrementors);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(forStatement, newForStatement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

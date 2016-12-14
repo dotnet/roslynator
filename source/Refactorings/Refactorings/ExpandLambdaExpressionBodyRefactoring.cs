@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,8 +25,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetSymbolInfo(lambda, cancellationToken).Symbol;
@@ -33,9 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             LambdaExpressionSyntax newNode = GetNewNode(lambda, expression, symbol)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(lambda, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static LambdaExpressionSyntax GetNewNode(
@@ -43,12 +40,12 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             ISymbol symbol)
         {
-            BlockSyntax block = SyntaxFactory.Block(GetStatement(expression, symbol));
+            BlockSyntax block = Block(GetStatement(expression, symbol));
 
             block = block
                 .WithCloseBraceToken(
                     block.CloseBraceToken
-                        .WithLeadingTrivia(SyntaxFactory.TriviaList(CSharpFactory.NewLineTrivia())));
+                        .WithLeadingTrivia(TriviaList(CSharpFactory.NewLineTrivia())));
 
             switch (lambda.Kind())
             {
@@ -74,10 +71,10 @@ namespace Roslynator.CSharp.Refactorings
                 var methodSymbol = (IMethodSymbol)symbol;
 
                 if (!methodSymbol.ReturnsVoid)
-                    return SyntaxFactory.ReturnStatement(expression);
+                    return ReturnStatement(expression);
             }
 
-            return SyntaxFactory.ExpressionStatement(expression);
+            return ExpressionStatement(expression);
         }
     }
 }

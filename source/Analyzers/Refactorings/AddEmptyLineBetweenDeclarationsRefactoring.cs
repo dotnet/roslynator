@@ -200,7 +200,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = memberDeclaration
                 .WithTrailingTrivia(memberDeclaration.GetTrailingTrivia().Add(CSharpFactory.NewLineTrivia()));
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

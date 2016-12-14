@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newDeclaration = SetModifiers(declaration, SyntaxFactory.TokenList(newModifiers));
 
-            return await document.ReplaceNodeAsync(declaration, newDeclaration).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(declaration, newDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxNode SetModifiers(SyntaxNode declaration, SyntaxTokenList modifiers)

@@ -11,16 +11,22 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
         {
-            if (!parenthesizedExpression.OpenParenToken.IsMissing
-                && parenthesizedExpression.OpenParenToken.Span.Contains(context.Span))
+            SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
+
+            if (!openParen.IsMissing
+                && openParen.Span.Contains(context.Span))
             {
                 return true;
             }
-
-            if (!parenthesizedExpression.CloseParenToken.IsMissing
-                && parenthesizedExpression.CloseParenToken.Span.Contains(context.Span))
+            else
             {
-                return true;
+                SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
+
+                if (!closeParen.IsMissing
+                    && closeParen.Span.Contains(context.Span))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -31,15 +37,11 @@ namespace Roslynator.CSharp.Refactorings
             ParenthesizedExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax newExpression = expression.Expression
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(expression, newExpression);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -15,8 +15,6 @@ namespace Roslynator.CSharp.Refactorings
             DoStatementSyntax doStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             WhileStatementSyntax whileStatement = WhileStatement(
                 doStatement.WhileKeyword,
                 doStatement.OpenParenToken,
@@ -28,9 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(doStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(doStatement, whileStatement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(doStatement, whileStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

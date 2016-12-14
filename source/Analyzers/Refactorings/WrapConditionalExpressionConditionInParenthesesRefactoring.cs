@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                     ).WithTriviaFrom(conditionalExpression.Condition)
                 ).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

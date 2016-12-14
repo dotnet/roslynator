@@ -242,8 +242,6 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxTrivia commentTrivia,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxTriviaList leadingTrivia = memberDeclaration.GetLeadingTrivia();
 
             SyntaxTriviaList newLeadingTrivia = InsertDocumentationCommentTrivia(leadingTrivia, commentTrivia);
@@ -252,9 +250,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithLeadingTrivia(newLeadingTrivia)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(memberDeclaration, newMemberDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxTriviaList InsertDocumentationCommentTrivia(SyntaxTriviaList leadingTrivia, SyntaxTrivia commentTrivia)

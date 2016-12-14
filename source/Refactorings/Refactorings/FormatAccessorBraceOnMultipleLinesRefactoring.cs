@@ -14,8 +14,6 @@ namespace Roslynator.CSharp.Refactorings
             AccessorDeclarationSyntax accessor,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxToken closeBrace = accessor.Body.CloseBraceToken;
 
             AccessorDeclarationSyntax newAccessor = accessor
@@ -25,9 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                             closeBrace.LeadingTrivia.Add(CSharpFactory.NewLineTrivia()))))
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(accessor, newAccessor);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken).ConfigureAwait(false);
         }
     }
 }

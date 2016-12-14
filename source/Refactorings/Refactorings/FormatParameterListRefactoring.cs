@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,13 +18,10 @@ namespace Roslynator.CSharp.Refactorings
             ParameterListSyntax parameterList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            SyntaxNode newRoot = oldRoot.ReplaceNode(
+            return await document.ReplaceNodeAsync(
                 parameterList,
-                CreateMultilineList(parameterList));
-
-            return document.WithSyntaxRoot(newRoot);
+                CreateMultilineList(parameterList),
+                cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> FormatAllParametersOnSingleLineAsync(
@@ -31,28 +29,24 @@ namespace Roslynator.CSharp.Refactorings
             ParameterListSyntax parameterList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ParameterListSyntax newParameterList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(parameterList)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parameterList, newParameterList);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(parameterList, newParameterList, cancellationToken).ConfigureAwait(false);
         }
 
         private static ParameterListSyntax CreateMultilineList(ParameterListSyntax list)
         {
             SeparatedSyntaxList<ParameterSyntax> parameters = SeparatedList<ParameterSyntax>(CreateNodesAndTokens(list));
 
-            SyntaxToken openParen = Token(SyntaxKind.OpenParenToken).WithTrailingNewLine();
+            SyntaxToken openParen = OpenParenToken().WithTrailingNewLine();
 
             return ParameterList(parameters).WithOpenParenToken(openParen);
         }
 
         private static IEnumerable<SyntaxNodeOrToken> CreateNodesAndTokens(ParameterListSyntax list)
         {
-            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(list.Parent).Add(CSharpFactory.IndentTrivia());
+            SyntaxTriviaList trivia = SyntaxHelper.GetIndentTrivia(list.Parent).Add(IndentTrivia());
 
             SeparatedSyntaxList<ParameterSyntax>.Enumerator en = list.Parameters.GetEnumerator();
 
@@ -62,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 while (en.MoveNext())
                 {
-                    yield return Token(SyntaxKind.CommaToken).WithTrailingNewLine();
+                    yield return CommaToken().WithTrailingNewLine();
 
                     yield return en.Current.WithLeadingTrivia(trivia);
                 }

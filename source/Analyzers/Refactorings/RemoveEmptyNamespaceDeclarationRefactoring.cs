@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             NamespaceDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(declaration, GetRemoveOptions(declaration)).ConfigureAwait(false);
+            return await document.RemoveNodeAsync(declaration, GetRemoveOptions(declaration), cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(NamespaceDeclarationSyntax declaration)

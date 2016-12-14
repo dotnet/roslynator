@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -9,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -42,16 +42,19 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsEmptyOrContainsOnlyDefaultSection(SwitchStatementSyntax switchStatement)
         {
-            if (switchStatement.Sections.Count == 0)
+            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+            if (!sections.Any())
             {
                 return true;
             }
-            else if (switchStatement.Sections.Count == 1)
+            else if (sections.Count == 1)
             {
-                SwitchSectionSyntax section = switchStatement.Sections[0];
+                SwitchSectionSyntax section = sections[0];
+                SyntaxList<SwitchLabelSyntax> labels = section.Labels;
 
-                return section.Labels.Count == 1
-                    && section.Labels[0].IsKind(SyntaxKind.DefaultSwitchLabel);
+                return labels.Count == 1
+                    && labels[0].IsKind(SyntaxKind.DefaultSwitchLabel);
             }
             else
             {
@@ -64,23 +67,19 @@ namespace Roslynator.CSharp.Refactorings
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var enumTypeSymbol = semanticModel
                 .GetTypeInfo(switchStatement.Expression, cancellationToken)
                 .ConvertedType as INamedTypeSymbol;
 
-            TypeSyntax enumType = CSharpFactory.Type(enumTypeSymbol, semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
+            TypeSyntax enumType = Type(enumTypeSymbol, semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
 
             SwitchStatementSyntax newNode = switchStatement
                 .WithSections(List(CreateSwitchSections(enumTypeSymbol, enumType)))
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(switchStatement, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol, TypeSyntax enumType)
@@ -99,8 +98,7 @@ namespace Roslynator.CSharp.Refactorings
                         SwitchSection(
                             SingletonList<SwitchLabelSyntax>(
                                 CaseSwitchLabel(
-                                    MemberAccessExpression(
-                                        SyntaxKind.SimpleMemberAccessExpression,
+                                    SimpleMemberAccessExpression(
                                         enumType,
                                         IdentifierName(memberSymbol.Name)))),
                             statements));

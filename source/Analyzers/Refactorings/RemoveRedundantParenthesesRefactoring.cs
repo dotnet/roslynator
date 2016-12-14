@@ -125,7 +125,8 @@ namespace Roslynator.CSharp.Refactorings
 
             return await document.ReplaceNodeAsync(
                 parenthesizedExpression,
-                expression.WithTrivia(leading, trailing)).ConfigureAwait(false);
+                expression.WithTrivia(leading, trailing),
+                cancellationToken).ConfigureAwait(false);
         }
     }
 }

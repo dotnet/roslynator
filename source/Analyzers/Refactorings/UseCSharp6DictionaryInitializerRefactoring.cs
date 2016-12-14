@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                     .AppendTrailingTrivia(initializer.CloseBraceToken.GetLeadingAndTrailingTrivia())
                     .WithFormatterAnnotation());
 
-            return await document.ReplaceNodeAsync(initializer, assignment).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(initializer, assignment, cancellationToken).ConfigureAwait(false);
         }
     }
 }

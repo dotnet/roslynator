@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithoutTrailingTrivia();
             }
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

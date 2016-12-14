@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -22,18 +23,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (members?.Count > 0)
                 {
-                    string text = "Introduce constructor";
-
                     context.RegisterRefactoring(
-                        text,
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                declaration,
-                                members,
-                                cancellationToken);
-                        });
+                        "Introduce constructor",
+                        cancellationToken => RefactorAsync(context.Document, declaration, members, cancellationToken));
                 }
             }
         }
@@ -228,22 +220,18 @@ namespace Roslynator.CSharp.Refactorings
             List<MemberDeclarationSyntax> assignableMembers,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberDeclarationSyntax parentMember = GetContainingMember(declaration);
 
             SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.Insert(
-                IndexOfLastConstructorOrField(members) + 1,
+            SyntaxList<MemberDeclarationSyntax> newMembers = MemberInserter.InsertMember(
+                members,
                 CreateConstructor(GetConstructorIdentifierText(parentMember), assignableMembers));
 
             MemberDeclarationSyntax newNode = parentMember.SetMembers(newMembers)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(parentMember, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(parentMember, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static string GetConstructorIdentifierText(MemberDeclarationSyntax declaration)
@@ -285,8 +273,7 @@ namespace Roslynator.CSharp.Refactorings
                 string parameterName = TextUtility.ToCamelCase(name);
 
                 statements.Add(ExpressionStatement(
-                    AssignmentExpression(
-                        SyntaxKind.SimpleAssignmentExpression,
+                    SimpleAssignmentExpression(
                         IdentifierName(name),
                         IdentifierName(parameterName))));
 
@@ -295,33 +282,16 @@ namespace Roslynator.CSharp.Refactorings
                     default(SyntaxTokenList),
                     GetType(member),
                     Identifier(parameterName),
-                    null));
+                    default(EqualsValueClauseSyntax)));
             }
 
             return ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                TokenList(Token(SyntaxKind.PublicKeyword)),
+                Modifiers.Public(),
                 Identifier(identifierText),
                 ParameterList(SeparatedList(parameters)),
-                null,
+                default(ConstructorInitializerSyntax),
                 Block(statements));
-        }
-
-        private static int IndexOfLastConstructorOrField(SyntaxList<MemberDeclarationSyntax> members)
-        {
-            for (int i = members.Count - 1; i >= 0; i--)
-            {
-                if (members[i].IsKind(SyntaxKind.ConstructorDeclaration))
-                    return i;
-            }
-
-            for (int i = members.Count - 1; i >= 0; i--)
-            {
-                if (members[i].IsKind(SyntaxKind.FieldDeclaration))
-                    return i;
-            }
-
-            return -1;
         }
 
         private static TypeSyntax GetType(MemberDeclarationSyntax memberDeclaration)

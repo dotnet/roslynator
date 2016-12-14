@@ -22,6 +22,22 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 throw new Exception<string>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FooProperty
+        {
+            get
+            {
+                string s = null;
+
+                if (s == null)
+                    throw new ArgumentNullException(nameof(s));
+
+                return s;
+            }
+        }
+
         public class Exception<T> : Exception
         {
 

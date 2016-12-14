@@ -21,18 +21,18 @@ namespace Roslynator.CSharp.Refactorings
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, oldRoot, semanticModel, cancellationToken).ConfigureAwait(false);
+            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, root, semanticModel, cancellationToken).ConfigureAwait(false);
 
             List<ElementAccessExpressionSyntax> expressions = identifierNames
                 .Select(f => f.Parent.Parent.Parent)
                 .Cast<ElementAccessExpressionSyntax>()
                 .ToList();
 
-            var rewriter = new ForToForEachSyntaxRewriter(expressions, ElementName);
+            var rewriter = new SyntaxRewriter(expressions, ElementName);
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
                 IdentifierName("var"),
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(forStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(forStatement, forEachStatement);
+            SyntaxNode newRoot = root.ReplaceNode(forStatement, forEachStatement);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -163,12 +163,12 @@ namespace Roslynator.CSharp.Refactorings
             return memberAccessExpression.Expression;
         }
 
-        private class ForToForEachSyntaxRewriter : CSharpSyntaxRewriter
+        private class SyntaxRewriter : CSharpSyntaxRewriter
         {
             private readonly IList<ElementAccessExpressionSyntax> _expressions;
             private readonly string _elementName;
 
-            public ForToForEachSyntaxRewriter(IList<ElementAccessExpressionSyntax> expressions, string elementName = ElementName)
+            public SyntaxRewriter(IList<ElementAccessExpressionSyntax> expressions, string elementName = ElementName)
             {
                 _expressions = expressions;
                 _elementName = elementName;

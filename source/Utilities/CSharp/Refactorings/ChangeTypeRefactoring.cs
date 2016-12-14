@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 
-            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> ChangeTypeAsync(
@@ -48,9 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             if (newType == null)
                 throw new ArgumentNullException(nameof(newType));
 
-            newType = newType.WithTriviaFrom(type);
-
-            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(type, newType.WithTriviaFrom(type), cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> ChangeTypeToVarAsync(
@@ -66,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
 
             IdentifierNameSyntax newType = VarType().WithTriviaFrom(type);
 
-            return await document.ReplaceNodeAsync(type, newType).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
         }
     }
 }

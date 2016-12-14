@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchSection, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(switchSection, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)

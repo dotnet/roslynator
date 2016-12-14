@@ -19,14 +19,10 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxNode newNode = RemoveModifier(node, SyntaxKind.PartialKeyword)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> RemoveSealedModifierAsync(
@@ -34,14 +30,10 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxNode newNode = RemoveModifier(node, SyntaxKind.SealedKeyword)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(node, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxNode RemoveModifier(SyntaxNode node, SyntaxKind modifierKind)

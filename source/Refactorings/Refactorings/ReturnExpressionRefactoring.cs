@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (expression != null)
             {
-                MemberDeclarationSyntax declaration = GetContainingMethodOrPropertyOrIndexer(expression);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                MemberDeclarationSyntax declaration = await GetContainingMethodOrPropertyOrIndexerAsync(expression, semanticModel, context.CancellationToken).ConfigureAwait(false);
 
                 if (declaration != null)
                 {
@@ -23,8 +26,6 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberType != null)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                         ITypeSymbol memberTypeSymbol = semanticModel
                             .GetTypeInfo(memberType, context.CancellationToken)
                             .Type;
@@ -239,30 +240,35 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static MemberDeclarationSyntax GetContainingMethodOrPropertyOrIndexer(ExpressionSyntax expression)
+        internal static async Task<MemberDeclarationSyntax> GetContainingMethodOrPropertyOrIndexerAsync(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (SyntaxNode ancestor in expression.Ancestors())
+            ISymbol symbol = semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
             {
-                switch (ancestor.Kind())
+                var methodsymbol = (IMethodSymbol)symbol;
+                MethodKind methodKind = methodsymbol.MethodKind;
+
+                if (methodKind == MethodKind.Ordinary)
                 {
-                    case SyntaxKind.MethodDeclaration:
-                    case SyntaxKind.PropertyDeclaration:
-                    case SyntaxKind.IndexerDeclaration:
-                        return (MemberDeclarationSyntax)ancestor;
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.DestructorDeclaration:
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.ConversionOperatorDeclaration:
-                    case SyntaxKind.OperatorDeclaration:
-                    case SyntaxKind.IncompleteMember:
-                        return null;
+                    if (methodsymbol.PartialImplementationPart != null)
+                        symbol = methodsymbol.PartialImplementationPart;
+                }
+                else if (methodKind == MethodKind.PropertyGet)
+                {
+                    symbol = methodsymbol.AssociatedSymbol;
                 }
             }
 
-            return null;
+            SyntaxNode node = await symbol
+                .DeclaringSyntaxReferences[0]
+                .GetSyntaxAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return node as MemberDeclarationSyntax;
         }
     }
 }

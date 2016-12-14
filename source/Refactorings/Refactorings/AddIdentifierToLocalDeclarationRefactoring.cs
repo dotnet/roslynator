@@ -16,11 +16,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
-            TypeSyntax type = localDeclaration.Declaration?.Type;
+            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+            TypeSyntax type = declaration?.Type;
 
             if (type?.IsVar == false)
             {
-                VariableDeclaratorSyntax declarator = localDeclaration.Declaration.Variables.FirstOrDefault();
+                VariableDeclaratorSyntax declarator = declaration.Variables.FirstOrDefault();
 
                 if (declarator != null
                     && context.Span.Start >= type.Span.Start)
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
@@ -66,8 +68,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(expression, context.CancellationToken).Type;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
@@ -91,8 +92,6 @@ namespace Roslynator.CSharp.Refactorings
             string name,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxTrivia endOfLine = type.GetTrailingTrivia()
                 .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
                 .First();
@@ -101,9 +100,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var textChange = new TextChange(span, " " + name);
 
-            SourceText newSourceText = sourceText.WithChanges(textChange);
-
-            return document.WithText(newSourceText);
+            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task<Document> RefactorAsync(
@@ -112,8 +109,6 @@ namespace Roslynator.CSharp.Refactorings
             string name,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             LocalDeclarationStatementSyntax newNode = LocalDeclarationStatement(
                 VariableDeclaration(
                     (TypeSyntax)expressionStatement.Expression,
@@ -130,9 +125,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithTriviaFrom(expressionStatement);
             }
 
-            root = root.ReplaceNode(expressionStatement, newNode);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(expressionStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -86,8 +86,6 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ParameterSyntax> parameters,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             BlockSyntax body = GetBody(parameters[0]);
@@ -105,9 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithStatements(body.Statements.InsertRange(index, ifStatements))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(body, newBody);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(body, newBody, cancellationToken).ConfigureAwait(false);
         }
 
         private static List<IfStatementSyntax> CreateNullChecks(ImmutableArray<ParameterSyntax> parameters)
@@ -267,7 +263,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             return parameter.Type != null
                 && !parameter.Identifier.IsMissing
-                && parameter.Parent?.IsKind(SyntaxKind.ParameterList) == true;
+                && parameter.IsParentKind(SyntaxKind.ParameterList);
         }
 
         private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)

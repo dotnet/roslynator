@@ -11,78 +11,52 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceAnyWithAllOrAllWithAnyRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            var methodSymbol = semanticModel.GetSymbolInfo(invocationExpression, context.CancellationToken).Symbol as IMethodSymbol;
+            if (!ComputeRefactoring(context, invocation, semanticModel, "Any", "All"))
+                ComputeRefactoring(context, invocation, semanticModel, "All", "Any");
+        }
 
-            if (methodSymbol == null)
-                return;
-
-            INamedTypeSymbol enumerable = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable);
-
-            if (enumerable == null)
-                return;
-
-            int argumentIndex = (methodSymbol.ReducedFrom != null) ? 0 : 1;
-
-            methodSymbol = methodSymbol.ReducedFrom ?? methodSymbol.ConstructedFrom;
-
-            if (methodSymbol.Equals(GetMethod(enumerable, "Any")))
+        private static bool ComputeRefactoring(
+            RefactoringContext context,
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            string fromMethodName,
+            string toMethodName)
+        {
+            if (SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, fromMethodName, 2, semanticModel, context.CancellationToken))
             {
-                ExpressionSyntax expression = GetExpression(invocationExpression, argumentIndex);
+                ExpressionSyntax expression = GetExpression(invocation);
 
                 if (expression != null)
                 {
                     context.RegisterRefactoring(
-                        "Replace 'Any' with 'All'",
+                        $"Replace '{fromMethodName}' with '{toMethodName}'",
                         cancellationToken =>
                         {
                             return RefactorAsync(
                                 context.Document,
-                                invocationExpression,
-                                "All",
+                                invocation,
+                                toMethodName,
                                 expression,
                                 cancellationToken);
                         });
+
+                    return true;
                 }
             }
-            else if (methodSymbol.Equals(GetMethod(enumerable, "All")))
-            {
-                ExpressionSyntax expression = GetExpression(invocationExpression, argumentIndex);
 
-                if (expression != null)
-                {
-                    context.RegisterRefactoring(
-                        "Replace 'All' with 'Any'",
-                        cancellationToken =>
-                        {
-                            return RefactorAsync(
-                                context.Document,
-                                invocationExpression,
-                                "Any",
-                                expression,
-                                cancellationToken);
-                        });
-                }
-            }
+            return false;
         }
 
-        private static ISymbol GetMethod(INamedTypeSymbol enumerable, string methodName)
+        private static ExpressionSyntax GetExpression(InvocationExpressionSyntax invocation)
         {
-            return enumerable
-                .GetMembers(methodName)
-                .Where(f => f.IsMethod())
-                .FirstOrDefault(f => ((IMethodSymbol)f).Parameters.Length == 2);
-        }
-
-        private static ExpressionSyntax GetExpression(InvocationExpressionSyntax invocationExpression, int argumentIndex)
-        {
-            ArgumentSyntax argument = invocationExpression
+            ArgumentSyntax argument = invocation
                 .ArgumentList?
                 .Arguments
-                .ElementAtOrDefault(argumentIndex);
+                .Last();
 
             switch (argument?.Expression?.Kind())
             {
@@ -106,8 +80,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
             MemberAccessExpressionSyntax newMemberAccessExpression = memberAccessExpression
@@ -117,9 +89,7 @@ namespace Roslynator.CSharp.Refactorings
                 .ReplaceNode(expression, expression.LogicallyNegate())
                 .WithExpression(newMemberAccessExpression);
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(invocationExpression, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -48,8 +47,6 @@ namespace Roslynator.CSharp.Refactorings
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var block = (BlockSyntax)usingStatement.Parent;
 
             int index = block.Statements.IndexOf(usingStatement);
@@ -74,9 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithStatements(newBlock.Statements.InsertRange(index, statements))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(block, newBlock);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
         }
 
         private static IEnumerable<StatementSyntax> GetStatements(UsingStatementSyntax usingStatement)

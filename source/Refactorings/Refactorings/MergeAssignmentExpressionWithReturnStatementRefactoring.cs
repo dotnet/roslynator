@@ -58,8 +58,6 @@ namespace Roslynator.CSharp.Refactorings
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var block = (BlockSyntax)statement.Parent;
 
             SyntaxList<StatementSyntax> statements = block.Statements;
@@ -78,9 +76,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newStatements = newStatements.Replace(newStatements[index], newReturnStatement);
 
-            root = root.ReplaceNode(block, block.WithStatements(newStatements));
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken).ConfigureAwait(false);
         }
     }
 }

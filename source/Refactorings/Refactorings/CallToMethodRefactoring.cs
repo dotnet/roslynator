@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -24,14 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     $"Call '{methodSymbol.Name}()'",
-                    cancellationToken =>
-                    {
-                        return RefactorAsync(
-                            context.Document,
-                            expression,
-                            methodSymbol,
-                            cancellationToken);
-                    });
+                    cancellationToken => RefactorAsync(context.Document, expression, methodSymbol, cancellationToken));
             }
         }
 
@@ -52,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                             return methodSymbol;
                         }
                     }
-                    else if (methodSymbol.Parameters.Length == 0)
+                    else if (!methodSymbol.Parameters.Any())
                     {
                         return methodSymbol;
                     }

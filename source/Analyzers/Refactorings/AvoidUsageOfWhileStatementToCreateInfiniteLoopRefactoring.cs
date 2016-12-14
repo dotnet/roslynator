@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(whileStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(whileStatement, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

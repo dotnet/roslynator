@@ -14,46 +14,46 @@ namespace Roslynator.CSharp.Refactorings
         {
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-            if (parameters.Count == 0)
-                return;
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
+            if (parameters.Any())
             {
-                var refactoring = new DuplicateParameterRefactoring(parameterList);
-                refactoring.ComputeRefactoring(context);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
-                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameterList).ConfigureAwait(false);
-
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.IntroduceAndInitializeField,
-                RefactoringIdentifiers.IntroduceAndInitializeProperty))
-            {
-                IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
-                && (context.Span.IsEmpty || context.Span.IsBetweenSpans(parameterList)))
-            {
-                if (parameterList.IsSingleLine())
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
                 {
-                    if (parameters.Count > 1)
-                    {
-                        context.RegisterRefactoring(
-                            "Format each parameter on a separate line",
-                            cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
-                    }
+                    var refactoring = new DuplicateParameterRefactoring(parameterList);
+                    refactoring.ComputeRefactoring(context);
                 }
-                else
-                {
-                    string title = parameters.Count == 1
-                        ? "Format parameter on a single line"
-                        : "Format all parameters on a single line";
 
-                    context.RegisterRefactoring(
-                        title,
-                        cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
+                    await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameterList).ConfigureAwait(false);
+
+                if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.IntroduceAndInitializeField,
+                    RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                {
+                    IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
+                }
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
+                    && (context.Span.IsEmpty || context.Span.IsBetweenSpans(parameterList)))
+                {
+                    if (parameterList.IsSingleLine())
+                    {
+                        if (parameters.Count > 1)
+                        {
+                            context.RegisterRefactoring(
+                                "Format each parameter on a separate line",
+                                cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
+                        }
+                    }
+                    else
+                    {
+                        string title = (parameters.Count == 1)
+                            ? "Format parameter on a single line"
+                            : "Format all parameters on a single line";
+
+                        context.RegisterRefactoring(
+                            title,
+                            cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
+                    }
                 }
             }
         }

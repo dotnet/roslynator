@@ -18,13 +18,16 @@ namespace Roslynator.CSharp.Refactorings
             if (lambda == null)
                 throw new ArgumentNullException(nameof(lambda));
 
-            if (lambda.Body?.IsKind(SyntaxKind.Block) == true)
-            {
-                var block = (BlockSyntax)lambda.Body;
+            CSharpSyntaxNode body = lambda.Body;
 
-                if (block.Statements.Count == 1)
+            if (body?.IsKind(SyntaxKind.Block) == true)
+            {
+                var block = (BlockSyntax)body;
+                SyntaxList<StatementSyntax> statements = block.Statements;
+
+                if (statements.Count == 1)
                 {
-                    StatementSyntax statement = block.Statements[0];
+                    StatementSyntax statement = statements[0];
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                     {
@@ -63,15 +66,11 @@ namespace Roslynator.CSharp.Refactorings
             if (lambdaExpressionSyntax == null)
                 throw new ArgumentNullException(nameof(lambdaExpressionSyntax));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             LambdaExpressionSyntax newLambda = Refactor(lambdaExpressionSyntax)
                 .WithTriviaFrom(lambdaExpressionSyntax)
                 .WithFormatterAnnotation();
 
-            root = root.ReplaceNode(lambdaExpressionSyntax, newLambda);
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(lambdaExpressionSyntax, newLambda, cancellationToken).ConfigureAwait(false);
         }
 
         private static LambdaExpressionSyntax Refactor(LambdaExpressionSyntax lambda)

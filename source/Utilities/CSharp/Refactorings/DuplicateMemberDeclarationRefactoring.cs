@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -22,11 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            root = root.ReplaceNode(member.Parent, Refactor(member));
-
-            return document.WithSyntaxRoot(root);
+            return await document.ReplaceNodeAsync(member.Parent, Refactor(member), cancellationToken).ConfigureAwait(false);
         }
 
         private static SyntaxNode Refactor(MemberDeclarationSyntax member)
@@ -36,61 +33,66 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.CompilationUnit:
                     {
                         var parent = (CompilationUnitSyntax)member.Parent;
-                        int index = parent.Members.IndexOf(member);
+                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
+                        int index = members.IndexOf(member);
 
-                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member));
                     }
                 case SyntaxKind.NamespaceDeclaration:
                     {
                         var parent = (NamespaceDeclarationSyntax)member.Parent;
-                        int index = parent.Members.IndexOf(member);
+                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
+                        int index = members.IndexOf(member);
 
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
                         }
 
-                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var parent = (ClassDeclarationSyntax)member.Parent;
-                        int index = parent.Members.IndexOf(member);
+                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
+                        int index = members.IndexOf(member);
 
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
                         }
 
-                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var parent = (StructDeclarationSyntax)member.Parent;
-                        int index = parent.Members.IndexOf(member);
+                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
+                        int index = members.IndexOf(member);
 
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
                         }
 
-                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var parent = (InterfaceDeclarationSyntax)member.Parent;
-                        int index = parent.Members.IndexOf(member);
+                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
+                        int index = members.IndexOf(member);
 
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
                         }
 
-                        return parent.WithMembers(parent.Members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member));
                     }
             }
 

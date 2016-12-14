@@ -7,6 +7,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class AvoidLockingOnPubliclyAIntroduceFieldToLockOnRefactoring
     {
+        private const string FooConst = "";
+
         public void Foo()
         {
             lock ()

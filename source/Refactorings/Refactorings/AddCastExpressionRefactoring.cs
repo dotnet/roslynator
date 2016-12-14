@@ -33,8 +33,6 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             TypeSyntax type = CSharpFactory.Type(destinationType, semanticModel, expression.SpanStart);
@@ -42,9 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, expression)
                 .WithTriviaFrom(expression);
 
-            SyntaxNode newRoot = root.ReplaceNode(expression, castExpression);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(expression, castExpression, cancellationToken).ConfigureAwait(false);
         }
     }
 }

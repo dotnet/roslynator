@@ -308,7 +308,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newParentMember = newParentMember.SetMembers(members);
 
-            return await document.ReplaceNodeAsync(parentMember, newParentMember).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(parentMember, newParentMember, cancellationToken).ConfigureAwait(false);
         }
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)

@@ -316,6 +316,39 @@ namespace Roslynator.CSharp
             return RemoveCommentRefactoring.RefactorAsync(document, comment, cancellationToken);
         }
 
+        public static async Task<Document> RemoveCommentsAsync(
+            Document document,
+            CommentRemoveOptions removeOptions,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = RemoveComments(root, removeOptions, span)
+                .WithFormatterAnnotation();
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        public static async Task<Document> RemoveCommentsAsync(
+            Document document,
+            CommentRemoveOptions removeOptions,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = RemoveComments(root, removeOptions)
+                .WithFormatterAnnotation();
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
         public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
         {
             CommentRemover remover = CommentRemover.Create(node, removeOptions);

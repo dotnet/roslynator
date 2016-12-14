@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -22,8 +21,6 @@ namespace Roslynator.CSharp.Refactorings
             SwitchSectionSyntax[] sections,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             IEnumerable<SwitchSectionSyntax> newSections = switchStatement
                 .Sections
                 .Select(section =>
@@ -43,9 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithSections(List(newSections))
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(switchStatement, newSwitchStatement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

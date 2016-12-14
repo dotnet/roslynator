@@ -16,8 +16,6 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxTrivia comment,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             SyntaxToken token = comment.Token;
 
             var triviaList = default(SyntaxTriviaList);
@@ -34,11 +32,9 @@ namespace Roslynator.CSharp.Refactorings
                 triviaList = token.TrailingTrivia;
             }
 
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+            IEnumerable<TextChange> textChanges = GetTextChanges(triviaList, index);
 
-            SourceText newSourceText = sourceText.WithChanges(GetTextChanges(triviaList, index));
-
-            return document.WithText(newSourceText);
+            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
         }
 
         private static IEnumerable<TextChange> GetTextChanges(SyntaxTriviaList triviaList, int index)

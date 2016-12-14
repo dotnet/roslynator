@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -41,15 +42,11 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             MemberDeclarationSyntax newMemberDeclaration = MakeAbstract(memberDeclaration)
                 .WithTriviaFrom(memberDeclaration)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = oldRoot.ReplaceNode(memberDeclaration, newMemberDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken).ConfigureAwait(false);
         }
 
         private static MemberDeclarationSyntax MakeAbstract(MemberDeclarationSyntax memberDeclaration)
@@ -75,8 +72,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 accessorList = accessorList
                     .AddAccessors(
-                        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                        Getter()
+                            .WithSemicolonToken(SemicolonToken()));
             }
             else
             {
@@ -85,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     accessorList = accessorList.AddAccessors(getter
                        .WithBody(null)
-                       .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                       .WithSemicolonToken(SemicolonToken()));
                 }
 
                 AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
@@ -93,13 +90,13 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     accessorList = accessorList.AddAccessors(setter
                        .WithBody(null)
-                       .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                       .WithSemicolonToken(SemicolonToken()));
                 }
             }
 
             return propertyDeclaration
                 .WithExpressionBody(null)
-                .WithSemicolonToken(Token(SyntaxKind.None))
+                .WithSemicolonToken(default(SyntaxToken))
                 .WithAccessorList(accessorList)
                 .WithModifiers(CreateModifiers(propertyDeclaration.Modifiers));
         }
@@ -108,10 +105,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             return methodDeclaration
                 .WithExpressionBody(null)
-                .WithSemicolonToken(Token(SyntaxKind.None))
+                .WithSemicolonToken(default(SyntaxToken))
                 .WithBody(null)
                 .WithModifiers(CreateModifiers(methodDeclaration.Modifiers))
-                .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+                .WithSemicolonToken(SemicolonToken());
         }
 
         private static IndexerDeclarationSyntax MakeAbstract(IndexerDeclarationSyntax indexerDeclaration)
@@ -122,8 +119,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 accessorList = accessorList
                     .AddAccessors(
-                        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                        Getter()
+                            .WithSemicolonToken(SemicolonToken()));
             }
             else
             {
@@ -132,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     accessorList = accessorList.AddAccessors(getter
                        .WithBody(null)
-                       .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                       .WithSemicolonToken(SemicolonToken()));
                 }
 
                 AccessorDeclarationSyntax setter = indexerDeclaration.Setter();
@@ -140,13 +137,13 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     accessorList = accessorList.AddAccessors(setter
                        .WithBody(null)
-                       .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                       .WithSemicolonToken(SemicolonToken()));
                 }
             }
 
             return indexerDeclaration
                 .WithExpressionBody(null)
-                .WithSemicolonToken(Token(SyntaxKind.None))
+                .WithSemicolonToken(default(SyntaxToken))
                 .WithAccessorList(accessorList)
                 .WithModifiers(CreateModifiers(indexerDeclaration.Modifiers));
         }
@@ -176,7 +173,7 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxTokenList AddAbstractKeywordIfNotPresent(SyntaxTokenList modifiers)
         {
             if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(Token(SyntaxKind.AbstractKeyword));
+                modifiers = modifiers.Add(AbstractKeyword());
 
             return modifiers;
         }

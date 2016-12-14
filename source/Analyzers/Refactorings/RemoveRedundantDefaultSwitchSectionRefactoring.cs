@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchStatementSyntax newSwitchStatement = GetNewSwitchStatement(switchSection, switchStatement);
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
         }
 
         private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
