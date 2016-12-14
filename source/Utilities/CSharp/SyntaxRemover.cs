@@ -307,14 +307,14 @@ namespace Roslynator.CSharp
             return member;
         }
 
-        public static TNode RemoveComment<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
         {
             CommentRemover remover = CommentRemover.Create(node, removeOptions);
 
             return (TNode)remover.Visit(node);
         }
 
-        public static TNode RemoveComment<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
         {
             CommentRemover remover = CommentRemover.Create(node, removeOptions, span);
 
