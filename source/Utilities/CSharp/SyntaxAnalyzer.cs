@@ -166,6 +166,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.VariableDeclaration:
                 case SyntaxKind.AwaitExpression:
                 case SyntaxKind.Interpolation:
+                case SyntaxKind.CollectionInitializerExpression:
                     return true;
                 case SyntaxKind.ForEachStatement:
                     {
