@@ -5,6 +5,8 @@ namespace Roslynator.CSharp
     public static class CSharpErrorCodes
     {
         private const string Prefix = "CS";
+
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = Prefix + "1674";
+        public const string CannotImplicitlyConvertType = Prefix + "0029";
     }
 }

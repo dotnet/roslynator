@@ -6,7 +6,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public char SomeMethod()
         {
-
+            string s = "x";
+            
             char ch = @"""";
 
             ch = "'";

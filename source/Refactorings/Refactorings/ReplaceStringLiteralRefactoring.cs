@@ -213,59 +213,5 @@ namespace Roslynator.CSharp.Refactorings
         {
             return (LiteralExpressionSyntax)ParseExpression(Quote + text + Quote);
         }
-
-        public static bool CanReplaceWithCharacterLiteral(LiteralExpressionSyntax literalExpression)
-        {
-            return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
-                && literalExpression.Token.ValueText.Length == 1;
-        }
-
-        public static async Task<Document> ReplaceWithCharacterLiteralAsync(
-            Document document,
-            LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var charLiteralExpression = (LiteralExpressionSyntax)ParseExpression($"'{GetCharLiteralText(literalExpression)}'")
-                .WithTriviaFrom(literalExpression);
-
-            root = root.ReplaceNode(literalExpression, charLiteralExpression);
-
-            return document.WithSyntaxRoot(root);
-        }
-
-        private static string GetCharLiteralText(LiteralExpressionSyntax literalExpression)
-        {
-            string s = literalExpression.Token.ValueText;
-
-            switch (s[0])
-            {
-                case '\'':
-                    return @"\'";
-                case '\"':
-                    return @"\""";
-                case '\\':
-                    return @"\\";
-                case '\0':
-                    return @"\0";
-                case '\a':
-                    return @"\a";
-                case '\b':
-                    return @"\b";
-                case '\f':
-                    return @"\f";
-                case '\n':
-                    return @"\n";
-                case '\r':
-                    return @"\r";
-                case '\t':
-                    return @"\t";
-                case '\v':
-                    return @"\v";
-                default:
-                    return s;
-            }
-        }
     }
 }

@@ -80,6 +80,7 @@
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceExpressionStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />

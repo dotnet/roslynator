@@ -367,7 +367,7 @@ namespace Roslynator.CSharp.Refactorings
                             var literalExpression = node as LiteralExpressionSyntax;
                             if (literalExpression != null)
                             {
-                                LiteralExpressionRefactoring.ComputeRefactorings(context, literalExpression);
+                                await LiteralExpressionRefactoring.ComputeRefactoringsAsync(context, literalExpression).ConfigureAwait(false);
                                 fLiteralExpression = true;
                             }
                         }

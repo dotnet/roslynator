@@ -708,7 +708,6 @@ namespace Roslynator.CSharp
             }
         }
 
-
         public static bool IsLiteralExpression(this ExpressionSyntax expression)
         {
             switch (expression?.Kind())
