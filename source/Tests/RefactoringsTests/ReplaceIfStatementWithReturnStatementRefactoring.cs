@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -96,21 +96,16 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
                 return x;
             }
-
-            return !x;
-        }
-
-        private static bool GetValue()
-        {
-            throw new NotImplementedException();
+            else
+            {
+                return !x;
+            }
         }
 
         private static bool Foo2()
         {
             bool condition = false;
             bool x = false;
-
-            return true;
 
             if (condition)
             {
@@ -175,7 +170,37 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return x;
             }
 
-            return x;
+            return !x;
+        }
+
+        public static IEnumerable<bool> Foo3()
+        {
+            bool condition = false;
+            bool x = false;
+            bool y = false;
+
+            if (condition)
+            {
+                yield return true;
+            }
+            else
+            {
+                yield return false;
+            }
+
+            if (condition)
+            {
+                yield return x;
+            }
+            else
+            {
+                yield return y;
+            }
+        }
+
+        private static bool GetValue()
+        {
+            return false;
         }
     }
 }

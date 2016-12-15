@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Roslynator.CSharp.Refactorings.ReplaceIfWithStatement;
 using Roslynator.CSharp.Refactorings.WrapStatements;
 
 namespace Roslynator.CSharp.Refactorings
@@ -35,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     MergeIfStatementsRefactoring.ComputeRefactorings(context, info);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement))
-                    ReplaceIfStatementWithReturnStatementRefactoring.ComputeRefactoring(context, info);
+                    ReplaceIfAndReturnWithReturnRefactoring.ComputeRefactoring(context, info);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
                     await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);

@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings.ReplaceIfWithStatement;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -11,17 +12,17 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.SwapStatementsInIfElse,
-                    RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression,
+                    RefactoringIdentifiers.ReplaceIfElseWithAssignment,
                     RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement,
                     RefactoringIdentifiers.ReplaceIfElseWithSwitch)
                 && IfElseChain.IsTopmostIf(ifStatement)
                 && context.Span.IsBetweenSpans(ifStatement))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement))
-                    ReplaceIfStatementWithReturnStatementRefactoring.ComputeRefactoring(context, ifStatement);
+                    ReplaceIfWithStatementRefactoring.ComputeRefactoring(context, ifStatement);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression))
-                    ReplaceIfElseWithConditionalExpressionRefactoring.ComputeRefactoring(context, ifStatement);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithAssignment))
+                    ReplaceIfElseWithAssignmentRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse))
                     SwapStatementInIfElseRefactoring.ComputeRefactoring(context, ifStatement);

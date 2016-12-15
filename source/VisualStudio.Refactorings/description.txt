@@ -426,7 +426,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-conditional-expression">Replace if-else with conditional expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-assignment">Replace if-else with assignment</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-switch-statement">Replace if-else with switch statement</a>

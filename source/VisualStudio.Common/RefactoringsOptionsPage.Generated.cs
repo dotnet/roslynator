@@ -141,7 +141,7 @@ namespace Roslynator.VisualStudio
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
             ReplaceHasFlagWithBitwiseOperation = true;
-            ReplaceIfElseWithConditionalExpression = true;
+            ReplaceIfElseWithAssignment = true;
             ReplaceIfElseWithSwitch = true;
             ReplaceIfStatementWithReturnStatement = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
@@ -311,7 +311,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithConditionalExpression, ReplaceIfElseWithConditionalExpression);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithAssignment, ReplaceIfElseWithAssignment);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement, ReplaceIfStatementWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
@@ -1641,10 +1641,10 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace if-else with conditional expression")]
-        [Description("Syntax: conditional expression")]
+        [DisplayName("Replace if-else with assignment")]
+        [Description("Syntax: if statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceIfElseWithConditionalExpression
+        public bool ReplaceIfElseWithAssignment
         {
             get;
             set;
