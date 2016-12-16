@@ -449,11 +449,23 @@
 
 ![Make member abstract](../../images/refactorings/MakeMemberAbstract.png)
 
+#### Make member virtual
+
+* **Syntax**: method declaration, indexer declaration
+
+![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
+
 #### Mark all members as static
 
 * **Syntax**: non-static field/method/property/event in static class
 
 ![Mark all members as static](../../images/refactorings/MarkAllMembersAsStatic.png)
+
+#### Mark containing class as abstract
+
+* **Syntax**: method declaration, property declaration, indexer declaration, event declaration
+
+![Mark containing class as abstract](../../images/refactorings/MarkContainingClassAsAbstract.png)
 
 #### Mark member as static
 
@@ -491,17 +503,15 @@
 
 ![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
 
-#### Merge string literals
+#### Merge string expressions
 
-* **Syntax**: concatenated string literals
+* **Syntax**: concatenated string expressions
 
-![Merge string literals](../../images/refactorings/MergeStringLiterals.png)
+![Merge string expressions](../../images/refactorings/MergeStringExpressions.png)
 
-#### Merge string literals into multiline string literal
+![Merge string expressions](../../images/refactorings/MergeStringLiterals.png)
 
-* **Syntax**: concatenated string literals
-
-![Merge string literals into multiline string literal](../../images/refactorings/MergeStringLiteralsIntoMultilineStringLiteral.png)
+![Merge string expressions](../../images/refactorings/MergeStringLiteralsIntoMultilineStringLiteral.png)
 
 #### Negate binary expression
 
@@ -841,6 +851,12 @@
 
 ![Replace for statement with foreach statement](../../images/refactorings/ReplaceForWithForEach.png)
 
+#### Replace for statement with while statement
+
+* **Syntax**: for statement
+
+![Replace for statement with while statement](../../images/refactorings/ReplaceForWithWhile.png)
+
 #### Replace foreach statement with for statement
 
 * **Syntax**: foreach statement
@@ -859,11 +875,11 @@
 
 ![Replace if statement with return statement](../../images/refactorings/ReplaceIfStatementWithReturnStatement.png)
 
-#### Replace if-else with conditional expression
+#### Replace if-else with assignment
 
-* **Syntax**: conditional expression
+* **Syntax**: if statement
 
-![Replace if-else with conditional expression](../../images/refactorings/ReplaceIfElseWithConditionalExpression.png)
+![Replace if-else with assignment](../../images/refactorings/ReplaceIfElseWithAssignment.png)
 
 #### Replace if-else with switch statement
 
