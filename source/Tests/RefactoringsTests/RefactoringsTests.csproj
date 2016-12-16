@@ -136,7 +136,7 @@
     <Compile Include="NegateOperatorRefactoring.cs" />
     <Compile Include="NegateBooleanLiteralRefactoring.cs" />
     <Compile Include="NegateBinaryExpressionRefactoring.cs" />
-    <Compile Include="MergeStringLiteralsRefactoring.cs" />
+    <Compile Include="MergeStringExpressionsRefactoring.cs" />
     <Compile Include="MakeMemberAbstractRefactoring.cs" />
     <Compile Include="IntroduceConstructorRefactoring.cs" />
     <Compile Include="CheckParameterForNullRefactoring.cs" />

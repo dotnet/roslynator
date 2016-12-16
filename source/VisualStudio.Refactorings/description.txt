@@ -255,10 +255,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-local-declarations">Merge local declarations</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-string-literals">Merge string literals</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-string-literals-into-multiline-string-literal">Merge string literals into multiline string literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-string-expressions">Merge string expressions</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#negate-binary-expression">Negate binary expression</a>

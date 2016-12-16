@@ -59,27 +59,10 @@ namespace Roslynator.CSharp.Refactorings
                 ExpandCoalesceExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
-            if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.MergeStringLiterals,
-                    RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral)
-                && MergeStringLiteralsRefactoring.CanRefactor(context, binaryExpression))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions)
+                && context.Span.IsBetweenSpans(binaryExpression))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringLiterals))
-                {
-                    context.RegisterRefactoring(
-                        "Merge string literals",
-                        cancellationToken => MergeStringLiteralsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken: cancellationToken));
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral)
-                    && binaryExpression
-                        .DescendantTrivia(binaryExpression.Span)
-                        .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
-                {
-                    context.RegisterRefactoring(
-                        "Merge string literals into multiline string literal",
-                        cancellationToken => MergeStringLiteralsRefactoring.RefactorAsync(context.Document, binaryExpression, multiline: true, cancellationToken: cancellationToken));
-                }
+                await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
@@ -111,16 +94,20 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (!context.Span.IsBetweenSpans(binaryExpression)
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+                && context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.ExtractExpressionFromCondition,
+                    RefactoringIdentifiers.MergeStringExpressions))
             {
                 SelectedExpressions selectedExpressions = SelectedExpressions.TryCreate(binaryExpression, context.Span);
-#pragma warning disable RCS1061
+
                 if (selectedExpressions?.Expressions.Length > 1)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
                         ExtractConditionRefactoring.ComputeRefactoring(context, selectedExpressions);
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions))
+                        await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, selectedExpressions).ConfigureAwait(false);
                 }
-#pragma warning restore RCS1061
             }
         }
     }

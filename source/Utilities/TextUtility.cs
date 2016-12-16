@@ -251,5 +251,15 @@ namespace Roslynator
                 .Replace("{", "{{")
                 .Replace("}", "}}");
         }
+
+        public static string EscapeQuote(string value)
+        {
+            return value.Replace("\"", @"\" + "\"");
+        }
+
+        public static string DoubleQuote(string value)
+        {
+            return value.Replace("\"", "\"\"");
+        }
     }
 }

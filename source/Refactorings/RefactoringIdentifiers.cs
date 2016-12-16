@@ -79,8 +79,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeIfStatements = "MergeIfStatements";
         public const string MergeInterpolationIntoInterpolatedString = "MergeInterpolationIntoInterpolatedString";
         public const string MergeLocalDeclarations = "MergeLocalDeclarations";
-        public const string MergeStringLiterals = "MergeStringLiterals";
-        public const string MergeStringLiteralsIntoMultilineStringLiteral = "MergeStringLiteralsIntoMultilineStringLiteral";
+        public const string MergeStringExpressions = "MergeStringExpressions";
         public const string NegateBinaryExpression = "NegateBinaryExpression";
         public const string NegateBooleanLiteral = "NegateBooleanLiteral";
         public const string NegateIsExpression = "NegateIsExpression";

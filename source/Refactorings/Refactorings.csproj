@@ -65,6 +65,7 @@
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactorings\ExtractTypeDeclarationToNewFileRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationsRefactoring.cs" />
+    <Compile Include="Refactorings\MergeStringExpressionsRefactoring.cs" />
     <Compile Include="Refactorings\NegateIsExpressionRefactoring.cs" />
     <Compile Include="Refactorings\RemoveConditionFromLastElseRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionRefactoring.cs" />
@@ -147,7 +148,6 @@
     <Compile Include="Refactorings\WrapStatements\WrapInUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
-    <Compile Include="Refactorings\MergeStringLiteralsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />
@@ -263,7 +263,7 @@
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
-    <Compile Include="StringLiteralChain.cs" />
+    <Compile Include="StringExpressionChain.cs" />
     <Compile Include="SyntaxHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\MemberDeclarationRefactoring.cs" />

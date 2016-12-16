@@ -85,8 +85,7 @@ namespace Roslynator.VisualStudio
             MergeIfStatements = true;
             MergeInterpolationIntoInterpolatedString = true;
             MergeLocalDeclarations = true;
-            MergeStringLiterals = true;
-            MergeStringLiteralsIntoMultilineStringLiteral = true;
+            MergeStringExpressions = true;
             NegateBinaryExpression = true;
             NegateBooleanLiteral = true;
             NegateIsExpression = true;
@@ -255,8 +254,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
             SetIsEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString, MergeInterpolationIntoInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.MergeLocalDeclarations, MergeLocalDeclarations);
-            SetIsEnabled(RefactoringIdentifiers.MergeStringLiterals, MergeStringLiterals);
-            SetIsEnabled(RefactoringIdentifiers.MergeStringLiteralsIntoMultilineStringLiteral, MergeStringLiteralsIntoMultilineStringLiteral);
+            SetIsEnabled(RefactoringIdentifiers.MergeStringExpressions, MergeStringExpressions);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.NegateBooleanLiteral, NegateBooleanLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateIsExpression, NegateIsExpression);
@@ -1081,20 +1079,10 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Merge string literals")]
-        [Description("Syntax: concatenated string literals")]
+        [DisplayName("Merge string expressions")]
+        [Description("Syntax: concatenated string expressions")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool MergeStringLiterals
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Merge string literals into multiline string literal")]
-        [Description("Syntax: concatenated string literals")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool MergeStringLiteralsIntoMultilineStringLiteral
+        public bool MergeStringExpressions
         {
             get;
             set;
