@@ -357,6 +357,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-all-members-as-static">Mark all members as static</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-containing-class-as-abstract">Mark containing class as abstract</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-member-as-static">Mark member as static</a>
         </li>
         <li>

@@ -45,6 +45,7 @@
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="IntroduceLocalFromExpressionStatementThatReturnsValueRefactoring.cs" />
+    <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="NegateIsExpressionRefactoring.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />

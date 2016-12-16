@@ -493,6 +493,14 @@
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="MarkContainingClassAsAbstract" Title="Mark containing class as abstract" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method declaration</Syntax>
+      <Syntax>property declaration</Syntax>
+      <Syntax>indexer declaration</Syntax>
+      <Syntax>event declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="MarkMemberAsStatic" Title="Mark member as static" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>

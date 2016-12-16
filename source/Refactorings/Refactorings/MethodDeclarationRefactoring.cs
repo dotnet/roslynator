@@ -33,6 +33,12 @@ namespace Roslynator.CSharp.Refactorings
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
+                && methodDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MarkContainingClassAsAbstractRefactoring.ComputeRefactoring(context, methodDeclaration);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
                 && methodDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplaceMethodWithPropertyRefactoring.CanRefactor(methodDeclaration))

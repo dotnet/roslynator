@@ -79,6 +79,7 @@ namespace Roslynator.VisualStudio
             IntroduceLocalFromStatementThatReturnsValue = true;
             MakeMemberAbstract = true;
             MarkAllMembersAsStatic = true;
+            MarkContainingClassAsAbstract = true;
             MarkMemberAsStatic = true;
             MergeAssignmentExpressionWithReturnStatement = true;
             MergeAttributes = true;
@@ -249,6 +250,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue, IntroduceLocalFromStatementThatReturnsValue);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
+            SetIsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract, MarkContainingClassAsAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, MergeAssignmentExpressionWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
@@ -1015,6 +1017,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: non-static field/method/property/event in static class")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MarkAllMembersAsStatic
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Mark containing class as abstract")]
+        [Description("Syntax: method declaration, property declaration, indexer declaration, event declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool MarkContainingClassAsAbstract
         {
             get;
             set;

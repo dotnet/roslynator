@@ -28,6 +28,12 @@ namespace Roslynator.CSharp.Refactorings
                     MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)propertyDeclaration.Parent);
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MarkContainingClassAsAbstractRefactoring.ComputeRefactoring(context, propertyDeclaration);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {

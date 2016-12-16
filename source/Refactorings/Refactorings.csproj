@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />

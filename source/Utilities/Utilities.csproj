@@ -46,6 +46,7 @@
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\Internal\LogicalNegationHelper.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\AddModifierRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />

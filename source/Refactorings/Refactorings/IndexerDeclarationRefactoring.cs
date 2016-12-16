@@ -19,6 +19,12 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
+                && indexerDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MarkContainingClassAsAbstractRefactoring.ComputeRefactoring(context, indexerDeclaration);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(indexerDeclaration))
