@@ -1,3 +1,14 @@
+### 1.1.90 (2016-12-16)
+
+#### Refactorings
+
+##### New Refactorings
+
+* MergeStringExpressions
+* ReplaceForWithWhile
+* MarkContainingClassAsAbstract
+* MakeMemberVirtual
+
 ### 1.1.8 (2016-12-07)
 
 #### Refactorings
