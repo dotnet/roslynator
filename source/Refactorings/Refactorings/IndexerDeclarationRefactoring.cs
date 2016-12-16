@@ -34,6 +34,12 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
+                && indexerDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MakeMemberVirtualRefactoring.ComputeRefactoring(context, indexerDeclaration);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span))
             {

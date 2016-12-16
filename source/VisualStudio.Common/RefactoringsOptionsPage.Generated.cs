@@ -78,6 +78,7 @@ namespace Roslynator.VisualStudio
             IntroduceFieldToLockOn = true;
             IntroduceLocalFromStatementThatReturnsValue = true;
             MakeMemberAbstract = true;
+            MakeMemberVirtual = true;
             MarkAllMembersAsStatic = true;
             MarkContainingClassAsAbstract = true;
             MarkMemberAsStatic = true;
@@ -249,6 +250,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn, IntroduceFieldToLockOn);
             SetIsEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue, IntroduceLocalFromStatementThatReturnsValue);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
+            SetIsEnabled(RefactoringIdentifiers.MakeMemberVirtual, MakeMemberVirtual);
             SetIsEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic, MarkAllMembersAsStatic);
             SetIsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract, MarkContainingClassAsAbstract);
             SetIsEnabled(RefactoringIdentifiers.MarkMemberAsStatic, MarkMemberAsStatic);
@@ -1007,6 +1009,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: non-abstract indexer/method/property in abstract class\r\nScope: indexer/method/property header")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MakeMemberAbstract
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Make member virtual")]
+        [Description("Syntax: method declaration, indexer declaration")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool MakeMemberVirtual
         {
             get;
             set;

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -26,11 +26,27 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            PropertyDeclarationSyntax newPropertyDeclaration = ExpandProperty(propertyDeclaration)
+            PropertyDeclarationSyntax newNode = ExpandProperty(propertyDeclaration);
+
+            newNode = ReplaceAbstractWithVirtual(newNode);
+
+            newNode = newNode
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(propertyDeclaration, newPropertyDeclaration, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        internal static PropertyDeclarationSyntax ReplaceAbstractWithVirtual(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+            int index = modifiers.IndexOf(SyntaxKind.AbstractKeyword);
+
+            if (index != -1)
+                propertyDeclaration = propertyDeclaration.WithModifiers(modifiers.ReplaceAt(index, CSharpFactory.VirtualToken().WithTriviaFrom(modifiers[index])));
+
+            return propertyDeclaration;
         }
 
         private static PropertyDeclarationSyntax ExpandProperty(PropertyDeclarationSyntax propertyDeclaration)

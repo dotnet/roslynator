@@ -42,9 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
+    <Compile Include="MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
+    <Compile Include="Refactorings\ExpandPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToIfRefactoring.cs" />
@@ -156,8 +159,6 @@
     <Compile Include="Refactorings\ReplaceFieldWithConstantRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
-    <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
-    <Compile Include="Refactorings\ExpandPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromParenthesesRefactoring.cs" />
     <Compile Include="Refactorings\ExtractGenericTypeRefactoring.cs" />

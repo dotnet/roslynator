@@ -234,6 +234,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#make-member-abstract">Make member abstract</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#make-member-virtual">Make member virtual</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-all-members-as-static">Mark all members as static</a>
         </li>
         <li>

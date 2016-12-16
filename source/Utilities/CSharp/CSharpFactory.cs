@@ -1039,6 +1039,11 @@ namespace Roslynator.CSharp
             return SyntaxFactory.AccessorList(List(accessors));
         }
 
+        public static AccessorListSyntax AccessorList(IEnumerable<AccessorDeclarationSyntax> accessors)
+        {
+            return SyntaxFactory.AccessorList(List(accessors));
+        }
+
         public static YieldStatementSyntax YieldReturnStatement(ExpressionSyntax expression)
         {
             return YieldStatement(SyntaxKind.YieldReturnStatement, expression);

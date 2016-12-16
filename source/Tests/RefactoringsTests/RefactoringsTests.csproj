@@ -46,6 +46,7 @@
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="IntroduceLocalFromExpressionStatementThatReturnsValueRefactoring.cs" />
     <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
+    <Compile Include="MakeMemberVirtualRefactoring.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="NegateIsExpressionRefactoring.cs" />
     <Compile Include="RemoveAllPreprocessorDirectivesRefactoring.cs" />

@@ -29,7 +29,11 @@ namespace Roslynator.CSharp.Refactorings
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
                 .WithFormatterAnnotation();
 
-            PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName)
+            PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName);
+
+            newPropertyDeclaration = ExpandPropertyRefactoring.ReplaceAbstractWithVirtual(newPropertyDeclaration);
+
+            newPropertyDeclaration = newPropertyDeclaration
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 

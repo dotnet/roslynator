@@ -488,6 +488,12 @@
     </Syntaxes>
     <Scope>indexer/method/property header</Scope>
   </Refactoring>
+  <Refactoring Id="MakeMemberVirtual" Title="Make member virtual" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>method declaration</Syntax>
+      <Syntax>indexer declaration</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as static" ExtensionVersion="0.9.70">
     <Syntaxes>
       <Syntax>non-static field/method/property/event in static class</Syntax>
