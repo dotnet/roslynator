@@ -488,7 +488,7 @@
     </Syntaxes>
     <Scope>indexer/method/property header</Scope>
   </Refactoring>
-  <Refactoring Id="MakeMemberVirtual" Title="Make member virtual" ExtensionVersion="0.0.0">
+  <Refactoring Id="MakeMemberVirtual" Title="Make member virtual" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>method declaration</Syntax>
       <Syntax>indexer declaration</Syntax>
@@ -499,7 +499,7 @@
       <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MarkContainingClassAsAbstract" Title="Mark containing class as abstract" ExtensionVersion="0.0.0">
+  <Refactoring Id="MarkContainingClassAsAbstract" Title="Mark containing class as abstract" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>method declaration</Syntax>
       <Syntax>property declaration</Syntax>
@@ -537,7 +537,7 @@
       <Syntax>local declarations with same type</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MergeStringExpressions" Title="Merge string expressions" ExtensionVersion="0.0.0">
+  <Refactoring Id="MergeStringExpressions" Title="Merge string expressions" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>concatenated string expressions</Syntax>
     </Syntaxes>
@@ -888,7 +888,7 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceForWithWhile" Title="Replace for statement with while statement" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceForWithWhile" Title="Replace for statement with while statement" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
