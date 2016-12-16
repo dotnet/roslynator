@@ -261,6 +261,7 @@
     <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
+    <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
     <Compile Include="StringExpressionChain.cs" />

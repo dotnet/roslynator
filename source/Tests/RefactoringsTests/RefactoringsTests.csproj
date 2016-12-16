@@ -69,6 +69,7 @@
     <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithAssignment.cs" />
+    <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />

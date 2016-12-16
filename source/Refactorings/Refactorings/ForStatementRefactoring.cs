@@ -10,8 +10,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithForEach)
-                && context.Span.IsEmpty
-                && forStatement.Span.Contains(context.Span)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forStatement)
                 && (await ReplaceForWithForEachRefactoring.CanRefactorAsync(context, forStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(
@@ -19,9 +18,16 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithWhile)
+                && context.Span.IsBetweenSpans(forStatement))
+            {
+                context.RegisterRefactoring(
+                    "Replace for with while",
+                    cancellationToken => ReplaceForWithWhileRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
-                && context.Span.IsEmpty
-                && forStatement.Span.Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forStatement))
             {
                 if (ReverseForLoopRefactoring.CanRefactor(forStatement))
                 {

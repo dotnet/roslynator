@@ -874,6 +874,11 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceForWithWhile" Title="Replace for statement with while statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>for statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceHasFlagWithBitwiseOperation" Title="Replace 'HasFlag' with bitwise operation" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>

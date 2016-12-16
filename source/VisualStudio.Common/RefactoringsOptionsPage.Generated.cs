@@ -139,6 +139,7 @@ namespace Roslynator.VisualStudio
             ReplaceFieldWithConstant = true;
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
+            ReplaceForWithWhile = true;
             ReplaceHasFlagWithBitwiseOperation = true;
             ReplaceIfElseWithAssignment = true;
             ReplaceIfElseWithSwitch = true;
@@ -308,6 +309,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant, ReplaceFieldWithConstant);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceForWithWhile, ReplaceForWithWhile);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHasFlagWithBitwiseOperation, ReplaceHasFlagWithBitwiseOperation);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithAssignment, ReplaceIfElseWithAssignment);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
@@ -1613,6 +1615,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceForWithForEach
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace for statement with while statement")]
+        [Description("Syntax: for statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceForWithWhile
         {
             get;
             set;

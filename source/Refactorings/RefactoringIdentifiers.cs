@@ -133,6 +133,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceFieldWithConstant = "ReplaceFieldWithConstant";
         public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";
         public const string ReplaceForWithForEach = "ReplaceForWithForEach";
+        public const string ReplaceForWithWhile = "ReplaceForWithWhile";
         public const string ReplaceHasFlagWithBitwiseOperation = "ReplaceHasFlagWithBitwiseOperation";
         public const string ReplaceIfElseWithAssignment = "ReplaceIfElseWithAssignment";
         public const string ReplaceIfElseWithSwitch = "ReplaceIfElseWithSwitch";
