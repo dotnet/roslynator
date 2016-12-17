@@ -341,9 +341,6 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="RefactoringsTemplate.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Refactorings.xml">
       <SubType>Designer</SubType>
     </Content>
