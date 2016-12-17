@@ -14,3 +14,36 @@ namespace Roslynator.CSharp.Refactorings.Tests
         }
     }
 }
+
+namespace A
+{
+    public static class Foo
+    {
+        public static void Bar()
+        {
+            A.Foo.Bar();
+        }
+    }
+
+    namespace B
+    {
+        public static class Foo2
+        {
+            public static void Bar2()
+            {
+                A.Foo.Bar();
+            }
+        }
+    }
+}
+
+namespace A.B
+{
+    public static class Foo3
+    {
+        public static void Bar()
+        {
+            A.Foo.Bar();
+        }
+    }
+}

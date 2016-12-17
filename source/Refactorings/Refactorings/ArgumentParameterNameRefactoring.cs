@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ArgumentSyntax> arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ArgumentListSyntax newArgumentList = SyntaxRemover.RemoveNameColon(argumentList, arguments)
+            ArgumentListSyntax newArgumentList = SyntaxRemover.RemoveNameColons(argumentList, arguments)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);

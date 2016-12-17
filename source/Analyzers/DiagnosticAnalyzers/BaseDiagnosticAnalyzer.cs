@@ -6,13 +6,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     public abstract class BaseDiagnosticAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly IGeneratedCodeAnalyzer _generatedCodeAnalyzerInstance = new GeneratedCodeAnalyzer();
+        private static readonly GeneratedCodeAnalyzer _generatedCodeAnalyzerInstance = new GeneratedCodeAnalyzer();
 
         protected BaseDiagnosticAnalyzer()
         {
         }
 
-        public virtual IGeneratedCodeAnalyzer GeneratedCodeAnalyzer
-            => _generatedCodeAnalyzerInstance;
+        public virtual GeneratedCodeAnalyzer GeneratedCodeAnalyzer
+        {
+            get { return _generatedCodeAnalyzerInstance; }
+        }
     }
 }

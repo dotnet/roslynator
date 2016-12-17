@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (node?.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.AliasQualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true
                 && !node.IsDescendantOf(SyntaxKind.UsingDirective)
-                && !SyntaxAnalyzer.IsUsingDirectiveInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
+                && !SyntaxAnalyzer.IsNamespaceInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
                     $"using {namespaceSymbol.ToString()};",

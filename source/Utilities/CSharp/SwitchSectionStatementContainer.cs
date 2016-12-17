@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public class SwitchSectionStatementContainer : StatementContainer
+    internal class SwitchSectionStatementContainer : StatementContainer
     {
         private readonly SwitchSectionSyntax _switchSection;
 

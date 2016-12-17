@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public class BlockStatementContainer : StatementContainer
+    internal class BlockStatementContainer : StatementContainer
     {
         private readonly BlockSyntax _block;
 

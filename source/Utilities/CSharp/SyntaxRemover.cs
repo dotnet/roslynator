@@ -33,13 +33,11 @@ namespace Roslynator.CSharp
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             if (member.Parent.IsKind(SyntaxKind.CompilationUnit))
             {
                 var compilationUnit = (CompilationUnitSyntax)member.Parent;
 
-                root = root.ReplaceNode(compilationUnit, compilationUnit.RemoveMember(member));
+                return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member)).ConfigureAwait(false);
             }
             else
             {
@@ -47,15 +45,13 @@ namespace Roslynator.CSharp
 
                 if (parentMember != null)
                 {
-                    root = root.ReplaceNode(parentMember, parentMember.RemoveMember(member));
+                    return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member)).ConfigureAwait(false);
                 }
                 else
                 {
-                    root = root.RemoveNode(member, DefaultMemberRemoveOptions);
+                    return await document.RemoveNodeAsync(member, DefaultMemberRemoveOptions).ConfigureAwait(false);
                 }
             }
-
-            return document.WithSyntaxRoot(root);
         }
 
         public static MemberDeclarationSyntax RemoveMemberAt(this MemberDeclarationSyntax containingMember, int index)
@@ -351,40 +347,24 @@ namespace Roslynator.CSharp
 
         public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
         {
-            CommentRemover remover = CommentRemover.Create(node, removeOptions);
-
-            return (TNode)remover.Visit(node);
+            return CommentRemover.RemoveComments(node, removeOptions);
         }
 
         public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
         {
-            CommentRemover remover = CommentRemover.Create(node, removeOptions, span);
-
-            return (TNode)remover.Visit(node);
+            return CommentRemover.RemoveComments(node, removeOptions, span);
         }
 
-        public static ArgumentListSyntax RemoveNameColon(ArgumentListSyntax argumentList)
+        public static TNode RemoveNameColons<TNode>(TNode node) where TNode : SyntaxNode
         {
-            return RemoveNameColon(argumentList, ImmutableArray<ArgumentSyntax>.Empty);
+            return NameColonRemover.RemoveNameColons(node);
         }
 
-        public static ArgumentListSyntax RemoveNameColon(
-            ArgumentListSyntax argumentList,
-            ImmutableArray<ArgumentSyntax> arguments)
+        public static TNode RemoveNameColons<TNode>(
+            TNode node,
+            IEnumerable<ArgumentSyntax> arguments) where TNode : SyntaxNode
         {
-            if (argumentList == null)
-                throw new ArgumentNullException(nameof(argumentList));
-
-            if (arguments == null)
-            {
-                return (ArgumentListSyntax)NameColonRemover.Instance.Visit(argumentList);
-            }
-            else
-            {
-                var remover = new NameColonRemover(arguments);
-
-                return (ArgumentListSyntax)remover.Visit(argumentList);
-            }
+            return NameColonRemover.RemoveNameColons(node, arguments);
         }
 
         public static TNode RemoveTrivia<TNode>(TNode node) where TNode : SyntaxNode
@@ -392,7 +372,7 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return (TNode)TriviaRemover.Instance.Visit(node);
+            return TriviaRemover.RemoveTrivia(node);
         }
 
         public static async Task<Document> RemoveTriviaAsync(
@@ -405,38 +385,31 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var rewriter = new TriviaSyntaxRewriter(span);
-
-            SyntaxNode newRoot = rewriter.Visit(root);
+            SyntaxNode newRoot = TriviaRemover.RemoveTrivia(root, span);
 
             return document.WithSyntaxRoot(newRoot);
         }
 
         public static TNode RemoveWhitespaceOrEndOfLine<TNode>(TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return (TNode)WhitespaceOrEndOfLineRemover.Instance.Visit(node);
+            return WhitespaceOrEndOfLineRemover.RemoveWhitespaceOrEndOfLine(node);
         }
 
         public static TNode RemoveWhitespaceOrEndOfLine<TNode>(TNode node, TextSpan span) where TNode : SyntaxNode
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            var remover = new WhitespaceOrEndOfLineRemover(span);
-
-            return (TNode)remover.Visit(node);
+            return WhitespaceOrEndOfLineRemover.RemoveWhitespaceOrEndOfLine(node, span);
         }
 
         public static async Task<SyntaxTree> RemoveDirectivesAsync(
             SyntaxTree syntaxTree,
-            ImmutableArray<DirectiveTriviaSyntax> directives,
+            IEnumerable<DirectiveTriviaSyntax> directives,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));
+
+            if (directives == null)
+                throw new ArgumentNullException(nameof(directives));
 
             SourceText sourceText = await syntaxTree.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -463,11 +436,14 @@ namespace Roslynator.CSharp
 
         public static async Task<Document> RemoveDirectivesAsync(
             Document document,
-            ImmutableArray<DirectiveTriviaSyntax> directives,
+            IEnumerable<DirectiveTriviaSyntax> directives,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
+
+            if (directives == null)
+                throw new ArgumentNullException(nameof(directives));
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
@@ -531,13 +507,10 @@ namespace Roslynator.CSharp
             return document;
         }
 
-        public static SourceText RemoveDirectives(
+        private static SourceText RemoveDirectives(
             SourceText sourceText,
             IEnumerable<DirectiveTriviaSyntax> directives)
         {
-            if (sourceText == null)
-                throw new ArgumentNullException(nameof(sourceText));
-
             TextLineCollection lines = sourceText.Lines;
 
             var changes = new List<TextChange>();
@@ -561,9 +534,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<DirectiveTriviaSyntax> directives = root.DescendantRegionDirectives().ToImmutableArray();
-
-            return await RemoveDirectivesAsync(syntaxTree, directives, cancellationToken).ConfigureAwait(false);
+            return await RemoveDirectivesAsync(syntaxTree, root.DescendantRegionDirectives(), cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> RemoveRegionDirectivesAsync(
@@ -575,9 +546,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<DirectiveTriviaSyntax> directives = root.DescendantRegionDirectives().ToImmutableArray();
-
-            return await RemoveDirectivesAsync(document, directives, cancellationToken).ConfigureAwait(false);
+            return await RemoveDirectivesAsync(document, root.DescendantRegionDirectives(), cancellationToken).ConfigureAwait(false);
         }
 
         public static SyntaxNode RemoveEmptyNamespaces(SyntaxNode node, SyntaxRemoveOptions removeOptions)
@@ -589,7 +558,7 @@ namespace Roslynator.CSharp
                 .DescendantNodes()
                 .Where(f => f.IsKind(SyntaxKind.NamespaceDeclaration))
                 .Cast<NamespaceDeclarationSyntax>()
-                .Where(f => f.Members.Count == 0);
+                .Where(f => !f.Members.Any());
 
             return node.RemoveNodes(emptyNamespaces, removeOptions);
         }
