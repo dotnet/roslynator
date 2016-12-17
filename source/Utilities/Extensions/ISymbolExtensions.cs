@@ -222,6 +222,34 @@ namespace Roslynator
             return symbol?.DeclaredAccessibility == Accessibility.Private;
         }
 
+        public static bool HasDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility)
+        {
+            return symbol?.DeclaredAccessibility == accessibility;
+        }
+
+        public static bool HasDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility1, Accessibility accessibility2)
+        {
+            if (symbol == null)
+                return false;
+
+            Accessibility accessibility = symbol.DeclaredAccessibility;
+
+            return accessibility == accessibility1
+                || accessibility == accessibility2;
+        }
+
+        public static bool HasDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility1, Accessibility accessibility2, Accessibility accessibility3)
+        {
+            if (symbol == null)
+                return false;
+
+            Accessibility accessibility = symbol.DeclaredAccessibility;
+
+            return accessibility == accessibility1
+                || accessibility == accessibility2
+                || accessibility == accessibility3;
+        }
+
         [DebuggerStepThrough]
         public static bool IsArrayType(this ISymbol symbol)
         {
@@ -299,6 +327,22 @@ namespace Roslynator
         public static bool IsTypeParameter(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.TypeParameter;
+        }
+
+        public static IEnumerable<INamespaceSymbol> ContainingNamespaces(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            INamespaceSymbol containingNamespace = symbol.ContainingNamespace;
+
+            do
+            {
+                yield return containingNamespace;
+
+                containingNamespace = containingNamespace.ContainingNamespace;
+
+            } while (containingNamespace != null);
         }
 
         public static bool SupportsPrefixOrPostfixUnaryOperator(this ITypeSymbol typeSymbol)

@@ -1257,6 +1257,58 @@ namespace Roslynator.CSharp
             return list.Replace(list[index], newNode);
         }
 
+        public static IEnumerable<UsingDirectiveSyntax> RegularUsings(this SyntaxList<UsingDirectiveSyntax> usings)
+        {
+            foreach (UsingDirectiveSyntax usingDirective in usings)
+            {
+                if (!usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
+                    && usingDirective.Alias == null)
+                {
+                    yield return usingDirective;
+                }
+            }
+        }
+
+        public static IEnumerable<NameSyntax> Namespaces(this SyntaxList<UsingDirectiveSyntax> usings)
+        {
+            foreach (UsingDirectiveSyntax usingDirective in usings.RegularUsings())
+            {
+                NameSyntax name = usingDirective.Name;
+
+                if (name != null)
+                    yield return name;
+            }
+        }
+
+        public static IEnumerable<UsingDirectiveSyntax> StaticUsings(this SyntaxList<UsingDirectiveSyntax> usings)
+        {
+            foreach (UsingDirectiveSyntax usingDirective in usings)
+            {
+                if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
+                    yield return usingDirective;
+            }
+        }
+
+        public static IEnumerable<NameSyntax> StaticClasses(this SyntaxList<UsingDirectiveSyntax> usings)
+        {
+            foreach (UsingDirectiveSyntax usingDirective in usings.StaticUsings())
+            {
+                NameSyntax name = usingDirective.Name;
+
+                if (name != null)
+                    yield return name;
+            }
+        }
+
+        public static IEnumerable<UsingDirectiveSyntax> AliasUsings(this SyntaxList<UsingDirectiveSyntax> usings)
+        {
+            foreach (UsingDirectiveSyntax usingDirective in usings)
+            {
+                if (usingDirective.Alias != null)
+                    yield return usingDirective;
+            }
+        }
+
         public static SeparatedSyntaxList<TNode> ReplaceAt<TNode>(this SeparatedSyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
         {
             return list.Replace(list[index], newNode);
