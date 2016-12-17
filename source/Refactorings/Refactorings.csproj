@@ -41,8 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
-    <Compile Include="MakeMemberVirtualRefactoring.cs" />
+    <Compile Include="Refactorings\MarkContainingClassAsAbstractRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
@@ -263,7 +263,7 @@
     <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
-    <Compile Include="ReplaceForWithWhileRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
     <Compile Include="StringExpressionChain.cs" />
