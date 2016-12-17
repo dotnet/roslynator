@@ -14,17 +14,20 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
         {
             StatementSyntax statement = GetStatement(ifStatement);
 
-            SyntaxKind kind = statement.Kind();
+            if (statement != null)
+            {
+                SyntaxKind kind = statement.Kind();
 
-            if (kind == SyntaxKind.ReturnStatement)
-            {
-                var refactoring = new ReplaceIfWithReturnRefactoring();
-                refactoring.ComputeRefactoring(context, ifStatement);
-            }
-            else if (kind == SyntaxKind.YieldReturnStatement)
-            {
-                var refactoring = new ReplaceIfWithYieldReturnRefactoring();
-                refactoring.ComputeRefactoring(context, ifStatement);
+                if (kind == SyntaxKind.ReturnStatement)
+                {
+                    var refactoring = new ReplaceIfWithReturnRefactoring();
+                    refactoring.ComputeRefactoring(context, ifStatement);
+                }
+                else if (kind == SyntaxKind.YieldReturnStatement)
+                {
+                    var refactoring = new ReplaceIfWithYieldReturnRefactoring();
+                    refactoring.ComputeRefactoring(context, ifStatement);
+                }
             }
         }
 
@@ -65,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
         {
             StatementSyntax statement = GetStatement(ifStatement);
 
-            if (statement.IsKind(SyntaxKind.ReturnStatement))
+            if (statement?.IsKind(SyntaxKind.ReturnStatement) == true)
                 return ((ReturnStatementSyntax)statement).Expression;
 
             return null;
