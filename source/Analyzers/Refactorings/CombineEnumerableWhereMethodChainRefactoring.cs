@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,43 +39,52 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (string.Equals(memberAccess2.Name?.Identifier.ValueText, "Where", StringComparison.Ordinal))
                     {
-                        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
+                        IMethodSymbol invocationSymbol2 = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
 
-                        if (methodSymbol != null)
+                        if (invocationSymbol2 != null
+                            && invocationSymbol2?.Name.Equals("Where", StringComparison.Ordinal) == true
+                            && invocationSymbol2.Parameters.Length == 1
+                            && SymbolAnalyzer.IsContainedInEnumerable(invocationSymbol2, semanticModel)
+                            && invocationSymbol2.ReducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
                         {
-                            IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
+                            IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-                            if (reducedFrom?.Name.Equals("Where", StringComparison.Ordinal) == true)
+                            if (IsWherePredicate(semanticModel, invocationSymbol2))
                             {
-                                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                                if (parameters.Length == 1
-                                    && SemanticAnalyzer.IsContainedInEnumerable(reducedFrom, semanticModel)
-                                    && reducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
+                                if (invocationSymbol != null
+                                    && SymbolAnalyzer.IsEnumerableWhereMethod(invocationSymbol, semanticModel))
                                 {
-                                    if (SemanticAnalyzer.IsPredicateFunc(
-                                        parameters[0].Type,
-                                        methodSymbol.TypeArguments[0],
-                                        semanticModel))
-                                    {
-                                        if (SemanticAnalyzer.IsEnumerableWhereMethod(invocation, semanticModel, cancellationToken))
-                                            Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
-                                    }
-                                    else if (SemanticAnalyzer.IsPredicateFunc(
-                                        parameters[0].Type,
-                                        methodSymbol.TypeArguments[0],
-                                        semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
-                                        semanticModel))
-                                    {
-                                        if (SemanticAnalyzer.IsEnumerableWhereMethodWithIndex(invocation, semanticModel, cancellationToken))
-                                            Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
-                                    }
+                                    Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
+                                }
+                            }
+                            else if (IsWherePredicateWithIndex(invocationSymbol2, semanticModel))
+                            {
+                                if (SymbolAnalyzer.IsEnumerableMethodWithPredicateWithIndex(invocationSymbol, "Where", semanticModel))
+                                {
+                                    Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static bool IsWherePredicate(SemanticModel semanticModel, IMethodSymbol methodSymbol)
+        {
+            return SymbolAnalyzer.IsPredicateFunc(
+                methodSymbol.Parameters[0].Type,
+                methodSymbol.TypeArguments[0],
+                semanticModel);
+        }
+
+        private static bool IsWherePredicateWithIndex(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            return SymbolAnalyzer.IsPredicateFunc(
+                methodSymbol.Parameters[0].Type,
+                methodSymbol.TypeArguments[0],
+                semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
+                semanticModel);
         }
 
         private static void Analyze(

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -268,11 +269,11 @@ namespace Roslynator.CSharp.Refactorings
 
             int fieldIndex = members.IndexOf((FieldDeclarationSyntax)variableDeclaration.Parent);
 
-            var newParentMember = (MemberDeclarationSyntax)parentMember.ReplaceNodes(
-                fieldSymbol,
-                IdentifierName(property.Identifier),
-                semanticModel,
-                cancellationToken);
+            ImmutableArray<SyntaxNode> oldNodes = await document.FindSymbolNodesAsync(fieldSymbol, cancellationToken).ConfigureAwait(false);
+
+            IdentifierNameSyntax newNode = IdentifierName(property.Identifier);
+
+            MemberDeclarationSyntax newParentMember = parentMember.ReplaceNodes(oldNodes, (f, g) => newNode.WithTriviaFrom(f));
 
             members = newParentMember.GetMembers();
 

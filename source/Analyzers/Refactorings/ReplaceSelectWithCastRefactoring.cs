@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +39,10 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (SemanticAnalyzer.IsEnumerableExtensionOrImmutableArrayExtensionMethod(invocation, "Select", 2, semanticModel, cancellationToken))
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+
+            if (methodSymbol != null
+                && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 

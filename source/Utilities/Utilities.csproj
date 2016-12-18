@@ -44,6 +44,7 @@
     <Compile Include="CSharp\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
+    <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
     <Compile Include="CSharp\Internal\LogicalNegationHelper.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddModifierRefactoring.cs" />
@@ -75,7 +76,7 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="CSharp\SemanticAnalyzer.cs" />
+    <Compile Include="SymbolAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionSyntaxRewriter.cs" />
@@ -112,7 +113,6 @@
     <Compile Include="Extensions\SyntaxTokenListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaExtensions.cs" />
-    <Compile Include="Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="GeneratedCodeAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

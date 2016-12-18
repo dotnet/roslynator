@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
                 return invocation
                     .WithExpression(
                         memberAccess.WithName(IdentifierName(newName)))
-                    .WithEmptyArgumentList();
+                    .WithArgumentList();
             }
             else if (invocation.Expression.IsKind(SyntaxKind.MemberBindingExpression))
             {
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
                 return invocation
                     .WithExpression(
                         memberBinding.WithName(IdentifierName(newName)))
-                    .WithEmptyArgumentList();
+                    .WithArgumentList();
             }
 
             return invocation;

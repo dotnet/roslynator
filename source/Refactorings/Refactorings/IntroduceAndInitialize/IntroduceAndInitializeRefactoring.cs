@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         {
             ConstructorDeclarationSyntax constructor = Constructor;
 
-            MemberDeclarationSyntax containingMember = constructor.GetParentMember();
+            var containingMember = constructor.Parent as MemberDeclarationSyntax;
 
             SyntaxList<MemberDeclarationSyntax> members = containingMember.GetMembers();
 

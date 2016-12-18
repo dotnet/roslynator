@@ -9,18 +9,22 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
         {
-            if (arrowExpressionClause.Expression != null
+            ExpressionSyntax expression = arrowExpressionClause.Expression;
+
+            if (expression != null
                 && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.CallToMethod))
             {
-                await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, arrowExpressionClause.Expression).ConfigureAwait(false);
+                await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)
-                && arrowExpressionClause.Parent?.SupportsExpressionBody() == true)
+                && (context.Span.IsEmptyAndContainedInSpan(arrowExpressionClause)
+                    || context.Span.IsBetweenSpans(expression))
+                && ExpandExpressionBodiedMemberRefactoring.CanRefactor(arrowExpressionClause))
             {
                 context.RegisterRefactoring(
                     "Expand expression-bodied member",

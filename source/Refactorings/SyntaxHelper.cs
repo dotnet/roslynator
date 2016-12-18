@@ -34,11 +34,11 @@ namespace Roslynator.CSharp
 
                     return parentElse ?? ancestor;
                 }
-                else if (ancestor.IsMemberDeclaration())
+                else if (ancestor is MemberDeclarationSyntax)
                 {
                     return ancestor;
                 }
-                else if (ancestor.IsStatement())
+                else if (ancestor is StatementSyntax)
                 {
                     return ancestor;
                 }

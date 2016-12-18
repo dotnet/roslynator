@@ -1,21 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator
 {
     public static class SyntaxTriviaExtensions
     {
-        public static bool IsNoneKind(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.None);
-        }
-
         public static SyntaxTriviaList GetContainingList(this SyntaxTrivia trivia)
         {
             SyntaxToken token = trivia.Token;
@@ -69,107 +61,6 @@ namespace Roslynator
                 return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLine();
 
             return -1;
-        }
-
-        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2)
-        {
-            SyntaxKind kind = trivia.Kind();
-
-            return kind == kind1
-                || kind == kind2;
-        }
-
-        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
-        {
-            SyntaxKind kind = trivia.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3;
-        }
-
-        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
-        {
-            SyntaxKind kind = trivia.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4;
-        }
-
-        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
-        {
-            SyntaxKind kind = trivia.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4
-                || kind == kind5;
-        }
-
-        public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
-        {
-            SyntaxKind kind = trivia.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4
-                || kind == kind5
-                || kind == kind6;
-        }
-
-        public static bool IsWhitespaceTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.WhitespaceTrivia);
-        }
-
-        public static bool IsEndOfLineTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.EndOfLineTrivia);
-        }
-
-        public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia trivia)
-        {
-            return trivia.IsWhitespaceTrivia() || trivia.IsEndOfLineTrivia();
-        }
-
-        public static bool IsSingleLineCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineCommentTrivia);
-        }
-
-        public static bool IsMultiLineCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.MultiLineCommentTrivia);
-        }
-
-        public static bool IsSingleLineDocumentationCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.SingleLineDocumentationCommentTrivia);
-        }
-
-        public static bool IsMultiLineDocumentationCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.MultiLineDocumentationCommentTrivia);
-        }
-
-        public static bool IsDocumentationCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return trivia.IsKind(
-                SyntaxKind.SingleLineDocumentationCommentTrivia,
-                SyntaxKind.MultiLineDocumentationCommentTrivia);
-        }
-
-        public static bool IsCommentTrivia(this SyntaxTrivia trivia)
-        {
-            return trivia.IsKind(
-                SyntaxKind.SingleLineCommentTrivia,
-                SyntaxKind.SingleLineDocumentationCommentTrivia,
-                SyntaxKind.MultiLineCommentTrivia,
-                SyntaxKind.MultiLineDocumentationCommentTrivia);
         }
     }
 }

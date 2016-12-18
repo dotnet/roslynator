@@ -78,20 +78,14 @@ namespace Roslynator
             return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
         }
 
-        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> node) where TNode : SyntaxNode
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SyntaxList<TNode> list) where TNode : SyntaxNode
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, list.Span, list.FullSpan);
         }
 
-        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> node) where TNode : SyntaxNode
+        public static bool IsEmptyAndContainedInSpanOrBetweenSpans<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return IsEmptyAndContainedInSpanOrBetweenSpans(span, node.Span, node.FullSpan);
+            return IsEmptyAndContainedInSpanOrBetweenSpans(span, list.Span, list.FullSpan);
         }
 
         public static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxToken token)
@@ -109,6 +103,33 @@ namespace Roslynator
             {
                 return span.IsBetweenSpans(innerSpan, outerSpan);
             }
+        }
+
+        public static bool IsEmptyAndContainedInSpan(this TextSpan span, SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return span.IsEmpty
+                && node.Span.Contains(span);
+        }
+
+        public static bool IsEmptyAndContainedInSpan<TNode>(this TextSpan span, SyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            return span.IsEmpty
+                && list.Span.Contains(span);
+        }
+
+        public static bool IsEmptyAndContainedInSpan<TNode>(this TextSpan span, SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            return span.IsEmpty
+                && list.Span.Contains(span);
+        }
+
+        public static bool IsEmptyAndContainedInSpan(this TextSpan span, SyntaxToken token)
+        {
+            return span.IsEmpty
+                && token.Span.Contains(span);
         }
     }
 }

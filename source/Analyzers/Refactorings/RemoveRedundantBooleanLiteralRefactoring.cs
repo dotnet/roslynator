@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
                     forStatement.OpenParenToken,
                     forStatement.Declaration,
                     forStatement.Initializers,
-                    forStatement.FirstSemicolonToken.WithTrailingTrivia(SpaceTrivia()),
+                    forStatement.FirstSemicolonToken.WithTrailingTrivia(SyntaxFactory.Space),
                     default(ExpressionSyntax),
                     forStatement.SecondSemicolonToken.WithoutLeadingTrivia(),
                     forStatement.Incrementors,

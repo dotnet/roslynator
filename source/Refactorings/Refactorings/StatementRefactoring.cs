@@ -227,7 +227,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SwitchStatementSyntax newSwitchStatement = switchStatement
-                .WithSections(SyntaxFactory.List<SwitchSectionSyntax>())
+                .WithSections(default(SyntaxList<SwitchSectionSyntax>))
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);

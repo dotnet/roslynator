@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,170 +9,6 @@ namespace Roslynator.CSharp
 {
     public static class SyntaxAnalyzer
     {
-        public static bool IsNamespaceInScope(
-            SyntaxNode node,
-            INamespaceSymbol namespaceSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (namespaceSymbol == null)
-                throw new ArgumentNullException(nameof(namespaceSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            foreach (NameSyntax name in NamespacesInScope(node))
-            {
-                if (name.IsParentKind(SyntaxKind.NamespaceDeclaration))
-                {
-                    if (IsNamespaceOrContainedInNamespace(name, namespaceSymbol, semanticModel, cancellationToken))
-                        return true;
-                }
-                else if (IsNamespace(name, namespaceSymbol, semanticModel, cancellationToken))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsNamespace(
-            NameSyntax name,
-            INamespaceSymbol namespaceSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-            return symbol?.IsNamespace() == true
-                && string.Equals(namespaceSymbol.ToString(), symbol.ToString(), StringComparison.Ordinal);
-        }
-
-        private static bool IsNamespaceOrContainedInNamespace(
-            NameSyntax name,
-            INamespaceSymbol namespaceSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-            if (symbol?.IsNamespace() == true)
-            {
-                string namespaceText = namespaceSymbol.ToString();
-
-                if (string.Equals(namespaceText, symbol.ToString(), StringComparison.Ordinal))
-                    return true;
-
-                foreach (INamespaceSymbol containingNamespace in symbol.ContainingNamespaces())
-                {
-                    if (string.Equals(namespaceText, containingNamespace.ToString(), StringComparison.Ordinal))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static bool IsStaticClassInScope(
-            SyntaxNode node,
-            INamedTypeSymbol staticClassSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (staticClassSymbol == null)
-                throw new ArgumentNullException(nameof(staticClassSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            foreach (NameSyntax name in StaticClassesInScope(node))
-            {
-                ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-                if (symbol?.Equals(staticClassSymbol) == true)
-                    return true;
-            }
-
-            return false;
-        }
-
-        private static IEnumerable<UsingDirectiveSyntax> UsingDirectivesInScope(SyntaxNode node)
-        {
-            foreach (SyntaxNode ancestor in node.Ancestors())
-            {
-                SyntaxKind kind = ancestor.Kind();
-
-                if (kind == SyntaxKind.NamespaceDeclaration)
-                {
-                    foreach (UsingDirectiveSyntax usingDirective in ((NamespaceDeclarationSyntax)ancestor).Usings)
-                        yield return usingDirective;
-                }
-                else if (kind == SyntaxKind.CompilationUnit)
-                {
-                    foreach (UsingDirectiveSyntax usingDirective in ((CompilationUnitSyntax)ancestor).Usings)
-                        yield return usingDirective;
-                }
-            }
-        }
-
-        private static IEnumerable<NameSyntax> NamespacesInScope(SyntaxNode node)
-        {
-            foreach (SyntaxNode ancestor in node.Ancestors())
-            {
-                SyntaxKind kind = ancestor.Kind();
-
-                if (kind == SyntaxKind.NamespaceDeclaration)
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)ancestor;
-
-                    NameSyntax namespaceName = namespaceDeclaration.Name;
-
-                    if (namespaceName != null)
-                        yield return namespaceName;
-
-                    foreach (NameSyntax name in namespaceDeclaration.Usings.Namespaces())
-                        yield return name;
-                }
-                else if (kind == SyntaxKind.CompilationUnit)
-                {
-                    var compilationUnit = (CompilationUnitSyntax)ancestor;
-
-                    foreach (NameSyntax name in compilationUnit.Usings.Namespaces())
-                        yield return name;
-                }
-            }
-        }
-
-        private static IEnumerable<NameSyntax> StaticClassesInScope(SyntaxNode node)
-        {
-            foreach (SyntaxNode ancestor in node.Ancestors())
-            {
-                SyntaxKind kind = ancestor.Kind();
-
-                if (kind == SyntaxKind.NamespaceDeclaration)
-                {
-                    var namespaceDeclaration = (NamespaceDeclarationSyntax)ancestor;
-
-                    foreach (NameSyntax name in namespaceDeclaration.Usings.StaticClasses())
-                        yield return name;
-                }
-                else if (kind == SyntaxKind.CompilationUnit)
-                {
-                    var compilationUnit = (CompilationUnitSyntax)ancestor;
-
-                    foreach (NameSyntax name in compilationUnit.Usings.StaticClasses())
-                        yield return name;
-                }
-            }
-        }
-
         public static bool AreParenthesesRedundantOrInvalid(SyntaxNode node)
         {
             if (node == null)
@@ -226,6 +59,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.AwaitExpression:
                 case SyntaxKind.Interpolation:
                 case SyntaxKind.CollectionInitializerExpression:
+                case SyntaxKind.ArrowExpressionClause:
                     return true;
                 case SyntaxKind.ForEachStatement:
                     {
@@ -276,19 +110,6 @@ namespace Roslynator.CSharp
             }
 
             return false;
-        }
-
-        public static bool ContainsAwait(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return methodDeclaration
-                .DescendantNodes(node => !node.IsKind(
-                    SyntaxKind.SimpleLambdaExpression,
-                    SyntaxKind.ParenthesizedLambdaExpression,
-                    SyntaxKind.AnonymousMethodExpression))
-                .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
 
         public static BracesAnalysisResult AnalyzeSwitchSection(SwitchSectionSyntax section)

@@ -6,21 +6,14 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
-using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator
 {
     public static class SyntaxTokenExtensions
     {
-        public static bool IsNoneKind(this SyntaxToken token)
-        {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(token, SyntaxKind.None);
-        }
-
         public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)
@@ -55,56 +48,6 @@ namespace Roslynator
             return token.LeadingTrivia.Concat(token.TrailingTrivia);
         }
 
-        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
-        {
-            SyntaxKind kind = token.Kind();
-
-            return kind == kind1
-                || kind == kind2;
-        }
-
-        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
-        {
-            SyntaxKind kind = token.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3;
-        }
-
-        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
-        {
-            SyntaxKind kind = token.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4;
-        }
-
-        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
-        {
-            SyntaxKind kind = token.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4
-                || kind == kind5;
-        }
-
-        public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
-        {
-            SyntaxKind kind = token.Kind();
-
-            return kind == kind1
-                || kind == kind2
-                || kind == kind3
-                || kind == kind4
-                || kind == kind5
-                || kind == kind6;
-        }
-
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
@@ -137,16 +80,6 @@ namespace Roslynator
             return -1;
         }
 
-        public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
-        {
-            return token.WithLeadingTrivia(token.LeadingTrivia.TrimStart());
-        }
-
-        public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
-        {
-            return token.WithTrailingTrivia(token.TrailingTrivia.TrimEnd());
-        }
-
         public static SyntaxToken WithoutTrivia(this SyntaxToken token)
         {
             return token.WithoutLeadingTrivia().WithoutTrailingTrivia();
@@ -160,16 +93,6 @@ namespace Roslynator
         public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
         {
             return token.WithTrailingTrivia((IEnumerable<SyntaxTrivia>)null);
-        }
-
-        public static SyntaxToken WithTrailingSpace(this SyntaxToken token)
-        {
-            return token.WithTrailingTrivia(SyntaxFactory.Space);
-        }
-
-        public static SyntaxToken WithTrailingNewLine(this SyntaxToken token)
-        {
-            return token.WithTrailingTrivia(CSharpFactory.NewLineTrivia());
         }
 
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)

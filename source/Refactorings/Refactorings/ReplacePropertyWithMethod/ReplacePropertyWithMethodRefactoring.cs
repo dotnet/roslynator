@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
                 {
                     AccessorDeclarationSyntax accessor = accessors.First();
 
-                    if (accessor.IsGetter())
+                    if (accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
                     {
                         if (accessor.Body != null)
                         {

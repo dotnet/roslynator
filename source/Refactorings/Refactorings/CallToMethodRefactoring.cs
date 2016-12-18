@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamespaceSymbol namespaceSymbol = methodSymbol.ContainingNamespace;
 
                 if (namespaceSymbol != null
-                    && !SyntaxAnalyzer.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken)
+                    && !expression.IsNamespaceInScope(namespaceSymbol, semanticModel, cancellationToken)
                     && newRoot.IsKind(SyntaxKind.CompilationUnit))
                 {
                     newRoot = ((CompilationUnitSyntax)newRoot)

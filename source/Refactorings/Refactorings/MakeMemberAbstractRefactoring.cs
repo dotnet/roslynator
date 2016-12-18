@@ -71,9 +71,7 @@ namespace Roslynator.CSharp.Refactorings
             if (propertyDeclaration.ExpressionBody != null)
             {
                 accessorList = accessorList
-                    .AddAccessors(
-                        Getter()
-                            .WithSemicolonToken(SemicolonToken()));
+                    .AddAccessors(Getter().WithSemicolonToken(SemicolonToken()));
             }
             else
             {
@@ -154,7 +152,7 @@ namespace Roslynator.CSharp.Refactorings
 
             modifiers = AddAbstractKeywordIfNotPresent(modifiers);
 
-            if (!ModifierUtility.IsSorted(modifiers))
+            if (!ModifierUtility.IsListSorted(modifiers))
                 modifiers = TokenList(modifiers.OrderBy(f => f, ModifierComparer.Instance));
 
             return modifiers;

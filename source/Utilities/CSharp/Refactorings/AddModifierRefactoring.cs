@@ -51,14 +51,14 @@ namespace Roslynator.CSharp.Refactorings
                             partialIndex,
                             Token(modifierKind)
                                 .WithLeadingTrivia(partialToken.LeadingTrivia)
-                                .WithTrailingTrivia(SpaceTrivia()));
+                                .WithTrailingTrivia(Space));
 
                     return classDeclaration.WithModifiers(modifiers);
                 }
                 else
                 {
                     return classDeclaration
-                        .AddModifiers(Token(modifierKind).WithLeadingTrivia(SpaceTrivia()));
+                        .AddModifiers(Token(modifierKind).WithLeadingTrivia(Space));
                 }
             }
             else

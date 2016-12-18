@@ -19,13 +19,14 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<SwitchSectionSyntax> sections,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            IEnumerable<SwitchSectionSyntax> newSections = switchStatement.Sections.Select(section =>
-            {
-                if (sections.Contains(section))
-                    return section.WithStatements(List<StatementSyntax>());
-
-                return section;
-            });
+            IEnumerable<SwitchSectionSyntax> newSections = switchStatement
+                .Sections
+                .Select(section =>
+                {
+                    return (sections.Contains(section))
+                        ? section.WithoutStatements()
+                        : section;
+                });
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(List(newSections));
 

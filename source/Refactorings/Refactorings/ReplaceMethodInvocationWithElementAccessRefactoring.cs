@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using System.Collections.Immutable;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -42,34 +42,39 @@ namespace Roslynator.CSharp.Refactorings
 
         private static async Task ProcessFirstOrLastAsync(RefactoringContext context, InvocationExpressionSyntax invocation, string methodName)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            if (invocation.ArgumentList.Arguments.Count == 0
-                && SemanticAnalyzer.IsEnumerableExtensionOrImmutableArrayExtensionMethod(invocation, methodName, 1, semanticModel))
+            if (invocation.ArgumentList.Arguments.Count == 0)
             {
-                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
-                    .Type;
+                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
-                if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
+                if (methodSymbol != null
+                    && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionMethodWithoutParameters(methodSymbol, methodName, semanticModel))
                 {
-                    string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
+                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                    if (propertyName != null)
+                    ITypeSymbol typeSymbol = semanticModel
+                        .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
+                        .Type;
+
+                    if (typeSymbol != null
+                        && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
                     {
-                        context.RegisterRefactoring(
-                            $"Replace '{methodName}' with '[]'",
-                            cancellationToken =>
-                            {
-                                return RefactorAsync(
-                                    context.Document,
-                                    invocation,
-                                    propertyName,
-                                    context.CancellationToken);
-                            });
+                        string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
+
+                        if (propertyName != null)
+                        {
+                            context.RegisterRefactoring(
+                                $"Replace '{methodName}' with '[]'",
+                                cancellationToken =>
+                                {
+                                    return RefactorAsync(
+                                        context.Document,
+                                        invocation,
+                                        propertyName,
+                                        context.CancellationToken);
+                                });
+                        }
                     }
                 }
             }
@@ -79,22 +84,24 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (invocation.ArgumentList?.Arguments.Count == 1
-                && (SemanticAnalyzer.IsEnumerableElementAtMethod(invocation, semanticModel)
-                    || SemanticAnalyzer.IsImmutableArrayElementAtMethod(invocation, semanticModel)))
+            if (invocation.ArgumentList?.Arguments.Count == 1)
             {
-                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
-                ITypeSymbol typeSymbol = semanticModel
-                    .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
-                    .Type;
-
-                if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
+                if (methodSymbol != null
+                    && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionElementAtMethod(methodSymbol, semanticModel))
                 {
-                    context.RegisterRefactoring(
-                        "Replace 'ElementAt' with '[]'",
-                        cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
+                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
+
+                    if (typeSymbol != null
+                        && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
+                    {
+                        context.RegisterRefactoring(
+                            "Replace 'ElementAt' with '[]'",
+                            cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
+                    }
                 }
             }
         }

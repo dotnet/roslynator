@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -26,7 +25,10 @@ namespace Roslynator.CSharp.Refactorings
             string fromMethodName,
             string toMethodName)
         {
-            if (SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, fromMethodName, 2, semanticModel, context.CancellationToken))
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+
+            if (methodSymbol != null
+                && SymbolAnalyzer.IsEnumerableMethodWithPredicate(methodSymbol, fromMethodName, semanticModel))
             {
                 ExpressionSyntax expression = GetExpression(invocation);
 

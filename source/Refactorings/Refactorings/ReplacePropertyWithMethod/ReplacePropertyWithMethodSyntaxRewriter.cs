@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
                 Identifier(methodName).WithLeadingTrivia(property.Identifier.LeadingTrivia),
                 default(TypeParameterListSyntax),
                 ParameterList().WithTrailingTrivia(property.Identifier.TrailingTrivia),
-                List<TypeParameterConstraintClauseSyntax>(),
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
                 methodBody,
                 default(ArrowExpressionClauseSyntax));
 

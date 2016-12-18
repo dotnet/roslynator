@@ -27,11 +27,6 @@ namespace Roslynator.CSharp
             return SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
         }
 
-        public static SyntaxTrivia SpaceTrivia()
-        {
-            return Whitespace(" ");
-        }
-
         public static SyntaxTrivia NewLineTrivia()
         {
             switch (Environment.NewLine)

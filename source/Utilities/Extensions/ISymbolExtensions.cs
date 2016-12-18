@@ -48,6 +48,11 @@ namespace Roslynator
                 || methodKind == methodKind3;
         }
 
+        internal static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
+        {
+            return methodSymbol.ReducedFrom ?? methodSymbol;
+        }
+
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
         {
             if (namedTypeSymbol == null)

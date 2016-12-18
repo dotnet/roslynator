@@ -27,17 +27,27 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
-                    if (memberAccess2.Name?.Identifier.ValueText == "Where"
-                        && SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, methodName, 1, context.SemanticModel, context.CancellationToken)
-                        && (SemanticAnalyzer.IsEnumerableWhereOrImmutableArrayWhereMethod(invocation2, context.SemanticModel, context.CancellationToken)))
+                    if (memberAccess2.Name?.Identifier.ValueText == "Where")
                     {
-                        TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
+                        IMethodSymbol invocationSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
-                        if (!invocation.ContainsDirectives(span))
+                        if (invocationSymbol != null
+                            && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(invocationSymbol, methodName, context.SemanticModel))
                         {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.SimplifyLinqMethodChain,
-                                Location.Create(invocation.SyntaxTree, span));
+                            IMethodSymbol invocationSymbol2 = context.SemanticModel.GetMethodSymbol(invocation2, context.CancellationToken);
+
+                            if (invocationSymbol2 != null
+                                && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
+                            {
+                                TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
+
+                                if (!invocation.ContainsDirectives(span))
+                                {
+                                    context.ReportDiagnostic(
+                                        DiagnosticDescriptors.SimplifyLinqMethodChain,
+                                        Location.Create(invocation.SyntaxTree, span));
+                                }
+                            }
                         }
                     }
                 }

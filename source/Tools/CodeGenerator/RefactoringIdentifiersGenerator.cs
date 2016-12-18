@@ -14,9 +14,6 @@ namespace CodeGenerator
         public CompilationUnitSyntax Generate(IEnumerable<RefactoringInfo> refactorings)
         {
             return CompilationUnit()
-                //.WithUsings(
-                //    UsingDirective(
-                //        ParseName("")))
                 .WithMembers(
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
@@ -30,21 +27,6 @@ namespace CodeGenerator
         {
             foreach (RefactoringInfo refactoring in refactorings)
                 yield return CreateConstantDeclaration(refactoring.Identifier);
-
-            //yield return MethodDeclaration(ParseTypeName("ImmutableArray<string>"), "GetIdentifiers")
-            //    .WithModifiers(Modifiers.InternalStatic())
-            //    .WithStatements(
-            //        ReturnStatement(
-            //            InvocationExpression(
-            //                SimpleMemberAccessExpression("ImmutableArray", "Create"),
-            //                ArgumentList(refactorings.Select(identifier =>
-            //                {
-            //                    return Argument(identifier.Identifier)
-            //                        .WithLeadingTrivia(NewLine);
-            //                }).ToArray())
-            //            )
-            //        )
-            //    );
         }
 
         private static MemberDeclarationSyntax CreateConstantDeclaration(string name)

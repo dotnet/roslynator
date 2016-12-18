@@ -14,6 +14,16 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class ExpandExpressionBodiedMemberRefactoring
     {
+        public static bool CanRefactor(ArrowExpressionClauseSyntax arrowExpressionClause)
+        {
+            if (arrowExpressionClause == null)
+                throw new ArgumentNullException(nameof(arrowExpressionClause));
+
+            var parent = arrowExpressionClause.Parent as MemberDeclarationSyntax;
+
+            return parent?.SupportsExpressionBody() == true;
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             ArrowExpressionClauseSyntax arrowExpressionClause,

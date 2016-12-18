@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             foreach (AccessorDeclarationSyntax accessor in propertyDeclaration.AccessorList.Accessors)
             {
-                if (accessor.IsGetter())
+                if (accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
                 {
                     ExpressionSyntax value = propertyDeclaration.Initializer?.Value;
 

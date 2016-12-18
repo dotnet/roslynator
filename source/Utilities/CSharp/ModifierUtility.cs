@@ -152,7 +152,7 @@ namespace Roslynator.CSharp
             return accessModifier;
         }
 
-        public static bool IsSorted(SyntaxTokenList modifiers)
+        public static bool IsListSorted(SyntaxTokenList modifiers)
         {
             for (int i = 0; i < modifiers.Count - 1; i++)
             {

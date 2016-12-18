@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxTokenList modifiers = declaration.GetModifiers();
 
             if (modifiers.Count > 1
-                && !ModifierUtility.IsSorted(modifiers)
+                && !ModifierUtility.IsListSorted(modifiers)
                 && !declaration.ContainsDirectives(modifiers.Span))
             {
                 context.ReportDiagnostic(

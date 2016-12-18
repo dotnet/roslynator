@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Refactorings
                 NotEqualsExpression(expression, NullLiteralExpression()),
                 Block(
                     Token(TriviaList(), SyntaxKind.OpenBraceToken, TriviaList(NewLineTrivia())),
-                    List<StatementSyntax>(),
+                    default(SyntaxList<StatementSyntax>),
                     Token(TriviaList(NewLineTrivia()), SyntaxKind.CloseBraceToken, TriviaList())));
 
             ifStatement = ifStatement

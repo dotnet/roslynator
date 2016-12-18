@@ -15,7 +15,10 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            if (SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, "Count", 1, context.SemanticModel, context.CancellationToken))
+            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+
+            if (methodSymbol != null
+                && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(methodSymbol, "Count", context.SemanticModel))
             {
                 string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: true, cancellationToken: context.CancellationToken);
 
@@ -29,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
                         Diagnostic diagnostic = Diagnostic.Create(
                             DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
                             Location.Create(context.Node.SyntaxTree, span),
-                            ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName",  propertyName) }),
+                            ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
                             propertyName);
 
                         context.ReportDiagnostic(diagnostic);

@@ -10,6 +10,10 @@ namespace Roslynator.CSharp
     {
         public static readonly ModifierComparer Instance = new ModifierComparer();
 
+        private ModifierComparer()
+        {
+        }
+
         public int Compare(SyntaxToken x, SyntaxToken y)
         {
             if (object.ReferenceEquals(x, y))

@@ -21,11 +21,10 @@ namespace CodeGenerator
         public CompilationUnitSyntax Generate(IEnumerable<RefactoringInfo> refactorings)
         {
             return CompilationUnit()
-                .WithUsings(
+                .WithUsings(List(new UsingDirectiveSyntax[] {
                     UsingDirective(ParseName(MetadataNames.System_ComponentModel)),
                     UsingDirective(ParseName("Roslynator.CSharp.Refactorings")),
-                    UsingDirective(ParseName("Roslynator.VisualStudio.TypeConverters"))
-                    )
+                    UsingDirective(ParseName("Roslynator.VisualStudio.TypeConverters"))}))
                 .WithMembers(
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
@@ -39,13 +38,13 @@ namespace CodeGenerator
         {
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
                 .WithModifiers(Modifiers.Public())
-                .WithBody(refactorings.Select(refactoring =>
+                .WithBody(Block(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
                             SimpleAssignmentExpression(
                                 IdentifierName(refactoring.Identifier),
                                 (refactoring.IsEnabledByDefault) ? TrueLiteralExpression() : FalseLiteralExpression()));
-                    }));
+                    })));
 
             yield return MethodDeclaration(VoidType(), "Apply")
                 .WithModifiers(Modifiers.Public())
@@ -77,8 +76,9 @@ namespace CodeGenerator
                     AttributeList(Attribute("TypeConverter", TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
                 .WithModifiers(Modifiers.Public())
                 .WithAccessorList(
-                    AutoGetter(),
-                    AutoSetter());
+                    AccessorList(
+                        AutoGetter(),
+                        AutoSetter()));
         }
 
         private static string CreateDescription(RefactoringInfo refactoring)

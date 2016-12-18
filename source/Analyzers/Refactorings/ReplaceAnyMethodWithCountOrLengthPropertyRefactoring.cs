@@ -18,44 +18,49 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false
-                && SemanticAnalyzer.IsEnumerableExtensionMethod(invocation, "Any", 1, context.SemanticModel, context.CancellationToken))
+            if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false)
             {
-                string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: false, cancellationToken: context.CancellationToken);
+                IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
-                if (propertyName != null)
+                if (methodSymbol != null
+                    && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(methodSymbol, "Any", context.SemanticModel))
                 {
-                    string messageArg = null;
+                    string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: false, cancellationToken: context.CancellationToken);
 
-                    TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
-
-                    if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                    if (propertyName != null)
                     {
-                        if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
-                        {
-                            var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+                        string messageArg = null;
 
-                            if (logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                                && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+
+                        if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        {
+                            if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
                             {
-                                messageArg = $"{propertyName} == 0";
+                                var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+
+                                if (logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                                    && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                {
+                                    messageArg = $"{propertyName} == 0";
+                                }
+                            }
+                            else
+                            {
+                                messageArg = $"{propertyName} > 0";
                             }
                         }
-                        else
+
+                        if (messageArg != null)
                         {
-                            messageArg = $"{propertyName} > 0";
+                            Diagnostic diagnostic = Diagnostic.Create(
+                                DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
+                                Location.Create(context.Node.SyntaxTree, span),
+                                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
+                                messageArg);
+
+                            context.ReportDiagnostic(diagnostic);
                         }
-                    }
-
-                    if (messageArg != null)
-                    {
-                        Diagnostic diagnostic = Diagnostic.Create(
-                            DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
-                            Location.Create(context.Node.SyntaxTree, span),
-                            ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
-                            messageArg);
-
-                        context.ReportDiagnostic(diagnostic);
                     }
                 }
             }

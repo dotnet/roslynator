@@ -40,39 +40,47 @@ namespace Roslynator.CSharp.Refactorings
                             SemanticModel semanticModel = context.SemanticModel;
                             CancellationToken cancellationToken = context.CancellationToken;
 
-                            if (SemanticAnalyzer.IsEnumerableCastMethod(invocation, semanticModel, cancellationToken)
-                                && (SemanticAnalyzer.IsEnumerableWhereMethod(invocation2, semanticModel, cancellationToken)))
+                            IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+
+                            if (invocationSymbol != null
+                                && SymbolAnalyzer.IsEnumerableCastMethod(invocationSymbol, semanticModel))
                             {
-                                BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);
+                                IMethodSymbol invocation2Symbol = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
 
-                                if (isExpression != null)
+                                if (invocation2Symbol != null
+                                    && SymbolAnalyzer.IsEnumerableWhereMethod(invocation2Symbol, semanticModel))
                                 {
-                                    var type = isExpression.Right as TypeSyntax;
+                                    BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);
 
-                                    if (type != null)
+                                    if (isExpression != null)
                                     {
-                                        TypeSyntax type2 = GetTypeArgument(memberAccess.Name);
+                                        var type = isExpression.Right as TypeSyntax;
 
-                                        if (type2 != null)
+                                        if (type != null)
                                         {
-                                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type);
+                                            TypeSyntax type2 = GetTypeArgument(memberAccess.Name);
 
-                                            if (typeSymbol != null)
+                                            if (type2 != null)
                                             {
-                                                ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(type2);
+                                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type);
 
-                                                if (typeSymbol.Equals(typeSymbol2))
+                                                if (typeSymbol != null)
                                                 {
-                                                    TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
+                                                    ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(type2);
 
-                                                    if (!invocation.ContainsDirectives(span))
+                                                    if (typeSymbol.Equals(typeSymbol2))
                                                     {
-                                                        context.ReportDiagnostic(
-                                                            DiagnosticDescriptors.SimplifyLinqMethodChain,
-                                                            Location.Create(invocation.SyntaxTree, span));
-                                                    }
+                                                        TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
 
-                                                    return true;
+                                                        if (!invocation.ContainsDirectives(span))
+                                                        {
+                                                            context.ReportDiagnostic(
+                                                                DiagnosticDescriptors.SimplifyLinqMethodChain,
+                                                                Location.Create(invocation.SyntaxTree, span));
+                                                        }
+
+                                                        return true;
+                                                    }
                                                 }
                                             }
                                         }

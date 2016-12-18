@@ -2,15 +2,82 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator
 {
     public static class DocumentExtensions
     {
+        public static Task<IEnumerable<ReferencedSymbol>> FindSymbolReferencesAsync(
+            this Document document,
+            ISymbol symbol,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return SymbolFinder.FindReferencesAsync(
+                symbol,
+                document.Project.Solution,
+                ImmutableHashSet.Create(document),
+                cancellationToken);
+        }
+
+        public static async Task<ImmutableArray<SyntaxNode>> FindSymbolNodesAsync(
+            this Document document,
+            ISymbol symbol,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            List<SyntaxNode> nodes = null;
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            IEnumerable<ReferencedSymbol> referencedSymbols = await document.FindSymbolReferencesAsync(symbol, cancellationToken).ConfigureAwait(false);
+
+            foreach (Location location in referencedSymbols
+                .SelectMany(f => f.Locations)
+                .Select(f => f.Location)
+                .Where(f => f.IsInSource))
+            {
+                SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+
+                Debug.Assert(node != null);
+
+                if (node != null)
+                {
+                    if (nodes == null)
+                        nodes = new List<SyntaxNode>();
+
+                    nodes.Add(node);
+                }
+            }
+
+            if (nodes != null)
+            {
+                return ImmutableArray.CreateRange(nodes);
+            }
+            else
+            {
+                return ImmutableArray<SyntaxNode>.Empty;
+            }
+        }
+
         public static async Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,

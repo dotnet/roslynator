@@ -166,7 +166,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                     }
                     else
                     {
-                        TypeDeclarationSyntax containingType = invocation.GetContainingType();
+                        TypeDeclarationSyntax containingType = invocation.GetEnclosingTypeDeclaration();
 
                         if (containingType != null)
                         {

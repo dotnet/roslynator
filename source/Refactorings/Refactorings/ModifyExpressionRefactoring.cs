@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void CallToString(RefactoringContext context, ExpressionSyntax expression, ITypeSymbol destinationType)
         {
-            if (!expression.IsLiteralExpression())
+            if (!(expression is LiteralExpressionSyntax))
                 CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
         }
 

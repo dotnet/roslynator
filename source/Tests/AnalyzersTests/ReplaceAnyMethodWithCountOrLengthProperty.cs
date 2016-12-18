@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace Roslynator.CSharp.Analyzers.Tests
@@ -26,6 +27,12 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             if (!array.Any())
+            {
+            }
+
+            ImmutableArray<int> ia = ImmutableArray.Create(1);
+
+            if (ia.Any())
             {
             }
         }
