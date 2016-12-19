@@ -119,5 +119,48 @@ namespace Roslynator.CSharp
                     }
             }
         }
+
+        internal static SyntaxKind GetKind(int orderIndex)
+        {
+            switch (orderIndex)
+            {
+                case 1:
+                    return SyntaxKind.FieldDeclaration;
+                case 2:
+                    return SyntaxKind.ConstructorDeclaration;
+                case 3:
+                    return SyntaxKind.DestructorDeclaration;
+                case 4:
+                    return SyntaxKind.DelegateDeclaration;
+                case 5:
+                    return SyntaxKind.EventDeclaration;
+                case 6:
+                    return SyntaxKind.EventFieldDeclaration;
+                case 7:
+                    return SyntaxKind.PropertyDeclaration;
+                case 8:
+                    return SyntaxKind.IndexerDeclaration;
+                case 9:
+                    return SyntaxKind.MethodDeclaration;
+                case 10:
+                    return SyntaxKind.ConversionOperatorDeclaration;
+                case 11:
+                    return SyntaxKind.OperatorDeclaration;
+                case 12:
+                    return SyntaxKind.EnumDeclaration;
+                case 13:
+                    return SyntaxKind.InterfaceDeclaration;
+                case 14:
+                    return SyntaxKind.StructDeclaration;
+                case 15:
+                    return SyntaxKind.ClassDeclaration;
+                case 16:
+                    return SyntaxKind.NamespaceDeclaration;
+                case 17:
+                    return SyntaxKind.IncompleteMember;
+                default:
+                    return SyntaxKind.None;
+            }
+        }
     }
 }

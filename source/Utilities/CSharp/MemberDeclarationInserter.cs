@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public static class MemberInserter
+    public static class MemberDeclarationInserter
     {
         public static CompilationUnitSyntax InsertMember(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
         {
@@ -179,34 +179,27 @@ namespace Roslynator.CSharp
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            return GetInsertIndex(
-                members,
-                MemberDeclarationComparer.GetOrderIndex(member),
-                member.Kind());
+            return GetInsertIndex(members, MemberDeclarationComparer.GetOrderIndex(member));
         }
 
         public static int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, SyntaxKind kind)
         {
-            return GetInsertIndex(
-                members,
-                MemberDeclarationComparer.GetOrderIndex(kind),
-                kind);
+            return GetInsertIndex(members, MemberDeclarationComparer.GetOrderIndex(kind));
         }
 
         public static int GetFieldInsertIndex(SyntaxList<MemberDeclarationSyntax> members, bool isConst)
         {
-            return GetInsertIndex(
-                members,
-                (isConst) ? 0 : 1,
-                SyntaxKind.None);
+            return GetInsertIndex(members, (isConst) ? 0 : 1);
         }
 
-        private static int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, int orderIndex, SyntaxKind kind)
+        private static int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, int orderIndex)
         {
             if (members.Any())
             {
                 for (int i = orderIndex; i >= 0; i--)
                 {
+                    SyntaxKind kind = MemberDeclarationComparer.GetKind(i);
+
                     for (int j = members.Count - 1; j >= 0; j--)
                     {
                         if (IsMatch(members[j], kind, i))

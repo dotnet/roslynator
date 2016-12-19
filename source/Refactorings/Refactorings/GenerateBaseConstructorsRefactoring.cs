@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = classDeclaration.Identifier.ValueText;
 
-            int insertIndex = MemberInserter.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
+            int insertIndex = MemberDeclarationInserter.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
 
             int position = (insertIndex == 0)
                 ? classDeclaration.OpenBraceToken.FullSpan.End

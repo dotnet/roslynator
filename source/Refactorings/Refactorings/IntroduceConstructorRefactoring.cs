@@ -224,7 +224,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = MemberInserter.InsertMember(
+            SyntaxList<MemberDeclarationSyntax> newMembers = MemberDeclarationInserter.InsertMember(
                 members,
                 CreateConstructor(GetConstructorIdentifierText(parentMember), assignableMembers));
 
