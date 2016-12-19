@@ -53,6 +53,18 @@ namespace Roslynator
             return methodSymbol.ReducedFrom ?? methodSymbol;
         }
 
+        public static IEnumerable<IMethodSymbol> OverridenMethods(this IMethodSymbol methodSymbol)
+        {
+            IMethodSymbol overridenMethod = methodSymbol.OverriddenMethod;
+
+            while (overridenMethod != null)
+            {
+                yield return overridenMethod;
+
+                overridenMethod = overridenMethod.OverriddenMethod;
+            }
+        }
+
         public static bool IsConstructedFromNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
         {
             if (typeSymbol == null)
