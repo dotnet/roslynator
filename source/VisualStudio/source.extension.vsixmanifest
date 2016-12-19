@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="1.1.90" Language="en-US" Publisher="Josef Pihrt"/>
+    <Identity Id="e5401839-cc8f-4d0c-b757-21d4e345aa62" Version="1.1.91" Language="en-US" Publisher="Josef Pihrt"/>
     <DisplayName>Roslynator</DisplayName>
     <Description xml:space="preserve">A collection of 110+ analyzers and 160+ refactorings for C#, powered by Roslyn.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
