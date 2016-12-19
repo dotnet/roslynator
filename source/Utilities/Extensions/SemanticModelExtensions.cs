@@ -27,8 +27,8 @@ namespace Roslynator
 
         public static bool ContainsDiagnostic(
             this SemanticModel semanticModel,
-            TextSpan span,
             string id,
+            TextSpan? span = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDiagnostic(semanticModel, id, span, cancellationToken) != null;

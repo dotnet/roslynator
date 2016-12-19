@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 if (semanticModel.ContainsDiagnostic(
-                    declaration.Span,
                     CSharpErrorCodes.TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable,
+                    declaration.Span,
                     context.CancellationToken))
                 {
                     if (context.Span.IsContainedInSpanOrBetweenSpans(declaration))

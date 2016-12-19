@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (semanticModel.ContainsDiagnostic(literalExpression.Span, CSharpErrorCodes.CannotImplicitlyConvertType, context.CancellationToken))
+                if (semanticModel.ContainsDiagnostic(CSharpErrorCodes.CannotImplicitlyConvertType, literalExpression.Span, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
                         "Replace string literal with character literal",
