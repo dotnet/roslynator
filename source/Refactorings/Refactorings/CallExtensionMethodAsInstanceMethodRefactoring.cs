@@ -52,6 +52,8 @@ namespace Roslynator.CSharp.Refactorings
                     return (SimpleNameSyntax)expression;
                 case SyntaxKind.SimpleMemberAccessExpression:
                     return ((MemberAccessExpressionSyntax)expression).Name;
+                case SyntaxKind.MemberBindingExpression:
+                    return null;
                 default:
                     {
                         Debug.Assert(false, expression.Kind().ToString());
