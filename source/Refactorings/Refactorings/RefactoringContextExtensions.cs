@@ -442,7 +442,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fDoStatement
                             && kind == SyntaxKind.DoStatement)
                         {
-                            await DoStatementRefactoring.ComputeRefactoringsAsync(context, (DoStatementSyntax)statement).ConfigureAwait(false);
+                            DoStatementRefactoring.ComputeRefactorings(context, (DoStatementSyntax)statement);
                             fDoStatement = true;
                         }
 
@@ -505,7 +505,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fWhileStatement
                             && kind == SyntaxKind.WhileStatement)
                         {
-                            await WhileStatementRefactoring.ComputeRefactoringsAsync(context, (WhileStatementSyntax)statement).ConfigureAwait(false);
+                            WhileStatementRefactoring.ComputeRefactorings(context, (WhileStatementSyntax)statement);
                             fWhileStatement = true;
                         }
 

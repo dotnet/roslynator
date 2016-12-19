@@ -53,7 +53,25 @@ namespace Roslynator
             return methodSymbol.ReducedFrom ?? methodSymbol;
         }
 
-        public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
+        public static bool IsConstructedFromNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return typeSymbol.IsNamedType()
+                && IsConstructedFromNullableOf((INamedTypeSymbol)typeSymbol, specialType);
+        }
+
+        public static bool IsConstructedFromNullableOf(this ITypeSymbol typeSymbol, ITypeSymbol typeArgument)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return typeSymbol.IsNamedType()
+                && IsConstructedFromNullableOf((INamedTypeSymbol)typeSymbol, typeArgument);
+        }
+
+        public static bool IsConstructedFromNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
         {
             if (namedTypeSymbol == null)
                 throw new ArgumentNullException(nameof(namedTypeSymbol));
@@ -62,16 +80,16 @@ namespace Roslynator
                 && namedTypeSymbol.TypeArguments[0].SpecialType == specialType;
         }
 
-        public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeSymbol)
+        public static bool IsConstructedFromNullableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeArgument)
         {
             if (namedTypeSymbol == null)
                 throw new ArgumentNullException(nameof(namedTypeSymbol));
 
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
+            if (typeArgument == null)
+                throw new ArgumentNullException(nameof(typeArgument));
 
             return namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T
-                && namedTypeSymbol.TypeArguments[0] == typeSymbol;
+                && namedTypeSymbol.TypeArguments[0] == typeArgument;
         }
 
         public static bool IsAnyTypeArgumentAnonymousType(this INamedTypeSymbol namedType)

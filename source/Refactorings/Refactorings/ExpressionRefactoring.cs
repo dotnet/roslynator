@@ -10,6 +10,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
+                await AddBooleanComparisonRefactoring.ComputeRefactoring2Async(context, expression).ConfigureAwait(false);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)
                 && context.Span.IsBetweenSpans(expression))
             {

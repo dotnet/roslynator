@@ -27,26 +27,6 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                && binaryExpression.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
-            {
-                ExpressionSyntax left = binaryExpression.Left;
-                ExpressionSyntax right = binaryExpression.Right;
-
-                if (left?.IsMissing == false
-                    && right?.IsMissing == false)
-                {
-                    if (left.Span.Contains(context.Span))
-                    {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, left).ConfigureAwait(false);
-                    }
-                    else if (right.Span.Contains(context.Span))
-                    {
-                        await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, right).ConfigureAwait(false);
-                    }
-                }
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
                 FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 

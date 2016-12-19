@@ -30,13 +30,6 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch))
                     await ReplaceIfElseWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
             }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                && ifStatement.Condition != null
-                && ifStatement.Condition.Span.Contains(context.Span))
-            {
-                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, ifStatement.Condition).ConfigureAwait(false);
-            }
         }
     }
 }

@@ -38,18 +38,6 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (expressionSymbol?.IsErrorType() == false)
                             {
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison)
-                                    && memberTypeSymbol.IsBoolean()
-                                    && expressionSymbol.IsNamedType())
-                                {
-                                    var namedTypeSymbol = (INamedTypeSymbol)expressionSymbol;
-
-                                    if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
-                                    {
-                                        AddBooleanComparisonRefactoring.RegisterRefactoring(context, expression);
-                                    }
-                                }
-
                                 ISymbol memberSymbol = semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))

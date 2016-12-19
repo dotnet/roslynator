@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,43 +12,88 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddBooleanComparisonRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
+        internal static async Task ComputeRefactoring2Async(RefactoringContext context, ExpressionSyntax expression)
         {
-            ExpressionSyntax expression2 = GetExpression(expression);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (expression2 != null)
+            foreach (Diagnostic diagnostic in semanticModel.GetCompilerDiagnostics(expression.Span, context.CancellationToken))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                if (diagnostic.Id == CSharpErrorCodes.CannotImplicitlyConvertTypeExplicitConversionExists)
+                {
+                    if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
+                    {
+                        expression = expression
+                            .Ancestors()
+                            .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as ExpressionSyntax;
 
-                var namedTypeSymbol = semanticModel.GetConvertedTypeSymbol(expression2, context.CancellationToken) as INamedTypeSymbol;
+                        if (expression != null
+                            && semanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                        {
+                            if (semanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken)?.IsBoolean() == true
+                                || IsCondition(expression))
+                            {
+                                RegisterRefactoring(context, expression);
+                            }
+                        }
+                    }
+                }
+                else if (diagnostic.Id == CSharpErrorCodes.OperatorCannotBeAppliedToOperands)
+                {
+                    if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
+                    {
+                        var binaryExpression = expression
+                            .Ancestors()
+                            .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as BinaryExpressionSyntax;
 
-                if (namedTypeSymbol?.IsNullableOf(SpecialType.System_Boolean) == true)
-                    RegisterRefactoring(context, expression);
+                        if (binaryExpression != null)
+                        {
+                            ExpressionSyntax left = binaryExpression.Left;
+
+                            if (left.Span.Contains(context.Span))
+                            {
+                                if (semanticModel.GetTypeSymbol(left, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                                {
+                                    RegisterRefactoring(context, left);
+                                }
+                            }
+                            else
+                            {
+                                ExpressionSyntax right = binaryExpression.Right;
+
+                                if (right.Span.Contains(context.Span)
+                                    && semanticModel.GetTypeSymbol(right, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                                {
+                                    RegisterRefactoring(context, right);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        public static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
+        private static bool IsCondition(ExpressionSyntax expression)
+        {
+            SyntaxNode parent = expression.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    return ((IfStatementSyntax)parent).Condition == expression;
+                case SyntaxKind.DoStatement:
+                    return ((DoStatementSyntax)parent).Condition == expression;
+                case SyntaxKind.WhileStatement:
+                    return ((WhileStatementSyntax)parent).Condition == expression;
+                default:
+                    return false;
+            }
+        }
+
+        private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
             context.RegisterRefactoring(
                 (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Add ' == false'" : "Add ' == true'",
                 cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
-        }
-
-        private static ExpressionSyntax GetExpression(ExpressionSyntax expression)
-        {
-            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
-            {
-                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
-
-                if (logicalNot.Operand?.IsMissing == false)
-                    return logicalNot.Operand;
-            }
-            else
-            {
-                return expression;
-            }
-
-            return null;
         }
 
         public static async Task<Document> RefactorAsync(
