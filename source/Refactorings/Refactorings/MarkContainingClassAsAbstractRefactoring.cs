@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Mark containing class as abstract",
                             cancellationToken =>
                             {
-                                return AddModifierRefactoring.RefactorAsync(
+                                return InsertModifierRefactoring.RefactorAsync(
                                     context.Document,
                                     classDeclaration,
                                     SyntaxKind.AbstractKeyword,

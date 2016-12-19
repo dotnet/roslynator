@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -9,6 +10,8 @@ namespace Roslynator.CSharp
     public sealed class ModifierComparer : IComparer<SyntaxToken>
     {
         public static readonly ModifierComparer Instance = new ModifierComparer();
+
+        internal static readonly int MaxOrderIndex = 16;
 
         private ModifierComparer()
         {
@@ -22,9 +25,14 @@ namespace Roslynator.CSharp
             return GetOrderIndex(x).CompareTo(GetOrderIndex(y));
         }
 
-        private static int GetOrderIndex(SyntaxToken syntaxToken)
+        internal static int GetOrderIndex(SyntaxToken syntaxToken)
         {
-            switch (syntaxToken.Kind())
+            return GetOrderIndex(syntaxToken.Kind());
+        }
+
+        public static int GetOrderIndex(SyntaxKind kind)
+        {
+            switch (kind)
             {
                 case SyntaxKind.NewKeyword:
                     return 0;
@@ -36,31 +44,79 @@ namespace Roslynator.CSharp
                     return 3;
                 case SyntaxKind.PrivateKeyword:
                     return 4;
-                case SyntaxKind.StaticKeyword:
+                case SyntaxKind.ConstKeyword:
                     return 5;
-                case SyntaxKind.VirtualKeyword:
+                case SyntaxKind.StaticKeyword:
                     return 6;
-                case SyntaxKind.SealedKeyword:
+                case SyntaxKind.VirtualKeyword:
                     return 7;
-                case SyntaxKind.OverrideKeyword:
+                case SyntaxKind.SealedKeyword:
                     return 8;
-                case SyntaxKind.AbstractKeyword:
+                case SyntaxKind.OverrideKeyword:
                     return 9;
-                case SyntaxKind.ReadOnlyKeyword:
+                case SyntaxKind.AbstractKeyword:
                     return 10;
-                case SyntaxKind.ExternKeyword:
+                case SyntaxKind.ReadOnlyKeyword:
                     return 11;
-                case SyntaxKind.UnsafeKeyword:
+                case SyntaxKind.ExternKeyword:
                     return 12;
-                case SyntaxKind.VolatileKeyword:
+                case SyntaxKind.UnsafeKeyword:
                     return 13;
-                case SyntaxKind.AsyncKeyword:
+                case SyntaxKind.VolatileKeyword:
                     return 14;
-                case SyntaxKind.PartialKeyword:
+                case SyntaxKind.AsyncKeyword:
                     return 15;
-                default:
+                case SyntaxKind.PartialKeyword:
                     return 16;
-                }
+                default:
+                    {
+                        Debug.Assert(false, $"unknown modifier '{kind}'");
+                        return MaxOrderIndex;
+                    }
+            }
+        }
+
+        internal static SyntaxKind GetKind(int orderIndex)
+        {
+            switch (orderIndex)
+            {
+                case 0:
+                    return SyntaxKind.NewKeyword;
+                case 1:
+                    return SyntaxKind.PublicKeyword;
+                case 2:
+                    return SyntaxKind.ProtectedKeyword;
+                case 3:
+                    return SyntaxKind.InternalKeyword;
+                case 4:
+                    return SyntaxKind.PrivateKeyword;
+                case 5:
+                    return SyntaxKind.ConstKeyword;
+                case 6:
+                    return SyntaxKind.StaticKeyword;
+                case 7:
+                    return SyntaxKind.VirtualKeyword;
+                case 8:
+                    return SyntaxKind.SealedKeyword;
+                case 9:
+                    return SyntaxKind.OverrideKeyword;
+                case 10:
+                    return SyntaxKind.AbstractKeyword;
+                case 11:
+                    return SyntaxKind.ReadOnlyKeyword;
+                case 12:
+                    return SyntaxKind.ExternKeyword;
+                case 13:
+                    return SyntaxKind.UnsafeKeyword;
+                case 14:
+                    return SyntaxKind.VolatileKeyword;
+                case 15:
+                    return SyntaxKind.AsyncKeyword;
+                case 16:
+                    return SyntaxKind.PartialKeyword;
+                default:
+                    return SyntaxKind.None;
+            }
         }
     }
 }

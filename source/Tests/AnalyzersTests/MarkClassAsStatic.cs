@@ -4,9 +4,9 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class MarkClassAsStatic
+    internal class MarkClassAsStatic
     {
-        public static class Foo
+        public class Foo
         {
             public const string FooConst = "";
 
@@ -39,14 +39,14 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        static class Foo2
+        class Foo2
         {
             public static void Foo()
             {
             }
         }
 
-        public static partial class Foo3
+        public partial class Foo3
         {
             public static void Foo()
             {

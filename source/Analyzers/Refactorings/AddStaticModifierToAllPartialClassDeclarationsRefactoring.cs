@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await AddModifierRefactoring.RefactorAsync(
+            return await InsertModifierRefactoring.RefactorAsync(
                 document,
                 classDeclaration,
                 SyntaxKind.StaticKeyword,
