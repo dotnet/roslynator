@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,22 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceSwitchWithIfElseRefactoring
     {
+        public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
+        {
+            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+            if (sections.Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
+            {
+                string title = (sections.Count == 1)
+                    ? "Replace switch with if"
+                    : "Replace switch with if-else";
+
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken));
+            }
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,

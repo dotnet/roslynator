@@ -23,14 +23,9 @@ namespace Roslynator.CSharp.Refactorings
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse)
-                && (switchStatement.SwitchKeyword.Span.Contains(context.Span) || context.Span.IsBetweenSpans(switchStatement))
-                && switchStatement
-                    .Sections
-                    .Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
+                && context.Span.IsBetweenSpans(switchStatement))
             {
-                context.RegisterRefactoring(
-                    "Replace switch with if-else",
-                    cancellationToken => ReplaceSwitchWithIfElseRefactoring.RefactorAsync(context.Document, switchStatement, cancellationToken));
+                ReplaceSwitchWithIfElseRefactoring.ComputeRefactoring(context, switchStatement);
             }
         }
     }
