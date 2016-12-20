@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
 {
@@ -19,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
 
         public abstract ExpressionSyntax GetExpression(TStatement statement);
 
-        public void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
+        public async Task ComputeRefactoringAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
             ElseClauseSyntax elseClause = ifStatement.Else;
 
@@ -47,9 +46,15 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
 
                                 if (expression2?.IsMissing == false)
                                 {
-                                    context.RegisterRefactoring(
-                                        $"Replace if-else with {StatementTitle}",
-                                        cancellationToken => RefactorAsync(context.Document, ifStatement, expression1, expression2, cancellationToken));
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                    if (semanticModel.GetTypeSymbol(expression1, context.CancellationToken)?.IsBoolean() == true
+                                        && semanticModel.GetTypeSymbol(expression2, context.CancellationToken)?.IsBoolean() == true)
+                                    {
+                                        context.RegisterRefactoring(
+                                            $"Replace if-else with {StatementTitle}",
+                                            cancellationToken => RefactorAsync(context.Document, ifStatement, expression1, expression2, cancellationToken));
+                                    }
 
                                     if (!expression1.IsBooleanLiteralExpression()
                                         || !expression2.IsBooleanLiteralExpression())

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
 {
     internal static class ReplaceIfWithStatementRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
             StatementSyntax statement = GetStatement(ifStatement);
 
@@ -21,12 +22,12 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                 if (kind == SyntaxKind.ReturnStatement)
                 {
                     var refactoring = new ReplaceIfWithReturnRefactoring();
-                    refactoring.ComputeRefactoring(context, ifStatement);
+                    await refactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
                 }
                 else if (kind == SyntaxKind.YieldReturnStatement)
                 {
                     var refactoring = new ReplaceIfWithYieldReturnRefactoring();
-                    refactoring.ComputeRefactoring(context, ifStatement);
+                    await refactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
                 && context.Span.IsBetweenSpans(ifStatement))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement))
-                    ReplaceIfWithStatementRefactoring.ComputeRefactoring(context, ifStatement);
+                    await ReplaceIfWithStatementRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithAssignment))
                     ReplaceIfElseWithAssignmentRefactoring.ComputeRefactoring(context, ifStatement);
