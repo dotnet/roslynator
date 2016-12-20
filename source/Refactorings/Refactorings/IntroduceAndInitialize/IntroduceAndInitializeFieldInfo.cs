@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             get
             {
                 if (_name == null)
-                    _name = TextUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
+                    _name = IdentifierUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
 
                 return _name;
             }

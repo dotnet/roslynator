@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
                             && fieldSymbol.ContainingType == propertySymbol.ContainingType)
                         {
-                            string newName = TextUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                            string newName = IdentifierUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
                             if (!string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal))
                             {

@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
                                         && symbol.IsPrivate()
                                         && !((IFieldSymbol)symbol).IsConst)
                                     {
-                                        newName = TextUtility.ToCamelCaseWithUnderscore(newName);
+                                        newName = IdentifierUtility.ToCamelCase(newName, prefixWithUnderscore: true);
                                     }
 
                                     if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))

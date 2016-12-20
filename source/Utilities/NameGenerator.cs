@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
+using Roslynator.Internal;
 
 namespace Roslynator
 {
@@ -214,7 +215,7 @@ namespace Roslynator
 
         public static string GenerateIdentifier(ITypeSymbol typeSymbol, bool firstCharToLower = false)
         {
-            return IdentifierGenerator.Generate(typeSymbol, firstCharToLower);
+            return IdentifierGenerator.GenerateIdentifier(typeSymbol, firstCharToLower);
         }
     }
 }

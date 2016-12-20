@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            string fieldName = TextUtility.ToCamelCase(
+            string fieldName = IdentifierUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 

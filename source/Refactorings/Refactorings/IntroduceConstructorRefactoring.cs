@@ -270,7 +270,7 @@ namespace Roslynator.CSharp.Refactorings
             foreach (MemberDeclarationSyntax member in members)
             {
                 string name = GetIdentifier(member).ValueText;
-                string parameterName = TextUtility.ToCamelCase(name);
+                string parameterName = IdentifierUtility.ToCamelCase(name);
 
                 statements.Add(ExpressionStatement(
                     SimpleAssignmentExpression(

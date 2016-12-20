@@ -5,11 +5,11 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator.Internal
 {
     internal static class IdentifierGenerator
     {
-        public static string Generate(ITypeSymbol typeSymbol, bool firstCharToLower = false)
+        public static string GenerateIdentifier(ITypeSymbol typeSymbol, bool firstCharToLower = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -36,14 +36,20 @@ namespace Roslynator
             if (name.Length > 1
                 && UsePlural(typeSymbol2))
             {
-                name = TextUtility.RemoveSuffix(name, "Collection");
+                name = IdentifierUtility.RemoveSuffix(name, "Collection");
 
                 if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
+                {
                     name += "es";
+                }
                 else if (name.EndsWith("y", StringComparison.Ordinal))
+                {
                     name = name.Remove(name.Length - 1) + "ies";
+                }
                 else
+                {
                     name += "s";
+                }
             }
 
             if (firstCharToLower)

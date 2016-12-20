@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-            string newName = TextUtility.ToCamelCaseWithUnderscore(declarator.Identifier.ValueText);
+            string newName = IdentifierUtility.ToCamelCase(declarator.Identifier.ValueText, prefixWithUnderscore: true);
 
             newName = NameGenerator.GenerateUniqueMemberName(newName, declarator.Identifier.SpanStart, semanticModel, context.CancellationToken);
 

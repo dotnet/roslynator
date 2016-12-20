@@ -77,6 +77,7 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
+    <Compile Include="IdentifierUtility.cs" />
     <Compile Include="SymbolAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Extensions\ISymbolExtensions.cs" />
     <Compile Include="Extensions\SemanticModelExtensions.cs" />
     <Compile Include="Extensions\TextSpanExtensions.cs" />
-    <Compile Include="IdentifierGenerator.cs" />
+    <Compile Include="Internal\IdentifierGenerator.cs" />
     <Compile Include="MetadataNames.cs" />
     <Compile Include="CSharp\ModifierUtility.cs" />
     <Compile Include="CSharp\Modifiers.cs" />

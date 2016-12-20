@@ -141,7 +141,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
         {
             string methodName = propertyDeclaration.Identifier.ValueText;
 
-            if (!_prefixes.Any(prefix => TextUtility.HasPrefix(methodName, prefix)))
+            if (!_prefixes.Any(prefix => IdentifierUtility.HasPrefix(methodName, prefix)))
                 methodName = "Get" + methodName;
 
             return methodName;
