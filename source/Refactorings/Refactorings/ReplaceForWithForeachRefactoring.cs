@@ -14,8 +14,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceForWithForEachRefactoring
     {
-        private const string ElementName = "item";
-
         public static async Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
@@ -32,11 +30,13 @@ namespace Roslynator.CSharp.Refactorings
                 .Cast<ElementAccessExpressionSyntax>()
                 .ToList();
 
-            var rewriter = new SyntaxRewriter(expressions, ElementName);
+            string identifier = NameGenerator.GenerateUniqueLocalName("item", forStatement.Statement.SpanStart, semanticModel, cancellationToken);
+
+            var rewriter = new SyntaxRewriter(expressions, identifier);
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
                 IdentifierName("var"),
-                ElementName,
+                identifier,
                 GetCollectionExpression(forStatement),
                 (StatementSyntax)rewriter.Visit(forStatement.Statement));
 
@@ -168,7 +168,7 @@ namespace Roslynator.CSharp.Refactorings
             private readonly IList<ElementAccessExpressionSyntax> _expressions;
             private readonly string _elementName;
 
-            public SyntaxRewriter(IList<ElementAccessExpressionSyntax> expressions, string elementName = ElementName)
+            public SyntaxRewriter(IList<ElementAccessExpressionSyntax> expressions, string elementName)
             {
                 _expressions = expressions;
                 _elementName = elementName;

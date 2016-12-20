@@ -8,6 +8,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public void SomeMethod()
         {
+            string item = null;
+
             var items = new List<string>();
 
             for (int i = 0; i < items.Count; i++)
