@@ -15,6 +15,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
                 ProcessString(value);
                 ProcessValue(value);
+
+                int i = 0;
+
+                short s = i * i;
             }
 
             private object GetObject()

@@ -37,7 +37,12 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax type = CSharpFactory.Type(destinationType, semanticModel, expression.SpanStart);
 
-            CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, expression)
+            ExpressionSyntax newExpression = expression;
+
+            if (CSharpUtility.GetOperatorPriority(expression) > CSharpUtility.GetOperatorPriority(SyntaxKind.CastExpression))
+                newExpression = expression.Parenthesize();
+
+            CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, newExpression)
                 .WithTriviaFrom(expression);
 
             return await document.ReplaceNodeAsync(expression, castExpression, cancellationToken).ConfigureAwait(false);

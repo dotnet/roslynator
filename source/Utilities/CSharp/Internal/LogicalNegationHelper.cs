@@ -270,7 +270,7 @@ namespace Roslynator.CSharp.Internal
         private static ExpressionSyntax ParenthesizeIfNecessary(this ExpressionSyntax expression, SyntaxKind kind)
         {
             if (expression != null
-                && GetOperatorPriority(expression) > GetOperatorPriority(kind))
+                && CSharpUtility.GetOperatorPriority(expression) > CSharpUtility.GetOperatorPriority(kind))
             {
                 expression = expression.Parenthesize(cutCopyTrivia: true);
             }
@@ -291,86 +291,6 @@ namespace Roslynator.CSharp.Internal
             Debug.Assert(false, expression.Kind().ToString());
 
             return expression;
-        }
-
-        private static int GetOperatorPriority(this ExpressionSyntax expression)
-        {
-            return GetOperatorPriority(expression.Kind());
-        }
-
-        private static int GetOperatorPriority(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.InvocationExpression:
-                case SyntaxKind.ElementAccessExpression:
-                case SyntaxKind.PostIncrementExpression:
-                case SyntaxKind.PostDecrementExpression:
-                case SyntaxKind.ObjectCreationExpression:
-                case SyntaxKind.AnonymousObjectCreationExpression:
-                case SyntaxKind.TypeOfExpression:
-                case SyntaxKind.DefaultExpression:
-                case SyntaxKind.CheckedExpression:
-                case SyntaxKind.UncheckedExpression:
-                    return 0;
-                case SyntaxKind.UnaryPlusExpression:
-                case SyntaxKind.UnaryMinusExpression:
-                case SyntaxKind.LogicalNotExpression:
-                case SyntaxKind.BitwiseNotExpression:
-                case SyntaxKind.PreIncrementExpression:
-                case SyntaxKind.PreDecrementExpression:
-                case SyntaxKind.CastExpression:
-                    return 1;
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                    return 2;
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                    return 3;
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                    return 4;
-                case SyntaxKind.LessThanExpression:
-                case SyntaxKind.GreaterThanExpression:
-                case SyntaxKind.LessThanOrEqualExpression:
-                case SyntaxKind.GreaterThanOrEqualExpression:
-                case SyntaxKind.IsExpression:
-                case SyntaxKind.AsExpression:
-                    return 5;
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
-                    return 6;
-                case SyntaxKind.BitwiseAndExpression:
-                    return 7;
-                case SyntaxKind.ExclusiveOrExpression:
-                    return 8;
-                case SyntaxKind.BitwiseOrExpression:
-                    return 9;
-                case SyntaxKind.LogicalAndExpression:
-                    return 10;
-                case SyntaxKind.LogicalOrExpression:
-                    return 11;
-                case SyntaxKind.CoalesceExpression:
-                    return 12;
-                case SyntaxKind.ConditionalExpression:
-                    return 13;
-                case SyntaxKind.SimpleAssignmentExpression:
-                case SyntaxKind.AddAssignmentExpression:
-                case SyntaxKind.SubtractAssignmentExpression:
-                case SyntaxKind.MultiplyAssignmentExpression:
-                case SyntaxKind.DivideAssignmentExpression:
-                case SyntaxKind.ModuloAssignmentExpression:
-                case SyntaxKind.AndAssignmentExpression:
-                case SyntaxKind.ExclusiveOrAssignmentExpression:
-                case SyntaxKind.OrAssignmentExpression:
-                case SyntaxKind.LeftShiftAssignmentExpression:
-                case SyntaxKind.RightShiftAssignmentExpression:
-                    return 14;
-                default:
-                    return 15;
-            }
         }
     }
 }
