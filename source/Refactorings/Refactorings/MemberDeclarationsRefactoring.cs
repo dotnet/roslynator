@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -14,11 +15,17 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
         {
-            var parent = member.Parent as MemberDeclarationSyntax;
+            SyntaxNode parent = member.Parent;
 
-            if (parent != null)
+            if (parent?.IsKind(
+                SyntaxKind.NamespaceDeclaration,
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.InterfaceDeclaration) == true)
             {
-                SyntaxList<MemberDeclarationSyntax> members = parent.GetMembers();
+                var parentMember = (MemberDeclarationSyntax)parent;
+
+                SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
 
                 if (members.Count > 1)
                 {
@@ -44,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         return ReplaceMembersAsync(
                                             context.Document,
-                                            parent,
+                                            parentMember,
                                             members,
                                             List(members.Skip(index + 1)),
                                             cancellationToken);
@@ -56,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         return ReplaceMembersAsync(
                                             context.Document,
-                                            parent,
+                                            parentMember,
                                             members,
                                             List(members.Take(index + 1)),
                                             cancellationToken);
@@ -71,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         return RefactorAsync(
                                             context.Document,
-                                            parent,
+                                            parentMember,
                                             members,
                                             index,
                                             cancellationToken);
