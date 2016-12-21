@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public static class SyntaxAnalyzer
+    public static class CSharpUtility
     {
         public static bool AreParenthesesRedundantOrInvalid(SyntaxNode node)
         {

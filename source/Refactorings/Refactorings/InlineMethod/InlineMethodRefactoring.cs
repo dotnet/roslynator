@@ -374,7 +374,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
 
-            if (!SyntaxAnalyzer.AreParenthesesRedundantOrInvalid(invocation))
+            if (!CSharpUtility.AreParenthesesRedundantOrInvalid(invocation))
             {
                 newExpression = newExpression
                    .WithoutTrivia()

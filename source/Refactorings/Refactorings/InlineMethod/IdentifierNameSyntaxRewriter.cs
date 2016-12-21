@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 _dic.Remove(node);
 
-                if (SyntaxAnalyzer.AreParenthesesRedundantOrInvalid(node, expression.Kind()))
+                if (CSharpUtility.AreParenthesesRedundantOrInvalid(node, expression.Kind()))
                 {
                     return expression;
                 }

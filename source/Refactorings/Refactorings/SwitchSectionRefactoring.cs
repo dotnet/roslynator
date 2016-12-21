@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                switch (SyntaxAnalyzer.AnalyzeSwitchSection(switchSection))
+                switch (CSharpUtility.AnalyzeSwitchSection(switchSection))
                 {
                     case BracesAnalysisResult.AddBraces:
                         {

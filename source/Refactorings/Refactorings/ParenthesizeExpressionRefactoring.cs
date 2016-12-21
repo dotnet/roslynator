@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (!SyntaxAnalyzer.AreParenthesesRedundantOrInvalid(expression)
+            if (!CSharpUtility.AreParenthesesRedundantOrInvalid(expression)
                 && !expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 try
