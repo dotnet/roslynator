@@ -14,8 +14,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class ReplaceForEachWithForRefactoring
     {
-        private const string CounterIdentifierName = "i";
-
         public static bool CanRefactor(
             ForEachStatementSyntax forEachStatement,
             SemanticModel semanticModel,
@@ -61,11 +59,13 @@ namespace Roslynator.CSharp.Refactorings
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
 
+            string identifier = NameGenerator.GenerateUniqueLocalName("i", forEachStatement.Statement.SpanStart, semanticModel, cancellationToken);
+
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
                     PredefinedType(Token(SyntaxKind.IntKeyword)),
                     SingletonSeparatedList(
-                        VariableDeclarator(CounterIdentifierName)
+                        VariableDeclarator(identifier)
                             .WithInitializer(
                                 EqualsValueClause(
                                     LiteralExpression(
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                 initializers: SeparatedList<ExpressionSyntax>(),
                 condition: BinaryExpression(
                     SyntaxKind.LessThanExpression,
-                    IdentifierName(CounterIdentifierName),
+                    IdentifierName(identifier),
                     MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
                         IdentifierName(forEachStatement.Expression.ToString()),
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
                 incrementors: SingletonSeparatedList<ExpressionSyntax>(
                     PostfixUnaryExpression(
                         SyntaxKind.PostIncrementExpression,
-                        IdentifierName(CounterIdentifierName))),
+                        IdentifierName(identifier))),
                 statement: forEachStatement.Statement.ReplaceNodes(
                     GetIdentifiers(root, referencedSymbols),
                     (f, g) =>
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
                         return ElementAccessExpression(
                             IdentifierName(forEachStatement.Expression.ToString()),
                             BracketedArgumentList(
-                                SingletonSeparatedList(Argument(IdentifierName(CounterIdentifierName))))
+                                SingletonSeparatedList(Argument(IdentifierName(identifier))))
                         ).WithTriviaFrom(f);
                     }));
 
