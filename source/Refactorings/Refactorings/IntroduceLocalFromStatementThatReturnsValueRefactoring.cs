@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = expressionStatement.Expression;
 
             if (expression?.IsMissing == false
-                && !expression.IsAssignmentExpression()
+                && !(expression is AssignmentExpressionSyntax)
                 && !expression.IsIncrementOrDecrementExpression())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

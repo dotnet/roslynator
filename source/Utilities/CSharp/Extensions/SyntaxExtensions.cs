@@ -1188,27 +1188,6 @@ namespace Roslynator.CSharp
             return LogicalNegationHelper.LogicallyNegate(booleanExpression);
         }
 
-        public static bool IsAssignmentExpression(this ExpressionSyntax expression)
-        {
-            switch (expression?.Kind())
-            {
-                case SyntaxKind.SimpleAssignmentExpression:
-                case SyntaxKind.AddAssignmentExpression:
-                case SyntaxKind.SubtractAssignmentExpression:
-                case SyntaxKind.MultiplyAssignmentExpression:
-                case SyntaxKind.DivideAssignmentExpression:
-                case SyntaxKind.ModuloAssignmentExpression:
-                case SyntaxKind.AndAssignmentExpression:
-                case SyntaxKind.ExclusiveOrAssignmentExpression:
-                case SyntaxKind.OrAssignmentExpression:
-                case SyntaxKind.LeftShiftAssignmentExpression:
-                case SyntaxKind.RightShiftAssignmentExpression:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         public static bool IsIncrementOrDecrementExpression(this ExpressionSyntax expression)
         {
             return expression?.IsKind(
