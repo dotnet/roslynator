@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
                 EqualsValueClauseSyntax @default = null;
 
                 if (parameterSymbol.HasExplicitDefaultValue)
-                    @default = EqualsValueClause(DefaultValue(parameterSymbol.ExplicitDefaultValue));
+                    @default = EqualsValueClause(DefaultValue(parameterSymbol).WithSimplifierAnnotation());
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),

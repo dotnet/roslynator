@@ -154,7 +154,55 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        public static ExpressionSyntax DefaultValue(object value)
+        public static ExpressionSyntax DefaultValue(IParameterSymbol parameterSymbol)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (parameterSymbol.HasExplicitDefaultValue)
+            {
+                object value = parameterSymbol.ExplicitDefaultValue;
+
+                ITypeSymbol type = parameterSymbol.Type;
+
+                if (type.IsEnum())
+                {
+                    IFieldSymbol fieldSymbol = FindMemberWithConstantValue(type, value);
+
+                    if (fieldSymbol != null)
+                        return SimpleMemberAccessExpression(Type(type), IdentifierName(fieldSymbol.Name));
+                }
+
+                return ConstantExpression(value);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private static IFieldSymbol FindMemberWithConstantValue(ITypeSymbol typeSymbol, object value)
+        {
+            foreach (ISymbol symbol in typeSymbol.GetMembers())
+            {
+                if (symbol.IsField())
+                {
+                    var fieldSymbol = (IFieldSymbol)symbol;
+
+                    if (fieldSymbol.HasConstantValue)
+                    {
+                        object constantValue = fieldSymbol.ConstantValue;
+
+                        if (value.Equals(constantValue))
+                            return fieldSymbol;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static ExpressionSyntax ConstantExpression(object value)
         {
             if (value == null)
                 return NullLiteralExpression();

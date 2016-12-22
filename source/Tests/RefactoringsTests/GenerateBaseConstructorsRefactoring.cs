@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         internal class FooBase<T>
         {
-            public FooBase(IEnumerable<T> values = null, int x = 1)
+            public FooBase(IEnumerable<T> values = null, int x = 1, StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries)
             {
             }
         }
