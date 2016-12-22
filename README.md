@@ -286,6 +286,7 @@
 * [Replace regular string literal with verbatim string literal](source/Refactorings/README.md#replace-regular-string-literal-with-verbatim-string-literal)
 * [Replace statement with if statement](source/Refactorings/README.md#replace-statement-with-if-statement)
 * [Replace string literal with character literal](source/Refactorings/README.md#replace-string-literal-with-character-literal)
+* [Replace string.Contains with string.IndexOf](source/Refactorings/README.md#replace-stringcontains-with-stringindexof)
 * [Replace 'string.Empty' with ""](source/Refactorings/README.md#replace-stringempty-with-)
 * [Replace 'string.Format' with interpolated string](source/Refactorings/README.md#replace-stringformat-with-interpolated-string)
 * [Replace switch statement with if-else](source/Refactorings/README.md#replace-switch-statement-with-if-else)

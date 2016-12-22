@@ -963,6 +963,13 @@
 
 ![Replace string literal with character literal](../../images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
+#### Replace string.Contains with string.IndexOf
+
+* **Syntax**: method invocation
+* **Scope**: method name
+
+![Replace string.Contains with string.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
+
 #### Replace 'string.Empty' with ""
 
 * **Syntax**: string.Empty
