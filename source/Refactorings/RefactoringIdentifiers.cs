@@ -151,6 +151,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplacePropertyWithMethod = "ReplacePropertyWithMethod";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
         public const string ReplaceStatementWithIfStatement = "ReplaceStatementWithIfStatement";
+        public const string ReplaceStringContainsWithStringIndexOf = "ReplaceStringContainsWithStringIndexOf";
         public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";

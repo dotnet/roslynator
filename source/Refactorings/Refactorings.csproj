@@ -260,6 +260,7 @@
     <Compile Include="Refactorings\RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />

@@ -157,6 +157,7 @@ namespace Roslynator.VisualStudio
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
             ReplaceStatementWithIfStatement = true;
+            ReplaceStringContainsWithStringIndexOf = true;
             ReplaceStringEmptyWithEmptyStringLiteral = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceStringLiteralWithCharacterLiteral = true;
@@ -329,6 +330,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement, ReplaceStatementWithIfStatement);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf, ReplaceStringContainsWithStringIndexOf);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral, ReplaceStringEmptyWithEmptyStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, ReplaceStringLiteralWithCharacterLiteral);
@@ -1799,6 +1801,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: return statement, yield return statement, assignment statement, local declaration statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStatementWithIfStatement
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace string.Contains with string.IndexOf")]
+        [Description("Syntax: method invocation\r\nScope: method name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceStringContainsWithStringIndexOf
         {
             get;
             set;

@@ -15,7 +15,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
-                    RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))
+                    RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod,
+                    RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf))
             {
                 ExpressionSyntax expression = invocationExpression.Expression;
 
@@ -30,6 +31,9 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
                             await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf))
+                            await ReplaceStringContainsWithStringIndexOfRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))

@@ -594,6 +594,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringcontains-with-stringindexof">Replace string.Contains with string.IndexOf</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringempty-with-">Replace 'string.Empty' with ""</a>
         </li>
         <li>
