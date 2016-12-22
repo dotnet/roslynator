@@ -486,25 +486,54 @@ namespace Roslynator.CSharp
             {
                 var endRegionDirective = (EndRegionDirectiveTriviaSyntax)list[1];
 
-                SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-                int startLine = regionDirective.GetSpanStartLine();
-                int endLine = endRegionDirective.GetSpanEndLine();
-
-                TextLineCollection lines = sourceText.Lines;
-
-                TextSpan span = TextSpan.FromBounds(
-                    lines[startLine].Start,
-                    lines[endLine].EndIncludingLineBreak);
-
-                var textChange = new TextChange(span, string.Empty);
-
-                SourceText newSourceText = sourceText.WithChanges(textChange);
-
-                return document.WithText(newSourceText);
+                return await RemoveRegionAsync(document, regionDirective, endRegionDirective, cancellationToken).ConfigureAwait(false);
             }
 
             return document;
+        }
+
+        public static async Task<Document> RemoveRegionAsync(
+            Document document,
+            EndRegionDirectiveTriviaSyntax endRegionDirective,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (endRegionDirective == null)
+                throw new ArgumentNullException(nameof(endRegionDirective));
+
+            List<DirectiveTriviaSyntax> list = endRegionDirective.GetRelatedDirectives();
+
+            if (list.Count == 2
+                && list[0].IsKind(SyntaxKind.RegionDirectiveTrivia))
+            {
+                var regionDirective = (RegionDirectiveTriviaSyntax)list[0];
+
+                return await RemoveRegionAsync(document, regionDirective, endRegionDirective, cancellationToken).ConfigureAwait(false);
+            }
+
+            return document;
+        }
+
+        private static async Task<Document> RemoveRegionAsync(Document document, RegionDirectiveTriviaSyntax regionDirective, EndRegionDirectiveTriviaSyntax endRegionDirective, CancellationToken cancellationToken)
+        {
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            int startLine = regionDirective.GetSpanStartLine();
+            int endLine = endRegionDirective.GetSpanEndLine();
+
+            TextLineCollection lines = sourceText.Lines;
+
+            TextSpan span = TextSpan.FromBounds(
+                lines[startLine].Start,
+                lines[endLine].EndIncludingLineBreak);
+
+            var textChange = new TextChange(span, string.Empty);
+
+            SourceText newSourceText = sourceText.WithChanges(textChange);
+
+            return document.WithText(newSourceText);
         }
 
         private static SourceText RemoveDirectives(

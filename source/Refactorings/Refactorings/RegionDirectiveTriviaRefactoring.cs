@@ -29,5 +29,16 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => SyntaxRemover.RemoveRegionAsync(context.Document, regionDirective, cancellationToken));
             }
         }
+
+        public static void ComputeRefactorings(RefactoringContext context, EndRegionDirectiveTriviaSyntax endRegionDirective)
+        {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveRegion)
+                && context.IsRootCompilationUnit)
+            {
+                context.RegisterRefactoring(
+                    "Remove region",
+                    cancellationToken => SyntaxRemover.RemoveRegionAsync(context.Document, endRegionDirective, cancellationToken));
+            }
+        }
     }
 }
