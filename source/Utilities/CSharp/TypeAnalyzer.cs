@@ -44,18 +44,27 @@ namespace Roslynator.CSharp
                                     ? TypeAnalysisResult.ImplicitButShouldBeExplicit
                                     : TypeAnalysisResult.None;
                             }
-                            else if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
+
+                            SyntaxNode parent = variableDeclaration.Parent;
+
+                            if (parent.IsKind(SyntaxKind.LocalDeclarationStatement)
+                                && ((LocalDeclarationStatementSyntax)parent).Modifiers.Contains(SyntaxKind.ConstKeyword))
+                            {
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                    : TypeAnalysisResult.None;
+                            }
+
+                            if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
                             {
                                 return (type.IsVar)
                                     ? TypeAnalysisResult.Implicit
                                     : TypeAnalysisResult.ExplicitButShouldBeImplicit;
                             }
-                            else
-                            {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                    : TypeAnalysisResult.Explicit;
-                            }
+
+                            return (type.IsVar)
+                                ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                : TypeAnalysisResult.Explicit;
                         }
                     }
                 }
