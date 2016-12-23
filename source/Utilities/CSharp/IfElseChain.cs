@@ -57,16 +57,34 @@ namespace Roslynator.CSharp
 
             while (true)
             {
-                if (!ifStatement.IsParentKind(SyntaxKind.ElseClause))
-                    break;
+                IfStatementSyntax parentIf = GetParentIf(ifStatement);
 
-                if (!ifStatement.Parent.IsParentKind(SyntaxKind.IfStatement))
+                if (parentIf != null)
+                {
+                    ifStatement = parentIf;
+                }
+                else
+                {
                     break;
-
-                ifStatement = (IfStatementSyntax)ifStatement.Parent.Parent;
+                }
             }
 
             return ifStatement;
+        }
+
+        private static IfStatementSyntax GetParentIf(IfStatementSyntax ifStatement)
+        {
+            SyntaxNode parent = ifStatement.Parent;
+
+            if (parent?.IsKind(SyntaxKind.ElseClause) == true)
+            {
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.IfStatement) == true)
+                    return (IfStatementSyntax)parent;
+            }
+
+            return null;
         }
 
         public static bool IsTopmostIf(IfStatementSyntax ifStatement)
