@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression,
                     invocation.ArgumentList.Arguments[0].Expression));
 
-            if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
                 ExpressionSyntax newNode = EqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation.Parent)
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)
         {
-            while (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+            while (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
 
             return memberAccess;

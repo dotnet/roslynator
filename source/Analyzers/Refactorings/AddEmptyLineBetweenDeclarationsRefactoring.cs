@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration)
         {
-            if (declaration.Parent?.IsKind(SyntaxKind.CompilationUnit) == false)
+            if (!declaration.IsParentKind(SyntaxKind.CompilationUnit))
             {
                 TokenPair tokenPair = GetTokenPair(declaration);
                 SyntaxToken openToken = tokenPair.OpenToken;

@@ -243,7 +243,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             statements[0] = statements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-            if (expressionStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+            if (expressionStatement.IsParentKind(SyntaxKind.Block))
             {
                 var block = (BlockSyntax)expressionStatement.Parent;
 

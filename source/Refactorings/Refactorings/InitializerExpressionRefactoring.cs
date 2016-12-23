@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
             if (initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                && initializer.Parent?.IsKind(SyntaxKind.CollectionInitializerExpression) == true)
+                && initializer.IsParentKind(SyntaxKind.CollectionInitializerExpression))
             {
                 initializer = (InitializerExpressionSyntax)initializer.Parent;
             }

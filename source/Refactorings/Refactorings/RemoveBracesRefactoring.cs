@@ -156,7 +156,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             StatementSyntax statement = block.Statements[0];
 
-            if (block.Parent?.IsKind(SyntaxKind.ElseClause) == true
+            if (block.IsParentKind(SyntaxKind.ElseClause)
                 && statement.IsKind(SyntaxKind.IfStatement))
             {
                 var elseClause = (ElseClauseSyntax)block.Parent;

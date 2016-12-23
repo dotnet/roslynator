@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)
         {
-            while (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+            while (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
 
             return memberAccess;

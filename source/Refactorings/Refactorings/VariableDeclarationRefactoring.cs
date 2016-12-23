@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax type = variableDeclaration.Type;
 
             if (type != null
-                && variableDeclaration.Parent?.IsKind(SyntaxKind.EventFieldDeclaration) == false)
+                && !variableDeclaration.IsParentKind(SyntaxKind.EventFieldDeclaration))
             {
                 SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 

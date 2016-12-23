@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (memberAccess.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true
+            if (!memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
                 && memberAccess.Expression != null
                 && memberAccess.Name?.Identifier.ValueText == "Empty")
             {

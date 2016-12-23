@@ -100,13 +100,13 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (IdentifierNameSyntax identifierName in identifierNames)
             {
-                if (identifierName.Parent?.IsKind(SyntaxKind.Argument) != true)
+                if (!identifierName.IsParentKind(SyntaxKind.Argument))
                     return false;
 
-                if (identifierName.Parent.Parent?.IsKind(SyntaxKind.BracketedArgumentList) != true)
+                if (!identifierName.Parent.IsParentKind(SyntaxKind.BracketedArgumentList))
                     return false;
 
-                if (identifierName.Parent.Parent.Parent?.IsKind(SyntaxKind.ElementAccessExpression) != true)
+                if (!identifierName.Parent.Parent.IsParentKind(SyntaxKind.ElementAccessExpression))
                     return false;
 
                 var elementAccess = (ElementAccessExpressionSyntax)identifierName.Parent.Parent.Parent;

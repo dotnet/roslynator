@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (parent?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
                 {
-                    if (parent.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+                    if (parent.IsParentKind(SyntaxKind.LogicalNotExpression))
                     {
                         RegisterRefactoring(context, (ExpressionSyntax)parent.Parent);
                     }

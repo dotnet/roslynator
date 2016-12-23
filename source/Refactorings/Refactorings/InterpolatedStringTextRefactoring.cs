@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
-                && interpolatedStringText.Parent?.IsKind(SyntaxKind.InterpolatedStringExpression) == true)
+                && interpolatedStringText.IsParentKind(SyntaxKind.InterpolatedStringExpression))
             {
                 context.RegisterRefactoring("Insert interpolation",
                     cancellationToken =>

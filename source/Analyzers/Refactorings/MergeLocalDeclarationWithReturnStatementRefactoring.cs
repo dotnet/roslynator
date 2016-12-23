@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static LocalDeclarationStatementSyntax GetLocalDeclaration(ReturnStatementSyntax returnStatement)
         {
-            if (returnStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+            if (returnStatement.IsParentKind(SyntaxKind.Block))
             {
                 var block = (BlockSyntax)returnStatement.Parent;
                 SyntaxList<StatementSyntax> statements = block.Statements;

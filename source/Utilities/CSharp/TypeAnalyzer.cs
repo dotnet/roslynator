@@ -28,7 +28,7 @@ namespace Roslynator.CSharp
                 SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
                 if (variables.Count > 0
-                    && variableDeclaration.Parent?.IsKind(SyntaxKind.FieldDeclaration) != true)
+                    && !variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
                 {
                     ExpressionSyntax expression = variables[0].Initializer?.Value;
 

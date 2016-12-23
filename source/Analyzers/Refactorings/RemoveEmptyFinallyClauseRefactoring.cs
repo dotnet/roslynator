@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, FinallyClauseSyntax finallyClause)
         {
-            if (finallyClause.Parent?.IsKind(SyntaxKind.TryStatement) == true)
+            if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
             {
                 var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 

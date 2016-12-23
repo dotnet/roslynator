@@ -90,12 +90,12 @@ namespace Roslynator.CSharp.Internal
             if (attributeArgument.NameEquals != null)
                 return null;
 
-            if (attributeArgument.Parent?.IsKind(SyntaxKind.AttributeArgumentList) != true)
+            if (!attributeArgument.IsParentKind(SyntaxKind.AttributeArgumentList))
                 return null;
 
             var argumentList = (AttributeArgumentListSyntax)attributeArgument.Parent;
 
-            if (argumentList.Parent?.IsKind(SyntaxKind.Attribute) != true)
+            if (!argumentList.IsParentKind(SyntaxKind.Attribute))
                 return null;
 
             var attribute = (AttributeSyntax)attributeArgument.Parent.Parent;

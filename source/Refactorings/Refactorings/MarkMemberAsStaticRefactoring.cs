@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
         {
-            if (fieldDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (fieldDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !fieldDeclaration.IsConst()
                 && !fieldDeclaration.IsStatic())
             {
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !methodDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)methodDeclaration.Parent;
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !propertyDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)propertyDeclaration.Parent;
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(EventDeclarationSyntax eventDeclaration)
         {
-            if (eventDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !eventDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)eventDeclaration.Parent;
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (eventFieldDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (eventFieldDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !eventFieldDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)eventFieldDeclaration.Parent;
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (constructorDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
+            if (constructorDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
                 && !constructorDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)constructorDeclaration.Parent;

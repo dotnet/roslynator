@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty:
                         {
                             string propertyName = diagnostic.Properties["PropertyName"];
-                            string sign = (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true) ? "==" : ">";
+                            string sign = (invocation.IsParentKind(SyntaxKind.LogicalNotExpression)) ? "==" : ">";
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Replace 'Any' with '{propertyName} {sign} 0'",

@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.CheckParameterForNull,
                     RefactoringIdentifiers.IntroduceAndInitializeField,
                     RefactoringIdentifiers.IntroduceAndInitializeProperty)
-                && closeParen.Parent?.IsKind(SyntaxKind.ParameterList) == true
+                && closeParen.IsParentKind(SyntaxKind.ParameterList)
                 && context.Span.Start > 0)
             {
                 ParameterSyntax parameter = context.Root
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                     await ParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
             }
 
-            if (closeParen.Parent?.IsKind(SyntaxKind.ArgumentList) == true)
+            if (closeParen.IsParentKind(SyntaxKind.ArgumentList))
             {
                 ArgumentSyntax argument = ((ArgumentListSyntax)closeParen.Parent)
                     .Arguments

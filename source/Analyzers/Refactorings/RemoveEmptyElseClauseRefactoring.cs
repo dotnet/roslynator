@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)
         {
-            if (elseClause.Parent?.IsKind(SyntaxKind.IfStatement) == true)
+            if (elseClause.IsParentKind(SyntaxKind.IfStatement))
             {
                 var ifStatement = (IfStatementSyntax)elseClause.Parent;
                 StatementSyntax statement = ifStatement.Statement;

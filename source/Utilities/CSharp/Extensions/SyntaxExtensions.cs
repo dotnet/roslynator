@@ -533,6 +533,21 @@ namespace Roslynator.CSharp
             return tokenList.IndexOf(kind) != -1;
         }
 
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind)
+        {
+            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(token.Parent, kind);
+        }
+
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
+        {
+            return IsKind(token.Parent, kind1, kind2);
+        }
+
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            return IsKind(token.Parent, kind1, kind2, kind3);
+        }
+
         public static bool IsNoneKind(this SyntaxTrivia trivia)
         {
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.None);
@@ -1699,7 +1714,7 @@ namespace Roslynator.CSharp
             if (identifierName == null)
                 throw new ArgumentNullException(nameof(identifierName));
 
-            return identifierName.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true;
+            return identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression);
         }
 
         public static bool IsQualifiedWithThis(this SimpleNameSyntax identifierName)

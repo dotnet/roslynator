@@ -57,10 +57,10 @@ namespace Roslynator.CSharp
 
             while (true)
             {
-                if (ifStatement.Parent?.IsKind(SyntaxKind.ElseClause) != true)
+                if (!ifStatement.IsParentKind(SyntaxKind.ElseClause))
                     break;
 
-                if (ifStatement.Parent.Parent?.IsKind(SyntaxKind.IfStatement) != true)
+                if (!ifStatement.Parent.IsParentKind(SyntaxKind.IfStatement))
                     break;
 
                 ifStatement = (IfStatementSyntax)ifStatement.Parent.Parent;
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            return ifStatement.Parent?.IsKind(SyntaxKind.ElseClause) != true;
+            return !ifStatement.IsParentKind(SyntaxKind.ElseClause);
         }
 
         public static IfStatementSyntax GetNextIf(IfStatementSyntax ifStatement)
@@ -93,8 +93,8 @@ namespace Roslynator.CSharp
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            if (ifStatement.Parent?.IsKind(SyntaxKind.ElseClause) == true
-                && ifStatement.Parent.Parent?.IsKind(SyntaxKind.IfStatement) == true)
+            if (ifStatement.IsParentKind(SyntaxKind.ElseClause)
+                && ifStatement.Parent.IsParentKind(SyntaxKind.IfStatement))
             {
                 return (IfStatementSyntax)ifStatement.Parent.Parent;
             }

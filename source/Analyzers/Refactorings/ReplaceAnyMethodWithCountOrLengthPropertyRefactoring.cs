@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            if (invocation.Parent?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == false)
+            if (!invocation.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
-                            if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+                            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
                             {
                                 var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
 
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newRoot = null;
 
-            if (invocation.Parent?.IsKind(SyntaxKind.LogicalNotExpression) == true)
+            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
                 BinaryExpressionSyntax binaryExpression = BinaryExpression(
                     SyntaxKind.EqualsExpression,

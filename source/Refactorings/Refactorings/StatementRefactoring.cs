@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (statement != null)
                 {
                     if (!EmbeddedStatement.IsEmbeddedStatement(statement)
-                        && statement.Parent?.IsKind(SyntaxKind.Block) == true)
+                        && statement.IsParentKind(SyntaxKind.Block))
                     {
                         RegisterRefactoring(context, statement);
                     }
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             if (switchStatement.OpenBraceToken.Span.Contains(context.Span)
                 || switchStatement.CloseBraceToken.Span.Contains(context.Span))
             {
-                if (switchStatement.Parent?.IsKind(SyntaxKind.Block) == true)
+                if (switchStatement.IsParentKind(SyntaxKind.Block))
                     RegisterRefactoring(context, switchStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 var usingStatement = (UsingStatementSyntax)parent;
 
-                                while (usingStatement.Parent?.IsKind(SyntaxKind.UsingStatement) == true)
+                                while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
                                     usingStatement = (UsingStatementSyntax)usingStatement.Parent;
 
                                 return usingStatement;
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var catchClause = (CatchClauseSyntax)parent;
 
-                        if (catchClause.Parent?.IsKind(SyntaxKind.TryStatement) == true)
+                        if (catchClause.IsParentKind(SyntaxKind.TryStatement))
                         {
                             var tryStatement = (TryStatementSyntax)catchClause.Parent;
 
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var finallyClause = (FinallyClauseSyntax)parent;
 
-                        if (finallyClause.Parent?.IsKind(SyntaxKind.TryStatement) == true)
+                        if (finallyClause.IsParentKind(SyntaxKind.TryStatement))
                         {
                             var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 

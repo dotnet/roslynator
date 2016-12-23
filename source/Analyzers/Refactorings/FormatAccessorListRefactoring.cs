@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-            else if (accessorList.Parent?.IsKind(SyntaxKind.PropertyDeclaration) == true
+            else if (accessorList.IsParentKind(SyntaxKind.PropertyDeclaration)
                 && accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
                 && !accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
