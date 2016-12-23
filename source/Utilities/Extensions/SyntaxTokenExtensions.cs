@@ -109,10 +109,5 @@ namespace Roslynator
         {
             return token.WithAdditionalAnnotations(RenameAnnotation.Create());
         }
-
-        public static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
-        {
-            return TokenList(tokens);
-        }
     }
 }
