@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,16 +12,45 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
         {
-            if (fieldDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
+            return !fieldDeclaration.IsStatic()
                 && !fieldDeclaration.IsConst()
-                && !fieldDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)fieldDeclaration.Parent;
+                && IsStaticClass(fieldDeclaration.Parent);
+        }
 
-                return classDeclaration.IsStatic();
-            }
+        public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
+        {
+            return !methodDeclaration.IsStatic()
+                && IsStaticClass(methodDeclaration.Parent);
+        }
 
-            return false;
+        public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            return !propertyDeclaration.IsStatic()
+                && IsStaticClass(propertyDeclaration.Parent);
+        }
+
+        public static bool CanRefactor(EventDeclarationSyntax eventDeclaration)
+        {
+            return !eventDeclaration.IsStatic()
+                && IsStaticClass(eventDeclaration.Parent);
+        }
+
+        public static bool CanRefactor(EventFieldDeclarationSyntax eventFieldDeclaration)
+        {
+            return !eventFieldDeclaration.IsStatic()
+                && IsStaticClass(eventFieldDeclaration.Parent);
+        }
+
+        public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration)
+        {
+            return !constructorDeclaration.IsStatic()
+                && IsStaticClass(constructorDeclaration.Parent);
+        }
+
+        private static bool IsStaticClass(SyntaxNode node)
+        {
+            return node?.IsKind(SyntaxKind.ClassDeclaration) == true
+                && ((ClassDeclarationSyntax)node).IsStatic();
         }
 
         public static async Task<Document> RefactorAsync(
@@ -36,19 +63,6 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
-                && !methodDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)methodDeclaration.Parent;
-
-                return classDeclaration.IsStatic();
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             MethodDeclarationSyntax methodDeclaration,
@@ -57,19 +71,6 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax newNode = AddStaticModifier(methodDeclaration);
 
             return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
-                && !propertyDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)propertyDeclaration.Parent;
-
-                return classDeclaration.IsStatic();
-            }
-
-            return false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -82,19 +83,6 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        public static bool CanRefactor(EventDeclarationSyntax eventDeclaration)
-        {
-            if (eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
-                && !eventDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)eventDeclaration.Parent;
-
-                return classDeclaration.IsStatic();
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             EventDeclarationSyntax eventDeclaration,
@@ -103,19 +91,6 @@ namespace Roslynator.CSharp.Refactorings
             EventDeclarationSyntax newNode = AddStaticModifier(eventDeclaration);
 
             return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        public static bool CanRefactor(EventFieldDeclarationSyntax eventFieldDeclaration)
-        {
-            if (eventFieldDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
-                && !eventFieldDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)eventFieldDeclaration.Parent;
-
-                return classDeclaration.IsStatic();
-            }
-
-            return false;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -128,19 +103,6 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(eventFieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (constructorDeclaration.IsParentKind(SyntaxKind.ClassDeclaration)
-                && !constructorDeclaration.IsStatic())
-            {
-                var classDeclaration = (ClassDeclarationSyntax)constructorDeclaration.Parent;
-
-                return classDeclaration.IsStatic();
-            }
-
-            return false;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             ConstructorDeclarationSyntax constructorDeclaration,
@@ -151,56 +113,109 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        public static FieldDeclarationSyntax AddStaticModifier(FieldDeclarationSyntax node)
+        public static FieldDeclarationSyntax AddStaticModifier(FieldDeclarationSyntax fieldDeclaration)
         {
-            if (!node.IsStatic())
-                return node.WithModifiers(AddStaticModifier(node.Modifiers));
+            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
-            return node;
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                return ModifierInserter.InsertModifier(fieldDeclaration, SyntaxKind.StaticKeyword);
+            }
+            else
+            {
+                return fieldDeclaration;
+            }
         }
 
-        public static MethodDeclarationSyntax AddStaticModifier(MethodDeclarationSyntax node)
+        public static MethodDeclarationSyntax AddStaticModifier(MethodDeclarationSyntax methodDeclaration)
         {
-            if (!node.IsStatic())
-                return node.WithModifiers(AddStaticModifier(node.Modifiers));
+            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
-            return node;
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                return ModifierInserter.InsertModifier(methodDeclaration, SyntaxKind.StaticKeyword);
+            }
+            else
+            {
+                return methodDeclaration;
+            }
         }
 
-        public static PropertyDeclarationSyntax AddStaticModifier(PropertyDeclarationSyntax node)
+        public static PropertyDeclarationSyntax AddStaticModifier(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (!node.IsStatic())
-                return node.WithModifiers(AddStaticModifier(node.Modifiers));
+            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
 
-            return node;
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                return ModifierInserter.InsertModifier(propertyDeclaration, SyntaxKind.StaticKeyword);
+            }
+            else
+            {
+                return propertyDeclaration;
+            }
         }
 
-        public static EventDeclarationSyntax AddStaticModifier(EventDeclarationSyntax node)
+        public static EventDeclarationSyntax AddStaticModifier(EventDeclarationSyntax eventDeclaration)
         {
-            if (!node.IsStatic())
-                return node.WithModifiers(AddStaticModifier(node.Modifiers));
+            SyntaxTokenList modifiers = eventDeclaration.Modifiers;
 
-            return node;
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                return ModifierInserter.InsertModifier(eventDeclaration, SyntaxKind.StaticKeyword);
+            }
+            else
+            {
+                return eventDeclaration;
+            }
         }
 
-        public static EventFieldDeclarationSyntax AddStaticModifier(EventFieldDeclarationSyntax node)
+        public static EventFieldDeclarationSyntax AddStaticModifier(EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (!node.IsStatic())
-                return node.WithModifiers(AddStaticModifier(node.Modifiers));
+            SyntaxTokenList modifiers = eventFieldDeclaration.Modifiers;
 
-            return node;
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                return ModifierInserter.InsertModifier(eventFieldDeclaration, SyntaxKind.StaticKeyword);
+            }
+            else
+            {
+                return eventFieldDeclaration;
+            }
         }
 
-        public static ConstructorDeclarationSyntax AddStaticModifier(ConstructorDeclarationSyntax node)
+        public static ConstructorDeclarationSyntax AddStaticModifier(ConstructorDeclarationSyntax constructorDeclaration)
         {
-            return node.WithModifiers(Modifiers.Static());
-        }
+            SyntaxTokenList modifiers = constructorDeclaration.Modifiers;
 
-        private static SyntaxTokenList AddStaticModifier(SyntaxTokenList modifiers)
-        {
-            return TokenList(
-                modifiers.Add(CSharpFactory.StaticToken())
-                    .OrderBy(f => f, ModifierComparer.Instance));
+            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
+            {
+                SyntaxTokenList newModifiers = modifiers;
+
+                if (ModifierUtility.ContainsAccessModifier(modifiers))
+                {
+                    newModifiers = ModifierUtility.RemoveAccessModifiers(modifiers);
+
+                    if (newModifiers.Any())
+                    {
+                        newModifiers = newModifiers.ReplaceAt(0, newModifiers[0].WithLeadingTrivia(modifiers[0].LeadingTrivia));
+                        newModifiers = ModifierInserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                    }
+                    else
+                    {
+                        newModifiers = ModifierInserter.InsertModifier(newModifiers, CSharpFactory.StaticToken().WithLeadingTrivia(modifiers[0].LeadingTrivia));
+                    }
+                }
+                else
+                {
+                    newModifiers = ModifierInserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                }
+
+                return constructorDeclaration.WithModifiers(newModifiers);
+            }
+            else
+            {
+                return constructorDeclaration;
+            }
         }
     }
 }

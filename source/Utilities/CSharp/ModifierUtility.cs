@@ -19,6 +19,11 @@ namespace Roslynator.CSharp
                 SyntaxKind.PrivateKeyword);
         }
 
+        public static SyntaxTokenList RemoveAccessModifiers(SyntaxTokenList tokenList)
+        {
+            return SyntaxFactory.TokenList(tokenList.Where(token => !IsAccessModifier(token)));
+        }
+
         public static bool ContainsAccessModifier(SyntaxTokenList tokenList)
         {
             return tokenList.Any(token => IsAccessModifier(token));

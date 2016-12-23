@@ -6,21 +6,26 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class MarkMemberAsStaticRefactoring
     {
-        public static class SomeClass
+        public static class Foo
         {
-            public void Do()
+            public void Bar()
             {
             }
 
-            public void Do2()
+            public void Bar2()
             {
             }
         }
 
-        private string _value;
+        private string _fieldName;
 
         public void MethodName()
         {
+        }
+
+        public unsafe MarkMemberAsStaticRefactoring()
+        {
+
         }
 
         public MarkMemberAsStaticRefactoring()
