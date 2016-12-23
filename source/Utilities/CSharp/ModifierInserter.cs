@@ -18,6 +18,14 @@ namespace Roslynator.CSharp
             return memberDeclaration.SetModifiers(InsertModifier(memberDeclaration.GetModifiers(), modifier));
         }
 
+        public static MemberDeclarationSyntax InsertModifier(MemberDeclarationSyntax memberDeclaration, SyntaxKind modifierKind)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            return memberDeclaration.SetModifiers(InsertModifier(memberDeclaration.GetModifiers(), modifierKind));
+        }
+
         public static int GetInsertIndex(MemberDeclarationSyntax memberDeclaration, SyntaxToken modifier)
         {
             if (memberDeclaration == null)
@@ -40,6 +48,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             return classDeclaration.WithModifiers(InsertModifier(classDeclaration.Modifiers, modifier));
+        }
+
+        public static ClassDeclarationSyntax InsertModifier(ClassDeclarationSyntax classDeclaration, SyntaxKind modifierKind)
+        {
+            if (classDeclaration == null)
+                throw new ArgumentNullException(nameof(classDeclaration));
+
+            return classDeclaration.WithModifiers(InsertModifier(classDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(ClassDeclarationSyntax classDeclaration, SyntaxToken modifier)
@@ -66,6 +82,14 @@ namespace Roslynator.CSharp
             return constructorDeclaration.WithModifiers(InsertModifier(constructorDeclaration.Modifiers, modifier));
         }
 
+        public static ConstructorDeclarationSyntax InsertModifier(ConstructorDeclarationSyntax constructorDeclaration, SyntaxKind modifierKind)
+        {
+            if (constructorDeclaration == null)
+                throw new ArgumentNullException(nameof(constructorDeclaration));
+
+            return constructorDeclaration.WithModifiers(InsertModifier(constructorDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(ConstructorDeclarationSyntax constructorDeclaration, SyntaxToken modifier)
         {
             if (constructorDeclaration == null)
@@ -88,6 +112,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
 
             return conversionOperatorDeclaration.WithModifiers(InsertModifier(conversionOperatorDeclaration.Modifiers, modifier));
+        }
+
+        public static ConversionOperatorDeclarationSyntax InsertModifier(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxKind modifierKind)
+        {
+            if (conversionOperatorDeclaration == null)
+                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
+
+            return conversionOperatorDeclaration.WithModifiers(InsertModifier(conversionOperatorDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxToken modifier)
@@ -114,6 +146,14 @@ namespace Roslynator.CSharp
             return delegateDeclaration.WithModifiers(InsertModifier(delegateDeclaration.Modifiers, modifier));
         }
 
+        public static DelegateDeclarationSyntax InsertModifier(DelegateDeclarationSyntax delegateDeclaration, SyntaxKind modifierKind)
+        {
+            if (delegateDeclaration == null)
+                throw new ArgumentNullException(nameof(delegateDeclaration));
+
+            return delegateDeclaration.WithModifiers(InsertModifier(delegateDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(DelegateDeclarationSyntax delegateDeclaration, SyntaxToken modifier)
         {
             if (delegateDeclaration == null)
@@ -136,6 +176,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(destructorDeclaration));
 
             return destructorDeclaration.WithModifiers(InsertModifier(destructorDeclaration.Modifiers, modifier));
+        }
+
+        public static DestructorDeclarationSyntax InsertModifier(DestructorDeclarationSyntax destructorDeclaration, SyntaxKind modifierKind)
+        {
+            if (destructorDeclaration == null)
+                throw new ArgumentNullException(nameof(destructorDeclaration));
+
+            return destructorDeclaration.WithModifiers(InsertModifier(destructorDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(DestructorDeclarationSyntax destructorDeclaration, SyntaxToken modifier)
@@ -162,6 +210,14 @@ namespace Roslynator.CSharp
             return enumDeclaration.WithModifiers(InsertModifier(enumDeclaration.Modifiers, modifier));
         }
 
+        public static EnumDeclarationSyntax InsertModifier(EnumDeclarationSyntax enumDeclaration, SyntaxKind modifierKind)
+        {
+            if (enumDeclaration == null)
+                throw new ArgumentNullException(nameof(enumDeclaration));
+
+            return enumDeclaration.WithModifiers(InsertModifier(enumDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(EnumDeclarationSyntax enumDeclaration, SyntaxToken modifier)
         {
             if (enumDeclaration == null)
@@ -184,6 +240,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(eventDeclaration));
 
             return eventDeclaration.WithModifiers(InsertModifier(eventDeclaration.Modifiers, modifier));
+        }
+
+        public static EventDeclarationSyntax InsertModifier(EventDeclarationSyntax eventDeclaration, SyntaxKind modifierKind)
+        {
+            if (eventDeclaration == null)
+                throw new ArgumentNullException(nameof(eventDeclaration));
+
+            return eventDeclaration.WithModifiers(InsertModifier(eventDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(EventDeclarationSyntax eventDeclaration, SyntaxToken modifier)
@@ -210,6 +274,14 @@ namespace Roslynator.CSharp
             return eventFieldDeclaration.WithModifiers(InsertModifier(eventFieldDeclaration.Modifiers, modifier));
         }
 
+        public static EventFieldDeclarationSyntax InsertModifier(EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxKind modifierKind)
+        {
+            if (eventFieldDeclaration == null)
+                throw new ArgumentNullException(nameof(eventFieldDeclaration));
+
+            return eventFieldDeclaration.WithModifiers(InsertModifier(eventFieldDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxToken modifier)
         {
             if (eventFieldDeclaration == null)
@@ -232,6 +304,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(fieldDeclaration));
 
             return fieldDeclaration.WithModifiers(InsertModifier(fieldDeclaration.Modifiers, modifier));
+        }
+
+        public static FieldDeclarationSyntax InsertModifier(FieldDeclarationSyntax fieldDeclaration, SyntaxKind modifierKind)
+        {
+            if (fieldDeclaration == null)
+                throw new ArgumentNullException(nameof(fieldDeclaration));
+
+            return fieldDeclaration.WithModifiers(InsertModifier(fieldDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(FieldDeclarationSyntax fieldDeclaration, SyntaxToken modifier)
@@ -258,6 +338,14 @@ namespace Roslynator.CSharp
             return indexerDeclaration.WithModifiers(InsertModifier(indexerDeclaration.Modifiers, modifier));
         }
 
+        public static IndexerDeclarationSyntax InsertModifier(IndexerDeclarationSyntax indexerDeclaration, SyntaxKind modifierKind)
+        {
+            if (indexerDeclaration == null)
+                throw new ArgumentNullException(nameof(indexerDeclaration));
+
+            return indexerDeclaration.WithModifiers(InsertModifier(indexerDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(IndexerDeclarationSyntax indexerDeclaration, SyntaxToken modifier)
         {
             if (indexerDeclaration == null)
@@ -280,6 +368,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return interfaceDeclaration.WithModifiers(InsertModifier(interfaceDeclaration.Modifiers, modifier));
+        }
+
+        public static InterfaceDeclarationSyntax InsertModifier(InterfaceDeclarationSyntax interfaceDeclaration, SyntaxKind modifierKind)
+        {
+            if (interfaceDeclaration == null)
+                throw new ArgumentNullException(nameof(interfaceDeclaration));
+
+            return interfaceDeclaration.WithModifiers(InsertModifier(interfaceDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(InterfaceDeclarationSyntax interfaceDeclaration, SyntaxToken modifier)
@@ -306,6 +402,14 @@ namespace Roslynator.CSharp
             return methodDeclaration.WithModifiers(InsertModifier(methodDeclaration.Modifiers, modifier));
         }
 
+        public static MethodDeclarationSyntax InsertModifier(MethodDeclarationSyntax methodDeclaration, SyntaxKind modifierKind)
+        {
+            if (methodDeclaration == null)
+                throw new ArgumentNullException(nameof(methodDeclaration));
+
+            return methodDeclaration.WithModifiers(InsertModifier(methodDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(MethodDeclarationSyntax methodDeclaration, SyntaxToken modifier)
         {
             if (methodDeclaration == null)
@@ -328,6 +432,14 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(operatorDeclaration));
 
             return operatorDeclaration.WithModifiers(InsertModifier(operatorDeclaration.Modifiers, modifier));
+        }
+
+        public static OperatorDeclarationSyntax InsertModifier(OperatorDeclarationSyntax operatorDeclaration, SyntaxKind modifierKind)
+        {
+            if (operatorDeclaration == null)
+                throw new ArgumentNullException(nameof(operatorDeclaration));
+
+            return operatorDeclaration.WithModifiers(InsertModifier(operatorDeclaration.Modifiers, modifierKind));
         }
 
         public static int GetInsertIndex(OperatorDeclarationSyntax operatorDeclaration, SyntaxToken modifier)
@@ -354,6 +466,14 @@ namespace Roslynator.CSharp
             return propertyDeclaration.WithModifiers(InsertModifier(propertyDeclaration.Modifiers, modifier));
         }
 
+        public static PropertyDeclarationSyntax InsertModifier(PropertyDeclarationSyntax propertyDeclaration, SyntaxKind modifierKind)
+        {
+            if (propertyDeclaration == null)
+                throw new ArgumentNullException(nameof(propertyDeclaration));
+
+            return propertyDeclaration.WithModifiers(InsertModifier(propertyDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(PropertyDeclarationSyntax propertyDeclaration, SyntaxToken modifier)
         {
             if (propertyDeclaration == null)
@@ -378,6 +498,14 @@ namespace Roslynator.CSharp
             return structDeclaration.WithModifiers(InsertModifier(structDeclaration.Modifiers, modifier));
         }
 
+        public static StructDeclarationSyntax InsertModifier(StructDeclarationSyntax structDeclaration, SyntaxKind modifierKind)
+        {
+            if (structDeclaration == null)
+                throw new ArgumentNullException(nameof(structDeclaration));
+
+            return structDeclaration.WithModifiers(InsertModifier(structDeclaration.Modifiers, modifierKind));
+        }
+
         public static int GetInsertIndex(StructDeclarationSyntax structDeclaration, SyntaxToken modifier)
         {
             if (structDeclaration == null)
@@ -392,6 +520,11 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             return GetInsertIndex(structDeclaration.Modifiers, modifierKind);
+        }
+
+        public static SyntaxTokenList InsertModifier(SyntaxTokenList modifiers, SyntaxKind modifierKind)
+        {
+            return InsertModifier(modifiers, Token(modifierKind));
         }
 
         public static SyntaxTokenList InsertModifier(SyntaxTokenList modifiers, SyntaxToken modifier)
