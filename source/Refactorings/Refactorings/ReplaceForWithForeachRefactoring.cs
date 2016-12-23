@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,168 +19,145 @@ namespace Roslynator.CSharp.Refactorings
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            StatementSyntax statement = forStatement.Statement;
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(document, forStatement, root, semanticModel, cancellationToken).ConfigureAwait(false);
+            string identifier = NameGenerator.GenerateUniqueLocalName("item", statement.SpanStart, semanticModel, cancellationToken);
+            IdentifierNameSyntax identifierName = IdentifierName(identifier);
 
-            List<ElementAccessExpressionSyntax> expressions = identifierNames
-                .Select(f => f.Parent.Parent.Parent)
-                .Cast<ElementAccessExpressionSyntax>()
-                .ToList();
+            var condition = (BinaryExpressionSyntax)forStatement.Condition;
+            var memberAccessExpression = (MemberAccessExpressionSyntax)condition.Right;
+            ExpressionSyntax expression = memberAccessExpression.Expression;
 
-            string identifier = NameGenerator.GenerateUniqueLocalName("item", forStatement.Statement.SpanStart, semanticModel, cancellationToken);
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables.First(), cancellationToken);
+            ImmutableArray<SyntaxNode> nodes = await document.FindSymbolNodesAsync(symbol, cancellationToken).ConfigureAwait(false);
 
-            var rewriter = new SyntaxRewriter(expressions, identifier);
+            StatementSyntax newStatement = statement.ReplaceNodes(
+                nodes.Select(f => f.Parent.Parent.Parent),
+                (f, g) => identifierName.WithTriviaFrom(f));
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
-                IdentifierName("var"),
+                VarType(),
                 identifier,
-                GetCollectionExpression(forStatement),
-                (StatementSyntax)rewriter.Visit(forStatement.Statement));
+                expression,
+                newStatement);
 
             forEachStatement = forEachStatement
                 .WithTriviaFrom(forStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(forStatement, forEachStatement);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(forStatement, forEachStatement, cancellationToken).ConfigureAwait(false);
         }
 
-        public static async Task<bool> CanRefactorAsync(
-            RefactoringContext context,
-            ForStatementSyntax forStatement)
+        public static async Task<bool> CanRefactorAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            ExpressionSyntax value = forStatement
-                .Declaration?
-                .Variables.SingleOrDefault()?
-                .Initializer?
-                .Value;
+            VariableDeclaratorSyntax variableDeclarator = forStatement.Declaration?.SingleVariableOrDefault();
 
-            if (value?.IsKind(SyntaxKind.NumericLiteralExpression) != true)
-                return false;
+            if (variableDeclarator != null)
+            {
+                ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-            if (((LiteralExpressionSyntax)value).Token.ValueText != "0")
-                return false;
+                if (value?.IsKind(SyntaxKind.NumericLiteralExpression) == true
+                    && ((LiteralExpressionSyntax)value).IsZeroLiteralExpression())
+                {
+                    ExpressionSyntax condition = forStatement.Condition;
 
-            if (forStatement.Condition?.IsKind(SyntaxKind.LessThanExpression) != true)
-                return false;
+                    if (condition?.IsKind(SyntaxKind.LessThanExpression) == true)
+                    {
+                        ExpressionSyntax right = ((BinaryExpressionSyntax)condition).Right;
 
-            ExpressionSyntax expression = ((BinaryExpressionSyntax)forStatement.Condition).Right;
+                        if (right?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                        {
+                            var memberAccess = (MemberAccessExpressionSyntax)right;
 
-            if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
-                return false;
+                            string memberName = memberAccess.Name?.Identifier.ValueText;
 
-            var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
+                            if (memberName == "Count" || memberName == "Length")
+                            {
+                                ExpressionSyntax expression = memberAccess.Expression;
 
-            string memberName = memberAccessExpression.Name?.Identifier.ValueText;
-            if (memberName != "Count" && memberName != "Length")
-                return false;
+                                if (expression != null)
+                                {
+                                    SeparatedSyntaxList<ExpressionSyntax> incrementors = forStatement.Incrementors;
 
-            if (forStatement.Incrementors.SingleOrDefault()?.IsKind(SyntaxKind.PostIncrementExpression) != true)
-                return false;
+                                    if (incrementors.Count == 1
+                                        && incrementors.First().IsKind(SyntaxKind.PostIncrementExpression))
+                                    {
+                                        return await IsElementAccessAsync(context, forStatement, variableDeclarator, expression).ConfigureAwait(false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            return await CheckIndexReferencesAsync(context, forStatement).ConfigureAwait(false);
+            return false;
         }
 
-        private static async Task<bool> CheckIndexReferencesAsync(
+        private static async Task<bool> IsElementAccessAsync(
             RefactoringContext context,
-            ForStatementSyntax forStatement)
+            ForStatementSyntax forStatement,
+            VariableDeclaratorSyntax variableDeclarator,
+            ExpressionSyntax memberAccessExpression)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ISymbol collectionSymbol = semanticModel.GetSymbolInfo(GetCollectionExpression(forStatement)).Symbol;
+            ISymbol symbol = semanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
 
-            if (collectionSymbol == null)
-                return false;
-
-            IEnumerable<IdentifierNameSyntax> identifierNames = await GetIdentifierNamesAsync(context.Document, forStatement, context.Root, semanticModel, context.CancellationToken).ConfigureAwait(false);
-
-            foreach (IdentifierNameSyntax identifierName in identifierNames)
+            if (symbol != null)
             {
-                if (!identifierName.IsParentKind(SyntaxKind.Argument))
-                    return false;
+                ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
 
-                if (!identifierName.Parent.IsParentKind(SyntaxKind.BracketedArgumentList))
-                    return false;
+                ImmutableArray<SyntaxNode> nodes = await context.Document.FindSymbolNodesAsync(variableSymbol, context.CancellationToken).ConfigureAwait(false);
 
-                if (!identifierName.Parent.Parent.IsParentKind(SyntaxKind.ElementAccessExpression))
-                    return false;
+                StatementSyntax statement = forStatement.Statement;
 
-                var elementAccess = (ElementAccessExpressionSyntax)identifierName.Parent.Parent.Parent;
-
-                ISymbol symbol = semanticModel.GetSymbolInfo(elementAccess.Expression, context.CancellationToken).Symbol;
-
-                if (!collectionSymbol.Equals(symbol))
-                    return false;
+                return nodes
+                    .Where(f => statement.Span.Contains(f.Span))
+                    .All(node => IsElementAccess(node, symbol, semanticModel, context.CancellationToken));
             }
 
             return true;
         }
 
-        private static async Task<IEnumerable<IdentifierNameSyntax>> GetIdentifierNamesAsync(
-            Document document,
-            ForStatementSyntax forStatement,
-            SyntaxNode root,
+        private static bool IsElementAccess(
+            SyntaxNode node,
+            ISymbol symbol,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken)
         {
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(
-                semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables[0]),
-                document.Project.Solution,
-                cancellationToken).ConfigureAwait(false);
-
-            return GetIdentifierNames(referencedSymbols, forStatement, root);
-        }
-
-        private static IEnumerable<IdentifierNameSyntax> GetIdentifierNames(
-            IEnumerable<ReferencedSymbol> referencedSymbols,
-            ForStatementSyntax forStatement,
-            SyntaxNode root)
-        {
-            foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
+            if (node.IsKind(SyntaxKind.IdentifierName))
             {
-                foreach (ReferenceLocation item in referencedSymbol.Locations)
-                {
-                    IdentifierNameSyntax node = root
-                        .FindNode(item.Location.SourceSpan, getInnermostNodeForTie: true)
-                        .FirstAncestorOrSelf<IdentifierNameSyntax>();
+                SyntaxNode parent = node.Parent;
 
-                    if (forStatement.Statement.Span.Contains(node.Span))
-                        yield return node;
+                if (parent?.IsKind(SyntaxKind.Argument) == true)
+                {
+                    parent = parent.Parent;
+
+                    if (parent?.IsKind(SyntaxKind.BracketedArgumentList) == true)
+                    {
+                        parent = parent.Parent;
+
+                        if (parent?.IsKind(SyntaxKind.ElementAccessExpression) == true)
+                        {
+                            var elementAccess = (ElementAccessExpressionSyntax)parent;
+
+                            ExpressionSyntax expression = elementAccess.Expression;
+
+                            if (expression != null)
+                            {
+                                ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                                return symbol.Equals(expressionSymbol);
+                            }
+                        }
+                    }
                 }
             }
-        }
 
-        private static ExpressionSyntax GetCollectionExpression(ForStatementSyntax forStatement)
-        {
-            var condition = (BinaryExpressionSyntax)forStatement.Condition;
-
-            var memberAccessExpression = (MemberAccessExpressionSyntax)condition.Right;
-
-            return memberAccessExpression.Expression;
-        }
-
-        private class SyntaxRewriter : CSharpSyntaxRewriter
-        {
-            private readonly IList<ElementAccessExpressionSyntax> _expressions;
-            private readonly string _elementName;
-
-            public SyntaxRewriter(IList<ElementAccessExpressionSyntax> expressions, string elementName)
-            {
-                _expressions = expressions;
-                _elementName = elementName;
-            }
-
-            public override SyntaxNode VisitElementAccessExpression(ElementAccessExpressionSyntax node)
-            {
-                if (_expressions.Contains(node))
-                    return IdentifierName(_elementName).WithTriviaFrom(node);
-
-                return base.VisitElementAccessExpression(node);
-            }
+            return false;
         }
     }
 }

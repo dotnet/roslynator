@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class ReplaceForWithForeachRefactoring
+    internal static class ReplaceForWithForeachRefactoring
     {
-        public void SomeMethod()
+        public static void Foo()
         {
             string item = null;
 
@@ -15,6 +15,27 @@ namespace Roslynator.CSharp.Refactorings.Tests
             for (int i = 0; i < items.Count; i++)
             {
                 string value = items[i];
+                string value2 = items[i];
+            }
+        }
+
+        public static void Foo2()
+        {
+            var items = new List<string>();
+
+            for (int i = 1; i < items.Count; i++)
+            {
+                string value = items[i];
+            }
+
+            for (int i = 0; i < items.Count - 1; i++)
+            {
+                string value = items[i];
+            }
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                string value = items[i + 1];
             }
         }
     }
