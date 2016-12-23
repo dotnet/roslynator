@@ -68,7 +68,7 @@ namespace Roslynator.CSharp
         private static bool IsLocalConstDeclaration(SyntaxNode node)
         {
             return node.IsKind(SyntaxKind.LocalDeclarationStatement)
-                && ((LocalDeclarationStatementSyntax)node).Modifiers.Contains(SyntaxKind.ConstKeyword);
+                && ((LocalDeclarationStatementSyntax)node).IsConst;
         }
 
         private static bool IsImplicitTypeAllowed(

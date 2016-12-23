@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, FieldDeclarationSyntax fieldDeclaration)
         {
-            if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
+            if (fieldDeclaration.IsConst())
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField)
                     && fieldDeclaration.Span.Contains(context.Span))

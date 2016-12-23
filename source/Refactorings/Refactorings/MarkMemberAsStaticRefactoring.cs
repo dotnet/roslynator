@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
         {
             if (fieldDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword)
+                && !fieldDeclaration.IsConst()
                 && !fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
             {
                 var classDeclaration = (ClassDeclarationSyntax)fieldDeclaration.Parent;
