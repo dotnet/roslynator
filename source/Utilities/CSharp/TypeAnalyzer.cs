@@ -38,39 +38,37 @@ namespace Roslynator.CSharp
 
                         if (typeSymbol?.SupportsExplicitDeclaration() == true)
                         {
-                            if (variables.Count > 1)
+                            if (variables.Count > 1
+                                || IsLocalConstDeclaration(variableDeclaration.Parent))
                             {
                                 return (type.IsVar)
                                     ? TypeAnalysisResult.ImplicitButShouldBeExplicit
                                     : TypeAnalysisResult.None;
                             }
-
-                            SyntaxNode parent = variableDeclaration.Parent;
-
-                            if (parent.IsKind(SyntaxKind.LocalDeclarationStatement)
-                                && ((LocalDeclarationStatementSyntax)parent).Modifiers.Contains(SyntaxKind.ConstKeyword))
-                            {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                    : TypeAnalysisResult.None;
-                            }
-
-                            if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
+                            else if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
                             {
                                 return (type.IsVar)
                                     ? TypeAnalysisResult.Implicit
                                     : TypeAnalysisResult.ExplicitButShouldBeImplicit;
                             }
-
-                            return (type.IsVar)
-                                ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                : TypeAnalysisResult.Explicit;
+                            else
+                            {
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                    : TypeAnalysisResult.Explicit;
+                            }
                         }
                     }
                 }
             }
 
             return TypeAnalysisResult.None;
+        }
+
+        private static bool IsLocalConstDeclaration(SyntaxNode node)
+        {
+            return node.IsKind(SyntaxKind.LocalDeclarationStatement)
+                && ((LocalDeclarationStatementSyntax)node).Modifiers.Contains(SyntaxKind.ConstKeyword);
         }
 
         private static bool IsImplicitTypeAllowed(
