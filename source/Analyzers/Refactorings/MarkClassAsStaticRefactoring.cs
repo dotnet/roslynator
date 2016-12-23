@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var classDeclaration = syntaxReference.GetSyntax(context.CancellationToken) as ClassDeclarationSyntax;
 
-                    if (classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == false)
+                    if (classDeclaration?.IsStatic() == false)
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.MarkClassAsStatic,

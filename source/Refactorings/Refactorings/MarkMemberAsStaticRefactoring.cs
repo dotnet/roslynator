@@ -16,11 +16,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (fieldDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
                 && !fieldDeclaration.IsConst()
-                && !fieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !fieldDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)fieldDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -39,11 +39,11 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
             if (methodDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !methodDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !methodDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)methodDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -62,11 +62,11 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
             if (propertyDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !propertyDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)propertyDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -85,11 +85,11 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(EventDeclarationSyntax eventDeclaration)
         {
             if (eventDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !eventDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !eventDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)eventDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -108,11 +108,11 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(EventFieldDeclarationSyntax eventFieldDeclaration)
         {
             if (eventFieldDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !eventFieldDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !eventFieldDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)eventFieldDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -131,11 +131,11 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration)
         {
             if (constructorDeclaration.Parent?.IsKind(SyntaxKind.ClassDeclaration) == true
-                && !constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                && !constructorDeclaration.IsStatic())
             {
                 var classDeclaration = (ClassDeclarationSyntax)constructorDeclaration.Parent;
 
-                return classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword);
+                return classDeclaration.IsStatic();
             }
 
             return false;
@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static FieldDeclarationSyntax AddStaticModifier(FieldDeclarationSyntax node)
         {
-            if (!node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (!node.IsStatic())
                 return node.WithModifiers(AddStaticModifier(node.Modifiers));
 
             return node;
@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static MethodDeclarationSyntax AddStaticModifier(MethodDeclarationSyntax node)
         {
-            if (!node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (!node.IsStatic())
                 return node.WithModifiers(AddStaticModifier(node.Modifiers));
 
             return node;
@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static PropertyDeclarationSyntax AddStaticModifier(PropertyDeclarationSyntax node)
         {
-            if (!node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (!node.IsStatic())
                 return node.WithModifiers(AddStaticModifier(node.Modifiers));
 
             return node;
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static EventDeclarationSyntax AddStaticModifier(EventDeclarationSyntax node)
         {
-            if (!node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (!node.IsStatic())
                 return node.WithModifiers(AddStaticModifier(node.Modifiers));
 
             return node;
@@ -185,7 +185,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static EventFieldDeclarationSyntax AddStaticModifier(EventFieldDeclarationSyntax node)
         {
-            if (!node.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (!node.IsStatic())
                 return node.WithModifiers(AddStaticModifier(node.Modifiers));
 
             return node;

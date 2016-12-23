@@ -33,7 +33,7 @@ namespace Roslynator.CSharp
             {
                 case SyntaxKind.ConstructorDeclaration:
                     {
-                        if (((ConstructorDeclarationSyntax)declaration).Modifiers.Contains(SyntaxKind.StaticKeyword))
+                        if (((ConstructorDeclarationSyntax)declaration).IsStatic())
                             return AccessModifier.None;
 
                         return AccessModifier.Private;

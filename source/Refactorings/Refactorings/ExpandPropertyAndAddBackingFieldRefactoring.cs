@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTokenList modifiers = TokenList(PrivateToken());
 
-            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+            if (propertyDeclaration.IsStatic())
                 modifiers = modifiers.Add(StaticToken());
 
             return FieldDeclaration(modifiers, propertyDeclaration.Type, name, propertyDeclaration.Initializer);

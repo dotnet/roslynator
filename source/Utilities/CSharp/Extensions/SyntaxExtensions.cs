@@ -859,6 +859,11 @@ namespace Roslynator.CSharp
                 classDeclaration.Identifier.Span.End);
         }
 
+        public static bool IsStatic(this ClassDeclarationSyntax classDeclaration)
+        {
+            return classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
+        }
+
         public static CompilationUnitSyntax WithMembers(
             this CompilationUnitSyntax compilationUnit,
             MemberDeclarationSyntax memberDeclaration)
@@ -995,6 +1000,11 @@ namespace Roslynator.CSharp
                 constructorDeclaration.Initializer?.Span.End
                     ?? constructorDeclaration.ParameterList?.Span.End
                     ?? constructorDeclaration.Identifier.Span.End);
+        }
+
+        public static bool IsStatic(this ConstructorDeclarationSyntax constructorDeclaration)
+        {
+            return constructorDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
         public static TextSpan HeaderSpan(this ConversionOperatorDeclarationSyntax operatorDeclaration)
@@ -1153,6 +1163,16 @@ namespace Roslynator.CSharp
                 eventDeclaration.Identifier.Span.End);
         }
 
+        public static bool IsStatic(this EventDeclarationSyntax eventDeclaration)
+        {
+            return eventDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
+        }
+
+        public static bool IsStatic(this EventFieldDeclarationSyntax eventFieldDeclaration)
+        {
+            return eventFieldDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
+        }
+
         public static ParenthesizedExpressionSyntax Parenthesize(this ExpressionSyntax expression, bool cutCopyTrivia = false)
         {
             if (expression == null)
@@ -1220,6 +1240,11 @@ namespace Roslynator.CSharp
         public static bool IsConst(this FieldDeclarationSyntax fieldDeclaration)
         {
             return fieldDeclaration?.Modifiers.Contains(SyntaxKind.ConstKeyword) == true;
+        }
+
+        public static bool IsStatic(this FieldDeclarationSyntax fieldDeclaration)
+        {
+            return fieldDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
         public static TextSpan ParenthesesSpan(this ForEachStatementSyntax forEachStatement)
@@ -1557,6 +1582,11 @@ namespace Roslynator.CSharp
                 methodDeclaration.ParameterList?.Span.End ?? methodDeclaration.Identifier.Span.End);
         }
 
+        public static bool IsStatic(this MethodDeclarationSyntax methodDeclaration)
+        {
+            return methodDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
+        }
+
         public static NamespaceDeclarationSyntax WithMembers(
             this NamespaceDeclarationSyntax namespaceDeclaration,
             MemberDeclarationSyntax member)
@@ -1657,6 +1687,11 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
             return propertyDeclaration.AccessorList?.Setter();
+        }
+
+        public static bool IsStatic(this PropertyDeclarationSyntax propertyDeclaration)
+        {
+            return propertyDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
         public static bool IsQualified(this SimpleNameSyntax identifierName)

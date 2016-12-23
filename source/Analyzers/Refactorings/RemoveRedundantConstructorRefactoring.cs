@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     .GetMembers()
                     .OfType<ConstructorDeclarationSyntax>()
                     .All(f => f.Equals(constructor)
-                        || f.Modifiers.Contains(SyntaxKind.StaticKeyword));
+                        || f.IsStatic());
         }
 
         public static async Task<Document> RefactorAsync(
