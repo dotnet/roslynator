@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -20,25 +22,30 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var assignment = parent as AssignmentExpressionSyntax;
 
-                if (assignment?.Left == expression
-                    && !RulesOutNullCheck(assignment.Right))
+                if (assignment?.Left == expression)
                 {
-                    parent = parent.Parent;
+                    ExpressionSyntax right = assignment.Right;
 
-                    if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                    if (!right.IsKind(SyntaxKind.NullLiteralExpression)
+                        && CanBeEqualToNull(right))
                     {
-                        var statement = (ExpressionStatementSyntax)parent;
+                        parent = parent.Parent;
 
-                        if (statement != null
-                            && !NullCheckExists(expression, statement))
+                        if (parent?.IsKind(SyntaxKind.ExpressionStatement) == true)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                            var statement = (ExpressionStatementSyntax)parent;
 
-                            if (semanticModel
-                                .GetTypeSymbol(expression, context.CancellationToken)?
-                                .IsReferenceType == true)
+                            if (statement != null
+                                && !NullCheckExists(expression, statement))
                             {
-                                RegisterRefactoring(context, expression, statement);
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                if (semanticModel
+                                    .GetTypeSymbol(expression, context.CancellationToken)?
+                                    .IsReferenceType == true)
+                                {
+                                    RegisterRefactoring(context, expression, statement);
+                                }
                             }
                         }
                     }
@@ -62,7 +69,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         VariableDeclaratorSyntax variableDeclarator = variables[0];
 
-                        if (!RulesOutNullCheck(variableDeclarator?.Initializer?.Value))
+                        ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
+
+                        if (!value.IsKind(SyntaxKind.NullLiteralExpression)
+                            && CanBeEqualToNull(value))
                         {
                             SyntaxToken identifier = variableDeclarator.Identifier;
 
@@ -90,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool RulesOutNullCheck(ExpressionSyntax expression)
+        private static bool CanBeEqualToNull(ExpressionSyntax expression)
         {
             switch (expression?.Kind())
             {
@@ -101,13 +111,12 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ThisExpression:
                 case SyntaxKind.CharacterLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
-                case SyntaxKind.NullLiteralExpression:
                 case SyntaxKind.NumericLiteralExpression:
                 case SyntaxKind.StringLiteralExpression:
                 case SyntaxKind.TrueLiteralExpression:
-                    return true;
-                default:
                     return false;
+                default:
+                    return true;
             }
         }
 
@@ -115,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 $"Check '{expression}' for null",
-                cancellationToken => RefactorAsync(context.Document, expression.WithoutTrivia(), statement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken));
         }
 
         private static bool NullCheckExists(ExpressionSyntax expression, StatementSyntax statement)
@@ -168,25 +177,118 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            IfStatementSyntax ifStatement = IfStatement(
-                NotEqualsExpression(expression, NullLiteralExpression()),
-                Block(
-                    Token(TriviaList(), SyntaxKind.OpenBraceToken, TriviaList(NewLineTrivia())),
-                    default(SyntaxList<StatementSyntax>),
-                    Token(TriviaList(NewLineTrivia()), SyntaxKind.CloseBraceToken, TriviaList())));
-
-            ifStatement = ifStatement
-                .WithLeadingTrivia(NewLineTrivia())
-                .WithFormatterAnnotation();
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             if (EmbeddedStatement.IsEmbeddedStatement(statement))
             {
-                return await document.ReplaceNodeAsync(statement, Block(statement, ifStatement), cancellationToken).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(statement, Block(statement, CreateNullCheck(expression)), cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                return await document.InsertNodeAfterAsync(statement, ifStatement, cancellationToken).ConfigureAwait(false);
+                StatementContainer container;
+                if (StatementContainer.TryCreate(statement, out container))
+                {
+                    SyntaxList<StatementSyntax> statements = container.Statements;
+
+                    int statementIndex = statements.IndexOf(statement);
+
+                    ISymbol symbol = (statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+                        ? semanticModel.GetDeclaredSymbol(((LocalDeclarationStatementSyntax)statement).Declaration.Variables.First(), cancellationToken)
+                        : semanticModel.GetSymbol(expression, cancellationToken);
+
+                    int lastStatementIndex = IncludeAllReferencesOfSymbol(symbol, expression.Kind(), statements, statementIndex + 1, semanticModel, cancellationToken);
+
+                    if (lastStatementIndex != -1)
+                    {
+                        if (lastStatementIndex < statements.Count - 1)
+                            lastStatementIndex = IncludeAllReferencesOfVariablesDeclared(statements, statements[statementIndex + 1], lastStatementIndex, semanticModel, cancellationToken);
+
+                        IEnumerable<StatementSyntax> blockStatements = statements
+                            .Skip(statementIndex + 1)
+                            .Take(lastStatementIndex - statementIndex);
+
+                        IfStatementSyntax ifStatement = CreateNullCheck(expression, List(blockStatements));
+
+                        if (lastStatementIndex < statements.Count - 1)
+                            ifStatement = ifStatement.AppendTrailingTrivia(NewLineTrivia());
+
+                        IEnumerable<StatementSyntax> newStatements = statements.Take(statementIndex + 1)
+                            .Concat(new IfStatementSyntax[] { ifStatement })
+                            .Concat(statements.Skip(lastStatementIndex + 1));
+
+                        return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+                    }
+                }
             }
+
+            return await document.InsertNodeAfterAsync(statement, CreateNullCheck(expression), cancellationToken).ConfigureAwait(false);
+        }
+
+        private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default(SyntaxList<StatementSyntax>))
+        {
+            SyntaxToken openBrace = (statements.Any())
+                ? OpenBraceToken()
+                : Token(default(SyntaxTriviaList), SyntaxKind.OpenBraceToken, TriviaList(NewLineTrivia()));
+
+            SyntaxToken closeBrace = (statements.Any())
+                ? CloseBraceToken()
+                : Token(TriviaList(NewLineTrivia()), SyntaxKind.CloseBraceToken, default(SyntaxTriviaList));
+
+            IfStatementSyntax ifStatement = IfStatement(
+                NotEqualsExpression(expression.WithoutTrivia(), NullLiteralExpression()),
+                Block(openBrace, statements, closeBrace));
+
+            return ifStatement
+                .WithLeadingTrivia(NewLineTrivia())
+                .WithFormatterAnnotation();
+        }
+
+        private static int IncludeAllReferencesOfSymbol(
+            ISymbol symbol,
+            SyntaxKind kind,
+            SyntaxList<StatementSyntax> statements,
+            int lastStatementIndex,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            for (int i = statements.Count - 1; i >= lastStatementIndex; i--)
+            {
+                foreach (SyntaxNode node in statements[i].DescendantNodes())
+                {
+                    if (node.IsKind(kind))
+                    {
+                        ISymbol symbol2 = semanticModel.GetSymbol(node, cancellationToken);
+
+                        if (symbol.Equals(symbol2))
+                            return i;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private static int IncludeAllReferencesOfVariablesDeclared(
+            SyntaxList<StatementSyntax> statements,
+            StatementSyntax firstStatement,
+            int lastStatementIndex,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            DataFlowAnalysis analysis = semanticModel.AnalyzeDataFlow(firstStatement, statements[lastStatementIndex]);
+
+            foreach (ISymbol symbol in analysis.VariablesDeclared)
+            {
+                if (symbol.IsLocal())
+                {
+                    int index = IncludeAllReferencesOfSymbol(symbol, SyntaxKind.IdentifierName, statements, lastStatementIndex + 1, semanticModel, cancellationToken);
+
+                    if (index > lastStatementIndex)
+                        lastStatementIndex = index;
+                }
+            }
+
+            return lastStatementIndex;
         }
     }
 }

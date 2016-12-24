@@ -16,6 +16,10 @@ namespace Pihrtsoft.CodeAnalysis.CSharp.Refactorings.Tests
 
             if (true)
                 x = GetValueOrDefault();
+
+            i = GetValue();
+
+            int j = GetValue();
         }
 
         private static Entity GetValueOrDefault()
