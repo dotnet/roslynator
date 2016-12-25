@@ -65,6 +65,7 @@
     <Compile Include="IntroduceAndInitializeRefactoring.cs" />
     <Compile Include="RemoveDirectiveAndRelatedDirectivesRefactoring.cs" />
     <Compile Include="RemoveUsingAliasDirectiveRefactoring.cs" />
+    <Compile Include="RenameIdentifierAccordingToTypeNameRefactoring.cs" />
     <Compile Include="ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />

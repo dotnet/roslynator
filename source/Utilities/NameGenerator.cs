@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.Internal;
 
@@ -35,11 +38,7 @@ namespace Roslynator
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            IEnumerable<string> memberNames = containingType
-                .GetMembers()
-                .Select(member => member.Name);
-
-            return EnsureUniqueName(baseName, memberNames);
+            return EnsureUniqueName(baseName, containingType.GetMembers());
         }
 
         public static string GenerateUniqueLocalName(
@@ -48,11 +47,73 @@ namespace Roslynator
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            IEnumerable<string> memberNames = semanticModel
-                .LookupSymbols(position)
-                .Select(symbol => symbol.Name);
+            ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
 
-            return EnsureUniqueName(baseName, memberNames);
+            symbols = AddLocalSymbols(symbols, position, semanticModel, cancellationToken);
+
+            return EnsureUniqueName(baseName, symbols);
+        }
+
+        private static ImmutableArray<ISymbol> AddLocalSymbols(ImmutableArray<ISymbol> symbols, int position, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+
+            if (enclosingSymbol != null)
+            {
+                List<ISymbol> additionalSymbols = null;
+
+                foreach (ILocalSymbol localSymbol in GetLocalSymbols(enclosingSymbol, semanticModel, cancellationToken))
+                {
+                    if (!symbols.Contains(localSymbol))
+                    {
+                        if (additionalSymbols == null)
+                            additionalSymbols = new List<ISymbol>();
+
+                        additionalSymbols.Add(localSymbol);
+                    }
+                }
+
+                if (additionalSymbols != null)
+                    symbols = symbols.AddRange(additionalSymbols);
+            }
+
+            return symbols;
+        }
+
+        public static IEnumerable<ILocalSymbol> GetLocalSymbols(
+            ISymbol symbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
+
+            if (syntaxReference != null)
+            {
+                var localSymbols = new List<ILocalSymbol>();
+
+                SyntaxNode node = syntaxReference.GetSyntax(cancellationToken);
+
+                foreach (SyntaxNode descendant in node.DescendantNodes())
+                {
+                    if (descendant.IsKind(SyntaxKind.LocalDeclarationStatement))
+                    {
+                        var localDeclaration = (LocalDeclarationStatementSyntax)descendant;
+
+                        VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+                        if (declaration != null)
+                        {
+                            foreach (VariableDeclaratorSyntax variable in declaration.Variables)
+                            {
+                                ISymbol localSymbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
+
+                                if (localSymbol?.IsLocal() == true)
+                                    yield return (ILocalSymbol)localSymbol;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public static async Task<string> GenerateUniqueParameterNameAsync(
@@ -86,7 +147,7 @@ namespace Roslynator
 
         private static HashSet<string> GetParameterNames(IParameterSymbol parameterSymbol)
         {
-            HashSet<string> reservedNames = new HashSet<string>();
+            HashSet<string> reservedNames = new HashSet<string>(OrdinalComparer);
 
             ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
 
@@ -189,13 +250,29 @@ namespace Roslynator
             }
         }
 
+        private static string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+        {
+            return EnsureUniqueName(baseName, symbols, GetStringComparison(isCaseSensitive));
+        }
+
         public static string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
         {
-            StringComparison stringComparison = (isCaseSensitive)
-                ? StringComparison.Ordinal
-                : StringComparison.OrdinalIgnoreCase;
+            return EnsureUniqueName(baseName, reservedNames, GetStringComparison(isCaseSensitive));
+        }
 
-            return EnsureUniqueName(baseName, reservedNames, stringComparison);
+        private static string EnsureUniqueName(string baseName, IList<ISymbol> symbols, StringComparison stringComparison)
+        {
+            int suffix = InitialNameSuffix;
+
+            string name = baseName;
+
+            while (symbols.Any(symbol => string.Equals(symbol.Name, name, stringComparison)))
+            {
+                name = baseName + suffix.ToString();
+                suffix++;
+            }
+
+            return name;
         }
 
         public static string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, StringComparison stringComparison)
@@ -216,6 +293,18 @@ namespace Roslynator
         public static string GenerateIdentifier(ITypeSymbol typeSymbol, bool firstCharToLower = false)
         {
             return IdentifierGenerator.GenerateIdentifier(typeSymbol, firstCharToLower);
+        }
+
+        private static StringComparison GetStringComparison(bool isCaseSensitive)
+        {
+            if (isCaseSensitive)
+            {
+                return StringComparison.Ordinal;
+            }
+            else
+            {
+                return StringComparison.OrdinalIgnoreCase;
+            }
         }
     }
 }
