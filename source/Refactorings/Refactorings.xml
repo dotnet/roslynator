@@ -106,7 +106,7 @@
       <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="CallToMethod" Title="Call 'To...' method" ExtensionVersion="1.0.7">
+  <Refactoring Id="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)" ExtensionVersion="1.0.7">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -364,7 +364,7 @@
     </Syntaxes>
     <Scope>identifier</Scope>
   </Refactoring>
-  <Refactoring Id="GenerateOnEventMethod" Title="Generate 'OnEvent' method" ExtensionVersion="1.0.6">
+  <Refactoring Id="GenerateEventInvokingMethod" Title="Generate event invoking method" ExtensionVersion="1.0.6">
     <Syntaxes>
       <Syntax>event</Syntax>
     </Syntaxes>
@@ -803,7 +803,7 @@
     </Syntaxes>
     <Scope>delegate keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceAnyWithAllOrAllWithAny" Title="Replace 'Any/All' with 'All/Any'" ExtensionVersion="0.9.2">
+  <Refactoring Id="ReplaceAnyWithAllOrAllWithAny" Title="Replace Any with All (or All with Any)" ExtensionVersion="0.9.2">
     <Syntaxes>
       <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
     </Syntaxes>
@@ -835,7 +835,7 @@
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceCountWithLengthOrLengthWithCount" Title="Replace 'Count/Length' with 'Length/Count'" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceCountWithLengthOrLengthWithCount" Title="Replace Count property with Length property (or Length with Count)" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>member access expression</Syntax>
     </Syntaxes>
@@ -847,26 +847,26 @@
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with 'string.Empty'" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with String.Empty" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with string.Equals" ExtensionVersion="1.1.0">
+  <Refactoring Id="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with String.Equals" ExtensionVersion="1.1.0">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty" ExtensionVersion="1.1.5">
+  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with String.IsNullOrEmpty" ExtensionVersion="1.1.5">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace" ExtensionVersion="1.1.5">
+  <Refactoring Id="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with String.IsNullOrWhiteSpace" ExtensionVersion="1.1.5">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
@@ -893,7 +893,7 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceHasFlagWithBitwiseOperation" Title="Replace 'HasFlag' with bitwise operation" ExtensionVersion="0.91.0">
+  <Refactoring Id="ReplaceHasFlagWithBitwiseOperation" Title="Replace HasFlag invocation with bitwise operation" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
@@ -934,7 +934,7 @@
       <Syntax>method group</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceMethodInvocationWithElementAccess" Title="Replace method invocation with '[]'" ExtensionVersion="0.9.40">
+  <Refactoring Id="ReplaceMethodInvocationWithElementAccess" Title="Replace method invocation with []" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>First/Last/ElementAt method invocation</Syntax>
     </Syntaxes>
@@ -978,20 +978,20 @@
       <Image>ReplaceReturnStatementWithIfStatement</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="ReplaceStringContainsWithStringIndexOf" Title="Replace string.Contains with string.IndexOf" ExtensionVersion="0.0.0">
+  <Refactoring Id="ReplaceStringContainsWithStringIndexOf" Title="Replace String.Contains with String.IndexOf" ExtensionVersion="0.0.0">
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace 'string.Empty' with &quot;&quot;" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace String.Empty with &quot;&quot;" ExtensionVersion="0.9.0">
     <Syntaxes>
-      <Syntax>string.Empty</Syntax>
+      <Syntax>String.Empty field</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceStringFormatWithInterpolatedString" Title="Replace 'string.Format' with interpolated string" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceStringFormatWithInterpolatedString" Title="Replace String.Format with interpolated string" ExtensionVersion="0.9.0">
     <Syntaxes>
-      <Syntax>string.Format method</Syntax>
+      <Syntax>String.Format method</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceStringLiteralWithCharacterLiteral" Title="Replace string literal with character literal" ExtensionVersion="0.9.70">

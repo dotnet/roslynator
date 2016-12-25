@@ -84,7 +84,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-extension-method-as-instance-method">Call extension method as instance method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-to-method">Call 'To...' method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-to-method-tostring-toarray-tolist">Call 'To...' method (ToString, ToArray, ToList)</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-explicit-type-to-var">Change explicit type to 'var'</a>
@@ -198,7 +198,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-base-constructors">Generate base constructors</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-onevent-method">Generate 'OnEvent' method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-event-invoking-method">Generate event invoking method</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-switch-sections">Generate switch sections</a>
@@ -375,13 +375,13 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-property-according-to-type-name">Rename property according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace--with-stringempty">Replace "" with 'string.Empty'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace--with-stringempty">Replace "" with String.Empty</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-anyall-with-allany">Replace 'Any/All' with 'All/Any'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-any-with-all-or-all-with-any">Replace Any with All (or All with Any)</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-as-expression-with-cast-expression">Replace as expression with cast expression</a>
@@ -399,19 +399,19 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-constant-with-field">Replace constant with field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-countlength-with-lengthcount">Replace 'Count/Length' with 'Length/Count'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-count-property-with-length-property-or-length-with-count">Replace Count property with Length property (or Length with Count)</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringequals">Replace equals expression with string.Equals</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringequals">Replace equals expression with String.Equals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorempty">Replace equals expression with string.IsNullOrEmpty</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorempty">Replace equals expression with String.IsNullOrEmpty</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with string.IsNullOrWhiteSpace</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with String.IsNullOrWhiteSpace</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-field-with-constant">Replace field with constant</a>
@@ -426,7 +426,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-hasflag-with-bitwise-operation">Replace 'HasFlag' with bitwise operation</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-hasflag-invocation-with-bitwise-operation">Replace HasFlag invocation with bitwise operation</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
@@ -450,7 +450,7 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-group-with-lambda">Replace method group with lambda</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-invocation-with-">Replace method invocation with '[]'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-invocation-with-">Replace method invocation with []</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-with-property">Replace method with property</a>
@@ -474,13 +474,13 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringcontains-with-stringindexof">Replace string.Contains with string.IndexOf</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringcontains-with-stringindexof">Replace String.Contains with String.IndexOf</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringempty-with-">Replace 'string.Empty' with ""</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringempty-with-">Replace String.Empty with ""</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringformat-with-interpolated-string">Replace 'string.Format' with interpolated string</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringformat-with-interpolated-string">Replace String.Format with interpolated string</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-switch-statement-with-if-else">Replace switch statement with if-else</a>

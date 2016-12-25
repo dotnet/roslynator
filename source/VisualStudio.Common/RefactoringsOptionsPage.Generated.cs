@@ -66,7 +66,7 @@ namespace Roslynator.VisualStudio
             FormatInitializer = true;
             FormatParameterList = true;
             GenerateBaseConstructors = true;
-            GenerateOnEventMethod = true;
+            GenerateEventInvokingMethod = true;
             GenerateSwitchSections = true;
             InitializeLocalWithDefaultValue = true;
             InlineAliasExpression = true;
@@ -239,7 +239,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.FormatInitializer, FormatInitializer);
             SetIsEnabled(RefactoringIdentifiers.FormatParameterList, FormatParameterList);
             SetIsEnabled(RefactoringIdentifiers.GenerateBaseConstructors, GenerateBaseConstructors);
-            SetIsEnabled(RefactoringIdentifiers.GenerateOnEventMethod, GenerateOnEventMethod);
+            SetIsEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod, GenerateEventInvokingMethod);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineAliasExpression, InlineAliasExpression);
@@ -517,7 +517,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Call 'To...' method")]
+        [DisplayName("Call 'To...' method (ToString, ToArray, ToList)")]
         [Description("Syntax: argument, assignment expression, return statement, variable declaration")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool CallToMethod
@@ -897,10 +897,10 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Generate 'OnEvent' method")]
+        [DisplayName("Generate event invoking method")]
         [Description("Syntax: event\r\nScope: identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool GenerateOnEventMethod
+        public bool GenerateEventInvokingMethod
         {
             get;
             set;
@@ -1497,7 +1497,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'Any/All' with 'All/Any'")]
+        [DisplayName("Replace Any with All (or All with Any)")]
         [Description("Syntax: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceAnyWithAllOrAllWithAny
@@ -1557,7 +1557,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'Count/Length' with 'Length/Count'")]
+        [DisplayName("Replace Count property with Length property (or Length with Count)")]
         [Description("Syntax: member access expression\r\nScope: name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceCountWithLengthOrLengthWithCount
@@ -1577,7 +1577,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace \"\" with 'string.Empty'")]
+        [DisplayName("Replace \"\" with String.Empty")]
         [Description("Syntax: empty string literal")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEmptyStringLiteralWithStringEmpty
@@ -1587,7 +1587,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace equals expression with string.Equals")]
+        [DisplayName("Replace equals expression with String.Equals")]
         [Description("Syntax: equals expression, not equals expression\r\nScope: operator")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEqualsExpressionWithStringEquals
@@ -1597,7 +1597,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace equals expression with string.IsNullOrEmpty")]
+        [DisplayName("Replace equals expression with String.IsNullOrEmpty")]
         [Description("Syntax: equals expression, not equals expression\r\nScope: operator")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEqualsExpressionWithStringIsNullOrEmpty
@@ -1607,7 +1607,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace equals expression with string.IsNullOrWhiteSpace")]
+        [DisplayName("Replace equals expression with String.IsNullOrWhiteSpace")]
         [Description("Syntax: equals expression, not equals expression\r\nScope: operator")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace
@@ -1657,7 +1657,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'HasFlag' with bitwise operation")]
+        [DisplayName("Replace HasFlag invocation with bitwise operation")]
         [Description("Syntax: Enum.HasFlag method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceHasFlagWithBitwiseOperation
@@ -1737,7 +1737,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace method invocation with '[]'")]
+        [DisplayName("Replace method invocation with []")]
         [Description("Syntax: First/Last/ElementAt method invocation\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceMethodInvocationWithElementAccess
@@ -1807,7 +1807,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace string.Contains with string.IndexOf")]
+        [DisplayName("Replace String.Contains with String.IndexOf")]
         [Description("Syntax: method invocation\r\nScope: method name")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringContainsWithStringIndexOf
@@ -1817,8 +1817,8 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'string.Empty' with \"\"")]
-        [Description("Syntax: string.Empty")]
+        [DisplayName("Replace String.Empty with \"\"")]
+        [Description("Syntax: String.Empty field")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringEmptyWithEmptyStringLiteral
         {
@@ -1827,8 +1827,8 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace 'string.Format' with interpolated string")]
-        [Description("Syntax: string.Format method")]
+        [DisplayName("Replace String.Format with interpolated string")]
+        [Description("Syntax: String.Format method")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceStringFormatWithInterpolatedString
         {

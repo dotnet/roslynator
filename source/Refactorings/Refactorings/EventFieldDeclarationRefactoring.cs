@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                 MarkContainingClassAsAbstractRefactoring.ComputeRefactoring(context, eventFieldDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateOnEventMethod))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod))
                 await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)

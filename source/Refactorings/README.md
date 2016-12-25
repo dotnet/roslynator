@@ -111,11 +111,11 @@
 
 ![Call extension method as instance method](../../images/refactorings/CallExtensionMethodAsInstanceMethod.png)
 
-#### Call 'To...' method
+#### Call 'To...' method (ToString, ToArray, ToList)
 
 * **Syntax**: argument, assignment expression, return statement, variable declaration
 
-![Call 'To...' method](../../images/refactorings/CallToMethod.png)
+![Call 'To...' method (ToString, ToArray, ToList)](../../images/refactorings/CallToMethod.png)
 
 #### Change explicit type to 'var'
 
@@ -370,12 +370,12 @@
 
 ![Generate base constructors](../../images/refactorings/GenerateBaseConstructors.png)
 
-#### Generate 'OnEvent' method
+#### Generate event invoking method
 
 * **Syntax**: event
 * **Scope**: identifier
 
-![Generate 'OnEvent' method](../../images/refactorings/GenerateOnEventMethod.png)
+![Generate event invoking method](../../images/refactorings/GenerateEventInvokingMethod.png)
 
 #### Generate switch sections
 
@@ -753,11 +753,11 @@
 
 ![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
 
-#### Replace "" with 'string.Empty'
+#### Replace "" with String.Empty
 
 * **Syntax**: empty string literal
 
-![Replace "" with 'string.Empty'](../../images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
+![Replace "" with String.Empty](../../images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
 
 #### Replace anonymous method with lambda expression
 
@@ -766,12 +766,12 @@
 
 ![Replace anonymous method with lambda expression](../../images/refactorings/ReplaceAnonymousMethodWithLambdaExpression.png)
 
-#### Replace 'Any/All' with 'All/Any'
+#### Replace Any with All (or All with Any)
 
 * **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
 * **Scope**: method name
 
-![Replace 'Any/All' with 'All/Any'](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
+![Replace Any with All (or All with Any)](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
 #### Replace as expression with cast expression
 
@@ -804,12 +804,12 @@
 
 ![Replace constant with field](../../images/refactorings/ReplaceConstantWithField.png)
 
-#### Replace 'Count/Length' with 'Length/Count'
+#### Replace Count property with Length property (or Length with Count)
 
 * **Syntax**: member access expression
 * **Scope**: name
 
-![Replace 'Count/Length' with 'Length/Count'](../../images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
+![Replace Count property with Length property (or Length with Count)](../../images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
 #### Replace do statement with while statement
 
@@ -818,26 +818,26 @@
 
 ![Replace do statement with while statement](../../images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
-#### Replace equals expression with string.Equals
+#### Replace equals expression with String.Equals
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with string.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
+![Replace equals expression with String.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
 
-#### Replace equals expression with string.IsNullOrEmpty
-
-* **Syntax**: equals expression, not equals expression
-* **Scope**: operator
-
-![Replace equals expression with string.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
-
-#### Replace equals expression with string.IsNullOrWhiteSpace
+#### Replace equals expression with String.IsNullOrEmpty
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with string.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
+![Replace equals expression with String.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
+
+#### Replace equals expression with String.IsNullOrWhiteSpace
+
+* **Syntax**: equals expression, not equals expression
+* **Scope**: operator
+
+![Replace equals expression with String.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
 #### Replace field with constant
 
@@ -863,11 +863,11 @@
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
 
-#### Replace 'HasFlag' with bitwise operation
+#### Replace HasFlag invocation with bitwise operation
 
 * **Syntax**: Enum.HasFlag method invocation
 
-![Replace 'HasFlag' with bitwise operation](../../images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
+![Replace HasFlag invocation with bitwise operation](../../images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
 
 #### Replace if statement with return statement
 
@@ -912,12 +912,12 @@
 
 ![Replace method group with lambda](../../images/refactorings/ReplaceMethodGroupWithLambda.png)
 
-#### Replace method invocation with '[]'
+#### Replace method invocation with []
 
 * **Syntax**: First/Last/ElementAt method invocation
 * **Scope**: method name
 
-![Replace method invocation with '[]'](../../images/refactorings/ReplaceMethodInvocationWithElementAccess.png)
+![Replace method invocation with []](../../images/refactorings/ReplaceMethodInvocationWithElementAccess.png)
 
 #### Replace method with property
 
@@ -963,24 +963,24 @@
 
 ![Replace string literal with character literal](../../images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
-#### Replace string.Contains with string.IndexOf
+#### Replace String.Contains with String.IndexOf
 
 * **Syntax**: method invocation
 * **Scope**: method name
 
-![Replace string.Contains with string.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
+![Replace String.Contains with String.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
 
-#### Replace 'string.Empty' with ""
+#### Replace String.Empty with ""
 
-* **Syntax**: string.Empty
+* **Syntax**: String.Empty field
 
-![Replace 'string.Empty' with ""](../../images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
+![Replace String.Empty with ""](../../images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
 
-#### Replace 'string.Format' with interpolated string
+#### Replace String.Format with interpolated string
 
-* **Syntax**: string.Format method
+* **Syntax**: String.Format method
 
-![Replace 'string.Format' with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+![Replace String.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
 #### Replace switch statement with if-else
 
