@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (lastStatementIndex != -1)
                     {
                         if (lastStatementIndex < statements.Count - 1)
-                            lastStatementIndex = IncludeAllReferencesOfVariablesDeclared(statements, statements[statementIndex + 1], lastStatementIndex, semanticModel, cancellationToken);
+                            lastStatementIndex = IncludeAllReferencesOfVariablesDeclared(statements, statementIndex + 1, lastStatementIndex, semanticModel, cancellationToken);
 
                         IEnumerable<StatementSyntax> blockStatements = statements
                             .Skip(statementIndex + 1)
@@ -270,21 +270,34 @@ namespace Roslynator.CSharp.Refactorings
 
         private static int IncludeAllReferencesOfVariablesDeclared(
             SyntaxList<StatementSyntax> statements,
-            StatementSyntax firstStatement,
+            int statementIndex,
             int lastStatementIndex,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            DataFlowAnalysis analysis = semanticModel.AnalyzeDataFlow(firstStatement, statements[lastStatementIndex]);
-
-            foreach (ISymbol symbol in analysis.VariablesDeclared)
+            for (int i = statementIndex; i <= lastStatementIndex; i++)
             {
-                if (symbol.IsLocal())
+                if (statements[i].IsKind(SyntaxKind.LocalDeclarationStatement))
                 {
-                    int index = IncludeAllReferencesOfSymbol(symbol, SyntaxKind.IdentifierName, statements, lastStatementIndex + 1, semanticModel, cancellationToken);
+                    var localDeclaration = (LocalDeclarationStatementSyntax)statements[i];
 
-                    if (index > lastStatementIndex)
-                        lastStatementIndex = index;
+                    VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
+                    if (declaration != null)
+                    {
+                        foreach (VariableDeclaratorSyntax variable in declaration.Variables)
+                        {
+                            ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
+
+                            if (symbol != null)
+                            {
+                                int index = IncludeAllReferencesOfSymbol(symbol, SyntaxKind.IdentifierName, statements, i + 1, semanticModel, cancellationToken);
+
+                                if (index > lastStatementIndex)
+                                    lastStatementIndex = index;
+                            }
+                        }
+                    }
                 }
             }
 
