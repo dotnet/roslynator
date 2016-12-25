@@ -16,7 +16,8 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement);
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
@@ -43,6 +44,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
                     MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
+                    await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {

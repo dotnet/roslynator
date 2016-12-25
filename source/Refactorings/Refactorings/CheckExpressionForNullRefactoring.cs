@@ -100,6 +100,103 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        internal static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
+        {
+            if (info.AreManySelected)
+            {
+                StatementSyntax statement = info.FirstSelectedNode;
+
+                SyntaxKind kind = statement.Kind();
+
+                if (kind == SyntaxKind.LocalDeclarationStatement)
+                {
+                    await ComputeRefactoringAsync(context, (LocalDeclarationStatementSyntax)statement, info).ConfigureAwait(false);
+                }
+                else if (kind == SyntaxKind.ExpressionStatement)
+                {
+                    await ComputeRefactoringAsync(context, (ExpressionStatementSyntax)statement, info).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private static async Task ComputeRefactoringAsync(
+            RefactoringContext context,
+            LocalDeclarationStatementSyntax localDeclaration,
+            SelectedStatementsInfo info)
+        {
+            VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
+
+            if (variableDeclaration != null)
+            {
+                TypeSyntax type = variableDeclaration.Type;
+
+                if (type != null)
+                {
+                    SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+
+                    if (variables.Count == 1)
+                    {
+                        VariableDeclaratorSyntax variableDeclarator = variables[0];
+
+                        ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
+
+                        if (!value.IsKind(SyntaxKind.NullLiteralExpression)
+                            && CanBeEqualToNull(value))
+                        {
+                            SyntaxToken identifier = variableDeclarator.Identifier;
+
+                            IdentifierNameSyntax identifierName = IdentifierName(identifier);
+
+                            if (!NullCheckExists(identifierName, localDeclaration))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                if (semanticModel
+                                    .GetTypeSymbol(type, context.CancellationToken)?
+                                    .IsReferenceType == true)
+                                {
+                                    RegisterRefactoring(context, identifierName, localDeclaration, info.SelectedCount - 1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static async Task ComputeRefactoringAsync(
+            RefactoringContext context,
+            ExpressionStatementSyntax expressionStatement,
+            SelectedStatementsInfo info)
+        {
+            ExpressionSyntax expression = expressionStatement.Expression;
+
+            if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+            {
+                var assignment = (AssignmentExpressionSyntax)expression;
+                ExpressionSyntax left = assignment.Left;
+
+                if (left != null)
+                {
+                    ExpressionSyntax right = assignment.Right;
+
+                    if (!right.IsKind(SyntaxKind.NullLiteralExpression)
+                        && CanBeEqualToNull(right)
+                        && !NullCheckExists(left, expressionStatement))
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        if (semanticModel
+                            .GetTypeSymbol(left, context.CancellationToken)?
+                            .IsReferenceType == true)
+                        {
+                            RegisterRefactoring(context, left, expressionStatement, info.SelectedCount - 1);
+                        }
+                    }
+                }
+            }
+        }
+
         private static bool CanBeEqualToNull(ExpressionSyntax expression)
         {
             switch (expression?.Kind())
@@ -123,8 +220,20 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression, StatementSyntax statement)
         {
             context.RegisterRefactoring(
-                $"Check '{expression}' for null",
+                GetTitle(expression),
                 cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken));
+        }
+
+        private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression, StatementSyntax statement, int statementCount)
+        {
+            context.RegisterRefactoring(
+                GetTitle(expression),
+                cancellationToken => RefactorAsync(context.Document, expression, statement, statementCount, cancellationToken));
+        }
+
+        private static string GetTitle(ExpressionSyntax expression)
+        {
+            return $"Check '{expression}' for null";
         }
 
         private static bool NullCheckExists(ExpressionSyntax expression, StatementSyntax statement)
@@ -203,25 +312,71 @@ namespace Roslynator.CSharp.Refactorings
                         if (lastStatementIndex < statements.Count - 1)
                             lastStatementIndex = IncludeAllReferencesOfVariablesDeclared(statements, statementIndex + 1, lastStatementIndex, semanticModel, cancellationToken);
 
-                        IEnumerable<StatementSyntax> blockStatements = statements
-                            .Skip(statementIndex + 1)
-                            .Take(lastStatementIndex - statementIndex);
-
-                        IfStatementSyntax ifStatement = CreateNullCheck(expression, List(blockStatements));
-
-                        if (lastStatementIndex < statements.Count - 1)
-                            ifStatement = ifStatement.AppendTrailingTrivia(NewLineTrivia());
-
-                        IEnumerable<StatementSyntax> newStatements = statements.Take(statementIndex + 1)
-                            .Concat(new IfStatementSyntax[] { ifStatement })
-                            .Concat(statements.Skip(lastStatementIndex + 1));
-
-                        return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+                        return await RefactorAsync(
+                            document,
+                            expression,
+                            statements,
+                            container,
+                            statementIndex,
+                            lastStatementIndex,
+                            cancellationToken).ConfigureAwait(false);
                     }
                 }
             }
 
             return await document.InsertNodeAfterAsync(statement, CreateNullCheck(expression), cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            ExpressionSyntax expression,
+            StatementSyntax statement,
+            int statementCount,
+            CancellationToken cancellationToken)
+        {
+            StatementContainer container;
+            if (StatementContainer.TryCreate(statement, out container))
+            {
+                SyntaxList<StatementSyntax> statements = container.Statements;
+
+                int statementIndex = statements.IndexOf(statement);
+
+                return await RefactorAsync(
+                    document,
+                    expression,
+                    statements,
+                    container,
+                    statementIndex,
+                    statementIndex + statementCount,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
+            return document;
+        }
+
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            ExpressionSyntax expression,
+            SyntaxList<StatementSyntax> statements,
+            StatementContainer container,
+            int statementIndex,
+            int lastStatementIndex,
+            CancellationToken cancellationToken)
+        {
+            IEnumerable<StatementSyntax> blockStatements = statements
+                .Skip(statementIndex + 1)
+                .Take(lastStatementIndex - statementIndex);
+
+            IfStatementSyntax ifStatement = CreateNullCheck(expression, List(blockStatements));
+
+            if (lastStatementIndex < statements.Count - 1)
+                ifStatement = ifStatement.AppendTrailingTrivia(NewLineTrivia());
+
+            IEnumerable<StatementSyntax> newStatements = statements.Take(statementIndex + 1)
+                .Concat(new IfStatementSyntax[] { ifStatement })
+                .Concat(statements.Skip(lastStatementIndex + 1));
+
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
         }
 
         private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default(SyntaxList<StatementSyntax>))
