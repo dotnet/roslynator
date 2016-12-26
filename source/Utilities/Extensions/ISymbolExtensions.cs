@@ -690,26 +690,6 @@ namespace Roslynator
                 || typeSymbol.IsConstructedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler_T));
         }
 
-        public static bool IsException(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (typeSymbol.IsClass())
-            {
-                INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Exception);
-
-                return typeSymbol
-                    .BaseTypesAndSelf()
-                    .Any(f => f.Equals(exceptionSymbol));
-            }
-
-            return false;
-        }
-
         public static bool IsTaskOrDerivedFromTask(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
         {
             if (typeSymbol == null)
@@ -753,6 +733,15 @@ namespace Roslynator
             }
 
             return false;
+        }
+
+        public static bool EqualsOrDerivedFrom(this ITypeSymbol typeSymbol, ISymbol symbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return typeSymbol.Equals(symbol)
+                || typeSymbol.BaseTypes().Any(f => f.Equals(symbol));
         }
 
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind)

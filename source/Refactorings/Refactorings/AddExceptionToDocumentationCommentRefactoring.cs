@@ -24,36 +24,89 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
-                    && typeSymbol.IsException(semanticModel))
+                    && SymbolAnalyzer.IsException(typeSymbol, semanticModel))
                 {
-                    MemberDeclarationSyntax containingMember = await GetContainingMemberAsync(throwStatement, semanticModel, context.CancellationToken).ConfigureAwait(false);
+                    ISymbol declarationSymbol = GetDeclarationSymbol(throwStatement, semanticModel, context.CancellationToken);
 
-                    if (containingMember != null)
+                    if (declarationSymbol != null)
                     {
-                        SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
+                        SyntaxNode node = await declarationSymbol
+                            .DeclaringSyntaxReferences[0]
+                            .GetSyntaxAsync(context.CancellationToken)
+                            .ConfigureAwait(false);
 
-                        if (trivia.IsSingleLineDocumentationCommentTrivia())
+                        var containingMember = node as MemberDeclarationSyntax;
+
+                        if (containingMember != null)
                         {
-                            var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                            SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
 
-                            if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true)
+                            if (trivia.IsSingleLineDocumentationCommentTrivia())
                             {
-                                string exceptionName = typeSymbol
-                                    .ToMinimalDisplayString(semanticModel, trivia.FullSpan.End)
-                                    .Replace('<', '{')
-                                    .Replace('>', '}');
+                                var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
 
-                                if (!ContainsException(comment, typeSymbol, semanticModel, context.CancellationToken))
+                                if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
+                                    && !ContainsException(comment, typeSymbol, semanticModel, context.CancellationToken))
                                 {
+                                    IParameterSymbol parameterSymbol = GetParameterSymbol(throwStatement, typeSymbol, declarationSymbol, semanticModel, context.CancellationToken);
+
                                     context.RegisterRefactoring(
                                         "Add exception to documentation comment",
-                                        cancellationToken => RefactorAsync(context.Document, trivia, exceptionName, cancellationToken));
+                                        cancellationToken => RefactorAsync(context.Document, trivia, typeSymbol, parameterSymbol, cancellationToken));
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static IParameterSymbol GetParameterSymbol(
+            ThrowStatementSyntax throwStatement,
+            ITypeSymbol exceptionSymbol,
+            ISymbol declarationSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            INamedTypeSymbol argumentNullExceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
+
+            if (exceptionSymbol.EqualsOrDerivedFrom(argumentNullExceptionSymbol))
+            {
+                SyntaxNode parent = throwStatement.Parent;
+
+                if (parent != null)
+                {
+                    if (parent.IsKind(SyntaxKind.Block))
+                        parent = parent.Parent;
+
+                    if (parent?.IsKind(SyntaxKind.IfStatement) == true)
+                    {
+                        var ifStatement = (IfStatementSyntax)parent;
+
+                        ExpressionSyntax condition = ifStatement.Condition;
+
+                        if (condition?.IsKind(SyntaxKind.EqualsExpression) == true)
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)condition;
+
+                            ExpressionSyntax left = equalsExpression.Left;
+
+                            if (left != null)
+                            {
+                                ISymbol leftSymbol = semanticModel.GetSymbol(left, cancellationToken);
+
+                                if (leftSymbol?.IsParameter() == true
+                                    && leftSymbol.ContainingSymbol?.Equals(declarationSymbol) == true)
+                                {
+                                    return (IParameterSymbol)leftSymbol;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static bool ContainsException(DocumentationCommentTriviaSyntax comment, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -87,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        internal static async Task<MemberDeclarationSyntax> GetContainingMemberAsync(
+        internal static ISymbol GetDeclarationSymbol(
             StatementSyntax statement,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -109,26 +162,33 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            SyntaxNode node = await symbol
-                .DeclaringSyntaxReferences[0]
-                .GetSyntaxAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            return node as MemberDeclarationSyntax;
+            return symbol;
         }
 
         private static async Task<Document> RefactorAsync(
             Document document,
             SyntaxTrivia trivia,
-            string exceptionName,
+            ITypeSymbol exceptionSymbol,
+            IParameterSymbol parameterSymbol,
             CancellationToken cancellationToken)
         {
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             int lineIndex = trivia.GetSpanStartLine(cancellationToken);
 
+            string exceptionName = exceptionSymbol
+                .ToMinimalDisplayString(semanticModel, trivia.FullSpan.End)
+                .Replace('<', '{')
+                .Replace('>', '}');
+
+            string content = (parameterSymbol != null)
+                ? $"<paramref name=\"{parameterSymbol.Name}\"/> is <c>null</c>."
+                : null;
+
             string newText = new string(' ', trivia.FullSpan.Start - sourceText.Lines[lineIndex].Start)
-                + $"/// <exception cref=\"{exceptionName}\"></exception>"
+                + $"/// <exception cref=\"{exceptionName}\">{content}</exception>"
                 + Environment.NewLine;
 
             SourceText newSourceText = sourceText.WithChanges(

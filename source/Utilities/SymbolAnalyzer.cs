@@ -9,6 +9,18 @@ namespace Roslynator
 {
     public static class SymbolAnalyzer
     {
+        public static bool IsException(ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return typeSymbol.IsClass()
+                && typeSymbol.EqualsOrDerivedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Exception));
+        }
+
         public static bool IsEnumerableMethod(
             IMethodSymbol methodSymbol,
             string methodName,
