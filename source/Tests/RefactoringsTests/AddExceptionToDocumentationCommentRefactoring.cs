@@ -10,10 +10,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
         /// 
         /// </summary>
         /// <param name="parameter"></param>
-        public void Foo(object parameter)
+        public void Foo(object parameter, object parameter2)
         {
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
+
+            if (parameter2 == null)
+                throw new ArgumentNullException(nameof(parameter2));
 
             if (parameter == null)
                 throw new ArgumentException(nameof(parameter));
