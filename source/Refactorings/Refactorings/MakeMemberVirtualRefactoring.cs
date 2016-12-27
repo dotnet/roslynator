@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Accessors
                 .Select(f => f.WithBody(Block()).WithoutSemicolonToken());
 
-            AccessorListSyntax accessorList = AccessorList(accessors);
+            AccessorListSyntax accessorList = AccessorList(List(accessors));
 
             accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             int index = modifiers.IndexOf(SyntaxKind.AbstractKeyword);
 
-            return modifiers.ReplaceAt(index, VirtualToken().WithTriviaFrom(modifiers[index]));
+            return modifiers.ReplaceAt(index, VirtualKeyword().WithTriviaFrom(modifiers[index]));
         }
     }
 }

@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                         context.RegisterRefactoring(
                                             $"Rename {GetName(symbol)} to '{newName}'",
-                                            cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                                            cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                                     }
                                 }
                             }

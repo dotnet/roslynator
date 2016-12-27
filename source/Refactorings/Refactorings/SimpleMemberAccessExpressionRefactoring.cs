@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
             else
             {
                 memberAccess = (MemberAccessExpressionSyntax)memberAccess
-                    .FirstAncestor(SyntaxKind.SimpleMemberAccessExpression);
+                    .FirstAncestorOf(SyntaxKind.SimpleMemberAccessExpression);
 
                 if (memberAccess != null)
                     await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);

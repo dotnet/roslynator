@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    BaseParameterListSyntax parameterList = ancestor.GetParameterList();
+                    BaseParameterListSyntax parameterList = CSharpUtility.GetParameterList(ancestor);
 
                     if (parameterList != null)
                     {
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
             if (symbol == null)
                 return null;
 
-            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetMethodOrPropertyParameters();
 
             if (parameters.Length == 0)
                 return null;

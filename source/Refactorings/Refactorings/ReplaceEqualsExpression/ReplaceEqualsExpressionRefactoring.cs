@@ -65,10 +65,10 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = InvocationExpression(
+            ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
                 MethodName,
-                ArgumentList(Argument(binaryExpression.Left)));
+                Argument(binaryExpression.Left));
 
             if (binaryExpression.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))
                 newNode = LogicalNotExpression(newNode);

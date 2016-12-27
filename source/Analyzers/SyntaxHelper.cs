@@ -26,7 +26,7 @@ namespace Roslynator.CSharp
                     return "Length";
 
                 if (allowImmutableArray
-                    && typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
+                    && SymbolAnalyzer.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
                 {
                     return "Length";
                 }

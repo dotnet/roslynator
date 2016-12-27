@@ -30,11 +30,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static StatementSyntax GetEmbeddedStatementThatShouldBeInsideBlock(SyntaxNode node)
         {
-            StatementSyntax statement = EmbeddedStatement.GetBlockOrEmbeddedStatement(node);
+            StatementSyntax statement = CSharpUtility.GetBlockOrEmbeddedStatement(node);
 
             if (statement?.IsKind(SyntaxKind.Block) == false)
             {
-                if (!statement.IsSingleLine() || !EmbeddedStatement.FormatSupportsEmbeddedStatement(node))
+                if (!statement.IsSingleLine() || !CSharpUtility.FormatSupportsEmbeddedStatement(node))
                     return statement;
             }
 

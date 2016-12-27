@@ -24,9 +24,10 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = context.SemanticModel;
                 CancellationToken cancellationToken = context.CancellationToken;
 
-                if (semanticModel
-                    .GetTypeSymbol(objectCreation, cancellationToken)?
-                    .IsEventHandlerOrConstructedFromEventHandlerOfT(semanticModel, cancellationToken) == true)
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, cancellationToken);
+
+                if (typeSymbol != null
+                    && SymbolAnalyzer.IsEventHandlerOrConstructedFromEventHandlerOfT(typeSymbol, semanticModel))
                 {
                     ArgumentListSyntax argumentList = objectCreation.ArgumentList;
 

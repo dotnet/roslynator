@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             if (variableDeclaration.Variables.Count != 1)
                 return;
 
-            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
+            TypeAnalysisResult result = CSharpUtility.AnalyzeType(
                 variableDeclaration,
                 context.SemanticModel,
                 context.CancellationToken);
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
         {
-            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
+            TypeAnalysisResult result = CSharpUtility.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
 
             if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {

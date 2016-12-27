@@ -5,21 +5,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
     public static class ISymbolExtensions
     {
-        public static bool IsReducedExtension(this IMethodSymbol methodSymbol)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            return methodSymbol.MethodKind == MethodKind.ReducedExtension;
-        }
-
         public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind)
         {
             return methodSymbol?.MethodKind == methodKind;
@@ -48,13 +39,11 @@ namespace Roslynator
                 || methodKind == methodKind3;
         }
 
-        internal static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
-        {
-            return methodSymbol.ReducedFrom ?? methodSymbol;
-        }
-
         public static IEnumerable<IMethodSymbol> OverridenMethods(this IMethodSymbol methodSymbol)
         {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
             IMethodSymbol overridenMethod = methodSymbol.OverriddenMethod;
 
             while (overridenMethod != null)
@@ -104,76 +93,6 @@ namespace Roslynator
                 && namedTypeSymbol.TypeArguments[0] == typeArgument;
         }
 
-        public static bool IsAnyTypeArgumentAnonymousType(this INamedTypeSymbol namedType)
-        {
-            if (namedType == null)
-                throw new ArgumentNullException(nameof(namedType));
-
-            ImmutableArray<ITypeSymbol> typeArguments = namedType.TypeArguments;
-
-            if (typeArguments.Length > 0)
-            {
-                var stack = new Stack<ITypeSymbol>(typeArguments);
-
-                while (stack.Count > 0)
-                {
-                    ITypeSymbol type = stack.Pop();
-
-                    if (type.IsAnonymousType)
-                        return true;
-
-                    if (type.IsNamedType())
-                    {
-                        typeArguments = ((INamedTypeSymbol)type).TypeArguments;
-
-                        for (int i = 0; i < typeArguments.Length; i++)
-                            stack.Push(typeArguments[i]);
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public static IEnumerable<ITypeSymbol> GetAllTypeArguments(this INamedTypeSymbol namedType)
-        {
-            if (namedType == null)
-                throw new ArgumentNullException(nameof(namedType));
-
-            ImmutableArray<ITypeSymbol> typeArguments = namedType.TypeArguments;
-
-            if (typeArguments.Length > 0)
-            {
-                var stack = new Stack<ITypeSymbol>(typeArguments);
-
-                while (stack.Count > 0)
-                {
-                    ITypeSymbol type = stack.Pop();
-
-                    yield return type;
-
-                    if (type.IsNamedType())
-                    {
-                        typeArguments = ((INamedTypeSymbol)type).TypeArguments;
-
-                        for (int i = 0; i < typeArguments.Length; i++)
-                            stack.Push(typeArguments[i]);
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<ITypeSymbol> GetAllTypeArgumentsAndSelf(this INamedTypeSymbol namedType)
-        {
-            if (namedType == null)
-                throw new ArgumentNullException(nameof(namedType));
-
-            yield return namedType;
-
-            foreach (ITypeSymbol typeSymbol in GetAllTypeArguments(namedType))
-                yield return typeSymbol;
-        }
-
         public static IEnumerable<INamespaceSymbol> ContainingNamespacesAndSelf(this INamespaceSymbol @namespace)
         {
             if (@namespace == null)
@@ -186,19 +105,6 @@ namespace Roslynator
                 @namespace = @namespace.ContainingNamespace;
 
             } while (@namespace != null);
-        }
-
-        public static IEnumerable<INamespaceSymbol> ContainingNamespaces(this INamespaceSymbol @namespace)
-        {
-            if (@namespace == null)
-                throw new ArgumentNullException(nameof(@namespace));
-
-            while (@namespace.ContainingNamespace != null)
-            {
-                yield return @namespace.ContainingNamespace;
-
-                @namespace = @namespace.ContainingNamespace;
-            }
         }
 
         public static bool IsKind(this ISymbol symbol, SymbolKind kind)
@@ -217,7 +123,19 @@ namespace Roslynator
                 || kind == kind2;
         }
 
-        public static ImmutableArray<IParameterSymbol> GetParameters(this ISymbol symbol)
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
+        {
+            if (symbol == null)
+                return false;
+
+            SymbolKind kind = symbol.Kind;
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3;
+        }
+
+        public static ImmutableArray<IParameterSymbol> GetMethodOrPropertyParameters(this ISymbol symbol)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -380,55 +298,6 @@ namespace Roslynator
             } while (containingNamespace != null);
         }
 
-        public static bool SupportsPrefixOrPostfixUnaryOperator(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            switch (typeSymbol.SpecialType)
-            {
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Char:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                case SpecialType.System_Decimal:
-                    return true;
-            }
-
-            if (typeSymbol.IsEnum())
-                return true;
-
-            return false;
-        }
-
-        public static bool SupportsExplicitDeclaration(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (!typeSymbol.IsAnonymousType)
-            {
-                switch (typeSymbol.Kind)
-                {
-                    case SymbolKind.TypeParameter:
-                        return true;
-                    case SymbolKind.ArrayType:
-                        return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
-                    case SymbolKind.NamedType:
-                        return !((INamedTypeSymbol)typeSymbol).IsAnyTypeArgumentAnonymousType();
-                }
-            }
-
-            return false;
-        }
-
         public static bool IsPubliclyAccessible(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
@@ -441,14 +310,14 @@ namespace Roslynator
                 || accessibility == Accessibility.Public;
         }
 
-        public static bool IsInt32(this ITypeSymbol typeSymbol)
-        {
-            return typeSymbol?.SpecialType == SpecialType.System_Int32;
-        }
-
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Void;
+        }
+
+        public static bool IsInt32(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.SpecialType == SpecialType.System_Int32;
         }
 
         public static bool IsBoolean(this ITypeSymbol typeSymbol)
@@ -476,12 +345,12 @@ namespace Roslynator
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            INamedTypeSymbol current = typeSymbol.BaseType;
+            INamedTypeSymbol baseType = typeSymbol.BaseType;
 
-            while (current != null)
+            while (baseType != null)
             {
-                yield return current;
-                current = current.BaseType;
+                yield return baseType;
+                baseType = baseType.BaseType;
             }
         }
 
@@ -499,61 +368,6 @@ namespace Roslynator
             }
         }
 
-        public static bool SupportsPredefinedType(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            switch (typeSymbol.SpecialType)
-            {
-                case SpecialType.System_Object:
-                case SpecialType.System_Boolean:
-                case SpecialType.System_Char:
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                case SpecialType.System_String:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        public static bool CanBeConstantValue(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            switch (typeSymbol.SpecialType)
-            {
-                case SpecialType.System_Boolean:
-                case SpecialType.System_Char:
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                case SpecialType.System_String:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         public static bool Implements(this ITypeSymbol typeSymbol, SpecialType specialType)
         {
             if (typeSymbol == null)
@@ -565,32 +379,6 @@ namespace Roslynator
             {
                 if (allInterfaces[i].SpecialType == specialType)
                     return true;
-            }
-
-            return false;
-        }
-
-        public static bool HasPublicIndexer(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            foreach (ISymbol symbol in typeSymbol.GetMembers("get_Item"))
-            {
-                if (symbol.IsMethod()
-                    && !symbol.IsStatic
-                    && symbol.IsPublic())
-                {
-                    var methodSymbol = (IMethodSymbol)symbol;
-
-                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                    if (parameters.Length == 1
-                        && parameters[0].Type?.IsInt32() == true)
-                    {
-                        return true;
-                    }
-                }
             }
 
             return false;
@@ -621,6 +409,16 @@ namespace Roslynator
             return typeSymbol?.TypeKind == TypeKind.Enum;
         }
 
+        public static bool IsConstructedFrom(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
+        {
+            return namedTypeSymbol?.ConstructedFrom?.SpecialType == specialType;
+        }
+
+        public static bool IsConstructedFrom(this INamedTypeSymbol namedTypeSymbol, ISymbol symbol)
+        {
+            return namedTypeSymbol?.ConstructedFrom?.Equals(symbol) == true;
+        }
+
         public static bool IsConstructedFrom(this ITypeSymbol typeSymbol, SpecialType specialType)
         {
             return typeSymbol?.IsNamedType() == true
@@ -631,27 +429,6 @@ namespace Roslynator
         {
             return typeSymbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(symbol) == true;
-        }
-
-        public static bool IsConstructedFrom(this ITypeSymbol typeSymbol, string fullyQualifiedMetadataName, SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (typeSymbol.IsNamedType())
-            {
-                INamedTypeSymbol namedTypeSymbol = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName(fullyQualifiedMetadataName);
-
-                return namedTypeSymbol != null
-                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(namedTypeSymbol) == true;
-            }
-
-            return false;
         }
 
         public static bool IsIEnumerable(this ITypeSymbol typeSymbol)
@@ -668,71 +445,6 @@ namespace Roslynator
         {
             return IsIEnumerable(typeSymbol)
                 || IsConstructedFromIEnumerableOfT(typeSymbol);
-        }
-
-        public static bool IsConstructedFromImmutableArrayOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            return IsConstructedFrom(typeSymbol, MetadataNames.System_Collections_Immutable_ImmutableArray_T, semanticModel);
-        }
-
-        public static bool IsEventHandlerOrConstructedFromEventHandlerOfT(
-            this ITypeSymbol typeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler))
-                || typeSymbol.IsConstructedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler_T));
-        }
-
-        public static bool IsTaskOrDerivedFromTask(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            INamedTypeSymbol taskSymbol = semanticModel
-                .Compilation
-                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-            if (typeSymbol.Equals(taskSymbol))
-                return true;
-
-            return typeSymbol.IsNamedType()
-                && ((INamedTypeSymbol)typeSymbol)
-                    .ConstructedFrom
-                    .BaseTypes()
-                    .Any(baseType => baseType.Equals(taskSymbol));
-        }
-
-        public static bool IsConstructedFromTaskOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (typeSymbol.IsNamedType())
-            {
-                INamedTypeSymbol constructedFrom = ((INamedTypeSymbol)typeSymbol).ConstructedFrom;
-
-                INamedTypeSymbol taskOfT = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                return constructedFrom.Equals(taskOfT)
-                    || constructedFrom.BaseTypes().Any(f => f.Equals(taskOfT));
-            }
-
-            return false;
         }
 
         public static bool EqualsOrDerivedFrom(this ITypeSymbol typeSymbol, ISymbol symbol)

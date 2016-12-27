@@ -10,7 +10,7 @@ namespace Roslynator
 {
     public static class SymbolRenamer
     {
-        public static async Task<Solution> RenameAsync(
+        public static async Task<Solution> RenameSymbolAsync(
             Document document,
             ISymbol symbol,
             string newName,
@@ -19,23 +19,13 @@ namespace Roslynator
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
-            return await RenameAsync(document.Project.Solution, symbol, newName, cancellationToken).ConfigureAwait(false);
-        }
-
-        public static async Task<Solution> RenameAsync(
-            Solution solution,
-            ISymbol symbol,
-            string newName,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
             if (newName == null)
                 throw new ArgumentNullException(nameof(newName));
+
+            Solution solution = document.Project.Solution;
 
             return await Renamer.RenameSymbolAsync(
                 solution,

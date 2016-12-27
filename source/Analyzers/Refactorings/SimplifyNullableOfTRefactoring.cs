@@ -43,10 +43,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective))
             {
-                var namedTypeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as INamedTypeSymbol;
+                var typeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as INamedTypeSymbol;
 
-                if (namedTypeSymbol?.SupportsPredefinedType() == false
-                    && namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                if (typeSymbol != null
+                    && !SymbolAnalyzer.SupportsPredefinedType(typeSymbol)
+                    && typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
                 {
                     context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName.GetLocation());
                 }

@@ -99,8 +99,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     leadingTrivia = leadingTrivia.AddRange(trivia);
 
-                newNode = right
-                    .LogicallyNegate()
+                newNode = CSharpUtility.LogicallyNegate(right)
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (right.IsBooleanLiteralExpression())
@@ -110,8 +109,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     trailingTrivia = trailingTrivia.InsertRange(0, trivia);
 
-                newNode = left
-                    .LogicallyNegate()
+                newNode = CSharpUtility.LogicallyNegate(left)
                     .WithTrailingTrivia(trailingTrivia);
             }
 #if DEBUG

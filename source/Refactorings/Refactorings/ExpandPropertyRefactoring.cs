@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             int index = modifiers.IndexOf(SyntaxKind.AbstractKeyword);
 
             if (index != -1)
-                propertyDeclaration = propertyDeclaration.WithModifiers(modifiers.ReplaceAt(index, CSharpFactory.VirtualToken().WithTriviaFrom(modifiers[index])));
+                propertyDeclaration = propertyDeclaration.WithModifiers(modifiers.ReplaceAt(index, CSharpFactory.VirtualKeyword().WithTriviaFrom(modifiers[index])));
 
             return propertyDeclaration;
         }

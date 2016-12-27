@@ -23,7 +23,7 @@ namespace Roslynator
 
         public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
         {
-            return !fileLinePositionSpan.IsMultiLine();
+            return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
         }
 
         public static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)

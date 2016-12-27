@@ -28,12 +28,7 @@ namespace Roslynator
 
         protected virtual bool NameEquals(string name1, string name2)
         {
-            return string.Equals(name1, name2, StringComparison);
-        }
-
-        public virtual StringComparison StringComparison
-        {
-            get { return StringComparison.Ordinal; }
+            return string.Equals(name1, name2, StringComparison.Ordinal);
         }
     }
 }

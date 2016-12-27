@@ -46,7 +46,6 @@
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
     <Compile Include="CSharp\Internal\LogicalNegationHelper.cs" />
-    <Compile Include="CSharp\ModifierInserter.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\InsertModifierRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="CSharp\Refactorings\RemoveCommentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
     <Compile Include="CSharp\SwitchSectionStatementContainer.cs" />
-    <Compile Include="CSharp\AccessModifier.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Internal\DetermineParameterHelper.cs" />
@@ -81,13 +79,11 @@
     <Compile Include="SymbolAnalyzer.cs" />
     <Compile Include="CSharp\CSharpUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
-    <Compile Include="CSharp\Refactorings\InlineAliasExpression\InlineAliasExpressionSyntaxRewriter.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\NameColonRemover.cs" />
+    <Compile Include="CSharp\Refactorings\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
     <Compile Include="CSharp\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRemover.cs" />
-    <Compile Include="CSharp\TypeAnalyzer.cs" />
     <Compile Include="CSharp\MemberDeclarationComparer.cs" />
     <Compile Include="CSharp\MemberDeclarationInserter.cs" />
     <Compile Include="UniqueNameGenerator.cs" />
@@ -115,7 +111,6 @@
     <Compile Include="Extensions\SyntaxTokenListExtensions.cs" />
     <Compile Include="Extensions\SyntaxTreeExtensions.cs" />
     <Compile Include="Extensions\SyntaxTriviaExtensions.cs" />
-    <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="GeneratedCodeAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CSharp\SyntaxRewriters\TriviaRemover.cs" />

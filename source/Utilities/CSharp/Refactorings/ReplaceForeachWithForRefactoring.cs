@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return typeSymbol.IsArrayType()
                    || typeSymbol.IsString()
-                   || typeSymbol.HasPublicIndexer();
+                   || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol);
             }
 
             return false;

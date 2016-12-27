@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 switchExpression = equalsExpression.Left;
 
-                                if (!semanticModel.IsValidSwitchExpression(switchExpression, cancellationToken))
+                                if (!CSharpUtility.IsValidSwitchExpression(switchExpression, semanticModel, cancellationToken))
                                     return false;
                             }
 
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
         private static bool IsValidSwitchExpression(ExpressionSyntax right, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             return right != null
-                && semanticModel.IsValidSwitchExpression(right, cancellationToken);
+                && CSharpUtility.IsValidSwitchExpression(right, semanticModel, cancellationToken);
         }
 
         private static async Task<Document> RefactorAsync(

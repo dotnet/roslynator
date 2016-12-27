@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename class to '{newName}'",
-                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken),
+                cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken),
                 DiagnosticIdentifiers.AddCodeFixProviderSuffix);
 
             context.RegisterCodeFix(codeAction, diagnostic);

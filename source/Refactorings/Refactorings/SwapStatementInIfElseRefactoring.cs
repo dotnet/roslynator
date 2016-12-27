@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax falseStatement = ifStatement.Else.Statement;
 
             IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(ifStatement.Condition.LogicallyNegate())
+                .WithCondition(CSharpUtility.LogicallyNegate(ifStatement.Condition))
                 .WithStatement(falseStatement.WithTriviaFrom(trueStatement))
                 .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
                 .WithFormatterAnnotation();

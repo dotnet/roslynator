@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
 
-                            if (trivia.IsSingleLineDocumentationCommentTrivia())
+                            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                             {
                                 var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
 

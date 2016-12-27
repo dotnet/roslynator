@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
             {
                 return ParenthesizedLambdaExpression(
-                    AsyncToken(),
+                    AsyncKeyword(),
                     methodDeclaration.ParameterList,
                     ArrowToken(),
                     body);

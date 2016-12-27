@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
@@ -128,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
                 .SkipWhile(f => f.IsWhitespaceOrEndOfLineTrivia())
                 .FirstOrDefault();
 
-            if (trivia.IsSingleLineDocumentationCommentTrivia())
+            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
             {
                 TextSpan span = TextSpan.FromBounds(trivia.Span.Start, member.Span.End);
 

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression?.IsMissing == false
                 && !(expression is AssignmentExpressionSyntax)
-                && !expression.IsIncrementOrDecrementExpression())
+                && !CSharpUtility.IsIncrementOrDecrementExpression(expression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                         && !typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))
                         && !typeSymbol.IsVoid())
                     {
-                        if (typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                        if (SymbolAnalyzer.IsConstructedFromTaskOfT(typeSymbol, semanticModel)
                             && semanticModel
                                 .GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken)?
                                 .IsAsyncMethod() == true)

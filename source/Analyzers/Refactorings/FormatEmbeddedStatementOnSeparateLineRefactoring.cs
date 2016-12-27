@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
         {
-            if (!token.IsNoneKind()
+            if (!token.IsKind(SyntaxKind.None)
                 && !token.IsMissing
                 && statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) == false
                 && context.SyntaxTree().IsSingleLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))

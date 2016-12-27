@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ArgumentSyntax> arguments,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ArgumentListSyntax newArgumentList = SyntaxRemover.RemoveNameColons(argumentList, arguments)
+            ArgumentListSyntax newArgumentList = RemoveParameterNameSyntaxRewriter.VisitNode(argumentList, arguments)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
@@ -112,7 +112,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (argument.NameColon == null || argument.NameColon.IsMissing)
             {
-                IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                    argument,
                     semanticModel,
                     allowParams: false,
                     cancellationToken: cancellationToken);
@@ -138,8 +139,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (argument.NameColon == null || argument.NameColon.IsMissing)
                 {
-                    IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                        await context.GetSemanticModelAsync().ConfigureAwait(false),
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                        argument,
+                        semanticModel,
                         allowParams: false,
                         cancellationToken: context.CancellationToken);
 
@@ -176,6 +180,48 @@ namespace Roslynator.CSharp.Refactorings
                     return AddParameterName(node, _semanticModel);
 
                 return base.VisitArgument(node);
+            }
+        }
+
+        private class RemoveParameterNameSyntaxRewriter : CSharpSyntaxRewriter
+        {
+            private readonly HashSet<ArgumentSyntax> _arguments;
+
+            private RemoveParameterNameSyntaxRewriter()
+            {
+            }
+
+            private RemoveParameterNameSyntaxRewriter(IEnumerable<ArgumentSyntax> arguments)
+            {
+                _arguments = new HashSet<ArgumentSyntax>(arguments);
+            }
+
+            public static TNode VisitNode<TNode>(TNode node) where TNode : SyntaxNode
+            {
+                var remover = new RemoveParameterNameSyntaxRewriter();
+
+                return (TNode)remover.Visit(node);
+            }
+
+            public static TNode VisitNode<TNode>(TNode node, IEnumerable<ArgumentSyntax> arguments) where TNode : SyntaxNode
+            {
+                var remover = new RemoveParameterNameSyntaxRewriter(arguments);
+
+                return (TNode)remover.Visit(node);
+            }
+
+            public override SyntaxNode VisitArgument(ArgumentSyntax node)
+            {
+                if (_arguments == null || _arguments.Contains(node))
+                {
+                    return node
+                        .WithNameColon(null)
+                        .WithTriviaFrom(node);
+                }
+                else
+                {
+                    return base.VisitArgument(node);
+                }
             }
         }
     }

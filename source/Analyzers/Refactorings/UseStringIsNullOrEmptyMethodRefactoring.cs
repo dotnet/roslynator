@@ -128,10 +128,10 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax expression = ((BinaryExpressionSyntax)left).Left;
 
-            ExpressionSyntax newNode = InvocationExpression(
+            ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
                 "IsNullOrEmpty",
-                ArgumentList(Argument(expression)));
+                Argument(expression));
 
             if (left.IsKind(SyntaxKind.NotEqualsExpression))
                 newNode = LogicalNotExpression(newNode);

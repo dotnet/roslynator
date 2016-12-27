@@ -25,6 +25,17 @@ namespace Roslynator.CSharp
             return GetOrderIndex(x).CompareTo(GetOrderIndex(y));
         }
 
+        public static bool IsListSorted(SyntaxTokenList modifiers)
+        {
+            for (int i = 0; i < modifiers.Count - 1; i++)
+            {
+                if (Instance.Compare(modifiers[i], modifiers[i + 1]) >= 0)
+                    return false;
+            }
+
+            return true;
+        }
+
         internal static int GetOrderIndex(SyntaxToken syntaxToken)
         {
             return GetOrderIndex(syntaxToken.Kind());

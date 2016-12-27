@@ -77,8 +77,8 @@ namespace CodeGenerator
                 .WithModifiers(Modifiers.Public())
                 .WithAccessorList(
                     AccessorList(
-                        AutoGetter(),
-                        AutoSetter()));
+                        AutoImplementedGetter(),
+                        AutoImplementedSetter()));
         }
 
         private static string CreateDescription(RefactoringInfo refactoring)

@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).ConvertedType;
 
-                    if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                    if (typeSymbol != null
+                        && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
                     {
                         context.RegisterRefactoring(
                             $"Replace 'null' with 'default({typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)})'",

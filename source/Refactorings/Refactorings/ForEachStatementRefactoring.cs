@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
+            TypeAnalysisResult result = CSharpUtility.AnalyzeType(
                 forEachStatement,
                 semanticModel,
                 context.CancellationToken);
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             context.RegisterRefactoring(
                                 $"Rename variable to '{newName}'",
-                                cancellationToken => SymbolRenamer.RenameAsync(context.Document, symbol, newName, cancellationToken));
+                                cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                         }
                     }
                 }

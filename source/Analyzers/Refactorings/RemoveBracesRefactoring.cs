@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BlockSyntax GetBlockThatCanBeEmbeddedStatement(SyntaxNode node)
         {
-            StatementSyntax childStatement = EmbeddedStatement.GetBlockOrEmbeddedStatement(node);
+            StatementSyntax childStatement = CSharpUtility.GetBlockOrEmbeddedStatement(node);
 
             if (childStatement?.IsKind(SyntaxKind.Block) == true)
             {
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)
                         && statement.IsSingleLine()
-                        && EmbeddedStatement.FormatSupportsEmbeddedStatement(node))
+                        && CSharpUtility.FormatSupportsEmbeddedStatement(node))
                     {
                         return block;
                     }

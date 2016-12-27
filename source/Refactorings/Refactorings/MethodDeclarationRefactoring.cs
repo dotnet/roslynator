@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                        $"Rename method to '{newName}'",
-                                       cancellationToken => SymbolRenamer.RenameAsync(context.Document, methodSymbol, newName, cancellationToken));
+                                       cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, methodSymbol, newName, cancellationToken));
                                 }
                             }
                         }

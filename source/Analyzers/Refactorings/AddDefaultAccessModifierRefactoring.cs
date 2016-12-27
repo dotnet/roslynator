@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTokenList modifiers = declaration.GetModifiers();
 
-            AccessModifier accessModifier = GetAccessModifier(context, declaration, modifiers);
+            Accessibility accessibility = GetAccessModifier(context, declaration, modifiers);
 
-            if (accessModifier != AccessModifier.None)
+            if (accessibility != Accessibility.NotApplicable)
             {
                 Location location = GetLocation(declaration);
 
@@ -31,12 +31,12 @@ namespace Roslynator.CSharp.Refactorings
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AddDefaultAccessModifier,
                         location,
-                        ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(AccessModifier), accessModifier.ToString()) }));
+                        ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Accessibility), accessibility.ToString()) }));
                 }
             }
         }
 
-        private static AccessModifier GetAccessModifier(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
+        private static Accessibility GetAccessModifier(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
             if (!ModifierUtility.ContainsAccessModifier(modifiers))
             {
@@ -44,17 +44,17 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (!declaration.IsKind(SyntaxKind.MethodDeclaration))
                     {
-                        AccessModifier? accessModifier = GetPartialAccessModifier(context, declaration);
+                        Accessibility? accessibility = GetPartialAccessModifier(context, declaration);
 
-                        if (accessModifier != null)
+                        if (accessibility != null)
                         {
-                            if (accessModifier == AccessModifier.None)
+                            if (accessibility == Accessibility.NotApplicable)
                             {
                                 return ModifierUtility.GetDefaultAccessModifier(declaration);
                             }
                             else
                             {
-                                return accessModifier.Value;
+                                return accessibility.Value;
                             }
                         }
                     }
@@ -65,14 +65,14 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return AccessModifier.None;
+            return Accessibility.NotApplicable;
         }
 
-        private static AccessModifier? GetPartialAccessModifier(
+        private static Accessibility? GetPartialAccessModifier(
             SyntaxNodeAnalysisContext context,
             MemberDeclarationSyntax declaration)
         {
-            var accessModifier = AccessModifier.None;
+            var accessibility = Accessibility.NotApplicable;
 
             ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
 
@@ -86,13 +86,13 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SyntaxTokenList modifiers = declaration2.GetModifiers();
 
-                        AccessModifier accessModifier2 = ModifierUtility.GetAccessModifier(modifiers);
+                        Accessibility accessibility2 = ModifierUtility.GetAccessModifier(modifiers);
 
-                        if (accessModifier2 != AccessModifier.None)
+                        if (accessibility2 != Accessibility.NotApplicable)
                         {
-                            if (accessModifier == AccessModifier.None || accessModifier == accessModifier2)
+                            if (accessibility == Accessibility.NotApplicable || accessibility == accessibility2)
                             {
-                                accessModifier = accessModifier2;
+                                accessibility = accessibility2;
                             }
                             else
                             {
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return accessModifier;
+            return accessibility;
         }
 
         private static Location GetLocation(SyntaxNode node)
@@ -173,12 +173,12 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax declaration,
-            AccessModifier accessModifier,
+            Accessibility accessibility,
             CancellationToken cancellationToken)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxToken[] accessModifiers = CreateModifiers(accessModifier);
+            SyntaxToken[] accessModifiers = CreateModifiers(accessibility);
 
             List<SyntaxToken> modifiers = declaration.GetModifiers().ToList();
 
@@ -212,20 +212,20 @@ namespace Roslynator.CSharp.Refactorings
             return document.WithSyntaxRoot(newRoot);
         }
 
-        private static SyntaxToken[] CreateModifiers(AccessModifier accessModifier)
+        private static SyntaxToken[] CreateModifiers(Accessibility accessModifier)
         {
             switch (accessModifier)
             {
-                case AccessModifier.Public:
-                    return new SyntaxToken[] { PublicToken() };
-                case AccessModifier.Internal:
-                    return new SyntaxToken[] { InternalToken() };
-                case AccessModifier.Protected:
-                    return new SyntaxToken[] { ProtectedToken() };
-                case AccessModifier.ProtectedInternal:
-                    return new SyntaxToken[] { ProtectedToken(), InternalToken() };
-                case AccessModifier.Private:
-                    return new SyntaxToken[] { PrivateToken() };
+                case Accessibility.Public:
+                    return new SyntaxToken[] { PublicKeyword() };
+                case Accessibility.Internal:
+                    return new SyntaxToken[] { InternalKeyword() };
+                case Accessibility.Protected:
+                    return new SyntaxToken[] { ProtectedKeyword() };
+                case Accessibility.ProtectedOrInternal:
+                    return new SyntaxToken[] { ProtectedKeyword(), InternalKeyword() };
+                case Accessibility.Private:
+                    return new SyntaxToken[] { PrivateKeyword() };
                 default:
                     return new SyntaxToken[0];
             }

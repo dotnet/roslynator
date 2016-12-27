@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = (conditionalExpression.WhenTrue.IsKind(SyntaxKind.TrueLiteralExpression))
                 ? condition
-                : condition.LogicallyNegate();
+                : CSharpUtility.LogicallyNegate(condition);
 
             TextSpan span = TextSpan.FromBounds(
                 conditionalExpression.Condition.Span.End,

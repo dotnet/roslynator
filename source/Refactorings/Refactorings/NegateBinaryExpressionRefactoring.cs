@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax newNode = binaryExpression.LogicallyNegate()
+            ExpressionSyntax newNode = CSharpUtility.LogicallyNegate(binaryExpression)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);

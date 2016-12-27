@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator
 {
@@ -51,33 +50,49 @@ namespace Roslynator
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
+            {
                 return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
+            {
                 return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
+            {
                 return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (token.SyntaxTree != null)
+            {
                 return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static SyntaxToken WithoutTrivia(this SyntaxToken token)
@@ -87,12 +102,12 @@ namespace Roslynator
 
         public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)
         {
-            return token.WithLeadingTrivia((IEnumerable<SyntaxTrivia>)null);
+            return token.WithLeadingTrivia(default(SyntaxTriviaList));
         }
 
         public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
         {
-            return token.WithTrailingTrivia((IEnumerable<SyntaxTrivia>)null);
+            return token.WithTrailingTrivia(default(SyntaxTriviaList));
         }
 
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)

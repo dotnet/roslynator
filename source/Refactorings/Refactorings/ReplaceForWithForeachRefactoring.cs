@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
                 if (value?.IsKind(SyntaxKind.NumericLiteralExpression) == true
-                    && ((LiteralExpressionSyntax)value).IsZeroLiteralExpression())
+                    && ((LiteralExpressionSyntax)value).IsZeroNumericLiteral())
                 {
                     ExpressionSyntax condition = forStatement.Condition;
 

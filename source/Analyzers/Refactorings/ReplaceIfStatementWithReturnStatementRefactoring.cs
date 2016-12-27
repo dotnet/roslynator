@@ -202,7 +202,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = ifStatement.Condition;
 
             if (GetBooleanLiteral(ifStatement.Statement).IsKind(SyntaxKind.FalseLiteralExpression))
-                expression = expression.LogicallyNegate();
+                expression = CSharpUtility.LogicallyNegate(expression);
 
             return ReturnStatement(
                 ReturnKeyword().WithTrailingSpace(),

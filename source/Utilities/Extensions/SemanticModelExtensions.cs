@@ -120,7 +120,7 @@ namespace Roslynator
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.ModelExtensions
+            return ModelExtensions
                 .GetSymbolInfo(semanticModel, node, cancellationToken)
                 .Symbol;
         }
@@ -130,7 +130,7 @@ namespace Roslynator
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.ModelExtensions
+            return ModelExtensions
                 .GetTypeInfo(semanticModel, node, cancellationToken)
                 .Type;
         }
@@ -140,7 +140,7 @@ namespace Roslynator
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.ModelExtensions
+            return ModelExtensions
                 .GetTypeInfo(semanticModel, node, cancellationToken)
                 .ConvertedType;
         }

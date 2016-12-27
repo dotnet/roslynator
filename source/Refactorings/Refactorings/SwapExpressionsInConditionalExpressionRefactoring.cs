@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression
-                .WithCondition(conditionalExpression.Condition.LogicallyNegate())
+                .WithCondition(CSharpUtility.LogicallyNegate(conditionalExpression.Condition))
                 .WithWhenTrue(conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue))
                 .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
                 .WithFormatterAnnotation();

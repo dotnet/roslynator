@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await InlineAliasExpressionSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
+            return await InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
         }
     }
 }

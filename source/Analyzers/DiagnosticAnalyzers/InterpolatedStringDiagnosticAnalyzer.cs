@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -37,8 +38,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolation,
-                    Location.Create(context.SyntaxTree(), interpolatedString.GetDollarSpan()));
+                    Location.Create(context.SyntaxTree(), GetDollarSpan(interpolatedString)));
             }
+        }
+
+        private static TextSpan GetDollarSpan(InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            SyntaxToken token = interpolatedString.StringStartToken;
+
+            if (token.Text.StartsWith("$"))
+                return new TextSpan(token.SpanStart, 1);
+
+            return new TextSpan(token.SpanStart, 0);
         }
     }
 }

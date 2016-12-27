@@ -166,7 +166,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                     }
                     else
                     {
-                        TypeDeclarationSyntax containingType = invocation.GetEnclosingTypeDeclaration();
+                        TypeDeclarationSyntax containingType = CSharpUtility.GetEnclosingTypeDeclaration(invocation);
 
                         if (containingType != null)
                         {
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                         }
                     }
                 }
-                else if (methodSymbol.IsReducedExtension()
+                else if (methodSymbol.IsMethodKind(MethodKind.ReducedExtension)
                     && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
                 {
                     return methodSymbol;
@@ -457,7 +457,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             List<ParameterInfo> parameterInfos = GetParameterInfos(invocation.ArgumentList, semanticModel, cancellationToken);
 
             if (parameterInfos != null
-                && methodSymbol.IsReducedExtension())
+                && methodSymbol.IsMethodKind(MethodKind.ReducedExtension))
             {
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
@@ -478,7 +478,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             foreach (ArgumentSyntax argument in argumentList.Arguments)
             {
-                IParameterSymbol parameterSymbol = argument.DetermineParameter(semanticModel, cancellationToken: cancellationToken);
+                IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(argument, semanticModel, cancellationToken: cancellationToken);
 
                 if (parameterSymbol != null)
                 {

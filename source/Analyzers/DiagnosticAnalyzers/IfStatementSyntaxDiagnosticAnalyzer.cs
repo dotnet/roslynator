@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (!ifStatement.IsParentKind(SyntaxKind.ElseClause)
                 && ifStatement.Else != null)
             {
-                BracesAnalysisResult result = IfElseAnalysis.Analyze(ifStatement);
+                BracesAnalysisResult result = CSharpUtility.AnalyzeBraces(ifStatement);
 
                 if ((result & BracesAnalysisResult.AddBraces) != 0)
                 {

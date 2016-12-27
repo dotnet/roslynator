@@ -33,15 +33,14 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                var namedTypeSymbol = semanticModel
-                    .GetSymbolInfo(node, context.CancellationToken)
-                    .Symbol as INamedTypeSymbol;
+                var typeSymbol = semanticModel.GetSymbol(node, context.CancellationToken) as INamedTypeSymbol;
 
-                if (namedTypeSymbol?.SupportsPredefinedType() == true)
+                if (typeSymbol != null
+                    && SymbolAnalyzer.SupportsPredefinedType(typeSymbol))
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Use predefined type '{namedTypeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
-                        cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, namedTypeSymbol, cancellationToken),
+                        $"Use predefined type '{typeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
+                        cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, typeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 
                     context.RegisterCodeFix(codeAction, context.Diagnostics);

@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
 
             IFieldSymbol fieldSymbol = GetDefaultFieldSymbol(symbol);
 
-            ExpressionSyntax newNode = InvocationExpression(
+            ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
                 "Equals",
                 ArgumentList(

@@ -31,9 +31,10 @@ namespace Roslynator.CSharp.Refactorings
                         if (left?.IsMissing == false
                             && right?.IsNumericLiteralExpression(1) == true)
                         {
-                            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(left, context.CancellationToken).Type;
+                            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
-                            if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
+                            if (typeSymbol != null
+                                && SymbolAnalyzer.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
                                 && !assignment.SpanContainsDirectives())
                             {
                                 ReportDiagnostic(context, assignment);
@@ -67,7 +68,8 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
-                                if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
+                                if (typeSymbol == null
+                                    && SymbolAnalyzer.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
                                     && left.IsEquivalentTo(binaryLeft, topLevel: false)
                                     && !assignment.SpanContainsDirectives())
                                 {

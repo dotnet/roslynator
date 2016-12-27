@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int propertyIndex = members.IndexOf(propertyDeclaration);
 
-            if (propertyDeclaration.IsReadOnlyAutoProperty())
+            if (IsReadOnlyAutoImplementedProperty(propertyDeclaration))
             {
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
@@ -61,6 +61,15 @@ namespace Roslynator.CSharp.Refactorings
             newMembers = MemberDeclarationInserter.InsertMember(newMembers, fieldDeclaration);
 
             return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
+        }
+
+        private static bool IsReadOnlyAutoImplementedProperty(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+            return accessorList != null
+                && accessorList.Getter()?.IsAutoImplementedGetter() == true
+                && accessorList.Setter() == null;
         }
 
         private static PropertyDeclarationSyntax ExpandPropertyAndAddBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
@@ -103,10 +112,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            SyntaxTokenList modifiers = TokenList(PrivateToken());
+            SyntaxTokenList modifiers = TokenList(PrivateKeyword());
 
             if (propertyDeclaration.IsStatic())
-                modifiers = modifiers.Add(StaticToken());
+                modifiers = modifiers.Add(StaticKeyword());
 
             return FieldDeclaration(modifiers, propertyDeclaration.Type, name, propertyDeclaration.Initializer);
         }

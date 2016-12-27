@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (interpolation == null)
                 return;
 
-            string innerText = ((LiteralExpressionSyntax)interpolation.Expression).GetStringLiteralInnerText();
+            string innerText = CSharpUtility.GetStringLiteralInnerText((LiteralExpressionSyntax)interpolation.Expression);
 
             CodeAction codeAction = CodeAction.Create(
                 $"Merge '{innerText}' into interpolated string",

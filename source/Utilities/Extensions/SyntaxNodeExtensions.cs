@@ -2,14 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 using Microsoft.CodeAnalysis.Text;
@@ -80,26 +75,6 @@ namespace Roslynator
                 .Any(f => f.IsDirective);
         }
 
-        public static TNode WithTrivia<TNode>(
-            this TNode node,
-            SyntaxTriviaList leadingTrivia,
-            SyntaxTriviaList trailingTrivia) where TNode : SyntaxNode
-        {
-            return Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithTrailingTrivia(
-                Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithLeadingTrivia(node, leadingTrivia),
-                trailingTrivia);
-        }
-
-        public static TNode WithTrivia<TNode>(
-            this TNode node,
-            IEnumerable<SyntaxTrivia> leadingTrivia,
-            IEnumerable<SyntaxTrivia> trailingTrivia) where TNode : SyntaxNode
-        {
-            return Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithTrailingTrivia(
-                Microsoft.CodeAnalysis.SyntaxNodeExtensions.WithLeadingTrivia(node, leadingTrivia),
-                trailingTrivia);
-        }
-
         public static TNode WithTriviaFrom<TNode>(this TNode syntax, SyntaxToken token) where TNode : SyntaxNode
         {
             if (syntax == null)
@@ -116,9 +91,13 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
+            {
                 return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanStartLine(
@@ -129,9 +108,13 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
+            {
                 return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
@@ -140,9 +123,13 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
+            {
                 return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanEndLine(
@@ -153,9 +140,13 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             if (node.SyntaxTree != null)
+            {
                 return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static TNode FirstAncestor<TNode>(

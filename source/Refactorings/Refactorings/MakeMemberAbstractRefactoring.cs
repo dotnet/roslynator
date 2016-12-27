@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Refactorings
 
             modifiers = AddAbstractKeywordIfNotPresent(modifiers);
 
-            if (!ModifierUtility.IsListSorted(modifiers))
+            if (!ModifierComparer.IsListSorted(modifiers))
                 modifiers = TokenList(modifiers.OrderBy(f => f, ModifierComparer.Instance));
 
             return modifiers;

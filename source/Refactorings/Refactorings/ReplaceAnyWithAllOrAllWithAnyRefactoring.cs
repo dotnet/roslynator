@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
 
             InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, expression.LogicallyNegate())
+                .ReplaceNode(expression, CSharpUtility.LogicallyNegate(expression))
                 .WithExpression(newMemberAccessExpression);
 
             return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);

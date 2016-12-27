@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             string newName,
             CancellationToken cancellationToken)
         {
-            return SymbolRenamer.RenameAsync(document, symbol, newName, cancellationToken);
+            return SymbolRenamer.RenameSymbolAsync(document, symbol, newName, cancellationToken);
         }
     }
 }

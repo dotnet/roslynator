@@ -53,9 +53,10 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     if (type.IsVar)
                                     {
-                                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                                        if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                                        if (typeSymbol != null
+                                            && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
                                         {
                                             type = Type(typeSymbol);
                                         }

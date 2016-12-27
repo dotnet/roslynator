@@ -26,8 +26,8 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             IdentifierNameSyntax identifierName)
         {
-            if (!identifierName.IsQualified()
-                || identifierName.IsQualifiedWithThis())
+            if (!IsQualified(identifierName)
+                || IsQualifiedWithThis(identifierName))
             {
                 PropertyDeclarationSyntax propertyDeclaration = identifierName.FirstAncestor<PropertyDeclarationSyntax>();
 
@@ -61,13 +61,30 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         $"Rename field to '{newName}'",
-                                        cancellationToken => SymbolRenamer.RenameAsync(context.Document, fieldSymbol, newName, cancellationToken));
+                                        cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, fieldSymbol, newName, cancellationToken));
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static bool IsQualified(SimpleNameSyntax identifierName)
+        {
+            return identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression);
+        }
+
+        private static bool IsQualifiedWithThis(SimpleNameSyntax identifierName)
+        {
+            if (IsQualified(identifierName))
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)identifierName.Parent;
+
+                return memberAccess.Expression?.IsKind(SyntaxKind.ThisExpression) == true;
+            }
+
+            return false;
         }
     }
 }

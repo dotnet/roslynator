@@ -34,33 +34,49 @@ namespace Roslynator
         public static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
+            {
                 return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
+            {
                 return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
+            {
                 return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
 
         public static int GetFullSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (trivia.SyntaxTree != null)
+            {
                 return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLine();
-
-            return -1;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

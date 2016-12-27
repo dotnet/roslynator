@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierInserter.InsertModifier(fieldDeclaration, SyntaxKind.StaticKeyword);
+                return ModifierUtility.InsertModifier(fieldDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierInserter.InsertModifier(methodDeclaration, SyntaxKind.StaticKeyword);
+                return ModifierUtility.InsertModifier(methodDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierInserter.InsertModifier(propertyDeclaration, SyntaxKind.StaticKeyword);
+                return ModifierUtility.InsertModifier(propertyDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierInserter.InsertModifier(eventDeclaration, SyntaxKind.StaticKeyword);
+                return ModifierUtility.InsertModifier(eventDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierInserter.InsertModifier(eventFieldDeclaration, SyntaxKind.StaticKeyword);
+                return ModifierUtility.InsertModifier(eventFieldDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -198,16 +198,16 @@ namespace Roslynator.CSharp.Refactorings
                     if (newModifiers.Any())
                     {
                         newModifiers = newModifiers.ReplaceAt(0, newModifiers[0].WithLeadingTrivia(modifiers[0].LeadingTrivia));
-                        newModifiers = ModifierInserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                        newModifiers = ModifierUtility.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
                     }
                     else
                     {
-                        newModifiers = ModifierInserter.InsertModifier(newModifiers, CSharpFactory.StaticToken().WithLeadingTrivia(modifiers[0].LeadingTrivia));
+                        newModifiers = ModifierUtility.InsertModifier(newModifiers, CSharpFactory.StaticKeyword().WithLeadingTrivia(modifiers[0].LeadingTrivia));
                     }
                 }
                 else
                 {
-                    newModifiers = ModifierInserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                    newModifiers = ModifierUtility.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
                 }
 
                 return constructorDeclaration.WithModifiers(newModifiers);

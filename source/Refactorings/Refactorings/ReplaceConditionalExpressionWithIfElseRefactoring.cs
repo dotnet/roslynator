@@ -42,9 +42,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        success = semanticModel
-                            .GetTypeSymbol(type, context.CancellationToken)?
-                            .SupportsExplicitDeclaration() == true;
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+                        success = typeSymbol != null
+                            && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol);
                     }
 
                     if (success)

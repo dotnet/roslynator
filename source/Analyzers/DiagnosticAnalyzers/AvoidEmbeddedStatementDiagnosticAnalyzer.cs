@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
 
-            StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(context.Node);
+            StatementSyntax statement = CSharpUtility.GetEmbeddedStatement(context.Node);
 
             if (statement != null)
             {

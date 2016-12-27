@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            return await document.ReplaceNodeAsync(expression, expression.LogicallyNegate(), cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(expression, CSharpUtility.LogicallyNegate(expression), cancellationToken).ConfigureAwait(false);
         }
     }
 }

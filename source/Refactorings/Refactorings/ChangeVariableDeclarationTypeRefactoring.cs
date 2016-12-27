@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisResult result = TypeAnalyzer.AnalyzeType(
+            TypeAnalysisResult result = CSharpUtility.AnalyzeType(
                 variableDeclaration,
                 semanticModel,
                 context.CancellationToken);
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (variables.Count == 1
                 && variables[0].Initializer?.Value != null
-                && typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                && SymbolAnalyzer.IsConstructedFromTaskOfT(typeSymbol, semanticModel)
                 && semanticModel
                     .GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken)?
                     .IsAsyncMethod() == true)

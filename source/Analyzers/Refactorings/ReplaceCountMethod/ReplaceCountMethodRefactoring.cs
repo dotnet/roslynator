@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
 
             if (left?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
             {
-                return ((LiteralExpressionSyntax)left).IsZeroLiteralExpression()
+                return ((LiteralExpressionSyntax)left).IsZeroNumericLiteral()
                     && binaryExpression.IsKind(
                         SyntaxKind.EqualsExpression,
                         SyntaxKind.LessThanExpression);
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
 
                 if (right?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
                 {
-                    return ((LiteralExpressionSyntax)right).IsZeroLiteralExpression()
+                    return ((LiteralExpressionSyntax)right).IsZeroNumericLiteral()
                         && binaryExpression.IsKind(
                             SyntaxKind.EqualsExpression,
                             SyntaxKind.GreaterThanExpression);

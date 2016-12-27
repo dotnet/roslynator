@@ -41,7 +41,6 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IfElseAnalysis.cs" />
     <Compile Include="Refactorings\AddConstructorArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultAccessModifierRefactoring.cs" />
     <Compile Include="Refactorings\AddEmptyLineAfterEmbeddedStatementRefactoring.cs" />

@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
                 default(SyntaxList<AttributeListSyntax>),
                 Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
                 Identifier(name),
-                ParameterList(parameters),
+                ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),
                 Block());
 

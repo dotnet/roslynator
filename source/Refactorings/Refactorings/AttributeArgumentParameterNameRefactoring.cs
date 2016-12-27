@@ -112,7 +112,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (argument.NameColon == null || argument.NameColon.IsMissing)
             {
-                IParameterSymbol parameterSymbol = argument.DetermineParameter(
+                IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                    argument,
                     semanticModel,
                     allowParams: false,
                     cancellationToken: cancellationToken);
@@ -138,8 +139,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (argument.NameColon == null || argument.NameColon.IsMissing)
                 {
-                    IParameterSymbol parameterSymbol = argument.DetermineParameter(
-                        await context.GetSemanticModelAsync().ConfigureAwait(false),
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                        argument,
+                        semanticModel,
                         allowParams: false,
                         cancellationToken: context.CancellationToken);
 
@@ -208,7 +212,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (_argumments == null || Array.IndexOf(_argumments, node) != -1)
                 {
                     return node
-                        .WithoutNameColon()
+                        .WithNameColon(null)
                         .WithTriviaFrom(node);
                 }
 

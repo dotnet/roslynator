@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            InvocationExpressionSyntax invocation = InvocationExpression(expression.WithoutTrailingTrivia(), IdentifierName(methodSymbol.Name))
+            InvocationExpressionSyntax invocation = SimpleMemberInvocationExpression(expression.WithoutTrailingTrivia(), IdentifierName(methodSymbol.Name))
                 .WithTrailingTrivia(expression.GetTrailingTrivia());
 
             SyntaxNode newRoot = root.ReplaceNode(expression, invocation);
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamespaceSymbol namespaceSymbol = methodSymbol.ContainingNamespace;
 
                 if (namespaceSymbol != null
-                    && !expression.IsNamespaceInScope(namespaceSymbol, semanticModel, cancellationToken)
+                    && !CSharpUtility.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken)
                     && newRoot.IsKind(SyntaxKind.CompilationUnit))
                 {
                     newRoot = ((CompilationUnitSyntax)newRoot)

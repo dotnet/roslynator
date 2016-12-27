@@ -24,8 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (typeSymbol?.IsErrorType() == false)
                     {
-                        IEnumerable<ITypeSymbol> newTypes = argument
-                            .DetermineParameterTypes(semanticModel, context.CancellationToken)
+                        IEnumerable<ITypeSymbol> newTypes = CSharpUtility.DetermineParameterTypes(argument, semanticModel, context.CancellationToken)
                             .Where(f => !typeSymbol.Equals(f));
 
                         ModifyExpressionRefactoring.ComputeRefactoring(context, expression, newTypes, semanticModel);

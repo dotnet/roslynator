@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (statement != null)
                 {
-                    if (!EmbeddedStatement.IsEmbeddedStatement(statement)
+                    if (!CSharpUtility.IsEmbeddedStatement(statement)
                         && statement.IsParentKind(SyntaxKind.Block))
                     {
                         RegisterRefactoring(context, statement);

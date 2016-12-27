@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                                     break;
                                 }
 
-                                switch (CSharpUtility.AnalyzeSwitchSection(section))
+                                switch (CSharpUtility.AnalyzeBraces(section))
                                 {
                                     case BracesAnalysisResult.AddBraces:
                                         {

@@ -14,6 +14,9 @@ namespace Roslynator
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
             return syntaxTree.GetLineSpan(span, cancellationToken).StartLine();
         }
 
@@ -22,34 +25,43 @@ namespace Roslynator
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
             return syntaxTree.GetLineSpan(span, cancellationToken).EndLine();
         }
 
         public static bool IsMultiLineSpan(
-            this SyntaxTree tree,
+            this SyntaxTree syntaxTree,
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (tree == null)
-                throw new ArgumentNullException(nameof(tree));
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
 
-            return tree.GetLineSpan(span, cancellationToken).IsMultiLine();
+            return syntaxTree.GetLineSpan(span, cancellationToken).IsMultiLine();
         }
 
         public static bool IsSingleLineSpan(
-            this SyntaxTree tree,
+            this SyntaxTree syntaxTree,
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return !IsMultiLineSpan(tree, span, cancellationToken);
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
+            return syntaxTree.GetLineSpan(span, cancellationToken).IsSingleLine();
         }
 
         public static int GetLineCount(
-            this SyntaxTree tree,
+            this SyntaxTree syntaxTree,
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return tree.GetLineSpan(span, cancellationToken).GetLineCount();
+            if (syntaxTree == null)
+                throw new ArgumentNullException(nameof(syntaxTree));
+
+            return syntaxTree.GetLineSpan(span, cancellationToken).GetLineCount();
         }
     }
 }

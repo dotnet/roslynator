@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
         private static bool ContainsAwait(MethodDeclarationSyntax methodDeclaration)
         {
             return methodDeclaration
-                .DescendantNodes(node => !node.IsMethodInsideMethod())
+                .DescendantNodes(node => !CSharpUtility.IsMethodInsideMethod(node))
                 .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
     }

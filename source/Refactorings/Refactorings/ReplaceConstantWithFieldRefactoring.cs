@@ -42,15 +42,15 @@ namespace Roslynator.CSharp.Refactorings
                     constModifier,
                     new SyntaxToken[]
                     {
-                        StaticToken().WithLeadingTrivia(constModifier.LeadingTrivia),
-                        ReadOnlyToken().WithTrailingTrivia(constModifier.TrailingTrivia)
+                        StaticKeyword().WithLeadingTrivia(constModifier.LeadingTrivia),
+                        ReadOnlyKeyword().WithTrailingTrivia(constModifier.TrailingTrivia)
                     });
             }
             else
             {
                 return field.Modifiers.Replace(
                     constModifier,
-                    ReadOnlyToken().WithTriviaFrom(constModifier));
+                    ReadOnlyKeyword().WithTriviaFrom(constModifier));
             }
         }
     }

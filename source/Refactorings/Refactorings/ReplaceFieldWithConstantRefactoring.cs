@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
                 return typeSymbol != null
-                    && typeSymbol.CanBeConstantValue();
+                    && SymbolAnalyzer.SupportsConstantValue(typeSymbol);
             }
 
             return false;

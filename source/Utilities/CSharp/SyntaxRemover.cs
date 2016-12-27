@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -262,19 +261,6 @@ namespace Roslynator.CSharp
                 .RemoveNode(namespaceDeclaration.Members[index], GetMemberRemoveOptions(newMember));
         }
 
-        internal static SyntaxRemoveOptions GetMemberRemoveOptions(MemberDeclarationSyntax member)
-        {
-            SyntaxRemoveOptions removeOptions = DefaultMemberRemoveOptions;
-
-            if (member.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-
-            if (member.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-
-            return removeOptions;
-        }
-
         internal static MemberDeclarationSyntax RemoveSingleLineDocumentationComment(MemberDeclarationSyntax member)
         {
             if (member == null)
@@ -353,18 +339,6 @@ namespace Roslynator.CSharp
         public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
         {
             return CommentRemover.RemoveComments(node, removeOptions, span);
-        }
-
-        public static TNode RemoveNameColons<TNode>(TNode node) where TNode : SyntaxNode
-        {
-            return NameColonRemover.RemoveNameColons(node);
-        }
-
-        public static TNode RemoveNameColons<TNode>(
-            TNode node,
-            IEnumerable<ArgumentSyntax> arguments) where TNode : SyntaxNode
-        {
-            return NameColonRemover.RemoveNameColons(node, arguments);
         }
 
         public static TNode RemoveTrivia<TNode>(TNode node) where TNode : SyntaxNode
@@ -590,6 +564,19 @@ namespace Roslynator.CSharp
                 .Where(f => !f.Members.Any());
 
             return node.RemoveNodes(emptyNamespaces, removeOptions);
+        }
+
+        private static SyntaxRemoveOptions GetMemberRemoveOptions(MemberDeclarationSyntax member)
+        {
+            SyntaxRemoveOptions removeOptions = DefaultMemberRemoveOptions;
+
+            if (member.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+
+            if (member.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+
+            return removeOptions;
         }
     }
 }

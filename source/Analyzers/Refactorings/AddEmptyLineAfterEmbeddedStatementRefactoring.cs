@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken token,
             StatementSyntax statement)
         {
-            if (!token.IsNoneKind()
+            if (!token.IsKind(SyntaxKind.None)
                 && !token.IsMissing
                 && statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) == false
                 && context.SyntaxTree().IsMultiLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))

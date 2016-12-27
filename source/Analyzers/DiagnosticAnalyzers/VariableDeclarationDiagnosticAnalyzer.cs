@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
-            switch (TypeAnalyzer.AnalyzeType(variableDeclaration, context.SemanticModel, context.CancellationToken))
+            switch (CSharpUtility.AnalyzeType(variableDeclaration, context.SemanticModel, context.CancellationToken))
             {
                 case TypeAnalysisResult.Explicit:
                     {

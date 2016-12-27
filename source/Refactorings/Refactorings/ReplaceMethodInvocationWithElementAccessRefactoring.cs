@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                         .Type;
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
+                        && (typeSymbol.IsArrayType() || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || typeSymbol.HasPublicIndexer()))
+                        && (typeSymbol.IsArrayType() || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         context.RegisterRefactoring(
                             "Replace 'ElementAt' with '[]'",
@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
 
-                if (typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
+                if (SymbolAnalyzer.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
                     return "Length";
 
                 ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;

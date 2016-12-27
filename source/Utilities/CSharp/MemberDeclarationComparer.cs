@@ -10,7 +10,8 @@ namespace Roslynator.CSharp
     internal class MemberDeclarationComparer : IComparer<MemberDeclarationSyntax>
     {
         public static readonly MemberDeclarationComparer Instance = new MemberDeclarationComparer();
-        public static readonly int MaxOrderIndex = 18;
+
+        private const int MaxOrderIndex = 18;
 
         public int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y)
         {

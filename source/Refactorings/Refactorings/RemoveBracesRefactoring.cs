@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     continue;
                 }
-                else if (EmbeddedStatement.IsEmbeddableBlock(block))
+                else if (CSharpUtility.IsEmbeddableBlock(block))
                 {
                     success = true;
                 }
@@ -91,9 +91,9 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
             if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(block)
-                && EmbeddedStatement.IsEmbeddableBlock(block))
+                && CSharpUtility.IsEmbeddableBlock(block))
             {
-                StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(block.Statements[0]);
+                StatementSyntax statement = CSharpUtility.GetEmbeddedStatement(block.Statements[0]);
 
                 return statement == null
                     || !statement.FullSpan.Contains(context.Span);

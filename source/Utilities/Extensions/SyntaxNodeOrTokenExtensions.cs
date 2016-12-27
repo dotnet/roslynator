@@ -9,17 +9,25 @@ namespace Roslynator
         public static SyntaxNodeOrToken WithoutLeadingTrivia(this SyntaxNodeOrToken nodeOrToken)
         {
             if (nodeOrToken.IsNode)
+            {
                 return nodeOrToken.AsNode().WithoutLeadingTrivia();
-
-            return nodeOrToken.AsToken().WithoutLeadingTrivia();
+            }
+            else
+            {
+                return nodeOrToken.AsToken().WithoutLeadingTrivia();
+            }
         }
 
         public static SyntaxNodeOrToken WithoutTrailingTrivia(this SyntaxNodeOrToken nodeOrToken)
         {
             if (nodeOrToken.IsNode)
+            {
                 return nodeOrToken.AsNode().WithoutTrailingTrivia();
-
-            return nodeOrToken.AsToken().WithoutTrailingTrivia();
+            }
+            else
+            {
+                return nodeOrToken.AsToken().WithoutTrailingTrivia();
+            }
         }
     }
 }

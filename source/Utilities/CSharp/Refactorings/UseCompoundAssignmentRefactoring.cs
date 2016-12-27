@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (left?.IsMissing == false
                     && right?.IsMissing == false
                     && !assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && right.SupportsCompoundAssignment())
+                    && CSharpUtility.SupportsCompoundAssignment(right))
                 {
                     var binaryExpression = (BinaryExpressionSyntax)right;
                     ExpressionSyntax binaryLeft = binaryExpression.Left;
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
                 default:
                     {
                         Debug.Assert(false, binaryExpression.Kind().ToString());
-                        return SyntaxKind.EqualsToken;
+                        return SyntaxKind.None;
                     }
             }
         }
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
                 default:
                     {
                         Debug.Assert(false, binaryExpression.Kind().ToString());
-                        return binaryExpression.Kind();
+                        return SyntaxKind.None;
                     }
             }
         }
