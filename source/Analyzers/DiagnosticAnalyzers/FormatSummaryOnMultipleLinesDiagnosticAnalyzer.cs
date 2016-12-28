@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeDocumentationComment(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
 
         private void AnalyzeDocumentationComment(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
             FormatSummaryOnMultipleLinesRefactoring.Analyze(context, documentationComment);

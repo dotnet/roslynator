@@ -34,6 +34,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
@@ -43,9 +45,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var method = (MethodDeclarationSyntax)context.Node;
 
             if (method.ExpressionBody == null)
@@ -61,9 +60,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (OperatorDeclarationSyntax)context.Node;
 
             if (declaration.ExpressionBody == null)
@@ -72,9 +68,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             if (declaration.ExpressionBody == null)
@@ -83,9 +76,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (PropertyDeclarationSyntax)context.Node;
 
             if (declaration.ExpressionBody == null)
@@ -94,9 +84,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (IndexerDeclarationSyntax)context.Node;
 
             if (declaration.ExpressionBody == null)

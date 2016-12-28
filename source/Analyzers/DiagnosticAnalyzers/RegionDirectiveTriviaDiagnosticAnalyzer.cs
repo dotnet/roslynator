@@ -23,14 +23,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeRegionDirectiveTrivia(f), SyntaxKind.RegionDirectiveTrivia);
         }
 
         private void AnalyzeRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var region = (RegionDirectiveTriviaSyntax)context.Node;
 
             RemoveEmptyRegionRefactoring.Analyze(context, region);

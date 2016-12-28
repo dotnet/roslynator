@@ -30,14 +30,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSimpleAssignment(f), SyntaxKind.SimpleAssignmentExpression);
         }
 
         private void AnalyzeSimpleAssignment(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
             if (UseCompoundAssignmentRefactoring.CanRefactor(assignment))

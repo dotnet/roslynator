@@ -31,14 +31,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.ElseClause);
         }
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var elseClause = (ElseClauseSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, elseClause);

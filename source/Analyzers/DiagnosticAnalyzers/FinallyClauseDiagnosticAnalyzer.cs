@@ -23,14 +23,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.FinallyClause);
         }
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var finallyClause = (FinallyClauseSyntax)context.Node;
 
             RemoveEmptyFinallyClauseRefactoring.Analyze(context, finallyClause);

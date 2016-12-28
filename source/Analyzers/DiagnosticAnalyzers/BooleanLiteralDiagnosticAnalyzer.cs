@@ -31,6 +31,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
                 SyntaxKind.EqualsExpression,
                 SyntaxKind.NotEqualsExpression,
@@ -40,9 +42,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
             ExpressionSyntax left = binaryExpression.Left;

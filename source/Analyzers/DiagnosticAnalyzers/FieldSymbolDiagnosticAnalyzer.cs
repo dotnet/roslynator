@@ -21,14 +21,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSymbolAction(f => AnalyzeField(f), SymbolKind.Field);
         }
 
         private void AnalyzeField(SymbolAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var fieldSymbol = (IFieldSymbol)context.Symbol;
 
             RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.Analyze(context, fieldSymbol);

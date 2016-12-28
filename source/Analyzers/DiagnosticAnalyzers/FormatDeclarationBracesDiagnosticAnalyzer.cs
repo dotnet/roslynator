@@ -23,6 +23,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
@@ -30,9 +32,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (ClassDeclarationSyntax)context.Node;
 
             FormatDeclarationBracesRefactoring.Analyze(context, declaration);
@@ -40,9 +39,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (StructDeclarationSyntax)context.Node;
 
             FormatDeclarationBracesRefactoring.Analyze(context, declaration);
@@ -50,9 +46,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (InterfaceDeclarationSyntax)context.Node;
 
             FormatDeclarationBracesRefactoring.Analyze(context, declaration);

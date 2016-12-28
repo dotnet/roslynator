@@ -28,6 +28,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeMemberDeclaration(f),
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.ConstructorDeclaration,
@@ -47,9 +49,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (MemberDeclarationSyntax)context.Node;
 
             ReorderModifiersRefactoring.Analyze(context, declaration);

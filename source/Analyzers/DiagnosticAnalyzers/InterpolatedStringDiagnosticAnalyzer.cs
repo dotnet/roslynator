@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.InterpolatedStringExpression);
         }
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
 
             if (ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))

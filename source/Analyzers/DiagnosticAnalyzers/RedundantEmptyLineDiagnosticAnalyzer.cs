@@ -23,6 +23,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
@@ -32,41 +34,26 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         public void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (ClassDeclarationSyntax)context.Node);
         }
 
         private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (StructDeclarationSyntax)context.Node);
         }
 
         private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (InterfaceDeclarationSyntax)context.Node);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (NamespaceDeclarationSyntax)context.Node);
         }
 
         private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
         }
     }

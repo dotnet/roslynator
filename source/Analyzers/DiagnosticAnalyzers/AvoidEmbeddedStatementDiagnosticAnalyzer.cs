@@ -22,6 +22,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
                 SyntaxKind.IfStatement,
                 SyntaxKind.ElseClause,
@@ -36,9 +38,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             StatementSyntax statement = CSharpUtility.GetEmbeddedStatement(context.Node);
 
             if (statement != null)

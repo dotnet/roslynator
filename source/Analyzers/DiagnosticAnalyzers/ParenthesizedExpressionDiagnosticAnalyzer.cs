@@ -28,6 +28,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeParenthesizedExpression(f), SyntaxKind.ParenthesizedExpression);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
@@ -60,121 +62,76 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (ParenthesizedExpressionSyntax)context.Node);
         }
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (WhileStatementSyntax)context.Node);
         }
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (DoStatementSyntax)context.Node);
         }
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (UsingStatementSyntax)context.Node);
         }
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (LockStatementSyntax)context.Node);
         }
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (IfStatementSyntax)context.Node);
         }
 
         private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
         }
 
         private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (ReturnStatementSyntax)context.Node);
         }
 
         private void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (YieldStatementSyntax)context.Node);
         }
 
         private void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (ExpressionStatementSyntax)context.Node);
         }
 
         private void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (ArgumentSyntax)context.Node);
         }
 
         private void AnalyzeAttributeArgument(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (AttributeArgumentSyntax)context.Node);
         }
 
         private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (EqualsValueClauseSyntax)context.Node);
         }
 
         private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (AwaitExpressionSyntax)context.Node);
         }
 
        private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             RemoveRedundantParenthesesRefactoring.Analyze(context, (AssignmentExpressionSyntax)context.Node);
         }
     }

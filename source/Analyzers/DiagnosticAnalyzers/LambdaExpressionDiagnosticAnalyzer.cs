@@ -28,6 +28,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f),
                 SyntaxKind.SimpleLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression);
@@ -35,9 +37,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var lambda = (LambdaExpressionSyntax)context.Node;
 
             if (SimplifyLambdaExpressionRefactoring.CanRefactor(lambda))

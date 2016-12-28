@@ -23,14 +23,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
         }
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var whileStatement = (WhileStatementSyntax)context.Node;
 
             AvoidUsageOfWhileStatementToCreateInfiniteLoopRefactoring.Analyze(context, whileStatement);

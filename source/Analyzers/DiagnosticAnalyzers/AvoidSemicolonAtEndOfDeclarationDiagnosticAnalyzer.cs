@@ -22,6 +22,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f),
                 SyntaxKind.NamespaceDeclaration,
                 SyntaxKind.ClassDeclaration,
@@ -32,9 +34,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             AvoidSemicolonAtEndOfDeclarationRefactoring.Analyze(context, context.Node);
         }
     }

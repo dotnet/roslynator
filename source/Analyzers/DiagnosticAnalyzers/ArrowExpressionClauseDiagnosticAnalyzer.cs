@@ -22,14 +22,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
         }
 
         private void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
 
             ExpressionSyntax expression = arrowExpressionClause.Expression;

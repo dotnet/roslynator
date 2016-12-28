@@ -28,14 +28,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzerNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
         }
 
         private void AnalyzerNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (NamespaceDeclarationSyntax)context.Node;
 
             RemoveEmptyNamespaceDeclarationRefactoring.Analyze(context, declaration);

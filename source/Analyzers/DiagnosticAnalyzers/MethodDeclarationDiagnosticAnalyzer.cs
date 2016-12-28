@@ -31,14 +31,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.MethodDeclaration);
         }
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             AsynchronousMethodNameShouldEndWithAsyncRefactoring.Analyze(context, methodDeclaration);

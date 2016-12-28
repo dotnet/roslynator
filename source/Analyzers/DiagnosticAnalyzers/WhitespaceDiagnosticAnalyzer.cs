@@ -27,14 +27,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxTreeAction(f => AnalyzeTrailingTrivia(f));
         }
 
         private void AnalyzeTrailingTrivia(SyntaxTreeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             SourceText sourceText;
             if (!context.Tree.TryGetText(out sourceText))
                 return;

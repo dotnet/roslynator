@@ -29,14 +29,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
         }
 
         private void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
 
             WrapConditionalExpressionConditionInParenthesesRefactoring.Analyze(context, conditionalExpression);
