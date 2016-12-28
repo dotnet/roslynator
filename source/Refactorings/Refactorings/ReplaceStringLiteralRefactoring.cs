@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             int interpolationLength = 0,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            string s = literalExpression.Token.Text.ToString();
+            string s = literalExpression.Token.Text;
 
             if (interpolationStartIndex != -1)
             {
@@ -111,20 +111,30 @@ namespace Roslynator.CSharp.Refactorings
                 switch (text[i])
                 {
                     case '"':
-                        sb.Append(Backslash + Quote);
-                        break;
+                        {
+                            sb.Append(Backslash + Quote);
+                            break;
+                        }
                     case '\\':
-                        sb.Append(Backslash + Backslash);
-                        break;
+                        {
+                            sb.Append(Backslash + Backslash);
+                            break;
+                        }
                     case '\r':
-                        sb.Append(@"\r");
-                        break;
+                        {
+                            sb.Append(@"\r");
+                            break;
+                        }
                     case '\n':
-                        sb.Append(@"\n");
-                        break;
+                        {
+                            sb.Append(@"\n");
+                            break;
+                        }
                     default:
-                        sb.Append(text[i]);
-                        break;
+                        {
+                            sb.Append(text[i]);
+                            break;
+                        }
                 }
             }
 

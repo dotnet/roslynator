@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.ToString());
-                    Debug.Assert(false, $"{nameof(ParenthesizeExpressionRefactoring)}\r\n{expression.Kind().ToString()}");
+                    Debug.Assert(false, $"{nameof(ParenthesizeExpressionRefactoring)}\r\n{expression.Kind()}");
                 }
             }
 

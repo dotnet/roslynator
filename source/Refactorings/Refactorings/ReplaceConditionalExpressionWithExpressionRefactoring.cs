@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     || expression.Equals(conditionalExpression.WhenFalse))
                 {
                     context.RegisterRefactoring(
-                        $"Replace ?: with '{expression.ToString()}'",
+                        $"Replace ?: with '{expression}'",
                         cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
                 }
             }

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             TypeSyntax nullableType = GetNullableType(type);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Simplify name '{type.ToString()}'",
+                $"Simplify name '{type}'",
                 cancellationToken => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, cancellationToken),
                 DiagnosticIdentifiers.SimplifyNullableOfT + EquivalenceKeySuffix);
 

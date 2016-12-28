@@ -105,8 +105,10 @@ namespace Roslynator.CSharp
                 case SyntaxKind.EnumDeclaration:
                     return "enum";
                 default:
-                    Debug.Assert(false, node.Kind().ToString());
-                    return string.Empty;
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return string.Empty;
+                    }
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         && (typeSymbol.DeclaredAccessibility == Accessibility.Public || typeSymbol.DeclaredAccessibility == Accessibility.Internal)
                         && !CSharpUtility.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
-                        context.RegisterRefactoring($"using static {typeSymbol.ToString()};",
+                        context.RegisterRefactoring($"using static {typeSymbol};",
                             cancellationToken =>
                             {
                                 return RefactorAsync(

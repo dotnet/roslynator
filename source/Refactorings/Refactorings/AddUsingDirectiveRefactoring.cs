@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 && !CSharpUtility.IsNamespaceInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(
-                    $"using {namespaceSymbol.ToString()};",
+                    $"using {namespaceSymbol};",
                     cancellationToken => RefactorAsync(context.Document, node, namespaceSymbol, cancellationToken));
             }
         }
