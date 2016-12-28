@@ -1,7 +1,24 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.25928.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
+	ProjectSection(SolutionItems) = preProject
+		ChangeLog.md = ChangeLog.md
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+		text\ReadMe.txt = text\ReadMe.txt
+		text\ReleaseCheckList.txt = text\ReleaseCheckList.txt
+		Roslynator.ruleset = Roslynator.ruleset
+		text\RoslynatorDescription.txt = text\RoslynatorDescription.txt
+		text\RoslynatorRefactoringsDescription.txt = text\RoslynatorRefactoringsDescription.txt
+		text\ToBeReleased.txt = text\ToBeReleased.txt
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCodeFileHeader", "source\Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "source\Utilities\Utilities.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
@@ -22,10 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio", "source\Visu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Refactorings", "source\VisualStudio.Refactorings\VisualStudio.Refactorings.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynatorRefactorings", "source\Tools\DebugRoslynatorRefactorings\DebugRoslynatorRefactorings.csproj", "{59C2BA93-6077-4F00-8F36-6A256E983C25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalAnalyzers", "source\Tools\InternalAnalyzers\InternalAnalyzers.csproj", "{1DB4A125-FBF8-4728-ABF5-37B9DF355753}"
@@ -37,19 +50,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynator", "source\Tools\DebugRoslynator\DebugRoslynator.csproj", "{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "source\Tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
-	ProjectSection(SolutionItems) = preProject
-		ChangeLog.md = ChangeLog.md
-		LICENSE.txt = LICENSE.txt
-		README.md = README.md
-		text\ReadMe.txt = text\ReadMe.txt
-		text\ReleaseCheckList.txt = text\ReleaseCheckList.txt
-		Roslynator.ruleset = Roslynator.ruleset
-		text\RoslynatorDescription.txt = text\RoslynatorDescription.txt
-		text\RoslynatorRefactoringsDescription.txt = text\RoslynatorRefactoringsDescription.txt
-		text\ToBeReleased.txt = text\ToBeReleased.txt
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
