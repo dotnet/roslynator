@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddBooleanComparisonRefactoring
     {
-        internal static async Task ComputeRefactoring2Async(RefactoringContext context, ExpressionSyntax expression)
+        internal static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
