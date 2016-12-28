@@ -4,17 +4,23 @@ namespace Roslynator.CSharp
 {
     public static class DiagnosticCategories
     {
-        public const string General = "General";
-        public const string FadeOut = "FadeOut";
-
-#if DEBUG
         public const string Design = "Design";
+        public const string FadeOut = "FadeOut";
         public const string Formatting = "Formatting";
+        public const string General = "General";
         public const string Maintainability = "Maintainability";
         public const string Naming = "Naming";
         public const string Performance = "Performance";
+        public const string Readability = "Readability";
+        public const string Redundancy = "Redundancy";
+        public const string Simplification = "Simplification";
         public const string Style = "Style";
         public const string Usage = "Usage";
-#endif
+
+        //public const string Compatibility = "Compatibility";
+        //public const string Correctness = "Correctness";
+        //public const string Globalization = "Globalization";
+        //public const string Reliability = "Reliability";
+        //public const string Security = "Security";
     }
 }
