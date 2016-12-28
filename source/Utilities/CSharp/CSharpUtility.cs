@@ -106,7 +106,7 @@ namespace Roslynator.CSharp
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
                         if (typeSymbol != null
-                            && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
+                            && Symbol.SupportsExplicitDeclaration(typeSymbol))
                         {
                             if (variables.Count > 1
                                 || IsLocalConstDeclaration(variableDeclaration.Parent))
@@ -164,8 +164,7 @@ namespace Roslynator.CSharp
                         {
                             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                            return symbol?.Kind == SymbolKind.Field
-                                && symbol.ContainingType?.TypeKind == TypeKind.Enum;
+                            return Symbol.IsEnumField(symbol);
                         }
 
                         break;
@@ -197,7 +196,7 @@ namespace Roslynator.CSharp
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
             if (typeSymbol != null
-                && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
+                && Symbol.SupportsExplicitDeclaration(typeSymbol))
             {
                 return TypeAnalysisResult.ImplicitButShouldBeExplicit;
             }
@@ -490,7 +489,7 @@ namespace Roslynator.CSharp
             {
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                if (namedTypeSymbol.ConstructedFrom.IsSpecialType(SpecialType.System_Nullable_T))
+                if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
                 {
                     switch (namedTypeSymbol.ConstructedFrom.TypeArguments.First().SpecialType)
                     {

@@ -124,8 +124,9 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             FieldDeclarationSyntax fieldDeclaration)
         {
-            if (fieldDeclaration.Declaration != null
-                && fieldDeclaration.Declaration.Variables.Count == 1)
+            VariableDeclaratorSyntax variable = fieldDeclaration.Declaration?.SingleVariableOrDefault();
+
+            if (variable != null)
             {
                 MemberDeclarationSyntax parentMember = GetContainingMember(fieldDeclaration);
 
@@ -133,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(fieldDeclaration.Declaration.Variables[0], context.CancellationToken);
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
 
                     return symbol != null
                         && !symbol.IsStatic
@@ -202,16 +203,16 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ISymbol symbol = semanticModel.GetSymbolInfo(expression, cancellationToken).Symbol;
+            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol != null
-                && !symbol.IsStatic
-                && symbol.IsField())
+            if (Symbol.IsInstanceField(symbol))
             {
                 return symbol;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         private static async Task<Document> RefactorAsync(

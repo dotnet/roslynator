@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             while (node?.Parent?.IsKind(SyntaxKind.QualifiedName, SyntaxKind.AliasQualifiedName, SyntaxKind.SimpleMemberAccessExpression) == true)
             {
-                ISymbol symbol = semanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol;
+                ISymbol symbol = semanticModel.GetSymbol(node, context.CancellationToken);
 
                 if (symbol?.IsNamespace() == true)
                 {

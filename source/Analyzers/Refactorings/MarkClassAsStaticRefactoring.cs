@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(INamedTypeSymbol symbol)
         {
-            if (symbol.TypeKind == TypeKind.Class
+            if (symbol.IsClass()
                 && !symbol.IsStatic
                 && !symbol.IsAbstract
                 && !symbol.IsImplicitClass

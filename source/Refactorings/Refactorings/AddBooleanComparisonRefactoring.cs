@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                             .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as ExpressionSyntax;
 
                         if (expression != null
-                            && semanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                            && semanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                         {
                             if (semanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken)?.IsBoolean() == true
                                 || IsCondition(expression))
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (left.Span.Contains(context.Span))
                             {
-                                if (semanticModel.GetTypeSymbol(left, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                                if (semanticModel.GetTypeSymbol(left, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
                                     RegisterRefactoring(context, left);
                                 }
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                                 ExpressionSyntax right = binaryExpression.Right;
 
                                 if (right.Span.Contains(context.Span)
-                                    && semanticModel.GetTypeSymbol(right, context.CancellationToken)?.IsConstructedFromNullableOf(SpecialType.System_Boolean) == true)
+                                    && semanticModel.GetTypeSymbol(right, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
                                     RegisterRefactoring(context, right);
                                 }

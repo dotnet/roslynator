@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken);
 
                 return methodSymbol != null
-                    && SymbolAnalyzer.IsTaskOrDerivedFromTask(methodSymbol.ReturnType, semanticModel)
+                    && Symbol.IsTaskOrDerivedFromTask(methodSymbol.ReturnType, semanticModel)
                     && semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) != null;
             }
 

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -60,9 +59,9 @@ namespace Roslynator.CSharp
             if (symbolDisplayFormat == null)
                 symbolDisplayFormat = _typeSymbolDisplayFormat;
 
-            Debug.Assert(SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol), typeSymbol.ToDisplayString(symbolDisplayFormat));
+            Debug.Assert(Symbol.SupportsExplicitDeclaration(typeSymbol), typeSymbol.ToDisplayString(symbolDisplayFormat));
 
-            if (!SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
+            if (!Symbol.SupportsExplicitDeclaration(typeSymbol))
                 throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
 
             if (semanticModel != null)
@@ -103,11 +102,8 @@ namespace Roslynator.CSharp
                     return ZeroLiteralExpression();
             }
 
-            if (typeSymbol.Kind == SymbolKind.NamedType
-                && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
-            {
+            if (typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
                 return NullLiteralExpression();
-            }
 
             if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Enum)
             {
@@ -143,18 +139,13 @@ namespace Roslynator.CSharp
 
         private static IFieldSymbol GetDefaultEnumMember(ITypeSymbol typeSymbol)
         {
-            foreach (ISymbol member in typeSymbol.GetMembers())
+            foreach (IFieldSymbol fieldSymbol in typeSymbol.GetFields())
             {
-                if (member.IsField())
+                if (fieldSymbol.HasConstantValue
+                    && fieldSymbol.ConstantValue is int
+                    && (int)fieldSymbol.ConstantValue == 0)
                 {
-                    var fieldSymbol = (IFieldSymbol)member;
-
-                    if (fieldSymbol.HasConstantValue
-                        && fieldSymbol.ConstantValue is int
-                        && (int)fieldSymbol.ConstantValue == 0)
-                    {
-                        return fieldSymbol;
-                    }
+                    return fieldSymbol;
                 }
             }
 
@@ -190,19 +181,14 @@ namespace Roslynator.CSharp
 
         private static IFieldSymbol FindMemberWithConstantValue(ITypeSymbol typeSymbol, object value)
         {
-            foreach (ISymbol symbol in typeSymbol.GetMembers())
+            foreach (IFieldSymbol fieldSymbol in typeSymbol.GetFields())
             {
-                if (symbol.IsField())
+                if (fieldSymbol.HasConstantValue)
                 {
-                    var fieldSymbol = (IFieldSymbol)symbol;
+                    object constantValue = fieldSymbol.ConstantValue;
 
-                    if (fieldSymbol.HasConstantValue)
-                    {
-                        object constantValue = fieldSymbol.ConstantValue;
-
-                        if (value.Equals(constantValue))
-                            return fieldSymbol;
-                    }
+                    if (value.Equals(constantValue))
+                        return fieldSymbol;
                 }
             }
 

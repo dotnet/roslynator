@@ -33,8 +33,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             foreach (ISymbol member in destinationType.GetMembers(methodName))
             {
-                if (member.IsMethod()
-                    && member.IsPublic())
+                if (Symbol.IsPublicMethod(member))
                 {
                     var methodSymbol = (IMethodSymbol)member;
 

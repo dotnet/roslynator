@@ -19,9 +19,10 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxKind.QualifiedName,
                     SyntaxKind.UsingDirective))
             {
-                var namedTypeSymbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) as INamedTypeSymbol;
+                var typeSymbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) as ITypeSymbol;
 
-                if (namedTypeSymbol?.SupportsPredefinedType() == true)
+                if (typeSymbol != null
+                    && Symbol.SupportsPredefinedType(typeSymbol))
                 {
                     IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(identifierName, context.CancellationToken);
 
@@ -35,10 +36,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective))
             {
-                var namedTypeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as INamedTypeSymbol;
+                var typeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as ITypeSymbol;
 
-                if (namedTypeSymbol?.SupportsPredefinedType() == true)
+                if (typeSymbol != null
+                    && Symbol.SupportsPredefinedType(typeSymbol))
+                {
                     ReportDiagnostic(context, qualifiedName);
+                }
             }
         }
 
@@ -52,9 +56,10 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxKind.SimpleMemberAccessExpression,
                     SyntaxKind.IdentifierName) == true)
                 {
-                    var namedTypeSymbol = context.SemanticModel.GetSymbol(expression, context.CancellationToken) as INamedTypeSymbol;
+                    var typeSymbol = context.SemanticModel.GetSymbol(expression, context.CancellationToken) as ITypeSymbol;
 
-                    if (namedTypeSymbol?.SupportsPredefinedType() == true)
+                    if (typeSymbol != null
+                        && Symbol.SupportsPredefinedType(typeSymbol))
                     {
                         IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(expression, context.CancellationToken);
 

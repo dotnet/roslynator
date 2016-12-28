@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (simpleBaseType.Type?.IsKind(SyntaxKind.PredefinedType) == true)
                         {
-                            var symbol = context.SemanticModel.GetSymbolInfo(simpleBaseType.Type, context.CancellationToken).Symbol as INamedTypeSymbol;
+                            var symbol = context.SemanticModel.GetSymbol(simpleBaseType.Type, context.CancellationToken) as INamedTypeSymbol;
 
                             if (symbol?.IsInt32() == true)
                                 return baseType;

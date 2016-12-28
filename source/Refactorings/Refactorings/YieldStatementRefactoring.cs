@@ -29,15 +29,11 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberType != null)
                     {
-                        ITypeSymbol memberTypeSymbol = semanticModel
-                            .GetTypeInfo(memberType, context.CancellationToken)
-                            .Type;
+                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
 
                         if (memberTypeSymbol?.SpecialType != SpecialType.System_Collections_IEnumerable)
                         {
-                            ITypeSymbol typeSymbol = semanticModel
-                                .GetTypeInfo(yieldStatement.Expression, context.CancellationToken)
-                                .Type;
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(yieldStatement.Expression, context.CancellationToken);
 
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
                                 && typeSymbol?.IsErrorType() == false
@@ -72,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
 
-                                if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                                if (namedTypeSymbol.IsConstructedFromIEnumerableOfT())
                                 {
                                     ITypeSymbol argumentSymbol = namedTypeSymbol.TypeArguments[0];
 

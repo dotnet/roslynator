@@ -8,8 +8,114 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    public static class SymbolAnalyzer
+    public static class Symbol
     {
+        public static bool IsPublicProperty(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && symbol.IsProperty();
+        }
+
+        public static bool IsPublicInstanceProperty(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && !symbol.IsStatic
+                && symbol.IsProperty();
+        }
+
+        public static bool IsPublicStaticProperty(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && symbol.IsStatic
+                && symbol.IsProperty();
+        }
+
+        public static bool IsPrivateField(ISymbol symbol)
+        {
+            return symbol?.IsPrivate() == true
+                && symbol.IsField();
+        }
+
+        public static bool IsInstanceField(ISymbol symbol)
+        {
+            return symbol?.IsStatic == false
+                && symbol.IsField();
+        }
+
+        public static bool IsStaticField(ISymbol symbol)
+        {
+            return symbol?.IsStatic == true
+                && symbol.IsField();
+        }
+
+        public static bool IsEnumField(ISymbol symbol)
+        {
+            return symbol?.Kind == SymbolKind.Field
+                && symbol.ContainingType?.TypeKind == TypeKind.Enum;
+        }
+
+        public static bool IsStaticClass(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.IsStatic == true
+                && typeSymbol.IsClass();
+        }
+
+        public static bool IsInstanceClass(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.IsStatic == false
+                && typeSymbol.IsClass();
+        }
+
+        public static bool IsSealedClass(ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.IsSealed == true
+                && typeSymbol.IsClass();
+        }
+
+        public static bool IsVoidMethod(ISymbol typeSymbol)
+        {
+            return typeSymbol?.IsMethod() == true
+                && ((IMethodSymbol)typeSymbol).ReturnsVoid;
+        }
+
+        public static bool IsAsyncMethod(ISymbol symbol)
+        {
+            return symbol?.IsMethod() == true
+                && ((IMethodSymbol)symbol).IsAsync;
+        }
+
+        public static bool IsInstanceMethod(ISymbol symbol)
+        {
+            return symbol?.IsStatic == false
+                && symbol.IsMethod();
+        }
+
+        public static bool IsStaticMethod(ISymbol symbol)
+        {
+            return symbol?.IsStatic == true
+                && symbol.IsMethod();
+        }
+
+        public static bool IsPublicInstanceMethod(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && !symbol.IsStatic
+                && symbol.IsMethod();
+        }
+
+        public static bool IsPublicMethod(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && symbol.IsMethod();
+        }
+
+        public static bool IsPublicStaticMethod(ISymbol symbol)
+        {
+            return symbol?.IsPublic() == true
+                && symbol.IsStatic
+                && symbol.IsMethod();
+        }
+
         public static bool SupportsExplicitDeclaration(ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
@@ -59,7 +165,7 @@ namespace Roslynator
             return false;
         }
 
-        public static bool SupportsPredefinedType(this ITypeSymbol typeSymbol)
+        public static bool SupportsPredefinedType(ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -149,14 +255,7 @@ namespace Roslynator
 
             INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
-            if (typeSymbol.Equals(taskSymbol))
-                return true;
-
-            return typeSymbol.IsNamedType()
-                && ((INamedTypeSymbol)typeSymbol)
-                    .ConstructedFrom
-                    .BaseTypes()
-                    .Any(baseType => baseType.Equals(taskSymbol));
+            return typeSymbol.EqualsOrDerivedFrom(taskSymbol);
         }
 
         public static bool IsConstructedFromTaskOfT(ITypeSymbol typeSymbol, SemanticModel semanticModel)
@@ -169,12 +268,9 @@ namespace Roslynator
 
             if (typeSymbol.IsNamedType())
             {
-                INamedTypeSymbol constructedFrom = ((INamedTypeSymbol)typeSymbol).ConstructedFrom;
-
                 INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
-                return constructedFrom.Equals(taskOfT)
-                    || constructedFrom.BaseTypes().Any(f => f.Equals(taskOfT));
+                return ((INamedTypeSymbol)typeSymbol).ConstructedFrom.EqualsOrDerivedFrom(taskOfT);
             }
 
             return false;
@@ -199,6 +295,11 @@ namespace Roslynator
             return IsConstructedFrom(typeSymbol, MetadataNames.System_Collections_Immutable_ImmutableArray_T, semanticModel);
         }
 
+        public static bool IsConstructedFromImmutableArrayOfT(INamedTypeSymbol namedTypeSymbol, SemanticModel semanticModel)
+        {
+            return IsConstructedFrom(namedTypeSymbol, MetadataNames.System_Collections_Immutable_ImmutableArray_T, semanticModel);
+        }
+
         public static bool IsConstructedFrom(ITypeSymbol typeSymbol, string fullyQualifiedMetadataName, SemanticModel semanticModel)
         {
             if (typeSymbol == null)
@@ -209,13 +310,27 @@ namespace Roslynator
 
             if (typeSymbol.IsNamedType())
             {
-                INamedTypeSymbol namedTypeSymbol = semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
+                INamedTypeSymbol symbol = semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
 
-                return namedTypeSymbol != null
-                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom?.Equals(namedTypeSymbol) == true;
+                return symbol != null
+                    && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(symbol);
             }
 
             return false;
+        }
+
+        public static bool IsConstructedFrom(INamedTypeSymbol namedTypeSymbol, string fullyQualifiedMetadataName, SemanticModel semanticModel)
+        {
+            if (namedTypeSymbol == null)
+                throw new ArgumentNullException(nameof(namedTypeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            INamedTypeSymbol symbol = semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
+
+            return symbol != null
+                && namedTypeSymbol.ConstructedFrom.Equals(symbol);
         }
 
         public static bool HasPublicIndexerWithInt32Parameter(ITypeSymbol typeSymbol)
@@ -225,16 +340,11 @@ namespace Roslynator
 
             foreach (ISymbol symbol in typeSymbol.GetMembers("get_Item"))
             {
-                if (symbol.IsMethod()
-                    && !symbol.IsStatic
-                    && symbol.IsPublic())
+                if (IsPublicInstanceMethod(symbol))
                 {
                     var methodSymbol = (IMethodSymbol)symbol;
 
-                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                    if (parameters.Length == 1
-                        && parameters[0].Type?.IsInt32() == true)
+                    if (methodSymbol.SingleParameterOrDefault()?.Type.IsInt32() == true)
                     {
                         return true;
                     }
@@ -370,7 +480,13 @@ namespace Roslynator
                 methodSymbol,
                 methodName,
                 semanticModel,
-                f => f.Parameters.Length == 1 && IsPredicateFunc(f.Parameters[0].Type, f.TypeArguments[0], semanticModel));
+                f =>
+                {
+                    IParameterSymbol parameter = f.SingleParameterOrDefault();
+
+                    return parameter != null
+                        && IsPredicateFunc(parameter.Type, f.TypeArguments[0], semanticModel);
+                });
         }
 
         public static bool IsEnumerableMethodWithPredicateWithIndex(IMethodSymbol methodSymbol, string methodName, SemanticModel semanticModel)
@@ -379,7 +495,13 @@ namespace Roslynator
                 methodSymbol,
                 methodName,
                 semanticModel,
-                f => f.Parameters.Length == 1 && IsPredicateFunc(f.Parameters[0].Type, f.TypeArguments[0], semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), semanticModel));
+                f =>
+                {
+                    IParameterSymbol parameter = f.SingleParameterOrDefault();
+
+                    return parameter != null
+                        && IsPredicateFunc(parameter.Type, f.TypeArguments[0], semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), semanticModel);
+                });
         }
 
         public static bool IsEnumerableCastMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
@@ -399,8 +521,7 @@ namespace Roslynator
                 if (reducedFrom != null)
                     methodSymbol = reducedFrom;
 
-                return methodSymbol.Parameters.Length == 1
-                    && methodSymbol.Parameters[0].Type.IsIEnumerable();
+                return methodSymbol.SingleParameterOrDefault()?.Type.IsIEnumerable() == true;
             }
 
             return false;
@@ -417,7 +538,13 @@ namespace Roslynator
                 methodSymbol,
                 "Where",
                 semanticModel,
-                f => f.Parameters.Length == 1 && IsPredicateFunc(f.Parameters[0].Type, f.TypeArguments[0], semanticModel));
+                f =>
+                {
+                    IParameterSymbol parameter = f.SingleParameterOrDefault();
+
+                    return parameter != null
+                        && IsPredicateFunc(parameter.Type, f.TypeArguments[0], semanticModel);
+                });
         }
 
         public static bool IsEnumerableOrImmutableArrayExtensionSelectMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
@@ -426,7 +553,13 @@ namespace Roslynator
                 methodSymbol,
                 "Select",
                 semanticModel,
-                f => f.Parameters.Length == 1 && IsFunc(f.Parameters[0].Type, f.TypeArguments[0], f.TypeArguments[1], semanticModel));
+                f =>
+                {
+                    IParameterSymbol parameter = f.SingleParameterOrDefault();
+
+                    return parameter != null
+                        && IsFunc(parameter.Type, f.TypeArguments[0], f.TypeArguments[1], semanticModel);
+                });
         }
 
         public static bool IsEnumerableOrImmutableArrayExtensionElementAtMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
@@ -435,7 +568,7 @@ namespace Roslynator
                 methodSymbol,
                 "ElementAt",
                 semanticModel,
-                f => f.Parameters.Length == 1 && f.Parameters[0].Type.IsInt32());
+                f => f.SingleParameterOrDefault()?.Type.IsInt32() == true);
         }
 
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)
@@ -590,6 +723,22 @@ namespace Roslynator
             return methodSymbol
                 .ContainingType?
                 .Equals(semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName)) == true;
+        }
+
+        public static ImmutableArray<IParameterSymbol> GetMethodOrPropertyParameters(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            switch (symbol.Kind)
+            {
+                case SymbolKind.Method:
+                    return ((IMethodSymbol)symbol).Parameters;
+                case SymbolKind.Property:
+                    return ((IPropertySymbol)symbol).Parameters;
+                default:
+                    return ImmutableArray<IParameterSymbol>.Empty;
+            }
         }
 
         private static bool NameEquals(string name1, string name2)

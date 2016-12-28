@@ -14,20 +14,28 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(ForStatementSyntax forStatement)
         {
-            if (forStatement.Declaration?.Variables.Count == 1)
-            {
-                ExpressionSyntax value = forStatement
-                    .Declaration
-                    .Variables[0]
-                    .Initializer?
-                    .Value;
+            ExpressionSyntax value = forStatement
+                .Declaration?
+                .SingleVariableOrDefault()?
+                .Initializer?
+                .Value;
 
-                return value?.IsKind(SyntaxKind.SubtractExpression) == true
-                    && ((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression(1) == true
-                    && forStatement.Condition?.IsKind(SyntaxKind.GreaterThanOrEqualExpression) == true
-                    && ((BinaryExpressionSyntax)forStatement.Condition).Right?.IsNumericLiteralExpression(0) == true
-                    && forStatement.Incrementors.Count == 1
-                    && forStatement.Incrementors[0].IsKind(SyntaxKind.PostDecrementExpression);
+            if (value?.IsKind(SyntaxKind.SubtractExpression) == true
+                && ((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression(1) == true)
+            {
+                ExpressionSyntax condition = forStatement.Condition;
+
+                if (condition?.IsKind(SyntaxKind.GreaterThanOrEqualExpression) == true
+                    && ((BinaryExpressionSyntax)condition).Right?.IsNumericLiteralExpression(0) == true)
+                {
+                    SeparatedSyntaxList<ExpressionSyntax> incrementors = forStatement.Incrementors;
+
+                    if (incrementors.Count == 1
+                        && incrementors[0].IsKind(SyntaxKind.PostDecrementExpression))
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;

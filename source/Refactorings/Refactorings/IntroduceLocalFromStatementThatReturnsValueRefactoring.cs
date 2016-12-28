@@ -30,21 +30,18 @@ namespace Roslynator.CSharp.Refactorings
                         && !typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))
                         && !typeSymbol.IsVoid())
                     {
-                        if (SymbolAnalyzer.IsConstructedFromTaskOfT(typeSymbol, semanticModel)
-                            && semanticModel
-                                .GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken)?
-                                .IsAsyncMethod() == true)
+                        bool addAwait = false;
+
+                        if (Symbol.IsConstructedFromTaskOfT(typeSymbol, semanticModel))
                         {
-                            context.RegisterRefactoring(
-                                GetTitle(expression),
-                                cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait: true, cancellationToken: cancellationToken));
+                            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken);
+
+                            addAwait = Symbol.IsAsyncMethod(enclosingSymbol);
                         }
-                        else
-                        {
-                            context.RegisterRefactoring(
-                                GetTitle(expression),
-                                cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait: false, cancellationToken: cancellationToken));
-                        }
+
+                        context.RegisterRefactoring(
+                            GetTitle(expression),
+                            cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait: addAwait, cancellationToken: cancellationToken));
                     }
                 }
             }

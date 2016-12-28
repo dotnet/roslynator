@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ISymbol symbol = semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol;
+            ISymbol symbol = semanticModel.GetSymbol(invocation, cancellationToken);
 
             if (symbol?.IsMethod() == true
                 && !symbol.IsImplicitlyDeclared)

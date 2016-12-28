@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (type == null)
                         return false;
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
                     if (typeSymbol == null || typeSymbol.IsErrorType())
                         return false;

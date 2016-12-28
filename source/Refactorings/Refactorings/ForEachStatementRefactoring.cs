@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
                 {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                     context.RegisterRefactoring(
                         $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     string oldName = identifier.ValueText;
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                     if (typeSymbol?.IsErrorType() == false)
                     {

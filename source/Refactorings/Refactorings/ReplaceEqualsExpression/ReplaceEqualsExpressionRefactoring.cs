@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(left, context.CancellationToken).ConvertedType;
+                        ITypeSymbol leftSymbol = semanticModel.GetConvertedTypeSymbol(left, context.CancellationToken);
 
                         if (leftSymbol?.IsString() == true)
                         {

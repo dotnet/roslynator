@@ -25,15 +25,13 @@ namespace Roslynator.CSharp.Refactorings
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            ITypeSymbol typeSymbol = semanticModel
-                .GetTypeInfo(forEachStatement.Expression, cancellationToken)
-                .Type;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, cancellationToken);
 
             if (typeSymbol?.IsErrorType() == false)
             {
                 return typeSymbol.IsArrayType()
                    || typeSymbol.IsString()
-                   || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol);
+                   || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol);
             }
 
             return false;
@@ -78,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                     MemberAccessExpression(
                         SyntaxKind.SimpleMemberAccessExpression,
                         IdentifierName(forEachStatement.Expression.ToString()),
-                        IdentifierName(GetCountOrLengthPropertyName(forEachStatement.Expression, semanticModel)))),
+                        IdentifierName(GetCountOrLengthPropertyName(forEachStatement.Expression, semanticModel, cancellationToken)))),
                 incrementors: SingletonSeparatedList<ExpressionSyntax>(
                     PostfixUnaryExpression(
                         SyntaxKind.PostIncrementExpression,
@@ -116,9 +114,9 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static string GetCountOrLengthPropertyName(ExpressionSyntax expression, SemanticModel semanticModel)
+        private static string GetCountOrLengthPropertyName(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).Type;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol?.IsErrorType() == false)
             {

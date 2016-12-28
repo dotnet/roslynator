@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var namedTypeSymbol = context.SemanticModel.GetSymbol(genericName, context.CancellationToken) as INamedTypeSymbol;
 
-                        if (namedTypeSymbol?.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                        if (namedTypeSymbol?.IsConstructedFrom(SpecialType.System_Nullable_T) == true)
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.SimplifyNullableOfT,
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                 var typeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as INamedTypeSymbol;
 
                 if (typeSymbol != null
-                    && !SymbolAnalyzer.SupportsPredefinedType(typeSymbol)
+                    && !Symbol.SupportsPredefinedType(typeSymbol)
                     && typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
                 {
                     context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName.GetLocation());

@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ISymbol symbol = semanticModel.GetSymbolInfo(initializer).Symbol;
+                    ISymbol symbol = semanticModel.GetSymbol(initializer);
 
                     if (symbol?.IsErrorType() == false)
                         ComputeRefactoring(context, constructorDeclaration, symbol);

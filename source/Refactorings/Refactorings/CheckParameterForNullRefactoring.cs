@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             INamedTypeSymbol exceptionType = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
 
-                            ISymbol type = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol;
+                            ISymbol type = semanticModel.GetSymbol(objectCreation.Type, cancellationToken);
 
                             return type?.Equals(exceptionType) == true;
                         }

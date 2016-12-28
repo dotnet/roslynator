@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                 if (methodSymbol != null
-                    && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(methodSymbol, "Any", context.SemanticModel))
+                    && Symbol.IsEnumerableMethodWithoutParameters(methodSymbol, "Any", context.SemanticModel))
                 {
                     string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: false, cancellationToken: context.CancellationToken);
 

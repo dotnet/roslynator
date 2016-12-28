@@ -32,9 +32,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ITypeSymbol typeSymbol = semanticModel
-                            .GetTypeInfo(declaration.Type, context.CancellationToken)
-                            .Type;
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, context.CancellationToken);
 
                         if (typeSymbol?.IsNamedType() == true
                             && ((INamedTypeSymbol)typeSymbol).Implements(SpecialType.System_IDisposable))

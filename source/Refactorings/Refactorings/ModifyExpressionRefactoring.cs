@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings
             IArrayTypeSymbol arrayType,
             SemanticModel semanticModel)
         {
-            ITypeSymbol expressionType = semanticModel.GetTypeInfo(expression, context.CancellationToken).Type;
+            ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
             if (expressionType?.IsNamedType() == true)
             {

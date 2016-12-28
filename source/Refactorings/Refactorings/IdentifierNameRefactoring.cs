@@ -35,9 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    var fieldSymbol = semanticModel
-                        .GetSymbolInfo(identifierName, context.CancellationToken)
-                        .Symbol as IFieldSymbol;
+                    var fieldSymbol = semanticModel.GetSymbol(identifierName, context.CancellationToken) as IFieldSymbol;
 
                     if (fieldSymbol?.IsPrivate() == true)
                     {

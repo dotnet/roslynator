@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 var typeSymbol = semanticModel.GetSymbol(node, context.CancellationToken) as INamedTypeSymbol;
 
                 if (typeSymbol != null
-                    && SymbolAnalyzer.SupportsPredefinedType(typeSymbol))
+                    && Symbol.SupportsPredefinedType(typeSymbol))
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Use predefined type '{typeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",

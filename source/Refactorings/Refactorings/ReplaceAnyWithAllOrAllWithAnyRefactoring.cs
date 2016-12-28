@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
             if (methodSymbol != null
-                && SymbolAnalyzer.IsEnumerableMethodWithPredicate(methodSymbol, fromMethodName, semanticModel))
+                && Symbol.IsEnumerableMethodWithPredicate(methodSymbol, fromMethodName, semanticModel))
             {
                 ExpressionSyntax expression = GetExpression(invocation);
 

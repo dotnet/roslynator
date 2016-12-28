@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (methodSymbol.IsAsync)
             {
-                if (SymbolAnalyzer.IsConstructedFromTaskOfT(returnType, semanticModel))
+                if (Symbol.IsConstructedFromTaskOfT(returnType, semanticModel))
                     return ((INamedTypeSymbol)returnType).TypeArguments.First();
             }
             else if (!returnType.IsIEnumerableOrConstructedFromIEnumerableOfT())

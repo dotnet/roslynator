@@ -175,8 +175,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 default:
                     {
                         return semanticModel
-                            .GetTypeInfo(expression, cancellationToken)
-                            .ConvertedType?
+                            .GetConvertedTypeSymbol(expression, cancellationToken)?
                             .IsBoolean() == true;
                     }
             }

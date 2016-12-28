@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             TypeSyntax type = forEachStatement.Type;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
             if (typeSymbol != null)
             {

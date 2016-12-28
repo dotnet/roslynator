@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                         IEnumerable<IMethodSymbol> declaredConstructors = classDeclaration.Members
                             .Where(f => f.IsKind(SyntaxKind.ConstructorDeclaration))
                             .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
-                            .Where(f => f?.IsMethod() == true && !f.IsStatic)
+                            .Where(f => Symbol.IsInstanceMethod(f))
                             .Cast<IMethodSymbol>();
 
                         using (IEnumerator<IMethodSymbol> en = baseSymbol

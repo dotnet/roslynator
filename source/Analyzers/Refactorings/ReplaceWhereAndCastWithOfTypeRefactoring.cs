@@ -43,12 +43,12 @@ namespace Roslynator.CSharp.Refactorings
                             IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
                             if (invocationSymbol != null
-                                && SymbolAnalyzer.IsEnumerableCastMethod(invocationSymbol, semanticModel))
+                                && Symbol.IsEnumerableCastMethod(invocationSymbol, semanticModel))
                             {
                                 IMethodSymbol invocation2Symbol = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
 
                                 if (invocation2Symbol != null
-                                    && SymbolAnalyzer.IsEnumerableWhereMethod(invocation2Symbol, semanticModel))
+                                    && Symbol.IsEnumerableWhereMethod(invocation2Symbol, semanticModel))
                                 {
                                     BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);
 

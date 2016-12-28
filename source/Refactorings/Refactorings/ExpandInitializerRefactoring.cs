@@ -176,9 +176,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (ISymbol member in typeSymbol.GetMembers("Add"))
                 {
-                    if (member.IsPublic()
-                        && !member.IsStatic
-                        && member.IsMethod())
+                    if (Symbol.IsPublicInstanceMethod(member))
                     {
                         var methodSymbol = (IMethodSymbol)member;
 
@@ -209,9 +207,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (ISymbol member in typeSymbol.GetMembers("this[]"))
                 {
-                    if (member.IsPublic()
-                        && !member.IsStatic
-                        && member.IsProperty())
+                    if (Symbol.IsPublicInstanceProperty(member))
                     {
                         var propertySymbol = (IPropertySymbol)member;
 

@@ -32,12 +32,12 @@ namespace Roslynator.CSharp.Refactorings
                         IMethodSymbol invocationSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                         if (invocationSymbol != null
-                            && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(invocationSymbol, methodName, context.SemanticModel))
+                            && Symbol.IsEnumerableMethodWithoutParameters(invocationSymbol, methodName, context.SemanticModel))
                         {
                             IMethodSymbol invocationSymbol2 = context.SemanticModel.GetMethodSymbol(invocation2, context.CancellationToken);
 
                             if (invocationSymbol2 != null
-                                && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
+                                && Symbol.IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
                             {
                                 TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
 

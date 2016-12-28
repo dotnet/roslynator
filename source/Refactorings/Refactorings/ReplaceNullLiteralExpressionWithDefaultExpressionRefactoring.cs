@@ -23,10 +23,10 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).ConvertedType;
+                    ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol))
+                        && Symbol.SupportsExplicitDeclaration(typeSymbol))
                     {
                         context.RegisterRefactoring(
                             $"Replace 'null' with 'default({typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)})'",

@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (invocationSymbol2 != null
                             && invocationSymbol2?.Name.Equals("Where", StringComparison.Ordinal) == true
                             && invocationSymbol2.Parameters.Length == 1
-                            && SymbolAnalyzer.IsContainedInEnumerable(invocationSymbol2, semanticModel)
+                            && Symbol.IsContainedInEnumerable(invocationSymbol2, semanticModel)
                             && invocationSymbol2.ReducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
                         {
                             IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
@@ -52,14 +52,14 @@ namespace Roslynator.CSharp.Refactorings
                             if (IsWherePredicate(semanticModel, invocationSymbol2))
                             {
                                 if (invocationSymbol != null
-                                    && SymbolAnalyzer.IsEnumerableWhereMethod(invocationSymbol, semanticModel))
+                                    && Symbol.IsEnumerableWhereMethod(invocationSymbol, semanticModel))
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
                             }
                             else if (IsWherePredicateWithIndex(invocationSymbol2, semanticModel))
                             {
-                                if (SymbolAnalyzer.IsEnumerableMethodWithPredicateWithIndex(invocationSymbol, "Where", semanticModel))
+                                if (Symbol.IsEnumerableMethodWithPredicateWithIndex(invocationSymbol, "Where", semanticModel))
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsWherePredicate(SemanticModel semanticModel, IMethodSymbol methodSymbol)
         {
-            return SymbolAnalyzer.IsPredicateFunc(
+            return Symbol.IsPredicateFunc(
                 methodSymbol.Parameters[0].Type,
                 methodSymbol.TypeArguments[0],
                 semanticModel);
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsWherePredicateWithIndex(IMethodSymbol methodSymbol, SemanticModel semanticModel)
         {
-            return SymbolAnalyzer.IsPredicateFunc(
+            return Symbol.IsPredicateFunc(
                 methodSymbol.Parameters[0].Type,
                 methodSymbol.TypeArguments[0],
                 semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),

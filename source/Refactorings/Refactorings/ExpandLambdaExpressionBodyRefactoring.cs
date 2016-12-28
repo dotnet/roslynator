@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ISymbol symbol = semanticModel.GetSymbolInfo(lambda, cancellationToken).Symbol;
+            ISymbol symbol = semanticModel.GetSymbol(lambda, cancellationToken);
 
             LambdaExpressionSyntax newNode = GetNewNode(lambda, expression, symbol)
                 .WithFormatterAnnotation();

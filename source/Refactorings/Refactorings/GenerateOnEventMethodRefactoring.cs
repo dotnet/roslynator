@@ -75,22 +75,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool MethodExists(IEventSymbol eventSymbol, INamedTypeSymbol containingType, ITypeSymbol eventArgsSymbol)
         {
-            foreach (ISymbol member in containingType.GetMembers($"On{eventSymbol.Name}"))
+            foreach (IMethodSymbol methodSymbol in containingType.GetMethods($"On{eventSymbol.Name}"))
             {
-                if (member.IsMethod())
-                {
-                    var methodSymbol = (IMethodSymbol)member;
-
-                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                    if (parameters.Length == 1)
-                    {
-                        IParameterSymbol parameterSymbol = parameters[0];
-
-                        if (eventArgsSymbol.Equals(parameterSymbol.Type))
-                            return true;
-                    }
-                }
+                if (eventArgsSymbol.Equals(methodSymbol.SingleParameterOrDefault()?.Type))
+                    return true;
             }
 
             return false;

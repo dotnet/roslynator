@@ -117,12 +117,12 @@ namespace Roslynator.CSharp.Refactorings
             if (expression == null)
                 return null;
 
-            ISymbol symbol = semanticModel.GetSymbolInfo(expression).Symbol;
+            ISymbol symbol = semanticModel.GetSymbol(expression);
 
             if (symbol == null)
                 return null;
 
-            ImmutableArray<IParameterSymbol> parameters = symbol.GetMethodOrPropertyParameters();
+            ImmutableArray<IParameterSymbol> parameters = Symbol.GetMethodOrPropertyParameters(symbol);
 
             if (parameters.Length == 0)
                 return null;

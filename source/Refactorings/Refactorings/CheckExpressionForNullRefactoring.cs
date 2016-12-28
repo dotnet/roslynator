@@ -63,35 +63,30 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (type != null)
                 {
-                    SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+                    VariableDeclaratorSyntax variableDeclarator = variableDeclaration.SingleVariableOrDefault();
 
-                    if (variables.Count == 1)
+                    ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
+
+                    if (!value.IsKind(SyntaxKind.NullLiteralExpression)
+                        && CanBeEqualToNull(value))
                     {
-                        VariableDeclaratorSyntax variableDeclarator = variables[0];
+                        SyntaxToken identifier = variableDeclarator.Identifier;
 
-                        ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
-
-                        if (!value.IsKind(SyntaxKind.NullLiteralExpression)
-                            && CanBeEqualToNull(value))
+                        if (context.Span.IsContainedInSpanOrBetweenSpans(identifier))
                         {
-                            SyntaxToken identifier = variableDeclarator.Identifier;
+                            IdentifierNameSyntax identifierName = IdentifierName(identifier);
 
-                            if (context.Span.IsContainedInSpanOrBetweenSpans(identifier))
+                            var localDeclaration = (StatementSyntax)parent;
+
+                            if (!NullCheckExists(identifierName, localDeclaration))
                             {
-                                IdentifierNameSyntax identifierName = IdentifierName(identifier);
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                var localDeclaration = (StatementSyntax)parent;
-
-                                if (!NullCheckExists(identifierName, localDeclaration))
+                                if (semanticModel
+                                    .GetTypeSymbol(type, context.CancellationToken)?
+                                    .IsReferenceType == true)
                                 {
-                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                    if (semanticModel
-                                        .GetTypeSymbol(type, context.CancellationToken)?
-                                        .IsReferenceType == true)
-                                    {
-                                        RegisterRefactoring(context, identifierName, localDeclaration);
-                                    }
+                                    RegisterRefactoring(context, identifierName, localDeclaration);
                                 }
                             }
                         }
@@ -132,31 +127,26 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (type != null)
                 {
-                    SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+                    VariableDeclaratorSyntax variableDeclarator = variableDeclaration.SingleVariableOrDefault();
 
-                    if (variables.Count == 1)
+                    ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
+
+                    if (!value.IsKind(SyntaxKind.NullLiteralExpression)
+                        && CanBeEqualToNull(value))
                     {
-                        VariableDeclaratorSyntax variableDeclarator = variables[0];
+                        SyntaxToken identifier = variableDeclarator.Identifier;
 
-                        ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
+                        IdentifierNameSyntax identifierName = IdentifierName(identifier);
 
-                        if (!value.IsKind(SyntaxKind.NullLiteralExpression)
-                            && CanBeEqualToNull(value))
+                        if (!NullCheckExists(identifierName, localDeclaration))
                         {
-                            SyntaxToken identifier = variableDeclarator.Identifier;
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            IdentifierNameSyntax identifierName = IdentifierName(identifier);
-
-                            if (!NullCheckExists(identifierName, localDeclaration))
+                            if (semanticModel
+                                .GetTypeSymbol(type, context.CancellationToken)?
+                                .IsReferenceType == true)
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                if (semanticModel
-                                    .GetTypeSymbol(type, context.CancellationToken)?
-                                    .IsReferenceType == true)
-                                {
-                                    RegisterRefactoring(context, identifierName, localDeclaration, info.SelectedCount - 1);
-                                }
+                                RegisterRefactoring(context, identifierName, localDeclaration, info.SelectedCount - 1);
                             }
                         }
                     }

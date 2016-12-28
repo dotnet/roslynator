@@ -13,20 +13,22 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(ForStatementSyntax forStatement)
         {
-            if (forStatement
+            ExpressionSyntax value = forStatement
                 .Declaration?
-                .Variables.Count == 1)
-            {
-                ExpressionSyntax value = forStatement
-                    .Declaration
-                    .Variables[0]
-                    .Initializer?
-                    .Value;
+                .SingleVariableOrDefault()?
+                .Initializer?
+                .Value;
 
-                return value?.IsNumericLiteralExpression(0) == true
-                    && forStatement.Condition?.IsKind(SyntaxKind.LessThanExpression) == true
-                    && forStatement.Incrementors.Count == 1
-                    && forStatement.Incrementors[0].IsKind(SyntaxKind.PostIncrementExpression);
+            if (value?.IsNumericLiteralExpression(0) == true
+                && forStatement.Condition?.IsKind(SyntaxKind.LessThanExpression) == true)
+            {
+                SeparatedSyntaxList<ExpressionSyntax> incrementors = forStatement.Incrementors;
+
+                if (incrementors.Count == 1
+                    && incrementors[0].IsKind(SyntaxKind.PostIncrementExpression))
+                {
+                    return true;
+                }
             }
 
             return false;

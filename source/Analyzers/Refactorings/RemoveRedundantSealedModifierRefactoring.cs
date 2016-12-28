@@ -28,8 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var containingSymbol = symbol?.ContainingSymbol as INamedTypeSymbol;
 
-            if (containingSymbol?.IsClass() == true
-                && containingSymbol.IsSealed)
+            if (Symbol.IsSealedClass(containingSymbol))
             {
                 SyntaxToken sealedKeyword = declaration
                     .GetModifiers()

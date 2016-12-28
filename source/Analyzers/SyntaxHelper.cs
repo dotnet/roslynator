@@ -26,7 +26,7 @@ namespace Roslynator.CSharp
                     return "Length";
 
                 if (allowImmutableArray
-                    && SymbolAnalyzer.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
+                    && Symbol.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
                 {
                     return "Length";
                 }
@@ -35,15 +35,12 @@ namespace Roslynator.CSharp
 
                 for (int i = 0; i < allInterfaces.Length; i++)
                 {
-                    if (allInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                    if (allInterfaces[i].IsConstructedFrom(SpecialType.System_Collections_Generic_ICollection_T))
                     {
-                        foreach (ISymbol members in typeSymbol.GetMembers("Count"))
+                        foreach (ISymbol member in typeSymbol.GetMembers("Count"))
                         {
-                            if (members.IsProperty()
-                                && members.IsPublic())
-                            {
+                            if (Symbol.IsPublicProperty(member))
                                 return "Count";
-                            }
                         }
                     }
                 }

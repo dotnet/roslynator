@@ -26,7 +26,7 @@ namespace Roslynator.Internal
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            if (typeSymbol3.TypeKind == TypeKind.Interface
+            if (typeSymbol3.IsInterface()
                 && name.Length > 1
                 && name[0] == 'I')
             {
@@ -64,7 +64,7 @@ namespace Roslynator.Internal
             {
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                if (namedTypeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
                     return namedTypeSymbol.TypeArguments[0];
             }
 
@@ -143,7 +143,7 @@ namespace Roslynator.Internal
             {
                 return null;
             }
-            else if (typeSymbol.SupportsPredefinedType())
+            else if (Symbol.SupportsPredefinedType(typeSymbol))
             {
                 return null;
             }

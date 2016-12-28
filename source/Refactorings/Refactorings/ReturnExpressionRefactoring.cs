@@ -26,15 +26,11 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberType != null)
                     {
-                        ITypeSymbol memberTypeSymbol = semanticModel
-                            .GetTypeInfo(memberType, context.CancellationToken)
-                            .Type;
+                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
 
                         if (memberTypeSymbol != null)
                         {
-                            ITypeSymbol expressionSymbol = semanticModel
-                                .GetTypeInfo(expression, context.CancellationToken)
-                                .Type;
+                            ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                             if (expressionSymbol?.IsErrorType() == false)
                             {
@@ -112,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (memberSymbol.IsAsyncMethod())
+            if (Symbol.IsAsyncMethod(memberSymbol))
             {
                 if (expression.IsKind(SyntaxKind.AwaitExpression))
                 {
@@ -120,9 +116,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (awaitExpression.Expression != null)
                     {
-                        var awaitableSymbol = semanticModel
-                            .GetTypeInfo(awaitExpression.Expression, cancellationToken)
-                            .Type as INamedTypeSymbol;
+                        var awaitableSymbol = semanticModel.GetTypeSymbol(awaitExpression.Expression, cancellationToken) as INamedTypeSymbol;
 
                         if (awaitableSymbol != null)
                         {
@@ -174,7 +168,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol expressionSymbol,
             SemanticModel semanticModel)
         {
-            if (memberSymbol.IsAsyncMethod())
+            if (Symbol.IsAsyncMethod(memberSymbol))
             {
                 if (memberTypeSymbol.IsNamedType())
                 {

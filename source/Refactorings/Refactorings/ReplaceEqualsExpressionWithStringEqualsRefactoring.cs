@@ -28,11 +28,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(left, context.CancellationToken).ConvertedType;
+                        ITypeSymbol leftSymbol = semanticModel.GetConvertedTypeSymbol(left, context.CancellationToken);
 
                         if (leftSymbol?.IsString() == true)
                         {
-                            ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(right, context.CancellationToken).ConvertedType;
+                            ITypeSymbol rightSymbol = semanticModel.GetConvertedTypeSymbol(right, context.CancellationToken);
 
                             if (rightSymbol?.IsString() == true)
                             {
@@ -84,23 +84,18 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IFieldSymbol GetDefaultFieldSymbol(INamedTypeSymbol symbol)
         {
-            foreach (ISymbol member in symbol.GetMembers())
+            foreach (IFieldSymbol fieldSymbol in symbol.GetFields())
             {
-                if (member.IsField())
+                if (fieldSymbol.HasConstantValue)
                 {
-                    var fieldSymbol = (IFieldSymbol)member;
+                    object constantValue = fieldSymbol.ConstantValue;
 
-                    if (fieldSymbol.HasConstantValue)
+                    if (constantValue is int)
                     {
-                        object constantValue = fieldSymbol.ConstantValue;
+                        var value = (int)constantValue;
 
-                        if (constantValue is int)
-                        {
-                            var value = (int)constantValue;
-
-                            if (value == 0)
-                                return fieldSymbol;
-                        }
+                        if (value == 0)
+                            return fieldSymbol;
                     }
                 }
             }

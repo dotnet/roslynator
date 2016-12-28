@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            ISymbol invocationSymbol = semanticModel.GetSymbolInfo(invocation, context.CancellationToken).Symbol;
+                            ISymbol invocationSymbol = semanticModel.GetSymbol(invocation, context.CancellationToken);
 
                             if (formatMethods == null)
                             {
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ImmutableArray<ExpressionSyntax> expandedArguments = ImmutableArray.CreateRange(GetExpandedArguments(arguments, semanticModel));
+            ImmutableArray<ExpressionSyntax> expandedArguments = ImmutableArray.CreateRange(GetExpandedArguments(arguments, semanticModel, cancellationToken));
 
             string formatText = ((LiteralExpressionSyntax)arguments[0].Expression).Token.ToString();
 
@@ -105,11 +105,11 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(invocation, newInterpolatedString, cancellationToken).ConfigureAwait(false);
         }
 
-        private static IEnumerable<ExpressionSyntax> GetExpandedArguments(SeparatedSyntaxList<ArgumentSyntax> arguments, SemanticModel semanticModel)
+        private static IEnumerable<ExpressionSyntax> GetExpandedArguments(SeparatedSyntaxList<ArgumentSyntax> arguments, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             for (int i = 1; i < arguments.Count; i++)
             {
-                ITypeSymbol targetType = semanticModel.GetTypeInfo(arguments[i].Expression).ConvertedType;
+                ITypeSymbol targetType = semanticModel.GetConvertedTypeSymbol(arguments[i].Expression, cancellationToken);
 
                 ExpressionSyntax expression = Cast(arguments[i].Expression, targetType);
 
@@ -139,8 +139,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsValidFormatMethod(ISymbol symbol)
         {
-            if (symbol.IsMethod()
-                && symbol.IsStatic)
+            if (Symbol.IsStaticMethod(symbol))
             {
                 var methodSymbol = (IMethodSymbol)symbol;
 

@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
                             if (typeSymbol != null
-                                && SymbolAnalyzer.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
+                                && Symbol.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
                                 && !assignment.SpanContainsDirectives())
                             {
                                 ReportDiagnostic(context, assignment);
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
                                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
                                 if (typeSymbol == null
-                                    && SymbolAnalyzer.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
+                                    && Symbol.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
                                     && left.IsEquivalentTo(binaryLeft, topLevel: false)
                                     && !assignment.SpanContainsDirectives())
                                 {

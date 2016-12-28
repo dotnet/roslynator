@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).Type;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",

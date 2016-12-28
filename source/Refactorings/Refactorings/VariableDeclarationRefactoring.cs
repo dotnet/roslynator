@@ -42,11 +42,10 @@ namespace Roslynator.CSharp.Refactorings
             if (type != null
                 && !variableDeclaration.IsParentKind(SyntaxKind.EventFieldDeclaration))
             {
-                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
+                VariableDeclaratorSyntax variable = variableDeclaration.SingleVariableOrDefault();
 
-                if (variables.Count == 1)
+                if (variable != null)
                 {
-                    VariableDeclaratorSyntax variable = variables[0];
                     SyntaxToken identifier = variable.Identifier;
 
                     if (identifier.Span.Contains(context.Span))
@@ -57,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (symbol != null)
                         {
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
@@ -68,8 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (!string.IsNullOrEmpty(newName))
                                 {
                                     if (context.Settings.PrefixFieldIdentifierWithUnderscore
-                                        && symbol.IsField()
-                                        && symbol.IsPrivate()
+                                        && Symbol.IsPrivateField(symbol)
                                         && !((IFieldSymbol)symbol).IsConst)
                                     {
                                         newName = IdentifierUtility.ToCamelCase(newName, prefixWithUnderscore: true);
@@ -131,15 +129,11 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol declarationType = semanticModel
-                        .GetTypeInfo(variableDeclaration.Type, context.CancellationToken)
-                        .Type;
+                    ITypeSymbol declarationType = semanticModel.GetTypeSymbol(variableDeclaration.Type, context.CancellationToken);
 
                     if (declarationType?.IsErrorType() == false)
                     {
-                        ITypeSymbol expressionType = semanticModel
-                            .GetTypeInfo(declarator.Initializer.Value, context.CancellationToken)
-                            .Type;
+                        ITypeSymbol expressionType = semanticModel.GetTypeSymbol(declarator.Initializer.Value, context.CancellationToken);
 
                         if (expressionType?.IsErrorType() == false
                             && !declarationType.Equals(expressionType))

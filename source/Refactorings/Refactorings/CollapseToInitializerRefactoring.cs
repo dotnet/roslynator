@@ -26,25 +26,15 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var localDeclaration = (LocalDeclarationStatementSyntax)firstStatement;
 
-                    VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+                    VariableDeclaratorSyntax variable = localDeclaration.Declaration?.SingleVariableOrDefault();
 
-                    if (declaration != null)
+                    objectCreation = variable?.Initializer?.Value as ObjectCreationExpressionSyntax;
+
+                    if (objectCreation != null)
                     {
-                        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
+                        semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (variables.Count == 1)
-                        {
-                            VariableDeclaratorSyntax variable = variables[0];
-
-                            objectCreation = variable.Initializer?.Value as ObjectCreationExpressionSyntax;
-
-                            if (objectCreation != null)
-                            {
-                                semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
-                            }
-                        }
+                        symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
                     }
                 }
                 else if (kind == SyntaxKind.ExpressionStatement)
@@ -61,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            symbol = semanticModel.GetSymbolInfo(assignment.Left, context.CancellationToken).Symbol;
+                            symbol = semanticModel.GetSymbol(assignment.Left, context.CancellationToken);
                         }
                     }
                 }

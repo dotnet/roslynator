@@ -26,9 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                 && memberAccess.Expression != null
                 && memberAccess.Name?.Identifier.ValueText == "Empty")
             {
-                var fieldSymbol = semanticModel
-                    .GetSymbolInfo(memberAccess.Name, cancellationToken)
-                    .Symbol as IFieldSymbol;
+                var fieldSymbol = semanticModel.GetSymbol(memberAccess.Name, cancellationToken) as IFieldSymbol;
 
                 return fieldSymbol != null
                     && fieldSymbol.IsPublic()

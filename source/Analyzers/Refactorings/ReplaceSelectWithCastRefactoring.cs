@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
             if (methodSymbol != null
-                && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
+                && Symbol.IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 

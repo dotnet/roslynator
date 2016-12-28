@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
             if (methodSymbol != null
-                && SymbolAnalyzer.IsEnumerableMethodWithoutParameters(methodSymbol, "Count", context.SemanticModel))
+                && Symbol.IsEnumerableMethodWithoutParameters(methodSymbol, "Count", context.SemanticModel))
             {
                 string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: true, cancellationToken: context.CancellationToken);
 

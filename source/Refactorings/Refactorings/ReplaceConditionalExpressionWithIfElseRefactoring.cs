@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                         success = typeSymbol != null
-                            && SymbolAnalyzer.SupportsExplicitDeclaration(typeSymbol);
+                            && Symbol.SupportsExplicitDeclaration(typeSymbol);
                     }
 
                     if (success)
@@ -172,22 +172,20 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ConditionalExpressionSyntax GetConditionalExpression(LocalDeclarationStatementSyntax localDeclaration)
         {
-            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+            ExpressionSyntax expression = localDeclaration
+                .Declaration?
+                .SingleVariableOrDefault()?
+                .Initializer?
+                .Value;
 
-            if (declaration != null)
+            if (expression?.IsKind(SyntaxKind.ConditionalExpression) == true)
             {
-                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
-
-                if (variables.Count == 1)
-                {
-                    ExpressionSyntax expression = variables.First().Initializer?.Value;
-
-                    if (expression?.IsKind(SyntaxKind.ConditionalExpression) == true)
-                        return (ConditionalExpressionSyntax)expression;
-                }
+                return (ConditionalExpressionSyntax)expression;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
     }
 }

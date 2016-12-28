@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 
                         if (syntaxKindSymbol != null)
                         {
-                            ISymbol argumentSymbol = semanticModel.GetSymbolInfo(argument.Expression, context.CancellationToken).Symbol;
+                            ISymbol argumentSymbol = semanticModel.GetSymbol(argument.Expression, context.CancellationToken);
 
                             if (argumentSymbol.IsField()
                                 && argumentSymbol.ContainingType?.Equals(syntaxKindSymbol) == true
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 if (newExtensionsClassSymbol != null
                     && NewExtensionMethodExists(elementName, typeSymbol, newExtensionsClassSymbol))
                 {
-                    var methodSymbol = semanticModel.GetSymbolInfo(methodName, cancellationToken).Symbol as IMethodSymbol;
+                    var methodSymbol = semanticModel.GetSymbol(methodName, cancellationToken) as IMethodSymbol;
 
                     if (methodSymbol != null
                         && methodSymbol.MethodKind == MethodKind.ReducedExtension
@@ -145,15 +145,12 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             {
                 foreach (ISymbol member in newExtensionsClassSymbol.GetMembers("Is" + elementName))
                 {
-                    if (member.IsMethod())
+                    if (Symbol.IsPublicStaticMethod(member))
                     {
                         var methodSymbol = (IMethodSymbol)member;
 
-                        if (methodSymbol.IsPublic()
-                            && methodSymbol.IsStatic
-                            && methodSymbol.ReturnType.IsBoolean()
-                            && methodSymbol.Parameters.Length == 1
-                            && methodSymbol.Parameters[0].Type.Equals(typeSymbol))
+                        if (methodSymbol.ReturnType.IsBoolean()
+                            && methodSymbol.SingleParameterOrDefault()?.Type.Equals(typeSymbol) == true)
                         {
                             return true;
                         }

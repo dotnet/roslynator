@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var returnTypeSymbol = semanticModel.GetTypeInfo(returnType, cancellationToken).Type as INamedTypeSymbol;
+            var returnTypeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken) as INamedTypeSymbol;
 
             if (returnTypeSymbol != null)
             {

@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -18,22 +19,19 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             SwitchStatementSyntax switchStatement)
         {
-            if (switchStatement.Expression != null
+            ExpressionSyntax expression = switchStatement.Expression;
+
+            if (expression != null
                 && IsEmptyOrContainsOnlyDefaultSection(switchStatement))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                var namedTypeSymbol = semanticModel
-                    .GetTypeInfo(switchStatement.Expression, context.CancellationToken)
-                    .ConvertedType as INamedTypeSymbol;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                if (namedTypeSymbol?.TypeKind == TypeKind.Enum)
+                if (typeSymbol?.IsEnum() == true
+                    && typeSymbol.GetFields().Any())
                 {
-                    foreach (ISymbol memberSymbol in namedTypeSymbol.GetMembers())
-                    {
-                        if (memberSymbol.IsField())
-                            return true;
-                    }
+                    return true;
                 }
             }
 
@@ -69,9 +67,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var enumTypeSymbol = semanticModel
-                .GetTypeInfo(switchStatement.Expression, cancellationToken)
-                .ConvertedType as INamedTypeSymbol;
+            var enumTypeSymbol = semanticModel.GetConvertedTypeSymbol(switchStatement.Expression, cancellationToken) as INamedTypeSymbol;
 
             TypeSyntax enumType = Type(enumTypeSymbol, semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
 

@@ -90,22 +90,16 @@ namespace Roslynator.CSharp.Refactorings
 
         private static VariableDeclaratorSyntax GetVariableDeclarator(LocalDeclarationStatementSyntax localDeclaration)
         {
-            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+            VariableDeclaratorSyntax declarator = localDeclaration.Declaration?.SingleVariableOrDefault();
 
-            if (declaration != null)
+            if (declarator?.Initializer?.Value != null)
             {
-                SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
-
-                if (variables.Count == 1)
-                {
-                    VariableDeclaratorSyntax declarator = variables[0];
-
-                    if (declarator.Initializer?.Value != null)
-                        return declarator;
-                }
+                return declarator;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         public static async Task<Document> RefactorAsync(

@@ -49,16 +49,14 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                 if (methodSymbol != null
-                    && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionMethodWithoutParameters(methodSymbol, methodName, semanticModel))
+                    && Symbol.IsEnumerableOrImmutableArrayExtensionMethodWithoutParameters(methodSymbol, methodName, semanticModel))
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                    ITypeSymbol typeSymbol = semanticModel
-                        .GetTypeInfo(memberAccess.Expression, context.CancellationToken)
-                        .Type;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol)))
+                        && (typeSymbol.IsArrayType() || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -89,14 +87,14 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                 if (methodSymbol != null
-                    && SymbolAnalyzer.IsEnumerableOrImmutableArrayExtensionElementAtMethod(methodSymbol, semanticModel))
+                    && Symbol.IsEnumerableOrImmutableArrayExtensionElementAtMethod(methodSymbol, semanticModel))
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || SymbolAnalyzer.HasPublicIndexerWithInt32Parameter(typeSymbol)))
+                        && (typeSymbol.IsArrayType() || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         context.RegisterRefactoring(
                             "Replace 'ElementAt' with '[]'",
@@ -111,9 +109,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ITypeSymbol typeSymbol = semanticModel
-                .GetTypeInfo(expression, cancellationToken)
-                .Type;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol?.IsErrorType() == false
                 && !typeSymbol.IsConstructedFromIEnumerableOfT())
@@ -121,22 +117,19 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
                     return "Length";
 
-                if (SymbolAnalyzer.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
+                if (Symbol.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
                     return "Length";
 
                 ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
 
                 for (int i = 0; i < allInterfaces.Length; i++)
                 {
-                    if (allInterfaces[i].ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_ICollection_T)
+                    if (allInterfaces[i].IsConstructedFrom(SpecialType.System_Collections_Generic_ICollection_T))
                     {
-                        foreach (ISymbol members in typeSymbol.GetMembers("Count"))
+                        foreach (ISymbol member in typeSymbol.GetMembers("Count"))
                         {
-                            if (members.IsProperty()
-                                && members.IsPublic())
-                            {
+                            if (Symbol.IsPublicProperty(member))
                                 return "Count";
-                            }
                         }
                     }
                 }

@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, cancellationToken);
 
                 if (typeSymbol != null
-                    && SymbolAnalyzer.IsEventHandlerOrConstructedFromEventHandlerOfT(typeSymbol, semanticModel))
+                    && Symbol.IsEventHandlerOrConstructedFromEventHandlerOfT(typeSymbol, semanticModel))
                 {
                     ArgumentListSyntax argumentList = objectCreation.ArgumentList;
 

@@ -46,9 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                 return true;
             }
 
-            ITypeSymbol typeSymbol = context.SemanticModel
-                .GetTypeInfo(expression, context.CancellationToken)
-                .ConvertedType;
+            ITypeSymbol typeSymbol = context.SemanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken);
 
             return typeSymbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)typeSymbol).IsString();

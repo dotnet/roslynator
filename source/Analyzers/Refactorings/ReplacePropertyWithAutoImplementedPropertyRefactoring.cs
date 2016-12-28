@@ -84,13 +84,9 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNodeAnalysisContext context,
             NameSyntax identifier)
         {
-            ISymbol symbol = context
-                .SemanticModel
-                .GetSymbolInfo(identifier, context.CancellationToken)
-                .Symbol;
+            ISymbol symbol = context.SemanticModel.GetSymbol(identifier, context.CancellationToken);
 
-            if (symbol?.IsField() == true
-                && symbol.IsPrivate())
+            if (Symbol.IsPrivateField(symbol))
             {
                 var fieldSymbol = (IFieldSymbol)symbol;
 
@@ -114,18 +110,11 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (setterIdentifier != null)
                 {
-                    ISymbol symbol = context
-                    .SemanticModel
-                    .GetSymbolInfo(getterIdentifier, context.CancellationToken)
-                    .Symbol;
+                    ISymbol symbol = context.SemanticModel.GetSymbol(getterIdentifier, context.CancellationToken);
 
-                    if (symbol?.IsField() == true
-                        && symbol.IsPrivate())
+                    if (Symbol.IsPrivateField(symbol))
                     {
-                        ISymbol symbol2 = context
-                        .SemanticModel
-                        .GetSymbolInfo(setterIdentifier, context.CancellationToken)
-                        .Symbol;
+                        ISymbol symbol2 = context.SemanticModel.GetSymbol(setterIdentifier, context.CancellationToken);
 
                         if (symbol.Equals(symbol2))
                             return (IFieldSymbol)symbol;

@@ -72,9 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     foreach (ISymbol symbol in expressionSymbol.GetMembers(newName))
                     {
-                        if (symbol.IsPublic()
-                            && !symbol.IsStatic
-                            && symbol.IsProperty()
+                        if (Symbol.IsPublicInstanceProperty(symbol)
                             && ((IPropertySymbol)symbol).IsReadOnly)
                         {
                             return true;

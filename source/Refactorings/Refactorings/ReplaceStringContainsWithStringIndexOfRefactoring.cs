@@ -20,17 +20,12 @@ namespace Roslynator.CSharp.Refactorings
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
             if (methodSymbol?.Name == "Contains"
-                && methodSymbol.ContainingType?.IsString() == true)
+                && methodSymbol.ContainingType?.IsString() == true
+                && methodSymbol.SingleParameterOrDefault()?.Type.IsString() == true)
             {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                if (parameters.Length == 1
-                    && parameters[0].Type.IsString())
-                {
-                    context.RegisterRefactoring(
-                        "Replace Contains with IndexOf",
-                        cancellationToken => RefactorAsync(context.Document, invocation, context.CancellationToken));
-                }
+                context.RegisterRefactoring(
+                    "Replace Contains with IndexOf",
+                    cancellationToken => RefactorAsync(context.Document, invocation, context.CancellationToken));
             }
         }
 

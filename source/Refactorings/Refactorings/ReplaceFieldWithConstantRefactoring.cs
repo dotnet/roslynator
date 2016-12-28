@@ -22,10 +22,10 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                 return typeSymbol != null
-                    && SymbolAnalyzer.SupportsConstantValue(typeSymbol);
+                    && Symbol.SupportsConstantValue(typeSymbol);
             }
 
             return false;
