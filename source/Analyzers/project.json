@@ -1,0 +1,18 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "CSharpAnalyzers": "1.1.0",
+    "Microsoft.CodeAnalysis.Analyzers": "1.2.0-beta2",
+    "Microsoft.CodeAnalysis.CSharp.Workspaces": "2.0.0-rc2",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.0",
+    "NuGet.CommandLine": "3.4.3"
+  },
+  "frameworks": {
+    "netstandard1.3": {
+      "imports": [
+        "portable-net45+win8+wp8+wpa81"
+      ]
+    }
+  }
+}
