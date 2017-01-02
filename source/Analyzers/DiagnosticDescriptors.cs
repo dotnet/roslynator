@@ -445,7 +445,7 @@ namespace Roslynator.CSharp
             messageFormat: "Add suffix 'Async' to asynchronous method name.",
             category: DiagnosticCategories.Naming,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsync = new DiagnosticDescriptor(
