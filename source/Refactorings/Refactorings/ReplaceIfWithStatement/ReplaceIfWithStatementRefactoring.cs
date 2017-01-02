@@ -96,11 +96,11 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return CSharpUtility.LogicallyNegate(condition);
+                                return Negator.LogicallyNegate(condition);
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalOrExpression(CSharpUtility.LogicallyNegate(condition), expression2);
+                                return LogicalOrExpression(Negator.LogicallyNegate(condition), expression2);
                         }
                     }
                 default:
@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(CSharpUtility.LogicallyNegate(condition), expression1);
+                                return LogicalOrExpression(Negator.LogicallyNegate(condition), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1, addParenthesesIfNecessary: true);
                             default:

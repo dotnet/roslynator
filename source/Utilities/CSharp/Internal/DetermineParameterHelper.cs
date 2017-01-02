@@ -8,6 +8,8 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Internal
 {
@@ -45,7 +47,7 @@ namespace Roslynator.CSharp.Internal
             if (symbol == null)
                 return null;
 
-            ImmutableArray<IParameterSymbol> parameters = Symbol.GetMethodOrPropertyParameters(symbol);
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
             string name = argument.NameColon?.Name?.Identifier.ValueText;
 
@@ -114,7 +116,7 @@ namespace Roslynator.CSharp.Internal
             if (symbol == null)
                 return null;
 
-            ImmutableArray<IParameterSymbol> parameters = Symbol.GetMethodOrPropertyParameters(symbol);
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
             if (attributeArgument.NameColon != null && !attributeArgument.NameColon.IsMissing)
             {
@@ -228,7 +230,7 @@ namespace Roslynator.CSharp.Internal
             ArgumentSyntax argument,
             BaseArgumentListSyntax argumentList)
         {
-            ImmutableArray<IParameterSymbol> parameters = Symbol.GetMethodOrPropertyParameters(symbol);
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
             string name = argument.NameColon?.Name?.Identifier.ValueText;
 

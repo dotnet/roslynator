@@ -10,6 +10,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -88,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            INamedTypeSymbol argumentExceptionSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentException);
+            INamedTypeSymbol argumentExceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentException);
 
             if (exceptionSymbol.EqualsOrDerivedFrom(argumentExceptionSymbol))
             {
@@ -348,7 +351,7 @@ namespace Roslynator.CSharp.Refactorings
                 sb.Append(parameterSymbol.Name);
                 sb.Append("\"/>");
 
-                if (exceptionSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
+                if (exceptionSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
                     sb.Append("\"/> is <c>null</c>.");
             }
 

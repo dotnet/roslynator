@@ -20,33 +20,33 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull);
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            if (info.IsAnySelected)
+            if (selectedStatements.Any())
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
                 {
                     var refactoring = new WrapInUsingStatementRefactoring();
-                    await refactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
+                    await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
-                    await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);
+                    await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
-                    MergeIfStatementsRefactoring.ComputeRefactorings(context, info);
+                    MergeIfStatementsRefactoring.ComputeRefactorings(context, selectedStatements);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement))
-                    ReplaceIfAndReturnWithReturnRefactoring.ComputeRefactoring(context, info);
+                    ReplaceIfAndReturnWithReturnRefactoring.ComputeRefactoring(context, selectedStatements);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
-                    await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, info).ConfigureAwait(false);
+                    await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
-                    MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, info);
+                    MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, selectedStatements);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
-                    await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
+                    await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                         cancellationToken =>
                         {
                             var refactoring = new WrapInIfStatementRefactoring();
-                            return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                            return refactoring.RefactorAsync(context.Document, selectedStatements, cancellationToken);
                         });
                 }
 
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
                         cancellationToken =>
                         {
                             var refactoring = new WrapInTryCatchRefactoring();
-                            return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                            return refactoring.RefactorAsync(context.Document, selectedStatements, cancellationToken);
                         });
                 }
             }

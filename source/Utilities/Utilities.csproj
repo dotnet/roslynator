@@ -41,11 +41,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncMethodNameGenerator.cs" />
-    <Compile Include="CSharp\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
-    <Compile Include="CSharp\Internal\LogicalNegationHelper.cs" />
+    <Compile Include="CSharp\Extensions\SymbolExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxNodeExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxNodeOrTokenExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxTokenExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxTokenListExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxTriviaExtensions.cs" />
+    <Compile Include="CSharp\Extensions\SyntaxTriviaListExtensions.cs" />
+    <Compile Include="CSharp\IfElseChain.cs" />
+    <Compile Include="CSharp\Inserter.cs" />
+    <Compile Include="CSharp\Negator.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\InsertModifierRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodiedMemberRefactoring.cs" />
@@ -58,7 +69,6 @@
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Internal\DetermineParameterHelper.cs" />
-    <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\Extensions\SyntaxExtensions.cs" />
     <Compile Include="CSharp\PropertyKind.cs" />
     <Compile Include="CSharp\Refactorings\CallConfigureAwaitRefactoring.cs" />
@@ -75,35 +85,32 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="IdentifierUtility.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="CSharp\CSharpUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
-    <Compile Include="CSharp\TypeAnalysisResult.cs" />
+    <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
     <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
-    <Compile Include="CSharp\SyntaxRemover.cs" />
+    <Compile Include="CSharp\Remover.cs" />
     <Compile Include="CSharp\MemberDeclarationComparer.cs" />
-    <Compile Include="CSharp\MemberDeclarationInserter.cs" />
     <Compile Include="UniqueNameGenerator.cs" />
     <Compile Include="Extensions\DiagnosticsExtensions.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
-    <Compile Include="Extensions\ISymbolExtensions.cs" />
+    <Compile Include="Extensions\SymbolExtensions.cs" />
     <Compile Include="Extensions\SemanticModelExtensions.cs" />
-    <Compile Include="Extensions\TextSpanExtensions.cs" />
-    <Compile Include="Internal\IdentifierGenerator.cs" />
+    <Compile Include="Text\Extensions\TextSpanExtensions.cs" />
+    <Compile Include="Internal\CreateNameFromTypeSymbol.cs" />
     <Compile Include="MetadataNames.cs" />
-    <Compile Include="CSharp\ModifierUtility.cs" />
-    <Compile Include="CSharp\Modifiers.cs" />
-    <Compile Include="NameGenerator.cs" />
-    <Compile Include="SelectedLinesInfo.cs" />
-    <Compile Include="CSharp\SelectedStatementsInfo.cs" />
-    <Compile Include="SelectedNodesInfo.cs" />
+    <Compile Include="CSharp\ModifierFactory.cs" />
+    <Compile Include="Identifier.cs" />
+    <Compile Include="Text\SelectedTextLineCollection.cs" />
+    <Compile Include="CSharp\SelectedStatementCollection.cs" />
+    <Compile Include="SelectedNodeCollection.cs" />
     <Compile Include="CSharp\BlockStatementContainer.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
-    <Compile Include="SymbolRenamer.cs" />
+    <Compile Include="Rename\SymbolRenamer.cs" />
     <Compile Include="CSharp\ModifierComparer.cs" />
     <Compile Include="Extensions\SyntaxNodeExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeOrTokenExtensions.cs" />
@@ -119,8 +126,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DefaultSymbolDisplayFormat.cs" />
-    <Compile Include="TextUtility.cs" />
+    <Compile Include="SymbolDisplay.cs" />
+    <Compile Include="StringUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

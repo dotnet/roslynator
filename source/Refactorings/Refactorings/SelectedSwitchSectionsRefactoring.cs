@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -21,16 +22,16 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (sections.Any())
                 {
-                    var info = new SelectedNodesInfo<SwitchSectionSyntax>(sections, context.Span);
+                    var selectedSections = new SelectedNodeCollection<SwitchSectionSyntax>(sections, context.Span);
 
-                    if (info.IsAnySelected)
+                    if (selectedSections.Any())
                     {
                         if (fAddBraces || fRemoveBraces)
                         {
                             var addBraces = new List<SwitchSectionSyntax>();
                             var removeBraces = new List<SwitchSectionSyntax>();
 
-                            foreach (SwitchSectionSyntax section in info.SelectedNodes())
+                            foreach (SwitchSectionSyntax section in selectedSections)
                             {
                                 if (addBraces.Count > 0
                                     && removeBraces.Count > 0)
@@ -38,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                                     break;
                                 }
 
-                                switch (CSharpUtility.AnalyzeBraces(section))
+                                switch (CSharpAnalysis.AnalyzeBraces(section))
                                 {
                                     case BracesAnalysisResult.AddBraces:
                                         {
@@ -96,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             string title = "Remove statements from section";
 
-                            if (info.AreManySelected)
+                            if (selectedSections.IsMultiple)
                                 title += "s";
 
                             context.RegisterRefactoring(
@@ -106,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
                                     return RemoveStatementsFromSwitchSectionsRefactoring.RefactorAsync(
                                         context.Document,
                                         switchStatement,
-                                        info.SelectedNodes().ToImmutableArray(),
+                                        selectedSections.ToImmutableArray(),
                                         cancellationToken);
                                 });
                         }

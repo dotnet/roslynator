@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -36,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Format initializer on multiple lines",
-                            cancellationToken => FormatInitializerOnMultipleLinesRefactoring.RefactorAsync(
+                            cancellationToken => CSharpFormatter.ToMultiLineAsync(
                                 context.Document,
                                 initializer,
                                 cancellationToken));
@@ -45,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Format initializer on a single line",
-                            cancellationToken => FormatInitializerOnSingleLineRefactoring.RefactorAsync(
+                            cancellationToken => CSharpFormatter.ToSingleLineAsync(
                                 context.Document,
                                 initializer,
                                 cancellationToken));

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -46,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    string name = NameGenerator.GenerateUniqueMemberName(LockObjectName, lockStatement.Expression.SpanStart, semanticModel, cancellationToken);
+                    string name = Identifier.EnsureUniqueMemberName(LockObjectName, lockStatement.Expression.SpanStart, semanticModel, cancellationToken);
 
                     LockStatementSyntax newLockStatement = lockStatement
                         .WithExpression(IdentifierName(Identifier(name).WithRenameAnnotation()));
@@ -60,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(index, newContainingMember);
 
-                    newMembers = MemberDeclarationInserter.InsertMember(newMembers, field);
+                    newMembers = Inserter.InsertMember(newMembers, field);
 
                     MemberDeclarationSyntax newNode = containingDeclaration.SetMembers(newMembers);
 
@@ -74,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
         private static FieldDeclarationSyntax CreateFieldDeclaration(string name, bool isStatic)
         {
             return FieldDeclaration(
-                (isStatic) ? Modifiers.PrivateStaticReadOnly() : Modifiers.PrivateReadOnly(),
+                (isStatic) ? ModifierFactory.PrivateStaticReadOnly() : ModifierFactory.PrivateReadOnly(),
                 ObjectType(),
                 Identifier(name),
                 ObjectCreationExpression(ObjectType(), ArgumentList()));

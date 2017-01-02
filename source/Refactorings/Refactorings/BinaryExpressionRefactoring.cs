@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ExtractCondition;
 using Roslynator.CSharp.Refactorings.ReplaceEqualsExpression;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {

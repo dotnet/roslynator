@@ -5,8 +5,9 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp.Extensions
 {
     public static class CSharpExtensions
     {
@@ -60,46 +61,6 @@ namespace Roslynator.CSharp
                 .Type;
         }
 
-        public static ITypeSymbol GetConvertedTypeSymbol(
-            this SemanticModel semanticModel,
-            AttributeSyntax attribute,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, attribute, cancellationToken)
-                .ConvertedType;
-        }
-
-        public static ITypeSymbol GetConvertedTypeSymbol(
-            this SemanticModel semanticModel,
-            ConstructorInitializerSyntax constructorInitializer,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, constructorInitializer, cancellationToken)
-                .ConvertedType;
-        }
-
-        public static ITypeSymbol GetConvertedTypeSymbol(
-            this SemanticModel semanticModel,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, expression, cancellationToken)
-                .ConvertedType;
-        }
-
-        public static ITypeSymbol GetConvertedTypeSymbol(
-            this SemanticModel semanticModel,
-            SelectOrGroupClauseSyntax selectOrGroupClause,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, selectOrGroupClause, cancellationToken)
-                .ConvertedType;
-        }
-
         public static IMethodSymbol GetMethodSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -110,7 +71,11 @@ namespace Roslynator.CSharp
                 .Symbol as IMethodSymbol;
         }
 
-        public static bool IsExplicitConversion(this SemanticModel semanticModel, ExpressionSyntax expression, ITypeSymbol destinationType)
+        public static bool IsExplicitConversion(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            ITypeSymbol destinationType,
+            bool isExplicitInSource = false)
         {
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
@@ -127,7 +92,7 @@ namespace Roslynator.CSharp
                 Conversion conversion = semanticModel.ClassifyConversion(
                     expression,
                     destinationType,
-                    isExplicitInSource: false);
+                    isExplicitInSource);
 
                 return conversion.IsExplicit;
             }

@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -93,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                     propertyDeclaration.Identifier.Span.End,
                     accessorList.CloseBraceToken.Span.Start);
 
-                PropertyDeclarationSyntax newPropertyDeclaration = SyntaxRemover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span);
+                PropertyDeclarationSyntax newPropertyDeclaration = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span);
 
                 newPropertyDeclaration = newPropertyDeclaration
                     .WithFormatterAnnotation();
@@ -116,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
                     .Add(CSharpFactory.NewLineTrivia());
 
-                return SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList)
+                return Remover.RemoveWhitespaceOrEndOfLine(accessorList)
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(triviaList));
             }
             else
@@ -141,7 +143,7 @@ namespace Roslynator.CSharp.Refactorings
             public override SyntaxNode VisitAccessorDeclaration(AccessorDeclarationSyntax node)
             {
                 if (ShouldBeFormatted(node))
-                    return SyntaxRemover.RemoveWhitespaceOrEndOfLine(node, node.Span);
+                    return Remover.RemoveWhitespaceOrEndOfLine(node, node.Span);
 
                 return base.VisitAccessorDeclaration(node);
             }

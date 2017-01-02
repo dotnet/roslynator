@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeAssignmentExpressionWithReturnStatementRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementsInfo info)
+        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            using (IEnumerator<StatementSyntax> en = info.SelectedNodes().GetEnumerator())
+            using (IEnumerator<StatementSyntax> en = selectedStatements.GetEnumerator())
             {
                 if (en.MoveNext()
                     && en.Current.IsKind(SyntaxKind.ExpressionStatement))

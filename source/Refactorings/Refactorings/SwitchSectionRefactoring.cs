@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -13,8 +14,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
             {
-                SelectedStatementsInfo info = SelectedStatementsInfo.Create(switchSection, context.Span);
-                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, info).ConfigureAwait(false);
+                SelectedStatementCollection selectedStatements = SelectedStatementCollection.Create(switchSection, context.Span);
+                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitSwitchLabels))
@@ -31,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                switch (CSharpUtility.AnalyzeBraces(switchSection))
+                switch (CSharpAnalysis.AnalyzeBraces(switchSection))
                 {
                     case BracesAnalysisResult.AddBraces:
                         {

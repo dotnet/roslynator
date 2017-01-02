@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -95,21 +98,21 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
+        internal static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            if (info.AreManySelected)
+            if (selectedStatements.IsMultiple)
             {
-                StatementSyntax statement = info.FirstSelectedNode;
+                StatementSyntax statement = selectedStatements.First;
 
                 SyntaxKind kind = statement.Kind();
 
                 if (kind == SyntaxKind.LocalDeclarationStatement)
                 {
-                    await ComputeRefactoringAsync(context, (LocalDeclarationStatementSyntax)statement, info).ConfigureAwait(false);
+                    await ComputeRefactoringAsync(context, (LocalDeclarationStatementSyntax)statement, selectedStatements).ConfigureAwait(false);
                 }
                 else if (kind == SyntaxKind.ExpressionStatement)
                 {
-                    await ComputeRefactoringAsync(context, (ExpressionStatementSyntax)statement, info).ConfigureAwait(false);
+                    await ComputeRefactoringAsync(context, (ExpressionStatementSyntax)statement, selectedStatements).ConfigureAwait(false);
                 }
             }
         }
@@ -117,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             LocalDeclarationStatementSyntax localDeclaration,
-            SelectedStatementsInfo info)
+            SelectedStatementCollection selectedStatements)
         {
             VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
@@ -146,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
                                 .GetTypeSymbol(type, context.CancellationToken)?
                                 .IsReferenceType == true)
                             {
-                                RegisterRefactoring(context, identifierName, localDeclaration, info.SelectedCount - 1);
+                                RegisterRefactoring(context, identifierName, localDeclaration, selectedStatements.Count - 1);
                             }
                         }
                     }
@@ -157,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             ExpressionStatementSyntax expressionStatement,
-            SelectedStatementsInfo info)
+            SelectedStatementCollection selectedStatements)
         {
             ExpressionSyntax expression = expressionStatement.Expression;
 
@@ -180,7 +183,7 @@ namespace Roslynator.CSharp.Refactorings
                             .GetTypeSymbol(left, context.CancellationToken)?
                             .IsReferenceType == true)
                         {
-                            RegisterRefactoring(context, left, expressionStatement, info.SelectedCount - 1);
+                            RegisterRefactoring(context, left, expressionStatement, selectedStatements.Count - 1);
                         }
                     }
                 }
@@ -228,7 +231,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool NullCheckExists(ExpressionSyntax expression, StatementSyntax statement)
         {
-            if (!CSharpUtility.IsEmbeddedStatement(statement))
+            if (!EmbeddedStatement.IsEmbeddedStatement(statement))
             {
                 StatementContainer container;
 
@@ -278,7 +281,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (CSharpUtility.IsEmbeddedStatement(statement))
+            if (EmbeddedStatement.IsEmbeddedStatement(statement))
             {
                 return await document.ReplaceNodeAsync(statement, Block(statement, CreateNullCheck(expression)), cancellationToken).ConfigureAwait(false);
             }

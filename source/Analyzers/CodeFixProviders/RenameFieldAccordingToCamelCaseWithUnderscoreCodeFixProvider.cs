@@ -36,9 +36,9 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-            string newName = IdentifierUtility.ToCamelCase(declarator.Identifier.ValueText, prefixWithUnderscore: true);
+            string newName = Identifier.ToCamelCase(declarator.Identifier.ValueText, prefixWithUnderscore: true);
 
-            newName = NameGenerator.GenerateUniqueMemberName(newName, declarator.Identifier.SpanStart, semanticModel, context.CancellationToken);
+            newName = Identifier.EnsureUniqueMemberName(newName, declarator.Identifier.SpanStart, semanticModel, context.CancellationToken);
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename field to '{newName}'",

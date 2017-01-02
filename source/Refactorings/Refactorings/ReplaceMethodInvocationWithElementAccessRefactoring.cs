@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -49,14 +51,15 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                 if (methodSymbol != null
-                    && Symbol.IsEnumerableOrImmutableArrayExtensionMethodWithoutParameters(methodSymbol, methodName, semanticModel))
+                    && Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, methodName, semanticModel)
+                    && !methodSymbol.Parameters.Any())
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol)))
+                        && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -87,14 +90,15 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
 
                 if (methodSymbol != null
-                    && Symbol.IsEnumerableOrImmutableArrayExtensionElementAtMethod(methodSymbol, semanticModel))
+                    && (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "ElementAt", semanticModel)
+                    && methodSymbol.SingleParameterOrDefault()?.Type.IsInt32() == true))
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol)))
+                        && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         context.RegisterRefactoring(
                             "Replace 'ElementAt' with '[]'",
@@ -114,25 +118,14 @@ namespace Roslynator.CSharp.Refactorings
             if (typeSymbol?.IsErrorType() == false
                 && !typeSymbol.IsConstructedFromIEnumerableOfT())
             {
-                if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
-                    return "Length";
-
-                if (Symbol.IsConstructedFromImmutableArrayOfT(typeSymbol, semanticModel))
-                    return "Length";
-
-                ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
-
-                for (int i = 0; i < allInterfaces.Length; i++)
+                if (typeSymbol.IsArrayType()
+                    || typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
                 {
-                    if (allInterfaces[i].IsConstructedFrom(SpecialType.System_Collections_Generic_ICollection_T))
-                    {
-                        foreach (ISymbol member in typeSymbol.GetMembers("Count"))
-                        {
-                            if (Symbol.IsPublicProperty(member))
-                                return "Count";
-                        }
-                    }
+                    return "Length";
                 }
+
+                if (Symbol.ImplementsICollectionOfT(typeSymbol))
+                    return "Count";
             }
 
             return null;
@@ -192,7 +185,7 @@ namespace Roslynator.CSharp.Refactorings
                 .DescendantTrivia(expression.Span)
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                expression = SyntaxRemover.RemoveWhitespaceOrEndOfLine(expression)
+                expression = Remover.RemoveWhitespaceOrEndOfLine(expression)
                     .WithFormatterAnnotation();
             }
 

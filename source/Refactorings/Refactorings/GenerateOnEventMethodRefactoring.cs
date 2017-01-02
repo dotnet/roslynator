@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -50,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                                         && !MethodExists(eventSymbol, containingType, eventArgsSymbol))
                                     {
                                         string methodName = "On" + eventSymbol.Name;
-                                        methodName = NameGenerator.GenerateUniqueMemberName(methodName, containingType, semanticModel, context.CancellationToken);
+                                        methodName = Identifier.EnsureUniqueMemberName(methodName, containingType, semanticModel, context.CancellationToken);
 
                                         context.RegisterRefactoring(
                                             $"Generate '{methodName}' method",
@@ -90,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeArguments.Length == 0)
             {
-                return semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
+                return semanticModel.GetTypeByMetadataName(MetadataNames.System_EventArgs);
             }
             else if (typeArguments.Length == 1)
             {
@@ -115,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6)
                 .WithFormatterAnnotation();
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = MemberDeclarationInserter.InsertMember(members, method);
+            SyntaxList<MemberDeclarationSyntax> newMembers = Inserter.InsertMember(members, method);
 
             return await document.ReplaceNodeAsync(containingMember, containingMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
@@ -130,8 +133,8 @@ namespace Roslynator.CSharp.Refactorings
             return MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 (eventSymbol.ContainingType.IsSealed || eventSymbol.ContainingType.IsStruct())
-                    ? Modifiers.Private()
-                    : Modifiers.ProtectedVirtual(),
+                    ? ModifierFactory.Private()
+                    : ModifierFactory.ProtectedVirtual(),
                 VoidType(),
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),

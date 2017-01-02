@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -30,9 +32,9 @@ namespace Roslynator.CSharp.Refactorings
                             "Format expression chain on multiple lines",
                             cancellationToken =>
                             {
-                                return FormatExpressionChainOnMultipleLinesAsync(
+                                return CSharpFormatter.ToMultiLineAsync(
                                     context.Document,
-                                    expressions.ToImmutableArray(),
+                                    expressions.ToArray(),
                                     cancellationToken);
                             });
                     }
@@ -42,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format expression chain on a single line",
                             cancellationToken =>
                             {
-                                return FormatExpressionChainOnSingleLineAsync(
+                                return CSharpFormatter.ToSingleLineAsync(
                                     context.Document,
                                     expressions[0],
                                     cancellationToken);
@@ -50,36 +52,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        private static async Task<Document> FormatExpressionChainOnMultipleLinesAsync(
-            Document document,
-            ImmutableArray<MemberAccessExpressionSyntax> expressions,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            MemberAccessExpressionSyntax expression = expressions[0];
-
-            SyntaxTriviaList triviaList = SyntaxHelper.GetIndentTrivia(expression).Add(CSharpFactory.IndentTrivia());
-
-            triviaList = triviaList.Insert(0, CSharpFactory.NewLineTrivia());
-
-            var rewriter = new SyntaxRewriter(expressions, triviaList);
-
-            SyntaxNode newNode = rewriter.Visit(expression)
-                .WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static async Task<Document> FormatExpressionChainOnSingleLineAsync(
-            Document document,
-            MemberAccessExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode newNode = SyntaxRemover.RemoveWhitespaceOrEndOfLine(expression)
-                .WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static List<MemberAccessExpressionSyntax> GetChain(
@@ -207,33 +179,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
-        }
-
-        private class SyntaxRewriter : CSharpSyntaxRewriter
-        {
-            private readonly ImmutableArray<MemberAccessExpressionSyntax> _expressions;
-            private readonly SyntaxTriviaList _triviaList;
-
-            public SyntaxRewriter(ImmutableArray<MemberAccessExpressionSyntax> expressions, SyntaxTriviaList triviaList)
-            {
-                _expressions = expressions;
-                _triviaList = triviaList;
-            }
-
-            public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-            {
-                var newNode = (MemberAccessExpressionSyntax)base.VisitMemberAccessExpression(node);
-
-                if (_expressions.Contains(node)
-                    && !node.OperatorToken.HasLeadingTrivia)
-                {
-                    return newNode.WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
-                }
-                else
-                {
-                    return newNode;
-                }
-            }
         }
     }
 }

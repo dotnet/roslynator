@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,9 +28,9 @@ namespace Roslynator.CSharp.Refactorings
 
                     var typeSymbol = semanticModel.GetSymbol(memberAccess.Expression, context.CancellationToken) as INamedTypeSymbol;
 
-                    if (Symbol.IsStaticClass(typeSymbol)
+                    if (typeSymbol.IsStaticClass()
                         && (typeSymbol.DeclaredAccessibility == Accessibility.Public || typeSymbol.DeclaredAccessibility == Accessibility.Internal)
-                        && !CSharpUtility.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
+                        && !CSharpAnalysis.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
                         context.RegisterRefactoring($"using static {typeSymbol};",
                             cancellationToken =>

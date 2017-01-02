@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -49,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            return await document.ReplaceNodeAsync(expression, CSharpUtility.LogicallyNegate(expression), cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(expression, Negator.LogicallyNegate(expression), cancellationToken).ConfigureAwait(false);
         }
     }
 }

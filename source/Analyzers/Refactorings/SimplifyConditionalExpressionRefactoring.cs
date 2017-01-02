@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -62,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = (conditionalExpression.WhenTrue.IsKind(SyntaxKind.TrueLiteralExpression))
                 ? condition
-                : CSharpUtility.LogicallyNegate(condition);
+                : Negator.LogicallyNegate(condition);
 
             TextSpan span = TextSpan.FromBounds(
                 conditionalExpression.Condition.Span.End,

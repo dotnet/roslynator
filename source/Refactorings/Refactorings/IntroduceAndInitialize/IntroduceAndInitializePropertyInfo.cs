@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             get
             {
                 if (_name == null)
-                    _name = TextUtility.FirstCharToUpper(ParameterName);
+                    _name = StringUtility.FirstCharToUpper(ParameterName);
 
                 return _name;
             }
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 ? PropertyKind.ReadOnlyAutoProperty
                 : PropertyKind.AutoPropertyWithPrivateSet;
 
-            return PropertyDeclaration(propertyKind, Modifiers.Public(), Type, Name);
+            return PropertyDeclaration(propertyKind, ModifierFactory.Public(), Type, Name);
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -22,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (statement != null)
                 {
-                    if (!CSharpUtility.IsEmbeddedStatement(statement)
+                    if (!EmbeddedStatement.IsEmbeddedStatement(statement)
                         && statement.IsParentKind(SyntaxKind.Block))
                     {
                         RegisterRefactoring(context, statement);
@@ -210,7 +212,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
         {
-            SyntaxRemoveOptions removeOptions = SyntaxRemover.DefaultMemberRemoveOptions;
+            SyntaxRemoveOptions removeOptions = Remover.DefaultMemberRemoveOptions;
 
             if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;

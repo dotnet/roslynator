@@ -41,6 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Formatting\CSharpFormatter.cs" />
+    <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
     <Compile Include="Refactorings\MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
@@ -60,7 +62,6 @@
     <Compile Include="Refactorings\CallToMethodRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateBaseConstructorsRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\IdentifierNameSyntaxRewriter.cs" />
     <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="Refactorings\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="Refactorings\ReverseReversedForLoopRefactoringy.cs" />
     <Compile Include="Refactorings\StatementRefactoring.cs" />
-    <Compile Include="Refactorings\FormatAttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\ElseClauseRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingStaticDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\IndexerDeclarationRefactoring.cs" />
@@ -150,8 +150,6 @@
     <Compile Include="Refactorings\ChangeVariableDeclarationTypeRefactoring.cs" />
     <Compile Include="Refactorings\InitializeLocalWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInUsingStatementRefactoring.cs" />
-    <Compile Include="Refactorings\FormatConditionalExpressionOnMultipleLinesRefactoring.cs" />
-    <Compile Include="Refactorings\FormatConditionalExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />
@@ -162,10 +160,6 @@
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromParenthesesRefactoring.cs" />
     <Compile Include="Refactorings\ExtractGenericTypeRefactoring.cs" />
-    <Compile Include="Refactorings\FormatArgumentListRefactoring.cs" />
-    <Compile Include="Refactorings\FormatInitializerOnMultipleLinesRefactoring.cs" />
-    <Compile Include="Refactorings\FormatInitializerOnSingleLineRefactoring.cs" />
-    <Compile Include="Refactorings\FormatParameterListRefactoring.cs" />
     <Compile Include="Refactorings\LambdaExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceAnyWithAllOrAllWithAnyRefactoring.cs" />
     <Compile Include="Refactorings\NegateBinaryExpressionRefactoring.cs" />
@@ -180,7 +174,6 @@
     <Compile Include="Refactorings\RemoveAllStatementsRefactoring.cs" />
     <Compile Include="Refactorings\MarkAllMembersAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\MarkMemberAsStaticRefactoring.cs" />
-    <Compile Include="Refactorings\FormatAccessorBraceOnSingleLineRefactoring.cs" />
     <Compile Include="Refactorings\RefactoringContextExtensions.cs" />
     <Compile Include="Refactorings\RefactoringContext.cs" />
     <Compile Include="Refactorings\InterpolatedStringRefactoring.cs" />
@@ -216,7 +209,6 @@
     <Compile Include="Refactorings\AssignmentExpressionRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\DuplicateArgumentRefactoring.cs" />
     <Compile Include="Refactorings\ExpandInitializerRefactoring.cs" />
-    <Compile Include="Refactorings\FormatAccessorBraceOnMultipleLinesRefactoring.cs" />
     <Compile Include="Refactorings\NotifyPropertyChangedRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\DuplicateParameterRefactoring.cs" />
@@ -268,7 +260,6 @@
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
     <Compile Include="StringExpressionChain.cs" />
-    <Compile Include="SyntaxHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\MemberDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\NodeSyntaxRewriter.cs" />

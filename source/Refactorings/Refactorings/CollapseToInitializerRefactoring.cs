@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class CollapseToInitializerRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SelectedStatementsInfo info)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            StatementSyntax firstStatement = info.FirstSelectedNode;
+            StatementSyntax firstStatement = selectedStatements.First;
             SemanticModel semanticModel = null;
             ISymbol symbol = null;
             ObjectCreationExpressionSyntax objectCreation = null;
 
-            if (info.AreManySelected)
+            if (selectedStatements.IsMultiple)
             {
                 SyntaxKind kind = firstStatement.Kind();
 
@@ -58,8 +60,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (objectCreation != null
                     && symbol?.IsErrorType() == false
-                    && info
-                        .SelectedNodes()
+                    && selectedStatements
                         .Skip(1)
                         .All(f => IsValidAssignmentStatement(f, symbol, semanticModel, context.CancellationToken)))
                 {
@@ -70,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                             return RefactorAsync(
                                 context.Document,
                                 objectCreation,
-                                info,
+                                selectedStatements,
                                 cancellationToken);
                         });
                 }
@@ -115,18 +116,17 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
-            SelectedStatementsInfo info,
+            SelectedStatementCollection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = info.Container;
+            StatementContainer container = selectedStatements.Container;
 
-            ExpressionStatementSyntax[] expressionStatements = info
-                .SelectedNodes()
+            ExpressionStatementSyntax[] expressionStatements = selectedStatements
                 .Skip(1)
                 .Cast<ExpressionStatementSyntax>()
                 .ToArray();
 
-            StatementSyntax firstNode = info.FirstSelectedNode;
+            StatementSyntax firstNode = selectedStatements.First;
 
             SyntaxList<StatementSyntax> newStatements = container.Statements.Replace(
                 firstNode,
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Refactorings
                     objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements))));
 
             int count = expressionStatements.Length;
-            int index = info.FirstSelectedNodeIndex + 1;
+            int index = selectedStatements.FirstIndex + 1;
 
             while (count > 0)
             {

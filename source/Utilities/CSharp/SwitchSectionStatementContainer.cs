@@ -15,11 +15,6 @@ namespace Roslynator.CSharp
             _switchSection = switchSection;
         }
 
-        public override bool IsSwitchSection
-        {
-            get { return true; }
-        }
-
         public override SyntaxList<StatementSyntax> Statements
         {
             get { return _switchSection.Statements; }

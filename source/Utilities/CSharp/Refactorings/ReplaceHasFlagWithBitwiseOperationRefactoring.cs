@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -74,9 +76,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax newNode = EqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation.Parent)
+                    .Parenthesize(moveTrivia: true)
+                    .WithSimplifierAnnotation()
                     .WithFormatterAnnotation();
-
-                newNode = AddParenthesesIfNecessary(invocation.Parent, newNode);
 
                 return await document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken).ConfigureAwait(false);
             }
@@ -84,24 +86,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax newNode = NotEqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
                     .WithTriviaFrom(invocation)
+                    .Parenthesize(moveTrivia: true)
+                    .WithSimplifierAnnotation()
                     .WithFormatterAnnotation();
-
-                newNode = AddParenthesesIfNecessary(invocation, newNode);
 
                 return await document.ReplaceNodeAsync(invocation, newNode, cancellationToken).ConfigureAwait(false);
             }
-        }
-
-        private static ExpressionSyntax AddParenthesesIfNecessary(SyntaxNode node, ExpressionSyntax expression)
-        {
-            if (!CSharpUtility.AreParenthesesRedundantOrInvalid(node))
-            {
-                expression = expression
-                   .WithoutTrivia()
-                   .Parenthesize(cutCopyTrivia: true);
-            }
-
-            return expression;
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

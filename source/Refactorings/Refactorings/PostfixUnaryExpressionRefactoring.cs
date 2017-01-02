@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -52,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
             {
                 PostfixUnaryExpressionSyntax postDecrement = postIncrement
-                    .WithOperatorToken(Token(SyntaxKind.MinusMinusToken))
+                    .WithOperatorToken(MinusMinusToken())
                     .WithTriviaFrom(postIncrement)
                     .WithFormatterAnnotation();
 
@@ -86,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
             {
                 PostfixUnaryExpressionSyntax postIncrement = postDecrement
-                    .WithOperatorToken(Token(SyntaxKind.PlusPlusToken))
+                    .WithOperatorToken(PlusPlusToken())
                     .WithTriviaFrom(postDecrement)
                     .WithFormatterAnnotation();
 

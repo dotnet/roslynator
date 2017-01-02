@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -81,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (methodSymbol.IsAsync)
             {
-                if (Symbol.IsConstructedFromTaskOfT(returnType, semanticModel))
+                if (returnType.IsConstructedFromTaskOfT(semanticModel))
                     return ((INamedTypeSymbol)returnType).TypeArguments.First();
             }
             else if (!returnType.IsIEnumerableOrConstructedFromIEnumerableOfT())

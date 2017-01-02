@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -28,11 +30,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        ITypeSymbol leftSymbol = semanticModel.GetConvertedTypeSymbol(left, context.CancellationToken);
+                        ITypeSymbol leftSymbol = semanticModel.GetTypeInfo(left, context.CancellationToken).ConvertedType;
 
                         if (leftSymbol?.IsString() == true)
                         {
-                            ITypeSymbol rightSymbol = semanticModel.GetConvertedTypeSymbol(right, context.CancellationToken);
+                            ITypeSymbol rightSymbol = semanticModel.GetTypeInfo(right, context.CancellationToken).ConvertedType;
 
                             if (rightSymbol?.IsString() == true)
                             {
@@ -57,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            INamedTypeSymbol symbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_StringComparison);
+            INamedTypeSymbol symbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
 
             IFieldSymbol fieldSymbol = GetDefaultFieldSymbol(symbol);
 

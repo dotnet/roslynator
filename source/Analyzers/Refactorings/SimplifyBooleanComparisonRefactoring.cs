@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -99,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     leadingTrivia = leadingTrivia.AddRange(trivia);
 
-                newNode = CSharpUtility.LogicallyNegate(right)
+                newNode = Negator.LogicallyNegate(right)
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (right.IsBooleanLiteralExpression())
@@ -109,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     trailingTrivia = trailingTrivia.InsertRange(0, trivia);
 
-                newNode = CSharpUtility.LogicallyNegate(left)
+                newNode = Negator.LogicallyNegate(left)
                     .WithTrailingTrivia(trailingTrivia);
             }
 #if DEBUG

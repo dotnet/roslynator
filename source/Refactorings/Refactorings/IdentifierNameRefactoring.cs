@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -45,11 +48,11 @@ namespace Roslynator.CSharp.Refactorings
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
                             && fieldSymbol.ContainingType == propertySymbol.ContainingType)
                         {
-                            string newName = IdentifierUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                            string newName = Identifier.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
                             if (!string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal))
                             {
-                                bool isUnique = await NameGenerator.IsUniqueMemberNameAsync(
+                                bool isUnique = await Identifier.IsUniqueMemberNameAsync(
                                     fieldSymbol,
                                     newName,
                                     context.Solution,
@@ -59,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         $"Rename field to '{newName}'",
-                                        cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, fieldSymbol, newName, cancellationToken));
+                                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, fieldSymbol, newName, cancellationToken));
                                 }
                             }
                         }

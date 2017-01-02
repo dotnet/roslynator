@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -46,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                 CodeAction codeAction = CodeAction.Create(
-                    $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
+                    $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.Span.Start, semanticModel)}'",
                     cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar + EquivalenceKeySuffix);
 

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -27,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (left?.IsMissing == false
                     && right?.IsMissing == false
                     && !assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && CSharpUtility.SupportsCompoundAssignment(right))
+                    && right.SupportsCompoundAssignment())
                 {
                     var binaryExpression = (BinaryExpressionSyntax)right;
                     ExpressionSyntax binaryLeft = binaryExpression.Left;

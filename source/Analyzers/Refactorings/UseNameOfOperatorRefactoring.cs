@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -82,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    BaseParameterListSyntax parameterList = CSharpUtility.GetParameterList(ancestor);
+                    BaseParameterListSyntax parameterList = GetParameterList(ancestor);
 
                     if (parameterList != null)
                     {
@@ -90,6 +91,25 @@ namespace Roslynator.CSharp.Refactorings
                             yield return parameterList.Parameters[i];
                     }
                 }
+            }
+        }
+
+        private static BaseParameterListSyntax GetParameterList(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).ParameterList;
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)node).ParameterList;
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)node).ParameterList;
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                    return ((ParenthesizedLambdaExpressionSyntax)node).ParameterList;
+                case SyntaxKind.AnonymousMethodExpression:
+                    return ((AnonymousMethodExpressionSyntax)node).ParameterList;
+                default:
+                    return null;
             }
         }
 
@@ -122,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings
             if (symbol == null)
                 return null;
 
-            ImmutableArray<IParameterSymbol> parameters = Symbol.GetMethodOrPropertyParameters(symbol);
+            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
             if (parameters.Length == 0)
                 return null;

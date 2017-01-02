@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -72,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     foreach (ISymbol symbol in expressionSymbol.GetMembers(newName))
                     {
-                        if (Symbol.IsPublicInstanceProperty(symbol)
+                        if (symbol.IsPublicInstanceProperty()
                             && ((IPropertySymbol)symbol).IsReadOnly)
                         {
                             return true;

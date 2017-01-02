@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -202,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = ifStatement.Condition;
 
             if (GetBooleanLiteral(ifStatement.Statement).IsKind(SyntaxKind.FalseLiteralExpression))
-                expression = CSharpUtility.LogicallyNegate(expression);
+                expression = Negator.LogicallyNegate(expression);
 
             return ReturnStatement(
                 ReturnKeyword().WithTrailingSpace(),

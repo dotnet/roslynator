@@ -2,6 +2,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -18,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
                         "Format ?: on multiple lines",
                         cancellationToken =>
                         {
-                            return FormatConditionalExpressionOnMultipleLinesRefactoring.RefactorAsync(
+                            return CSharpFormatter.ToMultiLineAsync(
                                 context.Document,
                                 conditionalExpression,
                                 cancellationToken);
@@ -30,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                         "Format ?: on a single line",
                         cancellationToken =>
                         {
-                            return FormatConditionalExpressionOnSingleLineRefactoring.RefactorAsync(
+                            return CSharpFormatter.ToSingleLineAsync(
                                 context.Document,
                                 conditionalExpression,
                                 cancellationToken);

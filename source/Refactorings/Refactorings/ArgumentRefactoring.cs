@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -20,11 +23,11 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(expression);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression).ConvertedType;
 
                     if (typeSymbol?.IsErrorType() == false)
                     {
-                        IEnumerable<ITypeSymbol> newTypes = CSharpUtility.DetermineParameterTypes(argument, semanticModel, context.CancellationToken)
+                        IEnumerable<ITypeSymbol> newTypes = CSharpAnalysis.DetermineParameterTypes(argument, semanticModel, context.CancellationToken)
                             .Where(f => !typeSymbol.Equals(f));
 
                         ModifyExpressionRefactoring.ComputeRefactoring(context, expression, newTypes, semanticModel);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,10 +25,10 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (lists.Any())
                 {
-                    var info = new SelectedNodesInfo<AttributeListSyntax>(lists, context.Span);
+                    var selectedLists = new SelectedNodeCollection<AttributeListSyntax>(lists, context.Span);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes)
-                        && info.SelectedNodes().Any(f => f.Attributes.Count > 1))
+                        && selectedLists.Any(f => f.Attributes.Count > 1))
                     {
                         context.RegisterRefactoring(
                             "Split attributes",
@@ -36,13 +37,13 @@ namespace Roslynator.CSharp.Refactorings
                                 return SplitAsync(
                                     context.Document,
                                     member,
-                                    info.SelectedNodes().ToArray(),
+                                    selectedLists.ToArray(),
                                     cancellationToken);
                             });
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes)
-                        && info.AreManySelected)
+                        && selectedLists.IsMultiple)
                     {
                         context.RegisterRefactoring(
                             "Merge attributes",
@@ -51,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                                 return MergeAsync(
                                     context.Document,
                                     member,
-                                    info.SelectedNodes().ToArray(),
+                                    selectedLists.ToArray(),
                                     cancellationToken);
                             });
                     }

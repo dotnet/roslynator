@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.NodeInList
 {

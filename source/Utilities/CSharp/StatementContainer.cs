@@ -19,16 +19,6 @@ namespace Roslynator.CSharp
 
         public abstract SyntaxList<StatementSyntax> Statements { get; }
 
-        public virtual bool IsBlock
-        {
-            get { return false; }
-        }
-
-        public virtual bool IsSwitchSection
-        {
-            get { return false; }
-        }
-
         public abstract SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements);
 
         public virtual SyntaxNode NodeWithStatements(IEnumerable<StatementSyntax> statements)

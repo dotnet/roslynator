@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -11,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             {
                                 string newName = methodDeclaration.Identifier.ValueText;
 
-                                newName = await NameGenerator.GenerateUniqueAsyncMethodNameAsync(
+                                newName = await Identifier.EnsureUniqueAsyncMethodNameAsync(
                                     methodSymbol,
                                     newName,
                                     document.Project.Solution,
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename method to '{newName}'",
-                                    c => SymbolRenamer.RenameSymbolAsync(document, methodSymbol, newName, c),
+                                    c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 string name = methodDeclaration.Identifier.ValueText;
                                 string newName = name.Remove(name.Length - AsyncSuffix.Length);
 
-                                newName = await NameGenerator.GenerateUniqueMemberNameAsync(
+                                newName = await Identifier.EnsureUniqueMemberNameAsync(
                                     methodSymbol,
                                     newName,
                                     document.Project.Solution,
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename method to '{newName}'",
-                                    c => SymbolRenamer.RenameSymbolAsync(document, methodSymbol, newName, c),
+                                    c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

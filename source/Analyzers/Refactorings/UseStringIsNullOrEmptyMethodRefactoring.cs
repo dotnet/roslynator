@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -100,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ISymbol symbol = semanticModel.GetSymbol(memberAccess.Name, cancellationToken);
 
-                                if (Symbol.IsPublicInstanceProperty(symbol)
+                                if (symbol.IsPublicInstanceProperty()
                                     && symbol.Name.Equals("Length", StringComparison.Ordinal))
                                 {
                                     return true;

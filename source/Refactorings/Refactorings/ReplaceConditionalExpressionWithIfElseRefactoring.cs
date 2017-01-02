@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -44,8 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                        success = typeSymbol != null
-                            && Symbol.SupportsExplicitDeclaration(typeSymbol);
+                        success = typeSymbol?.SupportsExplicitDeclaration() == true;
                     }
 
                     if (success)

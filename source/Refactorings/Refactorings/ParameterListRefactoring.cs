@@ -3,8 +3,11 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
 using Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
 using Roslynator.CSharp.Refactorings.NodeInList;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -41,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format each parameter on a separate line",
-                                cancellationToken => FormatParameterListRefactoring.FormatEachParameterOnSeparateLineAsync(context.Document, parameterList, cancellationToken));
+                                cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, parameterList, cancellationToken));
                         }
                     }
                     else
@@ -52,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         context.RegisterRefactoring(
                             title,
-                            cancellationToken => FormatParameterListRefactoring.FormatAllParametersOnSingleLineAsync(context.Document, parameterList, cancellationToken));
+                            cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, parameterList, cancellationToken));
                     }
                 }
             }

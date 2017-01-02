@@ -6,6 +6,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Analysis;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
-            switch (CSharpUtility.AnalyzeType(variableDeclaration, context.SemanticModel, context.CancellationToken))
+            switch (CSharpAnalysis.AnalyzeType(variableDeclaration, context.SemanticModel, context.CancellationToken))
             {
                 case TypeAnalysisResult.Explicit:
                     {

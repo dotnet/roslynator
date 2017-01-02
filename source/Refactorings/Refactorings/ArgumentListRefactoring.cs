@@ -3,7 +3,10 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
 using Roslynator.CSharp.Refactorings.NodeInList;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -35,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format each argument on a separate line",
                             cancellationToken =>
                             {
-                                return FormatArgumentListRefactoring.FormatEachArgumentOnSeparateLineAsync(
+                                return CSharpFormatter.ToMultiLineAsync(
                                     context.Document,
                                     argumentList,
                                     cancellationToken);
@@ -52,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                         title,
                         cancellationToken =>
                         {
-                            return FormatArgumentListRefactoring.FormatAllArgumentsOnSingleLineAsync(
+                            return CSharpFormatter.ToSingleLineAsync(
                                 context.Document,
                                 argumentList,
                                 cancellationToken);

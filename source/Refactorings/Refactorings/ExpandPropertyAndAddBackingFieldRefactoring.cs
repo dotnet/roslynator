@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,13 +21,13 @@ namespace Roslynator.CSharp.Refactorings
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            string fieldName = IdentifierUtility.ToCamelCase(
+            string fieldName = Identifier.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            fieldName = NameGenerator.GenerateUniqueMemberName(fieldName, propertyDeclaration.SpanStart, semanticModel, cancellationToken);
+            fieldName = Identifier.EnsureUniqueMemberName(fieldName, propertyDeclaration.SpanStart, semanticModel, cancellationToken);
 
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
                 .WithFormatterAnnotation();
@@ -58,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
 
-            newMembers = MemberDeclarationInserter.InsertMember(newMembers, fieldDeclaration);
+            newMembers = Inserter.InsertMember(newMembers, fieldDeclaration);
 
             return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
@@ -103,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
-            AccessorListSyntax accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(propertyDeclaration.AccessorList)
+            AccessorListSyntax accessorList = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration.AccessorList)
                 .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
 
             return propertyDeclaration

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -71,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)
         {
-            INamedTypeSymbol stringType = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_String);
+            INamedTypeSymbol stringType = semanticModel.GetTypeByMetadataName(MetadataNames.System_String);
 
             if (stringType != null)
             {
@@ -109,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             for (int i = 1; i < arguments.Count; i++)
             {
-                ITypeSymbol targetType = semanticModel.GetConvertedTypeSymbol(arguments[i].Expression, cancellationToken);
+                ITypeSymbol targetType = semanticModel.GetTypeInfo(arguments[i].Expression, cancellationToken).ConvertedType;
 
                 ExpressionSyntax expression = Cast(arguments[i].Expression, targetType);
 
@@ -139,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsValidFormatMethod(ISymbol symbol)
         {
-            if (Symbol.IsStaticMethod(symbol))
+            if (symbol.IsStaticMethod())
             {
                 var methodSymbol = (IMethodSymbol)symbol;
 

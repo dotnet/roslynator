@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator.Extensions
 {
     [DebuggerStepThrough]
     public static class DiagnosticsExtensions

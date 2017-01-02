@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -33,8 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
-                            if (typeSymbol != null
-                                && Symbol.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
+                            if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
                                 && !assignment.SpanContainsDirectives())
                             {
                                 ReportDiagnostic(context, assignment);
@@ -68,8 +69,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(left, context.CancellationToken);
 
-                                if (typeSymbol == null
-                                    && Symbol.SupportsPrefixOrPostfixUnaryOperator(typeSymbol)
+                                if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
                                     && left.IsEquivalentTo(binaryLeft, topLevel: false)
                                     && !assignment.SpanContainsDirectives())
                                 {

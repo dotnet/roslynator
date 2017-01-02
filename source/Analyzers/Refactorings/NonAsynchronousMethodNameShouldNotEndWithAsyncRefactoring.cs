@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -20,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol?.IsAsync == false
                 && !methodSymbol.IsAbstract
                 && methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal)
-                && !Symbol.IsTaskOrDerivedFromTask(methodSymbol.ReturnType, context.SemanticModel))
+                && !methodSymbol.ReturnType.IsTaskOrDerivedFromTask(context.SemanticModel))
             {
                 SyntaxToken identifier = methodDeclaration.Identifier;
 

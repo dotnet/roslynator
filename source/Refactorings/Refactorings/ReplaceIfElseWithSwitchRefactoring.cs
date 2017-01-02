@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -71,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 switchExpression = equalsExpression.Left;
 
-                                if (!CSharpUtility.IsValidSwitchExpression(switchExpression, semanticModel, cancellationToken))
+                                if (!IsValidSwitchExpression(switchExpression, semanticModel, cancellationToken))
                                     return false;
                             }
 
@@ -117,10 +119,63 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool IsValidSwitchExpression(ExpressionSyntax right, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool IsValidSwitchExpression(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return right != null
-                && CSharpUtility.IsValidSwitchExpression(right, semanticModel, cancellationToken);
+            if (expression == null)
+                return false;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
+
+            if (typeSymbol.IsEnum())
+                return true;
+
+            switch (typeSymbol.SpecialType)
+            {
+                case SpecialType.System_Boolean:
+                case SpecialType.System_Char:
+                case SpecialType.System_SByte:
+                case SpecialType.System_Byte:
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Single:
+                case SpecialType.System_Double:
+                case SpecialType.System_String:
+                    return true;
+            }
+
+            if (typeSymbol.IsNamedType())
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                {
+                    switch (namedTypeSymbol.ConstructedFrom.TypeArguments.First().SpecialType)
+                    {
+                        case SpecialType.System_Boolean:
+                        case SpecialType.System_Char:
+                        case SpecialType.System_SByte:
+                        case SpecialType.System_Byte:
+                        case SpecialType.System_Int16:
+                        case SpecialType.System_UInt16:
+                        case SpecialType.System_Int32:
+                        case SpecialType.System_UInt32:
+                        case SpecialType.System_Int64:
+                        case SpecialType.System_UInt64:
+                        case SpecialType.System_Single:
+                        case SpecialType.System_Double:
+                            return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static async Task<Document> RefactorAsync(

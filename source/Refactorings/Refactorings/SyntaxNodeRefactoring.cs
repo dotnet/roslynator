@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp.Refactorings.WrapSelectedLines;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,9 +15,9 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInRegion,
                 RefactoringIdentifiers.WrapInIfDirective))
             {
-                SelectedLinesInfo info = await SelectedLinesRefactoring.GetSelectedLinesInfoAsync(context, node).ConfigureAwait(false);
+                SelectedTextLineCollection lines = await SelectedLinesRefactoring.GetSelectedLinesAsync(context, node).ConfigureAwait(false);
 
-                if (info?.IsAnySelected == true)
+                if (lines?.Any() == true)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
                     {
@@ -26,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                            {
                                var refactoring = new WrapInRegionRefactoring();
 
-                               return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                               return refactoring.RefactorAsync(context.Document, lines, cancellationToken);
                            });
                     }
 
@@ -38,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                            {
                                var refactoring = new WrapInIfDirectiveRefactoring();
 
-                               return refactoring.RefactorAsync(context.Document, info, cancellationToken);
+                               return refactoring.RefactorAsync(context.Document, lines, cancellationToken);
                            });
                     }
                 }

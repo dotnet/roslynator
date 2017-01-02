@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -119,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierUtility.InsertModifier(fieldDeclaration, SyntaxKind.StaticKeyword);
+                return Inserter.InsertModifier(fieldDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -133,7 +135,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierUtility.InsertModifier(methodDeclaration, SyntaxKind.StaticKeyword);
+                return Inserter.InsertModifier(methodDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -147,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierUtility.InsertModifier(propertyDeclaration, SyntaxKind.StaticKeyword);
+                return Inserter.InsertModifier(propertyDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -161,7 +163,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierUtility.InsertModifier(eventDeclaration, SyntaxKind.StaticKeyword);
+                return Inserter.InsertModifier(eventDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -175,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                return ModifierUtility.InsertModifier(eventFieldDeclaration, SyntaxKind.StaticKeyword);
+                return Inserter.InsertModifier(eventFieldDeclaration, SyntaxKind.StaticKeyword);
             }
             else
             {
@@ -191,23 +193,23 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxTokenList newModifiers = modifiers;
 
-                if (ModifierUtility.ContainsAccessModifier(modifiers))
+                if (modifiers.ContainsAccessModifier())
                 {
-                    newModifiers = ModifierUtility.RemoveAccessModifiers(modifiers);
+                    newModifiers = modifiers.RemoveAccessModifiers();
 
                     if (newModifiers.Any())
                     {
                         newModifiers = newModifiers.ReplaceAt(0, newModifiers[0].WithLeadingTrivia(modifiers[0].LeadingTrivia));
-                        newModifiers = ModifierUtility.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                        newModifiers = Inserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
                     }
                     else
                     {
-                        newModifiers = ModifierUtility.InsertModifier(newModifiers, CSharpFactory.StaticKeyword().WithLeadingTrivia(modifiers[0].LeadingTrivia));
+                        newModifiers = Inserter.InsertModifier(newModifiers, CSharpFactory.StaticKeyword().WithLeadingTrivia(modifiers[0].LeadingTrivia));
                     }
                 }
                 else
                 {
-                    newModifiers = ModifierUtility.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
+                    newModifiers = Inserter.InsertModifier(newModifiers, SyntaxKind.StaticKeyword);
                 }
 
                 return constructorDeclaration.WithModifiers(newModifiers);

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -52,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
             var literalExpression = (LiteralExpressionSyntax)interpolation.Expression;
 
             s = s.Substring(0, interpolation.Span.Start - interpolatedString.Span.Start)
-                + TextUtility.DoubleBraces(CSharpUtility.GetStringLiteralInnerText(literalExpression))
+                + StringUtility.DoubleBraces(literalExpression.GetStringLiteralInnerText())
                 + s.Substring(interpolation.Span.End - interpolatedString.Span.Start);
 
             var newInterpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression(s)

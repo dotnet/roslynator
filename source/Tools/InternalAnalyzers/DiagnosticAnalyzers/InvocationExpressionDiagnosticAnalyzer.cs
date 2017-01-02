@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
@@ -43,7 +44,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                     {
                         SemanticModel semanticModel = context.SemanticModel;
 
-                        INamedTypeSymbol syntaxKindSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind);
+                        INamedTypeSymbol syntaxKindSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
 
                         if (syntaxKindSymbol != null)
                         {
@@ -75,7 +76,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            INamedTypeSymbol syntaxNodeSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode);
+            INamedTypeSymbol syntaxNodeSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxNode");
 
             if (CanRefactor(
                 methodName,
@@ -88,7 +89,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 return true;
             }
 
-            INamedTypeSymbol syntaxTriviaSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxTrivia);
+            INamedTypeSymbol syntaxTriviaSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTrivia");
 
             return CanRefactor(
                 methodName,
@@ -109,7 +110,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
         {
             if (typeSymbol != null)
             {
-                INamedTypeSymbol newExtensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName($"Roslynator.{typeSymbol.Name}Extensions");
+                INamedTypeSymbol newExtensionsClassSymbol = semanticModel.GetTypeByMetadataName($"Roslynator.{typeSymbol.Name}Extensions");
 
                 if (newExtensionsClassSymbol != null
                     && NewExtensionMethodExists(elementName, typeSymbol, newExtensionsClassSymbol))
@@ -122,7 +123,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                         && methodSymbol.ReducedFrom.Parameters[0].Type.Equals(typeSymbol)
                         && methodSymbol.ReducedFrom.Parameters[1].Type.Equals(syntaxKindSymbol))
                     {
-                        INamedTypeSymbol extensionsClassSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_CSharpExtensions);
+                        INamedTypeSymbol extensionsClassSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharpExtensions");
 
                         if (extensionsClassSymbol != null
                             && methodSymbol.ContainingType?.Equals(extensionsClassSymbol) == true)

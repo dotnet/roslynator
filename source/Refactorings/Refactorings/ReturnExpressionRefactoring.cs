@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,11 +48,11 @@ namespace Roslynator.CSharp.Refactorings
                                         {
                                             var newNamedType = (INamedTypeSymbol)newType;
 
-                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
+                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
 
                                             if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
                                             {
-                                                INamedTypeSymbol enumerableSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
+                                                INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
 
                                                 if (enumerableSymbol != null
                                                     && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
@@ -89,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
         {
             context.RegisterRefactoring(
-            $"Change {GetText(member)} type to '{newType.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
+            $"Change {GetText(member)} type to '{SymbolDisplay.GetMinimalDisplayString(newType, type.Span.Start, semanticModel)}'",
             cancellationToken =>
             {
                 return ChangeTypeRefactoring.ChangeTypeAsync(
@@ -108,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (Symbol.IsAsyncMethod(memberSymbol))
+            if (memberSymbol.IsAsyncMethod())
             {
                 if (expression.IsKind(SyntaxKind.AwaitExpression))
                 {
@@ -120,9 +121,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (awaitableSymbol != null)
                         {
-                            INamedTypeSymbol taskOfTSymbol = semanticModel
-                                .Compilation
-                                .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                            INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                             if (awaitableSymbol.ConstructedFrom.Equals(taskOfTSymbol))
                                 return awaitableSymbol;
@@ -131,9 +130,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else if (memberTypeSymbol.IsNamedType())
                 {
-                    INamedTypeSymbol taskOfTSymbol = semanticModel
-                        .Compilation
-                        .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom.Equals(taskOfTSymbol))
                     {
@@ -143,9 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                             return null;
                         }
 
-                        INamedTypeSymbol taskSymbol = semanticModel
-                            .Compilation
-                            .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                        INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                         if (expressionSymbol.Equals(taskSymbol))
                             return null;
@@ -168,13 +163,13 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol expressionSymbol,
             SemanticModel semanticModel)
         {
-            if (Symbol.IsAsyncMethod(memberSymbol))
+            if (memberSymbol.IsAsyncMethod())
             {
                 if (memberTypeSymbol.IsNamedType())
                 {
                     var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
 
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (taskOfTSymbol != null
                         && namedTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol)

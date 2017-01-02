@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -52,13 +54,13 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, context.CancellationToken);
-            if (propertySymbol != null
-                && propertySymbol.ContainingType != null)
-            {
-                INamedTypeSymbol inotifyPropertyChanged = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ComponentModel_INotifyPropertyChanged);
 
-                if (inotifyPropertyChanged != null)
-                    return propertySymbol.ContainingType.AllInterfaces.Contains(inotifyPropertyChanged);
+            if (propertySymbol != null)
+            {
+                INamedTypeSymbol containingType = propertySymbol.ContainingType;
+
+                return containingType != null
+                    && Symbol.ImplementsINotifyPropertyChanged(containingType, semanticModel);
             }
 
             return false;

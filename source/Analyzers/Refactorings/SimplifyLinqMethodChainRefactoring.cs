@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -37,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                             IMethodSymbol invocationSymbol2 = context.SemanticModel.GetMethodSymbol(invocation2, context.CancellationToken);
 
                             if (invocationSymbol2 != null
-                                && Symbol.IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
+                                && IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
                             {
                                 TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
 
@@ -51,6 +53,21 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                 }
+            }
+        }
+
+        private static bool IsEnumerableOrImmutableArrayExtensionWhereMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            if (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "Where", semanticModel))
+            {
+                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
+
+                return parameter != null
+                    && Symbol.IsPredicateFunc(parameter.Type, methodSymbol.TypeArguments[0], semanticModel);
+            }
+            else
+            {
+                return false;
             }
         }
 

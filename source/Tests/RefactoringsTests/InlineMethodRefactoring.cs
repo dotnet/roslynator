@@ -50,11 +50,6 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             private readonly Entity _value;
 
-            public Entity()
-            {
-                InstanceMethod(null, null);
-            }
-
             /// <summary>
             /// 
             /// </summary>
@@ -82,6 +77,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
 
                 return _value + p1 + p2;
+            }
+
+            public Entity InstanceMethod2()
+            {
+                return InstanceMethod(null, null);
             }
 
             public static Entity operator +(Entity left, Entity right)

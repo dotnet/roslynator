@@ -11,6 +11,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -202,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
 
-                            INamedTypeSymbol exceptionType = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
+                            INamedTypeSymbol exceptionType = semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
 
                             ISymbol type = semanticModel.GetSymbol(objectCreation.Type, cancellationToken);
 

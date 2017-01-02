@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -22,13 +24,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (labels.Count > 1)
                 {
-                    var info = new SelectedNodesInfo<SwitchLabelSyntax>(labels, context.Span);
+                    var nodes = new SelectedNodeCollection<SwitchLabelSyntax>(labels, context.Span);
 
-                    if (info.IsAnySelected)
+                    if (nodes.Any())
                     {
-                        if (info.AreManySelected || (info.FirstSelectedNode != labels.Last()))
+                        if (nodes.IsMultiple || (nodes.First != labels.Last()))
                         {
-                            SwitchLabelSyntax[] selectedLabels = info.SelectedNodes().ToArray();
+                            SwitchLabelSyntax[] selectedLabels = nodes.ToArray();
 
                             if (selectedLabels.Last() == labels.Last())
                                 selectedLabels = selectedLabels.Take(selectedLabels.Length - 1).ToArray();

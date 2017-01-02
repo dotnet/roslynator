@@ -7,7 +7,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -175,7 +177,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 default:
                     {
                         return semanticModel
-                            .GetConvertedTypeSymbol(expression, cancellationToken)?
+                            .GetTypeInfo(expression, cancellationToken)
+                            .ConvertedType?
                             .IsBoolean() == true;
                     }
             }

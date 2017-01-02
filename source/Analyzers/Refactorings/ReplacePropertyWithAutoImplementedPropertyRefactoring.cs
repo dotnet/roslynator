@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -86,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol symbol = context.SemanticModel.GetSymbol(identifier, context.CancellationToken);
 
-            if (Symbol.IsPrivateField(symbol))
+            if (symbol.IsPrivateField())
             {
                 var fieldSymbol = (IFieldSymbol)symbol;
 
@@ -112,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ISymbol symbol = context.SemanticModel.GetSymbol(getterIdentifier, context.CancellationToken);
 
-                    if (Symbol.IsPrivateField(symbol))
+                    if (symbol.IsPrivateField())
                     {
                         ISymbol symbol2 = context.SemanticModel.GetSymbol(setterIdentifier, context.CancellationToken);
 
@@ -323,7 +325,7 @@ namespace Roslynator.CSharp.Refactorings
                 .DescendantTrivia()
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
+                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);
             }
 
             PropertyDeclarationSyntax newProperty = property

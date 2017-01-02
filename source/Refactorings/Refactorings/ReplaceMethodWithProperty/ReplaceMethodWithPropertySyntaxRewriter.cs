@@ -5,6 +5,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
@@ -155,7 +157,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
                             block)));
 
             if (singleline)
-                accessorList = SyntaxRemover.RemoveWhitespaceOrEndOfLine(accessorList);
+                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);
 
             return accessorList;
         }

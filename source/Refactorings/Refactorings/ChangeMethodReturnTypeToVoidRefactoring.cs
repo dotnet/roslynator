@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -61,9 +63,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol?.IsAsync == true
                 && methodSymbol.ReturnType?.IsErrorType() == false)
             {
-                INamedTypeSymbol taskSymbol = semanticModel
-                    .Compilation
-                    .GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                 return methodSymbol.ReturnType.Equals(taskSymbol);
             }

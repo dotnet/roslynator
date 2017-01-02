@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator.Extensions
 {
     public static class SyntaxTokenListExtensions
     {

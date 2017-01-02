@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression
-                .WithCondition(CSharpUtility.LogicallyNegate(conditionalExpression.Condition))
+                .WithCondition(Negator.LogicallyNegate(conditionalExpression.Condition))
                 .WithWhenTrue(conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue))
                 .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
                 .WithFormatterAnnotation();

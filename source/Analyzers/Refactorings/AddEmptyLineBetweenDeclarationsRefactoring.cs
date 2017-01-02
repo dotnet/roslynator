@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -201,6 +203,30 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTrailingTrivia(memberDeclaration.GetTrailingTrivia().Add(CSharpFactory.NewLineTrivia()));
 
             return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        private struct TokenPair
+        {
+            public TokenPair(BlockSyntax block)
+            {
+                OpenToken = block.OpenBraceToken;
+                CloseToken = block.CloseBraceToken;
+            }
+
+            public TokenPair(AccessorListSyntax accessorList)
+            {
+                OpenToken = accessorList.OpenBraceToken;
+                CloseToken = accessorList.CloseBraceToken;
+            }
+
+            public TokenPair(SyntaxToken openToken, SyntaxToken closeToken)
+            {
+                OpenToken = openToken;
+                CloseToken = closeToken;
+            }
+
+            public SyntaxToken OpenToken { get; }
+            public SyntaxToken CloseToken { get; }
         }
     }
 }

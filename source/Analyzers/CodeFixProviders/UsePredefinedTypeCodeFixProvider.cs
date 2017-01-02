@@ -7,7 +7,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -35,11 +37,10 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                 var typeSymbol = semanticModel.GetSymbol(node, context.CancellationToken) as INamedTypeSymbol;
 
-                if (typeSymbol != null
-                    && Symbol.SupportsPredefinedType(typeSymbol))
+                if (typeSymbol?.SupportsPredefinedType() == true)
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Use predefined type '{typeSymbol.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
+                        $"Use predefined type '{SymbolDisplay.GetDisplayString(typeSymbol)}'",
                         cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, typeSymbol, cancellationToken),
                         DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
 

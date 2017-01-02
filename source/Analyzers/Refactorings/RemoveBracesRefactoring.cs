@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -34,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.RemoveBraces,
                             block.GetLocation(),
-                            SyntaxHelper.GetNodeTitle(node));
+                            GetName(node));
 
                         context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block);
                     }
@@ -44,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BlockSyntax GetBlockThatCanBeEmbeddedStatement(SyntaxNode node)
         {
-            StatementSyntax childStatement = CSharpUtility.GetBlockOrEmbeddedStatement(node);
+            StatementSyntax childStatement = EmbeddedStatement.GetBlockOrEmbeddedStatement(node);
 
             if (childStatement?.IsKind(SyntaxKind.Block) == true)
             {
@@ -58,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)
                         && statement.IsSingleLine()
-                        && CSharpUtility.FormatSupportsEmbeddedStatement(node))
+                        && EmbeddedStatement.FormattingSupportsEmbeddedStatement(node))
                     {
                         return block;
                     }
@@ -66,6 +69,36 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
+        }
+
+        private static string GetName(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    return "if statement";
+                case SyntaxKind.ElseClause:
+                    return "else clause";
+                case SyntaxKind.DoStatement:
+                    return "do statement";
+                case SyntaxKind.ForEachStatement:
+                    return "foreach statement";
+                case SyntaxKind.ForStatement:
+                    return "for statement";
+                case SyntaxKind.UsingStatement:
+                    return "using statement";
+                case SyntaxKind.WhileStatement:
+                    return "while statement";
+                case SyntaxKind.LockStatement:
+                    return "lock statement";
+                case SyntaxKind.FixedStatement:
+                    return "fixed statement";
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return "";
+                    }
+            }
         }
 
         public static async Task<Document> RefactorAsync(

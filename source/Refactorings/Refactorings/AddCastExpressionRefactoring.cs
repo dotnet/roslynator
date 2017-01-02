@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -16,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType)
         {
             context.RegisterRefactoring(
-                $"Cast to '{destinationType.ToDisplayString(DefaultSymbolDisplayFormat.Value)}'",
+                $"Cast to '{SymbolDisplay.GetDisplayString(destinationType)}'",
                 cancellationToken =>
                 {
                     return RefactorAsync(
@@ -37,10 +39,10 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax type = CSharpFactory.Type(destinationType, semanticModel, expression.SpanStart);
 
-            ExpressionSyntax newExpression = expression;
-
-            if (CSharpUtility.GetOperatorPriority(expression) > CSharpUtility.GetOperatorPriority(SyntaxKind.CastExpression))
-                newExpression = expression.Parenthesize();
+            ExpressionSyntax newExpression = expression
+                .WithoutTrivia()
+                .Parenthesize()
+                .WithSimplifierAnnotation();
 
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, newExpression)
                 .WithTriviaFrom(expression);

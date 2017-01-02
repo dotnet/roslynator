@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax falseStatement = ifStatement.Else.Statement;
 
             IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(CSharpUtility.LogicallyNegate(ifStatement.Condition))
+                .WithCondition(Negator.LogicallyNegate(ifStatement.Condition))
                 .WithStatement(falseStatement.WithTriviaFrom(trueStatement))
                 .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
                 .WithFormatterAnnotation();

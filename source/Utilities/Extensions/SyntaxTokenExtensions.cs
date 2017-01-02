@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 
-namespace Roslynator
+namespace Roslynator.Extensions
 {
     public static class SyntaxTokenExtensions
     {
@@ -93,11 +93,6 @@ namespace Roslynator
             {
                 return -1;
             }
-        }
-
-        public static SyntaxToken WithoutTrivia(this SyntaxToken token)
-        {
-            return token.WithoutLeadingTrivia().WithoutTrailingTrivia();
         }
 
         public static SyntaxToken WithoutLeadingTrivia(this SyntaxToken token)

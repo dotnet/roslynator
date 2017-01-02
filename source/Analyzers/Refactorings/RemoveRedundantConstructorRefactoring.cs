@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -56,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken)
         {
-            return await SyntaxRemover.RemoveMemberAsync(document, constructorDeclaration, cancellationToken).ConfigureAwait(false);
+            return await Remover.RemoveMemberAsync(document, constructorDeclaration, cancellationToken).ConfigureAwait(false);
         }
     }
 }

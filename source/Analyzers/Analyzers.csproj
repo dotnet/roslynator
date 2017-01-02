@@ -50,7 +50,6 @@
     <Compile Include="Refactorings\AsynchronousMethodNameShouldEndWithAsyncRefactoring.cs" />
     <Compile Include="Refactorings\AvoidEmptyCatchClauseThatCatchesSystemExceptionRefactoring.cs" />
     <Compile Include="Refactorings\AvoidImplicitlyTypedArrayRefactoring.cs" />
-    <Compile Include="Refactorings\AvoidInterpolatedStringWithNoInterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AvoidLockingOnPubliclyAccessibleInstanceRefactoring.cs" />
     <Compile Include="Refactorings\AvoidNullLiteralExpressionOnLeftSideOfBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactorings\AvoidSemicolonAtEndOfDeclarationRefactoring.cs" />
@@ -307,8 +306,6 @@
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesToIfElseCodeFixProvider.cs" />
-    <Compile Include="SyntaxHelper.cs" />
-    <Compile Include="TokenPair.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources.resx">

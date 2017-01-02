@@ -2,6 +2,8 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -20,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Format braces on multiple lines",
-                        cancellationToken => FormatAccessorBraceOnMultipleLinesRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                        cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, accessor, cancellationToken));
                 }
                 else
                 {
@@ -31,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Format braces on a single line",
-                            cancellationToken => FormatAccessorBraceOnSingleLineRefactoring.RefactorAsync(context.Document, accessor, cancellationToken));
+                            cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, accessor, cancellationToken));
                     }
                 }
             }

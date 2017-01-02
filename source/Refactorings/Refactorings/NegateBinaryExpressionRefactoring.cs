@@ -6,6 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -72,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax newNode = CSharpUtility.LogicallyNegate(binaryExpression)
+            ExpressionSyntax newNode = Negator.LogicallyNegate(binaryExpression)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);

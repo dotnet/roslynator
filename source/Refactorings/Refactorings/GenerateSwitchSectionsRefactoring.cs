@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -67,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var enumTypeSymbol = semanticModel.GetConvertedTypeSymbol(switchStatement.Expression, cancellationToken) as INamedTypeSymbol;
+            var enumTypeSymbol = semanticModel.GetTypeInfo(switchStatement.Expression, cancellationToken).ConvertedType as INamedTypeSymbol;
 
             TypeSyntax enumType = Type(enumTypeSymbol, semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
 

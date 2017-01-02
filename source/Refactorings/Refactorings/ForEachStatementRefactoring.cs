@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -46,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisResult result = CSharpUtility.AnalyzeType(
+            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(
                 forEachStatement,
                 semanticModel,
                 context.CancellationToken);
@@ -67,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                     context.RegisterRefactoring(
-                        $"Change type to '{typeSymbol.ToMinimalDisplayString(semanticModel, type.Span.Start, DefaultSymbolDisplayFormat.Value)}'",
+                        $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.Span.Start, semanticModel)}'",
                         cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
@@ -93,20 +97,20 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (typeSymbol?.IsErrorType() == false)
                     {
-                        string newName = NameGenerator.GenerateIdentifier(
+                        string newName = Identifier.CreateName(
                             typeSymbol,
                             firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(newName)
                             && !string.Equals(newName, oldName, StringComparison.Ordinal))
                         {
-                            newName = NameGenerator.GenerateUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
+                            newName = Identifier.EnsureUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
 
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                             context.RegisterRefactoring(
                                 $"Rename variable to '{newName}'",
-                                cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
+                                cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                         }
                     }
                 }
@@ -128,12 +132,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (info.ElementType != null)
                 {
-                    ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(type);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).ConvertedType;
 
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{info.ElementType.ToMinimalDisplayString(semanticModel, type.SpanStart, DefaultSymbolDisplayFormat.Value)}'",
+                            $"Change type to '{SymbolDisplay.GetMinimalDisplayString(info.ElementType, type.SpanStart, semanticModel)}'",
                             cancellationToken =>
                             {
                                 return ChangeTypeRefactoring.ChangeTypeAsync(

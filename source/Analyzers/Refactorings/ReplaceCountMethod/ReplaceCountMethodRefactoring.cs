@@ -3,11 +3,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
 {
@@ -20,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
             if (methodSymbol != null
                 && Symbol.IsEnumerableMethodWithoutParameters(methodSymbol, "Count", context.SemanticModel))
             {
-                string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: true, cancellationToken: context.CancellationToken);
+                string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, context.CancellationToken);
 
                 if (propertyName != null)
                 {
@@ -60,6 +63,29 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
                     }
                 }
             }
+        }
+
+        private static string GetCountOrLengthPropertyName(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (typeSymbol?.IsErrorType() == false
+                && !typeSymbol.IsConstructedFromIEnumerableOfT())
+            {
+                if (typeSymbol.IsArrayType()
+                    || typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
+                {
+                    return "Length";
+                }
+
+                if (Symbol.ImplementsICollectionOfT(typeSymbol))
+                    return "Count";
+            }
+
+            return null;
         }
 
         private static bool IsFixableBinaryExpression(BinaryExpressionSyntax binaryExpression)

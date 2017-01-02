@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
@@ -41,7 +43,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 var propertySymbol = semanticModel.GetSymbol(memberAccess, cancellationToken) as IPropertySymbol;
 
                 if ((propertySymbol.Name == "Type" || propertySymbol.Name == "ConvertedType")
-                    && propertySymbol?.Type == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_ITypeSymbol))
+                    && propertySymbol?.Type == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.ITypeSymbol"))
                 {
                     ExpressionSyntax expression = memberAccess.Expression;
 
@@ -52,12 +54,12 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                         if (methodSymbol?.Name == "GetTypeInfo"
                             && methodSymbol.IsExtensionMethod
                             && methodSymbol.MethodKind == MethodKind.ReducedExtension
-                            && methodSymbol.ReturnType == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_TypeInfo))
+                            && methodSymbol.ReturnType == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.TypeInfo"))
                         {
                             ImmutableArray<IParameterSymbol> parameters = methodSymbol.ReducedFrom.Parameters;
 
                             if (parameters.Length == 3
-                                && parameters[0].Type == semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.Microsoft_CodeAnalysis_SemanticModel))
+                                && parameters[0].Type == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.SemanticModel"))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.SimplifyGetTypeInfoInvocation,
