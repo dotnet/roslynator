@@ -289,7 +289,7 @@
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
     <Compile Include="Refactorings\SimplifyBooleanComparisonRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Refactorings\WrapConditionalExpressionConditionInParenthesesRefactoring.cs" />
+    <Compile Include="Refactorings\ParenthesizeConditionInConditionalExpressionRefactoring.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

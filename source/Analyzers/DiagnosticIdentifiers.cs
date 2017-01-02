@@ -56,7 +56,7 @@ namespace Roslynator.CSharp
         public const string ReplaceAnonymousMethodWithLambdaExpression = Prefix + "1048";
         public const string SimplifyBooleanComparison = Prefix + "1049";
         public const string AddConstructorArgumentList = Prefix + "1050";
-        public const string WrapConditionalExpressionConditionInParentheses = Prefix + "1051";
+        public const string ParenthesizeConditionInConditionalExpression = Prefix + "1051";
         public const string DeclareEachAttributeSeparately = Prefix + "1052";
         //public const string ReplaceForEachWithFor = Prefix + "1053";
         public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
