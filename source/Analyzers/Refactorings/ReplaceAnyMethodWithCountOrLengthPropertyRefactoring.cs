@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -25,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (methodSymbol != null
                     && Symbol.IsEnumerableMethodWithoutParameters(methodSymbol, "Any", context.SemanticModel))
                 {
-                    string propertyName = SyntaxHelper.GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, allowImmutableArray: false, cancellationToken: context.CancellationToken);
+                    string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, context.CancellationToken);
 
                     if (propertyName != null)
                     {
@@ -64,6 +66,26 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static string GetCountOrLengthPropertyName(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (typeSymbol?.IsErrorType() == false
+                && !typeSymbol.IsConstructedFromIEnumerableOfT())
+            {
+                if (typeSymbol.IsArrayType())
+                    return "Length";
+
+                if (Symbol.ImplementsICollectionOfT(typeSymbol))
+                    return "Count";
+            }
+
+            return null;
         }
 
         public static async Task<Document> RefactorAsync(

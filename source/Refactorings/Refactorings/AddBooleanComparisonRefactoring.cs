@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -29,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (expression != null
                             && semanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                         {
-                            if (semanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken)?.IsBoolean() == true
+                            if (semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType?.IsBoolean() == true
                                 || IsCondition(expression))
                             {
                                 RegisterRefactoring(context, expression);

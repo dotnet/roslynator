@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -46,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                 return true;
             }
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken);
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
 
             return typeSymbol?.IsNamedType() == true
                 && ((INamedTypeSymbol)typeSymbol).IsString();

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -60,26 +63,26 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                string newName = NameGenerator.GenerateIdentifier(
+                                string newName = Identifier.CreateName(
                                     typeSymbol,
                                     FirstCharToLower(symbol));
 
                                 if (!string.IsNullOrEmpty(newName))
                                 {
                                     if (context.Settings.PrefixFieldIdentifierWithUnderscore
-                                        && Symbol.IsPrivateField(symbol)
+                                        && symbol.IsPrivateField()
                                         && !((IFieldSymbol)symbol).IsConst)
                                     {
-                                        newName = IdentifierUtility.ToCamelCase(newName, prefixWithUnderscore: true);
+                                        newName = Identifier.ToCamelCase(newName, prefixWithUnderscore: true);
                                     }
 
                                     if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
                                     {
-                                        newName = NameGenerator.GenerateUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
+                                        newName = Identifier.EnsureUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
 
                                         context.RegisterRefactoring(
                                             $"Rename {GetName(symbol)} to '{newName}'",
-                                            cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
+                                            cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                                     }
                                 }
                             }

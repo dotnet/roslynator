@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -33,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             foreach (ISymbol member in destinationType.GetMembers(methodName))
             {
-                if (Symbol.IsPublicMethod(member))
+                if (member.IsPublicMethod())
                 {
                     var methodSymbol = (IMethodSymbol)member;
 
@@ -75,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamespaceSymbol namespaceSymbol = methodSymbol.ContainingNamespace;
 
                 if (namespaceSymbol != null
-                    && !CSharpUtility.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken)
+                    && !CSharpAnalysis.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken)
                     && newRoot.IsKind(SyntaxKind.CompilationUnit))
                 {
                     newRoot = ((CompilationUnitSyntax)newRoot)

@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -79,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                     .LookupNamespacesAndTypes(member.SpanStart)
                     .Select(f => f.Name);
 
-                string name = NameGenerator.EnsureUniqueName("Namespace", reservedNames);
+                string name = Identifier.EnsureUniqueName("Namespace", reservedNames);
 
                 NamespaceDeclarationSyntax namespaceDeclaration = NamespaceDeclaration(
                     IdentifierName(Identifier(name).WithRenameAnnotation()),

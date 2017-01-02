@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -205,7 +207,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (Symbol.IsInstanceField(symbol))
+            if (symbol.IsInstanceField())
             {
                 return symbol;
             }
@@ -225,7 +227,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = MemberDeclarationInserter.InsertMember(
+            SyntaxList<MemberDeclarationSyntax> newMembers = Inserter.InsertMember(
                 members,
                 CreateConstructor(GetConstructorIdentifierText(parentMember), assignableMembers));
 
@@ -271,7 +273,7 @@ namespace Roslynator.CSharp.Refactorings
             foreach (MemberDeclarationSyntax member in members)
             {
                 string name = GetIdentifier(member).ValueText;
-                string parameterName = IdentifierUtility.ToCamelCase(name);
+                string parameterName = Identifier.ToCamelCase(name);
 
                 statements.Add(ExpressionStatement(
                     SimpleAssignmentExpression(
@@ -288,7 +290,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                Modifiers.Public(),
+                ModifierFactory.Public(),
                 Identifier(identifierText),
                 ParameterList(SeparatedList(parameters)),
                 default(ConstructorInitializerSyntax),

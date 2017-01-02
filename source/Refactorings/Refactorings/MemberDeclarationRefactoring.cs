@@ -1,9 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -42,14 +45,14 @@ namespace Roslynator.CSharp.Refactorings
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                                 {
                                     context.RegisterRefactoring(
-                                        "Remove " + SyntaxHelper.GetSyntaxNodeTitle(member),
-                                        cancellationToken => SyntaxRemover.RemoveMemberAsync(context.Document, member, cancellationToken));
+                                        "Remove " + GetMemberName(member),
+                                        cancellationToken => Remover.RemoveMemberAsync(context.Document, member, cancellationToken));
                                 }
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                                 {
                                     context.RegisterRefactoring(
-                                        "Duplicate " + SyntaxHelper.GetSyntaxNodeTitle(member),
+                                        "Duplicate " + GetMemberName(member),
                                         cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
                                 }
                             }
@@ -256,6 +259,45 @@ namespace Roslynator.CSharp.Refactorings
         {
             return accessorList.OpenBraceToken.Span.Contains(span)
                 || accessorList.CloseBraceToken.Span.Contains(span);
+        }
+
+        public static string GetMemberName(MemberDeclarationSyntax memberDeclaration)
+        {
+            switch (memberDeclaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return "method";
+                case SyntaxKind.OperatorDeclaration:
+                    return "operator method";
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return "conversion method";
+                case SyntaxKind.ConstructorDeclaration:
+                    return "constructor";
+                case SyntaxKind.PropertyDeclaration:
+                    return "property";
+                case SyntaxKind.IndexerDeclaration:
+                    return "indexer";
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    return "event";
+                case SyntaxKind.FieldDeclaration:
+                    return "field";
+                case SyntaxKind.NamespaceDeclaration:
+                    return "namespace";
+                case SyntaxKind.ClassDeclaration:
+                    return "class";
+                case SyntaxKind.StructDeclaration:
+                    return "struct";
+                case SyntaxKind.InterfaceDeclaration:
+                    return "interface";
+                case SyntaxKind.EnumDeclaration:
+                    return "enum";
+                default:
+                    {
+                        Debug.Assert(false, memberDeclaration.Kind().ToString());
+                        return string.Empty;
+                    }
+            }
         }
     }
 }

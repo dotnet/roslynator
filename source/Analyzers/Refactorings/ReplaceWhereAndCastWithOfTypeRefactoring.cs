@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -43,12 +45,12 @@ namespace Roslynator.CSharp.Refactorings
                             IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
                             if (invocationSymbol != null
-                                && Symbol.IsEnumerableCastMethod(invocationSymbol, semanticModel))
+                                && IsEnumerableCastMethod(invocationSymbol, semanticModel))
                             {
                                 IMethodSymbol invocation2Symbol = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
 
                                 if (invocation2Symbol != null
-                                    && Symbol.IsEnumerableWhereMethod(invocation2Symbol, semanticModel))
+                                    && (Symbol.IsEnumerableMethodWithPredicate(invocation2Symbol, "Where", semanticModel)))
                                 {
                                     BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);
 
@@ -172,6 +174,14 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
+        }
+
+        private static bool IsEnumerableCastMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            return methodSymbol.IsExtensionMethod
+                && methodSymbol.Name == "Cast"
+                && methodSymbol.ContainingType?.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
+                && methodSymbol.ReducedFromOrSelf().SingleParameterOrDefault()?.Type.IsIEnumerable() == true;
         }
 
         public static async Task<Document> RefactorAsync(

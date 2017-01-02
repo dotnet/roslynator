@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -55,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)
         {
             return context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(statement)
-                && CSharpUtility.IsEmbeddedStatement(statement);
+                && EmbeddedStatement.IsEmbeddedStatement(statement);
         }
 
         private static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax topmostIf)

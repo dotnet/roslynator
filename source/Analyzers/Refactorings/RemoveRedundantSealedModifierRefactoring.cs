@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -28,7 +30,8 @@ namespace Roslynator.CSharp.Refactorings
 
             var containingSymbol = symbol?.ContainingSymbol as INamedTypeSymbol;
 
-            if (Symbol.IsSealedClass(containingSymbol))
+            if (containingSymbol?.IsSealed == true
+                && containingSymbol.IsClass())
             {
                 SyntaxToken sealedKeyword = declaration
                     .GetModifiers()

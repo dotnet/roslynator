@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -23,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string identifier = NameGenerator.GenerateUniqueLocalName("item", statement.SpanStart, semanticModel, cancellationToken);
+            string identifier = Identifier.EnsureUniqueLocalName("item", statement.SpanStart, semanticModel, cancellationToken);
             IdentifierNameSyntax identifierName = IdentifierName(identifier);
 
             var condition = (BinaryExpressionSyntax)forStatement.Condition;

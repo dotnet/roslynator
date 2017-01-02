@@ -11,6 +11,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+using static Roslynator.StringUtility;
 
 namespace Roslynator.CSharp
 {
@@ -226,14 +229,14 @@ namespace Roslynator.CSharp
                         && literal.IsVerbatimStringLiteral())
                     {
                         string s = literal.Token.ValueText;
-                        s = TextUtility.EscapeQuote(s);
-                        s = TextUtility.DoubleBraces(s);
+                        s = EscapeQuote(s);
+                        s = DoubleBraces(s);
                         sb.Append(s);
                     }
                     else
                     {
                         string s = GetInnerText(literal.Token.Text);
-                        s = TextUtility.DoubleBraces(s);
+                        s = DoubleBraces(s);
                         sb.Append(s);
                     }
                 }
@@ -257,7 +260,7 @@ namespace Roslynator.CSharp
                                 && isVerbatimInterpolatedString)
                             {
                                 string s = text.TextToken.ValueText;
-                                s = TextUtility.EscapeQuote(s);
+                                s = EscapeQuote(s);
                                 sb.Append(s);
                             }
                             else
@@ -305,7 +308,7 @@ namespace Roslynator.CSharp
                     if (ContainsVerbatimLiteral
                         && literal.IsVerbatimStringLiteral())
                     {
-                        sb.Append(TextUtility.EscapeQuote(literal.Token.ValueText));
+                        sb.Append(EscapeQuote(literal.Token.ValueText));
                     }
                     else
                     {
@@ -335,7 +338,7 @@ namespace Roslynator.CSharp
                 {
                     var literal = (LiteralExpressionSyntax)Expressions[i];
 
-                    string s = TextUtility.DoubleQuote(literal.Token.ValueText);
+                    string s = DoubleQuote(literal.Token.ValueText);
 
                     int charCount = 0;
 
@@ -397,7 +400,10 @@ namespace Roslynator.CSharp
 
         private static bool IsString(ExpressionSyntax right, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            return semanticModel.GetConvertedTypeSymbol(right, cancellationToken)?.IsString() == true;
+            return semanticModel
+                .GetTypeInfo(right, cancellationToken)
+                .ConvertedType?
+                .IsString() == true;
         }
     }
 }

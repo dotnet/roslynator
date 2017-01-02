@@ -29,7 +29,7 @@ namespace CodeGenerator
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
                             ClassDeclaration("RefactoringsOptionsPage")
-                                .WithModifiers(Modifiers.PublicPartial())
+                                .WithModifiers(ModifierFactory.PublicPartial())
                                 .WithMembers(
                                     CreateMembers(refactorings))));
         }
@@ -37,7 +37,7 @@ namespace CodeGenerator
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringInfo> refactorings)
         {
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
-                .WithModifiers(Modifiers.Public())
+                .WithModifiers(ModifierFactory.Public())
                 .WithBody(Block(refactorings.Select(refactoring =>
                     {
                         return ExpressionStatement(
@@ -47,7 +47,7 @@ namespace CodeGenerator
                     })));
 
             yield return MethodDeclaration(VoidType(), "Apply")
-                .WithModifiers(Modifiers.Public())
+                .WithModifiers(ModifierFactory.Public())
                 .WithBody(
                     Block(refactorings.Select(refactoring =>
                     {
@@ -74,7 +74,7 @@ namespace CodeGenerator
                     AttributeList(Attribute("DisplayName", StringLiteralExpression(refactoring.Title))),
                     AttributeList(Attribute("Description", StringLiteralExpression(CreateDescription(refactoring)))),
                     AttributeList(Attribute("TypeConverter", TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
-                .WithModifiers(Modifiers.Public())
+                .WithModifiers(ModifierFactory.Public())
                 .WithAccessorList(
                     AccessorList(
                         AutoImplementedGetter(),

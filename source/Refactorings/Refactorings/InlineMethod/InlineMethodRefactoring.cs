@@ -10,6 +10,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.InlineMethod
@@ -166,15 +169,10 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                     }
                     else
                     {
-                        TypeDeclarationSyntax containingType = CSharpUtility.GetEnclosingTypeDeclaration(invocation);
+                        INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(invocation.SpanStart, cancellationToken);
 
-                        if (containingType != null)
-                        {
-                            ISymbol containingTypeSymbol = semanticModel.GetDeclaredSymbol(containingType, cancellationToken);
-
-                            if (methodSymbol.ContainingType?.Equals(containingTypeSymbol) == true)
-                                return methodSymbol;
-                        }
+                        if (methodSymbol.ContainingType?.Equals(enclosingType) == true)
+                            return methodSymbol;
                     }
                 }
                 else if (methodSymbol.IsMethodKind(MethodKind.ReducedExtension)
@@ -374,15 +372,10 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
 
-            if (!CSharpUtility.AreParenthesesRedundantOrInvalid(invocation))
-            {
-                newExpression = newExpression
-                   .WithoutTrivia()
-                   .Parenthesize();
-            }
-
             return newExpression
-                .WithTriviaFrom(invocation)
+                .WithoutTrivia()
+                .Parenthesize()
+                .WithSimplifierAnnotation()
                 .WithFormatterAnnotation();
         }
 
@@ -443,9 +436,18 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 }
             }
 
-            var rewriter = new IdentifierNameSyntaxRewriter(dic);
-
-            return (TNode)rewriter.Visit(node);
+            return node.ReplaceNodes(dic.Keys, (f, g) =>
+            {
+                ExpressionSyntax expression;
+                if (dic.TryGetValue(f, out expression))
+                {
+                    return expression.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
+                }
+                else
+                {
+                    return g;
+                }
+            });
         }
 
         private static List<ParameterInfo> GetParameterInfos(
@@ -478,7 +480,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             foreach (ArgumentSyntax argument in argumentList.Arguments)
             {
-                IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(argument, semanticModel, cancellationToken: cancellationToken);
+                IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, semanticModel, cancellationToken: cancellationToken);
 
                 if (parameterSymbol != null)
                 {

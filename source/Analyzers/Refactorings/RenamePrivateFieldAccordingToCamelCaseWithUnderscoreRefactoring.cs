@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Extensions;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
                 && !fieldSymbol.IsImplicitlyDeclared
                 && fieldSymbol.IsPrivate()
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
-                && !IdentifierUtility.IsCamelCasePrefixedWithUnderscore(fieldSymbol.Name))
+                && !Identifier.IsCamelCasePrefixedWithUnderscore(fieldSymbol.Name))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
@@ -29,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             string newName,
             CancellationToken cancellationToken)
         {
-            return SymbolRenamer.RenameSymbolAsync(document, symbol, newName, cancellationToken);
+            return Renamer.RenameSymbolAsync(document, symbol, newName, cancellationToken);
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Analysis;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             if (variableDeclaration.Variables.Count != 1)
                 return;
 
-            TypeAnalysisResult result = CSharpUtility.AnalyzeType(
+            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(
                 variableDeclaration,
                 context.SemanticModel,
                 context.CancellationToken);
@@ -55,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
         {
-            TypeAnalysisResult result = CSharpUtility.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
+            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
 
             if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
             {

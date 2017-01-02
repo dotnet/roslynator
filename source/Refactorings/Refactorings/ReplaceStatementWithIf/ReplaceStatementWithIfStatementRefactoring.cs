@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -44,7 +45,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             if (semanticModel
-                                .GetConvertedTypeSymbol(expression, context.CancellationToken)?
+                                .GetTypeInfo(expression, context.CancellationToken)
+                                .ConvertedType?
                                 .IsBoolean() == true)
                             {
                                 context.RegisterRefactoring(

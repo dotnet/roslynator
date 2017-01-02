@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove trailing white-space",
-                                cancellationToken => SyntaxRemover.RemoveTriviaAsync(context.Document, context.Span, cancellationToken),
+                                cancellationToken => Remover.RemoveTriviaAsync(context.Document, context.Span, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty line",
-                                cancellationToken => SyntaxRemover.RemoveTriviaAsync(context.Document, context.Span, cancellationToken),
+                                cancellationToken => Remover.RemoveTriviaAsync(context.Document, context.Span, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

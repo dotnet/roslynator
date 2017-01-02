@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 {
@@ -141,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
         {
             string methodName = propertyDeclaration.Identifier.ValueText;
 
-            if (!_prefixes.Any(prefix => IdentifierUtility.HasPrefix(methodName, prefix)))
+            if (!_prefixes.Any(prefix => Identifier.HasPrefix(methodName, prefix)))
                 methodName = "Get" + methodName;
 
             return methodName;

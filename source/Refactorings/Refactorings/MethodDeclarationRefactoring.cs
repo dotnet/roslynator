@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
+using Roslynator.Extensions;
+using Roslynator.Rename;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -103,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (typeSymbol != null)
                     {
-                        string newName = NameGenerator.GenerateIdentifier(typeSymbol);
+                        string newName = Identifier.CreateName(typeSymbol);
 
                         if (!string.IsNullOrEmpty(newName))
                         {
@@ -114,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
                             {
-                                bool isUnique = await NameGenerator.IsUniqueMemberNameAsync(
+                                bool isUnique = await Identifier.IsUniqueMemberNameAsync(
                                     methodSymbol,
                                     newName,
                                     context.Solution,
@@ -124,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                        $"Rename method to '{newName}'",
-                                       cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, methodSymbol, newName, cancellationToken));
+                                       cancellationToken => Renamer.RenameSymbolAsync(context.Document, methodSymbol, newName, cancellationToken));
                                 }
                             }
                         }
@@ -142,14 +146,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (returnTypeSymbol != null)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
                 if (taskSymbol != null)
                 {
                     if (returnTypeSymbol.Equals(taskSymbol))
                         return null;
 
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                    INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
                     if (taskOfTSymbol != null
                         && returnTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol))

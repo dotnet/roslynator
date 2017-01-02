@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             DestructorDeclarationSyntax destructorDeclaration,
             CancellationToken cancellationToken)
         {
-            return await SyntaxRemover.RemoveMemberAsync(document, destructorDeclaration, cancellationToken).ConfigureAwait(false);
+            return await Remover.RemoveMemberAsync(document, destructorDeclaration, cancellationToken).ConfigureAwait(false);
         }
     }
 }

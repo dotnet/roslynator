@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -112,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (argument.NameColon == null || argument.NameColon.IsMissing)
             {
-                IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(
                     argument,
                     semanticModel,
                     allowParams: false,
@@ -123,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
                     return argument
                         .WithNameColon(
                             NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
-                                .WithTrailingTrivia(Space))
+                                .WithTrailingSpace())
                         .WithTriviaFrom(argument);
                 }
             }
@@ -141,7 +144,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    IParameterSymbol parameterSymbol = CSharpUtility.DetermineParameter(
+                    IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(
                         argument,
                         semanticModel,
                         allowParams: false,

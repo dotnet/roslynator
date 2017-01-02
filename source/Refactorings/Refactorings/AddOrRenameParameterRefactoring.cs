@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Extensions;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (span.Contains(context.Span))
                     {
-                        string name = NameGenerator.GenerateIdentifier(parameterSymbol.Type, firstCharToLower: true);
+                        string name = Identifier.CreateName(parameterSymbol.Type, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {
@@ -53,16 +55,16 @@ namespace Roslynator.CSharp.Refactorings
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string name = parameter.Identifier.ValueText;
-                string newName = NameGenerator.GenerateIdentifier(parameterSymbol.Type, firstCharToLower: true);
+                string newName = Identifier.CreateName(parameterSymbol.Type, firstCharToLower: true);
 
                 if (!string.IsNullOrEmpty(newName)
                     && !string.Equals(name, newName, StringComparison.Ordinal))
                 {
-                    newName = await NameGenerator.GenerateUniqueParameterNameAsync(parameterSymbol, newName, context.Solution, context.CancellationToken).ConfigureAwait(false);
+                    newName = await Identifier.EnsureUniqueParameterNameAsync(parameterSymbol, newName, context.Solution, context.CancellationToken).ConfigureAwait(false);
 
                     context.RegisterRefactoring(
                         $"Rename parameter to '{newName}'",
-                        cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, parameterSymbol, newName, cancellationToken));
+                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, parameterSymbol, newName, cancellationToken));
                 }
             }
         }

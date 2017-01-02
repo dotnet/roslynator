@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -28,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanBeReplacedWithCoalesceExpression(ConditionalExpressionSyntax conditionalExpression)
         {
-            ExpressionSyntax condition = conditionalExpression.Condition.UnwrapParentheses();
+            ExpressionSyntax condition = conditionalExpression.Condition.Unparenthesize();
 
             if (condition.IsKind(SyntaxKind.EqualsExpression))
             {
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
                     return binaryExpression.Left.IsEquivalentTo(
-                        conditionalExpression.WhenFalse.UnwrapParentheses(),
+                        conditionalExpression.WhenFalse.Unparenthesize(),
                         topLevel: false);
                 }
             }
@@ -50,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
                     return binaryExpression.Left.IsEquivalentTo(
-                        conditionalExpression.WhenTrue.UnwrapParentheses(),
+                        conditionalExpression.WhenTrue.Unparenthesize(),
                         topLevel: false);
                 }
             }
@@ -63,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.UnwrapParentheses();
+            var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.Unparenthesize();
 
             ExpressionSyntax left = (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
                 ? conditionalExpression.WhenFalse

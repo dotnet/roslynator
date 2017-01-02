@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -33,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                         IEnumerable<IMethodSymbol> declaredConstructors = classDeclaration.Members
                             .Where(f => f.IsKind(SyntaxKind.ConstructorDeclaration))
                             .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
-                            .Where(f => Symbol.IsInstanceMethod(f))
+                            .Where(f => f.IsInstanceMethod())
                             .Cast<IMethodSymbol>();
 
                         using (IEnumerator<IMethodSymbol> en = baseSymbol
@@ -78,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = classDeclaration.Identifier.ValueText;
 
-            int insertIndex = MemberDeclarationInserter.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
+            int insertIndex = Inserter.GetMemberInsertIndex(members, SyntaxKind.ConstructorDeclaration);
 
             int position = (insertIndex == 0)
                 ? classDeclaration.OpenBraceToken.FullSpan.End
@@ -109,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
-                    Modifiers.FromAccessibility(parameterSymbol.DeclaredAccessibility),
+                    ModifierFactory.FromAccessibility(parameterSymbol.DeclaredAccessibility),
                     Type(parameterSymbol.Type, semanticModel, position),
                     Identifier(parameterSymbol.Name),
                     @default));
@@ -119,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
+                ModifierFactory.FromAccessibility(methodSymbol.DeclaredAccessibility),
                 Identifier(name),
                 ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),

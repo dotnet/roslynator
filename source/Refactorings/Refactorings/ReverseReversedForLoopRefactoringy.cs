@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -57,12 +58,12 @@ namespace Roslynator.CSharp.Refactorings
                 ZeroLiteralExpression());
 
             BinaryExpressionSyntax newCondition = ((BinaryExpressionSyntax)forStatement.Condition)
-                .WithOperatorToken(Token(SyntaxKind.LessThanToken))
+                .WithOperatorToken(LessThanToken())
                 .WithRight(initializerValue.Left);
 
             SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
                 incrementor,
-                incrementor.WithOperatorToken(Token(SyntaxKind.PlusPlusToken)));
+                incrementor.WithOperatorToken(PlusPlusToken()));
 
             ForStatementSyntax newForStatement = forStatement
                 .WithDeclaration(newDeclaration)

@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -44,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (invocationSymbol2 != null
                             && invocationSymbol2?.Name.Equals("Where", StringComparison.Ordinal) == true
                             && invocationSymbol2.Parameters.Length == 1
-                            && Symbol.IsContainedInEnumerable(invocationSymbol2, semanticModel)
+                            && invocationSymbol2.ContainingType?.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
                             && invocationSymbol2.ReducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
                         {
                             IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
@@ -52,14 +54,14 @@ namespace Roslynator.CSharp.Refactorings
                             if (IsWherePredicate(semanticModel, invocationSymbol2))
                             {
                                 if (invocationSymbol != null
-                                    && Symbol.IsEnumerableWhereMethod(invocationSymbol, semanticModel))
+                                    && (Symbol.IsEnumerableMethodWithPredicate(invocationSymbol, "Where", semanticModel)))
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
                             }
                             else if (IsWherePredicateWithIndex(invocationSymbol2, semanticModel))
                             {
-                                if (Symbol.IsEnumerableMethodWithPredicateWithIndex(invocationSymbol, "Where", semanticModel))
+                                if (IsEnumerableMethodWithPredicateWithInt32Index(invocationSymbol, "Where", semanticModel))
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
@@ -85,6 +87,24 @@ namespace Roslynator.CSharp.Refactorings
                 methodSymbol.TypeArguments[0],
                 semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
                 semanticModel);
+        }
+
+        private static bool IsEnumerableMethodWithPredicateWithInt32Index(IMethodSymbol methodSymbol, string methodName, SemanticModel semanticModel)
+        {
+            if (Symbol.IsEnumerableMethod(
+                methodSymbol,
+                methodName,
+                semanticModel))
+            {
+                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
+
+                return parameter != null
+                    && Symbol.IsPredicateFunc(parameter.Type, methodSymbol.TypeArguments[0], semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), semanticModel);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static void Analyze(

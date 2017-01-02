@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -176,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (ISymbol member in typeSymbol.GetMembers("Add"))
                 {
-                    if (Symbol.IsPublicInstanceMethod(member))
+                    if (member.IsPublicInstanceMethod())
                     {
                         var methodSymbol = (IMethodSymbol)member;
 
@@ -184,7 +186,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (parameters.Length == 1)
                         {
-                            ITypeSymbol expressionSymbol = semanticModel.GetConvertedTypeSymbol(expression, cancellationToken);
+                            ITypeSymbol expressionSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
                             return expressionSymbol?.Equals(parameters[0].Type) == true;
                         }
@@ -207,7 +209,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (ISymbol member in typeSymbol.GetMembers("this[]"))
                 {
-                    if (Symbol.IsPublicInstanceProperty(member))
+                    if (member.IsPublicInstanceProperty())
                     {
                         var propertySymbol = (IPropertySymbol)member;
 
@@ -217,7 +219,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (parameters.Length == 1)
                             {
-                                ITypeSymbol expressionSymbol = semanticModel.GetConvertedTypeSymbol(expression, cancellationToken);
+                                ITypeSymbol expressionSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
                                 return expressionSymbol?.Equals(propertySymbol.Parameters[0].Type) == true;
                             }

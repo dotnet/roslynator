@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -28,11 +30,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (interpolationStartIndex != -1)
             {
-                s = TextUtility.DoubleBraces(s.Substring(0, interpolationStartIndex)) +
+                s = StringUtility.DoubleBraces(s.Substring(0, interpolationStartIndex)) +
                    "{" +
                    s.Substring(interpolationStartIndex, interpolationLength) +
                    "}" +
-                   TextUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength));
+                   StringUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength));
             }
 
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
@@ -52,9 +54,8 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            MemberAccessExpressionSyntax newNode = MemberAccessExpression(
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    PredefinedType(Token(SyntaxKind.StringKeyword)),
+            MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
+                    StringType(),
                     IdentifierName("Empty"))
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();

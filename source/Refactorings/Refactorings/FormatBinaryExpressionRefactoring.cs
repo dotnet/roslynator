@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Formatting;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         title,
-                        cancellationToken => FormatOnMultipleLinesAsync(context.Document, binaryExpression, cancellationToken));
+                        cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, binaryExpression, cancellationToken));
                 }
                 else
                 {
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         title,
-                        cancellationToken => FormatOnSingleLineAsync(context.Document, binaryExpression, cancellationToken));
+                        cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
         }
@@ -52,35 +52,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
-        }
-
-        private static async Task<Document> FormatOnMultipleLinesAsync(
-            Document document,
-            BinaryExpressionSyntax condition,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxTriviaList triviaList = SyntaxFactory.TriviaList(CSharpFactory.NewLineTrivia())
-                .AddRange(SyntaxHelper.GetIndentTrivia(condition))
-                .Add(CSharpFactory.IndentTrivia());
-
-            var rewriter = new SyntaxRewriter(triviaList);
-
-            var newCondition = (ExpressionSyntax)rewriter.Visit(condition);
-
-            return await document.ReplaceNodeAsync(condition, newCondition, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static async Task<Document> FormatOnSingleLineAsync(
-            Document document,
-            BinaryExpressionSyntax condition,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            BinaryExpressionSyntax newCondition = SyntaxRemover.RemoveWhitespaceOrEndOfLine(condition);
-
-            return await document.ReplaceNodeAsync(
-                condition,
-                newCondition.WithFormatterAnnotation(),
-                cancellationToken).ConfigureAwait(false);
         }
 
         private static bool IsFormattableKind(SyntaxKind kind)
@@ -120,33 +91,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return binaryExpression;
-        }
-
-        private class SyntaxRewriter : CSharpSyntaxRewriter
-        {
-            private readonly SyntaxTriviaList _triviaList;
-
-            private BinaryExpressionSyntax _previous;
-
-            public SyntaxRewriter(SyntaxTriviaList triviaList)
-            {
-                _triviaList = triviaList;
-            }
-
-            public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
-            {
-                if (_previous == null
-                    || (_previous.Equals(node.Parent) && node.IsKind(_previous.Kind())))
-                {
-                    node = node
-                        .WithLeft(node.Left.TrimTrivia())
-                        .WithOperatorToken(node.OperatorToken.WithLeadingTrivia(_triviaList));
-
-                    _previous = node;
-                }
-
-                return base.VisitBinaryExpression(node);
-            }
         }
     }
 }

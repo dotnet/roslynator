@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -18,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression?.IsMissing == false
                 && !(expression is AssignmentExpressionSyntax)
-                && !CSharpUtility.IsIncrementOrDecrementExpression(expression))
+                && !expression.IsIncrementOrDecrementExpression())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -27,16 +29,16 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                     if (typeSymbol?.IsErrorType() == false
-                        && !typeSymbol.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))
+                        && !typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))
                         && !typeSymbol.IsVoid())
                     {
                         bool addAwait = false;
 
-                        if (Symbol.IsConstructedFromTaskOfT(typeSymbol, semanticModel))
+                        if (typeSymbol.IsConstructedFromTaskOfT(semanticModel))
                         {
                             ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken);
 
-                            addAwait = Symbol.IsAsyncMethod(enclosingSymbol);
+                            addAwait = enclosingSymbol.IsAsyncMethod();
                         }
 
                         context.RegisterRefactoring(
@@ -64,9 +66,9 @@ namespace Roslynator.CSharp.Refactorings
             if (addAwait)
                 typeSymbol = ((INamedTypeSymbol)typeSymbol).TypeArguments.First();
 
-            string identifier = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true) ?? "x";
+            string identifier = Identifier.CreateName(typeSymbol, firstCharToLower: true) ?? "x";
 
-            identifier = NameGenerator.GenerateUniqueLocalName(identifier, expressionStatement.SpanStart, semanticModel, cancellationToken);
+            identifier = Identifier.EnsureUniqueLocalName(identifier, expressionStatement.SpanStart, semanticModel, cancellationToken);
 
             ExpressionSyntax value = expressionStatement.Expression;
 

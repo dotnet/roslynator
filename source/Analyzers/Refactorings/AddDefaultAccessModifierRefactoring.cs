@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Accessibility GetAccessModifier(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
-            if (!ModifierUtility.ContainsAccessModifier(modifiers))
+            if (!modifiers.ContainsAccessModifier())
             {
                 if (modifiers.Any(SyntaxKind.PartialKeyword))
                 {
@@ -50,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             if (accessibility == Accessibility.NotApplicable)
                             {
-                                return ModifierUtility.GetDefaultAccessModifier(declaration);
+                                return declaration.GetDefaultAccessibility();
                             }
                             else
                             {
@@ -61,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    return ModifierUtility.GetDefaultAccessModifier(declaration);
+                    return declaration.GetDefaultAccessibility();
                 }
             }
 
@@ -86,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SyntaxTokenList modifiers = declaration2.GetModifiers();
 
-                        Accessibility accessibility2 = ModifierUtility.GetAccessModifier(modifiers);
+                        Accessibility accessibility2 = DetermineAccessibility(modifiers);
 
                         if (accessibility2 != Accessibility.NotApplicable)
                         {
@@ -101,6 +103,44 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                 }
+            }
+
+            return accessibility;
+        }
+
+        private static Accessibility DetermineAccessibility(SyntaxTokenList tokenList)
+        {
+            int count = tokenList.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                switch (tokenList[i].Kind())
+                {
+                    case SyntaxKind.PublicKeyword:
+                        return Accessibility.Public;
+                    case SyntaxKind.PrivateKeyword:
+                        return Accessibility.Private;
+                    case SyntaxKind.InternalKeyword:
+                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.ProtectedKeyword, Accessibility.Internal);
+                    case SyntaxKind.ProtectedKeyword:
+                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.InternalKeyword, Accessibility.Protected);
+                }
+            }
+
+            return Accessibility.NotApplicable;
+        }
+
+        private static Accessibility GetAccessModifier(
+            SyntaxTokenList tokenList,
+            int startIndex,
+            int count,
+            SyntaxKind kind,
+            Accessibility accessibility)
+        {
+            for (int i = startIndex; i < count; i++)
+            {
+                if (tokenList[i].Kind() == kind)
+                    return Accessibility.ProtectedOrInternal;
             }
 
             return accessibility;

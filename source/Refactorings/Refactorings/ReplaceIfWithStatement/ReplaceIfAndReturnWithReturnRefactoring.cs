@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
 {
     internal static class ReplaceIfAndReturnWithReturnRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, SelectedStatementsInfo info)
+        public static void ComputeRefactoring(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            if (info.SelectedCount == 2)
+            if (selectedStatements.Count == 2)
             {
-                StatementSyntax[] statements = info.SelectedNodes().ToArray();
+                StatementSyntax[] statements = selectedStatements.ToArray();
 
                 if (statements[0].IsKind(SyntaxKind.IfStatement)
                     && statements[1].IsKind(SyntaxKind.ReturnStatement))
@@ -41,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                                 {
                                     context.RegisterRefactoring(
                                         title,
-                                        cancellationToken => RefactorAsync(context.Document, info.Container, ifStatement, returnStatement, cancellationToken));
+                                        cancellationToken => RefactorAsync(context.Document, selectedStatements.Container, ifStatement, returnStatement, cancellationToken));
                                 }
                                 else
                                 {
@@ -51,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                                         {
                                             return RefactorAsync(
                                                 context.Document,
-                                                info.Container,
+                                                selectedStatements.Container,
                                                 ifStatement,
                                                 returnStatement,
                                                 returnExpression,

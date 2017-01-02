@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Roslynator
+namespace Roslynator.Extensions
 {
     public static class SemanticModelExtensions
     {
@@ -135,18 +135,11 @@ namespace Roslynator
                 .Type;
         }
 
-        public static ITypeSymbol GetConvertedTypeSymbol(
-            this SemanticModel semanticModel,
-            SyntaxNode node,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
         {
-            return ModelExtensions
-                .GetTypeInfo(semanticModel, node, cancellationToken)
-                .ConvertedType;
-        }
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
 
-        internal static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
-        {
             return semanticModel
                 .Compilation
                 .GetTypeByMetadataName(fullyQualifiedMetadataName);

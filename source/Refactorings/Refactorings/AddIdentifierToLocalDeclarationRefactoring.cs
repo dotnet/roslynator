@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -44,8 +46,8 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                string name = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true);
-                                name = NameGenerator.GenerateUniqueLocalName(name, declarator.SpanStart, semanticModel, context.CancellationToken);
+                                string name = Identifier.CreateName(typeSymbol, firstCharToLower: true);
+                                name = Identifier.EnsureUniqueLocalName(name, declarator.SpanStart, semanticModel, context.CancellationToken);
 
                                 if (!string.IsNullOrEmpty(name))
                                 {
@@ -72,8 +74,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
-                    string name = NameGenerator.GenerateIdentifier(typeSymbol, firstCharToLower: true);
-                    name = NameGenerator.GenerateUniqueLocalName(name, expression.SpanStart, semanticModel, context.CancellationToken);
+                    string name = Identifier.CreateName(typeSymbol, firstCharToLower: true);
+                    name = Identifier.EnsureUniqueLocalName(name, expression.SpanStart, semanticModel, context.CancellationToken);
 
                     if (!string.IsNullOrEmpty(name))
                     {

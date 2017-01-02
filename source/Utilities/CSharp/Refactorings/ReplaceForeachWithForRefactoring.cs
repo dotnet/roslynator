@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -31,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return typeSymbol.IsArrayType()
                    || typeSymbol.IsString()
-                   || Symbol.HasPublicIndexerWithInt32Parameter(typeSymbol);
+                   || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol);
             }
 
             return false;
@@ -57,29 +59,24 @@ namespace Roslynator.CSharp.Refactorings
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
 
-            string identifier = NameGenerator.GenerateUniqueLocalName("i", forEachStatement.Statement.SpanStart, semanticModel, cancellationToken);
+            string identifier = Identifier.EnsureUniqueLocalName("i", forEachStatement.Statement.SpanStart, semanticModel, cancellationToken);
 
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
-                    PredefinedType(Token(SyntaxKind.IntKeyword)),
+                    IntType(),
                     SingletonSeparatedList(
                         VariableDeclarator(identifier)
                             .WithInitializer(
                                 EqualsValueClause(
-                                    LiteralExpression(
-                                        SyntaxKind.NumericLiteralExpression,
-                                        Literal(0)))))),
+                                    ZeroLiteralExpression())))),
                 initializers: SeparatedList<ExpressionSyntax>(),
-                condition: BinaryExpression(
-                    SyntaxKind.LessThanExpression,
+                condition: LessThanExpression(
                     IdentifierName(identifier),
-                    MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
+                    SimpleMemberAccessExpression(
                         IdentifierName(forEachStatement.Expression.ToString()),
                         IdentifierName(GetCountOrLengthPropertyName(forEachStatement.Expression, semanticModel, cancellationToken)))),
                 incrementors: SingletonSeparatedList<ExpressionSyntax>(
-                    PostfixUnaryExpression(
-                        SyntaxKind.PostIncrementExpression,
+                    PostIncrementExpression(
                         IdentifierName(identifier))),
                 statement: forEachStatement.Statement.ReplaceNodes(
                     GetIdentifiers(root, referencedSymbols),
@@ -120,21 +117,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol?.IsErrorType() == false)
             {
-                if (typeSymbol.IsString())
-                    return "Length";
-
-                if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Array)
-                    return "Length";
-
-                if (typeSymbol.IsNamedType())
+                if (typeSymbol.IsString()
+                    || typeSymbol.IsArrayType()
+                    || typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
                 {
-                    INamedTypeSymbol immutableArraySymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Immutable_ImmutableArray_T);
-
-                    if (immutableArraySymbol != null
-                        && ((INamedTypeSymbol)typeSymbol).ConstructedFrom.Equals(immutableArraySymbol))
-                    {
-                        return "Length";
-                    }
+                    return "Length";
                 }
             }
 

@@ -5,6 +5,8 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
@@ -59,9 +61,9 @@ namespace Roslynator.CSharp
             if (symbolDisplayFormat == null)
                 symbolDisplayFormat = _typeSymbolDisplayFormat;
 
-            Debug.Assert(Symbol.SupportsExplicitDeclaration(typeSymbol), typeSymbol.ToDisplayString(symbolDisplayFormat));
+            Debug.Assert(typeSymbol.SupportsExplicitDeclaration(), typeSymbol.ToDisplayString(symbolDisplayFormat));
 
-            if (!Symbol.SupportsExplicitDeclaration(typeSymbol))
+            if (!typeSymbol.SupportsExplicitDeclaration())
                 throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
 
             if (semanticModel != null)
@@ -503,7 +505,7 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.LessThanEqualsToken);
         }
 
-        public static SyntaxToken ArrowToken()
+        public static SyntaxToken EqualsGreaterThanToken()
         {
             return Token(SyntaxKind.EqualsGreaterThanToken);
         }
@@ -568,14 +570,114 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.ColonToken);
         }
 
+        public static SyntaxToken MinusMinusToken()
+        {
+            return Token(SyntaxKind.MinusMinusToken);
+        }
+
+        public static SyntaxToken PlusPlusToken()
+        {
+            return Token(SyntaxKind.PlusPlusToken);
+        }
+
         public static SyntaxToken ReturnKeyword()
         {
             return Token(SyntaxKind.ReturnKeyword);
         }
 
+        public static SyntaxToken ForKeyword()
+        {
+            return Token(SyntaxKind.ForKeyword);
+        }
+
+        public static SyntaxToken ForEachKeyword()
+        {
+            return Token(SyntaxKind.ForEachKeyword);
+        }
+
         private static SyntaxToken Token(SyntaxKind syntaxKind)
         {
             return SyntaxFactory.Token(syntaxKind);
+        }
+
+        public static SyntaxToken StringKeyword()
+        {
+            return Token(SyntaxKind.StringKeyword);
+        }
+
+        public static SyntaxToken IntKeyword()
+        {
+            return Token(SyntaxKind.IntKeyword);
+        }
+
+        public static SyntaxToken BoolKeyword()
+        {
+            return Token(SyntaxKind.BoolKeyword);
+        }
+
+        public static SyntaxToken VoidKeyword()
+        {
+            return Token(SyntaxKind.VoidKeyword);
+        }
+
+        public static SyntaxToken ObjectKeyword()
+        {
+            return Token(SyntaxKind.ObjectKeyword);
+        }
+
+        public static SyntaxToken CharKeyword()
+        {
+            return Token(SyntaxKind.CharKeyword);
+        }
+
+        public static SyntaxToken SByteKeyword()
+        {
+            return Token(SyntaxKind.SByteKeyword);
+        }
+
+        public static SyntaxToken ByteKeyword()
+        {
+            return Token(SyntaxKind.ByteKeyword);
+        }
+
+        public static SyntaxToken ShortKeyword()
+        {
+            return Token(SyntaxKind.ShortKeyword);
+        }
+
+        public static SyntaxToken UShortKeyword()
+        {
+            return Token(SyntaxKind.UShortKeyword);
+        }
+
+        public static SyntaxToken UIntKeyword()
+        {
+            return Token(SyntaxKind.UIntKeyword);
+        }
+
+        public static SyntaxToken LongKeyword()
+        {
+            return Token(SyntaxKind.LongKeyword);
+        }
+
+        public static SyntaxToken ULongKeyword()
+        {
+            return Token(SyntaxKind.ULongKeyword);
+        }
+
+        public static SyntaxToken DecimalKeyword()
+        {
+            return Token(SyntaxKind.DecimalKeyword);
+        }
+
+        public static SyntaxToken FloatKeyword()
+        {
+            return Token(SyntaxKind.FloatKeyword);
+        }
+
+        public static SyntaxToken DoubleKeyword()
+        {
+            return Token(SyntaxKind.DoubleKeyword);
         }
 
         public static PredefinedTypeSyntax StringType()
@@ -863,9 +965,9 @@ namespace Roslynator.CSharp
 
         private static ExpressionSyntax ParenthesizeIfNecessary(ExpressionSyntax expression, SyntaxKind parentKind)
         {
-            if (CSharpUtility.GetOperatorPriority(expression) > CSharpUtility.GetOperatorPriority(parentKind))
+            if (CSharpUtility.GetOperatorPrecedence(expression) > CSharpUtility.GetOperatorPrecedence(parentKind))
             {
-                return expression.Parenthesize(cutCopyTrivia: true);
+                return expression.Parenthesize(moveTrivia: true);
             }
             else
             {
@@ -921,6 +1023,46 @@ namespace Roslynator.CSharp
         public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.SubtractExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, operatorToken, right);
         }
 
         public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)

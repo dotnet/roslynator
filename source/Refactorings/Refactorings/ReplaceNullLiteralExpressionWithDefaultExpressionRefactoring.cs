@@ -6,6 +6,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,13 +25,12 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ITypeSymbol typeSymbol = semanticModel.GetConvertedTypeSymbol(expression, context.CancellationToken);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
 
-                    if (typeSymbol != null
-                        && Symbol.SupportsExplicitDeclaration(typeSymbol))
+                    if (typeSymbol?.SupportsExplicitDeclaration() == true)
                     {
                         context.RegisterRefactoring(
-                            $"Replace 'null' with 'default({typeSymbol.ToMinimalDisplayString(semanticModel, expression.Span.Start, DefaultSymbolDisplayFormat.Value)})'",
+                            $"Replace 'null' with 'default({SymbolDisplay.GetMinimalDisplayString(typeSymbol, expression.Span.Start, semanticModel)})'",
                             cancellationToken =>
                             {
                                 return RefactorAsync(

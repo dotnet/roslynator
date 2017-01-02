@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                 .SkipWhile(f => f.Start < span.Start)
                 .TakeWhile(f => f.EndIncludingLineBreak <= span.End))
             {
-                if (line.Span.Length == 0 || TextUtility.IsWhitespace(line.ToString()))
+                if (line.Span.Length == 0 || StringUtility.IsWhitespace(line.ToString()))
                 {
                     SyntaxTrivia endOfLine = root.FindTrivia(line.End, findInsideTrivia: true);
 

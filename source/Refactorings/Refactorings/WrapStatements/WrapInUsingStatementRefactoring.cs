@@ -7,15 +7,17 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
     internal class WrapInUsingStatementRefactoring : WrapStatementsRefactoring<UsingStatementSyntax>
     {
-        public async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementsInfo info)
+        public async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
         {
-            StatementSyntax statement = info.FirstSelectedNode;
+            StatementSyntax statement = selectedStatements.First;
 
             if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
             {
@@ -39,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
                         {
                             context.RegisterRefactoring(
                                 $"Using '{variable.Identifier.ValueText}'",
-                                cancellationToken => RefactorAsync(context.Document, info, cancellationToken));
+                                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
                         }
                     }
                 }

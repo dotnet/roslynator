@@ -13,16 +13,19 @@ namespace Roslynator.CSharp.Refactorings.Tests
             var items = new List<int>() { 0, 1, 2 };
 
             var first = items.First();
-
             var last = items.Last();
-
             var element = items.ElementAt(1);
 
-            var arr = new int[] { 0 };
-            first = arr.First();
+            var a = new int[] { 0 };
+            first = a.First();
+            first = a.Last();
+            element = a.ElementAt(1);
 
             var ia = ImmutableArray.Create(1);
             first = ia.First();
+            last = ia.Last();
+            element = ia.ElementAt(1);
+
 
             string s = "abc";
             char ch = s.First();

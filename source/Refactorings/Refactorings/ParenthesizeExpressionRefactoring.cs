@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (!CSharpUtility.AreParenthesesRedundantOrInvalid(expression)
+            if (AreParenthesesRedundantOrInvalid(expression)
                 && !expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 try
@@ -30,6 +31,84 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
+        }
+
+        private static bool AreParenthesesRedundantOrInvalid(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.ThisExpression:
+                case SyntaxKind.Argument:
+                case SyntaxKind.AttributeArgument:
+                    return false;
+            }
+
+            SyntaxNode parent = node.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.ParenthesizedExpression:
+                case SyntaxKind.Argument:
+                case SyntaxKind.AttributeArgument:
+                case SyntaxKind.QualifiedName:
+                case SyntaxKind.InvocationExpression:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
+                case SyntaxKind.ExpressionStatement:
+                case SyntaxKind.TypeArgumentList:
+                case SyntaxKind.TypeParameterList:
+                case SyntaxKind.VariableDeclaration:
+                case SyntaxKind.AwaitExpression:
+                case SyntaxKind.Interpolation:
+                case SyntaxKind.CollectionInitializerExpression:
+                case SyntaxKind.ArrowExpressionClause:
+                case SyntaxKind.EqualsValueClause:
+                    return false;
+                case SyntaxKind.ConditionalAccessExpression:
+                    {
+                        var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
+
+                        return node != conditionalAccess.WhenNotNull;
+                    }
+                case SyntaxKind.ForEachStatement:
+                    {
+                        var forEachStatement = (ForEachStatementSyntax)parent;
+
+                        return node != forEachStatement.Expression
+                            && node != forEachStatement.Type;
+                    }
+                case SyntaxKind.WhileStatement:
+                    return node != ((WhileStatementSyntax)parent).Condition;
+                case SyntaxKind.DoStatement:
+                    return node != ((DoStatementSyntax)parent).Condition;
+                case SyntaxKind.LockStatement:
+                    return node != ((LockStatementSyntax)parent).Expression;
+                case SyntaxKind.IfStatement:
+                    return node != ((IfStatementSyntax)parent).Condition;
+                case SyntaxKind.SwitchStatement:
+                    return node != ((SwitchStatementSyntax)parent).Expression;
+                case SyntaxKind.UsingStatement:
+                    {
+                        var usingStatement = (UsingStatementSyntax)parent;
+
+                        return node != usingStatement.Expression
+                            && node != usingStatement.Declaration;
+                    }
+                case SyntaxKind.ConditionalExpression:
+                    {
+                        var conditionalExpression = (ConditionalExpressionSyntax)parent;
+
+                        return node != conditionalExpression.WhenTrue
+                            && node != conditionalExpression.WhenFalse;
+                    }
+            }
+
+            return !(parent is AssignmentExpressionSyntax);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -48,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             return root.ReplaceNode(
                 expression,
-                expression.Parenthesize(cutCopyTrivia: true));
+                expression.Parenthesize(moveTrivia: true));
         }
     }
 }

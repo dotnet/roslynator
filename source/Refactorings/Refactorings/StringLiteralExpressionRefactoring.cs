@@ -3,6 +3,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Text.Extensions;
 using static Roslynator.CSharp.Refactorings.ReplaceStringLiteralRefactoring;
 
 namespace Roslynator.CSharp.Refactorings
@@ -35,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.Span.IsBetweenSpans(literalExpression))
             {
-                string text = CSharpUtility.GetStringLiteralInnerText(literalExpression);
+                string text = literalExpression.GetStringLiteralInnerText();
 
                 if (literalExpression.IsVerbatimStringLiteral())
                 {

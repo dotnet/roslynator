@@ -4,9 +4,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -34,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,
                 anonymousMethod.ParameterList,
-                Token(SyntaxKind.EqualsGreaterThanToken),
+                EqualsGreaterThanToken(),
                 anonymousMethod.Block);
 
             lambda = lambda

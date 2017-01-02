@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -81,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             RegionDirectiveTriviaSyntax regionDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await SyntaxRemover.RemoveRegionAsync(document, regionDirective, cancellationToken).ConfigureAwait(false);
+            return await Remover.RemoveRegionAsync(document, regionDirective, cancellationToken).ConfigureAwait(false);
         }
     }
 }

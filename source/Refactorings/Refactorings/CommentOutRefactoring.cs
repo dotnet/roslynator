@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -18,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             FileLinePositionSpan fileSpan = GetFileLinePositionSpan(member, context.CancellationToken);
 
             context.RegisterRefactoring(
-                $"Comment out {SyntaxHelper.GetSyntaxNodeTitle(member)}",
+                $"Comment out {MemberDeclarationRefactoring.GetMemberName(member)}",
                 cancellationToken =>
                 {
                     return RefactorAsync(
@@ -104,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
                 TextLine textLine = sourceText.Lines[i];
                 string s = textLine.ToString();
 
-                if (TextUtility.IsWhitespace(s))
+                if (StringUtility.IsWhitespace(s))
                 {
                     sb.Append(s);
                 }

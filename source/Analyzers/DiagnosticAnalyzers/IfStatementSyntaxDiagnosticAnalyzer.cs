@@ -6,7 +6,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -57,7 +60,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (!ifStatement.IsParentKind(SyntaxKind.ElseClause)
                 && ifStatement.Else != null)
             {
-                BracesAnalysisResult result = CSharpUtility.AnalyzeBraces(ifStatement);
+                BracesAnalysisResult result = CSharpAnalysis.AnalyzeBraces(ifStatement);
 
                 if ((result & BracesAnalysisResult.AddBraces) != 0)
                 {

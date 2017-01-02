@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -88,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
 
             InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, CSharpUtility.LogicallyNegate(expression))
+                .ReplaceNode(expression, Negator.LogicallyNegate(expression))
                 .WithExpression(newMemberAccessExpression);
 
             return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);

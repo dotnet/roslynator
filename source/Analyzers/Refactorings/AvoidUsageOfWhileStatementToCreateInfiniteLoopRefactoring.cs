@@ -8,7 +8,10 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -39,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             ForStatementSyntax newNode = ForStatement(
-                Token(SyntaxKind.ForKeyword)
+                ForKeyword()
                     .WithTriviaFrom(whileStatement.WhileKeyword),
                 Token(
                     whileStatement.OpenParenToken.LeadingTrivia,
@@ -47,9 +50,9 @@ namespace Roslynator.CSharp.Refactorings
                     default(SyntaxTriviaList)),
                 default(VariableDeclarationSyntax),
                 default(SeparatedSyntaxList<ExpressionSyntax>),
-                Token(SyntaxKind.SemicolonToken),
+                SemicolonToken(),
                 default(ExpressionSyntax),
-                Token(SyntaxKind.SemicolonToken),
+                SemicolonToken(),
                 default(SeparatedSyntaxList<ExpressionSyntax>),
                 Token(
                     default(SyntaxTriviaList),

@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             get
             {
                 if (_name == null)
-                    _name = IdentifierUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
+                    _name = Roslynator.Identifier.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
 
                 return _name;
             }
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override MemberDeclarationSyntax CreateDeclaration()
         {
-            return FieldDeclaration(Modifiers.PrivateReadOnly(), Type, Name);
+            return FieldDeclaration(ModifierFactory.PrivateReadOnly(), Type, Name);
         }
     }
 }

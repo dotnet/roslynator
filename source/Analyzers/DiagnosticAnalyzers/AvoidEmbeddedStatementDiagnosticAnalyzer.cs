@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -38,14 +40,44 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
         {
-            StatementSyntax statement = CSharpUtility.GetEmbeddedStatement(context.Node);
+            StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(context.Node);
 
             if (statement != null)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidEmbeddedStatement,
                     statement.GetLocation(),
-                    SyntaxHelper.GetNodeTitle(context.Node));
+                    GetName(context.Node));
+            }
+        }
+
+        private static string GetName(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    return "if statement";
+                case SyntaxKind.ElseClause:
+                    return "else clause";
+                case SyntaxKind.DoStatement:
+                    return "do statement";
+                case SyntaxKind.ForEachStatement:
+                    return "foreach statement";
+                case SyntaxKind.ForStatement:
+                    return "for statement";
+                case SyntaxKind.UsingStatement:
+                    return "using statement";
+                case SyntaxKind.WhileStatement:
+                    return "while statement";
+                case SyntaxKind.LockStatement:
+                    return "lock statement";
+                case SyntaxKind.FixedStatement:
+                    return "fixed statement";
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return "";
+                    }
             }
         }
     }

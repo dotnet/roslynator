@@ -15,11 +15,6 @@ namespace Roslynator.CSharp
             _block = block;
         }
 
-        public override bool IsBlock
-        {
-            get { return true; }
-        }
-
         public override SyntaxList<StatementSyntax> Statements
         {
             get { return _block.Statements; }

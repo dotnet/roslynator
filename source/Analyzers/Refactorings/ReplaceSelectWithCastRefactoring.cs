@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -42,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
             if (methodSymbol != null
-                && Symbol.IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
+                && IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 
@@ -150,6 +152,21 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
+        }
+
+        private static bool IsEnumerableOrImmutableArrayExtensionSelectMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        {
+            if (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "Select", semanticModel))
+            {
+                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
+
+                return parameter != null
+                    && Symbol.IsFunc(parameter.Type, methodSymbol.TypeArguments[0], methodSymbol.TypeArguments[1], semanticModel);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static async Task<Document> RefactorAsync(

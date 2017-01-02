@@ -2,9 +2,11 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
+using Roslynator.Extensions;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -51,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                                 TypeSyntax newType = CSharpFactory.Type(newTypeSymbol, semanticModel, memberType.SpanStart);
 
                                 context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{newTypeSymbol.ToMinimalDisplayString(semanticModel, memberType.SpanStart, DefaultSymbolDisplayFormat.Value)}'",
+                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalDisplayString(newTypeSymbol, memberType.SpanStart, semanticModel)}'",
                                     cancellationToken =>
                                     {
                                         return ChangeTypeRefactoring.ChangeTypeAsync(

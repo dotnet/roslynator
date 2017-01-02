@@ -40,13 +40,5 @@ namespace Roslynator
         public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
         public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";
         public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1";
-
-        public const string Microsoft_CodeAnalysis_CSharp_SyntaxKind = "Microsoft.CodeAnalysis.CSharp.SyntaxKind";
-        public const string Microsoft_CodeAnalysis_CSharpExtensions = "Microsoft.CodeAnalysis.CSharpExtensions";
-        public const string Microsoft_CodeAnalysis_ITypeSymbol = "Microsoft.CodeAnalysis.ITypeSymbol";
-        public const string Microsoft_CodeAnalysis_SemanticModel = "Microsoft.CodeAnalysis.SemanticModel";
-        public const string Microsoft_CodeAnalysis_SyntaxNode = "Microsoft.CodeAnalysis.SyntaxNode";
-        public const string Microsoft_CodeAnalysis_SyntaxTrivia = "Microsoft.CodeAnalysis.SyntaxTrivia";
-        public const string Microsoft_CodeAnalysis_TypeInfo = "Microsoft.CodeAnalysis.TypeInfo";
     }
 }

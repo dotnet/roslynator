@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Internal.CodeFixProviders
 {
@@ -68,7 +69,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename class to '{newName}'",
-                cancellationToken => SymbolRenamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken),
+                cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken),
                 DiagnosticIdentifiers.AddCodeFixProviderSuffix);
 
             context.RegisterCodeFix(codeAction, diagnostic);
