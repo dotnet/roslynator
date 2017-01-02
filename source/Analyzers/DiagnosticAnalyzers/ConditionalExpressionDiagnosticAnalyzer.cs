@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.WrapConditionalExpressionConditionInParentheses,
+                    DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression,
                     DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
                     DiagnosticDescriptors.SimplifyConditionalExpression);
             }
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
 
-            WrapConditionalExpressionConditionInParenthesesRefactoring.Analyze(context, conditionalExpression);
+            ParenthesizeConditionInConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
 
             ReplaceConditionalExpressionWithCoalesceExpressionRefactoring.Analyze(context, conditionalExpression);
 

@@ -490,8 +490,8 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor WrapConditionalExpressionConditionInParentheses = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses,
+        public static readonly DiagnosticDescriptor ParenthesizeConditionInConditionalExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
             title: "Parenthesize condition in conditional expression.",
             messageFormat: "Parenthesize condition in conditional expression.",
             category: DiagnosticCategories.Style,

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses,
+                    DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
                     DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression);
             }
@@ -38,11 +38,11 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.WrapConditionalExpressionConditionInParentheses:
+                    case DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Wrap condition in parentheses",
-                                cancellationToken => WrapConditionalExpressionConditionInParenthesesRefactoring.RefactorAsync(context.Document, conditionalExpression, cancellationToken),
+                                cancellationToken => ParenthesizeConditionInConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

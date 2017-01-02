@@ -10,7 +10,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class WrapConditionalExpressionConditionInParenthesesRefactoring
+    internal static class ParenthesizeConditionInConditionalExpressionRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
         {
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             if (condition?.IsKind(SyntaxKind.ParenthesizedExpression) == false)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.WrapConditionalExpressionConditionInParentheses,
+                    DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression,
                     condition.GetLocation());
             }
         }
