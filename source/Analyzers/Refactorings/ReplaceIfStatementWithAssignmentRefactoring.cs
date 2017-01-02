@@ -118,22 +118,18 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             ExpressionSyntax condition = ifStatement.Condition;
 
             AssignmentExpressionSyntax assignment = GetSimpleAssignmentExpression(ifStatement.Statement);
 
             if (assignment.Right.IsKind(SyntaxKind.FalseLiteralExpression))
-                condition = LogicalNotExpression(condition.WithoutTrivia()).WithTriviaFrom(condition);
+                condition = Negator.LogicallyNegate(condition);
 
             ExpressionStatementSyntax newNode = SimpleAssignmentExpressionStatement(assignment.Left, condition)
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newRoot = root.ReplaceNode(ifStatement, newNode);
-
-            return document.WithSyntaxRoot(newRoot);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
