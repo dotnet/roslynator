@@ -391,7 +391,7 @@ namespace Roslynator.CSharp.Formatting
 
         private static string IncreaseIndent(string s)
         {
-            if (s.Length > 0 && s.All(f => f == '\t'))
+            if (s.Length > 0 && ContainsOnlyTab(s))
             {
                 return s + '\t';
             }
@@ -399,6 +399,17 @@ namespace Roslynator.CSharp.Formatting
             {
                 return s + new string(' ', 4);
             }
+        }
+
+        private static bool ContainsOnlyTab(string s)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != '\t')
+                    return false;
+            }
+
+            return true;
         }
     }
 }

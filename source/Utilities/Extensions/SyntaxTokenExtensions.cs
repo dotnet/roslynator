@@ -105,6 +105,11 @@ namespace Roslynator.Extensions
             return token.WithTrailingTrivia(default(SyntaxTriviaList));
         }
 
+        public static SyntaxToken WithoutTrivia(this SyntaxToken token)
+        {
+            return token.WithoutLeadingTrivia().WithoutTrailingTrivia();
+        }
+
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(Formatter.Annotation);
