@@ -6,6 +6,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private class Entity
         {
+            public Entity()
+            {
+                FooMethod();
+            }
+
+            ~Entity()
+            {
+                FooMethod();
+            }
+
             public string FooMethod()
             {
                 return null;
@@ -21,9 +31,23 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 get { return string.Empty; }
             }
 
+            private string _fooProperty2;
+
+            public string FooProperty2
+            {
+                get { return _fooProperty2; }
+                set { _fooProperty2 = value; }
+            }
+
             public string this[int index]
             {
                 get { return null; }
+            }
+
+            public string this[string index]
+            {
+                get { return _fooProperty2; }
+                set { _fooProperty2 = value; }
             }
 
             public static explicit operator Entity(string value)

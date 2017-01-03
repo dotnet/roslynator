@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
         /// 
         /// </summary>
         /// <param name="parameter"></param>
-        public void Foo(object parameter, object parameter2)
+        public void Foo(object parameter, object parameter2, object parameter3)
         {
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
@@ -23,6 +23,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
             if (parameter == null)
                 throw new Exception<string>();
+
+            Parameter3 = parameter3 ?? throw new InvalidOperationException(nameof(parameter3));
         }
 
         /// <summary>
@@ -40,6 +42,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return s;
             }
         }
+
+        public object Parameter3 { get; private set; }
 
         public class Exception<T> : Exception
         {

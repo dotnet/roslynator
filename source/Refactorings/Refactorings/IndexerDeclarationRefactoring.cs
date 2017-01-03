@@ -10,16 +10,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && indexerDeclaration.AccessorList?.Span.Contains(context.Span) == true
-                && context.SupportsCSharp6
-                && UseExpressionBodiedMemberRefactoring.CanRefactor(indexerDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span))
             {

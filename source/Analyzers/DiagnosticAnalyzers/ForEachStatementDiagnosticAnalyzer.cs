@@ -6,7 +6,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Analysis;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -32,7 +33,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            UseExplicitTypeInsteadOfVarRefactoring.Analyze(context, forEachStatement);
+            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
+
+            if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach,
+                    forEachStatement.Type.GetLocation());
+            }
         }
     }
 }

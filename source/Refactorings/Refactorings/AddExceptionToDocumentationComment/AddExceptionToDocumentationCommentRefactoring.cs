@@ -14,7 +14,7 @@ using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using Roslynator.Text.Extensions;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
     internal static class AddExceptionToDocumentationCommentRefactoring
     {
@@ -25,56 +25,71 @@ namespace Roslynator.CSharp.Refactorings
             if (expression?.IsMissing == false
                 && context.Span.IsContainedInSpanOrBetweenSpans(throwStatement))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                await ComputeRefactoringAsync(context, throwStatement, expression).ConfigureAwait(false);
+            }
+        }
 
-                ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, ThrowExpressionSyntax throwExpression)
+        {
+            ExpressionSyntax expression = throwExpression.Expression;
 
-                if (exceptionSymbol?.IsErrorType() == false
-                    && Symbol.IsException(exceptionSymbol, semanticModel))
+            if (expression?.IsMissing == false
+                && context.Span.IsContainedInSpanOrBetweenSpans(throwExpression))
+            {
+                await ComputeRefactoringAsync(context, throwExpression, expression).ConfigureAwait(false);
+            }
+        }
+
+        private static async Task ComputeRefactoringAsync(RefactoringContext context, SyntaxNode node, ExpressionSyntax expression)
+        {
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+            if (exceptionSymbol?.IsErrorType() == false
+                && Symbol.IsException(exceptionSymbol, semanticModel))
+            {
+                ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, context.CancellationToken);
+
+                if (declarationSymbol != null)
                 {
-                    ISymbol declarationSymbol = GetDeclarationSymbol(throwStatement, semanticModel, context.CancellationToken);
+                    var containingMember = await declarationSymbol
+                        .DeclaringSyntaxReferences[0]
+                        .GetSyntaxAsync(context.CancellationToken)
+                        .ConfigureAwait(false) as MemberDeclarationSyntax;
 
-                    if (declarationSymbol != null)
+                    if (containingMember != null)
                     {
-                        SyntaxNode node = await declarationSymbol
-                            .DeclaringSyntaxReferences[0]
-                            .GetSyntaxAsync(context.CancellationToken)
-                            .ConfigureAwait(false);
+                        SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
 
-                        var containingMember = node as MemberDeclarationSyntax;
-
-                        if (containingMember != null)
+                        if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                         {
-                            SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
+                            var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
 
-                            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                            if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
+                                && !ContainsException(comment, exceptionSymbol, semanticModel, context.CancellationToken))
                             {
-                                var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                                ThrowInfo throwInfo1 = ThrowInfo.Create(node, exceptionSymbol);
 
-                                if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
-                                    && !ContainsException(comment, exceptionSymbol, semanticModel, context.CancellationToken))
+                                IParameterSymbol parameterSymbol = throwInfo1.GetParameterSymbol(declarationSymbol, semanticModel, context.CancellationToken);
+
+                                context.RegisterRefactoring(
+                                    "Add exception to documentation comment",
+                                    cancellationToken => RefactorAsync(context.Document, trivia, exceptionSymbol, parameterSymbol, cancellationToken));
+
+                                foreach (ThrowInfo throwInfo2 in GetOtherUndocumentedExceptions(containingMember, f => node != f, semanticModel, context.CancellationToken))
                                 {
-                                    IParameterSymbol parameterSymbol = GetParameterSymbol(throwStatement, exceptionSymbol, declarationSymbol, semanticModel, context.CancellationToken);
-
-                                    context.RegisterRefactoring(
-                                        "Add exception to documentation comment",
-                                        cancellationToken => RefactorAsync(context.Document, trivia, exceptionSymbol, parameterSymbol, cancellationToken));
-
-                                    foreach (ThrowInfo info in GetOtherUndocumentedExceptions(throwStatement, containingMember, semanticModel, context.CancellationToken))
+                                    if (throwInfo2.ExceptionSymbol != exceptionSymbol)
                                     {
-                                        if (info.IsValid
-                                            && info.ExceptionSymbol != exceptionSymbol)
-                                        {
-                                            var infos = new List<ThrowInfo>();
-                                            infos.Add(new ThrowInfo(throwStatement, exceptionSymbol));
-                                            infos.Add(info);
+                                        var infos = new List<ThrowInfo>();
+                                        infos.Add(throwInfo1);
+                                        infos.Add(throwInfo2);
 
-                                            context.RegisterRefactoring(
-                                                "Add all exceptions to documentation comment",
-                                                cancellationToken => RefactorAsync(context.Document, infos, containingMember, declarationSymbol, trivia, cancellationToken));
+                                        context.RegisterRefactoring(
+                                            "Add all exceptions to documentation comment",
+                                            cancellationToken => RefactorAsync(context.Document, infos, containingMember, declarationSymbol, trivia, cancellationToken));
 
-                                            break;
-                                        }
+                                        break;
                                     }
                                 }
                             }
@@ -84,81 +99,54 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static IParameterSymbol GetParameterSymbol(
-            ThrowStatementSyntax throwStatement,
-            ITypeSymbol exceptionSymbol,
-            ISymbol declarationSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            INamedTypeSymbol argumentExceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentException);
-
-            if (exceptionSymbol.EqualsOrDerivedFrom(argumentExceptionSymbol))
-            {
-                SyntaxNode parent = throwStatement.Parent;
-
-                if (parent != null)
-                {
-                    if (parent.IsKind(SyntaxKind.Block))
-                        parent = parent.Parent;
-
-                    if (parent?.IsKind(SyntaxKind.IfStatement) == true)
-                    {
-                        var ifStatement = (IfStatementSyntax)parent;
-
-                        ExpressionSyntax condition = ifStatement.Condition;
-
-                        if (condition?.IsKind(SyntaxKind.EqualsExpression) == true)
-                        {
-                            var equalsExpression = (BinaryExpressionSyntax)condition;
-
-                            ExpressionSyntax left = equalsExpression.Left;
-
-                            if (left != null)
-                            {
-                                ISymbol leftSymbol = semanticModel.GetSymbol(left, cancellationToken);
-
-                                if (leftSymbol?.IsParameter() == true
-                                    && leftSymbol.ContainingSymbol?.Equals(declarationSymbol) == true)
-                                {
-                                    return (IParameterSymbol)leftSymbol;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
         private static IEnumerable<ThrowInfo> GetOtherUndocumentedExceptions(
-            ThrowStatementSyntax throwStatement,
             MemberDeclarationSyntax containingMember,
+            Func<SyntaxNode, bool> predicate,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            foreach (SyntaxNode node in containingMember.DescendantNodes())
+            foreach (SyntaxNode descendant in containingMember.DescendantNodes())
             {
-                if (node.IsKind(SyntaxKind.ThrowStatement)
-                    && node != throwStatement)
+                switch (descendant.Kind())
                 {
-                    ThrowInfo info = GetUndocumentedExceptionInfo((ThrowStatementSyntax)node, containingMember, semanticModel, cancellationToken);
+                    case SyntaxKind.ThrowStatement:
+                        {
+                            if (predicate(descendant))
+                            {
+                                var throwStatement = (ThrowStatementSyntax)descendant;
 
-                    if (info.IsValid)
-                        yield return info;
+                                ThrowInfo info = GetUndocumentedExceptionInfo(descendant, throwStatement.Expression, containingMember, semanticModel, cancellationToken);
+
+                                if (info != null)
+                                    yield return info;
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.ThrowExpression:
+                        {
+                            if (predicate(descendant))
+                            {
+                                var throwExpression = (ThrowExpressionSyntax)descendant;
+                                ThrowInfo info = GetUndocumentedExceptionInfo(descendant, throwExpression.Expression, containingMember, semanticModel, cancellationToken);
+
+                                if (info != null)
+                                    yield return info;
+                            }
+
+                            break;
+                        }
                 }
             }
         }
 
         private static ThrowInfo GetUndocumentedExceptionInfo(
-            ThrowStatementSyntax throwStatement,
-            MemberDeclarationSyntax containingMember,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        SyntaxNode node,
+        ExpressionSyntax expression,
+        MemberDeclarationSyntax containingMember,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
         {
-            ExpressionSyntax expression = throwStatement.Expression;
-
             if (expression != null)
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
@@ -175,13 +163,13 @@ namespace Roslynator.CSharp.Refactorings
                         if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
                             && !ContainsException(comment, typeSymbol, semanticModel, cancellationToken))
                         {
-                            return new ThrowInfo(throwStatement, typeSymbol);
+                            return ThrowInfo.Create(node, typeSymbol);
                         }
                     }
                 }
             }
 
-            return default(ThrowInfo);
+            return null;
         }
 
         private static bool ContainsException(DocumentationCommentTriviaSyntax comment, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -216,11 +204,11 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         internal static ISymbol GetDeclarationSymbol(
-            StatementSyntax statement,
+            int position,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ISymbol symbol = semanticModel.GetEnclosingSymbol(statement.SpanStart, cancellationToken);
+            ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
             if (symbol?.IsMethod() == true)
             {
@@ -276,18 +264,11 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            foreach (SyntaxNode node in containingMember.DescendantNodes())
+            foreach (ThrowInfo info in GetOtherUndocumentedExceptions(containingMember, node => !infos.Any(f => f.Node == node), semanticModel, cancellationToken))
             {
-                if (node.IsKind(SyntaxKind.ThrowStatement)
-                    && !infos.Any(f => f.ThrowStatement == node))
+                if (!infos.Any(f => f.ExceptionSymbol == info.ExceptionSymbol))
                 {
-                    ThrowInfo info = GetUndocumentedExceptionInfo((ThrowStatementSyntax)node, containingMember, semanticModel, cancellationToken);
-
-                    if (info.IsValid
-                        && !infos.Any(f => f.ExceptionSymbol == info.ExceptionSymbol))
-                    {
-                        infos.Add(info);
-                    }
+                    infos.Add(info);
                 }
             }
 
@@ -299,7 +280,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 sb.Append(indent);
 
-                IParameterSymbol parameterSymbol = GetParameterSymbol(info.ThrowStatement, info.ExceptionSymbol, declarationSymbol, semanticModel, cancellationToken);
+                IParameterSymbol parameterSymbol = info.GetParameterSymbol(declarationSymbol, semanticModel, cancellationToken);
 
                 AppendExceptionDocumentation(trivia, info.ExceptionSymbol, parameterSymbol, semanticModel, ref sb);
             }
@@ -357,27 +338,6 @@ namespace Roslynator.CSharp.Refactorings
 
             sb.Append("</exception>");
             sb.AppendLine();
-        }
-
-        private struct ThrowInfo
-        {
-            public ThrowInfo(ThrowStatementSyntax throwStatement, ITypeSymbol exceptionSymbol)
-            {
-                ThrowStatement = throwStatement;
-                ExceptionSymbol = exceptionSymbol;
-            }
-
-            public ThrowStatementSyntax ThrowStatement { get; }
-            public ITypeSymbol ExceptionSymbol { get; }
-
-            public bool IsValid
-            {
-                get
-                {
-                    return ThrowStatement != null
-                        && ExceptionSymbol != null;
-                }
-            }
         }
     }
 }

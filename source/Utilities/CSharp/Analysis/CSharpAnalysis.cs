@@ -70,6 +70,53 @@ namespace Roslynator.CSharp.Analysis
             return TypeAnalysisResult.None;
         }
 
+        public static TypeAnalysisResult AnalyzeType(
+            DeclarationExpressionSyntax declarationExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (declarationExpression == null)
+                throw new ArgumentNullException(nameof(declarationExpression));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            TypeSyntax type = declarationExpression.Type;
+
+            if (type != null)
+            {
+                VariableDesignationSyntax designation = declarationExpression.Designation;
+
+                if (designation != null)
+                {
+                    SyntaxKind kind = designation.Kind();
+
+                    if (kind == SyntaxKind.ParenthesizedVariableDesignation)
+                    {
+                        return TypeAnalysisResult.None;
+                    }
+                    else if (kind == SyntaxKind.SingleVariableDesignation)
+                    {
+                        var symbol = semanticModel.GetDeclaredSymbol((SingleVariableDesignationSyntax)designation, cancellationToken) as ILocalSymbol;
+
+                        if (symbol != null)
+                        {
+                            ITypeSymbol typeSymbol = symbol.Type;
+
+                            if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                            {
+                                return (type.IsVar)
+                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
+                                    : TypeAnalysisResult.Explicit;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return TypeAnalysisResult.None;
+        }
+
         private static bool IsLocalConstDeclaration(SyntaxNode node)
         {
             return node.IsKind(SyntaxKind.LocalDeclarationStatement)

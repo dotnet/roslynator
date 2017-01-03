@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Extensions
             return node?.IsKind(
                 SyntaxKind.SimpleLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression,
-                SyntaxKind.AnonymousMethodExpression) == true;
+                SyntaxKind.AnonymousMethodExpression,
+                SyntaxKind.LocalFunctionStatement) == true;
         }
 
         public static IEnumerable<DirectiveTriviaSyntax> DescendantDirectives(this SyntaxNode node)

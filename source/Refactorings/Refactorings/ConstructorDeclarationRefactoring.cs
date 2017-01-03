@@ -25,6 +25,16 @@ namespace Roslynator.CSharp.Refactorings
                     MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)constructorDeclaration.Parent);
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && constructorDeclaration.Body?.Span.Contains(context.Span) == true
+                && context.SupportsCSharp6
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(constructorDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Use expression-bodied member",
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, constructorDeclaration, cancellationToken));
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
                 && constructorDeclaration.HeaderSpanIncludingInitializer().Contains(context.Span))
             {

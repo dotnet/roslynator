@@ -20,6 +20,16 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
             var items = new List<Entity>();
 
+            if (TryGet("", out var x))
+            {
+
+            }
+        }
+
+        private static bool TryGet(string value, out Entity result)
+        {
+            result = null;
+            return false;
         }
 
         private class Entity

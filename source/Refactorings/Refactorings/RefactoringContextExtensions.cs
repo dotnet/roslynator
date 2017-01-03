@@ -118,6 +118,8 @@ namespace Roslynator.CSharp.Refactorings
             bool fPrefixUnaryExpression = false;
             bool fAwaitExpression = false;
             bool fCastExpression = false;
+            bool fThrowExpression = false;
+            bool fDeclarationExpression = false;
 
             bool fMemberDeclaration = false;
             bool fStatement = false;
@@ -419,6 +421,21 @@ namespace Roslynator.CSharp.Refactorings
                             CastExpressionRefactoring.ComputeRefactorings(context, (CastExpressionSyntax)node);
                             fCastExpression = true;
                         }
+
+                        if (!fThrowExpression
+                            && kind == SyntaxKind.ThrowExpression)
+                        {
+                            await ThrowExpressionRefactoring.ComputeRefactoringsAsync(context, (ThrowExpressionSyntax)node).ConfigureAwait(false);
+                            fThrowExpression = true;
+                        }
+
+                        if (!fDeclarationExpression
+                            && kind == SyntaxKind.DeclarationExpression)
+                        {
+                            await DeclarationExpressionRefactoring.ComputeRefactoringsAsync(context, (DeclarationExpressionSyntax)node).ConfigureAwait(false);
+                            fDeclarationExpression = true;
+                        }
+
                         continue;
                     }
 

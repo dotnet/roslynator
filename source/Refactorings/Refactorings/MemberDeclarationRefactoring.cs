@@ -122,6 +122,11 @@ namespace Roslynator.CSharp.Refactorings
                         await ConstructorDeclarationRefactoring.ComputeRefactoringsAsync(context, (ConstructorDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
+                case SyntaxKind.DestructorDeclaration:
+                    {
+                        DestructorDeclarationRefactoring.ComputeRefactorings(context, (DestructorDeclarationSyntax)member);
+                        break;
+                    }
                 case SyntaxKind.IndexerDeclaration:
                     {
                         await IndexerDeclarationRefactoring.ComputeRefactoringsAsync(context, (IndexerDeclarationSyntax)member).ConfigureAwait(false);

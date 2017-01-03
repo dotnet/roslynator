@@ -617,15 +617,21 @@ namespace Roslynator.CSharp.Extensions
             }
         }
 
-        public static bool SupportsExpressionBody(this MemberDeclarationSyntax memberDeclaration)
+        public static bool SupportsExpressionBody(this SyntaxNode node)
         {
-            switch (memberDeclaration?.Kind())
+            switch (node?.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.IndexerDeclaration:
                 case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
                     return true;
                 default:
                     return false;

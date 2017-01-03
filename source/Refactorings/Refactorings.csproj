@@ -42,13 +42,19 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowExpressionInfo.cs" />
+    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowInfo.cs" />
     <Compile Include="Formatting\CSharpFormatter.cs" />
     <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
+    <Compile Include="Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowStatementInfo.cs" />
+    <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
+    <Compile Include="Refactorings\DestructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
-    <Compile Include="Refactorings\AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring.cs" />
@@ -104,6 +110,7 @@
     <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfElseWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromWhileToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\SelectedSwitchSectionsRefactoring.cs" />
+    <Compile Include="Refactorings\ThrowExpressionRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\CollapseToInitializerRefactoring.cs" />

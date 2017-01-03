@@ -12,8 +12,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ThrowStatementSyntax throwStatement)
         {
-            ExpressionSyntax expression = throwStatement.Expression;
+            Analyze(context, throwStatement.Expression);
+        }
 
+        internal static void Analyze(SyntaxNodeAnalysisContext context, ThrowExpressionSyntax throwExpression)
+        {
+            Analyze(context, throwExpression.Expression);
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
+        {
             if (expression?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
             {
                 var objectCreationExpression = (ObjectCreationExpressionSyntax)expression;
@@ -28,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.ThrowingOfNewNotImplementedException,
-                            throwStatement.GetLocation());
+                            expression.GetLocation());
                     }
                 }
             }

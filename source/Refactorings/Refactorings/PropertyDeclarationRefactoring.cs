@@ -44,16 +44,6 @@ namespace Roslynator.CSharp.Refactorings
                 ReplacePropertyWithMethodRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && propertyDeclaration.AccessorList?.Span.Contains(context.Span) == true
-                && context.SupportsCSharp6
-                && UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePropertyInitializer)
                 && RemovePropertyInitializerRefactoring.CanRefactor(context, propertyDeclaration))
             {

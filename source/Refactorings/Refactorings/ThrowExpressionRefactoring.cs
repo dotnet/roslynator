@@ -6,12 +6,12 @@ using Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ThrowStatementRefactoring
+    internal static class ThrowExpressionRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ThrowStatementSyntax throwStatement)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ThrowExpressionSyntax throwExpression)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment))
-                await AddExceptionToDocumentationCommentRefactoring.ComputeRefactoringAsync(context, throwStatement).ConfigureAwait(false);
+                await AddExceptionToDocumentationCommentRefactoring.ComputeRefactoringAsync(context, throwExpression).ConfigureAwait(false);
         }
     }
 }

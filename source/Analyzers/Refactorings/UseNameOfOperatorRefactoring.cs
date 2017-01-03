@@ -108,6 +108,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ParenthesizedLambdaExpressionSyntax)node).ParameterList;
                 case SyntaxKind.AnonymousMethodExpression:
                     return ((AnonymousMethodExpressionSyntax)node).ParameterList;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)node).ParameterList;
                 default:
                     return null;
             }
