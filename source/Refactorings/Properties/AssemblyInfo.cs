@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pihrtsoft")]
 [assembly: AssemblyProduct("Roslynator.CSharp.Refactorings")]
-[assembly: AssemblyCopyright("Copyright (c) 2016 Josef Pihrt")]
+[assembly: AssemblyCopyright("Copyright (c) 2016-2017 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
