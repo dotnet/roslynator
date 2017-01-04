@@ -21,6 +21,8 @@ namespace MetadataGenerator
         public Collection<AnalyzerInfo> Analyzers { get; } = new Collection<AnalyzerInfo>();
         public Collection<RefactoringInfo> Refactorings { get; } = new Collection<RefactoringInfo>();
 
+        public StringComparer StringComparer { get; } = StringComparer.InvariantCulture;
+
         public string CreateRefactoringsExtensionDescription()
         {
             using (var sw = new StringWriter())
@@ -58,7 +60,7 @@ namespace MetadataGenerator
             xw.WriteStartElement("ul");
 
             foreach (RefactoringInfo info in Refactorings
-                .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+                .OrderBy(f => f.Title, StringComparer))
             {
                 string href = "http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#" + info.GetGitHubHref();
                 xw.WriteStartElement("li");
@@ -78,7 +80,7 @@ namespace MetadataGenerator
 
             xw.WriteStartElement("ul");
             foreach (AnalyzerInfo analyzer in Analyzers
-                .OrderBy(f => f.Id, StringComparer.InvariantCulture))
+                .OrderBy(f => f.Id, StringComparer))
             {
                 xw.WriteElementString("li", $"{analyzer.Id} - {analyzer.Title}");
             }
@@ -93,8 +95,9 @@ namespace MetadataGenerator
                 sw.WriteLine(File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8));
                 sw.WriteLine("### List of Analyzers");
                 sw.WriteLine();
+
                 foreach (AnalyzerInfo info in Analyzers
-                    .OrderBy(f => f.Id, StringComparer.InvariantCulture))
+                    .OrderBy(f => f.Id, StringComparer))
                 {
                     sw.WriteLine("* " + info.Id + " - " + info.Title.TrimEnd('.'));
                 }
@@ -104,7 +107,7 @@ namespace MetadataGenerator
                 sw.WriteLine();
 
                 foreach (RefactoringInfo info in Refactorings
-                    .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+                    .OrderBy(f => f.Title, StringComparer))
                 {
                     sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/README.md#" + info.GetGitHubHref() + ")");
                 }
@@ -120,7 +123,7 @@ namespace MetadataGenerator
                 sw.WriteLine("## " + "Roslynator Refactorings");
 
                 foreach (RefactoringInfo info in Refactorings
-                    .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+                    .OrderBy(f => f.Title, StringComparer))
                 {
                     sw.WriteLine("");
                     sw.WriteLine("#### " + info.Title);
@@ -155,10 +158,86 @@ namespace MetadataGenerator
             }
         }
 
+        public string CreateAnalyzersMarkDown()
+        {
+            using (var sw = new StringWriter())
+            {
+                sw.WriteLine("## Analyzers");
+                sw.WriteLine();
+
+                sw.WriteLine(" Id | Title | Category | Enabled by Default ");
+                sw.WriteLine(" --- | --- | --- |:---:");
+
+                foreach (AnalyzerInfo info in Analyzers.OrderBy(f => f.Id, StringComparer))
+                {
+                    sw.Write(info.Id);
+                    sw.Write('|');
+                    sw.Write(MarkdownHelper.Escape(info.Title.TrimEnd('.')));
+                    sw.Write('|');
+                    sw.Write(info.Category);
+                    sw.Write('|');
+                    sw.Write((info.IsEnabledByDefault) ? "x" : "");
+
+                    sw.WriteLine();
+                }
+
+                return sw.ToString();
+            }
+        }
+
+        public string CreateAnalyzersByCategoryMarkDown()
+        {
+            using (var sw = new StringWriter())
+            {
+                sw.WriteLine("## Analyzers by Category");
+                sw.WriteLine();
+
+                sw.WriteLine(" Category | Title | Id | Enabled by Default ");
+                sw.WriteLine(" --- | --- | --- |:---:");
+
+                foreach (IGrouping<string, AnalyzerInfo> grouping in Analyzers
+                    .GroupBy(f => f.Category)
+                    .OrderBy(f => f.Key, StringComparer))
+                {
+                    foreach (AnalyzerInfo info in grouping.OrderBy(f => f.Title, StringComparer))
+                    {
+                        sw.Write(grouping.Key);
+                        sw.Write('|');
+                        sw.Write(MarkdownHelper.Escape(info.Title.TrimEnd('.')));
+                        sw.Write('|');
+                        sw.Write(info.Id);
+                        sw.Write('|');
+                        sw.Write((info.IsEnabledByDefault) ? "x" : "");
+
+                        sw.WriteLine();
+                    }
+                }
+
+                return sw.ToString();
+            }
+        }
+
+        private void WriteAnalyzersTable(IEnumerable<AnalyzerInfo> infos, StringWriter sw)
+        {
+            sw.WriteLine(" Id | Title | Enabled by Default ");
+            sw.WriteLine(" --- | --- |:---:");
+
+            foreach (AnalyzerInfo info in infos)
+            {
+                sw.Write(info.Id);
+                sw.Write('|');
+                sw.Write(MarkdownHelper.Escape(info.Title.TrimEnd('.')));
+                sw.Write('|');
+                sw.Write((info.IsEnabledByDefault) ? "x" : "");
+
+                sw.WriteLine();
+            }
+        }
+
         public IEnumerable<string> FindMissingImages(string imagesDirPath)
         {
             foreach (RefactoringInfo info in Refactorings
-                .OrderBy(f => f.Title, StringComparer.InvariantCulture))
+                .OrderBy(f => f.Title, StringComparer))
             {
                 foreach (ImageInfo image in info.Images)
                 {

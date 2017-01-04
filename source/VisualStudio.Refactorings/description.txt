@@ -21,17 +21,31 @@
 <p>Refactorings can be enabled/disabled in Visual Studio options.</p>  
 <img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
 
-<h3>Related Products</h3>
+<h3>List of Products</h3>
+
 <ul>
     <li>
         <a href="http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e">Roslynator</a>
-        <span> - Visual Studio extension that contains analyzers and refactorings.</span>
+        <span> - Extension for Visual Studio 2015 that contains analyzers and refactorings.</span>
+    </li>  
+    <li>
+        <a href="http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017">Roslynator 2017</a>
+        <span> - Extension for Visual Studio 2017 that contains analyzers and refactorings.</span>
+    </li>  
+    <li>
+        <a href="http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9">Roslynator Refactorings</a>
+        <span> - Extension for Visual Studio 2015 that contains only refactorings.</span>
+    </li>  
+    <li>
+        <a href="http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017">Roslynator Refactorings 2017</a>
+        <span> - Extension for Visual Studio 2017 that contains only refactorings.</span>
     </li>  
     <li>
         <a href="http://www.nuget.org/packages/CSharpAnalyzers">CSharpAnalyzers</a>
         <span> - NuGet package that contains only analyzers.</span>
     </li>  
 </ul>
+
 
     <h3>List of Refactorings</h3>
     <ul>
