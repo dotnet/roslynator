@@ -54,8 +54,8 @@
     <Compile Include="SyntaxInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\..\packages\CSharpAnalyzers.1.1.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\..\packages\CSharpAnalyzers.1.1.0\analyzers\dotnet\cs\Roslynator.Utilities.dll" />
+    <Analyzer Include="..\..\..\packages\Roslynator.Analyzers.1.0.0-beta\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\Roslynator.Analyzers.1.0.0-beta\analyzers\dotnet\cs\Roslynator.Utilities.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
