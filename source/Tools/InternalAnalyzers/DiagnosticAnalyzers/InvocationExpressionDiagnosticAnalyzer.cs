@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             {
                 foreach (ISymbol member in newExtensionsClassSymbol.GetMembers("Is" + elementName))
                 {
-                    if (Symbol.IsPublicStaticMethod(member))
+                    if (member.IsPublicStaticMethod())
                     {
                         var methodSymbol = (IMethodSymbol)member;
 

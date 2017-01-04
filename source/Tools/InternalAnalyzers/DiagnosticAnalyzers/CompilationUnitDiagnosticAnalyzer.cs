@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Internal.Refactoring;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
