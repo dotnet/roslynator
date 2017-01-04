@@ -70,6 +70,14 @@ namespace MetadataGenerator
                  Path.Combine(dirPath, @"Refactorings\README.md"),
                 generator.CreateRefactoringsMarkDown());
 
+            writer.SaveCode(
+                Path.Combine(dirPath, @"Analyzers\README.md"),
+                generator.CreateAnalyzersMarkDown());
+
+            writer.SaveCode(
+                Path.Combine(dirPath, @"Analyzers\AnalyzersByCategory.md"),
+                generator.CreateAnalyzersByCategoryMarkDown());
+
 #if DEBUG
             Console.WriteLine("DONE");
             Console.ReadKey();

@@ -1,3 +1,7 @@
+### 1.1.95 (2017-01-04)
+
+* Initial release of Roslynator 2017 and Roslynator Refactorings 2017
+
 ### 1.1.90 (2016-12-16)
 
 #### Refactorings
