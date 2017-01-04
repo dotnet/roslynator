@@ -318,7 +318,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CSharpAnalyzers.nuspec" />
+    <None Include="Roslynator.Analyzers.nuspec" />
     <None Include="project.json" />
     <None Include="Roslynator.CSharp.Analyzers.snk" />
     <None Include="tools\install.ps1">
@@ -346,7 +346,7 @@
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
       <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
     </GetAssemblyIdentity>
-    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.4.3\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\CSharpAnalyzers.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.4.3\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\Roslynator.Analyzers.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
     </Exec>
   </Target>
