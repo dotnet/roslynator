@@ -293,11 +293,6 @@
     <Compile Include="Refactorings\SimplifyBooleanComparisonRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\ParenthesizeConditionInConditionalExpressionRefactoring.cs" />
-    <Compile Include="Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="DiagnosticAnalyzers\RemoveBracesDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
@@ -309,12 +304,6 @@
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesToIfElseCodeFixProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
