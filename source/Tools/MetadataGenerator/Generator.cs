@@ -162,7 +162,7 @@ namespace MetadataGenerator
         {
             using (var sw = new StringWriter())
             {
-                sw.WriteLine("## Analyzers");
+                sw.WriteLine("## Roslynator Analyzers");
                 sw.WriteLine();
 
                 sw.WriteLine(" Id | Title | Category | Enabled by Default ");
@@ -189,7 +189,7 @@ namespace MetadataGenerator
         {
             using (var sw = new StringWriter())
             {
-                sw.WriteLine("## Analyzers by Category");
+                sw.WriteLine("## Roslynator Analyzers by Category");
                 sw.WriteLine();
 
                 sw.WriteLine(" Category | Title | Id | Enabled by Default ");
