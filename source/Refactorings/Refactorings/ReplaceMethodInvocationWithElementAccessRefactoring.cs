@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (propertyName != null)
                         {
                             context.RegisterRefactoring(
-                                $"Replace '{methodName}' with '[]'",
+                                $"Replace '{methodName}' with []",
                                 cancellationToken =>
                                 {
                                     return RefactorAsync(
@@ -101,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
                         && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         context.RegisterRefactoring(
-                            "Replace 'ElementAt' with '[]'",
+                            "Replace 'ElementAt' with []",
                             cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                     }
                 }
