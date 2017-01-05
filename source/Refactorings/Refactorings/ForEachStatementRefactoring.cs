@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                             context.RegisterRefactoring(
-                                $"Rename variable to '{newName}'",
+                                $"Rename local to '{newName}'",
                                 cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                         }
                     }
