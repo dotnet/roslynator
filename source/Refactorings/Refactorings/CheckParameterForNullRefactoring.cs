@@ -92,17 +92,44 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax body = GetBody(parameters[0]);
 
-            int index = body.Statements
+            SyntaxList<StatementSyntax> statements = body.Statements;
+
+            int count = statements
                 .TakeWhile(f => IsNullCheck(f, semanticModel, cancellationToken))
                 .Count();
 
             List<IfStatementSyntax> ifStatements = CreateNullChecks(parameters);
 
-            if (index > 0)
-                ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLineTrivia());
+            if (statements.Any())
+            {
+                if (count > 0)
+                    ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLineTrivia());
+
+                if (count != statements.Count)
+                {
+                    int start = (count > 0)
+                        ? statements[count - 1].Span.End
+                        : body.OpenBraceToken.Span.End;
+
+                    int end = (count > 0)
+                        ? statements[count].SpanStart
+                        : statements[0].SpanStart;
+
+                    int lineCount = body.SyntaxTree.GetLineCount(TextSpan.FromBounds(start, end), cancellationToken);
+
+                    if (lineCount <= 2)
+                    {
+                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(TriviaList(NewLineTrivia(), NewLineTrivia()));
+                    }
+                    else if (lineCount == 3)
+                    {
+                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLineTrivia());
+                    }
+                }
+            }
 
             BlockSyntax newBody = body
-                .WithStatements(body.Statements.InsertRange(index, ifStatements))
+                .WithStatements(statements.InsertRange(count, ifStatements))
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(body, newBody, cancellationToken).ConfigureAwait(false);
@@ -112,40 +139,28 @@ namespace Roslynator.CSharp.Refactorings
         {
             var ifStatements = new List<IfStatementSyntax>();
 
-            bool isFirst = true;
-
-            foreach (ParameterSyntax parameter in parameters)
+            for (int i = 0; i < parameters.Length; i++)
             {
-                IfStatementSyntax ifStatement = CreateNullCheck(parameter.Identifier.ValueText);
+                IfStatementSyntax ifStatement = IfStatement(
+                    EqualsExpression(
+                        IdentifierName(parameters[i].Identifier.ValueText),
+                        NullLiteralExpression()),
+                    ThrowStatement(
+                        ObjectCreationExpression(
+                            type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
+                            argumentList: ArgumentList(Argument(NameOf(parameters[i].Identifier.ValueText))),
+                            initializer: default(InitializerExpressionSyntax))));
 
-                if (isFirst)
+                if (i > 0)
                 {
-                    isFirst = false;
-                }
-                else
-                {
+                    ifStatements[i - 1] = ifStatements[i - 1].WithTrailingTrivia(NewLineTrivia());
                     ifStatement = ifStatement.WithLeadingTrivia(NewLineTrivia());
                 }
 
                 ifStatements.Add(ifStatement);
             }
 
-            ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLineTrivia(), NewLineTrivia());
-
             return ifStatements;
-        }
-
-        private static IfStatementSyntax CreateNullCheck(string identifier)
-        {
-            return IfStatement(
-                EqualsExpression(
-                    IdentifierName(identifier),
-                    NullLiteralExpression()),
-                ThrowStatement(
-                    ObjectCreationExpression(
-                        type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
-                        argumentList: ArgumentList(Argument(NameOf(identifier))),
-                        initializer: null)));
         }
 
         private static bool ContainsNullCheck(
