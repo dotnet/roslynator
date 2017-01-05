@@ -595,6 +595,11 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.ForEachKeyword);
         }
 
+        public static SyntaxToken ThrowKeyword()
+        {
+            return Token(SyntaxKind.ThrowKeyword);
+        }
+
         private static SyntaxToken Token(SyntaxKind syntaxKind)
         {
             return SyntaxFactory.Token(syntaxKind);
