@@ -7,7 +7,7 @@
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
-    <iconUrl>http://github.com/JosefPihrt/Roslynator/blob/master/images/Roslynator.ico</iconUrl>
+    <iconUrl>http://github.com/JosefPihrt/Roslynator/blob/master/images/Roslynator64.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 110+ analyzers for C#, powered by Roslyn.
 
