@@ -62,6 +62,36 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             return base.VisitMemberAccessExpression(node);
         }
 
+        public override SyntaxNode VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+        {
+            ExpressionSyntax whenNotNull = node.WhenNotNull;
+
+            if (whenNotNull?.IsKind(SyntaxKind.MemberBindingExpression) == true)
+            {
+                var memberBinding = (MemberBindingExpressionSyntax)whenNotNull;
+
+                SimpleNameSyntax name = memberBinding.Name;
+
+                if (name != null
+                    && _textSpans.Contains(name.Span))
+                {
+                    _textSpans.Remove(node.Span);
+
+                    var expression = (ExpressionSyntax)base.Visit(node.Expression);
+
+                    InvocationExpressionSyntax invocation = InvocationExpression(
+                        memberBinding.WithName(IdentifierName(_methodName).WithLeadingTrivia(name.GetLeadingTrivia())),
+                        ArgumentList().WithTrailingTrivia(memberBinding.GetTrailingTrivia()));
+
+                    return node
+                        .WithExpression(expression)
+                        .WithWhenNotNull(invocation);
+                }
+            }
+
+            return base.VisitConditionalAccessExpression(node);
+        }
+
         public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
         {
             if (_propertyDeclaration != null
