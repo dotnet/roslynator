@@ -36,9 +36,23 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public string Value3 { get; } = new string(' ', 1); /**/
 #endif
 
-        public string IsValue
+        private class Foo
         {
-            get { return string.Empty; }
+            public bool IsFoo
+            {
+                get { return false; }
+            }
+
+            public bool Bar()
+            {
+                var x = new Foo();
+
+                if (x?.IsFoo == true)
+                {
+                }
+
+                return false;
+            }
         }
     }
 }
