@@ -154,14 +154,13 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ISymbol symbol = semanticModel.GetSymbol(invocation, cancellationToken);
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-            if (symbol?.IsMethod() == true
-                && !symbol.IsImplicitlyDeclared)
+            if (methodSymbol?.Language == LanguageNames.CSharp)
             {
-                var methodSymbol = (IMethodSymbol)symbol;
+                MethodKind methodKind = methodSymbol.MethodKind;
 
-                if (methodSymbol.MethodKind == MethodKind.Ordinary)
+                if (methodKind == MethodKind.Ordinary)
                 {
                     if (methodSymbol.IsStatic)
                     {
@@ -172,10 +171,23 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                         INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(invocation.SpanStart, cancellationToken);
 
                         if (methodSymbol.ContainingType?.Equals(enclosingType) == true)
-                            return methodSymbol;
+                        {
+                            ExpressionSyntax expression = invocation.Expression;
+
+                            if (expression != null)
+                            {
+                                SyntaxKind kind = expression.Kind();
+
+                                if (kind == SyntaxKind.ThisExpression
+                                    || kind != SyntaxKind.SimpleMemberAccessExpression)
+                                {
+                                    return methodSymbol;
+                                }
+                            }
+                        }
                     }
                 }
-                else if (methodSymbol.IsMethodKind(MethodKind.ReducedExtension)
+                else if (methodKind == MethodKind.ReducedExtension
                     && invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
                 {
                     return methodSymbol;
