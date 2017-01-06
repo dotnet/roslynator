@@ -49,6 +49,11 @@ namespace Roslynator.CSharp.Refactorings
             AnalyzeExpression(context, switchStatement.Expression);
         }
 
+        internal static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
+        {
+            AnalyzeExpression(context, forEachStatement.Expression);
+        }
+
         public static void Analyze(SyntaxNodeAnalysisContext context, ReturnStatementSyntax returnStatement)
         {
             AnalyzeExpression(context, returnStatement.Expression);
@@ -82,6 +87,22 @@ namespace Roslynator.CSharp.Refactorings
         public static void Analyze(SyntaxNodeAnalysisContext context, AwaitExpressionSyntax awaitExpression)
         {
             AnalyzeExpression(context, awaitExpression.Expression);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, InitializerExpressionSyntax initializerExpression)
+        {
+            foreach (ExpressionSyntax expression in initializerExpression.Expressions)
+                AnalyzeExpression(context, expression);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, InterpolationSyntax interpolation)
+        {
+            AnalyzeExpression(context, interpolation.Expression);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
+        {
+            AnalyzeExpression(context, arrowExpressionClause.Expression);
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment)

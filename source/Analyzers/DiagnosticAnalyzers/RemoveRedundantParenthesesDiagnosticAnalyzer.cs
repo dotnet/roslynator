@@ -11,7 +11,7 @@ using Roslynator.CSharp.Refactorings;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ParenthesizedExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class RemoveRedundantParenthesesDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -38,6 +38,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzerForEachStatement(f), SyntaxKind.ForEachStatement);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeYieldReturnStatement(f), SyntaxKind.YieldReturnStatement);
@@ -46,6 +47,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgument(f), SyntaxKind.AttributeArgument);
             context.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
             context.RegisterSyntaxNodeAction(f => AnalyzeAwaitExpression(f), SyntaxKind.AwaitExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
+            context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
+            context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.ArrayInitializerExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.CollectionInitializerExpression);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SimpleAssignmentExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AddAssignmentExpression);
@@ -95,6 +100,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             RemoveRedundantParenthesesRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
         }
 
+        private void AnalyzerForEachStatement(SyntaxNodeAnalysisContext context)
+        {
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ForEachStatementSyntax)context.Node);
+        }
+
         private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
             RemoveRedundantParenthesesRefactoring.Analyze(context, (ReturnStatementSyntax)context.Node);
@@ -130,7 +140,22 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             RemoveRedundantParenthesesRefactoring.Analyze(context, (AwaitExpressionSyntax)context.Node);
         }
 
-       private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
+        private void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
+        {
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (ArrowExpressionClauseSyntax)context.Node);
+        }
+
+        private void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
+        {
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (InterpolationSyntax)context.Node);
+        }
+
+        private void AnalyzeInitializer(SyntaxNodeAnalysisContext context)
+        {
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (InitializerExpressionSyntax)context.Node);
+        }
+
+        private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
             RemoveRedundantParenthesesRefactoring.Analyze(context, (AssignmentExpressionSyntax)context.Node);
         }

@@ -262,7 +262,7 @@
     <Compile Include="DiagnosticAnalyzers\NamedTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReturnStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SwitchSectionDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\ParenthesizedExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\QualifiedNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\IdentifierNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\IfStatementSyntaxDiagnosticAnalyzer.cs" />
