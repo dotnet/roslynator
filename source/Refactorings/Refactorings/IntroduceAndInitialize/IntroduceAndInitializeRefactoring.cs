@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -122,9 +123,11 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 constructor,
                 constructor.AddBodyStatements(CreateAssignments().ToArray()));
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             newMembers = newMembers.InsertRange(
                 GetDeclarationIndex(members),
-                CreateDeclarations());
+                CreateDeclarations(constructor, semanticModel, cancellationToken));
 
             return await document.ReplaceNodeAsync(
                 containingMember,
@@ -138,10 +141,25 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 .Select(f => f.CreateAssignment());
         }
 
-        private IEnumerable<MemberDeclarationSyntax> CreateDeclarations()
+        private IEnumerable<MemberDeclarationSyntax> CreateDeclarations(ConstructorDeclarationSyntax constructor, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            return Infos
-                .Select(f => f.CreateDeclaration());
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(constructor, cancellationToken);
+
+            if (methodSymbol != null)
+            {
+                INamedTypeSymbol containingType = methodSymbol.ContainingType;
+
+                if (containingType != null)
+                {
+                    ImmutableArray<ISymbol> members = containingType.GetMembers();
+
+                    return Infos
+                        .Where(f => Identifier.IsUniqueMemberName(f.Name, containingType, isCaseSensitive: true, cancellationToken: cancellationToken))
+                        .Select(f => f.CreateDeclaration());
+                }
+            }
+
+            return Infos.Select(f => f.CreateDeclaration());
         }
 
         private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)
