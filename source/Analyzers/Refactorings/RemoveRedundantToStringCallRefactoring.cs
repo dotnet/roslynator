@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-                        if (methodSymbol.Name?.Equals("ToString", StringComparison.Ordinal) == true
+                        if (methodSymbol?.Name?.Equals("ToString", StringComparison.Ordinal) == true
                             && !methodSymbol.IsGenericMethod
                             && !methodSymbol.IsExtensionMethod
                             && methodSymbol.IsPublic()
