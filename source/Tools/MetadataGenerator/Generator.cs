@@ -329,14 +329,13 @@ namespace MetadataGenerator
 
         private static XmlWriterSettings CreateXmlWriterSettings()
         {
-            var settings = new XmlWriterSettings();
-
-            settings.OmitXmlDeclaration = true;
-            settings.NewLineChars = "\r\n";
-            settings.IndentChars = "    ";
-            settings.Indent = true;
-
-            return settings;
+            return new XmlWriterSettings()
+            {
+                OmitXmlDeclaration = true,
+                NewLineChars = "\r\n",
+                IndentChars = "    ",
+                Indent = true
+            };
         }
 
         private static string RemoveRootHtmlElement(string value)
