@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -13,15 +14,14 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         public IntroduceAndInitializeInfo(ParameterSyntax parameter)
         {
             Parameter = parameter;
-            Identifier = parameter.Identifier;
-            ParameterName = Identifier.ValueText;
+            ParameterName = parameter.Identifier.ValueText;
         }
 
         public ParameterSyntax Parameter { get; }
         public string ParameterName { get; }
-        public SyntaxToken Identifier { get; }
 
         public abstract string Name { get; }
+        public abstract SyntaxKind Kind { get; }
 
         public TypeSyntax Type
         {

@@ -29,13 +29,12 @@ namespace Roslynator
         {
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-            return EnsureUniqueMemberName(baseName, containingType, semanticModel, cancellationToken);
+            return EnsureUniqueMemberName(baseName, containingType, cancellationToken);
         }
 
         public static string EnsureUniqueMemberName(
             string baseName,
             INamedTypeSymbol containingType,
-            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return EnsureUniqueName(baseName, containingType.GetMembers());
@@ -190,6 +189,27 @@ namespace Roslynator
             return EnsureUniqueName(baseName, reservedNames);
         }
 
+        public static bool IsUniqueMemberName(
+            string name,
+            int position,
+            SemanticModel semanticModel,
+            bool isCaseSensitive = true,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
+
+            return IsUniqueMemberName(name, containingType, isCaseSensitive, cancellationToken);
+        }
+
+        public static bool IsUniqueMemberName(
+            string name,
+            INamedTypeSymbol containingType,
+            bool isCaseSensitive = true,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return IsUniqueName(name, containingType.GetMembers(), GetStringComparison(isCaseSensitive));
+        }
+
         public static async Task<bool> IsUniqueMemberNameAsync(
             ISymbol memberSymbol,
             string name,
@@ -266,7 +286,7 @@ namespace Roslynator
 
             string name = baseName;
 
-            while (symbols.Any(symbol => string.Equals(symbol.Name, name, stringComparison)))
+            while (!IsUniqueName(name, symbols, stringComparison))
             {
                 name = baseName + suffix.ToString();
                 suffix++;
@@ -281,13 +301,23 @@ namespace Roslynator
 
             string name = baseName;
 
-            while (reservedNames.Any(f => string.Equals(f, name, stringComparison)))
+            while (!IsUniqueName(name, reservedNames, stringComparison))
             {
                 name = baseName + suffix.ToString();
                 suffix++;
             }
 
             return name;
+        }
+
+        private static bool IsUniqueName(string name, IList<ISymbol> symbols, StringComparison stringComparison)
+        {
+            return !symbols.Any(symbol => string.Equals(symbol.Name, name, stringComparison));
+        }
+
+        private static bool IsUniqueName(string name, IEnumerable<string> reservedNames, StringComparison stringComparison)
+        {
+            return !reservedNames.Any(f => string.Equals(f, name, stringComparison));
         }
 
         public static string CreateName(ITypeSymbol typeSymbol, bool firstCharToLower = false)
