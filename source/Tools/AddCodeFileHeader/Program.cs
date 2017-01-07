@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace AddCodeFileHeader
 {
-    internal class Program
+    internal static class Program
     {
         private static readonly StringComparison _comparison = StringComparison.OrdinalIgnoreCase;
 

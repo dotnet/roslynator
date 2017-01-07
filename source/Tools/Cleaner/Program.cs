@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Cleaner
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
