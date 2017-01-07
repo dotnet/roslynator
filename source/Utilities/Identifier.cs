@@ -27,6 +27,9 @@ namespace Roslynator
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
             return EnsureUniqueMemberName(baseName, containingType, cancellationToken);
@@ -37,6 +40,9 @@ namespace Roslynator
             INamedTypeSymbol containingType,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (containingType == null)
+                throw new ArgumentNullException(nameof(containingType));
+
             return EnsureUniqueName(baseName, containingType.GetMembers());
         }
 
@@ -46,6 +52,9 @@ namespace Roslynator
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
 
             symbols = AddLocalSymbols(symbols, position, semanticModel, cancellationToken);
@@ -121,6 +130,12 @@ namespace Roslynator
             Solution solution,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
             HashSet<string> reservedNames = GetParameterNames(parameterSymbol);
 
             foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(parameterSymbol, solution, cancellationToken).ConfigureAwait(false))
@@ -172,6 +187,12 @@ namespace Roslynator
             Solution solution,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
             HashSet<string> reservedNames = await GetReservedNamesAsync(methodSymbol, solution, cancellationToken).ConfigureAwait(false);
 
             var generator = new AsyncMethodNameGenerator();
@@ -184,6 +205,12 @@ namespace Roslynator
             Solution solution,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (memberSymbol == null)
+                throw new ArgumentNullException(nameof(memberSymbol));
+
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
             HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, cancellationToken).ConfigureAwait(false);
 
             return EnsureUniqueName(baseName, reservedNames);
@@ -196,6 +223,9 @@ namespace Roslynator
             bool isCaseSensitive = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
             return IsUniqueMemberName(name, containingType, isCaseSensitive, cancellationToken);
@@ -207,6 +237,9 @@ namespace Roslynator
             bool isCaseSensitive = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (containingType == null)
+                throw new ArgumentNullException(nameof(containingType));
+
             return IsUniqueName(name, containingType.GetMembers(), GetStringComparison(isCaseSensitive));
         }
 
@@ -216,6 +249,12 @@ namespace Roslynator
             Solution solution,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (memberSymbol == null)
+                throw new ArgumentNullException(nameof(memberSymbol));
+
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
             HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, cancellationToken).ConfigureAwait(false);
 
             return !reservedNames.Contains(name);
@@ -297,6 +336,9 @@ namespace Roslynator
 
         public static string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, StringComparison stringComparison)
         {
+            if (reservedNames == null)
+                throw new ArgumentNullException(nameof(reservedNames));
+
             int suffix = 2;
 
             string name = baseName;
