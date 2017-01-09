@@ -65,9 +65,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
-      <Name>Utilities</Name>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\tools\InternalAnalyzers\InternalAnalyzers.csproj">
       <Project>{1db4a125-fbf8-4728-abf5-37b9df355753}</Project>

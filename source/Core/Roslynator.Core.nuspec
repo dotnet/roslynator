@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Roslynator.Utilities</id>
+    <id>Roslynator.Core</id>
     <version>1.0.0.0</version>
-    <title>Roslynator.Utilities</title>
+    <title>Roslynator.Core</title>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
