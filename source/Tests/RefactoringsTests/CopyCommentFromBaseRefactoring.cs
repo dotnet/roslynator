@@ -84,5 +84,54 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
             public override event EventHandler FooEvent;
         }
+
+        public interface ITest
+        {
+            /// <summary>
+            /// method
+            /// </summary>
+            void Foo();
+
+            /// <summary>
+            /// property
+            /// </summary>
+            string PropertyName { get; set; }
+
+            /// <summary>
+            /// indexer
+            /// </summary>
+            /// <param name="index"></param>
+            /// <returns></returns>
+            string this[int index] { get; set; }
+
+            /// <summary>
+            /// event
+            /// </summary>
+            event EventHandler EventName;
+
+            /// <summary>
+            /// event 2
+            /// </summary>
+            event EventHandler EventName2;
+        }
+
+        public abstract class Test : ITest
+        {
+            public abstract string this[int index] { get; set; }
+
+            public string PropertyName { get; set; }
+
+            public event EventHandler EventName;
+
+            public event EventHandler EventName2
+            {
+                add { }
+                remove { }
+            }
+
+            public void Foo()
+            {
+            }
+        }
     }
 }
