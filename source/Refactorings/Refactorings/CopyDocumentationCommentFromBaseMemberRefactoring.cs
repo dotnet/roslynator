@@ -25,11 +25,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
 
-                if (methodSymbol?.IsErrorType() == false
-                    && methodSymbol.OverriddenMethod != null)
-                {
-                    ComputeRefactoring(context, methodDeclaration, methodSymbol.OverriddenMethod);
-                }
+                if (methodSymbol?.IsErrorType() == false)
+                    ComputeRefactoring<IMethodSymbol>(context, methodDeclaration, methodSymbol, methodSymbol.OverriddenMethod);
             }
         }
 
@@ -41,11 +38,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration);
 
-                if (propertySymbol?.IsErrorType() == false
-                    && propertySymbol.OverriddenProperty != null)
-                {
-                    ComputeRefactoring(context, propertyDeclaration, propertySymbol.OverriddenProperty);
-                }
+                if (propertySymbol?.IsErrorType() == false)
+                    ComputeRefactoring<IPropertySymbol>(context, propertyDeclaration, propertySymbol, propertySymbol.OverriddenProperty);
             }
         }
 
@@ -57,11 +51,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration);
 
-                if (propertySymbol?.IsErrorType() == false
-                    && propertySymbol.OverriddenProperty != null)
-                {
-                    ComputeRefactoring(context, indexerDeclaration, propertySymbol.OverriddenProperty);
-                }
+                if (propertySymbol?.IsErrorType() == false)
+                    ComputeRefactoring<IPropertySymbol>(context, indexerDeclaration, propertySymbol, propertySymbol.OverriddenProperty);
             }
         }
 
@@ -71,13 +62,10 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                IEventSymbol propertySymbol = semanticModel.GetDeclaredSymbol(eventDeclaration);
+                IEventSymbol eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration);
 
-                if (propertySymbol?.IsErrorType() == false
-                    && propertySymbol.OverriddenEvent != null)
-                {
-                    ComputeRefactoring(context, eventDeclaration, propertySymbol.OverriddenEvent);
-                }
+                if (eventSymbol?.IsErrorType() == false)
+                    ComputeRefactoring<IEventSymbol>(context, eventDeclaration, eventSymbol, eventSymbol.OverriddenEvent);
             }
         }
 
@@ -93,11 +81,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator) as IEventSymbol;
 
-                    if (eventSymbol?.IsErrorType() == false
-                        && eventSymbol.OverriddenEvent != null)
-                    {
-                        ComputeRefactoring(context, eventFieldDeclaration, eventSymbol.OverriddenEvent);
-                    }
+                    if (eventSymbol?.IsErrorType() == false)
+                        ComputeRefactoring<IEventSymbol>(context, eventFieldDeclaration, eventSymbol, eventSymbol.OverriddenEvent);
                 }
             }
         }
@@ -115,24 +100,51 @@ namespace Roslynator.CSharp.Refactorings
                     ISymbol symbol = semanticModel.GetSymbol(initializer);
 
                     if (symbol?.IsErrorType() == false)
-                        ComputeRefactoring(context, constructorDeclaration, symbol);
+                        ComputeRefactoring<ISymbol>(context, constructorDeclaration, null, symbol);
                 }
             }
         }
 
-        private static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax memberDeclaration, ISymbol overridenSymbol)
+        private static void ComputeRefactoring<TInterfaceSymbol>(
+            RefactoringContext context,
+            MemberDeclarationSyntax memberDeclaration,
+            ISymbol memberSymbol,
+            ISymbol baseSymbol) where TInterfaceSymbol : ISymbol
         {
-            SyntaxTrivia commentTrivia = CreateDocumentationCommentTrivia(overridenSymbol, context.CancellationToken);
+            var commentTrivia = default(SyntaxTrivia);
+            string title = null;
+
+            if (baseSymbol != null)
+            {
+                commentTrivia = CreateDocumentationCommentTrivia(baseSymbol, context.CancellationToken);
+
+                if (commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                    title = GetTitleForBaseMember(memberDeclaration);
+            }
+
+            if (!commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
+                && memberSymbol != null)
+            {
+                TInterfaceSymbol interfaceMember = memberSymbol.FindImplementedInterfaceMember<TInterfaceSymbol>();
+
+                if (interfaceMember != null)
+                {
+                    commentTrivia = CreateDocumentationCommentTrivia(interfaceMember, context.CancellationToken);
+
+                    if (commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                        title = GetTitleForInterfaceMember(memberDeclaration);
+                }
+            }
 
             if (commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
             {
                 context.RegisterRefactoring(
-                    GetTitle(memberDeclaration),
+                    title,
                     cancellationToken => RefactorAsync(context.Document, memberDeclaration, commentTrivia, cancellationToken));
             }
         }
 
-        private static string GetTitle(MemberDeclarationSyntax memberDeclaration)
+        private static string GetTitleForBaseMember(MemberDeclarationSyntax memberDeclaration)
         {
             const string s = "Insert comment from ";
 
@@ -149,6 +161,29 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.EventFieldDeclaration:
                     return s + "overriden event";
+                default:
+                    {
+                        Debug.Assert(false, memberDeclaration.Kind().ToString());
+                        return "";
+                    }
+            }
+        }
+
+        private static string GetTitleForInterfaceMember(MemberDeclarationSyntax memberDeclaration)
+        {
+            const string s = "Insert comment from ";
+
+            switch (memberDeclaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return s + "implemented method";
+                case SyntaxKind.PropertyDeclaration:
+                    return s + "implemented property";
+                case SyntaxKind.IndexerDeclaration:
+                    return s + "implemented indexer";
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    return s + "implemented event";
                 default:
                     {
                         Debug.Assert(false, memberDeclaration.Kind().ToString());

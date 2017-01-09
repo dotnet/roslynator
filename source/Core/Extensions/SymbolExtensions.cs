@@ -99,6 +99,63 @@ namespace Roslynator.Extensions
             return methodSymbol.ReducedFrom ?? methodSymbol;
         }
 
+        public static ISymbol FindImplementedInterfaceMember(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            INamedTypeSymbol containingType = symbol.ContainingType;
+
+            if (containingType != null)
+            {
+                ImmutableArray<INamedTypeSymbol> allInterfaces = containingType.AllInterfaces;
+
+                for (int i = 0; i < allInterfaces.Length; i++)
+                {
+                    ImmutableArray<ISymbol> members = allInterfaces[i].GetMembers();
+
+                    for (int j = 0; j < members.Length; j++)
+                    {
+                        if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[i])))
+                            return members[i];
+                    }
+                }
+            }
+
+            return default(ISymbol);
+        }
+
+        public static TSymbol FindImplementedInterfaceMember<TSymbol>(this ISymbol symbol) where TSymbol : ISymbol
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            INamedTypeSymbol containingType = symbol.ContainingType;
+
+            if (containingType != null)
+            {
+                ImmutableArray<INamedTypeSymbol> allInterfaces = containingType.AllInterfaces;
+
+                for (int i = 0; i < allInterfaces.Length; i++)
+                {
+                    ImmutableArray<ISymbol> members = allInterfaces[i].GetMembers();
+
+                    for (int j = 0; j < members.Length; j++)
+                    {
+                        if (members[j] is TSymbol)
+                        {
+                            var tmember = (TSymbol)members[j];
+
+                            if (symbol.Equals(containingType.FindImplementationForInterfaceMember(tmember)))
+                                return tmember;
+                        }
+                    }
+                }
+            }
+
+            return default(TSymbol);
+        }
+
         public static bool IsNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
         {
             if (typeSymbol == null)
