@@ -126,17 +126,15 @@ namespace Roslynator.CSharp
                 }
             }
 
-            if (typeSymbol.IsValueType)
-            {
-                if (type == null)
-                    type = Type(typeSymbol).WithSimplifierAnnotation();
+            if (typeSymbol.IsReferenceType)
+                return NullLiteralExpression();
 
-                Debug.Assert(type != null);
+            if (type == null)
+                type = Type(typeSymbol).WithSimplifierAnnotation();
 
-                return DefaultExpression(type);
-            }
+            Debug.Assert(type != null);
 
-            return NullLiteralExpression();
+            return DefaultExpression(type);
         }
 
         private static IFieldSymbol GetDefaultEnumMember(ITypeSymbol typeSymbol)
