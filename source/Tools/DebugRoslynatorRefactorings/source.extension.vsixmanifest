@@ -2,8 +2,8 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
     <Identity Id="8c1816de-dfe4-4d69-a3dc-efe0b6c6bc19" Version="0.0.1" Language="en-US" Publisher="Josef Pihrt"/>
-    <DisplayName>Refactorings</DisplayName>
-    <Description xml:space="preserve"></Description>
+    <DisplayName>Roslynator Refactorings</DisplayName>
+    <Description xml:space="preserve">Roslynator Refactorings</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[15.0,16.0)" Id="Microsoft.VisualStudio.Community" />
