@@ -16,6 +16,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
             return f || f2;
         }
 
+        public static bool Foo(bool f, bool f2, bool f3)
+        {
+            return f || f2 || f3;
+        }
+
         public static bool Foo(bool f, bool fTrue, bool fFalse)
         {
             return (f) ? fTrue : fFalse;
