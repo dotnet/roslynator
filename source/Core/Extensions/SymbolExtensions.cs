@@ -468,18 +468,6 @@ namespace Roslynator.Extensions
                 && symbol.IsMethod();
         }
 
-        public static bool IsPubliclyAccessible(this ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            Accessibility accessibility = typeSymbol.DeclaredAccessibility;
-
-            return accessibility == Accessibility.Protected
-                || accessibility == Accessibility.ProtectedOrInternal
-                || accessibility == Accessibility.Public;
-        }
-
         [DebuggerStepThrough]
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
