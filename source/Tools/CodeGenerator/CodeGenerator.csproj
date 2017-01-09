@@ -145,9 +145,9 @@
     <Analyzer Include="..\..\..\packages\Roslynator.Analyzers.1.0.0-beta\analyzers\dotnet\cs\Roslynator.Utilities.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Utilities\Utilities.csproj">
+    <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
-      <Name>Utilities</Name>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>

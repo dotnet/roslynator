@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Roslynator</RootNamespace>
-    <AssemblyName>Roslynator.Utilities</AssemblyName>
+    <AssemblyName>Roslynator.Core</AssemblyName>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -38,7 +38,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Roslynator.Utilities.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Roslynator.Core.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AsyncMethodNameGenerator.cs" />
@@ -128,8 +128,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="project.json" />
-    <None Include="Roslynator.Utilities.snk" />
-    <None Include="Roslynator.Utilities.nuspec" />
+    <None Include="Roslynator.Core.snk" />
+    <None Include="Roslynator.Core.nuspec" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
