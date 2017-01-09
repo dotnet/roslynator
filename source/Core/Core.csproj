@@ -129,7 +129,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Roslynator.Core.nuspec" />
     <None Include="Roslynator.Core.snk" />
   </ItemGroup>
   <ItemGroup>
