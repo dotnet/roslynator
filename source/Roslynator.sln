@@ -2,41 +2,41 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCodeFileHeader", "source\Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCodeFileHeader", "Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "source\Core\Core.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refactorings", "source\Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refactorings", "Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzers", "source\Analyzers\Analyzers.csproj", "{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analyzers", "Analyzers\Analyzers.csproj", "{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "source\Tools\MetadataGenerator\MetadataGenerator.csproj", "{DD303EB5-1C57-4588-980C-C55A401DB125}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "Tools\MetadataGenerator\MetadataGenerator.csproj", "{DD303EB5-1C57-4588-980C-C55A401DB125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "source\Tools\Cleaner\Cleaner.csproj", "{44582CE6-29B1-4982-B485-C0285AA0A591}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "Tools\Cleaner\Cleaner.csproj", "{44582CE6-29B1-4982-B485-C0285AA0A591}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "source\Tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "Tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Common", "source\VisualStudio.Common\VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Common", "VisualStudio.Common\VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio", "source\VisualStudio\VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio", "VisualStudio\VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Refactorings", "source\VisualStudio.Refactorings\VisualStudio.Refactorings.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Refactorings", "VisualStudio.Refactorings\VisualStudio.Refactorings.csproj", "{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynatorRefactorings", "source\Tools\DebugRoslynatorRefactorings\DebugRoslynatorRefactorings.csproj", "{59C2BA93-6077-4F00-8F36-6A256E983C25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalAnalyzers", "Tools\InternalAnalyzers\InternalAnalyzers.csproj", "{1DB4A125-FBF8-4728-ABF5-37B9DF355753}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalAnalyzers", "source\Tools\InternalAnalyzers\InternalAnalyzers.csproj", "{1DB4A125-FBF8-4728-ABF5-37B9DF355753}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugInternalAnalyzers", "Tools\DebugInternalAnalyzers\DebugInternalAnalyzers.csproj", "{63A791CC-BD7C-4608-A4D9-9379B0C42F38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugInternalAnalyzers", "source\Tools\DebugInternalAnalyzers\DebugInternalAnalyzers.csproj", "{63A791CC-BD7C-4608-A4D9-9379B0C42F38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "Tools\Metadata\Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metadata", "source\Tools\Metadata\Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynator", "Tools\DebugRoslynator\DebugRoslynator.csproj", "{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynator", "source\Tools\DebugRoslynator\DebugRoslynator.csproj", "{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynatorRefactorings", "Tools\DebugRoslynatorRefactorings\DebugRoslynatorRefactorings.csproj", "{59C2BA93-6077-4F00-8F36-6A256E983C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "source\Tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "Tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
