@@ -79,12 +79,18 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             {
                 var binaryExpression = (BinaryExpressionSyntax)expression;
 
-                return CreateIfStatement(statement, binaryExpression.Left, TrueLiteralExpression(), binaryExpression.Right.WithoutTrivia());
+                ExpressionSyntax left = binaryExpression.Left;
+
+                if (left?.IsKind(SyntaxKind.LogicalOrExpression) == false)
+                {
+                    ExpressionSyntax right = binaryExpression.Right;
+
+                    if (right != null)
+                        return CreateIfStatement(statement, left, TrueLiteralExpression(), right.WithoutTrivia());
+                }
             }
-            else
-            {
-                return CreateIfStatement(statement, expression, TrueLiteralExpression(), FalseLiteralExpression());
-            }
+
+            return CreateIfStatement(statement, expression, TrueLiteralExpression(), FalseLiteralExpression());
         }
 
         private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax condition, ExpressionSyntax left, ExpressionSyntax right)
