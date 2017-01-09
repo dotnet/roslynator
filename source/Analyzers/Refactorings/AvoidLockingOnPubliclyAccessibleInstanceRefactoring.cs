@@ -21,12 +21,19 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                if (typeSymbol?.IsPubliclyAccessible() == true)
+                if (typeSymbol != null)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
-                        expression.GetLocation(),
-                        expression.ToString());
+                    Accessibility accessibility = typeSymbol.DeclaredAccessibility;
+
+                    if (accessibility == Accessibility.Public
+                        || accessibility == Accessibility.Protected
+                        || accessibility == Accessibility.ProtectedOrInternal)
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
+                            expression.GetLocation(),
+                            expression.ToString());
+                    }
                 }
             }
         }
