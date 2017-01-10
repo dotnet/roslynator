@@ -134,7 +134,7 @@ namespace Roslynator.VisualStudio
             ReplaceConstantWithField = true;
             ReplaceCountWithLengthOrLengthWithCount = true;
             ReplaceDoStatementWithWhileStatement = true;
-            ReplaceEmptyStringLiteralWithStringEmpty = true;
+            ReplaceEmptyStringLiteralWithStringEmpty = false;
             ReplaceEqualsExpressionWithStringEquals = true;
             ReplaceEqualsExpressionWithStringIsNullOrEmpty = true;
             ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = true;

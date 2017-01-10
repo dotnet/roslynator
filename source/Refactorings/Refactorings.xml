@@ -847,7 +847,7 @@
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with String.Empty" ExtensionVersion="0.9.0">
+  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with String.Empty" IsEnabledByDefault="false" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
