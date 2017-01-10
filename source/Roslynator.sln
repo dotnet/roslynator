@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26014.0
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
 EndProject
@@ -8,15 +8,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
-		ChangeLog.md = ChangeLog.md
-		LICENSE.txt = LICENSE.txt
-		README.md = README.md
-		text\ReadMe.txt = text\ReadMe.txt
-		text\ReleaseCheckList.txt = text\ReleaseCheckList.txt
+		..\ChangeLog.md = ..\ChangeLog.md
+		..\LICENSE.txt = ..\LICENSE.txt
+		..\README.md = ..\README.md
+		..\text\ReadMe.txt = ..\text\ReadMe.txt
+		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
 		Roslynator.ruleset = Roslynator.ruleset
-		text\RoslynatorDescription.txt = text\RoslynatorDescription.txt
-		text\RoslynatorRefactoringsDescription.txt = text\RoslynatorRefactoringsDescription.txt
-		text\ToBeReleased.txt = text\ToBeReleased.txt
+		..\text\RoslynatorDescription.txt = ..\text\RoslynatorDescription.txt
+		..\text\RoslynatorRefactoringsDescription.txt = ..\text\RoslynatorRefactoringsDescription.txt
+		..\text\ToBeReleased.txt = ..\text\ToBeReleased.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCodeFileHeader", "Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
