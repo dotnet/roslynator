@@ -14,14 +14,14 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal class RefactoringContext
     {
-        public RefactoringContext(CodeRefactoringContext context, SyntaxNode root, RefactoringSettings settings)
+        public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root, RefactoringSettings settings)
         {
-            BaseContext = context;
+            UnderlyingContext = underlyingContext;
             Root = root;
             Settings = settings;
         }
 
-        public CodeRefactoringContext BaseContext { get; }
+        public CodeRefactoringContext UnderlyingContext { get; }
 
         public SyntaxNode Root { get; }
 
@@ -34,12 +34,12 @@ namespace Roslynator.CSharp.Refactorings
 
         public CancellationToken CancellationToken
         {
-            get { return BaseContext.CancellationToken; }
+            get { return UnderlyingContext.CancellationToken; }
         }
 
         public Document Document
         {
-            get { return BaseContext.Document; }
+            get { return UnderlyingContext.Document; }
         }
 
         public Project Project
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public TextSpan Span
         {
-            get { return BaseContext.Span; }
+            get { return UnderlyingContext.Span; }
         }
 
         public bool IsRootCompilationUnit
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             Debug.WriteLine($"REGISTER REFACTORING \"{codeAction.Title}\"");
 
-            BaseContext.RegisterRefactoring(codeAction);
+            UnderlyingContext.RegisterRefactoring(codeAction);
         }
 
         public SyntaxNode FindNode(bool findInsideTrivia = false)
