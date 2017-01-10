@@ -40,15 +40,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "Tools\Snippets\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
-		ChangeLog.md = ChangeLog.md
-		LICENSE.txt = LICENSE.txt
-		README.md = README.md
-		text\ReadMe.txt = text\ReadMe.txt
-		text\ReleaseCheckList.txt = text\ReleaseCheckList.txt
+		..\ChangeLog.md = ..\ChangeLog.md
+		..\LICENSE.txt = ..\LICENSE.txt
+		..\README.md = ..\README.md
+		..\text\ReadMe.txt = ..\text\ReadMe.txt
+		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
 		Roslynator.ruleset = Roslynator.ruleset
-		text\RoslynatorDescription.txt = text\RoslynatorDescription.txt
-		text\RoslynatorRefactoringsDescription.txt = text\RoslynatorRefactoringsDescription.txt
-		text\ToBeReleased.txt = text\ToBeReleased.txt
+		..\text\RoslynatorDescription.txt = ..\text\RoslynatorDescription.txt
+		..\text\RoslynatorRefactoringsDescription.txt = ..\text\RoslynatorRefactoringsDescription.txt
+		..\text\ToBeReleased.txt = ..\text\ToBeReleased.txt
 	EndProjectSection
 EndProject
 Global
