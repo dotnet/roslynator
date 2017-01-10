@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (argumentList.Arguments.Count > 1)
                     {
                         context.RegisterRefactoring(
-                            "Format each argument on a separate line",
+                            "Format arguments on separate lines",
                             cancellationToken =>
                             {
                                 return CSharpFormatter.ToMultiLineAsync(
@@ -40,12 +40,8 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    string title = (argumentList.Arguments.Count == 1)
-                            ? "Format argument on a single line"
-                            : "Format all arguments on a single line";
-
                     context.RegisterRefactoring(
-                        title,
+                        "Format arguments on a single line",
                         cancellationToken =>
                         {
                             return CSharpFormatter.ToSingleLineAsync(

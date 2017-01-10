@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (conditionalExpression.IsSingleLine())
                 {
                     context.RegisterRefactoring(
-                        "Format ?: on multiple lines",
+                        "Format ?: on separate lines",
                         cancellationToken =>
                         {
                             return CSharpFormatter.ToMultiLineAsync(

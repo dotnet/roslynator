@@ -43,18 +43,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (parameters.Count > 1)
                         {
                             context.RegisterRefactoring(
-                                "Format each parameter on a separate line",
+                                "Format parameters on separate lines",
                                 cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, parameterList, cancellationToken));
                         }
                     }
                     else
                     {
-                        string title = (parameters.Count == 1)
-                            ? "Format parameter on a single line"
-                            : "Format all parameters on a single line";
-
                         context.RegisterRefactoring(
-                            title,
+                            "Format parameters on a single line",
                             cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, parameterList, cancellationToken));
                     }
                 }

@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (body.IsSingleLine())
                 {
                     context.RegisterRefactoring(
-                        "Format braces on multiple lines",
+                        "Format braces on separate lines",
                         cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, accessor, cancellationToken));
                 }
                 else

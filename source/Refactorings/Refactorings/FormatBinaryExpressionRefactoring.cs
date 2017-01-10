@@ -18,22 +18,16 @@ namespace Roslynator.CSharp.Refactorings
             if (binaryExpression != null
                 && IsFormattableKind(binaryExpression.Kind()))
             {
-                string title = "Format binary expression";
-
                 if (binaryExpression.IsSingleLine())
                 {
-                    title += " on multiple lines";
-
                     context.RegisterRefactoring(
-                        title,
+                        "Format binary expression on multiple lines",
                         cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, binaryExpression, cancellationToken));
                 }
                 else
                 {
-                    title += " on a single line";
-
                     context.RegisterRefactoring(
-                        title,
+                        "Format binary expression on a single line",
                         cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
