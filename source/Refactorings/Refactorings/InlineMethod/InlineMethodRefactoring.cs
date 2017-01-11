@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                         if (expression != null)
                         {
-                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
+                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, method, semanticModel, context.CancellationToken);
 
                             if (parameterInfos != null)
                             {
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                             if (statements?.Length > 0)
                             {
-                                List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
+                                List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, method, semanticModel, context.CancellationToken);
 
                                 if (parameterInfos != null)
                                 {
@@ -465,19 +465,44 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         private static List<ParameterInfo> GetParameterInfos(
             InvocationExpressionSyntax invocation,
             IMethodSymbol methodSymbol,
+            MethodDeclarationSyntax methodDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
             List<ParameterInfo> parameterInfos = GetParameterInfos(invocation.ArgumentList, semanticModel, cancellationToken);
 
-            if (parameterInfos != null
-                && methodSymbol.IsMethodKind(MethodKind.ReducedExtension))
+            if (parameterInfos != null)
             {
-                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                foreach (ParameterSyntax parameter in methodDeclaration.ParameterList.Parameters)
+                {
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
 
-                var parameterInfo = new ParameterInfo(methodSymbol.ReducedFrom.Parameters[0], memberAccess.Expression);
+                    if (symbol?.IsParameter() == true)
+                    {
+                        var parameterSymbol = (IParameterSymbol)symbol;
 
-                parameterInfos.Add(parameterInfo);
+                        if (!parameterInfos.Any(f => f.ParameterSymbol == parameterSymbol))
+                        {
+                            if (parameterSymbol.HasExplicitDefaultValue)
+                            {
+                                parameterInfos.Add(new ParameterInfo(parameterSymbol, CSharpFactory.DefaultValue(parameterSymbol)));
+                            }
+                            else
+                            {
+                                return null;
+                            }
+                        }
+                    }
+                }
+
+                if (methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                    var parameterInfo = new ParameterInfo(methodSymbol.ReducedFrom.Parameters[0], memberAccess.Expression);
+
+                    parameterInfos.Add(parameterInfo);
+                }
             }
 
             return parameterInfos;
