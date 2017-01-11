@@ -176,13 +176,12 @@
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesToSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\InsertInterpolationRefactoring.cs" />
-    <Compile Include="Refactorings\DefaultCodeRefactoringProvider.cs" />
+    <Compile Include="Refactorings\RoslynatorCodeRefactoringProvider.cs" />
     <Compile Include="Refactorings\ParenthesizeExpressionRefactoring.cs" />
     <Compile Include="Refactorings\InterpolatedStringTextRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllStatementsRefactoring.cs" />
     <Compile Include="Refactorings\MarkAllMembersAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\MarkMemberAsStaticRefactoring.cs" />
-    <Compile Include="Refactorings\RefactoringContextExtensions.cs" />
     <Compile Include="Refactorings\RefactoringContext.cs" />
     <Compile Include="Refactorings\InterpolatedStringRefactoring.cs" />
     <Compile Include="Refactorings\GenerateSwitchSectionsRefactoring.cs" />
