@@ -45,9 +45,11 @@ namespace Roslynator.VisualStudio
         /// </summary>
         protected override void Initialize()
         {
-            var optionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
+            var generalOptionsPage = (GeneralOptionsPage)GetDialogPage(typeof(GeneralOptionsPage));
+            generalOptionsPage.Apply();
 
-            optionsPage.Apply();
+            var refactoringsOptionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
+            refactoringsOptionsPage.Apply();
 
             base.Initialize();
         }

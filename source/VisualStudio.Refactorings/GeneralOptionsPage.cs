@@ -9,6 +9,11 @@ namespace Roslynator.VisualStudio
 {
     public partial class GeneralOptionsPage : DialogPage
     {
+        public GeneralOptionsPage()
+        {
+            PrefixFieldIdentifierWithUnderscore = true;
+        }
+
         [Category("General")]
         [DisplayName("Prefix field identifier with underscore")]
         [Description("")]
