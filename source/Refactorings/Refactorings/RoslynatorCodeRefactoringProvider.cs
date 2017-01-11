@@ -8,35 +8,31 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(DefaultCodeRefactoringProvider))]
-    public class DefaultCodeRefactoringProvider : CodeRefactoringProvider
+    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(RoslynatorCodeRefactoringProvider))]
+    public class RoslynatorCodeRefactoringProvider : CodeRefactoringProvider
     {
         public static RefactoringSettings DefaultSettings { get; } = new RefactoringSettings();
 
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
         {
-            SyntaxNode root = await context.Document
-                .GetSyntaxRootAsync(context.CancellationToken)
-                .ConfigureAwait(false);
+            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+
 #if DEBUG
             try
             {
 #endif
-                await ComputeRefactoringsAsync(new RefactoringContext(context, root, DefaultSettings)).ConfigureAwait(false);
+                var refactoringContext = new RefactoringContext(context, root, DefaultSettings);
+
+                await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #if DEBUG
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
-                Debug.Assert(false, nameof(DefaultCodeRefactoringProvider));
+                Debug.Assert(false, nameof(RoslynatorCodeRefactoringProvider));
                 throw;
             }
 #endif
-        }
-
-        private static async Task ComputeRefactoringsAsync(RefactoringContext context)
-        {
-            await context.ComputeRefactoringsAsync().ConfigureAwait(false);
         }
     }
 }

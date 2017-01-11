@@ -19,7 +19,7 @@ namespace Roslynator.VisualStudio
 
         private static void SetIsEnabled(string identifier, bool isEnabled)
         {
-            DefaultCodeRefactoringProvider.DefaultSettings.SetIsRefactoringEnabled(identifier, isEnabled);
+            RoslynatorCodeRefactoringProvider.DefaultSettings.SetIsRefactoringEnabled(identifier, isEnabled);
         }
     }
 }
