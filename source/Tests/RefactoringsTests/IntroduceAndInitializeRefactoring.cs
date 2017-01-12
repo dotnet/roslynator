@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
             }
 
-            public Entity(string value2, int id, int id2)
+            public Entity(string value2, int id, int @object)
             {
                 if (value2 == null)
                     throw new ArgumentNullException(nameof(value2));
