@@ -2,14 +2,17 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+#pragma warning disable RCS1016 // Use expression-bodied member.
     internal class UseAutoProperty
     {
         private string _property = null;
+        private string _property2 = null;
         private readonly string _readOnlyProperty = null;
 
         public UseAutoProperty()
         {
             _property = null;
+            _property2 = null;
             _readOnlyProperty = null;
         }
 
@@ -21,9 +24,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             set { _property = value; }
         }
 
+        public string Property2
+        {
+            get => _property2;
+            set => _property2 = value;
+        }
+
         public string ReadOnlyProperty
         {
             get { return _readOnlyProperty; }
         }
     }
+#pragma warning restore RCS1016 // Use expression-bodied member.
 }
