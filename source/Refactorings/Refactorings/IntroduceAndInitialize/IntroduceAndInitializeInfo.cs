@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         {
             AssignmentExpressionSyntax assignment = SimpleAssignmentExpression(
                 CreateAssignmentLeft(),
-                IdentifierName(ParameterName));
+                IdentifierName(Parameter.Identifier.WithoutTrivia()));
 
             return ExpressionStatement(assignment);
         }
