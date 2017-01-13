@@ -290,7 +290,7 @@
     <Rule Id="RCS1014" Action="Warning" />
     <Rule Id="RCS1016" Action="Warning" />
     <Rule Id="RCS1016FadeOut" Action="Hidden" />
-    <Rule Id="RCS1017" Action="Info" />
+    <Rule Id="RCS1017" Action="Warning" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Warning" />
     <Rule Id="RCS1022" Action="Hidden" />

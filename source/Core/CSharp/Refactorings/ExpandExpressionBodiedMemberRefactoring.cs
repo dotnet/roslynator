@@ -21,9 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
-            var parent = arrowExpressionClause.Parent as MemberDeclarationSyntax;
-
-            return parent?.SupportsExpressionBody() == true;
+            return arrowExpressionClause.Parent?.SupportsExpressionBody() == true;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -37,65 +35,98 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
-            SyntaxNode member = arrowExpressionClause.Parent;
+            SyntaxNode parent = arrowExpressionClause.Parent;
 
-            SyntaxNode newMember = Refactor(member, arrowExpressionClause.Expression).WithFormatterAnnotation();
+            SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(member, newMember, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static SyntaxNode Refactor(SyntaxNode member, ExpressionSyntax expression)
+        private static SyntaxNode Refactor(SyntaxNode node, ExpressionSyntax expression)
         {
-            switch (member.Kind())
+            switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
                     {
-                        var method = (MethodDeclarationSyntax)member;
+                        var method = (MethodDeclarationSyntax)node;
 
                         return method
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
                             .WithBody(CreateBlock(expression, method));
                     }
-                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
                     {
-                        return ((OperatorDeclarationSyntax)member)
+                        var constructor = (ConstructorDeclarationSyntax)node;
+
+                        return constructor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(Block(ExpressionStatement(expression)));
+                    }
+                case SyntaxKind.DestructorDeclaration:
+                    {
+                        var destructor = (DestructorDeclarationSyntax)node;
+
+                        return destructor
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .WithBody(Block(ExpressionStatement(expression)));
+                    }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        return ((OperatorDeclarationSyntax)node)
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .WithBody(Block(ReturnStatement(expression)));
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
-                        return ((ConversionOperatorDeclarationSyntax)member)
+                        return ((ConversionOperatorDeclarationSyntax)node)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(Block(ReturnStatement(expression)));
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        return ((PropertyDeclarationSyntax)member)
+                        return ((PropertyDeclarationSyntax)node)
                             .WithAccessorList(CreateAccessorList(expression))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        return ((IndexerDeclarationSyntax)member)
+                        return ((IndexerDeclarationSyntax)node)
                             .WithAccessorList(CreateAccessorList(expression))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
+                case SyntaxKind.GetAccessorDeclaration:
+                    {
+                        var accessor = (AccessorDeclarationSyntax)node;
+
+                        return accessor
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .WithBody(Block(ReturnStatement(expression)));
+                    }
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                    {
+                        var accessor = (AccessorDeclarationSyntax)node;
+
+                        return accessor
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .WithBody(Block(ExpressionStatement(expression)));
+                    }
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
-                        return member;
+                        Debug.Assert(false, node.Kind().ToString());
+                        return node;
                     }
             }
-        }
-
-        private static BlockSyntax CreateBlock(ExpressionSyntax expression)
-        {
-            return Block(ReturnStatement(expression));
         }
 
         private static BlockSyntax CreateBlock(ExpressionSyntax expression, MethodDeclarationSyntax methodDeclaration)
@@ -108,23 +139,25 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                return CreateBlock(expression);
+                return Block(ReturnStatement(expression));
             }
         }
 
         private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression)
         {
-            BlockSyntax block = CreateBlock(expression);
+            BlockSyntax block = Block(ReturnStatement(expression));
 
             AccessorListSyntax accessorList = AccessorList(Getter(block));
 
             if (expression.IsSingleLine())
             {
-                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList)
+                return Remover.RemoveWhitespaceOrEndOfLine(accessorList)
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
             }
-
-            return accessorList;
+            else
+            {
+                return accessorList;
+            }
         }
     }
 }
