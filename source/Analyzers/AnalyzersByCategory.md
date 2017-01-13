@@ -28,7 +28,7 @@ General|Use linefeed as newline|RCS1086|
 Maintainability|Declare each type in separate file|RCS1060|
 Maintainability|Remove original exception from throw statement|RCS1044|x
 Maintainability|Use nameof operator|RCS1015|x
-Naming|Asynchronous method name should end with 'Async'|RCS1046|
+Naming|Asynchronous method name should end with 'Async'|RCS1046|x
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
 Performance|Replace 'Any' method with 'Count' or 'Length' property|RCS1080|x

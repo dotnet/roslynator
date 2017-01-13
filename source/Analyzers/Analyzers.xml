@@ -401,7 +401,7 @@
     <Title>Asynchronous method name should end with 'Async'.</Title>
     <Category>Naming</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>

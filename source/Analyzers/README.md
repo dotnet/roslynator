@@ -46,7 +46,7 @@ RCS1042|Remove enum default underlying type|Redundancy|x
 RCS1043|Remove partial modifier from type with a single part|Redundancy|x
 RCS1044|Remove original exception from throw statement|Maintainability|x
 RCS1045|Rename private field according to camel case with underscore|Naming|
-RCS1046|Asynchronous method name should end with 'Async'|Naming|
+RCS1046|Asynchronous method name should end with 'Async'|Naming|x
 RCS1047|Non\-asynchronous method name should not end with 'Async'|Naming|x
 RCS1048|Replace anonymous method with lambda expression|Usage|x
 RCS1049|Simplify boolean comparison|Simplification|x
