@@ -48,7 +48,7 @@ namespace Roslynator.VisualStudio
             ExpandAssignmentExpression = true;
             ExpandCoalesceExpression = true;
             ExpandEvent = true;
-            ExpandExpressionBodiedMember = true;
+            ExpandExpressionBody = true;
             ExpandInitializer = true;
             ExpandLambdaExpressionBody = true;
             ExpandProperty = true;
@@ -221,7 +221,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ExpandAssignmentExpression, ExpandAssignmentExpression);
             SetIsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression, ExpandCoalesceExpression);
             SetIsEnabled(RefactoringIdentifiers.ExpandEvent, ExpandEvent);
-            SetIsEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember, ExpandExpressionBodiedMember);
+            SetIsEnabled(RefactoringIdentifiers.ExpandExpressionBody, ExpandExpressionBody);
             SetIsEnabled(RefactoringIdentifiers.ExpandInitializer, ExpandInitializer);
             SetIsEnabled(RefactoringIdentifiers.ExpandLambdaExpressionBody, ExpandLambdaExpressionBody);
             SetIsEnabled(RefactoringIdentifiers.ExpandProperty, ExpandProperty);
@@ -717,10 +717,10 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Expand expression-bodied member")]
+        [DisplayName("Expand expression-body")]
         [Description("Syntax: expression body")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ExpandExpressionBodiedMember
+        public bool ExpandExpressionBody
         {
             get;
             set;

@@ -22,14 +22,14 @@ namespace Roslynator.CSharp.Refactorings
                 await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBodiedMember)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBody)
                 && (context.Span.IsEmptyAndContainedInSpan(arrowExpressionClause)
                     || context.Span.IsBetweenSpans(expression))
-                && ExpandExpressionBodiedMemberRefactoring.CanRefactor(arrowExpressionClause))
+                && ExpandExpressionBodyRefactoring.CanRefactor(arrowExpressionClause))
             {
                 context.RegisterRefactoring(
-                    "Expand expression-bodied member",
-                    cancellationToken => ExpandExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken));
+                    "Expand expression-body",
+                    cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken));
             }
         }
     }

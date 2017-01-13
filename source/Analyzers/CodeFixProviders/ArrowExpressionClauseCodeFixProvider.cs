@@ -32,8 +32,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Expand expression-bodied member",
-                cancellationToken => ExpandExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
+                "Expand expression-body",
+                cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
                 DiagnosticIdentifiers.AvoidMultilineExpressionBody + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

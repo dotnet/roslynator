@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandAssignmentExpression = "ExpandAssignmentExpression";
         public const string ExpandCoalesceExpression = "ExpandCoalesceExpression";
         public const string ExpandEvent = "ExpandEvent";
-        public const string ExpandExpressionBodiedMember = "ExpandExpressionBodiedMember";
+        public const string ExpandExpressionBody = "ExpandExpressionBody";
         public const string ExpandInitializer = "ExpandInitializer";
         public const string ExpandLambdaExpressionBody = "ExpandLambdaExpressionBody";
         public const string ExpandProperty = "ExpandProperty";
