@@ -18,8 +18,9 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax member)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.SplitAttributes,
-                RefactoringIdentifiers.MergeAttributes))
+                    RefactoringIdentifiers.SplitAttributes,
+                    RefactoringIdentifiers.MergeAttributes)
+                && !member.IsKind(SyntaxKind.NamespaceDeclaration))
             {
                 SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
 
