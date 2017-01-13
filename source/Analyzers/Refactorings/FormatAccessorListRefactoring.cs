@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +22,9 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
         {
-            if (accessorList.Accessors.Any(f => f.Body != null))
+            SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
+
+            if (accessors.Any(f => f.BodyOrExpressionBody() != null))
             {
                 if (accessorList.IsSingleLine(includeExteriorTrivia: false))
                 {
@@ -31,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+                    foreach (AccessorDeclarationSyntax accessor in accessors)
                     {
                         if (ShouldBeFormatted(accessor))
                             context.ReportDiagnostic(DiagnosticDescriptor, accessor.GetLocation());
@@ -39,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
             else if (accessorList.IsParentKind(SyntaxKind.PropertyDeclaration)
-                && accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
+                && accessors.All(f => !f.AttributeLists.Any())
                 && !accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
                 var propertyDeclaration = (PropertyDeclarationSyntax)accessorList.Parent;
@@ -78,6 +79,19 @@ namespace Roslynator.CSharp.Refactorings
                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
             }
+            else
+            {
+                ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
+
+                if (expressionBody != null
+                    && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.Span.Start, accessor.Span.End))
+                    && expressionBody.Expression?.IsSingleLine() == true)
+                {
+                    return accessor
+                       .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
+                       .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                }
+            }
 
             return false;
         }
@@ -87,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             AccessorListSyntax accessorList,
             CancellationToken cancellationToken)
         {
-            if (accessorList.Accessors.All(f => f.Body == null))
+            if (accessorList.Accessors.All(f => f.BodyOrExpressionBody() == null))
             {
                 var propertyDeclaration = (PropertyDeclarationSyntax)accessorList.Parent;
 
@@ -95,27 +109,47 @@ namespace Roslynator.CSharp.Refactorings
                     propertyDeclaration.Identifier.Span.End,
                     accessorList.CloseBraceToken.Span.Start);
 
-                PropertyDeclarationSyntax newPropertyDeclaration = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span);
-
-                newPropertyDeclaration = newPropertyDeclaration
+                PropertyDeclarationSyntax newPropertyDeclaration = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span)
                     .WithFormatterAnnotation();
 
                 return await document.ReplaceNodeAsync(propertyDeclaration, newPropertyDeclaration, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList)
-                    .WithFormatterAnnotation();
+                AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList);
+
+                newAccessorList = AddNewLineAfterFirstAccessorIfNecessary(accessorList, newAccessorList, cancellationToken);
+
+                newAccessorList = newAccessorList.WithFormatterAnnotation();
 
                 return await document.ReplaceNodeAsync(accessorList, newAccessorList, cancellationToken).ConfigureAwait(false);
             }
+        }
+
+        private static AccessorListSyntax AddNewLineAfterFirstAccessorIfNecessary(AccessorListSyntax accessorList, AccessorListSyntax newAccessorList, CancellationToken cancellationToken)
+        {
+            SyntaxList<AccessorDeclarationSyntax> accessors = newAccessorList.Accessors;
+
+            if (accessors.Count > 1)
+            {
+                AccessorDeclarationSyntax accessor = accessors.First();
+
+                SyntaxTriviaList trailingTrivia = accessor.GetTrailingTrivia();
+
+                if (accessorList.SyntaxTree.IsSingleLineSpan(trailingTrivia.Span, cancellationToken))
+                    return newAccessorList.ReplaceNode(accessor, accessor.AppendTrailingTrivia(CSharpFactory.NewLineTrivia()));
+            }
+
+            return newAccessorList;
         }
 
         private static AccessorListSyntax GetNewAccessorList(AccessorListSyntax accessorList)
         {
             if (accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
-                SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
+                SyntaxTriviaList triviaList = accessorList
+                    .CloseBraceToken
+                    .LeadingTrivia
                     .Add(CSharpFactory.NewLineTrivia());
 
                 return Remover.RemoveWhitespaceOrEndOfLine(accessorList)
@@ -123,29 +157,17 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                return AccessorSyntaxRewriter.VisitNode(accessorList);
-            }
-        }
-
-        private class AccessorSyntaxRewriter : CSharpSyntaxRewriter
-        {
-            private static readonly AccessorSyntaxRewriter _instance = new AccessorSyntaxRewriter();
-
-            private AccessorSyntaxRewriter()
-            {
-            }
-
-            public static AccessorListSyntax VisitNode(AccessorListSyntax accessorList)
-            {
-                return (AccessorListSyntax)_instance.Visit(accessorList);
-            }
-
-            public override SyntaxNode VisitAccessorDeclaration(AccessorDeclarationSyntax node)
-            {
-                if (ShouldBeFormatted(node))
-                    return Remover.RemoveWhitespaceOrEndOfLine(node, node.Span);
-
-                return base.VisitAccessorDeclaration(node);
+                return accessorList.ReplaceNodes(accessorList.Accessors, (f, g) =>
+                {
+                    if (ShouldBeFormatted(f))
+                    {
+                        return Remover.RemoveWhitespaceOrEndOfLine(f, f.Span);
+                    }
+                    else
+                    {
+                        return g;
+                    }
+                });
             }
         }
     }

@@ -51,6 +51,23 @@ namespace Roslynator.CSharp.Extensions
             return accessorDeclaration.WithSemicolonToken(default(SyntaxToken));
         }
 
+        public static CSharpSyntaxNode BodyOrExpressionBody(this AccessorDeclarationSyntax accessorDeclaration)
+        {
+            if (accessorDeclaration == null)
+                throw new ArgumentNullException(nameof(accessorDeclaration));
+
+            BlockSyntax body = accessorDeclaration.Body;
+
+            if (body != null)
+            {
+                return body;
+            }
+            else
+            {
+                return accessorDeclaration.ExpressionBody;
+            }
+        }
+
         public static AccessorDeclarationSyntax Getter(this AccessorListSyntax accessorList)
         {
             return Accessor(accessorList, SyntaxKind.GetAccessorDeclaration);
