@@ -248,6 +248,8 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
                     {
                         var accessor = (AccessorDeclarationSyntax)node;
 
