@@ -10,19 +10,21 @@
 
 ![Refactorings Options](/images/RefactoringsOptions.png)
 
-### Distribution
+### Products
 
-##### Roslynator
-* [Extension for Visual Studio 2015](http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e) that contains both analyzers and refactorings.
+#### Extensions for Visual Studio 2017
 
-##### Roslynator 2017
-* [Extension for Visual Studio 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) that contains both analyzers and refactorings.
+* [Roslynator 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) (analyzers and refactorings).
+* [Roslynator Refactorings 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) (refactorings only).
 
-##### Roslynator Refactorings
-* [Extension for Visual Studio 2015](http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9) that contains only refactorings.
+#### Extensions for Visual Studio 2015
 
-##### Roslynator Refactorings 2017
-* [Extension for Visual Studio 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) that contains only refactorings.
+* [Roslynator](http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e) (analyzers and refactorings).
+* [Roslynator Refactorings](http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9) (refactorings only).
 
-##### C# Analyzers
-* [NuGet package](http://www.nuget.org/packages/CSharpAnalyzers/) that contains only analyzers.
+#### NuGet Packages
+
+* [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) (analyzers only).
+  * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.2.0.0 (Visual Studio 2017 or higher).
+* [C# Analyzers](http://www.nuget.org/packages/CSharpAnalyzers/) (analyzers only).
+  * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0 (Visual Studio 2015 or higher).
