@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.AddBraces,
              title: "Add braces.",
              messageFormat: "Add braces to {0}.",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Style,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
          );
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveBraces,
             title: "Remove braces.",
             messageFormat: "Remove braces from {0}.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddBracesToIfElse,
             title: "Add braces to if-else.",
             messageFormat: "Add braces to if-else.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveBracesFromIfElse,
             title: "Remove braces from if-else.",
             messageFormat: "Remove braces from if-else.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyNestedUsingStatement,
             title: "Simplify nested using statement.",
             messageFormat: "Simplify nested using statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement,
             title: "Merge else clause with nested if statement.",
             messageFormat: "Merge else clause with nested if statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidEmbeddedStatement,
             title: "Avoid embedded statement.",
             messageFormat: "Add braces to {0}.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
             title: "Use explicit type instead of 'var' (when the type is not obvious).",
             messageFormat: "Use explicit type instead of 'var'.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach,
             title: "Use explicit type instead of 'var' (foreach variable).",
             messageFormat: "Use explicit type instead of 'var'.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseVarInsteadOfExplicitType,
             title: "Use 'var' instead of explicit type (when the type is obvious).",
             messageFormat: "Use 'var' instead of explicit type.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious,
             title: "Use explicit type instead of 'var' (even if the type is obvious).",
             messageFormat: "Use explicit type instead of 'var'.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -118,7 +118,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UsePredefinedType,
             title: "Use predefined type.",
             messageFormat: "Use predefined type.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidImplicitlyTypedArray,
             title: "Avoid implicitly-typed array.",
             messageFormat: "Declare explicit type when creating an array.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseNameOfOperator,
             title: "Use nameof operator.",
             messageFormat: "Use nameof operator.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Maintainability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseExpressionBodiedMember,
             title: "Use expression-bodied member.",
             messageFormat: "Use expression bodied member.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidMultilineExpressionBody,
             title: "Avoid multiline expression body.",
             messageFormat: "Expand expression-bodied member.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -168,7 +168,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddDefaultAccessModifier,
             title: "Add default access modifier.",
             messageFormat: "Add default access modifier.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReorderModifiers,
             title: "Reorder modifiers.",
             messageFormat: "Reorder modifiers.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -186,7 +186,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyNullableOfT,
             title: "Simplify Nullable<T> to T?.",
             messageFormat: "Simplify Nullable<T> to T?.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -196,7 +196,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyLambdaExpression,
             title: "Simplify lambda expression.",
             messageFormat: "Simplify lambda expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -207,7 +207,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList,
             title: "Simplify lambda expression parameter list.",
             messageFormat: "Simplify lambda expression parameter list.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -218,7 +218,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatEmptyBlock,
             title: "Format empty block.",
             messageFormat: "Format empty block.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -227,7 +227,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatAccessorList,
             title: "Format accessor list.",
             messageFormat: "Format accessor list.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -236,7 +236,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine,
             title: "Format each enum member on a separate line.",
             messageFormat: "Format each enum member on a separate line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -245,7 +245,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatEachStatementOnSeparateLine,
             title: "Format each statement on a separate line.",
             messageFormat: "Format each statement on a separate line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -254,7 +254,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine,
             title: "Format embedded statement on a separate line.",
             messageFormat: "Format embedded statement on a separate line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -263,7 +263,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine,
             title: "Format switch section's statement on a separate line.",
             messageFormat: "Format switch section's statement on a separate line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -272,7 +272,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine,
             title: "Format binary operator on next line.",
             messageFormat: "Format binary operator on next line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -281,7 +281,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement,
             title: "Add empty line after embedded statement.",
             messageFormat: "Add empty line after embedded statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -290,7 +290,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantBraces,
             title: "Remove redundant braces.",
             messageFormat: "Remove redundant braces.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -301,7 +301,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantParentheses,
             title: "Remove redundant parentheses.",
             messageFormat: "Remove redundant parentheses.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -312,7 +312,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
             title: "Remove redundant boolean literal.",
             messageFormat: "Remove redundant boolean literal.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -323,7 +323,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantSealedModifier,
             title: "Remove redundant sealed modifier.",
             messageFormat: "Remove redundant sealed modifier.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -333,7 +333,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantCommaInInitializer,
             title: "Remove redundant comma in initializer.",
             messageFormat: "Remove redundant comma in initializer.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -343,7 +343,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantEmptyLine,
             title: "Remove redundant empty line.",
             messageFormat: "Remove redundant empty line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -352,7 +352,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveTrailingWhitespace,
             title: "Remove trailing white-space.",
             messageFormat: "Remove trailing white-space.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -361,7 +361,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyStatement,
             title: "Remove empty statement.",
             messageFormat: "Remove empty statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -371,7 +371,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList,
             title: "Remove empty attribute argument list.",
             messageFormat: "Remove empty attribute argument list.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -381,7 +381,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyElseClause,
             title: "Remove empty else clause.",
             messageFormat: "Remove empty else clause.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -391,7 +391,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyInitializer,
             title: "Remove empty initializer.",
             messageFormat: "Remove empty initializer.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -401,7 +401,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType,
             title: "Remove enum default underlying type.",
             messageFormat: "Remove enum default underlying type.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -411,7 +411,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart,
             title: "Remove partial modifier from type with a single part.",
             messageFormat: "Remove partial modifier from type with a single part.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -421,7 +421,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement,
             title: "Remove original exception from throw statement.",
             messageFormat: "Remove original exception from throw statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Maintainability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -431,7 +431,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
             title: "Rename private field according to camel case with underscore.",
             messageFormat: "Rename private field to camel case with underscore.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Naming,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -440,7 +440,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync,
             title: "Asynchronous method name should end with 'Async'.",
             messageFormat: "Add suffix 'Async' to asynchronous method name.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Naming,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -449,7 +449,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync,
             title: "Non-asynchronous method name should not end with 'Async'.",
             messageFormat: "Remove suffix 'Async' from non-asynchronous method name.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Naming,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -460,7 +460,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression,
             title: "Replace anonymous method with lambda expression.",
             messageFormat: "Replace anonymous method with lambda expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -471,7 +471,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyBooleanComparison,
             title: "Simplify boolean comparison.",
             messageFormat: "Simplify boolean comparison.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -482,7 +482,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddConstructorArgumentList,
             title: "Add constructor argument list.",
             messageFormat: "Add constructor argument list.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -491,7 +491,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
             title: "Parenthesize condition in conditional expression.",
             messageFormat: "Parenthesize condition in conditional expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -500,7 +500,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.DeclareEachAttributeSeparately,
             title: "Declare each attribute separately.",
             messageFormat: "Declare each attribute separately.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -509,7 +509,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement,
             title: "Merge local declaration with return statement.",
             messageFormat: "Merge local declaration with return statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -520,7 +520,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
             title: "Avoid semicolon at the end of declaration.",
             messageFormat: "Remove semicolon from the end of declaration.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -530,7 +530,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective,
             title: "Avoid usage of using alias directive.",
             messageFormat: "Avoid usage of using alias directive.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -539,7 +539,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
             title: "Add empty line between declarations.",
             messageFormat: "Add empty line between declarations.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -548,7 +548,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseCompoundAssignment,
             title: "Use compound assignment.",
             messageFormat: "Use {0} operator.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -559,7 +559,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance,
             title: "Avoid locking on publicly accessible instance.",
             messageFormat: "Lock on private field instead of locking on '{0}'.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -568,7 +568,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.DeclareEachTypeInSeparateFile,
             title: "Declare each type in separate file.",
             messageFormat: "Declare each type in separate file.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Maintainability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -577,7 +577,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
             title: "Merge if statement with nested if statement.",
             messageFormat: "Merge if statement with nested if statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
@@ -588,7 +588,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation,
             title: "Avoid interpolated string with no interpolation.",
             messageFormat: "Remove '$' from interpolated string with no interpolation.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -598,7 +598,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop,
             title: "Avoid usage of do statement to create an infinite loop.",
             messageFormat: "Use while statement to create an infinite loop.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -607,7 +607,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop,
             title: "Avoid usage of for statement to create an infinite loop.",
             messageFormat: "Use while statement to create an infinite loop.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -616,7 +616,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
             title: "Avoid usage of while statement to create an inifinite loop.",
             messageFormat: "Use for statement to create an infinite loop.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -625,7 +625,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyFinallyClause,
             title: "Remove empty finally clause.",
             messageFormat: "Remove empty finally clause.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -635,7 +635,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyArgumentList,
             title: "Remove empty argument list.",
             messageFormat: "Remove empty argument list.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -645,7 +645,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyLogicalNotExpression,
             title: "Simplify logical not expression.",
             messageFormat: "Simplify logical not expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -654,7 +654,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel,
             title: "Remove unnecessary case label.",
             messageFormat: "Remove unnecessary case label.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -664,7 +664,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
             title: "Remove redundant default switch section.",
             messageFormat: "Remove redundant default switch section.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -674,7 +674,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
             title: "Remove redundant base constructor call.",
             messageFormat: "Remove redundant base constructor call.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -684,7 +684,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration,
             title: "Remove empty namespace declaration.",
             messageFormat: "Remove empty namespace declaration.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -694,7 +694,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement,
             title: "Replace if statement with return statement.",
             messageFormat: "Replace if statement with return statement.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
@@ -705,7 +705,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantConstructor,
             title: "Remove redundant constructor.",
             messageFormat: "Remove redundant constructor.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -715,7 +715,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidEmptyCatchClauseThatCatchesSystemException,
             title: "Avoid empty catch clause that catches System.Exception.",
             messageFormat: "Avoid empty catch clause that catches System.Exception.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -724,7 +724,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatDeclarationBraces,
             title: "Format declaration braces.",
             messageFormat: "Format declaration braces.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -733,7 +733,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyLinqMethodChain,
             title: "Simplify LINQ method chain.",
             messageFormat: "Simplify LINQ method chain.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -761,7 +761,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty,
             title: "Replace 'Any' method with 'Count' or 'Length' property.",
             messageFormat: "Replace 'Any' method with '{0}' property.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -770,7 +770,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SplitVariableDeclaration,
             title: "Split variable declaration.",
             messageFormat: "Split variable declaration.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
@@ -779,7 +779,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty,
             title: "Replace 'Count' method with 'Count' or 'Length' property.",
             messageFormat: "Replace 'Count' method with '{0}' property.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -788,7 +788,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
             title: "Replace 'Count' method with 'Any' method.",
             messageFormat: "Replace 'Count' method with 'Any' method.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -797,7 +797,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression,
             title: "Replace conditional expression with coalesce expression.",
             messageFormat: "Replace conditional expression with coalesce expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -806,7 +806,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty,
             title: "Replace property with auto-implemented property.",
             messageFormat: "Replace property with auto-implemented property.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -844,7 +844,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment,
             title: "Use postfix unary operator instead of assignment.",
             messageFormat: "Use {0} operator instead of assignment.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -855,7 +855,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.CallConfigureAwait,
              title: "Call 'ConfigureAwait(false)'.",
              messageFormat: "Call 'ConfigureAwait(false).",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Design,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
         );
@@ -864,7 +864,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.RemoveEmptyRegion,
              title: "Remove empty region.",
              messageFormat: "Remove empty region.",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Redundancy,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
         );
@@ -873,7 +873,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
              title: "Add empty line after last statement in do statement.",
              messageFormat: "Add empty line after last statement in do statement.",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Formatting,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: false
         );
@@ -882,7 +882,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.RemoveFileWithNoCode,
              title: "Remove file with no code.",
              messageFormat: "Remove file with no code.",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Redundancy,
              defaultSeverity: DiagnosticSeverity.Info,
              isEnabledByDefault: true
         );
@@ -891,7 +891,7 @@ namespace Roslynator.CSharp
              id: DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel,
              title: "Declare using directive on top level.",
              messageFormat: "Declare using directive on top level.",
-             category: DiagnosticCategories.General,
+             category: DiagnosticCategories.Readability,
              defaultSeverity: DiagnosticSeverity.Warning,
              isEnabledByDefault: false
         );
@@ -900,7 +900,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseCSharp6DictionaryInitializer,
             title: "Use C# 6.0 dictionary initializer.",
             messageFormat: "Use C# 6.0 dictionary initializer.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -909,7 +909,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod,
             title: "Use bitwise operation instead of 'HasFlag' method.",
             messageFormat: "Use bitwise operation instead of 'HasFlag' method.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -918,7 +918,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantToStringCall,
             title: "Remove redundant 'ToString' call.",
             messageFormat: "Remove redundant 'ToString' call.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -928,7 +928,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
             title: "Avoid 'null' on the left side of a binary expression.",
             messageFormat: "Swap the left and right part of a binary expression so that 'null' is on the right side.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -937,7 +937,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
             title: "Default label should be last label in switch section.",
             messageFormat: "Move default label to last position in switch section.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -946,7 +946,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
             title: "Format documentation summary on a single line.",
             messageFormat: "Format documentation summary on a single line.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -955,7 +955,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
             title: "Format documentation summary on multiple lines.",
             messageFormat: "Format documentation summary on multiple lines.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -964,7 +964,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.MarkClassAsStatic,
             title: "Mark class as static.",
             messageFormat: "Mark class as static.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -973,7 +973,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
             title: "Replace if statement with assignment.",
             messageFormat: "Replace if statement with assignment.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -982,7 +982,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.SimplifyConditionalExpression,
             title: "Simplify conditional expression.",
             messageFormat: "Simplify conditional expression.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -991,7 +991,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString,
             title: "Merge interpolation into interpolated string.",
             messageFormat: "Merge interpolation into interpolated string.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -1000,7 +1000,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveEmptyDestructor,
             title: "Remove empty destructor.",
             messageFormat: "Remove empty destructor.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -1010,7 +1010,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
             title: "Remove redundant 'ToCharArray' call.",
             messageFormat: "Remove redundant 'ToCharArray' call.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
@@ -1020,7 +1020,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
             title: "Add static modifier to all partial class declarations.",
             messageFormat: "Add static modifier to all partial class declarations.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -1029,7 +1029,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
             title: "Use 'Cast' method instead of 'Select' method.",
             messageFormat: "Use 'Cast' method instead of 'Select' method.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -1038,7 +1038,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.DeclareTypeInsideNamespace,
             title: "Declare type inside namespace.",
             messageFormat: "Declare '{0}' inside namespace.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
@@ -1047,7 +1047,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
             title: "Add braces to switch section with multiple statements.",
             messageFormat: "Add braces to switch section with multiple statements.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
@@ -1056,7 +1056,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
             title: "Combine 'Enumerable.Where' method chain.",
             messageFormat: "Combine 'Enumerable.Where' method chain.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -1067,7 +1067,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
             title: "Use 'string.IsNullOrEmpty' method.",
             messageFormat: "Use 'string.IsNullOrEmpty' method.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
@@ -1076,7 +1076,7 @@ namespace Roslynator.CSharp
             id: DiagnosticIdentifiers.RemoveRedundantDelegateCreation,
             title: "Remove redundant delegate creation.",
             messageFormat: "Remove redundant delegate creation.",
-            category: DiagnosticCategories.General,
+            category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
