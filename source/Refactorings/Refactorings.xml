@@ -221,7 +221,7 @@
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExpandExpressionBodiedMember" Title="Expand expression-bodied member" ExtensionVersion="0.9.0">
+  <Refactoring Id="ExpandExpressionBody" Title="Expand expression-body" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>expression body</Syntax>
     </Syntaxes>

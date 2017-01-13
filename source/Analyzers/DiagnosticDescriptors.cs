@@ -158,7 +158,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidMultilineExpressionBody,
             title: "Avoid multiline expression body.",
-            messageFormat: "Expand expression-bodied member.",
+            messageFormat: "Expand expression body with multiline expression.",
             category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false

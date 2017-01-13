@@ -14,7 +14,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ExpandExpressionBodiedMemberRefactoring
+    public static class ExpandExpressionBodyRefactoring
     {
         public static bool CanRefactor(ArrowExpressionClauseSyntax arrowExpressionClause)
         {
