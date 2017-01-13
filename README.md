@@ -24,6 +24,8 @@
 
 #### NuGet Packages
 
+* [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) NuGet package that contains only analyzers.
+  * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.2.0.0 (Visual Studio 2017 or higher).
 * [C# Analyzers](http://www.nuget.org/packages/CSharpAnalyzers/) NuGet package that contains only analyzers.
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0 (Visual Studio 2015 or higher).
 
