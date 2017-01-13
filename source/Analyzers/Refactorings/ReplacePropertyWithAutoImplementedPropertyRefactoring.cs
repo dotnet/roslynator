@@ -18,6 +18,11 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplacePropertyWithAutoImplementedPropertyRefactoring
     {
+        public static DiagnosticDescriptor FadeOutDescriptor
+        {
+            get { return DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut; }
+        }
+
         public static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
             IFieldSymbol fieldSymbol = GetBackingFieldSymbol(property, context.SemanticModel, context.CancellationToken);
@@ -42,26 +47,54 @@ namespace Roslynator.CSharp.Refactorings
                             DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
                             property.GetLocation());
 
-                        DiagnosticDescriptor descriptor = DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut;
-
                         if (property.ExpressionBody != null)
                         {
-                            context.FadeOutNode(descriptor, property.ExpressionBody);
+                            context.FadeOutNode(FadeOutDescriptor, property.ExpressionBody);
                         }
                         else
                         {
                             AccessorDeclarationSyntax getter = property.Getter();
 
                             if (getter != null)
-                                context.FadeOutNode(descriptor, getter.Body);
+                                FadeOutBodyOrExpressionBody(context, getter);
 
                             AccessorDeclarationSyntax setter = property.Setter();
 
                             if (setter != null)
-                                context.FadeOutNode(descriptor, setter.Body);
+                                FadeOutBodyOrExpressionBody(context, setter);
                         }
                     }
                 }
+            }
+        }
+
+        private static void FadeOutBodyOrExpressionBody(SyntaxNodeAnalysisContext context, AccessorDeclarationSyntax getter)
+        {
+            BlockSyntax body = getter.Body;
+
+            if (body != null)
+            {
+                StatementSyntax statement = body.Statements.First();
+
+                switch (statement.Kind())
+                {
+                    case SyntaxKind.ReturnStatement:
+                        {
+                            context.FadeOutNode(FadeOutDescriptor, ((ReturnStatementSyntax)statement).Expression);
+                            break;
+                        }
+                    case SyntaxKind.ExpressionStatement:
+                        {
+                            context.FadeOutNode(FadeOutDescriptor, ((ExpressionStatementSyntax)statement).Expression);
+                            break;
+                        }
+                }
+
+                context.FadeOutBraces(FadeOutDescriptor, body);
+            }
+            else
+            {
+                context.FadeOutNode(FadeOutDescriptor, getter.ExpressionBody);
             }
         }
 
@@ -172,7 +205,6 @@ namespace Roslynator.CSharp.Refactorings
                 else
                 {
                     return GetIdentifierFromExpression(getter.ExpressionBody?.Expression);
-
                 }
             }
 
