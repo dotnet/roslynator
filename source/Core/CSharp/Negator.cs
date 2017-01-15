@@ -252,15 +252,21 @@ namespace Roslynator.CSharp
             ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
             ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
 
-            whenTrue = whenTrue?
-                .LogicallyNegate()
-                .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
-                .WithTriviaFrom(whenTrue);
+            if (whenTrue?.IsKind(SyntaxKind.ThrowExpression) == false)
+            {
+                whenTrue = whenTrue
+                    .LogicallyNegate()
+                    .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
+                    .WithTriviaFrom(whenTrue);
+            }
 
-            whenFalse = whenFalse?
-                .LogicallyNegate()
-                .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
-                .WithTriviaFrom(whenFalse);
+            if (whenFalse?.IsKind(SyntaxKind.ThrowExpression) == false)
+            {
+                whenFalse = whenFalse
+                    .LogicallyNegate()
+                    .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
+                    .WithTriviaFrom(whenFalse);
+            }
 
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression.Update(
                 conditionalExpression.Condition,
