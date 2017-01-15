@@ -473,24 +473,17 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             if (parameterInfos != null)
             {
-                foreach (ParameterSyntax parameter in methodDeclaration.ParameterList.Parameters)
+                foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
-
-                    if (symbol?.IsParameter() == true)
+                    if (!parameterInfos.Any(f => f.ParameterSymbol == parameterSymbol))
                     {
-                        var parameterSymbol = (IParameterSymbol)symbol;
-
-                        if (!parameterInfos.Any(f => f.ParameterSymbol == parameterSymbol))
+                        if (parameterSymbol.HasExplicitDefaultValue)
                         {
-                            if (parameterSymbol.HasExplicitDefaultValue)
-                            {
-                                parameterInfos.Add(new ParameterInfo(parameterSymbol, CSharpFactory.DefaultValue(parameterSymbol)));
-                            }
-                            else
-                            {
-                                return null;
-                            }
+                            parameterInfos.Add(new ParameterInfo(parameterSymbol, CSharpFactory.DefaultValue(parameterSymbol)));
+                        }
+                        else
+                        {
+                            return null;
                         }
                     }
                 }
