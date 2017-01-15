@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             Analyze(context, ifStatement.CloseParenToken, ifStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
+        internal static void Analyze(SyntaxNodeAnalysisContext context, CommonForEachStatementSyntax forEachStatement)
         {
             Analyze(context, forEachStatement.CloseParenToken, forEachStatement.Statement);
         }

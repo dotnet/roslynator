@@ -58,6 +58,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
             }
 
+            foreach ((string, string) item in (Tuple.Values))
+            {
+            }
+
             string s = $"{("")}";
 
             int i = 0;

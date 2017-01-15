@@ -85,6 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.DoStatement:
                 case SyntaxKind.ForStatement:
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                 case SyntaxKind.FixedStatement:
                 case SyntaxKind.CheckedStatement:
                 case SyntaxKind.UncheckedStatement:

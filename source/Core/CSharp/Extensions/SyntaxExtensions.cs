@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Extensions
             return fieldDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
-        public static TextSpan ParenthesesSpan(this ForEachStatementSyntax forEachStatement)
+        public static TextSpan ParenthesesSpan(this CommonForEachStatementSyntax forEachStatement)
         {
             if (forEachStatement == null)
                 throw new ArgumentNullException(nameof(forEachStatement));

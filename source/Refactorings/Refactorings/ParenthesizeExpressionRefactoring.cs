@@ -83,6 +83,13 @@ namespace Roslynator.CSharp.Refactorings
                         return node != forEachStatement.Expression
                             && node != forEachStatement.Type;
                     }
+                case SyntaxKind.ForEachVariableStatement:
+                    {
+                        var forEachStatement = (ForEachVariableStatementSyntax)parent;
+
+                        return node != forEachStatement.Expression
+                            && node != forEachStatement.Variable;
+                    }
                 case SyntaxKind.WhileStatement:
                     return node != ((WhileStatementSyntax)parent).Condition;
                 case SyntaxKind.DoStatement:

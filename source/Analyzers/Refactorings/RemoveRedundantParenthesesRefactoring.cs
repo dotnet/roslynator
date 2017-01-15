@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             AnalyzeExpression(context, switchStatement.Expression);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax forEachStatement)
+        internal static void Analyze(SyntaxNodeAnalysisContext context, CommonForEachStatementSyntax forEachStatement)
         {
             AnalyzeExpression(context, forEachStatement.Expression);
         }

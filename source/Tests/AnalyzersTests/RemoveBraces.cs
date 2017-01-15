@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    public static class AddBraces
+    public static class RemoveBraces
     {
         private static void Foo(object x, object y)
         {
@@ -13,61 +13,61 @@ namespace Roslynator.CSharp.Analyzers.Tests
             var items = new List<object>();
 
             if (f)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             if (f)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
             else
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             foreach (object item in items)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             foreach ((string, string) item in Tuple.Values)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             for (int i = 0; i < items.Count; i++)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             using ((IDisposable)null)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             while (f)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             do
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
             while (f);
 
             lock (null)
-                Foo(
-                    x,
-                    y);
+            {
+                Foo(x, y);
+            }
 
             unsafe
             {
                 fixed ()
-                    Foo(
-                        x,
-                        y);
+                {
+                    Foo(x, y);
+                }
             }
         }
     }

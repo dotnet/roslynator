@@ -72,6 +72,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.IfStatement:
                 case SyntaxKind.ElseClause:
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                 case SyntaxKind.ForStatement:
                 case SyntaxKind.UsingStatement:
                 case SyntaxKind.WhileStatement:
@@ -91,7 +92,8 @@ namespace Roslynator.CSharp
                 case SyntaxKind.IfStatement:
                     return ((IfStatementSyntax)node).Statement;
                 case SyntaxKind.ForEachStatement:
-                    return ((ForEachStatementSyntax)node).Statement;
+                case SyntaxKind.ForEachVariableStatement:
+                    return ((CommonForEachStatementSyntax)node).Statement;
                 case SyntaxKind.ForStatement:
                     return ((ForStatementSyntax)node).Statement;
                 case SyntaxKind.WhileStatement:
@@ -141,8 +143,9 @@ namespace Roslynator.CSharp
                         return ((DoStatementSyntax)containingNode).Condition?.IsMultiLine() != true;
                     }
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                     {
-                        var forEachStatement = (ForEachStatementSyntax)containingNode;
+                        var forEachStatement = (CommonForEachStatementSyntax)containingNode;
 
                         return forEachStatement.SyntaxTree.IsSingleLineSpan(forEachStatement.ParenthesesSpan());
                     }

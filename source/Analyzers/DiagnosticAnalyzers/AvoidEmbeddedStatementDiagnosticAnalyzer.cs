@@ -30,6 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.IfStatement,
                 SyntaxKind.ElseClause,
                 SyntaxKind.ForEachStatement,
+                SyntaxKind.ForEachVariableStatement,
                 SyntaxKind.ForStatement,
                 SyntaxKind.UsingStatement,
                 SyntaxKind.WhileStatement,
@@ -62,6 +63,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 case SyntaxKind.DoStatement:
                     return "do statement";
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                     return "foreach statement";
                 case SyntaxKind.ForStatement:
                     return "for statement";

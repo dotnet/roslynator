@@ -66,6 +66,7 @@ namespace Roslynator.CSharp.Refactorings
             switch (node.Kind())
             {
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                 case SyntaxKind.ForStatement:
                 case SyntaxKind.UsingStatement:
                 case SyntaxKind.WhileStatement:

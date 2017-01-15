@@ -32,6 +32,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
                 SyntaxKind.IfStatement,
                 SyntaxKind.ForEachStatement,
+                SyntaxKind.ForEachVariableStatement,
                 SyntaxKind.ForStatement,
                 SyntaxKind.UsingStatement,
                 SyntaxKind.WhileStatement,

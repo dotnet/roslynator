@@ -44,6 +44,7 @@
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AsynchronousMethodNameShouldEndWithAsync.cs" />
+    <Compile Include="AvoidEmbeddedStatement.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
     <Compile Include="MergeLocalDeclarationWithReturnStatement.cs" />
+    <Compile Include="RemoveBraces.cs" />
     <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveFileWithNoCode.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
+    <Compile Include="Tuple.cs" />
     <Compile Include="UseCompoundAssignment.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />
@@ -114,6 +117,9 @@
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

@@ -38,7 +38,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzerForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachVariableStatement);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeYieldReturnStatement(f), SyntaxKind.YieldReturnStatement);
@@ -100,9 +101,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             RemoveRedundantParenthesesRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
         }
 
-        private void AnalyzerForEachStatement(SyntaxNodeAnalysisContext context)
+        private void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ForEachStatementSyntax)context.Node);
+            RemoveRedundantParenthesesRefactoring.Analyze(context, (CommonForEachStatementSyntax)context.Node);
         }
 
         private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)

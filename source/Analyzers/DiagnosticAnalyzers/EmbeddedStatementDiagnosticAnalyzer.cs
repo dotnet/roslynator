@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachVariableStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
@@ -50,9 +51,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             AddBracesRefactoring.Analyze(context, ifStatement);
         }
 
-        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        private void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            var forEachStatement = (ForEachStatementSyntax)context.Node;
+            var forEachStatement = (CommonForEachStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, forEachStatement);
             AddEmptyLineAfterEmbeddedStatementRefactoring.Analyze(context, forEachStatement);

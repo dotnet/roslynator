@@ -42,6 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.DoStatement:
                     return "do statement";
                 case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
                     return "foreach statement";
                 case SyntaxKind.ForStatement:
                     return "for statement";

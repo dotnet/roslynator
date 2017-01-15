@@ -25,6 +25,9 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return true;
             }
 
+            foreach ((string, string) item in Tuple.Values)
+                GetValue();
+
             return false;
         }
     }
