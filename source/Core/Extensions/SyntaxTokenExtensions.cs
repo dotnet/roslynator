@@ -13,7 +13,7 @@ namespace Roslynator.Extensions
 {
     public static class SyntaxTokenExtensions
     {
-        public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
+        public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
@@ -21,12 +21,12 @@ namespace Roslynator.Extensions
             return token.WithLeadingTrivia(trivia.Concat(token.LeadingTrivia));
         }
 
-        public static SyntaxToken PrependLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
         {
             return token.WithLeadingTrivia(token.LeadingTrivia.Insert(0, trivia));
         }
 
-        public static SyntaxToken AppendTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
+        public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
         {
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
@@ -34,7 +34,7 @@ namespace Roslynator.Extensions
             return token.WithTrailingTrivia(token.TrailingTrivia.AddRange(trivia));
         }
 
-        public static SyntaxToken AppendTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
         {
             return token.WithTrailingTrivia(token.TrailingTrivia.Add(trivia));
         }

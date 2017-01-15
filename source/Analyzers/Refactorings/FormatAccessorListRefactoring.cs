@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxTriviaList trailingTrivia = accessor.GetTrailingTrivia();
 
                 if (accessorList.SyntaxTree.IsSingleLineSpan(trailingTrivia.Span, cancellationToken))
-                    return newAccessorList.ReplaceNode(accessor, accessor.AppendTrailingTrivia(CSharpFactory.NewLineTrivia()));
+                    return newAccessorList.ReplaceNode(accessor, accessor.AppendToTrailingTrivia(CSharpFactory.NewLineTrivia()));
             }
 
             return newAccessorList;
