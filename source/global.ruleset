@@ -213,6 +213,18 @@
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
     <Rule Id="IDE0011" Action="None" />
     <Rule Id="IDE0011WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0021" Action="None" />
+    <Rule Id="IDE0021WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0022" Action="None" />
+    <Rule Id="IDE0022WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0023" Action="None" />
+    <Rule Id="IDE0023WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0024" Action="None" />
+    <Rule Id="IDE0024WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0025" Action="None" />
+    <Rule Id="IDE0025WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0026" Action="None" />
+    <Rule Id="IDE0026WithoutSuggestion" Action="None" />
     <Rule Id="IDE0027" Action="None" />
     <Rule Id="IDE0027WithoutSuggestion" Action="None" />
     <Rule Id="IDE0030" Action="None" />
