@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
@@ -19,29 +20,33 @@ namespace Roslynator.CSharp.Refactorings
                 await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral))
-                await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                ReplaceStringEmptyWithEmptyStringLiteral(context, semanticModel, memberAccess);
+            }
         }
 
-        private static async Task ConvertStringEmptyToEmptyStringLiteralAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
+        private static void ReplaceStringEmptyWithEmptyStringLiteral(RefactoringContext context, SemanticModel semanticModel, MemberAccessExpressionSyntax memberAccess)
         {
-            if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
+            while (memberAccess != null)
             {
-                context.RegisterRefactoring(
-                    $"Replace '{memberAccess}' with \"\"",
-                    cancellationToken =>
-                    {
-                        return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
-                            context.Document,
-                            memberAccess,
-                            cancellationToken);
-                    });
-            }
-            else
-            {
-                memberAccess = (MemberAccessExpressionSyntax)memberAccess.FirstAncestor(SyntaxKind.SimpleMemberAccessExpression);
+                if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, semanticModel, context.CancellationToken))
+                {
+                    context.RegisterRefactoring(
+                        $"Replace '{memberAccess}' with \"\"",
+                        cancellationToken =>
+                        {
+                            return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
+                                context.Document,
+                                memberAccess,
+                                cancellationToken);
+                        });
 
-                if (memberAccess != null)
-                    await ConvertStringEmptyToEmptyStringLiteralAsync(context, memberAccess).ConfigureAwait(false);
+                    break;
+                }
+
+                memberAccess = (MemberAccessExpressionSyntax)memberAccess.FirstAncestor(SyntaxKind.SimpleMemberAccessExpression);
             }
         }
     }
