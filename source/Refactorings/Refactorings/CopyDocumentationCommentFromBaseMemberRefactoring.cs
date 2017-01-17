@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration);
 
                 if (methodSymbol?.IsErrorType() == false)
-                    ComputeRefactoring<IMethodSymbol>(context, methodDeclaration, methodSymbol, methodSymbol.OverriddenMethod);
+                    ComputeRefactoring<IMethodSymbol>(context, methodDeclaration, methodSymbol, methodSymbol.OverriddenMethod, semanticModel);
             }
         }
 
@@ -39,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration);
 
                 if (propertySymbol?.IsErrorType() == false)
-                    ComputeRefactoring<IPropertySymbol>(context, propertyDeclaration, propertySymbol, propertySymbol.OverriddenProperty);
+                    ComputeRefactoring<IPropertySymbol>(context, propertyDeclaration, propertySymbol, propertySymbol.OverriddenProperty, semanticModel);
             }
         }
 
@@ -52,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration);
 
                 if (propertySymbol?.IsErrorType() == false)
-                    ComputeRefactoring<IPropertySymbol>(context, indexerDeclaration, propertySymbol, propertySymbol.OverriddenProperty);
+                    ComputeRefactoring<IPropertySymbol>(context, indexerDeclaration, propertySymbol, propertySymbol.OverriddenProperty, semanticModel);
             }
         }
 
@@ -65,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
                 IEventSymbol eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration);
 
                 if (eventSymbol?.IsErrorType() == false)
-                    ComputeRefactoring<IEventSymbol>(context, eventDeclaration, eventSymbol, eventSymbol.OverriddenEvent);
+                    ComputeRefactoring<IEventSymbol>(context, eventDeclaration, eventSymbol, eventSymbol.OverriddenEvent, semanticModel);
             }
         }
 
@@ -82,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
                     var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator) as IEventSymbol;
 
                     if (eventSymbol?.IsErrorType() == false)
-                        ComputeRefactoring<IEventSymbol>(context, eventFieldDeclaration, eventSymbol, eventSymbol.OverriddenEvent);
+                        ComputeRefactoring<IEventSymbol>(context, eventFieldDeclaration, eventSymbol, eventSymbol.OverriddenEvent, semanticModel);
                 }
             }
         }
@@ -100,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
                     ISymbol symbol = semanticModel.GetSymbol(initializer);
 
                     if (symbol?.IsErrorType() == false)
-                        ComputeRefactoring<ISymbol>(context, constructorDeclaration, null, symbol);
+                        ComputeRefactoring<ISymbol>(context, constructorDeclaration, null, symbol, semanticModel);
                 }
             }
         }
@@ -109,14 +110,15 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             MemberDeclarationSyntax memberDeclaration,
             ISymbol memberSymbol,
-            ISymbol baseSymbol) where TInterfaceSymbol : ISymbol
+            ISymbol baseSymbol,
+            SemanticModel semanticModel) where TInterfaceSymbol : ISymbol
         {
             var commentTrivia = default(SyntaxTrivia);
             string title = null;
 
             if (baseSymbol != null)
             {
-                commentTrivia = CreateDocumentationCommentTrivia(baseSymbol, context.CancellationToken);
+                commentTrivia = CreateDocumentationCommentTrivia(baseSymbol, semanticModel, memberDeclaration.SpanStart, context.CancellationToken);
 
                 if (commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                     title = GetTitleForBaseMember(memberDeclaration);
@@ -129,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (interfaceMember != null)
                 {
-                    commentTrivia = CreateDocumentationCommentTrivia(interfaceMember, context.CancellationToken);
+                    commentTrivia = CreateDocumentationCommentTrivia(interfaceMember, semanticModel, memberDeclaration.SpanStart, context.CancellationToken);
 
                     if (commentTrivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                         title = GetTitleForInterfaceMember(memberDeclaration);
@@ -192,7 +194,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static SyntaxTrivia CreateDocumentationCommentTrivia(ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        public static SyntaxTrivia CreateDocumentationCommentTrivia(ISymbol symbol, SemanticModel semanticModel, int position, CancellationToken cancellationToken = default(CancellationToken))
         {
             string xmlString = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
 
@@ -207,13 +209,65 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxTriviaList triviaList = SyntaxFactory.ParseLeadingTrivia(text);
 
                     if (triviaList.Count == 1)
-                        return triviaList.First();
+                    {
+                        SyntaxTrivia trivia = triviaList.First();
+
+                        if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia)
+                            && trivia.HasStructure)
+                        {
+                            SyntaxNode structure = trivia.GetStructure();
+
+                            if (structure.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                            {
+                                var commentTrivia = (DocumentationCommentTriviaSyntax)structure;
+
+                                var rewriter = new DocumentationCommentTriviaRewriter(position, semanticModel);
+
+                                // Remove T: from cref attribute and replace `1 with {T}
+                                commentTrivia = (DocumentationCommentTriviaSyntax)rewriter.Visit(commentTrivia);
+
+                                // Remove <filterpriority> element
+                                commentTrivia = RemoveFilterPriorityElement(commentTrivia);
+
+                                string commentTriviaText = commentTrivia.ToFullString();
+
+                                commentTriviaText = Regex.Replace(commentTriviaText, @"^///\s*(\r?\n|$)", "", RegexOptions.Multiline);
+
+                                triviaList = SyntaxFactory.ParseLeadingTrivia(commentTriviaText);
+
+                                if (triviaList.Count == 1)
+                                    return triviaList.First();
+                            }
+                        }
+                    }
                 }
 
                 Debug.Assert(false, xmlString);
             }
 
             return default(SyntaxTrivia);
+        }
+
+        private static DocumentationCommentTriviaSyntax RemoveFilterPriorityElement(DocumentationCommentTriviaSyntax commentTrivia)
+        {
+            SyntaxList<XmlNodeSyntax> content = commentTrivia.Content;
+
+            for (int i = content.Count - 1; i >= 0; i--)
+            {
+                XmlNodeSyntax xmlNode = content[i];
+
+                if (xmlNode.IsKind(SyntaxKind.XmlElement))
+                {
+                    var xmlElement = (XmlElementSyntax)xmlNode;
+
+                    string name = xmlElement.StartTag?.Name?.LocalName.ValueText;
+
+                    if (string.Equals(name, "filterpriority", StringComparison.OrdinalIgnoreCase))
+                        content = content.RemoveAt(i);
+                }
+            }
+
+            return commentTrivia.WithContent(content);
         }
 
         public static string GetInnerXml(string comment)
@@ -301,6 +355,72 @@ namespace Roslynator.CSharp.Refactorings
             else
             {
                 return leadingTrivia.Insert(0, commentTrivia);
+            }
+        }
+
+        private class DocumentationCommentTriviaRewriter : CSharpSyntaxRewriter
+        {
+            private readonly SemanticModel _semanticModel;
+            private readonly int _position;
+
+            public DocumentationCommentTriviaRewriter(int position, SemanticModel semanticModel)
+                : base(visitIntoStructuredTrivia: true)
+            {
+                if (semanticModel == null)
+                    throw new ArgumentNullException(nameof(semanticModel));
+
+                _position = position;
+                _semanticModel = semanticModel;
+            }
+
+            public override SyntaxNode VisitXmlTextAttribute(XmlTextAttributeSyntax node)
+            {
+                XmlNameSyntax name = node.Name;
+
+                if (name?.LocalName.ValueText == "cref")
+                {
+                    SyntaxTokenList tokens = node.TextTokens;
+
+                    if (tokens.Count == 1)
+                    {
+                        SyntaxToken token = tokens.First();
+
+                        string text = token.Text;
+
+                        string valueText = token.ValueText;
+
+                        if (text.StartsWith("T:", StringComparison.Ordinal))
+                            text = GetMinimalDisplayString(text.Substring(2));
+
+                        if (valueText.StartsWith("T:", StringComparison.Ordinal))
+                            valueText = GetMinimalDisplayString(valueText.Substring(2));
+
+                        SyntaxToken newToken = SyntaxFactory.Token(
+                            default(SyntaxTriviaList),
+                            SyntaxKind.XmlTextLiteralToken,
+                            text,
+                            valueText,
+                            default(SyntaxTriviaList));
+
+                        return node.WithTextTokens(tokens.Replace(token, newToken));
+                    }
+                }
+
+                return base.VisitXmlTextAttribute(node);
+            }
+
+            private string GetMinimalDisplayString(string metadataName)
+            {
+                INamedTypeSymbol typeSymbol = _semanticModel.Compilation.GetTypeByMetadataName(metadataName);
+
+                if (typeSymbol != null)
+                {
+                    return SymbolDisplay.GetMinimalDisplayString(typeSymbol, _position, _semanticModel)
+                        .Replace('<', '{')
+                        .Replace('>', '}');
+                }
+
+                return metadataName;
             }
         }
     }
