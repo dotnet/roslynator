@@ -69,6 +69,19 @@ namespace Roslynator.Metadata
 
         public ReadOnlyCollection<ImageInfo> Images { get; }
 
+        public IEnumerable<ImageInfo> ImagesOrDefaultImage()
+        {
+            if (Images.Count > 0)
+            {
+                foreach (ImageInfo image in Images)
+                    yield return image;
+            }
+            else
+            {
+                yield return new ImageInfo(Identifier);
+            }
+        }
+
         public string GetGitHubHref()
         {
             string s = Title.TrimEnd('.').ToLowerInvariant();
