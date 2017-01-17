@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class AddToMethodInvocationRefactoring
+    internal class CallToMethodRefactoring
     {
         private class Foo
         {
@@ -15,6 +15,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 object value = GetObject();
 
                 ProcessString(value);
+
                 ProcessValue(value);
 
                 RegexOptions options = RegexOptions.None;

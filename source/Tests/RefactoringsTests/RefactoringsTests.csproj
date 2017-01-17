@@ -36,10 +36,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
-    <Compile Include="AddToMethodInvocationRefactoring.cs" />
-    <Compile Include="CopyCommentFromBaseRefactoring.cs" />
+    <Compile Include="CallConfigureAwaitRefactoring.cs" />
+    <Compile Include="CallToMethodRefactoring.cs" />
     <Compile Include="CheckExpressionForNullRefactoring.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethodRefactoring.cs" />
+    <Compile Include="CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
+    <Compile Include="ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="FormatAttributeArgumentListRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
@@ -89,7 +91,6 @@
     <Compile Include="WrapInRegionRefactoring.cs" />
     <Compile Include="InlineMethodRefactoring_.cs" />
     <Compile Include="InlineMethodRefactoring.cs" />
-    <Compile Include="AddConfigureAwaitRefactoring.cs" />
     <Compile Include="RemoveStatementsFromSwitchSectionsRefactoring.cs" />
     <Compile Include="ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="RemoveEmptyLinesRefactoring.cs" />
@@ -176,7 +177,6 @@
     <Compile Include="ExpandAssignmentExpressionRefactoring.cs" />
     <Compile Include="ExpandCoalesceExpressionRefactoring.cs" />
     <Compile Include="ExpandEventRefactoring.cs" />
-    <Compile Include="ExpandExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="ExpandLambdaExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandInitializerRefactoring.cs" />
     <Compile Include="ExpandPropertyRefactoring.cs" />
