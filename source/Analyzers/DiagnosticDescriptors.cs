@@ -237,7 +237,7 @@ namespace Roslynator.CSharp
             title: "Format each enum member on a separate line.",
             messageFormat: "Format each enum member on a separate line.",
             category: DiagnosticCategories.Formatting,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
 
@@ -599,7 +599,7 @@ namespace Roslynator.CSharp
             title: "Avoid usage of do statement to create an infinite loop.",
             messageFormat: "Use while statement to create an infinite loop.",
             category: DiagnosticCategories.Style,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -608,7 +608,7 @@ namespace Roslynator.CSharp
             title: "Avoid usage of for statement to create an infinite loop.",
             messageFormat: "Use while statement to create an infinite loop.",
             category: DiagnosticCategories.Style,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
 
@@ -617,7 +617,7 @@ namespace Roslynator.CSharp
             title: "Avoid usage of while statement to create an inifinite loop.",
             messageFormat: "Use for statement to create an infinite loop.",
             category: DiagnosticCategories.Style,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
 
@@ -901,7 +901,7 @@ namespace Roslynator.CSharp
             title: "Use C# 6.0 dictionary initializer.",
             messageFormat: "Use C# 6.0 dictionary initializer.",
             category: DiagnosticCategories.Usage,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -974,7 +974,7 @@ namespace Roslynator.CSharp
             title: "Replace if statement with assignment.",
             messageFormat: "Replace if statement with assignment.",
             category: DiagnosticCategories.Simplification,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -983,7 +983,7 @@ namespace Roslynator.CSharp
             title: "Simplify conditional expression.",
             messageFormat: "Simplify conditional expression.",
             category: DiagnosticCategories.Simplification,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
@@ -992,7 +992,7 @@ namespace Roslynator.CSharp
             title: "Merge interpolation into interpolated string.",
             messageFormat: "Merge interpolation into interpolated string.",
             category: DiagnosticCategories.Simplification,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
