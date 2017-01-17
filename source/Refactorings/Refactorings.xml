@@ -160,6 +160,10 @@
       <Syntax>indexer</Syntax>
       <Syntax>event</Syntax>
     </Syntaxes>
+    <Images>
+      <Image>CopyDocumentationCommentFromBaseMember</Image>
+      <Image>CopyDocumentationCommentFromImplementedMember</Image>
+    </Images>
   </Refactoring>
   <Refactoring Id="DuplicateArgument" Title="Duplicate argument" ExtensionVersion="0.9.60">
     <Syntaxes>
@@ -221,7 +225,7 @@
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ExpandExpressionBody" Title="Expand expression-body" ExtensionVersion="0.9.0">
+  <Refactoring Id="ExpandExpressionBody" Title="Expand expression body" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>expression body</Syntax>
     </Syntaxes>
@@ -1048,6 +1052,9 @@
       <Syntax>field declaration</Syntax>
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
+    <Images>
+      <Image>SplitLocalDeclaration</Image>
+    </Images>
   </Refactoring>
   <Refactoring Id="SwapExpressionsInBinaryExpression" Title="Swap expressions in binary expression" ExtensionVersion="0.9.40">
     <Syntaxes>
