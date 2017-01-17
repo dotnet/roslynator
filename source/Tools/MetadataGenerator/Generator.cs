@@ -239,7 +239,7 @@ namespace MetadataGenerator
             foreach (RefactoringInfo info in Refactorings
                 .OrderBy(f => f.Title, StringComparer))
             {
-                foreach (ImageInfo image in info.Images)
+                foreach (ImageInfo image in info.ImagesOrDefaultImage())
                 {
                     string imagePath = Path.Combine(imagesDirPath, image.Name + ".png");
 
