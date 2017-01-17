@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             StatementSyntax newNode = statement
-                .AppendTrailingTrivia(CSharpFactory.NewLineTrivia())
+                .AppendToTrailingTrivia(CSharpFactory.NewLineTrivia())
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(statement, newNode, cancellationToken).ConfigureAwait(false);

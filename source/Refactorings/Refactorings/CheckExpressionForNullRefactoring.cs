@@ -363,7 +363,7 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax ifStatement = CreateNullCheck(expression, List(blockStatements));
 
             if (lastStatementIndex < statements.Count - 1)
-                ifStatement = ifStatement.AppendTrailingTrivia(NewLineTrivia());
+                ifStatement = ifStatement.AppendToTrailingTrivia(NewLineTrivia());
 
             IEnumerable<StatementSyntax> newStatements = statements.Take(statementIndex + 1)
                 .Concat(new IfStatementSyntax[] { ifStatement })

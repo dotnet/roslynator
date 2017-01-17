@@ -22,7 +22,7 @@ namespace Roslynator.Extensions
             return node.GetLeadingTrivia().Concat(node.GetTrailingTrivia());
         }
 
-        public static TNode PrependLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        public static TNode PrependToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -33,7 +33,7 @@ namespace Roslynator.Extensions
             return node.WithLeadingTrivia(trivia.Concat(node.GetLeadingTrivia()));
         }
 
-        public static TNode PrependLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        public static TNode PrependToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -41,7 +41,7 @@ namespace Roslynator.Extensions
             return node.WithLeadingTrivia(node.GetLeadingTrivia().Insert(0, trivia));
         }
 
-        public static TNode AppendTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        public static TNode AppendToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -52,7 +52,7 @@ namespace Roslynator.Extensions
             return node.WithTrailingTrivia(node.GetTrailingTrivia().AddRange(trivia));
         }
 
-        public static TNode AppendTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        public static TNode AppendToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));

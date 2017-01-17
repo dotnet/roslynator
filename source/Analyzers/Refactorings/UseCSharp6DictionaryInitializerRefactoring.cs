@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 implicitElementAccess,
                 EqualsToken().WithTriviaFrom(initializer.ChildTokens().FirstOrDefault()),
                 expressions[1]
-                    .AppendTrailingTrivia(initializer.CloseBraceToken.GetLeadingAndTrailingTrivia())
+                    .AppendToTrailingTrivia(initializer.CloseBraceToken.GetLeadingAndTrailingTrivia())
                     .WithFormatterAnnotation());
 
             return await document.ReplaceNodeAsync(initializer, assignment, cancellationToken).ConfigureAwait(false);

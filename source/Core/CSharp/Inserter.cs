@@ -537,7 +537,7 @@ namespace Roslynator.CSharp
 
                 if (index == modifiers.Count)
                 {
-                    return modifiers.Add(modifier.PrependLeadingTrivia(Space));
+                    return modifiers.Add(modifier.PrependToLeadingTrivia(Space));
                 }
                 else
                 {

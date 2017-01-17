@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
                 {
                     expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
 
-                    expression = AppendTrailingTrivia(expression, node);
+                    expression = AppendToTrailingTrivia(expression, node);
 
                     return expression;
                 }
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
                             .WithExpression(expression)
                             .WithName(IdentifierName(_propertyName).WithTriviaFrom(name));
 
-                        return AppendTrailingTrivia(memberAccess, node);
+                        return AppendToTrailingTrivia(memberAccess, node);
                     }
                 }
             }
@@ -60,13 +60,13 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
             return base.VisitInvocationExpression(node);
         }
 
-        private static TNode AppendTrailingTrivia<TNode>(TNode node, InvocationExpressionSyntax invocation) where TNode : SyntaxNode
+        private static TNode AppendToTrailingTrivia<TNode>(TNode node, InvocationExpressionSyntax invocation) where TNode : SyntaxNode
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 
             if (argumentList != null)
             {
-                node = node.AppendTrailingTrivia(
+                node = node.AppendToTrailingTrivia(
                     argumentList.OpenParenToken.GetLeadingAndTrailingTrivia()
                         .Concat(argumentList.CloseParenToken.GetLeadingAndTrailingTrivia()));
             }
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
 
             if (parameterList?.IsMissing == false)
             {
-                identifier = identifier.AppendTrailingTrivia(
+                identifier = identifier.AppendToTrailingTrivia(
                     parameterList.OpenParenToken.GetLeadingAndTrailingTrivia().Concat(
                         parameterList.CloseParenToken.GetLeadingAndTrailingTrivia()));
             }

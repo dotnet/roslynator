@@ -42,9 +42,9 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = interpolation.Expression;
 
             newNode = newNode
-                .PrependLeadingTrivia(interpolation.GetLeadingTrivia()
+                .PrependToLeadingTrivia(interpolation.GetLeadingTrivia()
                     .Concat(interpolation.OpenBraceToken.TrailingTrivia))
-                .AppendTrailingTrivia(interpolation.CloseBraceToken.LeadingTrivia
+                .AppendToTrailingTrivia(interpolation.CloseBraceToken.LeadingTrivia
                     .Concat(interpolatedString.GetTrailingTrivia()));
 
             return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
             ExpressionSyntax newExpression = memberAccess.Expression
-                .AppendTrailingTrivia(
+                .AppendToTrailingTrivia(
                     memberAccess.OperatorToken.GetLeadingAndTrailingTrivia()
                         .Concat(memberAccess.Name.GetLeadingAndTrailingTrivia())
                         .Concat(invocation.ArgumentList.OpenParenToken.GetLeadingAndTrailingTrivia())
