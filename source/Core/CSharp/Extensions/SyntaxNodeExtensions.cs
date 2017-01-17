@@ -164,19 +164,6 @@ namespace Roslynator.CSharp.Extensions
                 && IsKind(node.Parent, kind1, kind2, kind3);
         }
 
-        public static SyntaxNode FirstAncestorOf(
-            this SyntaxNode node,
-            SyntaxKind kind,
-            bool ascendOutOfTrivia = true)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node
-                .Ancestors(ascendOutOfTrivia)
-                .FirstOrDefault(f => f.IsKind(kind));
-        }
-
         public static bool IsSingleLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
@@ -344,6 +331,114 @@ namespace Roslynator.CSharp.Extensions
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithTrailingTrivia(Space);
+        }
+
+        public static SyntaxNode FirstAncestor(
+            this SyntaxNode node,
+            SyntaxKind kind,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestor(node, f => f.IsKind(kind), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestor(
+            this SyntaxNode node,
+            SyntaxKind kind1,
+            SyntaxKind kind2,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestor(node, f => f.IsKind(kind1, kind2), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestor(
+            this SyntaxNode node,
+            SyntaxKind kind1,
+            SyntaxKind kind2,
+            SyntaxKind kind3,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestor(node, f => f.IsKind(kind1, kind2, kind3), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestor(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            SyntaxNode parent = GetParent(node, ascendOutOfTrivia);
+
+            if (parent != null)
+            {
+                return FirstAncestorOrSelf(parent, predicate, ascendOutOfTrivia);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(
+            this SyntaxNode node,
+            SyntaxKind kind,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestorOrSelf(node, f => f.IsKind(kind), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(
+            this SyntaxNode node,
+            SyntaxKind kind1,
+            SyntaxKind kind2,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestorOrSelf(node, f => f.IsKind(kind1, kind2), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(
+            this SyntaxNode node,
+            SyntaxKind kind1,
+            SyntaxKind kind2,
+            SyntaxKind kind3,
+            bool ascendOutOfTrivia = true)
+        {
+            return FirstAncestorOrSelf(node, f => f.IsKind(kind1, kind2, kind3), ascendOutOfTrivia);
+        }
+
+        public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            while (node != null)
+            {
+                if (predicate(node))
+                    return node;
+
+                node = GetParent(node, ascendOutOfTrivia);
+            }
+
+            return null;
+        }
+
+        private static SyntaxNode GetParent(SyntaxNode node, bool ascendOutOfTrivia)
+        {
+            SyntaxNode parent = node.Parent;
+
+            if (parent == null && ascendOutOfTrivia)
+            {
+                var structuredTrivia = node as IStructuredTriviaSyntax;
+
+                if (structuredTrivia != null)
+                    parent = structuredTrivia.ParentTrivia.Token.Parent;
+            }
+
+            return parent;
         }
     }
 }
