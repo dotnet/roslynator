@@ -1,11 +1,29 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class CopyCommentFromBaseRefactoring
+    internal class CopyDocumentationCommentFromBaseMemberRefactoring
     {
+        private class Comparer : IComparer<object>
+        {
+            public int Compare(object x, object y)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class ObjectCollection : Collection<List<object>>
+        {
+
+            public ObjectCollection(IList<List<object>> list) : base(list)
+            {
+            }
+        }
+
         public class BaseClass
         {
             /// <summary>
@@ -14,7 +32,6 @@ namespace Roslynator.CSharp.Refactorings.Tests
             /// <param name="value"></param>
             public BaseClass(string value)
             {
-
             }
 
             /// <summary>

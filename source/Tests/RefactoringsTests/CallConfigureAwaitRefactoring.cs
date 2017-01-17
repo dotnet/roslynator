@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class AddConfigureAwaitRefactoring
+    internal class CallConfigureAwaitRefactoring
     {
         public async Task<string> GetValueAsync()
         {

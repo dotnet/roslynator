@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class ExpandExpressionBodiedMemberRefactoring
+    internal class ExpandExpressionBodyRefactoring
     {
         public string GetValue() => null;
     }
