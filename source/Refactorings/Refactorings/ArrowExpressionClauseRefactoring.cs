@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 && ExpandExpressionBodyRefactoring.CanRefactor(arrowExpressionClause))
             {
                 context.RegisterRefactoring(
-                    "Expand expression-body",
+                    "Expand expression body",
                     cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken));
             }
         }
