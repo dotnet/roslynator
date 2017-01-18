@@ -717,7 +717,7 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Expand expression-body")]
+        [DisplayName("Expand expression body")]
         [Description("Syntax: expression body")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ExpandExpressionBody

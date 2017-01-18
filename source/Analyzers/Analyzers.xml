@@ -211,7 +211,7 @@
     <Id>RCS1025</Id>
     <Title>Format each enum member on a separate line.</Title>
     <Category>Formatting</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -544,7 +544,7 @@
     <Id>RCS1063</Id>
     <Title>Avoid usage of do statement to create an infinite loop.</Title>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -553,7 +553,7 @@
     <Id>RCS1064</Id>
     <Title>Avoid usage of for statement to create an infinite loop.</Title>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -562,7 +562,7 @@
     <Id>RCS1065</Id>
     <Title>Avoid usage of while statement to create an inifinite loop.</Title>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -832,7 +832,7 @@
     <Id>RCS1095</Id>
     <Title>Use C# 6.0 dictionary initializer.</Title>
     <Category>Usage</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -904,7 +904,7 @@
     <Id>RCS1103</Id>
     <Title>Replace if statement with assignment.</Title>
     <Category>Simplification</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -913,7 +913,7 @@
     <Id>RCS1104</Id>
     <Title>Simplify conditional expression.</Title>
     <Category>Simplification</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -922,7 +922,7 @@
     <Id>RCS1105</Id>
     <Title>Merge interpolation into interpolated string.</Title>
     <Category>Simplification</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

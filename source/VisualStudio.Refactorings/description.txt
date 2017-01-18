@@ -50,510 +50,510 @@
     <h3>List of Refactorings</h3>
     <ul>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-boolean-comparison">Add boolean comparison</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-boolean-comparison">Add boolean comparison</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-braces">Add braces</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-braces">Add braces</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-braces-to-if-else">Add braces to if-else</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-braces-to-if-else">Add braces to if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-braces-to-switch-section">Add braces to switch section</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-braces-to-switch-section">Add braces to switch section</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-braces-to-switch-sections">Add braces to switch sections</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-braces-to-switch-sections">Add braces to switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-cast-expression">Add cast expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-cast-expression">Add cast expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-default-value-to-parameter">Add default value to parameter</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-default-value-to-parameter">Add default value to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-default-value-to-return-statement">Add default value to return statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-default-value-to-return-statement">Add default value to return statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-exception-to-documentation-comment">Add exception to documentation comment</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-exception-to-documentation-comment">Add exception to documentation comment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-identifier-to-variable-declaration">Add identifier to variable declaration</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-parameter-name-to-argument">Add parameter name to argument</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-parameter-name-to-argument">Add parameter name to argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-using-directive">Add using directive</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-using-directive">Add using directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#add-using-static-directive">Add using static directive</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-using-static-directive">Add using static directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-configureawaitfalse">Call 'ConfigureAwait(false)'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#call-configureawaitfalse">Call 'ConfigureAwait(false)'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-extension-method-as-instance-method">Call extension method as instance method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#call-extension-method-as-instance-method">Call extension method as instance method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#call-to-method-tostring-toarray-tolist">Call 'To...' method (ToString, ToArray, ToList)</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#call-to-method-tostring-toarray-tolist">Call 'To...' method (ToString, ToArray, ToList)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-explicit-type-to-var">Change explicit type to 'var'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-explicit-type-to-var">Change explicit type to 'var'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-method-return-type-to-void">Change method return type to 'void'</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-method-return-type-to-void">Change method return type to 'void'</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-methodpropertyindexer-type-according-to-return-expression">Change method/property/indexer type according to return expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression">Change method/property/indexer type according to return expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-methodpropertyindexer-type-according-to-yield-return-expression">Change method/property/indexer type according to yield return expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-methodpropertyindexer-type-according-to-yield-return-expression">Change method/property/indexer type according to yield return expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-type-according-to-expression">Change type according to expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-type-according-to-expression">Change type according to expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#change-var-to-explicit-type">Change 'var' to explicit type</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#change-var-to-explicit-type">Change 'var' to explicit type</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#check-expression-for-null">Check expression for null</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#check-expression-for-null">Check expression for null</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#check-parameter-for-null">Check parameter for null</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#check-parameter-for-null">Check parameter for null</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#collapse-to-initalizer">Collapse to initalizer</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#collapse-to-initalizer">Collapse to initalizer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#comment-out-member">Comment out member</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#comment-out-member">Comment out member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#comment-out-statement">Comment out statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#comment-out-statement">Comment out statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#copy-documentation-comment-from-base-member">Copy documentation comment from base member</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#copy-documentation-comment-from-base-member">Copy documentation comment from base member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#duplicate-argument">Duplicate argument</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#duplicate-argument">Duplicate argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#duplicate-member">Duplicate member</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#duplicate-member">Duplicate member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#duplicate-parameter">Duplicate parameter</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#duplicate-parameter">Duplicate parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#duplicate-statement">Duplicate statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#duplicate-statement">Duplicate statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-assignment-expression">Expand assignment expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-assignment-expression">Expand assignment expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-coalesce-expression">Expand coalesce expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-coalesce-expression">Expand coalesce expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-event">Expand event</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-event">Expand event</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-expression-body">Expand expression-body</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-expression-body">Expand expression body</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-initializer">Expand initializer</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-initializer">Expand initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-lambda-expression-body">Expand lambda expression body</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-lambda-expression-body">Expand lambda expression body</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-property">Expand property</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-property">Expand property</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#expand-property-and-add-backing-field">Expand property and add backing field</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#expand-property-and-add-backing-field">Expand property and add backing field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#extract-declaration-from-using-statement">Extract declaration from using statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#extract-expression-from-condition">Extract expression from condition</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#extract-expression-from-condition">Extract expression from condition</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#extract-generic-type">Extract generic type</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#extract-generic-type">Extract generic type</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#extract-statements">Extract statement(s)</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#extract-statements">Extract statement(s)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#extract-type-declaration-to-a-new-file">Extract type declaration to a new file</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#extract-type-declaration-to-a-new-file">Extract type declaration to a new file</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-accessor-braces">Format accessor braces</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-accessor-braces">Format accessor braces</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-argument-list">Format argument list</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-argument-list">Format argument list</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-binary-expression">Format binary expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-binary-expression">Format binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-conditional-expression">Format conditional expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-conditional-expression">Format conditional expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-expression-chain">Format expression chain</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-expression-chain">Format expression chain</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-initializer">Format initializer</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-initializer">Format initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#format-parameter-list">Format parameter list</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#format-parameter-list">Format parameter list</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-base-constructors">Generate base constructors</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#generate-base-constructors">Generate base constructors</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-event-invoking-method">Generate event invoking method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#generate-event-invoking-method">Generate event invoking method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#generate-switch-sections">Generate switch sections</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#generate-switch-sections">Generate switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#initialize-local-with-default-value">Initialize local with default value</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#inline-alias-expression">Inline alias expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#inline-alias-expression">Inline alias expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#inline-method">Inline method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#inline-method">Inline method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#insert-string-interpolation">Insert string interpolation</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#insert-string-interpolation">Insert string interpolation</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-and-initialize-field">Introduce and initialize field</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#introduce-and-initialize-field">Introduce and initialize field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-and-initialize-property">Introduce and initialize property</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#introduce-and-initialize-property">Introduce and initialize property</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-constructor">Introduce constructor</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#introduce-constructor">Introduce constructor</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-field-to-lock-on">Introduce field to lock on</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#introduce-field-to-lock-on">Introduce field to lock on</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#introduce-local-from-statement-that-returns-value">Introduce local from statement that returns value</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#introduce-local-from-statement-that-returns-value">Introduce local from statement that returns value</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#make-member-abstract">Make member abstract</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#make-member-abstract">Make member abstract</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#make-member-virtual">Make member virtual</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#make-member-virtual">Make member virtual</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-all-members-as-static">Mark all members as static</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#mark-all-members-as-static">Mark all members as static</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-containing-class-as-abstract">Mark containing class as abstract</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#mark-containing-class-as-abstract">Mark containing class as abstract</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#mark-member-as-static">Mark member as static</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#mark-member-as-static">Mark member as static</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-assignment-expression-with-return-statement">Merge assignment expression with return statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-assignment-expression-with-return-statement">Merge assignment expression with return statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-attributes">Merge attributes</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-attributes">Merge attributes</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-if-statements">Merge if statements</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-if-statements">Merge if statements</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-interpolation-into-interpolated-string">Merge interpolation into interpolated string</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-interpolation-into-interpolated-string">Merge interpolation into interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-local-declarations">Merge local declarations</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-local-declarations">Merge local declarations</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#merge-string-expressions">Merge string expressions</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#merge-string-expressions">Merge string expressions</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#negate-binary-expression">Negate binary expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#negate-binary-expression">Negate binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#negate-boolean-literal">Negate boolean literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#negate-boolean-literal">Negate boolean literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#negate-is-expression">Negate is expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#negate-is-expression">Negate is expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#negate-operator">Negate operator</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#negate-operator">Negate operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#notify-property-changed">Notify property changed</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#notify-property-changed">Notify property changed</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#parenthesize-expression">Parenthesize expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#parenthesize-expression">Parenthesize expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#promote-local-to-parameter">Promote local to parameter</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#promote-local-to-parameter">Promote local to parameter</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-comments">Remove all comments</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-comments">Remove all comments</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-comments-except-documentation-comments">Remove all comments (except documentation comments)</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-comments-except-documentation-comments">Remove all comments (except documentation comments)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-documentation-comments">Remove all documentation comments</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-documentation-comments">Remove all documentation comments</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-member-declarations">Remove all member declarations</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-member-declarations">Remove all member declarations</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-preprocessor-directives">Remove all preprocessor directives</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-preprocessor-directives">Remove all preprocessor directives</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-region-directives">Remove all region directives</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-region-directives">Remove all region directives</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-statements">Remove all statements</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-statements">Remove all statements</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-all-switch-sections">Remove all switch sections</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-all-switch-sections">Remove all switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-braces">Remove braces</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-braces">Remove braces</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-braces-from-if-else">Remove braces from if-else</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-braces-from-if-else">Remove braces from if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-braces-from-switch-section">Remove braces from switch section</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-braces-from-switch-section">Remove braces from switch section</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-braces-from-switch-sections">Remove braces from switch sections</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-braces-from-switch-sections">Remove braces from switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-comment">Remove comment</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-comment">Remove comment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-condition-from-last-else-clause">Remove condition from last else clause</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-condition-from-last-else-clause">Remove condition from last else clause</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-directive-and-related-directives">Remove directive and related directives</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-directive-and-related-directives">Remove directive and related directives</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-empty-lines">Remove empty lines</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-empty-lines">Remove empty lines</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-interpolation">Remove interpolation</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-interpolation">Remove interpolation</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-member">Remove member</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-member">Remove member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-member-declarations-abovebelow">Remove member declarations above/below</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-member-declarations-abovebelow">Remove member declarations above/below</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-parameter-name-from-argument">Remove parameter name from argument</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-parentheses">Remove parentheses</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-parentheses">Remove parentheses</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-property-initializer">Remove property initializer</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-property-initializer">Remove property initializer</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-region">Remove region</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-region">Remove region</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-statement">Remove statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-statement">Remove statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#remove-statements-from-switch-sections">Remove statements from switch sections</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#remove-statements-from-switch-sections">Remove statements from switch sections</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-backing-field-according-to-property-name">Rename backing field according to property name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-identifier-according-to-type-name">Rename identifier according to type name</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-identifier-according-to-type-name">Rename identifier according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-method-according-to-type-name">Rename method according to type name</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-method-according-to-type-name">Rename method according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-parameter-according-to-its-type-name">Rename parameter according to its type name</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-parameter-according-to-its-type-name">Rename parameter according to its type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#rename-property-according-to-type-name">Rename property according to type name</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-property-according-to-type-name">Rename property according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace--with-stringempty">Replace "" with String.Empty</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace--with-stringempty">Replace "" with String.Empty</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-any-with-all-or-all-with-any">Replace Any with All (or All with Any)</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any">Replace Any with All (or All with Any)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-as-expression-with-cast-expression">Replace as expression with cast expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-as-expression-with-cast-expression">Replace as expression with cast expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-cast-expression-with-as-expression">Replace cast expression with as expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-cast-expression-with-as-expression">Replace cast expression with as expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-conditional-expression-with-expression">Replace conditional expression with expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-conditional-expression-with-expression">Replace conditional expression with expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-conditional-expression-with-if-else">Replace conditional expression with if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-constant-with-field">Replace constant with field</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-constant-with-field">Replace constant with field</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-count-property-with-length-property-or-length-with-count">Replace Count property with Length property (or Length with Count)</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-count-property-with-length-property-or-length-with-count">Replace Count property with Length property (or Length with Count)</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-do-statement-with-while-statement">Replace do statement with while statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringequals">Replace equals expression with String.Equals</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-equals-expression-with-stringequals">Replace equals expression with String.Equals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorempty">Replace equals expression with String.IsNullOrEmpty</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorempty">Replace equals expression with String.IsNullOrEmpty</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with String.IsNullOrWhiteSpace</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with String.IsNullOrWhiteSpace</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-field-with-constant">Replace field with constant</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-for-statement-with-foreach-statement">Replace for statement with foreach statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-for-statement-with-foreach-statement">Replace for statement with foreach statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-for-statement-with-while-statement">Replace for statement with while statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-for-statement-with-while-statement">Replace for statement with while statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-hasflag-invocation-with-bitwise-operation">Replace HasFlag invocation with bitwise operation</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-hasflag-invocation-with-bitwise-operation">Replace HasFlag invocation with bitwise operation</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-assignment">Replace if-else with assignment</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-else-with-assignment">Replace if-else with assignment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-if-else-with-switch-statement">Replace if-else with switch statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement">Replace if-else with switch statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-increment-operator-with-decrement-operator">Replace increment operator with decrement operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-interpolated-string-with-interpolation-expression">Replace interpolated string with interpolation expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-interpolated-string-with-interpolation-expression">Replace interpolated string with interpolation expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-interpolated-string-with-string-literal">Replace interpolated string with string literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-interpolated-string-with-string-literal">Replace interpolated string with string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-group-with-lambda">Replace method group with lambda</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-group-with-lambda">Replace method group with lambda</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-invocation-with-">Replace method invocation with []</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-invocation-with-">Replace method invocation with []</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-method-with-property">Replace method with property</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-with-property">Replace method with property</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-null-literal-expression-with-default-expression">Replace null literal expression with default expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-null-literal-expression-with-default-expression">Replace null literal expression with default expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-prefix-operator-to-postfix-operator">Replace prefix operator to postfix operator</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-prefix-operator-to-postfix-operator">Replace prefix operator to postfix operator</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-property-with-method">Replace property with method</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-property-with-method">Replace property with method</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal">Replace regular string literal with verbatim string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-statement-with-if-statement">Replace statement with if statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-statement-with-if-statement">Replace statement with if statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-string-literal-with-character-literal">Replace string literal with character literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringcontains-with-stringindexof">Replace String.Contains with String.IndexOf</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof">Replace String.Contains with String.IndexOf</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringempty-with-">Replace String.Empty with ""</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringempty-with-">Replace String.Empty with ""</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-stringformat-with-interpolated-string">Replace String.Format with interpolated string</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string">Replace String.Format with interpolated string</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-switch-statement-with-if-else">Replace switch statement with if-else</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-switch-statement-with-if-else">Replace switch statement with if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal">Replace verbatim string literal with regular string literal</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals">Replace verbatim string literal with regular string literals</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-while-statement-with-do-statement">Replace while statement with do statement</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#reverse-for-loop">Reverse for loop</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#reverse-for-loop">Reverse for loop</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#simplify-lambda-expression">Simplify lambda expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#split-attributes">Split attributes</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#split-attributes">Split attributes</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#split-switch-labels">Split switch labels</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#split-switch-labels">Split switch labels</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#split-variable-declaration">Split variable declaration</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#split-variable-declaration">Split variable declaration</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#swap-expressions-in-binary-expression">Swap expressions in binary expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#swap-expressions-in-conditional-expression">Swap expressions in conditional expression</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#swap-expressions-in-conditional-expression">Swap expressions in conditional expression</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#swap-member-declarations">Swap member declarations</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#swap-member-declarations">Swap member declarations</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#swap-statements-in-if-else">Swap statements in if-else</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#swap-statements-in-if-else">Swap statements in if-else</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#uncomment">Uncomment</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#uncomment">Uncomment</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#use-expression-bodied-member">Use expression-bodied member</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#wrap-in-if-directive">Wrap in #if directive</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-if-directive">Wrap in #if directive</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#wrap-in-condition">Wrap in condition</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-condition">Wrap in condition</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#wrap-in-region">Wrap in region</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-region">Wrap in region</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#wrap-in-try-catch">Wrap in try-catch</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-try-catch">Wrap in try-catch</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#wrap-in-using-statement">Wrap in using statement</a>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-using-statement">Wrap in using statement</a>
         </li>
     </ul>
