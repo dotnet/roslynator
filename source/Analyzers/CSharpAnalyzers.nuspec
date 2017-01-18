@@ -3,6 +3,7 @@
   <metadata>
     <id>CSharpAnalyzers</id>
     <version>1.2.0</version>
+    <title>C# Analyzers</title>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>https://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
