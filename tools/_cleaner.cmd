@@ -1,2 +1,2 @@
 @echo off
-Cleaner "..\source"
+"..\source\Tools\Cleaner\bin\Release\Cleaner" "..\source"
