@@ -1,3 +1,8 @@
+### 1.2.0 (2017-01-18)
+
+* Release of package Roslynator.Analyzers 1.2.0
+* Release of package CSharpAnalyzers 1.2.0
+
 ### 1.1.95 (2017-01-04)
 
 * Initial release of Roslynator 2017 and Roslynator Refactorings 2017
