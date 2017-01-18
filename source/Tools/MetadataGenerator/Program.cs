@@ -67,12 +67,16 @@ namespace MetadataGenerator
                 Console.WriteLine($"missing image: {imagePath}");
 
             writer.SaveCode(
-                 Path.Combine(dirPath, @"Refactorings\README.md"),
+                Path.Combine(dirPath, @"Refactorings\Refactorings.md"),
                 generator.CreateRefactoringsMarkDown());
 
             writer.SaveCode(
+                Path.Combine(dirPath, @"Refactorings\README.md"),
+                generator.CreateRefactoringsReadMe());
+
+            writer.SaveCode(
                 Path.Combine(dirPath, @"Analyzers\README.md"),
-                generator.CreateAnalyzersMarkDown());
+                generator.CreateAnalyzersReadMe());
 
             writer.SaveCode(
                 Path.Combine(dirPath, @"Analyzers\AnalyzersByCategory.md"),

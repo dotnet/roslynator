@@ -62,7 +62,7 @@ namespace MetadataGenerator
             foreach (RefactoringInfo info in Refactorings
                 .OrderBy(f => f.Title, StringComparer))
             {
-                string href = "http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md#" + info.GetGitHubHref();
+                string href = "http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#" + info.GetGitHubHref();
                 xw.WriteStartElement("li");
                 xw.WriteStartElement("a");
                 xw.WriteAttributeString("href", href);
@@ -109,7 +109,7 @@ namespace MetadataGenerator
                 foreach (RefactoringInfo info in Refactorings
                     .OrderBy(f => f.Title, StringComparer))
                 {
-                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/README.md#" + info.GetGitHubHref() + ")");
+                    sw.WriteLine("* [" + info.Title.TrimEnd('.') + "](source/Refactorings/Refactorings.md#" + info.GetGitHubHref() + ")");
                 }
 
                 return sw.ToString();
@@ -158,7 +158,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateAnalyzersMarkDown()
+        public string CreateAnalyzersReadMe()
         {
             using (var sw = new StringWriter())
             {
@@ -178,6 +178,28 @@ namespace MetadataGenerator
                     sw.Write('|');
                     sw.Write((info.IsEnabledByDefault) ? "x" : "");
 
+                    sw.WriteLine();
+                }
+
+                return sw.ToString();
+            }
+        }
+
+        public string CreateRefactoringsReadMe()
+        {
+            using (var sw = new StringWriter())
+            {
+                sw.WriteLine("## Roslynator Refactorings");
+                sw.WriteLine();
+
+                sw.WriteLine(" Title | Enabled by Default ");
+                sw.WriteLine(" --- |:---:");
+
+                foreach (RefactoringInfo info in Refactorings.OrderBy(f => f.Title, StringComparer))
+                {
+                    sw.Write("[" + MarkdownHelper.Escape(info.Title.TrimEnd('.')) + "](Refactorings.md#" + info.GetGitHubHref() + ")");
+                    sw.Write('|');
+                    sw.Write((info.IsEnabledByDefault) ? "x" : "");
                     sw.WriteLine();
                 }
 
