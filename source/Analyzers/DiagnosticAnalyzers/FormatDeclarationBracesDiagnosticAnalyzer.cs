@@ -24,6 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);

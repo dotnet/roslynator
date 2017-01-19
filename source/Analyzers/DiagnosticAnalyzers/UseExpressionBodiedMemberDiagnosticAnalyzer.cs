@@ -37,6 +37,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
