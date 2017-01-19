@@ -5,7 +5,7 @@
     "Microsoft.CodeAnalysis.CSharp.Workspaces": "2.0.0-rc2",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "1.6.0",
-    "Roslynator.Analyzers": "1.0.0-beta"
+    "Roslynator.Analyzers": "1.2.0"
   },
   "frameworks": {
     "netstandard1.3": {
