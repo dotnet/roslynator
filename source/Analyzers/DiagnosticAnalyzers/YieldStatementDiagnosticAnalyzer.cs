@@ -11,15 +11,13 @@ using Roslynator.CSharp.Refactorings;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReturnStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class YieldStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatement,
-                    DiagnosticDescriptors.MergeLocalDeclarationWithReturnStatementFadeOut,
                     DiagnosticDescriptors.ReplaceReturnStatementWithExpressionStatement);
             }
         }
@@ -31,16 +29,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.YieldReturnStatement);
         }
 
         private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            MergeLocalDeclarationWithReturnStatementRefactoring.Analyze(context);
+            var yieldStatement = (YieldStatementSyntax)context.Node;
 
-            var returnStatement = (ReturnStatementSyntax)context.Node;
-
-            ReplaceReturnStatementWithExpressionStatementRefactoring.Analyze(context, returnStatement);
+            ReplaceReturnStatementWithExpressionStatementRefactoring.Analyze(context, yieldStatement);
         }
     }
 }

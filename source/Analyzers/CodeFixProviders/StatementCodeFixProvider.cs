@@ -2,10 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -17,7 +19,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
+                    DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -30,21 +37,66 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<StatementSyntax>();
 
+            Debug.Assert(statement != null, $"{nameof(statement)} is null");
+
             if (statement == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Add empty line",
-                cancellationToken =>
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
                 {
-                    return AddEmptyLineAfterLastStatementInDoStatementRefactoring.RefactorAsync(
-                        context.Document,
-                        statement,
-                        cancellationToken);
-                },
-                DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement + EquivalenceKeySuffix);
+                    case DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add empty line",
+                                cancellationToken =>
+                                {
+                                    return AddEmptyLineAfterLastStatementInDoStatementRefactoring.RefactorAsync(
+                                        context.Document,
+                                        statement,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement:
+                        {
+                            switch (statement.Kind())
+                            {
+                                case SyntaxKind.ReturnStatement:
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Remove 'return'",
+                                            cancellationToken => ReplaceReturnStatementWithExpressionStatementRefactoring.RefactorAsync(context.Document, (ReturnStatementSyntax)statement, cancellationToken),
+                                            diagnostic.Id + EquivalenceKeySuffix);
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
+                                case SyntaxKind.YieldReturnStatement:
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Remove 'yield return'",
+                                            cancellationToken => ReplaceReturnStatementWithExpressionStatementRefactoring.RefactorAsync(context.Document, (YieldStatementSyntax)statement, cancellationToken),
+                                            diagnostic.Id + EquivalenceKeySuffix);
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        Debug.Assert(false, statement.Kind().ToString());
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+                }
+            }
         }
     }
 }

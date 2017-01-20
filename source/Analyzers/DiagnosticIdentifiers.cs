@@ -120,5 +120,6 @@ namespace Roslynator.CSharp
         public const string CombineEnumerableWhereMethodChain = Prefix + "1112";
         public const string UseStringIsNullOrEmptyMethod = Prefix + "1113";
         public const string RemoveRedundantDelegateCreation = Prefix + "1114";
+        public const string ReplaceReturnStatementWithExpressionStatement = Prefix + "1115";
     }
 }

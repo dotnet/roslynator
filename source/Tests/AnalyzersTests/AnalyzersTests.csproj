@@ -81,6 +81,7 @@
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
+    <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="UseCompoundAssignment.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
