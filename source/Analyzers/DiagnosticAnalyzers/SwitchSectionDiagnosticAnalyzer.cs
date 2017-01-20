@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
                     DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
                     DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
-                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements);
+                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
+                    DiagnosticDescriptors.AddBreakStatementToSwitchSection);
             }
         }
 
@@ -34,7 +35,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
-            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.SwitchSection);
         }
@@ -45,6 +45,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             FormatEachStatementOnSeparateLineRefactoring.Analyze(context, switchSection);
 
+            if (AddBreakStatementToSwitchSectionRefactoring.CanRefactor(context, switchSection))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.AddBreakStatementToSwitchSection,
+                    switchSection.GetLocation());
+            }
+
             RemoveRedundantDefaultSwitchSectionRefactoring.Analyze(context, switchSection);
 
             RemoveUnnecessaryCaseLabelRefactoring.Analyze(context, switchSection);
@@ -53,11 +60,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.Analyze(context, switchSection);
 
-            if (switchSection.Statements.Count > 1)
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+            if (statements.Count > 1)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
-                    Location.Create(switchSection.SyntaxTree, switchSection.Statements.Span));
+                    Location.Create(switchSection.SyntaxTree, statements.Span));
             }
         }
     }
