@@ -134,5 +134,6 @@ namespace Roslynator.CSharp
         public const string AvoidEmbeddedStatementInIfElse = Prefix + "1126";
         public const string MergeLocalDeclarationWithInitialization = Prefix + "1127";
         public const string UseCoalesceExpression = Prefix + "1128";
+        public const string RemoveRedundantFieldInitialization = Prefix + "1129";
     }
 }

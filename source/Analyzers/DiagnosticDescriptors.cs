@@ -1215,5 +1215,15 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor UseCoalesceExpressionFadeOut = UseCoalesceExpression.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor RemoveRedundantFieldInitialization = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantFieldInitialization,
+            title: "Remove redundant field initalization.",
+            messageFormat: "Remove redundant field initialization.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
