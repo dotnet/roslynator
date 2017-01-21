@@ -77,6 +77,7 @@
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
+    <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
     <Compile Include="UseCompoundAssignment.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />

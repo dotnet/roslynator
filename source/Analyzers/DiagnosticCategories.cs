@@ -5,6 +5,7 @@ namespace Roslynator.CSharp
     public static class DiagnosticCategories
     {
         public const string Design = "Design";
+        public const string ErrorFix = "ErrorFix";
         public const string FadeOut = "FadeOut";
         public const string Formatting = "Formatting";
         public const string General = "General";
