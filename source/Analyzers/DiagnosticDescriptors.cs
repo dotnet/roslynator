@@ -1111,8 +1111,8 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MarkVariableLocalAsConst = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MarkVariableLocalAsConst,
+        public static readonly DiagnosticDescriptor MarkLocalVariableAsConst = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkLocalVariableAsConst,
             title: "Mark local variable(s) as const.",
             messageFormat: "Consider marking local variable as const.",
             category: DiagnosticCategories.General,

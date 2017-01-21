@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                                             cancellationToken))
                                         {
                                             context.ReportDiagnostic(
-                                                DiagnosticDescriptors.MarkVariableLocalAsConst,
+                                                DiagnosticDescriptors.MarkLocalVariableAsConst,
                                                 type.GetLocation());
                                         }
                                     }

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MarkVariableLocalAsConst); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.MarkLocalVariableAsConst); }
         }
 
         public override void Initialize(AnalysisContext context)

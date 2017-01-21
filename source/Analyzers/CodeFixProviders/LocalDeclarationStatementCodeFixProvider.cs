@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.MarkVariableLocalAsConst,
+                    DiagnosticIdentifiers.MarkLocalVariableAsConst,
                     DiagnosticIdentifiers.InlineLocalVariable);
             }
         }
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.MarkVariableLocalAsConst:
+                    case DiagnosticIdentifiers.MarkLocalVariableAsConst:
                         {
                             string names = GetNames(localDeclaration);
 
