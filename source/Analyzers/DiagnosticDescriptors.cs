@@ -1101,5 +1101,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AddReturnStatementThatReturnsDefaultValue = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue,
+            title: "Add return statement that returns default value.",
+            messageFormat: "Add return statement that returns default value.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

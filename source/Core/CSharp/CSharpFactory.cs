@@ -81,6 +81,22 @@ namespace Roslynator.CSharp
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
+            return DefaultValue(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
+        }
+
+        public static ExpressionSyntax DefaultValue(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return DefaultValue(typeSymbol, default(TypeSyntax), semanticModel, position, format);
+        }
+
+        private static ExpressionSyntax DefaultValue(ITypeSymbol typeSymbol, TypeSyntax type, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
             if (typeSymbol.IsErrorType())
                 return null;
 
@@ -114,7 +130,11 @@ namespace Roslynator.CSharp
                 if (fieldSymbol != null)
                 {
                     if (type == null)
-                        type = Type(typeSymbol).WithSimplifierAnnotation();
+                    {
+                        type = (semanticModel != null)
+                            ? Type(typeSymbol, semanticModel, position, format).WithSimplifierAnnotation()
+                            : Type(typeSymbol).WithSimplifierAnnotation();
+                    }
 
                     Debug.Assert(type != null);
 
@@ -130,7 +150,11 @@ namespace Roslynator.CSharp
                 return NullLiteralExpression();
 
             if (type == null)
-                type = Type(typeSymbol).WithSimplifierAnnotation();
+            {
+                type = (semanticModel != null)
+                    ? Type(typeSymbol, semanticModel, position, format)
+                    : Type(typeSymbol).WithSimplifierAnnotation();
+            }
 
             Debug.Assert(type != null);
 
