@@ -31,7 +31,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
                     DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
                     DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
-                    DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod);
+                    DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                    DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt,
+                    DiagnosticIdentifiers.UseElementAccessInsteadOfFirst);
             }
         }
 
@@ -155,6 +157,26 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Find' instead of 'FirstOrDefault'",
                                 cancellationToken => CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use [] instead of calling 'ElementAt'",
+                                cancellationToken => UseElementAccessInsteadOfElementAtRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseElementAccessInsteadOfFirst:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use [] instead of calling 'First'",
+                                cancellationToken => UseElementAccessInsteadOfFirstRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

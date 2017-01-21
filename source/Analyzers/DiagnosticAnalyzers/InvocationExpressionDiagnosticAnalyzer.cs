@@ -30,7 +30,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseCastMethodInsteadOfSelectMethod,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut,
-                    DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod);
+                    DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                    DiagnosticDescriptors.UseElementAccessInsteadOfElementAt,
+                    DiagnosticDescriptors.UseElementAccessInsteadOfFirst);
             }
         }
 
@@ -85,6 +87,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     break;
                                 }
                             case "First":
+                                {
+                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
+                                    UseElementAccessInsteadOfFirstRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
                             case "FirstOrDefault":
                             case "Last":
                             case "LastOrDefault":
@@ -101,6 +108,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         switch (methodName)
                         {
+                            case "ElementAt":
+                                {
+                                    UseElementAccessInsteadOfElementAtRefactoring.Analyze(context, invocation, memberAccess);
+                                    break;
+                                }
                             case "FirstOrDefault":
                                 {
                                     CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.Analyze(context, invocation, memberAccess);

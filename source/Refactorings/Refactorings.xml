@@ -938,12 +938,6 @@
       <Syntax>method group</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceMethodInvocationWithElementAccess" Title="Replace method invocation with []" ExtensionVersion="0.9.40">
-    <Syntaxes>
-      <Syntax>First/Last/ElementAt method invocation</Syntax>
-    </Syntaxes>
-    <Scope>method name</Scope>
-  </Refactoring>
   <Refactoring Id="ReplaceMethodWithProperty" Title="Replace method with property" IsEnabledByDefault="false" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>method</Syntax>
@@ -1083,6 +1077,12 @@
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method" ExtensionVersion="0.9.40">
+    <Syntaxes>
+      <Syntax>First/Last/ElementAt method invocation</Syntax>
+    </Syntaxes>
+    <Scope>method name</Scope>
   </Refactoring>
   <Refactoring Id="UseExpressionBodiedMember" Title="Use expression-bodied member" ExtensionVersion="0.9.60">
     <Syntaxes>

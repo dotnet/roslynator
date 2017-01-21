@@ -125,5 +125,7 @@ namespace Roslynator.CSharp
         public const string AddReturnStatementThatReturnsDefaultValue = Prefix + "1117";
         public const string MarkVariableLocalAsConst = Prefix + "1118";
         public const string CallFindMethodInsteadOfFirstOrDefaultMethod = Prefix + "1119";
+        public const string UseElementAccessInsteadOfElementAt = Prefix + "1120";
+        public const string UseElementAccessInsteadOfFirst = Prefix + "1121";
     }
 }

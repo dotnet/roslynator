@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceMethodInvocationWithElementAccessRefactoring
+    internal static class UseElementAccessInsteadOfEnumerableMethodRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (propertyName != null)
                         {
                             context.RegisterRefactoring(
-                                $"Replace '{methodName}' with []",
+                                $"Use [] instead of calling '{methodName}'",
                                 cancellationToken =>
                                 {
                                     return RefactorAsync(
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
                         && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
                     {
                         context.RegisterRefactoring(
-                            "Replace 'ElementAt' with []",
+                            "Use [] instead of calling 'ElementAt'",
                             cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                     }
                 }

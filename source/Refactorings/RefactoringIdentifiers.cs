@@ -144,7 +144,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceInterpolatedStringWithInterpolationExpression = "ReplaceInterpolatedStringWithInterpolationExpression";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
         public const string ReplaceMethodGroupWithLambda = "ReplaceMethodGroupWithLambda";
-        public const string ReplaceMethodInvocationWithElementAccess = "ReplaceMethodInvocationWithElementAccess";
         public const string ReplaceMethodWithProperty = "ReplaceMethodWithProperty";
         public const string ReplaceNullLiteralExpressionWithDefaultExpression = "ReplaceNullLiteralExpressionWithDefaultExpression";
         public const string ReplacePrefixOperatorWithPostfixOperator = "ReplacePrefixOperatorWithPostfixOperator";
@@ -169,6 +168,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string SwapMemberDeclarations = "SwapMemberDeclarations";
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
+        public const string UseElementAccessInsteadOfEnumerableMethod = "UseElementAccessInsteadOfEnumerableMethod";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
         public const string WrapInCondition = "WrapInCondition";
         public const string WrapInIfDirective = "WrapInIfDirective";

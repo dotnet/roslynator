@@ -470,9 +470,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-group-with-lambda">Replace method group with lambda</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-invocation-with-">Replace method invocation with []</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-method-with-property">Replace method with property</a>
         </li>
         <li>
@@ -543,6 +540,9 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#uncomment">Uncomment</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method">Use element access instead of 'First/Last'ElementAt' method</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>

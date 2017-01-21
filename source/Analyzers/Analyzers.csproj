@@ -45,6 +45,8 @@
     <Compile Include="CodeFixProviders\DeclarationExpressionCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ThrowExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
+    <Compile Include="Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="Refactorings\AddConstructorArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultAccessModifierRefactoring.cs" />
     <Compile Include="Refactorings\AddEmptyLineAfterEmbeddedStatementRefactoring.cs" />
