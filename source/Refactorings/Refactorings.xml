@@ -498,11 +498,6 @@
       <Syntax>indexer declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="MarkAllMembersAsStatic" Title="Mark all members as static" ExtensionVersion="0.9.70">
-    <Syntaxes>
-      <Syntax>non-static field/method/property/event in static class</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="MarkContainingClassAsAbstract" Title="Mark containing class as abstract" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>method declaration</Syntax>

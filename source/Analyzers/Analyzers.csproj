@@ -51,6 +51,7 @@
     <Compile Include="Refactorings\AddParenthesesAccordingToOperatorPrecedenceRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InlineLocalVariableDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\MarkMemberAsStaticDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ThrowExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />

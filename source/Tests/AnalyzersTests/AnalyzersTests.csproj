@@ -66,6 +66,7 @@
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
+    <Compile Include="MarkMemberAsStatic.cs" />
     <Compile Include="MergeIfStatementWithNestedIfStatement.cs" />
     <Compile Include="MarkLocalVariableAsConst.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />

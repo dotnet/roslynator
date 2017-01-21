@@ -34,19 +34,13 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic, RefactoringIdentifiers.MarkAllMembersAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && fieldDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic))
-                {
-                    context.RegisterRefactoring(
+                context.RegisterRefactoring(
                    "Mark field as static",
                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
-                    MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)fieldDeclaration.Parent);
             }
         }
     }

@@ -375,9 +375,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#make-member-virtual">Make member virtual</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#mark-all-members-as-static">Mark all members as static</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#mark-containing-class-as-abstract">Mark containing class as abstract</a>
         </li>
         <li>

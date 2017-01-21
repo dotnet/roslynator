@@ -73,7 +73,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string IntroduceLocalFromStatementThatReturnsValue = "IntroduceLocalFromStatementThatReturnsValue";
         public const string MakeMemberAbstract = "MakeMemberAbstract";
         public const string MakeMemberVirtual = "MakeMemberVirtual";
-        public const string MarkAllMembersAsStatic = "MarkAllMembersAsStatic";
         public const string MarkContainingClassAsAbstract = "MarkContainingClassAsAbstract";
         public const string MarkMemberAsStatic = "MarkMemberAsStatic";
         public const string MergeAssignmentExpressionWithReturnStatement = "MergeAssignmentExpressionWithReturnStatement";
