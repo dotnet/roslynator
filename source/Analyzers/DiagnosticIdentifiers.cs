@@ -124,5 +124,6 @@ namespace Roslynator.CSharp
         public const string AddBreakStatementToSwitchSection = Prefix + "1116";
         public const string AddReturnStatementThatReturnsDefaultValue = Prefix + "1117";
         public const string MarkVariableLocalAsConst = Prefix + "1118";
+        public const string CallFindMethodInsteadOfFirstOrDefaultMethod = Prefix + "1119";
     }
 }

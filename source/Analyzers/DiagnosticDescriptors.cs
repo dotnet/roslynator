@@ -1119,5 +1119,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor CallFindMethodInsteadOfFirstOrDefaultMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
+            title: "Call 'Find' method instead of 'FirstOrDefault' method.",
+            messageFormat: "Call 'Find' method instead of 'FirstOrDefault' method.",
+            category: DiagnosticCategories.Performance,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

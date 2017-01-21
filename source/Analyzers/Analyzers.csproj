@@ -141,6 +141,7 @@
     <Compile Include="Refactorings\SimplifyNullableOfTRefactoring.cs" />
     <Compile Include="Refactorings\ThrowingOfNewNotImplementedExceptionRefactoring.cs" />
     <Compile Include="Refactorings\UseCarriageReturnAndLinefeedAsNewLineRefactoring.cs" />
+    <Compile Include="Refactorings\CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.cs" />
     <Compile Include="Refactorings\UseLinefeedAsNewLineRefactoring.cs" />
     <Compile Include="Refactorings\UseNameOfOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UsePredefinedTypeRefactoring.cs" />

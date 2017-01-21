@@ -48,6 +48,7 @@
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
     <Compile Include="AvoidEmbeddedStatement.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
+    <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />
     <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
