@@ -19,7 +19,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkVariableLocalAsConst); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.MarkVariableLocalAsConst,
+                    DiagnosticIdentifiers.InlineLocalVariable);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -46,6 +51,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Mark {names} as const",
                                 cancellationToken => MarkLocalVariableAsConstRefactoring.RefactorAsync(context.Document, localDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.InlineLocalVariable:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Inline local variable",
+                                cancellationToken => InlineLocalVariableRefactoring.RefactorAsync(context.Document, localDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
