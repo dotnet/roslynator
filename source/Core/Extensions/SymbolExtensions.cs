@@ -833,5 +833,24 @@ namespace Roslynator.Extensions
                     yield return (IMethodSymbol)members[i];
             }
         }
+
+        internal static IFieldSymbol FindFieldWithConstantValue(this ITypeSymbol typeSymbol, int value)
+        {
+            foreach (IFieldSymbol fieldSymbol in typeSymbol.GetFields())
+            {
+                if (fieldSymbol.HasConstantValue)
+                {
+                    object constantValue = fieldSymbol.ConstantValue;
+
+                    if (constantValue is int
+                        && (int)constantValue == value)
+                    {
+                        return fieldSymbol;
+                    }
+                }
+            }
+
+            return null;
+        }
     }
 }

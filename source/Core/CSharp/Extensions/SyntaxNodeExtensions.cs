@@ -82,6 +82,22 @@ namespace Roslynator.CSharp.Extensions
             return false;
         }
 
+        public static bool IsCharacterLiteralExpression(this SyntaxNode node, char value)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (node.IsKind(SyntaxKind.CharacterLiteralExpression))
+            {
+                object tokenValue = ((LiteralExpressionSyntax)node).Token.Value;
+
+                return tokenValue is char
+                    && (char)tokenValue == value;
+            }
+
+            return false;
+        }
+
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
             if (node == null)

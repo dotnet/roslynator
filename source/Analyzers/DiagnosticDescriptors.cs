@@ -1193,5 +1193,16 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithInitialization = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeLocalDeclarationWithInitialization,
+            title: "Merge local declaration with initialization.",
+            messageFormat: "Merge local declaration with initialization.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithInitializationFadeOut = MergeLocalDeclarationWithInitialization.CreateFadeOut();
     }
 }

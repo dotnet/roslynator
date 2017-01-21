@@ -73,6 +73,7 @@
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
+    <Compile Include="MergeLocalDeclarationWithInitialization.cs" />
     <Compile Include="MergeLocalDeclarationWithReturnStatement.cs" />
     <Compile Include="RemoveBraces.cs" />
     <Compile Include="RemoveEmptyDestructor.cs" />
