@@ -80,12 +80,15 @@
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\YieldStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\LocalDeclarationStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddReturnStatementThatReturnsDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\AddBreakStatementToSwitchSectionRefactoring.cs" />
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\DestructorDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereMethodChainRefactoring.cs" />
+    <Compile Include="Refactorings\MarkLocalVariableAsConstRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationWithReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />

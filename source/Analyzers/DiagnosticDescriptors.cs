@@ -1110,5 +1110,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MarkVariableLocalAsConst = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkVariableLocalAsConst,
+            title: "Mark local variable(s) as const.",
+            messageFormat: "Consider marking local variable as const.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
