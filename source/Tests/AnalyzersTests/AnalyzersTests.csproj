@@ -42,6 +42,7 @@
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />
+    <Compile Include="AddBreakStatementToSwitchSection.cs" />
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AsynchronousMethodNameShouldEndWithAsync.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
