@@ -94,6 +94,7 @@
     <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
     <Compile Include="UseElementAccessInsteadOfElementAt.cs" />
     <Compile Include="Tuple.cs" />
+    <Compile Include="UseCoalesceExpression.cs" />
     <Compile Include="UseCompoundAssignment.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />

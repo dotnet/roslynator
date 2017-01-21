@@ -23,15 +23,14 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
-                    DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement);
+                    DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
+                    DiagnosticIdentifiers.UseCoalesceExpression);
             }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document
-                .GetSyntaxRootAsync(context.CancellationToken)
-                .ConfigureAwait(false);
+            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
             StatementSyntax statement = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
@@ -93,6 +92,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     }
                             }
 
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseCoalesceExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use ?? operator",
+                                cancellationToken =>
+                                {
+                                    return UseCoalesceExpressionRefactoring.RefactorAsync(
+                                        context.Document,
+                                        statement,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

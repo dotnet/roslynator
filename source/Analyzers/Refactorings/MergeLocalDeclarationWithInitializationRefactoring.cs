@@ -96,7 +96,6 @@ namespace Roslynator.CSharp.Refactorings
                                                 }
                                             }
                                         }
-
                                     }
                                 }
                             }

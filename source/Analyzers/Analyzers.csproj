@@ -59,6 +59,7 @@
     <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ThrowExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="Refactorings\AddConstructorArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultAccessModifierRefactoring.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Refactorings\ThrowingOfNewNotImplementedExceptionRefactoring.cs" />
     <Compile Include="Refactorings\UseCarriageReturnAndLinefeedAsNewLineRefactoring.cs" />
     <Compile Include="Refactorings\CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.cs" />
+    <Compile Include="Refactorings\UseCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UseLinefeedAsNewLineRefactoring.cs" />
     <Compile Include="Refactorings\UseNameOfOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UsePredefinedTypeRefactoring.cs" />
