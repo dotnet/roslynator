@@ -41,6 +41,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="Refactorings\AddConstructorArgumentListRefactoring.cs" />
