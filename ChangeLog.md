@@ -1,3 +1,25 @@
+### 1.2.10 (2017-01-22)
+
+#### Analyzers
+
+##### New Analyzers
+
+* ReplaceReturnStatementWithExpressionStatement
+* AddBreakStatementToSwitchSection
+* AddReturnStatementThatReturnsDefaultValue
+* MarkLocalVariableAsConst
+* CallFindMethodInsteadOfFirstOrDefaultMethod
+* UseElementAccessInsteadOfElementAt
+* UseElementAccessInsteadOfFirst
+* AddMissingSemicolon
+* AddParenthesesAccordingToOperatorPrecedence
+* InlineLocalVariable
+* MarkMemberAsStatic
+* AvoidEmbeddedStatementInIfElse
+* MergeLocalDeclarationWithInitialization
+* UseCoalesceExpression
+* RemoveRedundantFieldInitialization
+
 ### 1.2.0 (2017-01-18)
 
 * Release of package Roslynator.Analyzers 1.2.0
