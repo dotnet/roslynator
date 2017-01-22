@@ -172,8 +172,6 @@
     <Compile Include="Refactorings\ParenthesizeExpressionRefactoring.cs" />
     <Compile Include="Refactorings\InterpolatedStringTextRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllStatementsRefactoring.cs" />
-    <Compile Include="Refactorings\MarkAllMembersAsStaticRefactoring.cs" />
-    <Compile Include="Refactorings\MarkMemberAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\RefactoringContext.cs" />
     <Compile Include="Refactorings\InterpolatedStringRefactoring.cs" />
     <Compile Include="Refactorings\GenerateSwitchSectionsRefactoring.cs" />

@@ -1175,5 +1175,14 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = InlineLocalVariable.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor MarkMemberAsStatic = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkMemberAsStatic,
+            title: "Mark member as static.",
+            messageFormat: "Mark member as static.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -11,19 +11,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic, RefactoringIdentifiers.MarkAllMembersAsStatic)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                 && eventFieldDeclaration.Span.Contains(context.Span)
                 && MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic))
-                {
-                    context.RegisterRefactoring(
-                        "Mark event as static",
-                        cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
-                    MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)eventFieldDeclaration.Parent);
+                context.RegisterRefactoring(
+                    "Mark event as static",
+                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)

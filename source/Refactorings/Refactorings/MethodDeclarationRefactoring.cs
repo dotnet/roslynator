@@ -20,18 +20,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (methodDeclaration.Span.Contains(context.Span))
             {
-                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic, RefactoringIdentifiers.MarkAllMembersAsStatic)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
                     && MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic))
-                    {
-                        context.RegisterRefactoring(
-                       "Mark method as static",
-                       cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
-                    }
-
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkAllMembersAsStatic))
-                        MarkAllMembersAsStaticRefactoring.RegisterRefactoring(context, (ClassDeclarationSyntax)methodDeclaration.Parent);
+                    context.RegisterRefactoring(
+                        "Mark method as static",
+                        cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
                 }
 
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);

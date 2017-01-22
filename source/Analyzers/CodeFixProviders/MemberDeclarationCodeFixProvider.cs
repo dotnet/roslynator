@@ -2,10 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -17,7 +19,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatDeclarationBraces); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.FormatDeclarationBraces,
+                    DiagnosticIdentifiers.MarkMemberAsStatic);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -28,15 +35,58 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<MemberDeclarationSyntax>();
 
+            Debug.Assert(memberDeclaration != null, $"{nameof(memberDeclaration)} is null");
+
             if (memberDeclaration == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Format braces",
-                cancellationToken => FormatDeclarationBracesRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
-                DiagnosticIdentifiers.FormatDeclarationBraces + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.FormatDeclarationBraces:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Format braces",
+                                cancellationToken => FormatDeclarationBracesRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MarkMemberAsStatic:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Mark {GetMemberName(memberDeclaration)} as static",
+                                cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private object GetMemberName(MemberDeclarationSyntax memberDeclaration)
+        {
+            switch (memberDeclaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return "method";
+                case SyntaxKind.ConstructorDeclaration:
+                    return "constructor";
+                case SyntaxKind.PropertyDeclaration:
+                    return "property";
+                case SyntaxKind.FieldDeclaration:
+                    return "field";
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    return "event";
+            }
+
+            Debug.Assert(false, memberDeclaration.Kind().ToString());
+            return "member";
         }
     }
 }
