@@ -131,5 +131,6 @@ namespace Roslynator.CSharp
         public const string AddParenthesesAccordingToOperatorPrecedence = Prefix + "1123";
         public const string InlineLocalVariable = Prefix + "1124";
         public const string MarkMemberAsStatic = Prefix + "1125";
+        public const string AvoidEmbeddedStatementInIfElse = Prefix + "1126";
     }
 }

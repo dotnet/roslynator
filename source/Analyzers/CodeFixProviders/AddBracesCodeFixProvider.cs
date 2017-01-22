@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -17,7 +18,13 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBraces); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddBraces,
+                    DiagnosticIdentifiers.AvoidEmbeddedStatement,
+                    DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -28,15 +35,20 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<StatementSyntax>();
 
+            Debug.Assert(statement != null, $"{nameof(statement)} is null");
+
             if (statement == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Add braces",
-                cancellationToken => AddBracesRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                DiagnosticIdentifiers.AddBraces + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Add braces",
+                    cancellationToken => AddBracesRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                    diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
     }
 }

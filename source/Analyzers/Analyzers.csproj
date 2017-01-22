@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
@@ -164,7 +165,6 @@
     <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\AvoidEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AnonymousMethodCodeFixProvider.cs" />

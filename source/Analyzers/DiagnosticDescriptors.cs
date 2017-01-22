@@ -1184,5 +1184,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AvoidEmbeddedStatementInIfElse = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse,
+            title: "Avoid embedded statement in if-else.",
+            messageFormat: "Add braces to {0}.",
+            category: DiagnosticCategories.Style,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
