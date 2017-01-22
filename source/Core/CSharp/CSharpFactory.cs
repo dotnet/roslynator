@@ -125,7 +125,7 @@ namespace Roslynator.CSharp
 
             if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Enum)
             {
-                IFieldSymbol fieldSymbol = GetDefaultEnumMember(typeSymbol);
+                IFieldSymbol fieldSymbol = typeSymbol.FindFieldWithConstantValue(0);
 
                 if (fieldSymbol != null)
                 {
@@ -159,21 +159,6 @@ namespace Roslynator.CSharp
             Debug.Assert(type != null);
 
             return DefaultExpression(type);
-        }
-
-        private static IFieldSymbol GetDefaultEnumMember(ITypeSymbol typeSymbol)
-        {
-            foreach (IFieldSymbol fieldSymbol in typeSymbol.GetFields())
-            {
-                if (fieldSymbol.HasConstantValue
-                    && fieldSymbol.ConstantValue is int
-                    && (int)fieldSymbol.ConstantValue == 0)
-                {
-                    return fieldSymbol;
-                }
-            }
-
-            return null;
         }
 
         public static ExpressionSyntax DefaultValue(IParameterSymbol parameterSymbol)

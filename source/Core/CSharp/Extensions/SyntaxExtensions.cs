@@ -879,6 +879,72 @@ namespace Roslynator.CSharp.Extensions
             return propertyDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
+        public static SyntaxList<StatementSyntax> GetContainingList(this StatementSyntax statement)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            SyntaxNode parent = statement.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.Block:
+                    return ((BlockSyntax)parent).Statements;
+                case SyntaxKind.SwitchSection:
+                    return ((SwitchSectionSyntax)parent).Statements;
+                default:
+                    return default(SyntaxList<StatementSyntax>);
+            }
+        }
+
+        public static StatementSyntax PreviousStatement(this StatementSyntax statement)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            SyntaxList<StatementSyntax> statements = statement.GetContainingList();
+
+            if (statements.Any())
+            {
+                int index = statements.IndexOf(statement);
+
+                if (index > 0)
+                {
+                    return statements[index - 1];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public static StatementSyntax NextStatement(this StatementSyntax statement)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            SyntaxList<StatementSyntax> statements = statement.GetContainingList();
+
+            if (statements.Any())
+            {
+                int index = statements.IndexOf(statement);
+
+                if (index < statements.Count - 1)
+                {
+                    return statements[index + 1];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
         public static TextSpan HeaderSpan(this StructDeclarationSyntax structDeclaration)
         {
             if (structDeclaration == null)
