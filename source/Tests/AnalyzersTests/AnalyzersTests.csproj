@@ -82,12 +82,14 @@
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
     <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
+    <Compile Include="UseElementAccessInsteadOfElementAt.cs" />
     <Compile Include="UseCompoundAssignment.cs" />
     <Compile Include="SimplifyBooleanComparison.cs" />
     <Compile Include="SimplifyConditionalExpression.cs" />
     <Compile Include="SimplifyNullableOfT.cs" />
     <Compile Include="ThrowingOfNewNotImplementedException.cs" />
     <Compile Include="UseAutoProperty.cs" />
+    <Compile Include="UseElementAccessInsteadOfFirst.cs" />
     <Compile Include="UseExplicitTypeInsteadOfVar.cs" />
     <Compile Include="UseExpressionBodiedMember.cs" />
     <Compile Include="UseStringIsNullOrEmptyMethod.cs" />

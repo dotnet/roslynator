@@ -209,7 +209,7 @@
     <Compile Include="Refactorings\NodeInList\DuplicateArgumentRefactoring.cs" />
     <Compile Include="Refactorings\ExpandInitializerRefactoring.cs" />
     <Compile Include="Refactorings\NotifyPropertyChangedRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
+    <Compile Include="Refactorings\UseElementAccessInsteadOfEnumerableMethodRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactorings\ExpandCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactorings\AddBooleanComparisonRefactoring.cs" />

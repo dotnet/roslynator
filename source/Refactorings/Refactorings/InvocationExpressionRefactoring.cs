@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocationExpression)
         {
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess,
+                    RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod,
                     RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
                     RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod,
                     RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf))
@@ -26,8 +26,8 @@ namespace Roslynator.CSharp.Refactorings
                     if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                         && ((MemberAccessExpressionSyntax)expression).Name?.Span.Contains(context.Span) == true)
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess))
-                            await ReplaceMethodInvocationWithElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod))
+                            await UseElementAccessInsteadOfEnumerableMethodRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
                             await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);

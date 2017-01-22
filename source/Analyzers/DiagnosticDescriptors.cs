@@ -1128,5 +1128,23 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfElementAt = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt,
+            title: "Use [] instead of calling 'ElementAt'.",
+            messageFormat: "Use [] instead of calling 'ElementAt'.",
+            category: DiagnosticCategories.Performance,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfFirst = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseElementAccessInsteadOfFirst,
+            title: "Use [] instead of calling 'First'.",
+            messageFormat: "Use [] instead of calling 'First'.",
+            category: DiagnosticCategories.Performance,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

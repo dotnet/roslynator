@@ -150,7 +150,6 @@ namespace Roslynator.VisualStudio
             ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodGroupWithLambda = true;
-            ReplaceMethodInvocationWithElementAccess = true;
             ReplaceMethodWithProperty = false;
             ReplaceNullLiteralExpressionWithDefaultExpression = true;
             ReplacePrefixOperatorWithPostfixOperator = true;
@@ -175,6 +174,7 @@ namespace Roslynator.VisualStudio
             SwapMemberDeclarations = true;
             SwapStatementsInIfElse = true;
             Uncomment = true;
+            UseElementAccessInsteadOfEnumerableMethod = true;
             UseExpressionBodiedMember = true;
             WrapInCondition = true;
             WrapInIfDirective = true;
@@ -323,7 +323,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda, ReplaceMethodGroupWithLambda);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceMethodInvocationWithElementAccess, ReplaceMethodInvocationWithElementAccess);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty, ReplaceMethodWithProperty);
             SetIsEnabled(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression, ReplaceNullLiteralExpressionWithDefaultExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
@@ -348,6 +347,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapMemberDeclarations, SwapMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
             SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
+            SetIsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod, UseElementAccessInsteadOfEnumerableMethod);
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
             SetIsEnabled(RefactoringIdentifiers.WrapInCondition, WrapInCondition);
             SetIsEnabled(RefactoringIdentifiers.WrapInIfDirective, WrapInIfDirective);
@@ -1737,16 +1737,6 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace method invocation with []")]
-        [Description("Syntax: First/Last/ElementAt method invocation\r\nScope: method name")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceMethodInvocationWithElementAccess
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Replace method with property")]
         [Description("Syntax: method\r\nScope: method header")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -1981,6 +1971,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: single-line comment(s)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool Uncomment
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Use element access instead of 'First/Last'ElementAt' method")]
+        [Description("Syntax: First/Last/ElementAt method invocation\r\nScope: method name")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool UseElementAccessInsteadOfEnumerableMethod
         {
             get;
             set;
