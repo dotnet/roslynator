@@ -457,12 +457,6 @@
 
 ![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
 
-#### Mark all members as static
-
-* **Syntax**: non-static field/method/property/event in static class
-
-![Mark all members as static](../../images/refactorings/MarkAllMembersAsStatic.png)
-
 #### Mark containing class as abstract
 
 * **Syntax**: method declaration, property declaration, indexer declaration, event declaration
@@ -914,13 +908,6 @@
 
 ![Replace method group with lambda](../../images/refactorings/ReplaceMethodGroupWithLambda.png)
 
-#### Replace method invocation with []
-
-* **Syntax**: First/Last/ElementAt method invocation
-* **Scope**: method name
-
-![Replace method invocation with []](../../images/refactorings/ReplaceMethodInvocationWithElementAccess.png)
-
 #### Replace method with property
 
 * **Syntax**: method
@@ -1073,6 +1060,13 @@
 * **Syntax**: single-line comment(s)
 
 ![Uncomment](../../images/refactorings/Uncomment.png)
+
+#### Use element access instead of 'First/Last'ElementAt' method
+
+* **Syntax**: First/Last/ElementAt method invocation
+* **Scope**: method name
+
+![Use element access instead of 'First/Last'ElementAt' method](../../images/refactorings/UseElementAccessInsteadOfEnumerableMethod.png)
 
 #### Use expression-bodied member
 

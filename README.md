@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 110+ analyzers and 160+ refactorings for C#, powered by Roslyn.
+* A collection of 120+ analyzers and 160+ refactorings for C#, powered by Roslyn.
 * [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
@@ -143,6 +143,21 @@
 * RCS1112 - Combine 'Enumerable.Where' method chain
 * RCS1113 - Use 'string.IsNullOrEmpty' method
 * RCS1114 - Remove redundant delegate creation
+* RCS1115 - Replace yield/return statement with expression statement
+* RCS1116 - Add break statement to switch section
+* RCS1117 - Add return statement that returns default value
+* RCS1118 - Mark local variable as const
+* RCS1119 - Call 'Find' method instead of 'FirstOrDefault' method
+* RCS1120 - Use [] instead of calling 'ElementAt'
+* RCS1121 - Use [] instead of calling 'First'
+* RCS1122 - Add missing semicolon
+* RCS1123 - Add parentheses according to operator precedence
+* RCS1124 - Inline local variable
+* RCS1125 - Mark member as static
+* RCS1126 - Avoid embedded statement in if-else
+* RCS1127 - Merge local declaration with initialization
+* RCS1128 - Use coalesce expression
+* RCS1129 - Remove redundant field initalization
 
 ### List of Refactorings
 
@@ -213,7 +228,6 @@
 * [Introduce local from statement that returns value](source/Refactorings/Refactorings.md#introduce-local-from-statement-that-returns-value)
 * [Make member abstract](source/Refactorings/Refactorings.md#make-member-abstract)
 * [Make member virtual](source/Refactorings/Refactorings.md#make-member-virtual)
-* [Mark all members as static](source/Refactorings/Refactorings.md#mark-all-members-as-static)
 * [Mark containing class as abstract](source/Refactorings/Refactorings.md#mark-containing-class-as-abstract)
 * [Mark member as static](source/Refactorings/Refactorings.md#mark-member-as-static)
 * [Merge assignment expression with return statement](source/Refactorings/Refactorings.md#merge-assignment-expression-with-return-statement)
@@ -284,7 +298,6 @@
 * [Replace interpolated string with interpolation expression](source/Refactorings/Refactorings.md#replace-interpolated-string-with-interpolation-expression)
 * [Replace interpolated string with string literal](source/Refactorings/Refactorings.md#replace-interpolated-string-with-string-literal)
 * [Replace method group with lambda](source/Refactorings/Refactorings.md#replace-method-group-with-lambda)
-* [Replace method invocation with []](source/Refactorings/Refactorings.md#replace-method-invocation-with-)
 * [Replace method with property](source/Refactorings/Refactorings.md#replace-method-with-property)
 * [Replace null literal expression with default expression](source/Refactorings/Refactorings.md#replace-null-literal-expression-with-default-expression)
 * [Replace prefix operator to postfix operator](source/Refactorings/Refactorings.md#replace-prefix-operator-to-postfix-operator)
@@ -309,6 +322,7 @@
 * [Swap member declarations](source/Refactorings/Refactorings.md#swap-member-declarations)
 * [Swap statements in if-else](source/Refactorings/Refactorings.md#swap-statements-in-if-else)
 * [Uncomment](source/Refactorings/Refactorings.md#uncomment)
+* [Use element access instead of 'First/Last'ElementAt' method](source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method)
 * [Use expression-bodied member](source/Refactorings/Refactorings.md#use-expression-bodied-member)
 * [Wrap in #if directive](source/Refactorings/Refactorings.md#wrap-in-if-directive)
 * [Wrap in condition](source/Refactorings/Refactorings.md#wrap-in-condition)

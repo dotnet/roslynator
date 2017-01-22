@@ -1008,4 +1008,139 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="ReplaceReturnStatementWithExpressionStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1115</Id>
+    <Title>Replace yield/return statement with expression statement.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddBreakStatementToSwitchSection" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1116</Id>
+    <Title>Add break statement to switch section.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddReturnStatementThatReturnsDefaultValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1117</Id>
+    <Title>Add return statement that returns default value.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MarkLocalVariableAsConst" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1118</Id>
+    <Title>Mark local variable as const.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="CallFindMethodInsteadOfFirstOrDefaultMethod" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1119</Id>
+    <Title>Call 'Find' method instead of 'FirstOrDefault' method.</Title>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseElementAccessInsteadOfElementAt" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1120</Id>
+    <Title>Use [] instead of calling 'ElementAt'.</Title>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseElementAccessInsteadOfFirst" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1121</Id>
+    <Title>Use [] instead of calling 'First'.</Title>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddMissingSemicolon" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1122</Id>
+    <Title>Add missing semicolon.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddParenthesesAccordingToOperatorPrecedence" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1123</Id>
+    <Title>Add parentheses according to operator precedence.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="InlineLocalVariable" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1124</Id>
+    <Title>Inline local variable.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MarkMemberAsStatic" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1125</Id>
+    <Title>Mark member as static.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AvoidEmbeddedStatementInIfElse" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1126</Id>
+    <Title>Avoid embedded statement in if-else.</Title>
+    <Category>Style</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MergeLocalDeclarationWithInitialization" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1127</Id>
+    <Title>Merge local declaration with initialization.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseCoalesceExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1128</Id>
+    <Title>Use coalesce expression.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantFieldInitialization" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1129</Id>
+    <Title>Remove redundant field initalization.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
