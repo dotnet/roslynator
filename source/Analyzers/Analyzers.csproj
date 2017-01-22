@@ -43,9 +43,12 @@
   <ItemGroup>
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddParenthesesAccordingToOperatorPrecedenceRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\InlineLocalVariableDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="Refactorings\AddConstructorArgumentListRefactoring.cs" />
@@ -83,7 +86,6 @@
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\YieldStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\LocalDeclarationStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddReturnStatementThatReturnsDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\AddBreakStatementToSwitchSectionRefactoring.cs" />

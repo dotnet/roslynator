@@ -129,5 +129,6 @@ namespace Roslynator.CSharp
         public const string UseElementAccessInsteadOfFirst = Prefix + "1121";
         public const string AddMissingSemicolon = Prefix + "1122";
         public const string AddParenthesesAccordingToOperatorPrecedence = Prefix + "1123";
+        public const string InlineLocalVariable = Prefix + "1124";
     }
 }

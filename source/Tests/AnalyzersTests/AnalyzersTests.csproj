@@ -59,6 +59,7 @@
     <Compile Include="FormatEmbeddedStatementOnSeparateLine.cs" />
     <Compile Include="FormatEmptyBlock.cs" />
     <Compile Include="FormatSwitchSectionStatementOnSeparateLine.cs" />
+    <Compile Include="InlineLocalVariable.cs" />
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />

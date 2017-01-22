@@ -1164,5 +1164,16 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor InlineLocalVariable = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.InlineLocalVariable,
+            title: "Inline local variable.",
+            messageFormat: "Inline local variable.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = InlineLocalVariable.CreateFadeOut();
     }
 }
