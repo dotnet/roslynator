@@ -45,6 +45,7 @@
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AsynchronousMethodNameShouldEndWithAsync.cs" />
+    <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />

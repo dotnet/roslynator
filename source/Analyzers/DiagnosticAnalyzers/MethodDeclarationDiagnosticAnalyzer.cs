@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -22,7 +23,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
                     DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
+                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
+                    DiagnosticDescriptors.AddReturnStatementThatReturnsDefaultValue);
             }
         }
 
@@ -40,6 +42,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return;
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
+            if (AddReturnStatementThatReturnsDefaultValueRefactoring.CanRefactor(methodDeclaration, context.SemanticModel, context.CancellationToken))
+                context.ReportDiagnostic(DiagnosticDescriptors.AddReturnStatementThatReturnsDefaultValue, methodDeclaration.Identifier.GetLocation());
 
             AsynchronousMethodNameShouldEndWithAsyncRefactoring.Analyze(context, methodDeclaration);
             NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.Analyze(context, methodDeclaration);

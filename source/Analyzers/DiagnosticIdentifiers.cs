@@ -122,5 +122,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantDelegateCreation = Prefix + "1114";
         public const string ReplaceReturnStatementWithExpressionStatement = Prefix + "1115";
         public const string AddBreakStatementToSwitchSection = Prefix + "1116";
+        public const string AddReturnStatementThatReturnsDefaultValue = Prefix + "1117";
     }
 }
