@@ -1204,5 +1204,16 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor MergeLocalDeclarationWithInitializationFadeOut = MergeLocalDeclarationWithInitialization.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor UseCoalesceExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCoalesceExpression,
+            title: "Use coalesce expression.",
+            messageFormat: "Use coalesce expression.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionFadeOut = UseCoalesceExpression.CreateFadeOut();
     }
 }

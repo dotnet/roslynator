@@ -1077,6 +1077,16 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, operatorToken, right);
         }
 
+        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.CoalesceExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.CoalesceExpression, left, operatorToken, right);
+        }
+
         public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)
         {
             return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand);
