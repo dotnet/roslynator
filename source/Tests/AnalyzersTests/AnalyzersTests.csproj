@@ -47,6 +47,7 @@
     <Compile Include="AsynchronousMethodNameShouldEndWithAsync.cs" />
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
+    <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />
     <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
