@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    internal static class CSharpUtility
+    public static class CSharpUtility
     {
         public static int GetOperatorPrecedence(ExpressionSyntax expression)
         {

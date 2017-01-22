@@ -1155,5 +1155,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AddParenthesesAccordingToOperatorPrecedence = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence,
+            title: "Add parentheses according to operator precedence.",
+            messageFormat: "Add parentheses according to operator precedence.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
