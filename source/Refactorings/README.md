@@ -69,7 +69,6 @@
 [Introduce local from statement that returns value](Refactorings.md#introduce-local-from-statement-that-returns-value)|x
 [Make member abstract](Refactorings.md#make-member-abstract)|x
 [Make member virtual](Refactorings.md#make-member-virtual)|x
-[Mark all members as static](Refactorings.md#mark-all-members-as-static)|x
 [Mark containing class as abstract](Refactorings.md#mark-containing-class-as-abstract)|x
 [Mark member as static](Refactorings.md#mark-member-as-static)|x
 [Merge assignment expression with return statement](Refactorings.md#merge-assignment-expression-with-return-statement)|x
@@ -140,7 +139,6 @@
 [Replace interpolated string with interpolation expression](Refactorings.md#replace-interpolated-string-with-interpolation-expression)|x
 [Replace interpolated string with string literal](Refactorings.md#replace-interpolated-string-with-string-literal)|x
 [Replace method group with lambda](Refactorings.md#replace-method-group-with-lambda)|x
-[Replace method invocation with \[\]](Refactorings.md#replace-method-invocation-with-)|x
 [Replace method with property](Refactorings.md#replace-method-with-property)|
 [Replace null literal expression with default expression](Refactorings.md#replace-null-literal-expression-with-default-expression)|x
 [Replace prefix operator to postfix operator](Refactorings.md#replace-prefix-operator-to-postfix-operator)|x
@@ -165,6 +163,7 @@
 [Swap member declarations](Refactorings.md#swap-member-declarations)|x
 [Swap statements in if\-else](Refactorings.md#swap-statements-in-if-else)|x
 [Uncomment](Refactorings.md#uncomment)|x
+[Use element access instead of 'First/Last'ElementAt' method](Refactorings.md#use-element-access-instead-of-firstlastelementat-method)|x
 [Use expression\-bodied member](Refactorings.md#use-expression-bodied-member)|x
 [Wrap in \#if directive](Refactorings.md#wrap-in-if-directive)|x
 [Wrap in condition](Refactorings.md#wrap-in-condition)|x

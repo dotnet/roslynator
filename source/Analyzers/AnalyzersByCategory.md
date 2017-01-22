@@ -7,6 +7,11 @@ Design|Avoid locking on publicly accessible instance|RCS1059|x
 Design|Call 'ConfigureAwait\(false\)'|RCS1090|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
+ErrorFix|Add break statement to switch section|RCS1116|x
+ErrorFix|Add missing semicolon|RCS1122|x
+ErrorFix|Add return statement that returns default value|RCS1117|x
+ErrorFix|Mark member as static|RCS1125|x
+ErrorFix|Replace yield/return statement with expression statement|RCS1115|x
 Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
 Formatting|Add empty line between declarations|RCS1057|x
@@ -21,6 +26,7 @@ Formatting|Format embedded statement on a separate line|RCS1027|
 Formatting|Format empty block|RCS1023|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Avoid usage of tab|RCS1088|
+General|Mark local variable as const|RCS1118|x
 General|Replace string\.Empty with ""|RCS1078|
 General|Throwing of new NotImplementedException|RCS1079|x
 General|Use carriage return \+ linefeed as newline|RCS1087|
@@ -31,11 +37,15 @@ Maintainability|Use nameof operator|RCS1015|x
 Naming|Asynchronous method name should end with 'Async'|RCS1046|
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
+Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
 Performance|Replace 'Any' method with 'Count' or 'Length' property|RCS1080|x
 Performance|Replace 'Count' method with 'Any' method|RCS1083|x
 Performance|Replace 'Count' method with 'Count' or 'Length' property|RCS1082|x
+Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
+Performance|Use \[\] instead of calling 'First'|RCS1121|x
 Performance|Use bitwise operation instead of 'HasFlag' method|RCS1096|x
 Readability|Add default access modifier|RCS1018|x
+Readability|Add parentheses according to operator precedence|RCS1123|x
 Readability|Add static modifier to all partial class declarations|RCS1108|x
 Readability|Avoid implicitly\-typed array|RCS1014|
 Readability|Avoid 'null' on the left side of a binary expression|RCS1098|x
@@ -69,6 +79,7 @@ Redundancy|Remove redundant constructor|RCS1074|x
 Redundancy|Remove redundant default switch section|RCS1070|x
 Redundancy|Remove redundant delegate creation|RCS1114|x
 Redundancy|Remove redundant empty line|RCS1036|x
+Redundancy|Remove redundant field initalization|RCS1129|x
 Redundancy|Remove redundant parentheses|RCS1032|x
 Redundancy|Remove redundant sealed modifier|RCS1034|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
@@ -76,9 +87,11 @@ Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
 Redundancy|Remove unnecessary case label|RCS1069|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
+Simplification|Inline local variable|RCS1124|x
 Simplification|Merge else clause with nested if statement|RCS1006|x
 Simplification|Merge if statement with nested if statement|RCS1061|x
 Simplification|Merge interpolation into interpolated string|RCS1105|x
+Simplification|Merge local declaration with initialization|RCS1127|x
 Simplification|Merge local declaration with return statement|RCS1054|x
 Simplification|Replace conditional expression with coalesce expression|RCS1084|x
 Simplification|Replace if statement with assignment|RCS1103|x
@@ -93,6 +106,7 @@ Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
 Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
+Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use postfix unary operator instead of assignment|RCS1089|x
 Simplification|Use 'var' instead of explicit type \(when the type is obvious\)|RCS1010|x
@@ -100,6 +114,7 @@ Style|Add braces to if\-else|RCS1003|x
 Style|Add braces to switch section with multiple statements|RCS1111|
 Style|Add braces|RCS1001|x
 Style|Add constructor argument list|RCS1050|
+Style|Avoid embedded statement in if\-else|RCS1126|
 Style|Avoid embedded statement|RCS1007|
 Style|Avoid multiline expression body|RCS1017|
 Style|Avoid usage of do statement to create an infinite loop|RCS1063|x

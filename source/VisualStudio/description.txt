@@ -1,7 +1,7 @@
 ﻿<h3>Introduction</h3>
 
 <p>
-    A collection of 110+ analyzers and 160+ refactorings for C#, powered by Roslyn.
+    A collection of 120+ analyzers and 160+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
@@ -170,6 +170,21 @@
         <li>RCS1112 - Combine 'Enumerable.Where' method chain.</li>
         <li>RCS1113 - Use 'string.IsNullOrEmpty' method.</li>
         <li>RCS1114 - Remove redundant delegate creation.</li>
+        <li>RCS1115 - Replace yield/return statement with expression statement.</li>
+        <li>RCS1116 - Add break statement to switch section.</li>
+        <li>RCS1117 - Add return statement that returns default value.</li>
+        <li>RCS1118 - Mark local variable as const.</li>
+        <li>RCS1119 - Call 'Find' method instead of 'FirstOrDefault' method.</li>
+        <li>RCS1120 - Use [] instead of calling 'ElementAt'.</li>
+        <li>RCS1121 - Use [] instead of calling 'First'.</li>
+        <li>RCS1122 - Add missing semicolon.</li>
+        <li>RCS1123 - Add parentheses according to operator precedence.</li>
+        <li>RCS1124 - Inline local variable.</li>
+        <li>RCS1125 - Mark member as static.</li>
+        <li>RCS1126 - Avoid embedded statement in if-else.</li>
+        <li>RCS1127 - Merge local declaration with initialization.</li>
+        <li>RCS1128 - Use coalesce expression.</li>
+        <li>RCS1129 - Remove redundant field initalization.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>

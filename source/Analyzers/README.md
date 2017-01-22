@@ -114,3 +114,18 @@ RCS1111|Add braces to switch section with multiple statements|Style|
 RCS1112|Combine 'Enumerable\.Where' method chain|Simplification|x
 RCS1113|Use 'string\.IsNullOrEmpty' method|Usage|x
 RCS1114|Remove redundant delegate creation|Redundancy|x
+RCS1115|Replace yield/return statement with expression statement|ErrorFix|x
+RCS1116|Add break statement to switch section|ErrorFix|x
+RCS1117|Add return statement that returns default value|ErrorFix|x
+RCS1118|Mark local variable as const|General|x
+RCS1119|Call 'Find' method instead of 'FirstOrDefault' method|Performance|x
+RCS1120|Use \[\] instead of calling 'ElementAt'|Performance|x
+RCS1121|Use \[\] instead of calling 'First'|Performance|x
+RCS1122|Add missing semicolon|ErrorFix|x
+RCS1123|Add parentheses according to operator precedence|Readability|x
+RCS1124|Inline local variable|Simplification|x
+RCS1125|Mark member as static|ErrorFix|x
+RCS1126|Avoid embedded statement in if\-else|Style|
+RCS1127|Merge local declaration with initialization|Simplification|x
+RCS1128|Use coalesce expression|Simplification|x
+RCS1129|Remove redundant field initalization|Redundancy|x
