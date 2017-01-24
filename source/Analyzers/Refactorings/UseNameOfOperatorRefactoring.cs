@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Analysis;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -18,53 +18,53 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ArgumentSyntax argument)
         {
-            if (argument.Expression?.IsKind(SyntaxKind.StringLiteralExpression) != true)
-                return;
+            ExpressionSyntax expression = argument.Expression;
 
-            using (IEnumerator<ParameterSyntax> en = GetParametersInScope(argument).GetEnumerator())
+            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true)
             {
-                if (en.MoveNext())
+                using (IEnumerator<ParameterSyntax> en = GetParametersInScope(argument).GetEnumerator())
                 {
-                    var literalExpression = (LiteralExpressionSyntax)argument.Expression;
-
-                    string text = (literalExpression).Token.ValueText;
-
-                    if (ExistsParameterWithName(en, text))
+                    if (en.MoveNext())
                     {
-                        IParameterSymbol parameterSymbol = GetParameterSymbol(argument, context.SemanticModel);
+                        var literalExpression = (LiteralExpressionSyntax)expression;
 
-                        if (parameterSymbol != null
-                            && (IdentifierEquals(parameterSymbol.Name, "paramName")
-                                || IdentifierEquals(parameterSymbol.Name, "parameterName")))
+                        string text = literalExpression.Token.ValueText;
+
+                        if (ExistsParameterWithName(en, text))
                         {
-                            ReportDiagnostic(context, literalExpression, text);
+                            IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, context.SemanticModel, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+
+                            if (parameterSymbol != null
+                                && (NameEquals(parameterSymbol.Name, "paramName")
+                                    || NameEquals(parameterSymbol.Name, "parameterName")))
+                            {
+                                ReportDiagnostic(context, literalExpression, text);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    AccessorDeclarationSyntax setter = argument
-                        .FirstAncestor<AccessorDeclarationSyntax>();
-
-                    if (setter?.IsKind(SyntaxKind.SetAccessorDeclaration) == true)
+                    else
                     {
-                        PropertyDeclarationSyntax property = setter
-                            .FirstAncestor<PropertyDeclarationSyntax>();
+                        AccessorDeclarationSyntax accessor = argument.FirstAncestor<AccessorDeclarationSyntax>();
 
-                        if (property != null)
+                        if (accessor?.IsKind(SyntaxKind.SetAccessorDeclaration) == true)
                         {
-                            var literalExpression = (LiteralExpressionSyntax)argument.Expression;
+                            PropertyDeclarationSyntax property = accessor.FirstAncestor<PropertyDeclarationSyntax>();
 
-                            string text = (literalExpression).Token.ValueText;
-
-                            if (IdentifierEquals(property.Identifier.ValueText, text))
+                            if (property != null)
                             {
-                                IParameterSymbol parameterSymbol = GetParameterSymbol(argument, context.SemanticModel);
+                                var literalExpression = (LiteralExpressionSyntax)expression;
 
-                                if (parameterSymbol != null
-                                    && IdentifierEquals(parameterSymbol.Name, "propertyName"))
+                                string text = literalExpression.Token.ValueText;
+
+                                if (NameEquals(property.Identifier.ValueText, text))
                                 {
-                                    ReportDiagnostic(context, literalExpression, text);
+                                    IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, context.SemanticModel, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+
+                                    if (parameterSymbol != null
+                                        && NameEquals(parameterSymbol.Name, "propertyName"))
+                                    {
+                                        ReportDiagnostic(context, literalExpression, text);
+                                    }
                                 }
                             }
                         }
@@ -87,8 +87,10 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (parameterList != null)
                     {
-                        for (int i = 0; i < parameterList.Parameters.Count; i++)
-                            yield return parameterList.Parameters[i];
+                        SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+
+                        foreach (ParameterSyntax parameter in parameters)
+                            yield return parameter;
                     }
                 }
             }
@@ -119,64 +121,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             do
             {
-                if (IdentifierEquals(enumerator.Current.Identifier.ValueText, name))
+                if (NameEquals(enumerator.Current.Identifier.ValueText, name))
                     return true;
 
             } while (enumerator.MoveNext());
 
             return false;
-        }
-
-        private static IParameterSymbol GetParameterSymbol(ArgumentSyntax argument, SemanticModel semanticModel)
-        {
-            var argumentList = argument.Parent as ArgumentListSyntax;
-
-            if (argumentList == null)
-                return null;
-
-            var expression = argumentList.Parent as ExpressionSyntax;
-
-            if (expression == null)
-                return null;
-
-            ISymbol symbol = semanticModel.GetSymbol(expression);
-
-            if (symbol == null)
-                return null;
-
-            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
-
-            if (parameters.Length == 0)
-                return null;
-
-            if (argument.NameColon != null)
-            {
-                string name = argument.NameColon.Name?.Identifier.ValueText;
-
-                if (name != null)
-                {
-                    for (int i = 0; i < parameters.Length; i++)
-                    {
-                        if (IdentifierEquals(parameters[i].Name, name))
-                            return parameters[i];
-                    }
-                }
-            }
-            else
-            {
-                int index = argumentList.Arguments.IndexOf(argument);
-
-                if (index < parameters.Length)
-                    return parameters[index];
-
-                if (index >= parameters.Length
-                    && parameters[parameters.Length - 1].IsParams)
-                {
-                    return parameters[parameters.Length - 1];
-                }
-            }
-
-            return null;
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LiteralExpressionSyntax literalExpression, string text)
@@ -190,19 +140,20 @@ namespace Roslynator.CSharp.Refactorings
 
             if (text.Length >= 2)
             {
-                ReportDiagnostic(context, literalExpression, new TextSpan(literalExpression.Span.Start, (text[0] == '@') ? 2 : 1));
-                ReportDiagnostic(context, literalExpression, new TextSpan(literalExpression.Span.End - 1, 1));
+                SyntaxTree syntaxTree = literalExpression.SyntaxTree;
+                TextSpan span = literalExpression.Span;
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseNameOfOperatorFadeOut,
+                    Location.Create(syntaxTree, new TextSpan(span.Start, (text[0] == '@') ? 2 : 1)));
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.UseNameOfOperatorFadeOut,
+                    Location.Create(syntaxTree, new TextSpan(span.End - 1, 1)));
             }
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LiteralExpressionSyntax literalExpression, TextSpan span)
-        {
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.UseNameOfOperatorFadeOut,
-                Location.Create(literalExpression.SyntaxTree, span));
-        }
-
-        private static bool IdentifierEquals(string a, string b)
+        private static bool NameEquals(string a, string b)
         {
             return string.Equals(a, b, StringComparison.Ordinal);
         }

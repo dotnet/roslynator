@@ -396,22 +396,6 @@ namespace Roslynator.Extensions
             } while (containingNamespace != null);
         }
 
-        public static ImmutableArray<IParameterSymbol> GetParameters(this ISymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            switch (symbol.Kind)
-            {
-                case SymbolKind.Method:
-                    return ((IMethodSymbol)symbol).Parameters;
-                case SymbolKind.Property:
-                    return ((IPropertySymbol)symbol).Parameters;
-                default:
-                    return ImmutableArray<IParameterSymbol>.Empty;
-            }
-        }
-
         public static bool IsStaticClass(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.IsStatic == true

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Tests
@@ -36,6 +35,24 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
             private void ProcessValue(int index)
             {
+            }
+
+            public class Base
+            {
+                public Base(long x)
+                {
+                }
+
+                public Base(int x)
+                {
+                }
+            }
+
+            public class Derived : Base
+            {
+                public Derived(object x) : base(x)
+                {
+                }
             }
         }
 

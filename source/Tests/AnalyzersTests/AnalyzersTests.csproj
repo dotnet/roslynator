@@ -105,6 +105,7 @@
     <Compile Include="UseElementAccessInsteadOfFirst.cs" />
     <Compile Include="UseExplicitTypeInsteadOfVar.cs" />
     <Compile Include="UseExpressionBodiedMember.cs" />
+    <Compile Include="UseNameOfOperator.cs" />
     <Compile Include="UseStringIsNullOrEmptyMethod.cs" />
     <Compile Include="SimplifyLinqMethodChain.cs" />
     <Compile Include="UseCastMethodInsteadOfSelectMethod.cs" />
