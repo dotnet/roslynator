@@ -87,6 +87,30 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        public bool SupportsCSharp7
+        {
+            get
+            {
+                if (Project.Language == LanguageNames.CSharp)
+                {
+                    switch (((CSharpParseOptions)Project.ParseOptions).LanguageVersion)
+                    {
+                        case LanguageVersion.CSharp1:
+                        case LanguageVersion.CSharp2:
+                        case LanguageVersion.CSharp3:
+                        case LanguageVersion.CSharp4:
+                        case LanguageVersion.CSharp5:
+                        case LanguageVersion.CSharp6:
+                            return false;
+                        default:
+                            return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public Task<SemanticModel> GetSemanticModelAsync()
         {
             return Document.GetSemanticModelAsync(CancellationToken);
