@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
@@ -14,32 +15,51 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (parameter.Type != null
-                && !parameter.Identifier.IsMissing
-                && context.Span.Start >= parameter.Identifier.Span.Start)
+            SyntaxNode parent = parameter.Parent as BaseParameterListSyntax;
+
+            if (parent != null)
             {
-                EqualsValueClauseSyntax @default = parameter.Default;
+                parent = parent.Parent;
 
-                if (@default == null
-                    || @default.IsMissing
-                    || @default.Value == null
-                    || @default.Value.IsMissing)
+                if (parent?.IsKind(
+                    SyntaxKind.SimpleLambdaExpression,
+                    SyntaxKind.ParenthesizedLambdaExpression,
+                    SyntaxKind.AnonymousMethodExpression) == false)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    TypeSyntax type = parameter.Type;
 
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(parameter.Type, context.CancellationToken);
-
-                    if (typeSymbol?.IsErrorType() == false)
+                    if (type != null)
                     {
-                        context.RegisterRefactoring(
-                            "Add default value",
-                            cancellationToken => RefactorAsync(context.Document, parameter, typeSymbol, cancellationToken));
+                        SyntaxToken identifier = parameter.Identifier;
+
+                        if (!identifier.IsMissing
+                            && context.Span.Start >= identifier.Span.Start)
+                        {
+                            EqualsValueClauseSyntax @default = parameter.Default;
+
+                            if (@default == null
+                                || @default.IsMissing
+                                || @default.Value == null
+                                || @default.Value.IsMissing)
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+                                if (typeSymbol?.IsErrorType() == false)
+                                {
+                                    context.RegisterRefactoring(
+                                        "Add default value",
+                                        cancellationToken => RefactorAsync(context.Document, parameter, typeSymbol, cancellationToken));
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ParameterSyntax parameter,
             ITypeSymbol typeSymbol,
@@ -47,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ParameterSyntax newParameter = GetNewParameter(parameter, typeSymbol);
 
-            return await document.ReplaceNodeAsync(parameter, newParameter, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
         }
 
         private static ParameterSyntax GetNewParameter(
