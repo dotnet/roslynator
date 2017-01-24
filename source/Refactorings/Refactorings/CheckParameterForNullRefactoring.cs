@@ -267,7 +267,11 @@ namespace Roslynator.CSharp.Refactorings
                         return ((ConstructorDeclarationSyntax)parent).Body;
                     default:
                         {
-                            Debug.Assert(false, parent?.Kind().ToString());
+                            Debug.Assert(parent?.IsKind(
+                                SyntaxKind.ParenthesizedLambdaExpression,
+                                SyntaxKind.AnonymousMethodExpression,
+                                SyntaxKind.LocalFunctionStatement) != false, parent?.Kind().ToString());
+
                             break;
                         }
                 }
