@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Internal;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Extensions
@@ -99,6 +100,26 @@ namespace Roslynator.CSharp.Extensions
             }
 
             return false;
+        }
+
+        public static IParameterSymbol DetermineParameter(
+            this SemanticModel semanticModel,
+            ArgumentSyntax argument,
+            bool allowParams = false,
+            bool allowCandidate = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return DetermineParameterHelper.DetermineParameter(argument, semanticModel, allowParams, allowParams, cancellationToken);
+        }
+
+        public static IParameterSymbol DetermineParameter(
+            this SemanticModel semanticModel,
+            AttributeArgumentSyntax attributeArgument,
+            bool allowParams = false,
+            bool allowCandidate = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return DetermineParameterHelper.DetermineParameter(attributeArgument, semanticModel, allowParams, allowCandidate, cancellationToken);
         }
 
         public static bool IsDefaultValue(

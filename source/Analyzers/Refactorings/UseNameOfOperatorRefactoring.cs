@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -32,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (ExistsParameterWithName(en, text))
                         {
-                            IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, context.SemanticModel, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+                            IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
 
                             if (parameterSymbol != null
                                 && (NameEquals(parameterSymbol.Name, "paramName")
@@ -58,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (NameEquals(property.Identifier.ValueText, text))
                                 {
-                                    IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, context.SemanticModel, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+                                    IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
 
                                     if (parameterSymbol != null
                                         && NameEquals(parameterSymbol.Name, "propertyName"))

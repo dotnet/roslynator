@@ -115,9 +115,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (argument.NameColon == null || argument.NameColon.IsMissing)
             {
-                IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(
+                IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
                     argument,
-                    semanticModel,
                     allowParams: false,
                     cancellationToken: cancellationToken);
 
@@ -144,9 +143,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(
+                    IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
                         argument,
-                        semanticModel,
                         allowParams: false,
                         cancellationToken: context.CancellationToken);
 

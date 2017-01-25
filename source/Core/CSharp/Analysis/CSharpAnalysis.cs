@@ -2,13 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
-using Roslynator.CSharp.Internal;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Analysis
@@ -455,34 +453,6 @@ namespace Roslynator.CSharp.Analysis
                 if (usingDirective.Alias != null)
                     yield return usingDirective;
             }
-        }
-
-        public static IParameterSymbol DetermineParameter(
-            ArgumentSyntax argument,
-            SemanticModel semanticModel,
-            bool allowParams = false,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return DetermineParameterHelper.DetermineParameter(argument, semanticModel, allowParams, allowParams, cancellationToken);
-        }
-
-        public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
-            ArgumentSyntax argument,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return DetermineParameterHelper.DetermineParameterTypes(argument, semanticModel, cancellationToken);
-        }
-
-        public static IParameterSymbol DetermineParameter(
-            AttributeArgumentSyntax attributeArgument,
-            SemanticModel semanticModel,
-            bool allowParams = false,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return DetermineParameterHelper.DetermineParameter(attributeArgument, semanticModel, allowParams, allowCandidate, cancellationToken);
         }
     }
 }
