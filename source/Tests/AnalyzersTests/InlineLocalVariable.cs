@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -32,6 +33,14 @@ namespace Roslynator.CSharp.Analyzers.Tests
             string x = s;
         }
 
+        private static void Foo22()
+        {
+            IEnumerable<int> items = Enumerable.Range(0, 10);
+            foreach (int item in items)
+            {
+            }
+        }
+
         private static void Foo3()
         {
             string x = null;
@@ -46,6 +55,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             string x = s;
 
             string x2 = s;
+        }
+
+        private static void Foo44()
+        {
+            IEnumerable<int> items = Enumerable.Range(0, 10);
+            foreach (int item in items)
+            {
+            }
+
+            items = null;
         }
 
         private static void Foo5()
