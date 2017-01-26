@@ -49,12 +49,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 var block = (BlockSyntax)body;
 
-                context.FadeOutBraces(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
+                context.ReportBraces(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
 
                 StatementSyntax statement = block.Statements[0];
 
                 if (statement.IsKind(SyntaxKind.ReturnStatement))
-                    context.FadeOutToken(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                    context.ReportToken(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
             }
         }
     }

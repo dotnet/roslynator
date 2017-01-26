@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNodeAnalysisContext context,
             BinaryExpressionSyntax binaryExpression)
         {
-            context.FadeOutToken(FadeOutDescriptor, binaryExpression.OperatorToken);
+            context.ReportToken(FadeOutDescriptor, binaryExpression.OperatorToken);
 
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
@@ -51,11 +51,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            context.FadeOutNode(FadeOutDescriptor, left);
+                            context.ReportNode(FadeOutDescriptor, left);
                         }
                         else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            context.FadeOutNode(FadeOutDescriptor, right);
+                            context.ReportNode(FadeOutDescriptor, right);
                         }
 
                         break;
@@ -65,11 +65,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            context.FadeOutNode(FadeOutDescriptor, left);
+                            context.ReportNode(FadeOutDescriptor, left);
                         }
                         else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            context.FadeOutNode(FadeOutDescriptor, right);
+                            context.ReportNode(FadeOutDescriptor, right);
                         }
 
                         break;

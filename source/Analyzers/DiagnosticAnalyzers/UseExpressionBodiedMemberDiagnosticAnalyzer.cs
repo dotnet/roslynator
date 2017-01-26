@@ -134,8 +134,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 ReportDiagnostic(context, accessor.Body, expression);
 
-                context.FadeOutToken(FadeOutDescriptor, accessor.Keyword);
-                context.FadeOutBraces(FadeOutDescriptor, accessorList);
+                context.ReportToken(FadeOutDescriptor, accessor.Keyword);
+                context.ReportBraces(FadeOutDescriptor, accessorList);
             }
         }
 
@@ -148,9 +148,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNode parent = expression.Parent;
 
             if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.FadeOutToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
+                context.ReportToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
 
-            context.FadeOutBraces(FadeOutDescriptor, block);
+            context.ReportBraces(FadeOutDescriptor, block);
         }
     }
 }

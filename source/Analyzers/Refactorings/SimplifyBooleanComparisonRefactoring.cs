@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNodeAnalysisContext context,
             BinaryExpressionSyntax binaryExpression)
         {
-            context.FadeOutToken(FadeOutDescriptor, binaryExpression.OperatorToken);
+            context.ReportToken(FadeOutDescriptor, binaryExpression.OperatorToken);
 
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
@@ -45,34 +45,34 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    context.FadeOutNode(FadeOutDescriptor, left);
+                    context.ReportNode(FadeOutDescriptor, left);
 
                     if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.FadeOutToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
                 else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
                 {
-                    context.FadeOutNode(FadeOutDescriptor, right);
+                    context.ReportNode(FadeOutDescriptor, right);
 
                     if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.FadeOutToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                 }
             }
             else if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
             {
                 if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
-                    context.FadeOutNode(FadeOutDescriptor, left);
+                    context.ReportNode(FadeOutDescriptor, left);
 
                     if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.FadeOutToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                 }
                 else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
                 {
-                    context.FadeOutNode(FadeOutDescriptor, right);
+                    context.ReportNode(FadeOutDescriptor, right);
 
                     if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.FadeOutToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                 }
             }
         }

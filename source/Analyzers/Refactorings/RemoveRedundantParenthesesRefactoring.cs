@@ -125,8 +125,8 @@ namespace Roslynator.CSharp.Refactorings
                     openParen.GetLocation(),
                     additionalLocations: new Location[] { closeParen.GetLocation() });
 
-                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
+                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
+                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
             }
         }
 

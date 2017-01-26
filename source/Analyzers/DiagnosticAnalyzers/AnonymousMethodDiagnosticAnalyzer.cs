@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            context.FadeOutToken(DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
+            context.ReportToken(DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
 
             BlockSyntax block = anonymousMethod.Block;
 
@@ -70,10 +70,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
-                    context.FadeOutBraces(DiagnosticDescriptor, block);
+                    context.ReportBraces(DiagnosticDescriptor, block);
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        context.FadeOutToken(DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                        context.ReportToken(DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
                 }
             }
         }

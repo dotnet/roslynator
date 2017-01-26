@@ -44,14 +44,14 @@ namespace Roslynator.CSharp.Refactorings
                 DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
                 ifStatement.GetLocation());
 
-            context.FadeOutToken(FadeOutDescriptor, nestedIf.IfKeyword);
-            context.FadeOutToken(FadeOutDescriptor, nestedIf.OpenParenToken);
-            context.FadeOutToken(FadeOutDescriptor, nestedIf.CloseParenToken);
+            context.ReportToken(FadeOutDescriptor, nestedIf.IfKeyword);
+            context.ReportToken(FadeOutDescriptor, nestedIf.OpenParenToken);
+            context.ReportToken(FadeOutDescriptor, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                context.FadeOutBraces(FadeOutDescriptor, (BlockSyntax)nestedIf.Statement);
+                context.ReportBraces(FadeOutDescriptor, (BlockSyntax)nestedIf.Statement);
             }
         }
 

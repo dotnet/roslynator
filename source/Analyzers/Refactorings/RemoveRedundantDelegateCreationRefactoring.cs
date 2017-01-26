@@ -57,9 +57,9 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right.GetLocation());
 
-                                        context.FadeOutToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
-                                        context.FadeOutNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
-                                        context.FadeOutParentheses(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
+                                        context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
+                                        context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
+                                        context.ReportParentheses(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
                                     }
                                 }
                             }

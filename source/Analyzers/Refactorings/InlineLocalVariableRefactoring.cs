@@ -120,13 +120,13 @@ namespace Roslynator.CSharp.Refactorings
             context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclaration.GetLocation());
 
             foreach (SyntaxToken modifier in localDeclaration.Modifiers)
-                context.FadeOutToken(FadeOutDescriptor, modifier);
+                context.ReportToken(FadeOutDescriptor, modifier);
 
-            context.FadeOutNode(FadeOutDescriptor, declaration.Type);
-            context.FadeOutToken(FadeOutDescriptor, identifier);
-            context.FadeOutToken(FadeOutDescriptor, initializer.EqualsToken);
-            context.FadeOutToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
-            context.FadeOutNode(FadeOutDescriptor, expression);
+            context.ReportNode(FadeOutDescriptor, declaration.Type);
+            context.ReportToken(FadeOutDescriptor, identifier);
+            context.ReportToken(FadeOutDescriptor, initializer.EqualsToken);
+            context.ReportToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
+            context.ReportNode(FadeOutDescriptor, expression);
         }
 
         private static ExpressionSyntax GetAssignedValue(StatementSyntax statement)

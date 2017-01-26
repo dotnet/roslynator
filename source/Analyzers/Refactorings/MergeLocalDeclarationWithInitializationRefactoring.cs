@@ -84,13 +84,13 @@ namespace Roslynator.CSharp.Refactorings
                                                                 declarator.Identifier.GetLocation());
 
                                                             if (value != null)
-                                                                context.FadeOutNode(FadeOutDescriptor, initializer);
+                                                                context.ReportNode(FadeOutDescriptor, initializer);
 
-                                                            context.FadeOutToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
-                                                            context.FadeOutNode(FadeOutDescriptor, left);
+                                                            context.ReportToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
+                                                            context.ReportNode(FadeOutDescriptor, left);
 
                                                             if (value != null)
-                                                                context.FadeOutToken(FadeOutDescriptor, assignment.OperatorToken);
+                                                                context.ReportToken(FadeOutDescriptor, assignment.OperatorToken);
                                                         }
                                                     }
                                                 }

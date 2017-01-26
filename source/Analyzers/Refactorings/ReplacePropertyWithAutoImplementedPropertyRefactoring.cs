@@ -223,19 +223,19 @@ namespace Roslynator.CSharp.Refactorings
 
             if (property.ExpressionBody != null)
             {
-                context.FadeOutNode(descriptor, property.ExpressionBody);
+                context.ReportNode(descriptor, property.ExpressionBody);
             }
             else
             {
                 AccessorDeclarationSyntax getter = property.Getter();
 
                 if (getter != null)
-                    context.FadeOutNode(descriptor, getter.Body);
+                    context.ReportNode(descriptor, getter.Body);
 
                 AccessorDeclarationSyntax setter = property.Setter();
 
                 if (setter != null)
-                    context.FadeOutNode(descriptor, setter.Body);
+                    context.ReportNode(descriptor, setter.Body);
             }
         }
 

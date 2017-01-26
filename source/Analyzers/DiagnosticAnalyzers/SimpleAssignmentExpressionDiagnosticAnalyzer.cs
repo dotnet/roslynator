@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 var binaryExpression = (BinaryExpressionSyntax)assignment.Right;
 
                 context.ReportDiagnostic(DiagnosticDescriptors.UseCompoundAssignment, assignment.GetLocation(), UseCompoundAssignmentRefactoring.GetCompoundOperatorText(binaryExpression));
-                context.FadeOutNode(DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
+                context.ReportNode(DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
             }
 
             UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.Analyze(context, assignment);
