@@ -510,7 +510,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             foreach (ArgumentSyntax argument in argumentList.Arguments)
             {
-                IParameterSymbol parameterSymbol = CSharpAnalysis.DetermineParameter(argument, semanticModel, cancellationToken: cancellationToken);
+                IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(argument, cancellationToken: cancellationToken);
 
                 if (parameterSymbol != null)
                 {
