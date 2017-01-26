@@ -1170,7 +1170,7 @@ namespace Roslynator.CSharp
             title: "Inline local variable.",
             messageFormat: "Inline local variable.",
             category: DiagnosticCategories.Simplification,
-            defaultSeverity: DiagnosticSeverity.Info,
+            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
