@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBraces, block.GetLocation());
 
-                context.FadeOutBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block);
+                context.ReportBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block);
             }
         }
 

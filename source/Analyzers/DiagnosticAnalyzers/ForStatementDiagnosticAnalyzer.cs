@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition.GetLocation());
-                context.FadeOutNode(DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut, condition);
+                context.ReportNode(DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut, condition);
             }
         }
     }

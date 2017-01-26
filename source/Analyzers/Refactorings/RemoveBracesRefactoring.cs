@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                             block.GetLocation(),
                             GetName(node));
 
-                        context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block);
+                        context.ReportBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block);
                     }
                 }
             }

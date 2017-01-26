@@ -135,8 +135,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                             {
                                 ReportDiagnostic(context, accessorList, expression);
-                                context.FadeOutToken(FadeOutDescriptor, accessor.Keyword);
-                                context.FadeOutBraces(FadeOutDescriptor, body);
+                                context.ReportToken(FadeOutDescriptor, accessor.Keyword);
+                                context.ReportBraces(FadeOutDescriptor, body);
                             }
 
                             return;
@@ -175,9 +175,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNode parent = expression.Parent;
 
             if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.FadeOutToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
+                context.ReportToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
 
-            context.FadeOutBraces(FadeOutDescriptor, block);
+            context.ReportBraces(FadeOutDescriptor, block);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList, ExpressionSyntax expression)
@@ -189,9 +189,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNode parent = expression.Parent;
 
             if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.FadeOutToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
+                context.ReportToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
 
-            context.FadeOutBraces(FadeOutDescriptor, accessorList);
+            context.ReportBraces(FadeOutDescriptor, accessorList);
         }
     }
 }

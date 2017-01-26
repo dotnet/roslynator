@@ -76,18 +76,18 @@ namespace Roslynator.CSharp.Refactorings
                             DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
                             Location.Create(context.Node.SyntaxTree, span));
 
-                        context.FadeOutToken(FadeOutDescriptor, ifStatement.IfKeyword);
-                        context.FadeOutToken(FadeOutDescriptor, ifStatement.OpenParenToken);
-                        context.FadeOutToken(FadeOutDescriptor, ifStatement.CloseParenToken);
-                        context.FadeOutNode(FadeOutDescriptor, ifStatement.Statement);
+                        context.ReportToken(FadeOutDescriptor, ifStatement.IfKeyword);
+                        context.ReportToken(FadeOutDescriptor, ifStatement.OpenParenToken);
+                        context.ReportToken(FadeOutDescriptor, ifStatement.CloseParenToken);
+                        context.ReportNode(FadeOutDescriptor, ifStatement.Statement);
 
                         if (ifStatement.Else != null)
                         {
-                            context.FadeOutNode(FadeOutDescriptor, @else);
+                            context.ReportNode(FadeOutDescriptor, @else);
                         }
                         else
                         {
-                            context.FadeOutNode(FadeOutDescriptor, returnStatement2);
+                            context.ReportNode(FadeOutDescriptor, returnStatement2);
                         }
                     }
                 }

@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     foreach (SyntaxNode node in ifStatement.DescendantNodes())
                     {
                         if (node.IsKind(SyntaxKind.Block))
-                            context.FadeOutBraces(DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, (BlockSyntax)node);
+                            context.ReportBraces(DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, (BlockSyntax)node);
                     }
                 }
             }

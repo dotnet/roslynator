@@ -14,34 +14,34 @@ namespace Roslynator.CSharp
             return context.Node.SyntaxTree;
         }
 
-        public static void FadeOutToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token)
+        public static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token)
         {
             if (!token.IsMissing)
                 context.ReportDiagnostic(descriptor, token.GetLocation());
         }
 
-        public static void FadeOutNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node)
+        public static void ReportNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node)
         {
             if (!node.IsMissing)
                 context.ReportDiagnostic(descriptor, node.GetLocation());
         }
 
-        public static void FadeOutBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, BlockSyntax block)
+        public static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, BlockSyntax block)
         {
-            FadeOutToken(context, descriptor, block.OpenBraceToken);
-            FadeOutToken(context, descriptor, block.CloseBraceToken);
+            ReportToken(context, descriptor, block.OpenBraceToken);
+            ReportToken(context, descriptor, block.CloseBraceToken);
         }
 
-        public static void FadeOutBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, AccessorListSyntax accessorList)
+        public static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, AccessorListSyntax accessorList)
         {
-            FadeOutToken(context, descriptor, accessorList.OpenBraceToken);
-            FadeOutToken(context, descriptor, accessorList.CloseBraceToken);
+            ReportToken(context, descriptor, accessorList.OpenBraceToken);
+            ReportToken(context, descriptor, accessorList.CloseBraceToken);
         }
 
-        public static void FadeOutParentheses(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ArgumentListSyntax argumentList)
+        public static void ReportParentheses(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ArgumentListSyntax argumentList)
         {
-            FadeOutToken(context, descriptor, argumentList.OpenParenToken);
-            FadeOutToken(context, descriptor, argumentList.CloseParenToken);
+            ReportToken(context, descriptor, argumentList.OpenParenToken);
+            ReportToken(context, descriptor, argumentList.CloseParenToken);
         }
     }
 }

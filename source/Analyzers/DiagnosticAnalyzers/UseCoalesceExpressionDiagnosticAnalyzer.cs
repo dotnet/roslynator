@@ -151,16 +151,16 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                                     DiagnosticDescriptors.UseCoalesceExpression,
                                                     nextStatement.GetLocation());
 
-                                                context.FadeOutToken(FadeOutDescriptor, ifStatement.IfKeyword);
+                                                context.ReportToken(FadeOutDescriptor, ifStatement.IfKeyword);
 
-                                                context.FadeOutNode(FadeOutDescriptor, condition);
+                                                context.ReportNode(FadeOutDescriptor, condition);
 
                                                 if (blockOrStatement.IsKind(SyntaxKind.Block))
-                                                    context.FadeOutBraces(FadeOutDescriptor, (BlockSyntax)blockOrStatement);
+                                                    context.ReportBraces(FadeOutDescriptor, (BlockSyntax)blockOrStatement);
 
-                                                context.FadeOutNode(FadeOutDescriptor, left2);
-                                                context.FadeOutToken(FadeOutDescriptor, assignment.OperatorToken);
-                                                context.FadeOutToken(FadeOutDescriptor, expressionStatement.SemicolonToken);
+                                                context.ReportNode(FadeOutDescriptor, left2);
+                                                context.ReportToken(FadeOutDescriptor, assignment.OperatorToken);
+                                                context.ReportToken(FadeOutDescriptor, expressionStatement.SemicolonToken);
                                             }
                                         }
                                     }

@@ -67,13 +67,13 @@ namespace Roslynator.CSharp.Refactorings
                 foreach (ParameterSyntax parameter in parameters)
                 {
                     if (parameter.Type != null)
-                        context.FadeOutNode(FadeOutDescriptor, parameter.Type);
+                        context.ReportNode(FadeOutDescriptor, parameter.Type);
                 }
 
                 if (parameters.Count == 1)
                 {
-                    context.FadeOutToken(FadeOutDescriptor, parameterList.OpenParenToken);
-                    context.FadeOutToken(FadeOutDescriptor, parameterList.CloseParenToken);
+                    context.ReportToken(FadeOutDescriptor, parameterList.OpenParenToken);
+                    context.ReportToken(FadeOutDescriptor, parameterList.CloseParenToken);
                 }
             }
         }

@@ -58,11 +58,11 @@ namespace Roslynator.CSharp.Refactorings
                         Location.Create(context.Node.SyntaxTree, span));
                 }
 
-                context.FadeOutNode(FadeOutDescriptor, localDeclaration.Declaration.Type);
-                context.FadeOutToken(FadeOutDescriptor, declarator.Identifier);
-                context.FadeOutToken(FadeOutDescriptor, declarator.Initializer.EqualsToken);
-                context.FadeOutToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
-                context.FadeOutNode(FadeOutDescriptor, expression);
+                context.ReportNode(FadeOutDescriptor, localDeclaration.Declaration.Type);
+                context.ReportToken(FadeOutDescriptor, declarator.Identifier);
+                context.ReportToken(FadeOutDescriptor, declarator.Initializer.EqualsToken);
+                context.ReportToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
+                context.ReportNode(FadeOutDescriptor, expression);
             }
         }
 

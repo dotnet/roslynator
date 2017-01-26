@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (operatorToken.Span.Length == 2)
                                     context.ReportDiagnostic(FadeOutDescriptor, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)));
 
-                                context.FadeOutNode(FadeOutDescriptor, assignment.Right);
+                                context.ReportNode(FadeOutDescriptor, assignment.Right);
                             }
                         }
 
@@ -75,9 +75,9 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     ReportDiagnostic(context, assignment);
 
-                                    context.FadeOutToken(FadeOutDescriptor, assignment.OperatorToken);
-                                    context.FadeOutNode(FadeOutDescriptor, binaryLeft);
-                                    context.FadeOutNode(FadeOutDescriptor, binaryRight);
+                                    context.ReportToken(FadeOutDescriptor, assignment.OperatorToken);
+                                    context.ReportNode(FadeOutDescriptor, binaryLeft);
+                                    context.ReportNode(FadeOutDescriptor, binaryRight);
                                 }
                             }
                         }

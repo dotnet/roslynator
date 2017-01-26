@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (property.ExpressionBody != null)
                         {
-                            context.FadeOutNode(FadeOutDescriptor, property.ExpressionBody);
+                            context.ReportNode(FadeOutDescriptor, property.ExpressionBody);
                         }
                         else
                         {
@@ -80,21 +80,21 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case SyntaxKind.ReturnStatement:
                         {
-                            context.FadeOutNode(FadeOutDescriptor, ((ReturnStatementSyntax)statement).Expression);
+                            context.ReportNode(FadeOutDescriptor, ((ReturnStatementSyntax)statement).Expression);
                             break;
                         }
                     case SyntaxKind.ExpressionStatement:
                         {
-                            context.FadeOutNode(FadeOutDescriptor, ((ExpressionStatementSyntax)statement).Expression);
+                            context.ReportNode(FadeOutDescriptor, ((ExpressionStatementSyntax)statement).Expression);
                             break;
                         }
                 }
 
-                context.FadeOutBraces(FadeOutDescriptor, body);
+                context.ReportBraces(FadeOutDescriptor, body);
             }
             else
             {
-                context.FadeOutNode(FadeOutDescriptor, getter.ExpressionBody);
+                context.ReportNode(FadeOutDescriptor, getter.ExpressionBody);
             }
         }
 
