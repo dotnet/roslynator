@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
@@ -25,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (expression != null
                 && GetGroupNumber(kind) == GetGroupNumber(expression.Kind())
-                && CSharpUtility.GetOperatorPrecedence(expression) < CSharpUtility.GetOperatorPrecedence(kind))
+                && CSharpAnalysis.GetOperatorPrecedence(expression) < CSharpAnalysis.GetOperatorPrecedence(kind))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence,

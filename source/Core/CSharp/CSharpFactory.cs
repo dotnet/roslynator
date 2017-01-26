@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -977,7 +978,7 @@ namespace Roslynator.CSharp
 
         private static ExpressionSyntax ParenthesizeIfNecessary(ExpressionSyntax expression, SyntaxKind parentKind)
         {
-            if (CSharpUtility.GetOperatorPrecedence(expression) > CSharpUtility.GetOperatorPrecedence(parentKind))
+            if (CSharpAnalysis.GetOperatorPrecedence(expression) > CSharpAnalysis.GetOperatorPrecedence(parentKind))
             {
                 return expression.Parenthesize(moveTrivia: true);
             }
