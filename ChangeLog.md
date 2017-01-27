@@ -1,3 +1,23 @@
+### 1.2.11 (2017-01-27)
+
+#### Analyzers
+
+##### New Analyzers
+
+* BitwiseOperatorOnEnumWithoutFlagsAttribute
+* ReplaceReturnWithYieldReturn
+* RemoveRedundantOverridenMember
+* RemoveRedundantDisposeOrCloseCall
+* RemoveRedundantContinueStatement
+* DeclareEnumMemberWithZeroValue
+* MergeSwitchSectionsWithEquivalentContent
+* AddDocumentationComment
+* AddSummaryToDocumentationComment
+* AddSummaryElementToDocumentationComment
+* AddExceptionToDocumentationComment
+* AddParameterToDocumentationComment
+* AddTypeParameterToDocumentationComment
+
 ### 1.2.10 (2017-01-22)
 
 #### Analyzers
