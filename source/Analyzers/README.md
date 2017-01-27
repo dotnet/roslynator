@@ -129,3 +129,16 @@ RCS1126|Avoid embedded statement in if\-else|Style|
 RCS1127|Merge local declaration with initialization|Simplification|x
 RCS1128|Use coalesce expression|Simplification|x
 RCS1129|Remove redundant field initalization|Redundancy|x
+RCS1130|Bitwise operation on enum without Flags attribute|General|x
+RCS1131|Replace return with yield return|ErrorFix|x
+RCS1132|Remove redundant overriden member|Redundancy|x
+RCS1133|Remove redundant Dispose/Close call|Redundancy|x
+RCS1134|Remove redundant continue statement|Redundancy|x
+RCS1135|Declare enum member with zero value \(when enum has FlagsAttribute\)|Design|x
+RCS1136|Merge switch sections with equivalent content|Simplification|x
+RCS1137|Add documentation comment to publicly visible type or member|Maintainability|x
+RCS1138|Add summary to documentation comment|Maintainability|x
+RCS1139|Add summary element to documentation comment|Maintainability|x
+RCS1140|Add exception to documentation comment|Maintainability|x
+RCS1141|Add parameter to documentation comment|Maintainability|x
+RCS1142|Add type parameter to documentation comment|Maintainability|x

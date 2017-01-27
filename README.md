@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 120+ analyzers and 160+ refactorings for C#, powered by Roslyn.
+* A collection of 140+ analyzers and 160+ refactorings for C#, powered by Roslyn.
 * [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
@@ -158,6 +158,19 @@
 * RCS1127 - Merge local declaration with initialization
 * RCS1128 - Use coalesce expression
 * RCS1129 - Remove redundant field initalization
+* RCS1130 - Bitwise operation on enum without Flags attribute
+* RCS1131 - Replace return with yield return
+* RCS1132 - Remove redundant overriden member
+* RCS1133 - Remove redundant Dispose/Close call
+* RCS1134 - Remove redundant continue statement
+* RCS1135 - Declare enum member with zero value (when enum has FlagsAttribute)
+* RCS1136 - Merge switch sections with equivalent content
+* RCS1137 - Add documentation comment to publicly visible type or member
+* RCS1138 - Add summary to documentation comment
+* RCS1139 - Add summary element to documentation comment
+* RCS1140 - Add exception to documentation comment
+* RCS1141 - Add parameter to documentation comment
+* RCS1142 - Add type parameter to documentation comment
 
 ### List of Refactorings
 

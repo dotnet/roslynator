@@ -1093,7 +1093,7 @@
     <Id>RCS1124</Id>
     <Title>Inline local variable.</Title>
     <Category>Simplification</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
@@ -1141,6 +1141,123 @@
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="BitwiseOperationOnEnumWithoutFlagsAttribute" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1130</Id>
+    <Title>Bitwise operation on enum without Flags attribute.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="ReplaceReturnWithYieldReturn" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1131</Id>
+    <Title>Replace return with yield return.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantOverridenMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1132</Id>
+    <Title>Remove redundant overriden member.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantDisposeOrCloseCall" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1133</Id>
+    <Title>Remove redundant Dispose/Close call.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantContinueStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1134</Id>
+    <Title>Remove redundant continue statement.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="DeclareEnumMemberWithZeroValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1135</Id>
+    <Title>Declare enum member with zero value (when enum has FlagsAttribute).</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MergeSwitchSectionsWithEquivalentContent" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1136</Id>
+    <Title>Merge switch sections with equivalent content.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1137</Id>
+    <Title>Add documentation comment to publicly visible type or member.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddSummaryToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1138</Id>
+    <Title>Add summary to documentation comment.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddSummaryElementToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1139</Id>
+    <Title>Add summary element to documentation comment.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddExceptionToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1140</Id>
+    <Title>Add exception to documentation comment.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddParameterToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1141</Id>
+    <Title>Add parameter to documentation comment.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddTypeParameterToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1142</Id>
+    <Title>Add type parameter to documentation comment.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
 </Analyzers>

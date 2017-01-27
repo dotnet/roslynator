@@ -1,7 +1,7 @@
 ﻿<h3>Introduction</h3>
 
 <p>
-    A collection of 120+ analyzers and 160+ refactorings for C#, powered by Roslyn.
+    A collection of 140+ analyzers and 160+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
@@ -185,6 +185,19 @@
         <li>RCS1127 - Merge local declaration with initialization.</li>
         <li>RCS1128 - Use coalesce expression.</li>
         <li>RCS1129 - Remove redundant field initalization.</li>
+        <li>RCS1130 - Bitwise operation on enum without Flags attribute.</li>
+        <li>RCS1131 - Replace return with yield return.</li>
+        <li>RCS1132 - Remove redundant overriden member.</li>
+        <li>RCS1133 - Remove redundant Dispose/Close call.</li>
+        <li>RCS1134 - Remove redundant continue statement.</li>
+        <li>RCS1135 - Declare enum member with zero value (when enum has FlagsAttribute).</li>
+        <li>RCS1136 - Merge switch sections with equivalent content.</li>
+        <li>RCS1137 - Add documentation comment to publicly visible type or member.</li>
+        <li>RCS1138 - Add summary to documentation comment.</li>
+        <li>RCS1139 - Add summary element to documentation comment.</li>
+        <li>RCS1140 - Add exception to documentation comment.</li>
+        <li>RCS1141 - Add parameter to documentation comment.</li>
+        <li>RCS1142 - Add type parameter to documentation comment.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
