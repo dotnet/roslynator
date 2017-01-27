@@ -20,6 +20,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
                 RegexOptions options = RegexOptions.None;
                 Debug.Assert(false, options);
+                Debug.Assert(false, RegexOptions.Singleline | RegexOptions.Multiline);
             }
 
             private object GetObject()

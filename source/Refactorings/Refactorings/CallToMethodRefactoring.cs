@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -65,20 +66,26 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            InvocationExpressionSyntax invocation = SimpleMemberInvocationExpression(expression.WithoutTrailingTrivia(), IdentifierName(methodSymbol.Name))
-                .WithTrailingTrivia(expression.GetTrailingTrivia());
+            InvocationExpressionSyntax invocation = SimpleMemberInvocationExpression(
+                expression
+                    .WithoutTrailingTrivia()
+                    .Parenthesize(moveTrivia: true)
+                    .WithSimplifierAnnotation(),
+                IdentifierName(methodSymbol.Name));
+
+            invocation = invocation.WithTrailingTrivia(expression.GetTrailingTrivia());
 
             SyntaxNode newRoot = root.ReplaceNode(expression, invocation);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (methodSymbol.IsExtensionMethod)
+            if (methodSymbol.IsExtensionMethod
+                && newRoot.IsKind(SyntaxKind.CompilationUnit))
             {
                 INamespaceSymbol namespaceSymbol = methodSymbol.ContainingNamespace;
 
                 if (namespaceSymbol != null
-                    && !CSharpAnalysis.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken)
-                    && newRoot.IsKind(SyntaxKind.CompilationUnit))
+                    && !CSharpAnalysis.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken))
                 {
                     newRoot = ((CompilationUnitSyntax)newRoot)
                         .AddUsings(UsingDirective(ParseName(namespaceSymbol.ToString())));
