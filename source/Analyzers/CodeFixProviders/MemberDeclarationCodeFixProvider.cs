@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDeclarationBraces,
-                    DiagnosticIdentifiers.MarkMemberAsStatic);
+                    DiagnosticIdentifiers.MarkMemberAsStatic,
+                    DiagnosticIdentifiers.RemoveRedundantOverridenMember);
             }
         }
 
@@ -64,6 +65,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
+                    case DiagnosticIdentifiers.RemoveRedundantOverridenMember:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Remove redundant overriden {GetMemberName(memberDeclaration)}",
+                                cancellationToken => Remover.RemoveMemberAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
                 }
             }
         }
@@ -78,6 +89,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     return "constructor";
                 case SyntaxKind.PropertyDeclaration:
                     return "property";
+                case SyntaxKind.IndexerDeclaration:
+                    return "indexer";
                 case SyntaxKind.FieldDeclaration:
                     return "field";
                 case SyntaxKind.EventDeclaration:

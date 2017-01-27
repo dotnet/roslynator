@@ -86,6 +86,7 @@
     <Compile Include="RemoveRedundantDelegateCreation.cs" />
     <Compile Include="RemoveRedundantEmptyLine.cs" />
     <Compile Include="RemoveRedundantFieldInitialization.cs" />
+    <Compile Include="RemoveRedundantOverridenMember.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="RenamePrivateFieldAccordingToCamelCaseWithUnderscore.cs" />
