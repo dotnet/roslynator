@@ -213,7 +213,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
         {
-            SyntaxRemoveOptions removeOptions = Remover.DefaultMemberRemoveOptions;
+            SyntaxRemoveOptions removeOptions = Remover.DefaultRemoveOptions;
 
             if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;

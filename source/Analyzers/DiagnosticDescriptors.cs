@@ -1253,5 +1253,15 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantDisposeOrCloseCall = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
+            title: "Remove redundant Dispose/Close call.",
+            messageFormat: "Remove redundant '{0}' call.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

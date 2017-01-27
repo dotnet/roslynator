@@ -138,5 +138,6 @@ namespace Roslynator.CSharp
         public const string BitwiseOperationOnEnumWithoutFlagsAttribute = Prefix + "1130";
         public const string ReplaceReturnWithYieldReturn = Prefix + "1131";
         public const string RemoveRedundantOverridenMember = Prefix + "1132";
+        public const string RemoveRedundantDisposeOrCloseCall = Prefix + "1133";
     }
 }

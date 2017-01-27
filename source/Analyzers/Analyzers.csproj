@@ -53,6 +53,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantDisposeOrCloseCallDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantOverridenMemberDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddParenthesesAccordingToOperatorPrecedenceRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationExpressionDiagnosticAnalyzer.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkMemberAsStaticDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantFieldInitializationRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationWithInitializationRefactoring.cs" />
     <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />

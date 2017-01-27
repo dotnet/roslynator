@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
                     DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
-                    DiagnosticIdentifiers.UseCoalesceExpression);
+                    DiagnosticIdentifiers.UseCoalesceExpression,
+                    DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall);
             }
         }
 
@@ -105,6 +106,20 @@ namespace Roslynator.CSharp.CodeFixProviders
                                         statement,
                                         cancellationToken);
                                 },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall:
+                        {
+                            var expressionStatement = (ExpressionStatementSyntax)statement;
+                            var invocation = (InvocationExpressionSyntax)expressionStatement.Expression;
+                            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Remove redundant '{memberAccess.Name?.Identifier.ValueText}' call",
+                                cancellationToken => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

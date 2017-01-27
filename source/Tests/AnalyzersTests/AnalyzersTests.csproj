@@ -84,6 +84,7 @@
     <Compile Include="RemoveRedundantBraces.cs" />
     <Compile Include="RemoveRedundantConstructor.cs" />
     <Compile Include="RemoveRedundantDelegateCreation.cs" />
+    <Compile Include="RemoveRedundantDisposeOrCloseCall.cs" />
     <Compile Include="RemoveRedundantEmptyLine.cs" />
     <Compile Include="RemoveRedundantFieldInitialization.cs" />
     <Compile Include="RemoveRedundantOverridenMember.cs" />
