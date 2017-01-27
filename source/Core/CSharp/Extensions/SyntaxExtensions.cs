@@ -1000,6 +1000,28 @@ namespace Roslynator.CSharp.Extensions
             return list.Replace(list[index], newNode);
         }
 
+        public static bool IsFirst<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.IndexOf(node) == 0;
+        }
+
+        public static bool IsLast<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.Any()
+                && list.IndexOf(node) == list.Count - 1;
+        }
+
+        public static bool IsFirst<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.IndexOf(node) == 0;
+        }
+
+        public static bool IsLast<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.Any()
+                && list.IndexOf(node) == list.Count - 1;
+        }
+
         public static SeparatedSyntaxList<TNode> ReplaceAt<TNode>(this SeparatedSyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
         {
             return list.Replace(list[index], newNode);

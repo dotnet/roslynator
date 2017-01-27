@@ -1263,5 +1263,15 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantContinueStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantContinueStatement,
+            title: "Remove redundant continue statement.",
+            messageFormat: "Remove redundant continue statement.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
