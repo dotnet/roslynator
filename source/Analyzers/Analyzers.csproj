@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EqualsValueClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\DeclareEnumMemberWithZeroValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantContinueStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantDisposeOrCloseCallDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantOverridenMemberDiagnosticAnalyzer.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
+    <Compile Include="Refactorings\DeclareEnumMemberWithZeroValueRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantContinueStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantFieldInitializationRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationWithInitializationRefactoring.cs" />

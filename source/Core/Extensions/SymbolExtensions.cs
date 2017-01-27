@@ -452,6 +452,134 @@ namespace Roslynator.Extensions
                 && symbol.IsMethod();
         }
 
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is sbyte
+                    && (sbyte)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, byte value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is byte
+                    && (byte)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, short value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is short
+                    && (short)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ushort value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is ushort
+                    && (ushort)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, int value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is int
+                    && (int)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, uint value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is uint
+                    && (uint)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, long value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is long
+                    && (long)constantValue == value;
+            }
+
+            return false;
+        }
+
+        public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ulong value)
+        {
+            if (fieldSymbol == null)
+                throw new ArgumentNullException(nameof(fieldSymbol));
+
+            if (fieldSymbol.HasConstantValue)
+            {
+                object constantValue = fieldSymbol.ConstantValue;
+
+                return constantValue is ulong
+                    && (ulong)constantValue == value;
+            }
+
+            return false;
+        }
+
         [DebuggerStepThrough]
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {

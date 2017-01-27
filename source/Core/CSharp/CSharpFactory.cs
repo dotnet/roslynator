@@ -1352,5 +1352,18 @@ namespace Roslynator.CSharp
                     type,
                     SingletonSeparatedList(declarator)));
         }
+
+        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, ExpressionSyntax value)
+        {
+            return EnumMemberDeclaration(Identifier(name), value);
+        }
+
+        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(SyntaxToken identifier, ExpressionSyntax value)
+        {
+            return SyntaxFactory.EnumMemberDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                identifier,
+                EqualsValueClause(value));
+        }
     }
 }
