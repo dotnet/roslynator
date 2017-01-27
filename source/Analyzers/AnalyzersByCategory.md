@@ -5,12 +5,14 @@
 Design|Avoid empty catch clause that catches System\.Exception|RCS1075|x
 Design|Avoid locking on publicly accessible instance|RCS1059|x
 Design|Call 'ConfigureAwait\(false\)'|RCS1090|x
+Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
 ErrorFix|Add break statement to switch section|RCS1116|x
 ErrorFix|Add missing semicolon|RCS1122|x
 ErrorFix|Add return statement that returns default value|RCS1117|x
 ErrorFix|Mark member as static|RCS1125|x
+ErrorFix|Replace return with yield return|RCS1131|x
 ErrorFix|Replace yield/return statement with expression statement|RCS1115|x
 Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
@@ -26,11 +28,18 @@ Formatting|Format embedded statement on a separate line|RCS1027|
 Formatting|Format empty block|RCS1023|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Avoid usage of tab|RCS1088|
+General|Bitwise operation on enum without Flags attribute|RCS1130|x
 General|Mark local variable as const|RCS1118|x
 General|Replace string\.Empty with ""|RCS1078|
 General|Throwing of new NotImplementedException|RCS1079|x
 General|Use carriage return \+ linefeed as newline|RCS1087|
 General|Use linefeed as newline|RCS1086|
+Maintainability|Add documentation comment to publicly visible type or member|RCS1137|x
+Maintainability|Add exception to documentation comment|RCS1140|x
+Maintainability|Add parameter to documentation comment|RCS1141|x
+Maintainability|Add summary element to documentation comment|RCS1139|x
+Maintainability|Add summary to documentation comment|RCS1138|x
+Maintainability|Add type parameter to documentation comment|RCS1142|x
 Maintainability|Declare each type in separate file|RCS1060|
 Maintainability|Remove original exception from throw statement|RCS1044|x
 Maintainability|Use nameof operator|RCS1015|x
@@ -76,10 +85,13 @@ Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant braces|RCS1031|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
 Redundancy|Remove redundant constructor|RCS1074|x
+Redundancy|Remove redundant continue statement|RCS1134|x
 Redundancy|Remove redundant default switch section|RCS1070|x
 Redundancy|Remove redundant delegate creation|RCS1114|x
+Redundancy|Remove redundant Dispose/Close call|RCS1133|x
 Redundancy|Remove redundant empty line|RCS1036|x
 Redundancy|Remove redundant field initalization|RCS1129|x
+Redundancy|Remove redundant overriden member|RCS1132|x
 Redundancy|Remove redundant parentheses|RCS1032|x
 Redundancy|Remove redundant sealed modifier|RCS1034|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
@@ -93,6 +105,7 @@ Simplification|Merge if statement with nested if statement|RCS1061|x
 Simplification|Merge interpolation into interpolated string|RCS1105|x
 Simplification|Merge local declaration with initialization|RCS1127|x
 Simplification|Merge local declaration with return statement|RCS1054|x
+Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace conditional expression with coalesce expression|RCS1084|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
