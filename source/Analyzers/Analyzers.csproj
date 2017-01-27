@@ -94,6 +94,7 @@
     <Compile Include="CodeFixProviders\DestructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\BitwiseOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\YieldStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LocalDeclarationStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddReturnStatementThatReturnsDefaultValueRefactoring.cs" />

@@ -135,5 +135,6 @@ namespace Roslynator.CSharp
         public const string MergeLocalDeclarationWithInitialization = Prefix + "1127";
         public const string UseCoalesceExpression = Prefix + "1128";
         public const string RemoveRedundantFieldInitialization = Prefix + "1129";
+        public const string BitwiseOperationOnEnumWithoutFlagsAttribute = Prefix + "1130";
     }
 }
