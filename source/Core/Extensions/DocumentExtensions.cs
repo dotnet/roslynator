@@ -224,6 +224,41 @@ namespace Roslynator.Extensions
             return document.WithSyntaxRoot(newRoot);
         }
 
+        public static async Task<Document> ReplaceTriviaAsync(
+            this Document document,
+            SyntaxTrivia oldTrivia,
+            SyntaxTrivia newTrivia,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.ReplaceTrivia(oldTrivia, newTrivia);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        public static async Task<Document> ReplaceTriviaAsync(
+            this Document document,
+            SyntaxTrivia oldTrivia,
+            IEnumerable<SyntaxTrivia> newTrivia,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (newTrivia == null)
+                throw new ArgumentNullException(nameof(newTrivia));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.ReplaceTrivia(oldTrivia, newTrivia);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
         public static async Task<Document> InsertNodeBeforeAsync(
             this Document document,
             SyntaxNode nodeInList,

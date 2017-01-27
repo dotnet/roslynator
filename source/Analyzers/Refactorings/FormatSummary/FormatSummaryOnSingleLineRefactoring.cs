@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.FormatSummary
@@ -15,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
         {
-            XmlElementSyntax summaryElement = FormatSummaryRefactoring.GetSummaryElement(documentationComment);
+            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             if (summaryElement != null)
             {
@@ -51,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
         {
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-            XmlElementSyntax summaryElement = FormatSummaryRefactoring.GetSummaryElement(documentationComment);
+            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             XmlElementStartTagSyntax startTag = summaryElement.StartTag;
             XmlElementEndTagSyntax endTag = summaryElement.EndTag;

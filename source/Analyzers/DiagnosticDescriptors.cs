@@ -1301,5 +1301,50 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AddSummaryToDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddSummaryToDocumentationComment,
+            title: "Add summary to documentation comment.",
+            messageFormat: "Add summary to documentation comment.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor AddSummaryElementToDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddSummaryElementToDocumentationComment,
+            title: "Add summary element to documentation comment.",
+            messageFormat: "Add summary element to documentation comment.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor AddExceptionToDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddExceptionToDocumentationComment,
+            title: "Add exception to documentation comment.",
+            messageFormat: "Add exception to documentation comment.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor AddParameterToDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddParameterToDocumentationComment,
+            title: "Add parameter to documentation comment.",
+            messageFormat: "Add parameter to documentation comment.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor AddTypeParameterToDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddTypeParameterToDocumentationComment,
+            title: "Add type parameter to documentation comment.",
+            messageFormat: "Add type parameter to documentation comment.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
