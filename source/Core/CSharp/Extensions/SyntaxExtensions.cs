@@ -89,6 +89,18 @@ namespace Roslynator.CSharp.Extensions
             return block.WithStatements(default(SyntaxList<StatementSyntax>));
         }
 
+        public static StatementSyntax SingleStatementOrDefault(this BlockSyntax body)
+        {
+            if (body == null)
+                throw new ArgumentNullException(nameof(body));
+
+            SyntaxList<StatementSyntax> statements = body.Statements;
+
+            return (statements.Count == 1)
+                ? statements.First()
+                : null;
+        }
+
         public static ClassDeclarationSyntax WithMembers(
             this ClassDeclarationSyntax classDeclaration,
             IEnumerable<MemberDeclarationSyntax> memberDeclarations)

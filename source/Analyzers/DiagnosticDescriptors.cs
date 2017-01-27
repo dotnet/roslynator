@@ -1243,5 +1243,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantOverridenMember = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantOverridenMember,
+            title: "Remove redundant overriden member.",
+            messageFormat: "Remove redundant overriden {0}.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
