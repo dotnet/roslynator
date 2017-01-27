@@ -1225,5 +1225,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor BitwiseOperationOnEnumWithoutFlagsAttribute = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.BitwiseOperationOnEnumWithoutFlagsAttribute,
+            title: "Bitwise operation on enum without Flags attribute.",
+            messageFormat: "Bitwise operation on enum without Flags attribute.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
