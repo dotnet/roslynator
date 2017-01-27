@@ -23,6 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,11 +49,13 @@
     <Compile Include="CodeFixProviders\EqualsValueClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\AddDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\AddDocumentationCommentRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeSwitchSectionsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclareEnumMemberWithZeroValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantContinueStatementDiagnosticAnalyzer.cs" />

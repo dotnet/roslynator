@@ -10,6 +10,7 @@ namespace Roslynator.CSharp
         public const string CannotImplicitlyConvertType = Prefix + "0029";
         public const string NotAllCodePathsReturnValue = Prefix + "0161";
         public const string CannotImplicitlyConvertTypeExplicitConversionExists = Prefix + "0266";
+        public const string MissingXmlComment = Prefix + "1591";
         public const string CannotReturnValueFromIterator = Prefix + "1622";
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = Prefix + "1674";
     }

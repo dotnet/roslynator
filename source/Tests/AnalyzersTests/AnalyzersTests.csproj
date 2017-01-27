@@ -25,6 +25,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\AnalyzersTests.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
+    <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />

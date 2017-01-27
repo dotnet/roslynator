@@ -1292,5 +1292,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor AddDocumentationComment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddDocumentationComment,
+            title: "Add documentation comment to publicly visible type or member.",
+            messageFormat: "Add documentation comment to publicly visible type or member.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }
