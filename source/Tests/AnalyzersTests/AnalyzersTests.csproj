@@ -47,9 +47,14 @@
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
+    <Compile Include="AddExceptionToDocumentationComment.cs" />
     <Compile Include="AddMissingSemicolon.cs" />
     <Compile Include="BitwiseOperationOnEnumWithoutFlagsAttribute.cs" />
+    <Compile Include="AddParameterToDocumentationComment.cs" />
     <Compile Include="AddParentheses.cs" />
+    <Compile Include="AddSummaryElementToDocumentationComment.cs" />
+    <Compile Include="AddSummaryToDocumentationComment.cs" />
+    <Compile Include="AddTypeParameterToDocumentationComment.cs" />
     <Compile Include="AsynchronousMethodNameShouldEndWithAsync.cs" />
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
     <Compile Include="AvoidEmbeddedStatement.cs" />

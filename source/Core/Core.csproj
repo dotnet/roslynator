@@ -61,6 +61,11 @@
     <Compile Include="CSharp\Inserter.cs" />
     <Compile Include="CSharp\Negator.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentAnalysis.cs" />
+    <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\ThrowExpressionInfo.cs" />
+    <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\ThrowInfo.cs" />
+    <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\ThrowStatementInfo.cs" />
     <Compile Include="CSharp\Refactorings\InsertModifierRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />

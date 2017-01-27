@@ -11,11 +11,12 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
     internal abstract class ThrowInfo
     {
-        protected ThrowInfo(SyntaxNode node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol)
+        protected ThrowInfo(SyntaxNode node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
         {
             Node = node;
             Expression = expression;
             ExceptionSymbol = exceptionSymbol;
+            DeclarationSymbol = declarationSymbol;
         }
 
         public SyntaxNode Node { get; }
@@ -24,7 +25,9 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
         public ExpressionSyntax Expression { get; }
 
-        public static ThrowInfo Create(SyntaxNode node, ITypeSymbol exceptionSymbol)
+        public ISymbol DeclarationSymbol { get; }
+
+        public static ThrowInfo Create(SyntaxNode node, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
         {
             switch (node.Kind())
             {
@@ -32,13 +35,13 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                     {
                         var throwStatement = (ThrowStatementSyntax)node;
 
-                        return new ThrowStatementInfo(throwStatement, throwStatement.Expression, exceptionSymbol);
+                        return new ThrowStatementInfo(throwStatement, throwStatement.Expression, exceptionSymbol, declarationSymbol);
                     }
                 case SyntaxKind.ThrowExpression:
                     {
                         var throwExpression = (ThrowExpressionSyntax)node;
 
-                        return new ThrowExpressionInfo(throwExpression, throwExpression.Expression, exceptionSymbol);
+                        return new ThrowExpressionInfo(throwExpression, throwExpression.Expression, exceptionSymbol, declarationSymbol);
                     }
                 default:
                     {
@@ -48,7 +51,6 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         }
 
         public IParameterSymbol GetParameterSymbol(
-            ISymbol declarationSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -56,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             if (ExceptionSymbol.EqualsOrDerivedFrom(argumentExceptionSymbol))
             {
-                return GetParameterSymbolCore(declarationSymbol, semanticModel, cancellationToken);
+                return GetParameterSymbolCore(semanticModel, cancellationToken);
             }
             else
             {
@@ -65,7 +67,6 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         }
 
         protected abstract IParameterSymbol GetParameterSymbolCore(
-            ISymbol declarationSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken);
     }

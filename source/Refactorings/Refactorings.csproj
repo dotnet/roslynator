@@ -42,12 +42,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowExpressionInfo.cs" />
-    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowInfo.cs" />
     <Compile Include="Formatting\CSharpFormatter.cs" />
     <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
-    <Compile Include="Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentRefactoring.cs" />
-    <Compile Include="Refactorings\AddExceptionToDocumentationComment\ThrowStatementInfo.cs" />
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
     <Compile Include="Refactorings\DestructorDeclarationRefactoring.cs" />

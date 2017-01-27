@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
         {
-            XmlElementSyntax summaryElement = FormatSummaryRefactoring.GetSummaryElement(documentationComment);
+            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             if (summaryElement?.StartTag?.IsMissing == false
                 && summaryElement.EndTag?.IsMissing == false
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
 
             int lineIndex = documentationComment.GetSpanStartLine(cancellationToken);
 
-            XmlElementSyntax summaryElement = FormatSummaryRefactoring.GetSummaryElement(documentationComment);
+            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             string newText = Environment.NewLine
                 + new string(' ', documentationComment.FullSpan.Start - sourceText.Lines[lineIndex].Start)
