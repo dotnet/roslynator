@@ -813,6 +813,16 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.AbstractKeyword);
         }
 
+        public static SyntaxToken YieldKeyword()
+        {
+            return Token(SyntaxKind.YieldKeyword);
+        }
+
+        public static SyntaxToken BreakKeyword()
+        {
+            return Token(SyntaxKind.BreakKeyword);
+        }
+
         public static IdentifierNameSyntax VarType()
         {
             return IdentifierName("var");

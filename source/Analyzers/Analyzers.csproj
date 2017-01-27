@@ -46,11 +46,13 @@
     <Compile Include="CodeFixProviders\DeclarationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EqualsValueClauseCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddParenthesesAccordingToOperatorPrecedenceRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclarationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InlineLocalVariableDiagnosticAnalyzer.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Refactorings\MergeLocalDeclarationWithInitializationRefactoring.cs" />
     <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ThrowExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\ReplaceReturnWithYieldReturnRefactoring.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />

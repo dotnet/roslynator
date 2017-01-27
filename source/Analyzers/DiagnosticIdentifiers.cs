@@ -136,5 +136,6 @@ namespace Roslynator.CSharp
         public const string UseCoalesceExpression = Prefix + "1128";
         public const string RemoveRedundantFieldInitialization = Prefix + "1129";
         public const string BitwiseOperationOnEnumWithoutFlagsAttribute = Prefix + "1130";
+        public const string ReplaceReturnWithYieldReturn = Prefix + "1131";
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
     <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
+    <Compile Include="ReplaceReturnWithYieldReturn.cs" />
     <Compile Include="UseElementAccessInsteadOfElementAt.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="UseCoalesceExpression.cs" />

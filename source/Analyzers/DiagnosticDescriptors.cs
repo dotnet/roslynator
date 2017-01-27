@@ -1234,5 +1234,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor ReplaceReturnWithYieldReturn = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReplaceReturnWithYieldReturn,
+            title: "Replace return with yield return.",
+            messageFormat: "Replace return with yield return.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }
