@@ -74,6 +74,7 @@
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
     <Compile Include="MergeLocalDeclarationWithInitialization.cs" />
     <Compile Include="MergeLocalDeclarationWithReturnStatement.cs" />
+    <Compile Include="MergeSwitchSectionsWithEquivalentContent.cs" />
     <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveFileWithNoCode.cs" />

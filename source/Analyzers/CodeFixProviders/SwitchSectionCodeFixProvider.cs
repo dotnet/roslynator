@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.DiagnosticAnalyzers;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -25,7 +24,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
                     DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
                     DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
-                    DiagnosticIdentifiers.AddBreakStatementToSwitchSection);
+                    DiagnosticIdentifiers.AddBreakStatementToSwitchSection,
+                    DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent);
             }
         }
 
@@ -83,6 +83,18 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Add break;",
                                 cancellationToken => AddBreakStatementToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
+                        {
+                            int additionalSections = diagnostic.AdditionalLocations.Count;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Merge sections",
+                                cancellationToken => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, additionalSections, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -52,6 +52,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\MergeSwitchSectionsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclareEnumMemberWithZeroValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantContinueStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantDisposeOrCloseCallDiagnosticAnalyzer.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
+    <Compile Include="Refactorings\MergeSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\DeclareEnumMemberWithZeroValueRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantContinueStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantFieldInitializationRefactoring.cs" />

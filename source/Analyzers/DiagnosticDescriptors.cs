@@ -1282,5 +1282,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MergeSwitchSectionsWithEquivalentContent = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent,
+            title: "Merge switch sections with equivalent content.",
+            messageFormat: "Merge switch sections with equivalent content.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
