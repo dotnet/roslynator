@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+#pragma warning disable CS0162, CS1522, RCS1065
     public static class RemoveRedundantParentheses
     {
         private static readonly object _lockObject = new object();
@@ -50,8 +51,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             var dic = new Dictionary<object, object>() { ([0] = null) };
 
-            dic = new Dictionary<object, object>() { ({ 0, null }) };
-
             var items = new List<string>() { (null) };
 
             foreach (string item in (items))
@@ -59,6 +58,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             string s = $"{("")}";
+            s = $"{((f) ? "a" : "b")}";
 
             int i = 0;
 

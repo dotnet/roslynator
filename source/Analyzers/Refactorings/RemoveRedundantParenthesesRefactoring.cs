@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
+
     internal static class RemoveRedundantParenthesesRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
@@ -97,7 +99,15 @@ namespace Roslynator.CSharp.Refactorings
 
         internal static void Analyze(SyntaxNodeAnalysisContext context, InterpolationSyntax interpolation)
         {
-            AnalyzeExpression(context, interpolation.Expression);
+            ExpressionSyntax expression = interpolation.Expression;
+
+            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
+            {
+                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+
+                if (parenthesizedExpression.Expression?.IsKind(SyntaxKind.ConditionalExpression) == false)
+                    AnalyzeParenthesizedExpression(context, parenthesizedExpression);
+            }
         }
 
         internal static void Analyze(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
@@ -114,19 +124,27 @@ namespace Roslynator.CSharp.Refactorings
         private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
             if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
-            {
-                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+                AnalyzeParenthesizedExpression(context, (ParenthesizedExpressionSyntax)expression);
+        }
 
-                SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
+        private static void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
+        {
+            SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
+
+            if (!openParen.IsMissing)
+            {
                 SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
 
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantParentheses,
-                    openParen.GetLocation(),
-                    additionalLocations: new Location[] { closeParen.GetLocation() });
+                if (!closeParen.IsMissing)
+                {
+                    context.ReportDiagnostic(
+                       DiagnosticDescriptors.RemoveRedundantParentheses,
+                       openParen.GetLocation(),
+                       additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
 
-                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
+                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
+                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
+                }
             }
         }
 
