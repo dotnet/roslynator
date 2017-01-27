@@ -216,6 +216,14 @@ namespace Roslynator
             return EnsureUniqueName(baseName, reservedNames);
         }
 
+        public static string EnsureUniqueEnumMemberName(INamedTypeSymbol enumSymbol, string baseName)
+        {
+            if (enumSymbol == null)
+                throw new ArgumentNullException(nameof(enumSymbol));
+
+            return EnsureUniqueName(baseName, enumSymbol.MemberNames);
+        }
+
         public static bool IsUniqueMemberName(
             string name,
             int position,

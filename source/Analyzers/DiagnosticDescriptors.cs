@@ -1273,5 +1273,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor DeclareEnumMemberWithZeroValue = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue,
+            title: "Declare enum member with zero value (when enum has FlagsAttribute).",
+            messageFormat: "Declare enum member with zero value (when enum has FlagsAttribute).",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

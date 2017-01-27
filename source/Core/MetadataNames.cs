@@ -4,6 +4,8 @@ namespace Roslynator
 {
     public static class MetadataNames
     {
+        public const string System_FlagsAttribute = "System.FlagsAttribute";
+
         public const string System_Collections = "System.Collections";
         public const string System_Collections_IEnumerable = "System.Collections.IEnumerable";
 
