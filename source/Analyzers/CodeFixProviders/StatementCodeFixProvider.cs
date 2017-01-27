@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
                     DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
                     DiagnosticIdentifiers.UseCoalesceExpression,
-                    DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall);
+                    DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
+                    DiagnosticIdentifiers.RemoveRedundantContinueStatement);
             }
         }
 
@@ -120,6 +121,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove redundant '{memberAccess.Name?.Identifier.ValueText}' call",
                                 cancellationToken => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantContinueStatement:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove continue;",
+                                cancellationToken => RemoveRedundantContinueStatementRefactoring.RefactorAsync(context.Document, (ContinueStatementSyntax)statement, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -139,5 +139,6 @@ namespace Roslynator.CSharp
         public const string ReplaceReturnWithYieldReturn = Prefix + "1131";
         public const string RemoveRedundantOverridenMember = Prefix + "1132";
         public const string RemoveRedundantDisposeOrCloseCall = Prefix + "1133";
+        public const string RemoveRedundantContinueStatement = Prefix + "1134";
     }
 }
