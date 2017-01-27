@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDeclarationBraces,
                     DiagnosticIdentifiers.MarkMemberAsStatic,
-                    DiagnosticIdentifiers.RemoveRedundantOverridenMember);
+                    DiagnosticIdentifiers.RemoveRedundantOverridenMember,
+                    DiagnosticIdentifiers.AddDocumentationComment);
             }
         }
 
@@ -60,6 +61,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Mark {GetMemberName(memberDeclaration)} as static",
                                 cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddDocumentationComment:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add documentation comment",
+                                cancellationToken => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

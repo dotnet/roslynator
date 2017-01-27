@@ -142,5 +142,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantContinueStatement = Prefix + "1134";
         public const string DeclareEnumMemberWithZeroValue = Prefix + "1135";
         public const string MergeSwitchSectionsWithEquivalentContent = Prefix + "1136";
+        public const string AddDocumentationComment = Prefix + "1137";
     }
 }

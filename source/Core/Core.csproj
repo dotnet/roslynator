@@ -45,6 +45,8 @@
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\DocumentationCommentGenerator.cs" />
+    <Compile Include="CSharp\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
