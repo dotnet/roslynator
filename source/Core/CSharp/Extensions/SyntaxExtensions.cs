@@ -821,6 +821,176 @@ namespace Roslynator.CSharp.Extensions
             return Accessibility.NotApplicable;
         }
 
+        public static Accessibility GetDeclaredAccessibility(this MemberDeclarationSyntax memberDeclaration)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            switch (memberDeclaration.Kind())
+            {
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        var constructorDeclaration = (ConstructorDeclarationSyntax)memberDeclaration;
+
+                        if (constructorDeclaration.IsStatic())
+                        {
+                            return Accessibility.Private;
+                        }
+                        else
+                        {
+                            return AccessibilityOrDefault(constructorDeclaration, constructorDeclaration.Modifiers);
+                        }
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
+
+                        SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+
+                        if (modifiers.Contains(SyntaxKind.PartialKeyword))
+                        {
+                            return Accessibility.Private;
+                        }
+                        else if (methodDeclaration.ExplicitInterfaceSpecifier != null
+                            || methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+                        {
+                            return Accessibility.Public;
+                        }
+                        else
+                        {
+                            return AccessibilityOrDefault(methodDeclaration, modifiers);
+                        }
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
+
+                        if (propertyDeclaration.ExplicitInterfaceSpecifier != null
+                            || propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+                        {
+                            return Accessibility.Public;
+                        }
+                        else
+                        {
+                            return AccessibilityOrDefault(propertyDeclaration, propertyDeclaration.Modifiers);
+                        }
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        var indexerDeclaration = (IndexerDeclarationSyntax)memberDeclaration;
+
+                        if (indexerDeclaration.ExplicitInterfaceSpecifier != null
+                            || indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+                        {
+                            return Accessibility.Public;
+                        }
+                        else
+                        {
+                            return AccessibilityOrDefault(indexerDeclaration, indexerDeclaration.Modifiers);
+                        }
+                    }
+                case SyntaxKind.EventDeclaration:
+                    {
+                        var eventDeclaration = (EventDeclarationSyntax)memberDeclaration;
+
+                        if (eventDeclaration.ExplicitInterfaceSpecifier != null)
+                        {
+                            return Accessibility.Public;
+                        }
+                        else
+                        {
+                            return AccessibilityOrDefault(eventDeclaration, eventDeclaration.Modifiers);
+                        }
+                    }
+                case SyntaxKind.EventFieldDeclaration:
+                    {
+                        if (memberDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+                        {
+                            return Accessibility.Public;
+                        }
+                        else
+                        {
+                            var eventFieldDeclaration = (EventFieldDeclarationSyntax)memberDeclaration;
+
+                            return AccessibilityOrDefault(eventFieldDeclaration, eventFieldDeclaration.Modifiers);
+                        }
+                    }
+                case SyntaxKind.FieldDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.EnumDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                    {
+                        return AccessibilityOrDefault(memberDeclaration, memberDeclaration.GetModifiers());
+                    }
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.EnumMemberDeclaration:
+                case SyntaxKind.NamespaceDeclaration:
+                    {
+                        return Accessibility.Public;
+                    }
+            }
+
+            return Accessibility.NotApplicable;
+        }
+
+        private static Accessibility AccessibilityOrDefault(MemberDeclarationSyntax memberDeclaration, SyntaxTokenList modifiers)
+        {
+            Accessibility accessibility = modifiers.GetAccessibility();
+
+            if (accessibility != Accessibility.NotApplicable)
+            {
+                return accessibility;
+            }
+            else
+            {
+                return GetDefaultAccessibility(memberDeclaration);
+            }
+        }
+
+        public static bool IsPubliclyVisible(this MemberDeclarationSyntax memberDeclaration)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            do
+            {
+                if (memberDeclaration.IsKind(SyntaxKind.NamespaceDeclaration))
+                    return true;
+
+                Accessibility accessibility = memberDeclaration.GetDeclaredAccessibility();
+
+                if (accessibility == Accessibility.Public
+                    || accessibility == Accessibility.Protected
+                    || accessibility == Accessibility.ProtectedOrInternal)
+                {
+                    SyntaxNode parent = memberDeclaration.Parent;
+
+                    if (parent != null)
+                    {
+                        if (parent.IsKind(SyntaxKind.CompilationUnit))
+                            return true;
+
+                        memberDeclaration = parent as MemberDeclarationSyntax;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+
+            } while (memberDeclaration != null);
+
+            return false;
+        }
+
         public static bool IsIterator(this MethodDeclarationSyntax methodDeclaration)
         {
             if (methodDeclaration == null)

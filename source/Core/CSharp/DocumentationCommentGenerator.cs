@@ -1,16 +1,61 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp
 {
     public static class DocumentationCommentGenerator
     {
+        public static MemberDeclarationSyntax GenerateAndAttach(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            SyntaxTriviaList leadingTrivia = memberDeclaration.GetLeadingTrivia();
+
+            int index = 0;
+
+            string indent = "";
+
+            if (leadingTrivia.Any())
+            {
+                index = leadingTrivia.Count - 1;
+
+                for (int i = leadingTrivia.Count - 1; i >= 0; i--)
+                {
+                    if (leadingTrivia[i].IsWhitespaceTrivia())
+                    {
+                        index = i;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                indent = string.Concat(leadingTrivia.Skip(index));
+            }
+
+            settings = settings ?? DocumentationCommentGeneratorSettings.Default;
+
+            settings = settings.WithIndent(indent);
+
+            SyntaxTriviaList comment = Generate(memberDeclaration, settings);
+
+            SyntaxTriviaList newLeadingTrivia = leadingTrivia.InsertRange(index, comment);
+
+            return memberDeclaration.WithLeadingTrivia(newLeadingTrivia);
+        }
+
         public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
             if (memberDeclaration == null)
@@ -55,6 +100,18 @@ namespace Roslynator.CSharp
                 default:
                     throw new ArgumentException("", nameof(memberDeclaration));
             }
+        }
+
+        public static async Task<Document> GenerateAndAttachAsync(Document document, DocumentationCommentGeneratorSettings settings = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = GenerateDocumentationCommentSyntaxRewriter.GenerateAndAttach(root, settings);
+
+            return document.WithSyntaxRoot(newRoot);
         }
 
         public static SyntaxTriviaList Generate(NamespaceDeclarationSyntax namespaceDeclaration, DocumentationCommentGeneratorSettings settings = null)

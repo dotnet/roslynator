@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-#pragma warning disable RCS1016, RCS1100, RCS1106
+#pragma warning disable RCS1016, RCS1100, RCS1106, RCS1138
     /// <summary>
     /// 
     /// </summary>
@@ -257,5 +257,4 @@ namespace Roslynator.CSharp.Analyzers.Tests
             public delegate void DelegateName<T>(object parameter);
         }
     }
-#pragma warning restore RCS1016, RCS1100, RCS1106
 }
