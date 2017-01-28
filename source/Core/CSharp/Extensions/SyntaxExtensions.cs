@@ -703,7 +703,7 @@ namespace Roslynator.CSharp.Extensions
             }
         }
 
-        public static Accessibility GetDefaultAccessibility(this MemberDeclarationSyntax memberDeclaration)
+        public static Accessibility GetDefaultExplicitAccessibility(this MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
@@ -947,7 +947,7 @@ namespace Roslynator.CSharp.Extensions
             }
             else
             {
-                return GetDefaultAccessibility(memberDeclaration);
+                return GetDefaultExplicitAccessibility(memberDeclaration);
             }
         }
 
