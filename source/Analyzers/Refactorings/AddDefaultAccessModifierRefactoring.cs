@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             if (accessibility == Accessibility.NotApplicable)
                             {
-                                return declaration.GetDefaultAccessibility();
+                                return declaration.GetDefaultExplicitAccessibility();
                             }
                             else
                             {
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    return declaration.GetDefaultAccessibility();
+                    return declaration.GetDefaultExplicitAccessibility();
                 }
             }
 
