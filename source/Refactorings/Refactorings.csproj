@@ -223,7 +223,6 @@
     <Compile Include="Refactorings\FormatBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberAbstractRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveModifierRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRenameParameterRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceSwitchWithIfElseRefactoring.cs" />
     <Compile Include="Refactorings\CloseParenTokenRefactoring.cs" />

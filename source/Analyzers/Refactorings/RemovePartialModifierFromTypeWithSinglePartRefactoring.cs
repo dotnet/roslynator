@@ -46,7 +46,9 @@ namespace Roslynator.CSharp.Refactorings
             TypeDeclarationSyntax typeDeclaration,
             CancellationToken cancellationToken)
         {
-            return await RemoveModifierRefactoring.RemovePartialModifierAsync(document, typeDeclaration, cancellationToken).ConfigureAwait(false);
+            SyntaxNode newNode = Remover.RemoveModifier(typeDeclaration, SyntaxKind.PartialKeyword);
+
+            return await document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
