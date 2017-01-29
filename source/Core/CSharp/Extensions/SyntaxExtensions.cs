@@ -522,6 +522,63 @@ namespace Roslynator.CSharp.Extensions
                 .Any(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
         }
 
+        public static SyntaxTokenList GetModifiers(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            switch (node.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.DestructorDeclaration:
+                    return ((DestructorDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.EventFieldDeclaration:
+                    return ((EventFieldDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.FieldDeclaration:
+                    return ((FieldDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.OperatorDeclaration:
+                    return ((OperatorDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)node).Modifiers;
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return ((AccessorDeclarationSyntax)node).Modifiers;
+                case SyntaxKind.LocalDeclarationStatement:
+                    return ((LocalDeclarationStatementSyntax)node).Modifiers;
+                case SyntaxKind.Parameter:
+                    return ((ParameterSyntax)node).Modifiers;
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return default(SyntaxTokenList);
+                    }
+            }
+        }
+
         public static SyntaxTokenList GetModifiers(this MemberDeclarationSyntax declaration)
         {
             if (declaration == null)
@@ -559,10 +616,69 @@ namespace Roslynator.CSharp.Extensions
                     return ((PropertyDeclarationSyntax)declaration).Modifiers;
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Modifiers;
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)declaration).Modifiers;
                 default:
                     {
                         Debug.Assert(false, declaration.Kind().ToString());
                         return default(SyntaxTokenList);
+                    }
+            }
+        }
+
+        public static SyntaxNode SetModifiers(this SyntaxNode node, SyntaxTokenList modifiers)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            switch (node.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.OperatorDeclaration:
+                    return ((OperatorDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.DestructorDeclaration:
+                    return ((DestructorDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.EventFieldDeclaration:
+                    return ((EventFieldDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.FieldDeclaration:
+                    return ((FieldDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return ((AccessorDeclarationSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.LocalDeclarationStatement:
+                    return ((LocalDeclarationStatementSyntax)node).WithModifiers(modifiers);
+                case SyntaxKind.Parameter:
+                    return ((ParameterSyntax)node).WithModifiers(modifiers);
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+                        return node;
                     }
             }
         }
@@ -604,6 +720,8 @@ namespace Roslynator.CSharp.Extensions
                     return ((PropertyDeclarationSyntax)declaration).WithModifiers(modifiers);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).WithModifiers(modifiers);
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)declaration).WithModifiers(modifiers);
                 default:
                     {
                         Debug.Assert(false, declaration.Kind().ToString());

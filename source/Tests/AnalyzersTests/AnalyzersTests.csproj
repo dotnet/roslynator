@@ -86,6 +86,7 @@
     <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />
     <Compile Include="RemoveFileWithNoCode.cs" />
+    <Compile Include="RemovePartialModifierFromTypeWithSinglePart.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantBraces.cs" />
     <Compile Include="RemoveRedundantConstructor.cs" />
@@ -95,9 +96,11 @@
     <Compile Include="RemoveRedundantEmptyLine.cs" />
     <Compile Include="RemoveRedundantFieldInitialization.cs" />
     <Compile Include="RemoveRedundantOverridenMember.cs" />
+    <Compile Include="RemoveRedundantSealedModifier.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="RenamePrivateFieldAccordingToCamelCaseWithUnderscore.cs" />
+    <Compile Include="ReorderModifiers.cs" />
     <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />

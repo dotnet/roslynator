@@ -10,5 +10,16 @@ namespace Roslynator.Extensions
         {
             return tokenList.Replace(tokenList[index], newToken);
         }
+
+        public static bool IsFirst(this SyntaxTokenList tokenList, SyntaxToken token)
+        {
+            return tokenList.IndexOf(token) == 0;
+        }
+
+        public static bool IsLast<TNode>(this SyntaxTokenList tokenList, SyntaxToken token)
+        {
+            return tokenList.Any()
+                && tokenList.IndexOf(token) == tokenList.Count - 1;
+        }
     }
 }
