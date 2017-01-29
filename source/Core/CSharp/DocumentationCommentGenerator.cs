@@ -314,11 +314,20 @@ namespace Roslynator.CSharp
             var sb = new StringBuilder();
 
             sb.Append(settings.Indent);
-            sb.AppendLine(@"/// <summary>");
-            sb.Append(settings.Indent);
-            sb.AppendLine(@"/// ");
-            sb.Append(settings.Indent);
-            sb.AppendLine(@"/// </summary>");
+            sb.Append(@"/// <summary>");
+
+            if (settings.SingleLineSummary)
+            {
+                sb.AppendLine(@"</summary>");
+            }
+            else
+            {
+                sb.AppendLine();
+                sb.Append(settings.Indent);
+                sb.AppendLine(@"/// ");
+                sb.Append(settings.Indent);
+                sb.AppendLine(@"/// </summary>");
+            }
 
             foreach (TypeParameterSyntax typeParameter in typeParameters)
             {
