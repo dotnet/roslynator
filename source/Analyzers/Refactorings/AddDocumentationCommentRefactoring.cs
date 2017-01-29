@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -117,40 +115,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken)
         {
-            SyntaxTriviaList leadingTrivia = memberDeclaration.GetLeadingTrivia();
-
-            int index = 0;
-
-            string indent = "";
-
-            if (leadingTrivia.Any())
-            {
-                index = leadingTrivia.Count - 1;
-
-                for (int i = leadingTrivia.Count - 1; i >= 0; i--)
-                {
-                    if (leadingTrivia[i].IsWhitespaceTrivia())
-                    {
-                        index = i;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                indent = string.Join("", leadingTrivia.Skip(index));
-            }
-
-            DocumentationCommentGeneratorSettings settings = (indent.Length > 0)
-                ? new DocumentationCommentGeneratorSettings(indent)
-                : null;
-
-            SyntaxTriviaList comment = DocumentationCommentGenerator.Generate(memberDeclaration, settings);
-
-            SyntaxTriviaList newLeadingTrivia = leadingTrivia.InsertRange(index, comment);
-
-            MemberDeclarationSyntax newNode = memberDeclaration.WithLeadingTrivia(newLeadingTrivia);
+            MemberDeclarationSyntax newNode = DocumentationCommentGenerator.GenerateAndAttach(memberDeclaration);
 
             return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
