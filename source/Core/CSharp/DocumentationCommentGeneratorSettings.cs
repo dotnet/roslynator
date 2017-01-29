@@ -6,43 +6,58 @@ namespace Roslynator.CSharp
     {
         public DocumentationCommentGeneratorSettings(
             string indent = null,
-            bool generateReturns = true,
-            bool skipNamespaceDeclaration = true)
+            bool singleLineSummary = false,
+            bool skipNamespaceDeclaration = true,
+            bool generateReturns = true
+            )
         {
             Indent = indent ?? "";
-            GenerateReturns = generateReturns;
+            SingleLineSummary = singleLineSummary;
             SkipNamespaceDeclaration = skipNamespaceDeclaration;
+            GenerateReturns = generateReturns;
         }
 
         public static DocumentationCommentGeneratorSettings Default { get; } = new DocumentationCommentGeneratorSettings();
 
         public string Indent { get; }
-        public bool GenerateReturns { get; }
+        public bool SingleLineSummary { get; }
         public bool SkipNamespaceDeclaration { get; }
+        public bool GenerateReturns { get; }
 
         public DocumentationCommentGeneratorSettings WithIndent(string indent)
         {
             return new DocumentationCommentGeneratorSettings(
                 indent: indent,
-                generateReturns: GenerateReturns,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration);
-
+                singleLineSummary: SingleLineSummary,
+                skipNamespaceDeclaration: SkipNamespaceDeclaration,
+                generateReturns: GenerateReturns);
         }
 
-        public DocumentationCommentGeneratorSettings WithGenerateReturns(bool generateReturns)
+        public DocumentationCommentGeneratorSettings WithSingleLineSummary(bool singleLineSummary)
         {
             return new DocumentationCommentGeneratorSettings(
                 indent: Indent,
-                generateReturns: generateReturns,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration);
+                singleLineSummary: singleLineSummary,
+                skipNamespaceDeclaration: SkipNamespaceDeclaration,
+                generateReturns: GenerateReturns);
         }
 
         public DocumentationCommentGeneratorSettings WithSkipNamespaceDeclaration(bool skipNamespaceDeclaration)
         {
             return new DocumentationCommentGeneratorSettings(
                 indent: Indent,
-                generateReturns: GenerateReturns,
-                skipNamespaceDeclaration: skipNamespaceDeclaration);
+                singleLineSummary: SingleLineSummary,
+                skipNamespaceDeclaration: skipNamespaceDeclaration,
+                generateReturns: GenerateReturns);
+        }
+
+        public DocumentationCommentGeneratorSettings WithGenerateReturns(bool generateReturns)
+        {
+            return new DocumentationCommentGeneratorSettings(
+                indent: Indent,
+                singleLineSummary: SingleLineSummary,
+                skipNamespaceDeclaration: SkipNamespaceDeclaration,
+                generateReturns: generateReturns);
         }
     }
 }
