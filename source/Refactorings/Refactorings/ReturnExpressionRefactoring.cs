@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,65 +18,74 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                MemberDeclarationSyntax declaration = await GetContainingMethodOrPropertyOrIndexerAsync(expression, semanticModel, context.CancellationToken).ConfigureAwait(false);
+                ISymbol memberSymbol = GetContainingMethodOrPropertySymbol(expression, semanticModel, context.CancellationToken);
 
-                if (declaration != null)
+                if (memberSymbol != null)
                 {
-                    TypeSyntax memberType = GetMemberType(declaration);
+                    SyntaxNode node = await memberSymbol
+                        .DeclaringSyntaxReferences[0]
+                        .GetSyntaxAsync(context.CancellationToken)
+                        .ConfigureAwait(false);
 
-                    if (memberType != null)
+                    var declaration = node as MemberDeclarationSyntax;
+
+                    if (declaration != null)
                     {
-                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
+                        TypeSyntax memberType = GetMemberType(declaration);
 
-                        if (memberTypeSymbol != null)
+                        if (memberType != null)
                         {
-                            ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                            ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
 
-                            if (expressionSymbol?.IsErrorType() == false)
+                            if (memberTypeSymbol != null)
                             {
-                                ISymbol memberSymbol = semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
+                                ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                                if (expressionSymbol?.IsErrorType() == false)
                                 {
-                                    ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
-
-                                    if (newType?.IsErrorType() == false
-                                        && !memberTypeSymbol.Equals(newType))
+                                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                                     {
-                                        if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
+                                        ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
+
+                                        if (newType?.IsErrorType() == false
+                                            && !memberTypeSymbol.Equals(newType)
+                                            && !memberSymbol.IsOverride)
                                         {
-                                            var newNamedType = (INamedTypeSymbol)newType;
-
-                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
-
-                                            if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
+                                            if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
                                             {
-                                                INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
+                                                var newNamedType = (INamedTypeSymbol)newType;
 
-                                                if (enumerableSymbol != null
-                                                    && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
+                                                INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
+
+                                                if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
                                                 {
-                                                    RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
+                                                    INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
+
+                                                    if (enumerableSymbol != null
+                                                        && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
+                                                    {
+                                                        RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
+                                                    }
                                                 }
                                             }
+
+                                            RegisterChangeType(context, declaration, memberType, newType, semanticModel);
                                         }
-
-                                        RegisterChangeType(context, declaration, memberType, newType, semanticModel);
                                     }
-                                }
 
-                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                                    && !memberTypeSymbol.IsErrorType())
-                                {
-                                    ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
-
-                                    if (castTypeSymbol != null)
+                                    if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
+                                        && !memberTypeSymbol.IsErrorType())
                                     {
-                                        ModifyExpressionRefactoring.ComputeRefactoring(
-                                           context,
-                                           expression,
-                                           castTypeSymbol,
-                                           semanticModel);
+                                        ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
+
+                                        if (castTypeSymbol != null)
+                                        {
+                                            ModifyExpressionRefactoring.ComputeRefactoring(
+                                               context,
+                                               expression,
+                                               castTypeSymbol,
+                                               semanticModel);
+                                        }
                                     }
                                 }
                             }
@@ -217,7 +225,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static async Task<MemberDeclarationSyntax> GetContainingMethodOrPropertyOrIndexerAsync(
+        internal static ISymbol GetContainingMethodOrPropertySymbol(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -240,12 +248,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            SyntaxNode node = await symbol
-                .DeclaringSyntaxReferences[0]
-                .GetSyntaxAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            return node as MemberDeclarationSyntax;
+            return symbol;
         }
     }
 }
