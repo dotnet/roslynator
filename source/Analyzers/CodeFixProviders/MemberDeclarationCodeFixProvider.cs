@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDeclarationBraces,
                     DiagnosticIdentifiers.MarkMemberAsStatic,
-                    DiagnosticIdentifiers.RemoveRedundantOverridenMember,
+                    DiagnosticIdentifiers.RemoveRedundantOverridingMember,
                     DiagnosticIdentifiers.AddDocumentationComment);
             }
         }
@@ -76,10 +76,10 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.RemoveRedundantOverridenMember:
+                    case DiagnosticIdentifiers.RemoveRedundantOverridingMember:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                $"Remove redundant overriden {GetMemberName(memberDeclaration)}",
+                                $"Remove redundant overridding {GetMemberName(memberDeclaration)}",
                                 cancellationToken => Remover.RemoveMemberAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 

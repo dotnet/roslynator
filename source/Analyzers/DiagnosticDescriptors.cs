@@ -1244,10 +1244,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantOverridenMember = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveRedundantOverridenMember,
-            title: "Remove redundant overriden member.",
-            messageFormat: "Remove redundant overriden {0}.",
+        public static readonly DiagnosticDescriptor RemoveRedundantOverridingMember = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantOverridingMember,
+            title: "Remove redundant overriding member.",
+            messageFormat: "Remove redundant overriding {0}.",
             category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,

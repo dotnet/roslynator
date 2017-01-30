@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                                 }
                                 else if (methodSymbol.IsOverride)
                                 {
-                                    return methodSymbol.OverridenMethods().Any(f => f.ContainingType?.IsObject() == true);
+                                    return methodSymbol.OverriddenMethods().Any(f => f.ContainingType?.IsObject() == true);
                                 }
                             }
                         }

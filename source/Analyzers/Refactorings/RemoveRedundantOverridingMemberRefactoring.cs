@@ -12,7 +12,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveRedundantOverridenMemberRefactoring
+    internal static class RemoveRedundantOverridingMemberRefactoring
     {
         internal static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
         {
@@ -42,17 +42,17 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (methodSymbol != null)
                             {
-                                IMethodSymbol overridenMethod = methodSymbol.OverriddenMethod;
+                                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-                                if (overridenMethod != null)
+                                if (overriddenMethod != null)
                                 {
                                     ISymbol symbol = context.SemanticModel.GetSymbol(simpleName, context.CancellationToken);
 
-                                    if (overridenMethod.Equals(symbol)
+                                    if (overriddenMethod.Equals(symbol)
                                         && !methodDeclaration.ContainsDirectives)
                                     {
                                         context.ReportDiagnostic(
-                                            DiagnosticDescriptors.RemoveRedundantOverridenMember,
+                                            DiagnosticDescriptors.RemoveRedundantOverridingMember,
                                             methodDeclaration.GetLocation(),
                                             "method");
                                     }
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
                 && !propertyDeclaration.ContainsDirectives)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantOverridenMember,
+                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
                     propertyDeclaration.GetLocation(),
                     "property");
             }
@@ -136,13 +136,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (propertySymbol != null)
                                 {
-                                    IPropertySymbol overridenProperty = propertySymbol.OverriddenProperty;
+                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                                    if (overridenProperty != null)
+                                    if (overriddenProperty != null)
                                     {
                                         ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                                        if (overridenProperty.Equals(symbol))
+                                        if (overriddenProperty.Equals(symbol))
                                             return true;
                                     }
                                 }
@@ -183,13 +183,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                                 if (propertySymbol != null)
                                                 {
-                                                    IPropertySymbol overridenProperty = propertySymbol.OverriddenProperty;
+                                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                                                    if (overridenProperty != null)
+                                                    if (overriddenProperty != null)
                                                     {
                                                         ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                                                        if (overridenProperty.Equals(symbol))
+                                                        if (overriddenProperty.Equals(symbol))
                                                             return true;
                                                     }
                                                 }
@@ -227,7 +227,7 @@ namespace Roslynator.CSharp.Refactorings
                 && !indexerDeclaration.ContainsDirectives)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantOverridenMember,
+                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
                     indexerDeclaration.GetLocation(),
                     "indexer");
             }
@@ -256,13 +256,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (propertySymbol != null)
                                 {
-                                    IPropertySymbol overridenProperty = propertySymbol.OverriddenProperty;
+                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                                    if (overridenProperty != null)
+                                    if (overriddenProperty != null)
                                     {
                                         ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                                        if (overridenProperty.Equals(symbol))
+                                        if (overriddenProperty.Equals(symbol))
                                             return true;
                                     }
                                 }
@@ -300,13 +300,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                             if (propertySymbol != null)
                                             {
-                                                IPropertySymbol overridenProperty = propertySymbol.OverriddenProperty;
+                                                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-                                                if (overridenProperty != null)
+                                                if (overriddenProperty != null)
                                                 {
                                                     ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                                                    if (overridenProperty.Equals(symbol))
+                                                    if (overriddenProperty.Equals(symbol))
                                                         return true;
                                                 }
                                             }

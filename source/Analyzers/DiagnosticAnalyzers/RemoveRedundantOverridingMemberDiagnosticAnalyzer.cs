@@ -11,11 +11,11 @@ using Roslynator.CSharp.Refactorings;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveRedundantOverridenMemberDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class RemoveRedundantOverridingMemberDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantOverridenMember); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantOverridingMember); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -34,19 +34,19 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-            RemoveRedundantOverridenMemberRefactoring.Analyze(context, methodDeclaration);
+            RemoveRedundantOverridingMemberRefactoring.Analyze(context, methodDeclaration);
         }
 
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
-            RemoveRedundantOverridenMemberRefactoring.Analyze(context, propertyDeclaration);
+            RemoveRedundantOverridingMemberRefactoring.Analyze(context, propertyDeclaration);
         }
 
         private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
-            RemoveRedundantOverridenMemberRefactoring.Analyze(context, indexerDeclaration);
+            RemoveRedundantOverridingMemberRefactoring.Analyze(context, indexerDeclaration);
         }
     }
 }
