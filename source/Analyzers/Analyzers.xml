@@ -1161,9 +1161,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantOverridenMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantOverriddenMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
     <Id>RCS1132</Id>
-    <Title>Remove redundant overriden member.</Title>
+    <Title>Remove redundant overridden member.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

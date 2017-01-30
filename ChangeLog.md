@@ -6,7 +6,7 @@
 
 * BitwiseOperatorOnEnumWithoutFlagsAttribute
 * ReplaceReturnWithYieldReturn
-* RemoveRedundantOverridenMember
+* RemoveRedundantOverridingMember
 * RemoveRedundantDisposeOrCloseCall
 * RemoveRedundantContinueStatement
 * DeclareEnumMemberWithZeroValue

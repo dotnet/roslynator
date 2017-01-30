@@ -160,7 +160,7 @@
 * RCS1129 - Remove redundant field initalization
 * RCS1130 - Bitwise operation on enum without Flags attribute
 * RCS1131 - Replace return with yield return
-* RCS1132 - Remove redundant overriden member
+* RCS1132 - Remove redundant overriding member
 * RCS1133 - Remove redundant Dispose/Close call
 * RCS1134 - Remove redundant continue statement
 * RCS1135 - Declare enum member with zero value (when enum has FlagsAttribute)

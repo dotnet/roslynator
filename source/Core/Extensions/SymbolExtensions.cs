@@ -42,18 +42,18 @@ namespace Roslynator.Extensions
                 || methodKind == methodKind3;
         }
 
-        public static IEnumerable<IMethodSymbol> OverridenMethods(this IMethodSymbol methodSymbol)
+        public static IEnumerable<IMethodSymbol> OverriddenMethods(this IMethodSymbol methodSymbol)
         {
             if (methodSymbol == null)
                 throw new ArgumentNullException(nameof(methodSymbol));
 
-            IMethodSymbol overridenMethod = methodSymbol.OverriddenMethod;
+            IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-            while (overridenMethod != null)
+            while (overriddenMethod != null)
             {
-                yield return overridenMethod;
+                yield return overriddenMethod;
 
-                overridenMethod = overridenMethod.OverriddenMethod;
+                overriddenMethod = overriddenMethod.OverriddenMethod;
             }
         }
 
