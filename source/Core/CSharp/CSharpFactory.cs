@@ -140,33 +140,25 @@ namespace Roslynator.CSharp
 
                 ITypeSymbol type = parameterSymbol.Type;
 
-                //TODO: error type ?
                 if (type.IsEnum())
                 {
-                    IFieldSymbol fieldSymbol = FindMemberWithConstantValue(type, value);
+                    if (value != null)
+                    {
+                        foreach (IFieldSymbol fieldSymbol in type.GetFields())
+                        {
+                            if (fieldSymbol.HasConstantValue
+                                && value.Equals(fieldSymbol.ConstantValue))
+                            {
+                                return SimpleMemberAccessExpression(type.ToSyntax(), IdentifierName(fieldSymbol.Name));
+                            }
+                        }
 
-                    if (fieldSymbol != null)
-                        return SimpleMemberAccessExpression(type.ToSyntax(), IdentifierName(fieldSymbol.Name));
+                        return CastExpression(type.ToSyntax().WithSimplifierAnnotation(), ConstantExpression(value));
+                    }
                 }
-
-                return ConstantExpression(value);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private static IFieldSymbol FindMemberWithConstantValue(ITypeSymbol typeSymbol, object value)
-        {
-            foreach (IFieldSymbol fieldSymbol in typeSymbol.GetFields())
-            {
-                if (fieldSymbol.HasConstantValue)
+                else
                 {
-                    object constantValue = fieldSymbol.ConstantValue;
-
-                    if (value.Equals(constantValue))
-                        return fieldSymbol;
+                    return ConstantExpression(value);
                 }
             }
 
