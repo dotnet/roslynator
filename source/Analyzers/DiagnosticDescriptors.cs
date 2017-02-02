@@ -1411,5 +1411,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin,
+            title: "Call string.Concat instead of string.Join.",
+            messageFormat: "Call string.Concat instead of string.Join.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

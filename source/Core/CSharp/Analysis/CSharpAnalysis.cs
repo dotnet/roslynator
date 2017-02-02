@@ -501,5 +501,61 @@ namespace Roslynator.CSharp.Analysis
                     return 0;
             }
         }
+
+        public static bool IsEmptyString(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            SyntaxKind kind = expression.Kind();
+
+            if (kind == SyntaxKind.StringLiteralExpression)
+            {
+                return ((LiteralExpressionSyntax)expression).Token.ValueText.Length == 0;
+            }
+            else if (kind == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                if (memberAccess.Name?.Identifier.ValueText == "Empty")
+                {
+                    ISymbol symbol = semanticModel.GetSymbol(memberAccess, cancellationToken);
+
+                    if (symbol?.IsField() == true)
+                    {
+                        INamedTypeSymbol stringSymbol = semanticModel.Compilation.GetSpecialType(SpecialType.System_String);
+
+                        if (Symbol.IsField(
+                            fieldSymbol: (IFieldSymbol)symbol,
+                            containingType: stringSymbol,
+                            accessibility: Accessibility.Public,
+                            isStatic: true,
+                            isReadOnly: true,
+                            type: stringSymbol,
+                            name: "Empty"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+
+            if (optional.HasValue)
+            {
+                var value = optional.Value as string;
+
+                return value?.Length == 0;
+            }
+
+            return false;
+        }
     }
 }

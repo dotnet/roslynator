@@ -33,7 +33,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
                     DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
                     DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt,
-                    DiagnosticIdentifiers.UseElementAccessInsteadOfFirst);
+                    DiagnosticIdentifiers.UseElementAccessInsteadOfFirst,
+                    DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin);
             }
         }
 
@@ -177,6 +178,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Use [] instead of calling 'First'",
                                 cancellationToken => UseElementAccessInsteadOfFirstRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Call 'Concat' instead of 'Join'",
+                                cancellationToken => CallStringConcatInsteadOfStringJoinRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

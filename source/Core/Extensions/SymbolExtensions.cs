@@ -874,6 +874,37 @@ namespace Roslynator.Extensions
             return typeSymbol?.SpecialType == SpecialType.System_Collections_IEnumerable;
         }
 
+        public static bool IsIEnumerableOf(this ITypeSymbol typeSymbol, ITypeSymbol typeArgument)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (typeArgument == null)
+                throw new ArgumentNullException(nameof(typeArgument));
+
+            if (typeSymbol.IsNamedType())
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
+                    && namedTypeSymbol.TypeArguments.First().Equals(typeArgument);
+            }
+
+            return false;
+        }
+
+        public static bool IsIEnumerableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeArgument)
+        {
+            if (namedTypeSymbol == null)
+                throw new ArgumentNullException(nameof(namedTypeSymbol));
+
+            if (typeArgument == null)
+                throw new ArgumentNullException(nameof(typeArgument));
+
+            return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
+                && namedTypeSymbol.TypeArguments.First().Equals(typeArgument);
+        }
+
         public static bool IsConstructedFromIEnumerableOfT(this ITypeSymbol typeSymbol)
         {
             return IsConstructedFrom(typeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T);
@@ -1003,6 +1034,29 @@ namespace Roslynator.Extensions
             }
 
             return null;
+        }
+
+        public static bool IsParamsOf(this IParameterSymbol parameterSymbol, ITypeSymbol elementType)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (elementType == null)
+                throw new ArgumentNullException(nameof(elementType));
+
+            if (parameterSymbol.IsParams)
+            {
+                ITypeSymbol type = parameterSymbol.Type;
+
+                if (type.IsArrayType())
+                {
+                    var arrayType = (IArrayTypeSymbol)type;
+
+                    return arrayType.ElementType.Equals(elementType);
+                }
+            }
+
+            return false;
         }
     }
 }
