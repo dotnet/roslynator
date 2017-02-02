@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -54,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             MethodDeclarationSyntax newNode = methodDeclaration
-                .AddBodyStatements(ReturnStatement(CSharpFactory.DefaultValue(typeSymbol, semanticModel, position)));
+                .AddBodyStatements(ReturnStatement(typeSymbol.ToDefaultExpression(semanticModel, position)));
 
             return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }

@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-                ExpressionSyntax expression = DefaultValue(methodSymbol.ReturnType, returnType);
+                ExpressionSyntax expression = methodSymbol.ReturnType.ToDefaultExpression(returnType);
 
                 body = body.AddStatements(ReturnStatement(expression));
             }

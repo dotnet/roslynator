@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -99,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax expression = CSharpFactory.DefaultValue(typeSymbol);
+            ExpressionSyntax expression = typeSymbol.ToDefaultExpression();
 
             ReturnStatementSyntax newReturnStatement = returnStatement.WithExpression(expression);
 

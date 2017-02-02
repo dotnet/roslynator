@@ -479,7 +479,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                     {
                         if (parameterSymbol.HasExplicitDefaultValue)
                         {
-                            parameterInfos.Add(new ParameterInfo(parameterSymbol, CSharpFactory.DefaultValue(parameterSymbol)));
+                            parameterInfos.Add(new ParameterInfo(parameterSymbol, parameterSymbol.ToDefaultExpression()));
                         }
                         else
                         {
