@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
-                    DiagnosticIdentifiers.SimplifyCoalesceExpression);
+                    DiagnosticIdentifiers.SimplifyCoalesceExpression,
+                    DiagnosticIdentifiers.RemoveRedundantAsOperator);
             }
         }
 
@@ -103,7 +104,17 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                }
+                    case DiagnosticIdentifiers.RemoveRedundantAsOperator:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant 'as' operator",
+                                cancellationToken => RemoveRedundantAsOperatorRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                 }
             }
         }
     }
