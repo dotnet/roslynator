@@ -86,6 +86,7 @@
     <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring2.cs" />
     <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
+    <Compile Include="UseConditionalAccess.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />
     <Compile Include="InlineMethodRefactoring_.cs" />

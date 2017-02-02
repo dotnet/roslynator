@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
-                    DiagnosticIdentifiers.RemoveRedundantAsOperator);
+                    DiagnosticIdentifiers.RemoveRedundantAsOperator,
+                    DiagnosticIdentifiers.UseConditionalAccess);
             }
         }
 
@@ -114,7 +115,17 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                 }
+                    case DiagnosticIdentifiers.UseConditionalAccess:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use conditional access",
+                                cancellationToken => UseConditionalAccessRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
             }
         }
     }

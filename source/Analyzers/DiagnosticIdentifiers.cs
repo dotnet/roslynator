@@ -151,5 +151,6 @@ namespace Roslynator.CSharp
         public const string SimplifyCoalesceExpression = Prefix + "1143";
         public const string MarkContainingClassAsAbstract = Prefix + "1144";
         public const string RemoveRedundantAsOperator = Prefix + "1145";
+        public const string UseConditionalAccess = Prefix + "1146";
     }
 }
