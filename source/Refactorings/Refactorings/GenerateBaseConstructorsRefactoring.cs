@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         using (IEnumerator<IMethodSymbol> en = baseSymbol
                             .InstanceConstructors
-                            .Where(f => !f.IsPrivate())
+                            .Where(f => !f.IsPrivate() && !f.Parameters.Any(parameter => parameter.Type.IsErrorType()))
                             .Except(declaredConstructors, ConstructorComparer.Instance)
                             .GetEnumerator())
                         {
@@ -107,7 +107,12 @@ namespace Roslynator.CSharp.Refactorings
                 EqualsValueClauseSyntax @default = null;
 
                 if (parameterSymbol.HasExplicitDefaultValue)
-                    @default = EqualsValueClause(DefaultValue(parameterSymbol).WithSimplifierAnnotation());
+                {
+                    ExpressionSyntax defaultValue = DefaultValue(parameterSymbol);
+
+                    if (defaultValue != null)
+                        @default = EqualsValueClause(defaultValue.WithSimplifierAnnotation());
+                }
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
