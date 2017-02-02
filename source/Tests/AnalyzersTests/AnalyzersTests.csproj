@@ -104,6 +104,7 @@
     <Compile Include="RemoveRedundantSealedModifier.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
+    <Compile Include="RemoveUnreachableCode.cs" />
     <Compile Include="RenamePrivateFieldAccordingToCamelCaseWithUnderscore.cs" />
     <Compile Include="ReorderModifiers.cs" />
     <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />

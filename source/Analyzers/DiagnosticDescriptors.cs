@@ -1391,5 +1391,15 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor RemoveUnreachableCode = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveUnreachableCode,
+            title: "Remove unreachable code.",
+            messageFormat: "Remove unreachable code.",
+            category: DiagnosticCategories.General,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
