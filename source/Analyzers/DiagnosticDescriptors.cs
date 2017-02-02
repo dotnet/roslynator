@@ -1420,5 +1420,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantCast = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantCast,
+            title: "Remove redundant cast.",
+            messageFormat: "Remove redundant cast.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
