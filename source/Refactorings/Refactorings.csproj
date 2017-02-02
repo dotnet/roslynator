@@ -152,8 +152,8 @@
     <Compile Include="Refactorings\IndexerDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\ChangeMethodReturnTypeToVoidRefactoring.cs" />
     <Compile Include="Refactorings\MethodDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceWhileStatementWithDoStatementRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceWhileWithDoRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceDoWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ChangeVariableDeclarationTypeRefactoring.cs" />
     <Compile Include="Refactorings\InitializeLocalWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInUsingStatementRefactoring.cs" />
@@ -261,6 +261,7 @@
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceWhileWithForRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
     <Compile Include="Refactorings\SortEnumMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarationsRefactoring.cs" />

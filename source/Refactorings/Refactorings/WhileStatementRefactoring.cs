@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Text.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,11 +16,17 @@ namespace Roslynator.CSharp.Refactorings
                     "Replace while with do",
                     cancellationToken =>
                     {
-                        return ReplaceWhileStatementWithDoStatementRefactoring.RefactorAsync(
+                        return ReplaceWhileWithDoRefactoring.RefactorAsync(
                             context.Document,
                             whileStatement,
                             cancellationToken);
                     });
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)
+                && context.Span.IsBetweenSpans(whileStatement))
+            {
+                ReplaceWhileWithForRefactoring.ComputeRefactoring(context, whileStatement);
             }
         }
     }

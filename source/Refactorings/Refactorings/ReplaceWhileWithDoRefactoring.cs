@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceWhileStatementWithDoStatementRefactoring
+    internal static class ReplaceWhileWithDoRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

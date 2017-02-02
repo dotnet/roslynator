@@ -65,6 +65,14 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static bool ContainsEmbeddedStatement(SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return GetBlockOrEmbeddedStatement(node)?.IsKind(SyntaxKind.Block) == false;
+        }
+
         public static bool CanContainEmbeddedStatement(SyntaxNode node)
         {
             switch (node?.Kind())
@@ -87,6 +95,9 @@ namespace Roslynator.CSharp
 
         public static StatementSyntax GetBlockOrEmbeddedStatement(SyntaxNode node)
         {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
             switch (node.Kind())
             {
                 case SyntaxKind.IfStatement:

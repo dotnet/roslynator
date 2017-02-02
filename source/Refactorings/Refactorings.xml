@@ -1014,6 +1014,11 @@
     </Syntaxes>
     <Scope>while keyword</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceWhileWithFor" Title="Replace while statement with for statement" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>while statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReverseForLoop" Title="Reverse for loop" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>for statement</Syntax>
