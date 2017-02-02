@@ -88,6 +88,7 @@
     <Compile Include="MergeLocalDeclarationWithInitialization.cs" />
     <Compile Include="MergeLocalDeclarationWithReturnStatement.cs" />
     <Compile Include="MergeSwitchSectionsWithEquivalentContent.cs" />
+    <Compile Include="RemoveImplementationFromAbstractOrInterfaceMember.cs" />
     <Compile Include="RemoveBraces.cs" />
     <Compile Include="RemoveEmptyDestructor.cs" />
     <Compile Include="RemoveEmptyRegion.cs" />

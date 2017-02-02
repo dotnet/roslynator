@@ -1163,6 +1163,23 @@ namespace Roslynator.CSharp.Extensions
                 .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
         }
 
+        public static CSharpSyntaxNode BodyOrExpressionBody(this MethodDeclarationSyntax methodDeclaration)
+        {
+            if (methodDeclaration == null)
+                throw new ArgumentNullException(nameof(methodDeclaration));
+
+            BlockSyntax body = methodDeclaration.Body;
+
+            if (body != null)
+            {
+                return body;
+            }
+            else
+            {
+                return methodDeclaration.ExpressionBody;
+            }
+        }
+
         public static TextSpan HeaderSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
         {
             if (namespaceDeclaration == null)
