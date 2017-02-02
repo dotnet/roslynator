@@ -12,68 +12,34 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantBooleanLiteralRefactoring
     {
-        private static DiagnosticDescriptor FadeOutDescriptor
-        {
-            get { return DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut; }
-        }
-
-        public static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression, ExpressionSyntax expression)
+        public static void ReportDiagnostic(
+            SyntaxNodeAnalysisContext context,
+            BinaryExpressionSyntax binaryExpression,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            ExpressionSyntax expression)
         {
             if (!binaryExpression.SpanContainsDirectives())
             {
+                var span = default(TextSpan);
+
+                if (expression.Equals(left))
+                {
+                    span = TextSpan.FromBounds(left.SpanStart, binaryExpression.OperatorToken.Span.End);
+                }
+                else
+                {
+                    span = TextSpan.FromBounds(binaryExpression.OperatorToken.SpanStart, right.Span.End);
+                }
+
                 context.ReportDiagnostic(
-               DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
-               expression.GetLocation());
-
-                FadeOut(context, binaryExpression);
-            }
-        }
-
-        private static void FadeOut(
-            SyntaxNodeAnalysisContext context,
-            BinaryExpressionSyntax binaryExpression)
-        {
-            context.ReportToken(FadeOutDescriptor, binaryExpression.OperatorToken);
-
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-
-            switch (binaryExpression.Kind())
-            {
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.LogicalAndExpression:
-                    {
-                        if (left.IsKind(SyntaxKind.TrueLiteralExpression))
-                        {
-                            context.ReportNode(FadeOutDescriptor, left);
-                        }
-                        else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
-                        {
-                            context.ReportNode(FadeOutDescriptor, right);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.NotEqualsExpression:
-                case SyntaxKind.LogicalOrExpression:
-                    {
-                        if (left.IsKind(SyntaxKind.FalseLiteralExpression))
-                        {
-                            context.ReportNode(FadeOutDescriptor, left);
-                        }
-                        else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
-                        {
-                            context.ReportNode(FadeOutDescriptor, right);
-                        }
-
-                        break;
-                    }
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
+                    Location.Create(binaryExpression.SyntaxTree, span));
             }
         }
 
@@ -112,12 +78,10 @@ namespace Roslynator.CSharp.Refactorings
 
                 newNode = left.WithTrailingTrivia(trailingTrivia);
             }
-#if DEBUG
             else
             {
                 Debug.Assert(false, binaryExpression.ToString());
             }
-#endif
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
         }

@@ -2,14 +2,11 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+#pragma warning disable RCS1118, RCS1023
     public static class RemoveRedundantBooleanLiteral
     {
         public static void Foo()
         {
-            for (int i = 0; true; i++)
-            {
-            }
-
             bool f = false;
 
             if (f && true) { }
@@ -32,6 +29,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
 #if DEBUG
                 && true) { }
 #endif
+
+            for (int i = 0; true; i++)
+            {
+            }
         }
     }
 }

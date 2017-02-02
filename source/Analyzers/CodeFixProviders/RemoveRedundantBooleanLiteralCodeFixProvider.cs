@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -29,25 +30,23 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
 
-            LiteralExpressionSyntax literalExpression = root
+            SyntaxNode node = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<LiteralExpressionSyntax>();
+                .FirstAncestorOrSelf(f => f.IsKind(
+                    SyntaxKind.TrueLiteralExpression,
+                    SyntaxKind.EqualsExpression,
+                    SyntaxKind.NotEqualsExpression,
+                    SyntaxKind.LogicalAndExpression,
+                    SyntaxKind.LogicalOrExpression));
 
-            Debug.Assert(literalExpression != null, $"{nameof(literalExpression)} is null");
+            Debug.Assert(node != null, $"{nameof(node)} is null");
 
-            if (literalExpression == null)
+            if (node == null)
                 return;
 
-            Debug.Assert(literalExpression.IsBooleanLiteralExpression(), literalExpression.Kind().ToString());
-
-            if (!literalExpression.IsBooleanLiteralExpression())
-                return;
-
-            SyntaxNode parent = literalExpression.Parent;
-
-            switch (parent?.Kind())
+            switch (node.Kind())
             {
-                case SyntaxKind.ForStatement:
+                case SyntaxKind.TrueLiteralExpression:
                     {
                         RegisterCodeFix(
                             context,
@@ -55,16 +54,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
                                     context.Document,
-                                    (ForStatementSyntax)parent,
+                                    (ForStatementSyntax)node.Parent,
                                     cancellationToken);
                             });
 
                         break;
                     }
-                case SyntaxKind.LogicalAndExpression:
-                case SyntaxKind.LogicalOrExpression:
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.LogicalAndExpression:
+                case SyntaxKind.LogicalOrExpression:
                     {
                         RegisterCodeFix(
                             context,
@@ -72,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
                                     context.Document,
-                                    (BinaryExpressionSyntax)parent,
+                                    (BinaryExpressionSyntax)node,
                                     cancellationToken);
                             });
 

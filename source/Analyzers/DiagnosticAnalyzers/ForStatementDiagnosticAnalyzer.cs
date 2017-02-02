@@ -20,8 +20,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop,
-                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
-                    DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut);
+                    DiagnosticDescriptors.RemoveRedundantBooleanLiteral);
             }
         }
 
@@ -44,10 +43,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             ExpressionSyntax condition = forStatement.Condition;
 
             if (condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
-            {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition.GetLocation());
-                context.ReportNode(DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut, condition);
-            }
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition);
         }
     }
 }
