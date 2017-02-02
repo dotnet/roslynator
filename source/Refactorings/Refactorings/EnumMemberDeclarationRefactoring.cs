@@ -1,0 +1,33 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute;
+using Roslynator.Text.Extensions;
+
+namespace Roslynator.CSharp.Refactorings
+{
+    internal static class EnumMemberDeclarationRefactoring
+    {
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumMemberDeclarationSyntax enumMemberDeclaration)
+        {
+            if (context.Span.IsEmptyAndContainedInSpan(enumMemberDeclaration))
+            {
+                SyntaxNode parent = enumMemberDeclaration.Parent;
+
+                if (parent?.IsKind(SyntaxKind.EnumDeclaration) == true)
+                {
+                    var enumDeclaration = (EnumDeclarationSyntax)parent;
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumValues))
+                        await GenerateEnumValuesRefactoring.ComputeRefactoringAsync(context, enumDeclaration).ConfigureAwait(false);
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumMember))
+                        await GenerateEnumMemberRefactoring.ComputeRefactoringAsync(context, enumDeclaration).ConfigureAwait(false);
+                }
+            }
+        }
+    }
+}

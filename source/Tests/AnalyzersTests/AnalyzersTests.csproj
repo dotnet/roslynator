@@ -76,6 +76,9 @@
     <Compile Include="FormatEmptyBlock.cs" />
     <Compile Include="FormatSwitchSectionStatementOnSeparateLine.cs" />
     <Compile Include="InlineLocalVariable.cs" />
+    <Compile Include="GenerateCombinedEnumMember.cs" />
+    <Compile Include="GenerateEnumMember.cs" />
+    <Compile Include="GenerateEnumValues.cs" />
     <Compile Include="MarkClassAsStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
