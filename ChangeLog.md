@@ -1,3 +1,31 @@
+### 1.2.12 (2017-02-02)
+
+#### Analyzers
+
+##### New Analyzers
+
+* SimplifyCoalesceExpression
+* MarkContainingClassAsAbstract
+* RemoveRedundantAsOperator
+* UseConditionalAccess
+* RemoveInapplicableModifier
+* RemoveUnreachableCode
+* RemoveImplementationFromAbstractMember
+* CallStringConcatInsteadOfStringJoin
+* RemoveRedundantCast
+* MemberTypeMustMatchOverriddenMemberType
+* AddEmptyLineAfterClosingBrace
+
+#### Refactorings
+
+##### New Refactorings
+
+* SortMemberDeclarations
+* ReplaceWhileWithFor
+* GenerateEnumValues
+* GenerateEnumMember
+* GenerateCombinedEnumMember
+
 ### 1.2.11 (2017-01-27)
 
 #### Analyzers
