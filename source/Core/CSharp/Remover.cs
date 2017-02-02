@@ -292,6 +292,17 @@ namespace Roslynator.CSharp
             return member;
         }
 
+        public static Task<Document> RemoveStatementAsync(Document document, StatementSyntax statement, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            return document.RemoveNodeAsync(statement, GetRemoveOptions(statement));
+        }
+
         public static TNode RemoveStatement<TNode>(TNode node, StatementSyntax statement) where TNode : SyntaxNode
         {
             if (node == null)

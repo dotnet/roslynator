@@ -153,5 +153,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantAsOperator = Prefix + "1145";
         public const string UseConditionalAccess = Prefix + "1146";
         public const string RemoveInapplicableModifier = Prefix + "1147";
+        public const string RemoveUnreachableCode = Prefix + "1148";
     }
 }
