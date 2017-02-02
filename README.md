@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 140+ analyzers and 160+ refactorings for C#, powered by Roslyn.
+* A collection of 150+ analyzers and 170+ refactorings for C#, powered by Roslyn.
 * [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
@@ -160,7 +160,7 @@
 * RCS1129 - Remove redundant field initalization
 * RCS1130 - Bitwise operation on enum without Flags attribute
 * RCS1131 - Replace return with yield return
-* RCS1132 - Remove redundant overriden member
+* RCS1132 - Remove redundant overriding member
 * RCS1133 - Remove redundant Dispose/Close call
 * RCS1134 - Remove redundant continue statement
 * RCS1135 - Declare enum member with zero value (when enum has FlagsAttribute)
@@ -171,6 +171,17 @@
 * RCS1140 - Add exception to documentation comment
 * RCS1141 - Add parameter to documentation comment
 * RCS1142 - Add type parameter to documentation comment
+* RCS1143 - Simplify coalesce expression
+* RCS1144 - Mark containing class as abstract
+* RCS1145 - Remove redundant 'as' operator
+* RCS1146 - Use conditional access
+* RCS1147 - Remove inapplicable modifier
+* RCS1148 - Remove unreachable code
+* RCS1149 - Remove implementation from abstract member
+* RCS1150 - Call string.Concat instead of string.Join
+* RCS1151 - Remove redundant cast
+* RCS1152 - Member type must match overriden member type
+* RCS1153 - Add empty line after closing brace
 
 ### List of Refactorings
 
@@ -228,6 +239,9 @@
 * [Format initializer](source/Refactorings/Refactorings.md#format-initializer)
 * [Format parameter list](source/Refactorings/Refactorings.md#format-parameter-list)
 * [Generate base constructors](source/Refactorings/Refactorings.md#generate-base-constructors)
+* [Generate combined enum member](source/Refactorings/Refactorings.md#generate-combined-enum-member)
+* [Generate enum member](source/Refactorings/Refactorings.md#generate-enum-member)
+* [Generate enum values](source/Refactorings/Refactorings.md#generate-enum-values)
 * [Generate event invoking method](source/Refactorings/Refactorings.md#generate-event-invoking-method)
 * [Generate switch sections](source/Refactorings/Refactorings.md#generate-switch-sections)
 * [Initialize local with default value](source/Refactorings/Refactorings.md#initialize-local-with-default-value)
@@ -325,8 +339,10 @@
 * [Replace verbatim string literal with regular string literal](source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)
 * [Replace verbatim string literal with regular string literals](source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals)
 * [Replace while statement with do statement](source/Refactorings/Refactorings.md#replace-while-statement-with-do-statement)
+* [Replace while statement with for statement](source/Refactorings/Refactorings.md#replace-while-statement-with-for-statement)
 * [Reverse for loop](source/Refactorings/Refactorings.md#reverse-for-loop)
 * [Simplify lambda expression](source/Refactorings/Refactorings.md#simplify-lambda-expression)
+* [Sort member declarations](source/Refactorings/Refactorings.md#sort-member-declarations)
 * [Split attributes](source/Refactorings/Refactorings.md#split-attributes)
 * [Split switch labels](source/Refactorings/Refactorings.md#split-switch-labels)
 * [Split variable declaration](source/Refactorings/Refactorings.md#split-variable-declaration)

@@ -121,7 +121,7 @@ RCS1118|Mark local variable as const|General|x
 RCS1119|Call 'Find' method instead of 'FirstOrDefault' method|Performance|x
 RCS1120|Use \[\] instead of calling 'ElementAt'|Performance|x
 RCS1121|Use \[\] instead of calling 'First'|Performance|x
-RCS1122|Add missing semicolon|ErrorFix|x
+RCS1122|Add missing semicolon|ErrorFix|
 RCS1123|Add parentheses according to operator precedence|Readability|x
 RCS1124|Inline local variable|Simplification|x
 RCS1125|Mark member as static|ErrorFix|x
@@ -131,7 +131,7 @@ RCS1128|Use coalesce expression|Simplification|x
 RCS1129|Remove redundant field initalization|Redundancy|x
 RCS1130|Bitwise operation on enum without Flags attribute|General|x
 RCS1131|Replace return with yield return|ErrorFix|x
-RCS1132|Remove redundant overriden member|Redundancy|x
+RCS1132|Remove redundant overriding member|Redundancy|x
 RCS1133|Remove redundant Dispose/Close call|Redundancy|x
 RCS1134|Remove redundant continue statement|Redundancy|x
 RCS1135|Declare enum member with zero value \(when enum has FlagsAttribute\)|Design|x
@@ -142,3 +142,14 @@ RCS1139|Add summary element to documentation comment|Maintainability|x
 RCS1140|Add exception to documentation comment|Maintainability|x
 RCS1141|Add parameter to documentation comment|Maintainability|x
 RCS1142|Add type parameter to documentation comment|Maintainability|x
+RCS1143|Simplify coalesce expression|Simplification|x
+RCS1144|Mark containing class as abstract|ErrorFix|x
+RCS1145|Remove redundant 'as' operator|Redundancy|x
+RCS1146|Use conditional access|Usage|x
+RCS1147|Remove inapplicable modifier|ErrorFix|x
+RCS1148|Remove unreachable code|General|x
+RCS1149|Remove implementation from abstract member|ErrorFix|x
+RCS1150|Call string\.Concat instead of string\.Join|Simplification|x
+RCS1151|Remove redundant cast|Redundancy|x
+RCS1152|Member type must match overriden member type|ErrorFix|x
+RCS1153|Add empty line after closing brace|Formatting|

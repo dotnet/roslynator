@@ -9,11 +9,16 @@ Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
 ErrorFix|Add break statement to switch section|RCS1116|x
-ErrorFix|Add missing semicolon|RCS1122|x
+ErrorFix|Add missing semicolon|RCS1122|
 ErrorFix|Add return statement that returns default value|RCS1117|x
+ErrorFix|Mark containing class as abstract|RCS1144|x
 ErrorFix|Mark member as static|RCS1125|x
+ErrorFix|Member type must match overriden member type|RCS1152|x
+ErrorFix|Remove implementation from abstract member|RCS1149|x
+ErrorFix|Remove inapplicable modifier|RCS1147|x
 ErrorFix|Replace return with yield return|RCS1131|x
 ErrorFix|Replace yield/return statement with expression statement|RCS1115|x
+Formatting|Add empty line after closing brace|RCS1153|
 Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
 Formatting|Add empty line between declarations|RCS1057|x
@@ -30,6 +35,7 @@ Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Avoid usage of tab|RCS1088|
 General|Bitwise operation on enum without Flags attribute|RCS1130|x
 General|Mark local variable as const|RCS1118|x
+General|Remove unreachable code|RCS1148|x
 General|Replace string\.Empty with ""|RCS1078|
 General|Throwing of new NotImplementedException|RCS1079|x
 General|Use carriage return \+ linefeed as newline|RCS1087|
@@ -80,9 +86,11 @@ Redundancy|Remove empty statement|RCS1038|x
 Redundancy|Remove enum default underlying type|RCS1042|x
 Redundancy|Remove file with no code|RCS1093|x
 Redundancy|Remove partial modifier from type with a single part|RCS1043|x
+Redundancy|Remove redundant 'as' operator|RCS1145|x
 Redundancy|Remove redundant base constructor call|RCS1071|x
 Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant braces|RCS1031|x
+Redundancy|Remove redundant cast|RCS1151|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
 Redundancy|Remove redundant constructor|RCS1074|x
 Redundancy|Remove redundant continue statement|RCS1134|x
@@ -91,13 +99,14 @@ Redundancy|Remove redundant delegate creation|RCS1114|x
 Redundancy|Remove redundant Dispose/Close call|RCS1133|x
 Redundancy|Remove redundant empty line|RCS1036|x
 Redundancy|Remove redundant field initalization|RCS1129|x
-Redundancy|Remove redundant overriden member|RCS1132|x
+Redundancy|Remove redundant overriding member|RCS1132|x
 Redundancy|Remove redundant parentheses|RCS1032|x
 Redundancy|Remove redundant sealed modifier|RCS1034|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
 Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
 Redundancy|Remove unnecessary case label|RCS1069|x
+Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
 Simplification|Inline local variable|RCS1124|x
 Simplification|Merge else clause with nested if statement|RCS1006|x
@@ -111,6 +120,7 @@ Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
 Simplification|Replace property with auto\-implemented property|RCS1085|x
 Simplification|Simplify boolean comparison|RCS1049|x
+Simplification|Simplify coalesce expression|RCS1143|x
 Simplification|Simplify conditional expression|RCS1104|x
 Simplification|Simplify lambda expression parameter list|RCS1022|
 Simplification|Simplify lambda expression|RCS1021|x
@@ -139,6 +149,7 @@ Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
 Usage|Replace anonymous method with lambda expression|RCS1048|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
+Usage|Use conditional access|RCS1146|x
 Usage|Use expression\-bodied member|RCS1016|
 Usage|Use predefined type|RCS1013|
 Usage|Use 'string\.IsNullOrEmpty' method|RCS1113|x
