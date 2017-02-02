@@ -1439,5 +1439,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AddEmptyLineAfterClosingBrace = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddEmptyLineAfterClosingBrace,
+            title: "Add empty line after closing brace.",
+            messageFormat: "Consider adding empty line after closing brace.",
+            category: DiagnosticCategories.Formatting,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
