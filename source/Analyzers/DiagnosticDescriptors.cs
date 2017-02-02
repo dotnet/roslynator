@@ -314,10 +314,9 @@ namespace Roslynator.CSharp
             messageFormat: "Remove redundant boolean literal.",
             category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
         );
-
-        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteralFadeOut = RemoveRedundantBooleanLiteral.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor RemoveRedundantSealedModifier = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantSealedModifier,

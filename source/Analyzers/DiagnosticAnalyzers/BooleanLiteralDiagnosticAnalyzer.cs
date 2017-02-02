@@ -22,7 +22,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
-                    DiagnosticDescriptors.RemoveRedundantBooleanLiteralFadeOut,
                     DiagnosticDescriptors.SimplifyBooleanComparison,
                     DiagnosticDescriptors.SimplifyBooleanComparisonFadeOut);
             }
@@ -33,14 +32,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
-                SyntaxKind.EqualsExpression,
-                SyntaxKind.NotEqualsExpression,
-                SyntaxKind.LogicalAndExpression,
-                SyntaxKind.LogicalOrExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsExpression(f), SyntaxKind.EqualsExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeNotEqualsExpression(f), SyntaxKind.NotEqualsExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalAndExpression(f), SyntaxKind.LogicalAndExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalOrExpression(f), SyntaxKind.LogicalOrExpression);
         }
 
-        private void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+        private void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
                 return;
@@ -54,57 +52,52 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 ExpressionSyntax right = binaryExpression.Right;
 
                 if (right?.IsMissing == false)
-                {
-                    switch (binaryExpression.Kind())
-                    {
-                        case SyntaxKind.EqualsExpression:
-                            {
-                                AnalyzeEqualsNotEquals(
-                                    context,
-                                    binaryExpression,
-                                    left,
-                                    right,
-                                    SyntaxKind.FalseLiteralExpression,
-                                    SyntaxKind.TrueLiteralExpression);
+                    AnalyzeEqualsNotEquals(context, binaryExpression, left, right, SyntaxKind.FalseLiteralExpression, SyntaxKind.TrueLiteralExpression);
+            }
+        }
 
-                                break;
-                            }
-                        case SyntaxKind.NotEqualsExpression:
-                            {
-                                AnalyzeEqualsNotEquals(
-                                    context,
-                                    binaryExpression,
-                                    left,
-                                    right,
-                                    SyntaxKind.TrueLiteralExpression,
-                                    SyntaxKind.FalseLiteralExpression);
+        private void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
-                                break;
-                            }
-                        case SyntaxKind.LogicalAndExpression:
-                            {
-                                AnalyzerLogicalAndLogicalOr(
-                                    context,
-                                    binaryExpression,
-                                    left,
-                                    right,
-                                    SyntaxKind.TrueLiteralExpression);
+            ExpressionSyntax left = binaryExpression.Left;
 
-                                break;
-                            }
-                        case SyntaxKind.LogicalOrExpression:
-                            {
-                                AnalyzerLogicalAndLogicalOr(
-                                    context,
-                                    binaryExpression,
-                                    left,
-                                    right,
-                                    SyntaxKind.FalseLiteralExpression);
+            if (left?.IsMissing == false)
+            {
+                ExpressionSyntax right = binaryExpression.Right;
 
-                                break;
-                            }
-                    }
-                }
+                if (right?.IsMissing == false)
+                    AnalyzeEqualsNotEquals(context, binaryExpression, left, right, SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression);
+            }
+        }
+
+        private void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+            ExpressionSyntax left = binaryExpression.Left;
+
+            if (left?.IsMissing == false)
+            {
+                ExpressionSyntax right = binaryExpression.Right;
+
+                if (right?.IsMissing == false)
+                    AnalyzeLogicalAndLogicalOr(context, binaryExpression, left, right, SyntaxKind.TrueLiteralExpression);
+            }
+        }
+
+        private void AnalyzeLogicalOrExpression(SyntaxNodeAnalysisContext context)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+            ExpressionSyntax left = binaryExpression.Left;
+
+            if (left?.IsMissing == false)
+            {
+                ExpressionSyntax right = binaryExpression.Right;
+
+                if (right?.IsMissing == false)
+                    AnalyzeLogicalAndLogicalOr(context, binaryExpression, left, right, SyntaxKind.FalseLiteralExpression);
             }
         }
 
@@ -120,13 +113,36 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             if (leftKind == kind)
             {
-                if (IsBooleanExpressionButNotBooleanLiteral(right, context.SemanticModel, context.CancellationToken))
-                    SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression);
+                switch (AnalyzeExpression(right, context.SemanticModel, context.CancellationToken))
+                {
+                    case AnalysisResult.Boolean:
+                        {
+                            SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
+                            break;
+                        }
+                    case AnalysisResult.LogicalNotWithNullableBoolean:
+                        {
+                            SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                            break;
+                        }
+                }
             }
             else if (leftKind == kind2)
             {
-                if (IsBooleanExpressionButNotBooleanLiteral(right, context.SemanticModel, context.CancellationToken))
-                    RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left);
+                switch (AnalyzeExpression(right, context.SemanticModel, context.CancellationToken))
+                {
+                    case AnalysisResult.Boolean:
+                        {
+                            RemoveRedundantBooleanLiteralRefactoring.
+                                ReportDiagnostic(context, binaryExpression, left, right, left);
+                            break;
+                        }
+                    case AnalysisResult.LogicalNotWithNullableBoolean:
+                        {
+                            SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                            break;
+                        }
+                }
             }
             else
             {
@@ -134,18 +150,40 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (rightKind == kind)
                 {
-                    if (IsBooleanExpressionButNotBooleanLiteral(left, context.SemanticModel, context.CancellationToken))
-                        SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression);
+                    switch (AnalyzeExpression(left, context.SemanticModel, context.CancellationToken))
+                    {
+                        case AnalysisResult.Boolean:
+                            {
+                                SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: true);
+                                break;
+                            }
+                        case AnalysisResult.LogicalNotWithNullableBoolean:
+                            {
+                                SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                                break;
+                            }
+                    }
                 }
                 else if (rightKind == kind2)
                 {
-                    if (IsBooleanExpressionButNotBooleanLiteral(left, context.SemanticModel, context.CancellationToken))
-                        RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, right);
+                    switch (AnalyzeExpression(left, context.SemanticModel, context.CancellationToken))
+                    {
+                        case AnalysisResult.Boolean:
+                            {
+                                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, right);
+                                break;
+                            }
+                        case AnalysisResult.LogicalNotWithNullableBoolean:
+                            {
+                                SimplifyBooleanComparisonRefactoring.ReportDiagnostic(context, binaryExpression, left, right, fadeOut: false);
+                                break;
+                            }
+                    }
                 }
             }
         }
 
-        private static void AnalyzerLogicalAndLogicalOr(
+        private static void AnalyzeLogicalAndLogicalOr(
             SyntaxNodeAnalysisContext context,
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax left,
@@ -154,15 +192,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             if (left.IsKind(kind))
             {
-                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left);
+                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, left);
             }
             else if (right.IsKind(kind))
             {
-                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, right);
+                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, right);
             }
         }
 
-        private static bool IsBooleanExpressionButNotBooleanLiteral(
+        private static AnalysisResult AnalyzeExpression(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -171,17 +209,55 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
-                    return false;
+                    return AnalysisResult.BooleanLiteral;
                 case SyntaxKind.LogicalNotExpression:
-                    return true;
+                    {
+                        var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+                        ExpressionSyntax operand = logicalNot.Operand;
+
+                        if (operand != null)
+                        {
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType;
+
+                            if (typeSymbol != null)
+                            {
+                                if (typeSymbol.IsBoolean())
+                                {
+                                    return AnalysisResult.Boolean;
+                                }
+                                else if (typeSymbol.IsNullableOf(SpecialType.System_Boolean))
+                                {
+                                    return AnalysisResult.LogicalNotWithNullableBoolean;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
                 default:
                     {
-                        return semanticModel
+                        if (semanticModel
                             .GetTypeInfo(expression, cancellationToken)
                             .ConvertedType?
-                            .IsBoolean() == true;
+                            .IsBoolean() == true)
+                        {
+                            return AnalysisResult.Boolean;
+                        }
+
+                        break;
                     }
             }
+
+            return AnalysisResult.None;
+        }
+
+        private enum AnalysisResult
+        {
+            None,
+            BooleanLiteral,
+            Boolean,
+            LogicalNotWithNullableBoolean
         }
     }
 }

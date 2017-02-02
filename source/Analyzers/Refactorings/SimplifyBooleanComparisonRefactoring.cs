@@ -22,57 +22,62 @@ namespace Roslynator.CSharp.Refactorings
             get { return DiagnosticDescriptors.SimplifyBooleanComparisonFadeOut; }
         }
 
-        public static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
+        public static void ReportDiagnostic(
+            SyntaxNodeAnalysisContext context,
+            BinaryExpressionSyntax binaryExpression,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            bool fadeOut)
         {
             if (!binaryExpression.SpanContainsDirectives())
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyBooleanComparison, binaryExpression.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyBooleanComparison, binaryExpression);
 
-                FadeOut(context, binaryExpression);
-            }
-        }
-
-        private static void FadeOut(
-            SyntaxNodeAnalysisContext context,
-            BinaryExpressionSyntax binaryExpression)
-        {
-            context.ReportToken(FadeOutDescriptor, binaryExpression.OperatorToken);
-
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-
-            if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-            {
-                if (left.IsKind(SyntaxKind.FalseLiteralExpression))
+                if (fadeOut)
                 {
-                    context.ReportNode(FadeOutDescriptor, left);
+                    context.ReportToken(FadeOutDescriptor, binaryExpression.OperatorToken);
 
-                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
-                }
-                else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
-                {
-                    context.ReportNode(FadeOutDescriptor, right);
+                    switch (binaryExpression.Kind())
+                    {
+                        case SyntaxKind.EqualsExpression:
+                            {
+                                if (left.IsKind(SyntaxKind.FalseLiteralExpression))
+                                {
+                                    context.ReportNode(FadeOutDescriptor, left);
 
-                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
-                }
-            }
-            else if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
-            {
-                if (left.IsKind(SyntaxKind.TrueLiteralExpression))
-                {
-                    context.ReportNode(FadeOutDescriptor, left);
+                                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
+                                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                                }
+                                else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
+                                {
+                                    context.ReportNode(FadeOutDescriptor, right);
 
-                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
-                }
-                else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
-                {
-                    context.ReportNode(FadeOutDescriptor, right);
+                                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
+                                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                                }
 
-                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                                break;
+                            }
+                        case SyntaxKind.NotEqualsExpression:
+                            {
+                                if (left.IsKind(SyntaxKind.TrueLiteralExpression))
+                                {
+                                    context.ReportNode(FadeOutDescriptor, left);
+
+                                    if (right.IsKind(SyntaxKind.LogicalNotExpression))
+                                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                                }
+                                else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
+                                {
+                                    context.ReportNode(FadeOutDescriptor, right);
+
+                                    if (left.IsKind(SyntaxKind.LogicalNotExpression))
+                                        context.ReportToken(FadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                                }
+
+                                break;
+                            }
+                    }
                 }
             }
         }
@@ -82,11 +87,19 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
+            ExpressionSyntax newNode = await CreateNewNode(document, binaryExpression, cancellationToken).ConfigureAwait(false);
+
+            return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<ExpressionSyntax> CreateNewNode(
+            Document document,
+            BinaryExpressionSyntax binaryExpression,
+            CancellationToken cancellationToken)
+        {
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-            ExpressionSyntax newNode = binaryExpression;
 
             TextSpan span = TextSpan.FromBounds(left.Span.End, right.Span.Start);
 
@@ -101,7 +114,23 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     leadingTrivia = leadingTrivia.AddRange(trivia);
 
-                newNode = Negator.LogicallyNegate(right)
+                if (right.IsKind(SyntaxKind.LogicalNotExpression))
+                {
+                    var logicalNot = (PrefixUnaryExpressionSyntax)right;
+
+                    ExpressionSyntax operand = logicalNot.Operand;
+
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                    if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
+                    {
+                        return binaryExpression
+                            .WithLeft(Negator.LogicallyNegate(left))
+                            .WithRight(operand.WithTriviaFrom(right));
+                    }
+                }
+
+                return Negator.LogicallyNegate(right)
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (right.IsBooleanLiteralExpression())
@@ -111,17 +140,29 @@ namespace Roslynator.CSharp.Refactorings
                 if (!isWhiteSpaceOrEndOfLine)
                     trailingTrivia = trailingTrivia.InsertRange(0, trivia);
 
-                newNode = Negator.LogicallyNegate(left)
+                if (left.IsKind(SyntaxKind.LogicalNotExpression))
+                {
+                    var logicalNot = (PrefixUnaryExpressionSyntax)left;
+
+                    ExpressionSyntax operand = logicalNot.Operand;
+
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                    if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
+                    {
+                        return binaryExpression
+                            .WithLeft(operand.WithTriviaFrom(left))
+                            .WithRight(Negator.LogicallyNegate(right));
+                    }
+                }
+
+                return Negator.LogicallyNegate(left)
                     .WithTrailingTrivia(trailingTrivia);
             }
-#if DEBUG
-            else
-            {
-                Debug.Assert(false, binaryExpression.ToString());
-            }
-#endif
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
+            Debug.Assert(false, binaryExpression.ToString());
+
+            return binaryExpression;
         }
     }
 }

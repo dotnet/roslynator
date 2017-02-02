@@ -2,6 +2,7 @@
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+#pragma warning disable RCS1118, RCS1023
     public static class SimplifyBooleanComparison
     {
         public static void Foo()
@@ -16,11 +17,20 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             if (true != f) { }
 
-
             if (f
 #if DEBUG
                 == false) { }
 #endif
+
+            bool? x = null;
+
+            if (!x == true) { } // !x == false
+
+            if (!x != true) { } // !x != false
+
+            if (!x == false) { } // !x == true
+
+            if (!x != false) { } // !x != true
         }
     }
 }
