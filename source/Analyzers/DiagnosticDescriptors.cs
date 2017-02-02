@@ -1152,7 +1152,7 @@ namespace Roslynator.CSharp
             messageFormat: "Add missing semicolon.",
             category: DiagnosticCategories.ErrorFix,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor AddParenthesesAccordingToOperatorPrecedence = new DiagnosticDescriptor(
