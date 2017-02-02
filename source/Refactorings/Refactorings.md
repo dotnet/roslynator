@@ -372,6 +372,24 @@
 
 ![Generate base constructors](../../images/refactorings/GenerateBaseConstructors.png)
 
+#### Generate combined enum member
+
+* **Syntax**: enum declaration (with FlagsAttribute)
+
+![Generate combined enum member](../../images/refactorings/GenerateCombinedEnumMember.png)
+
+#### Generate enum member
+
+* **Syntax**: enum declaration (with FlagsAttribute)
+
+![Generate enum member](../../images/refactorings/GenerateEnumMember.png)
+
+#### Generate enum values
+
+* **Syntax**: enum declaration (with FlagsAttribute)
+
+![Generate enum values](../../images/refactorings/GenerateEnumValues.png)
+
 #### Generate event invoking method
 
 * **Syntax**: event
@@ -997,6 +1015,12 @@
 
 ![Replace while statement with do statement](../../images/refactorings/ReplaceWhileStatementWithDoStatement.png)
 
+#### Replace while statement with for statement
+
+* **Syntax**: while statement
+
+![Replace while statement with for statement](../../images/refactorings/ReplaceWhileWithFor.png)
+
 #### Reverse for loop
 
 * **Syntax**: for statement
@@ -1009,6 +1033,19 @@
 * **Scope**: body
 
 ![Simplify lambda expression](../../images/refactorings/SimplifyLambdaExpression.png)
+
+#### Sort member declarations
+
+* **Syntax**: namespace declarations, class declarations, struct declarations, interface declarations, enum declarations
+* **Scope**: selected member declarations
+
+![Sort member declarations](../../images/refactorings/SortMembersByKind.png)
+
+![Sort member declarations](../../images/refactorings/SortMembersByName.png)
+
+![Sort member declarations](../../images/refactorings/SortEnumMembersByName.png)
+
+![Sort member declarations](../../images/refactorings/SortEnumMembersByValue.png)
 
 #### Split attributes
 

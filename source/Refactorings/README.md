@@ -56,6 +56,9 @@
 [Format initializer](Refactorings.md#format-initializer)|x
 [Format parameter list](Refactorings.md#format-parameter-list)|x
 [Generate base constructors](Refactorings.md#generate-base-constructors)|x
+[Generate combined enum member](Refactorings.md#generate-combined-enum-member)|x
+[Generate enum member](Refactorings.md#generate-enum-member)|x
+[Generate enum values](Refactorings.md#generate-enum-values)|x
 [Generate event invoking method](Refactorings.md#generate-event-invoking-method)|x
 [Generate switch sections](Refactorings.md#generate-switch-sections)|x
 [Initialize local with default value](Refactorings.md#initialize-local-with-default-value)|x
@@ -153,8 +156,10 @@
 [Replace verbatim string literal with regular string literal](Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)|x
 [Replace verbatim string literal with regular string literals](Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals)|x
 [Replace while statement with do statement](Refactorings.md#replace-while-statement-with-do-statement)|x
+[Replace while statement with for statement](Refactorings.md#replace-while-statement-with-for-statement)|x
 [Reverse for loop](Refactorings.md#reverse-for-loop)|x
 [Simplify lambda expression](Refactorings.md#simplify-lambda-expression)|x
+[Sort member declarations](Refactorings.md#sort-member-declarations)|x
 [Split attributes](Refactorings.md#split-attributes)|x
 [Split switch labels](Refactorings.md#split-switch-labels)|x
 [Split variable declaration](Refactorings.md#split-variable-declaration)|x

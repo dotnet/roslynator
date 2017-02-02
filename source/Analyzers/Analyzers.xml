@@ -285,8 +285,8 @@
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantSealedModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1034</Id>
@@ -1076,7 +1076,7 @@
     <Title>Add missing semicolon.</Title>
     <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -1132,7 +1132,7 @@
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantFieldInitialization" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
     <Id>RCS1129</Id>
@@ -1161,9 +1161,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantOverriddenMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantOverridingMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
     <Id>RCS1132</Id>
-    <Title>Remove redundant overridden member.</Title>
+    <Title>Remove redundant overriding member.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1257,6 +1257,105 @@
     <Category>Maintainability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyCoalesceExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1143</Id>
+    <Title>Simplify coalesce expression.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MarkContainingClassAsAbstract" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1144</Id>
+    <Title>Mark containing class as abstract.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantAsOperator" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1145</Id>
+    <Title>Remove redundant 'as' operator.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseConditionalAccess" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1146</Id>
+    <Title>Use conditional access.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveInapplicableModifier" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1147</Id>
+    <Title>Remove inapplicable modifier.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveUnreachableCode" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1148</Id>
+    <Title>Remove unreachable code.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveImplementationFromAbstractMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1149</Id>
+    <Title>Remove implementation from abstract member.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="CallStringConcatInsteadOfStringJoin" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1150</Id>
+    <Title>Call string.Concat instead of string.Join.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantCast" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1151</Id>
+    <Title>Remove redundant cast.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1152</Id>
+    <Title>Member type must match overriden member type.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineAfterClosingBrace" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1153</Id>
+    <Title>Add empty line after closing brace.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
