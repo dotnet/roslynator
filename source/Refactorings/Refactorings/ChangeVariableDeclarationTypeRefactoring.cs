@@ -112,13 +112,13 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeArgument = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
                     context.RegisterRefactoring(
-                        $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeArgument, type.SpanStart, semanticModel)}' and insert 'await'",
+                        $"Change type to '{SymbolDisplay.GetMinimalString(typeArgument, semanticModel, type.SpanStart)}' and insert 'await'",
                         c => ChangeTypeAndAddAwaitAsync(context.Document, variableDeclaration, typeArgument, c));
                 }
             }
 
             context.RegisterRefactoring(
-                $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.Span.Start, semanticModel)}'",
+                $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.Span.Start)}'",
                 c => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, c));
         }
 

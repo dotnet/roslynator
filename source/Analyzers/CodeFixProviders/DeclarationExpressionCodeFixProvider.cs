@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     if (typeSymbol != null)
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.SpanStart, semanticModel)}'",
+                            $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.SpanStart)}'",
                             cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                             DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar + EquivalenceKeySuffix);
 

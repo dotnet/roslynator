@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                                 ITypeSymbol typeSymbol = localSymbol.Type;
 
                                 context.RegisterRefactoring(
-                                    $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.Span.Start, semanticModel)}'",
+                                    $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.Span.Start)}'",
                                     cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                             }
 

@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                                 TypeSyntax newType = newTypeSymbol.ToMinimalSyntax(semanticModel, memberType.SpanStart);
 
                                 context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalDisplayString(newTypeSymbol, memberType.SpanStart, semanticModel)}'",
+                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalString(newTypeSymbol, semanticModel, memberType.SpanStart)}'",
                                     cancellationToken =>
                                     {
                                         return ChangeTypeRefactoring.ChangeTypeAsync(
