@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
                     return argument
                         .WithNameColon(
                             NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
-                                .WithTrailingSpace())
+                                .WithTrailingTrivia(Space))
                         .WithTriviaFrom(argument);
                 }
             }

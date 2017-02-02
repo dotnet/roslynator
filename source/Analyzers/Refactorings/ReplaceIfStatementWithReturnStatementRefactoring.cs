@@ -207,7 +207,7 @@ namespace Roslynator.CSharp.Refactorings
                 expression = Negator.LogicallyNegate(expression);
 
             return ReturnStatement(
-                ReturnKeyword().WithTrailingSpace(),
+                ReturnKeyword().WithTrailingTrivia(Space),
                 expression,
                 SemicolonToken());
         }
