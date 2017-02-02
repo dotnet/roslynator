@@ -8,8 +8,18 @@ namespace Roslynator.CSharp.Analyzers.Tests
 #pragma warning disable RCS1002, RCS1016
     public static class UseCoalesceExpression
     {
-        private static void Foo()
+        private static void Foo(string value, string value2)
         {
+            // a
+            if (value == null)
+            {
+                // b
+                value = "";
+            }
+
+            if (value2 == null)
+                value2 = "";
+
             string x = GetValueOrDefault();
 
             if (x == null)

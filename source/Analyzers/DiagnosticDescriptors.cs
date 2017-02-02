@@ -1214,8 +1214,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseCoalesceExpressionFadeOut = UseCoalesceExpression.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor RemoveRedundantFieldInitialization = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantFieldInitialization,
             title: "Remove redundant field initalization.",
