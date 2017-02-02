@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Extensions;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Extensions
 {
@@ -24,7 +27,7 @@ namespace Roslynator.CSharp.Extensions
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
 
-            return SyntaxFactory.ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
+            return ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
         }
 
         public static TypeSyntax ToMinimalSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
@@ -39,7 +42,128 @@ namespace Roslynator.CSharp.Extensions
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
 
-            return SyntaxFactory.ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, symbolDisplayFormat));
+            return ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, symbolDisplayFormat));
+        }
+
+        public static ExpressionSyntax ToDefaultExpression(this ITypeSymbol typeSymbol, TypeSyntax type = null)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            return ToDefaultExpression(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
+        }
+
+        public static ExpressionSyntax ToDefaultExpression(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return ToDefaultExpression(typeSymbol, default(TypeSyntax), semanticModel, position, format);
+        }
+
+        private static ExpressionSyntax ToDefaultExpression(ITypeSymbol typeSymbol, TypeSyntax type, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
+            if (typeSymbol.IsErrorType())
+                return null;
+
+            switch (typeSymbol.SpecialType)
+            {
+                case SpecialType.System_Boolean:
+                    return FalseLiteralExpression();
+                case SpecialType.System_Char:
+                    return CharacterLiteralExpression('\0');
+                case SpecialType.System_SByte:
+                case SpecialType.System_Byte:
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Decimal:
+                case SpecialType.System_Single:
+                case SpecialType.System_Double:
+                    return ZeroLiteralExpression();
+            }
+
+            if (typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
+                return NullLiteralExpression();
+
+            if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Enum)
+            {
+                IFieldSymbol fieldSymbol = typeSymbol.FindFieldWithConstantValue(0);
+
+                if (fieldSymbol != null)
+                {
+                    if (type == null)
+                    {
+                        type = (semanticModel != null)
+                            ? typeSymbol.ToMinimalSyntax(semanticModel, position, format)
+                            : typeSymbol.ToSyntax().WithSimplifierAnnotation();
+                    }
+
+                    Debug.Assert(type != null);
+
+                    return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
+                }
+                else
+                {
+                    return ZeroLiteralExpression();
+                }
+            }
+
+            if (typeSymbol.IsReferenceType)
+                return NullLiteralExpression();
+
+            if (type == null)
+            {
+                type = (semanticModel != null)
+                    ? typeSymbol.ToMinimalSyntax(semanticModel, position, format)
+                    : typeSymbol.ToSyntax().WithSimplifierAnnotation();
+            }
+
+            Debug.Assert(type != null);
+
+            return DefaultExpression(type);
+        }
+
+        public static ExpressionSyntax ToDefaultExpression(this IParameterSymbol parameterSymbol)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (parameterSymbol.HasExplicitDefaultValue)
+            {
+                object value = parameterSymbol.ExplicitDefaultValue;
+
+                ITypeSymbol type = parameterSymbol.Type;
+
+                if (type.IsEnum())
+                {
+                    if (value != null)
+                    {
+                        foreach (IFieldSymbol fieldSymbol in type.GetFields())
+                        {
+                            if (fieldSymbol.HasConstantValue
+                                && value.Equals(fieldSymbol.ConstantValue))
+                            {
+                                return SimpleMemberAccessExpression(type.ToSyntax(), IdentifierName(fieldSymbol.Name));
+                            }
+                        }
+
+                        return CastExpression(type.ToSyntax().WithSimplifierAnnotation(), ConstantExpression(value));
+                    }
+                }
+                else
+                {
+                    return ConstantExpression(value);
+                }
+            }
+
+            return null;
         }
 
         private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat)
