@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                var memberSymbol = ReturnExpressionRefactoring.GetContainingMethodOrPropertySymbol(yieldStatement.Expression, semanticModel, context.CancellationToken);
+                ISymbol memberSymbol = ReturnExpressionRefactoring.GetContainingMethodOrPropertySymbol(yieldStatement.Expression, semanticModel, context.CancellationToken);
 
                 if (memberSymbol != null)
                 {
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                                     .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
                                     .Construct(typeSymbol);
 
-                                TypeSyntax newType = CSharpFactory.Type(newTypeSymbol, semanticModel, memberType.SpanStart);
+                                TypeSyntax newType = newTypeSymbol.ToMinimalSyntax(semanticModel, memberType.SpanStart);
 
                                 context.RegisterRefactoring(
                                     $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalDisplayString(newTypeSymbol, memberType.SpanStart, semanticModel)}'",

@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TypeSyntax newType = CSharpFactory.Type(typeSymbol)
+            TypeSyntax newType = typeSymbol.ToSyntax()
                 .WithTriviaFrom(node)
                 .WithFormatterAnnotation();
 

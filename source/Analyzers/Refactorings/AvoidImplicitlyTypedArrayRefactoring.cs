@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -45,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            var arrayType = CSharpFactory.Type(typeSymbol, semanticModel, expression.SpanStart) as ArrayTypeSyntax;
+            var arrayType = typeSymbol.ToMinimalSyntax(semanticModel, expression.SpanStart) as ArrayTypeSyntax;
 
             ArrayCreationExpressionSyntax newNode = SyntaxFactory.ArrayCreationExpression(
                 expression.NewKeyword,
