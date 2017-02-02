@@ -29,7 +29,7 @@ namespace Roslynator.CSharp
         {
             for (int i = 0; i < modifiers.Count - 1; i++)
             {
-                if (Instance.Compare(modifiers[i], modifiers[i + 1]) >= 0)
+                if (Instance.Compare(modifiers[i], modifiers[i + 1]) > 0)
                     return false;
             }
 

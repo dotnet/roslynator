@@ -1381,5 +1381,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveInapplicableModifier = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveInapplicableModifier,
+            title: "Remove inapplicable modifier.",
+            messageFormat: "Remove inapplicable modifier.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

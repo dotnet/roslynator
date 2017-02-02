@@ -94,6 +94,7 @@
     <Compile Include="RemoveFileWithNoCode.cs" />
     <Compile Include="RemovePartialModifierFromTypeWithSinglePart.cs" />
     <Compile Include="RemoveRedundantAsOperator.cs" />
+    <Compile Include="RemoveInapplicableModifier.cs" />
     <Compile Include="RemoveRedundantBooleanLiteral.cs" />
     <Compile Include="RemoveRedundantBraces.cs" />
     <Compile Include="RemoveRedundantConstructor.cs" />

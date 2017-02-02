@@ -152,5 +152,6 @@ namespace Roslynator.CSharp
         public const string MarkContainingClassAsAbstract = Prefix + "1144";
         public const string RemoveRedundantAsOperator = Prefix + "1145";
         public const string UseConditionalAccess = Prefix + "1146";
+        public const string RemoveInapplicableModifier = Prefix + "1147";
     }
 }

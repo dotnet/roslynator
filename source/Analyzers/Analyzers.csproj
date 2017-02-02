@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclarationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveInapplicableModifierDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
