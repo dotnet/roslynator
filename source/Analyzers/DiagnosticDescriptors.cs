@@ -1353,5 +1353,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor MarkContainingClassAsAbstract = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkContainingClassAsAbstract,
+            title: "Mark containing class as abstract.",
+            messageFormat: "Mark containing class as abstract.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

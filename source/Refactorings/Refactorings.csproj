@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Formatting\CSharpFormatter.cs" />
     <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
-    <Compile Include="Refactorings\MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />

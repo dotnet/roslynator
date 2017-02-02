@@ -21,9 +21,12 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
-                && eventFieldDeclaration.Span.Contains(context.Span))
+                && eventFieldDeclaration.Span.Contains(context.Span)
+                && MarkContainingClassAsAbstractRefactoring.CanRefactor(eventFieldDeclaration))
             {
-                MarkContainingClassAsAbstractRefactoring.ComputeRefactoring(context, eventFieldDeclaration);
+                context.RegisterRefactoring(
+                    "Mark containing class as abstract",
+                    cancellationToken => MarkContainingClassAsAbstractRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, cancellationToken));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod))
