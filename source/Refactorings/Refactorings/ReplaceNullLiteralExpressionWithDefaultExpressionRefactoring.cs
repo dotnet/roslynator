@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using Roslynator.Text.Extensions;
 
@@ -52,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = CSharpFactory.Type(typeSymbol, semanticModel, expression.SpanStart);
+            TypeSyntax type = typeSymbol.ToMinimalSyntax(semanticModel, expression.SpanStart);
 
             DefaultExpressionSyntax defaultExpression = SyntaxFactory.DefaultExpression(type)
                 .WithTriviaFrom(expression);

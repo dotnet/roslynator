@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = CSharpFactory.Type(destinationType, semanticModel, expression.SpanStart);
+            TypeSyntax type = destinationType.ToMinimalSyntax(semanticModel, expression.SpanStart);
 
             ExpressionSyntax newExpression = expression
                 .WithoutTrivia()

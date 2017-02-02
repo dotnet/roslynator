@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -57,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (typeSymbol?.SupportsExplicitDeclaration() == true)
                                         {
-                                            type = Type(typeSymbol);
+                                            type = typeSymbol.ToSyntax();
                                         }
                                         else
                                         {

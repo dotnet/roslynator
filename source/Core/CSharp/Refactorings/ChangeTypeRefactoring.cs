@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            TypeSyntax newType = Type(typeSymbol)
+            TypeSyntax newType = typeSymbol.ToSyntax()
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 

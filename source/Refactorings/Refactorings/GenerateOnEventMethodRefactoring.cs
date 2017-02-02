@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol eventArgsSymbol,
             bool supportCSharp6)
         {
-            TypeSyntax eventArgsType = Type(eventArgsSymbol).WithSimplifierAnnotation();
+            TypeSyntax eventArgsType = eventArgsSymbol.ToSyntax().WithSimplifierAnnotation();
 
             return MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 yield return LocalDeclarationStatement(
                     VariableDeclaration(
-                        Type(eventSymbol.Type).WithSimplifierAnnotation(),
+                        eventSymbol.Type.ToSyntax().WithSimplifierAnnotation(),
                         VariableDeclarator(
                             Identifier(HandlerIdentifier),
                             default(BracketedArgumentListSyntax),

@@ -3,12 +3,51 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Extensions
 {
     public static class SymbolExtensions
     {
+        private static SymbolDisplayFormat DefaultSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+
+        public static TypeSyntax ToSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat = null)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            symbolDisplayFormat = symbolDisplayFormat ?? DefaultSymbolDisplayFormat;
+
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
+
+            return SyntaxFactory.ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
+        }
+
+        public static TypeSyntax ToMinimalSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            symbolDisplayFormat = symbolDisplayFormat ?? DefaultSymbolDisplayFormat;
+
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
+
+            return SyntaxFactory.ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, symbolDisplayFormat));
+        }
+
+        private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat)
+        {
+            if (!typeSymbol.SupportsExplicitDeclaration())
+                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
+        }
+
         public static bool SupportsPredefinedType(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
