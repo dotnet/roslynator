@@ -6,12 +6,12 @@ namespace Roslynator
 {
     public static class SymbolDisplay
     {
-        public static string GetDisplayString(ITypeSymbol typeSymbol)
+        public static string GetString(ITypeSymbol typeSymbol)
         {
             return typeSymbol.ToDisplayString(Format);
         }
 
-        public static string GetMinimalDisplayString(ITypeSymbol typeSymbol, int position, SemanticModel semanticModel)
+        public static string GetMinimalString(ITypeSymbol typeSymbol, SemanticModel semanticModel, int position)
         {
             return typeSymbol.ToMinimalDisplayString(semanticModel, position, Format);
         }

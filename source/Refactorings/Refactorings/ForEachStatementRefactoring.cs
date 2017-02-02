@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                     context.RegisterRefactoring(
-                        $"Change type to '{SymbolDisplay.GetMinimalDisplayString(typeSymbol, type.Span.Start, semanticModel)}'",
+                        $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.Span.Start)}'",
                         cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
                 }
             }
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!info.ElementType.Equals(typeSymbol))
                     {
                         context.RegisterRefactoring(
-                            $"Change type to '{SymbolDisplay.GetMinimalDisplayString(info.ElementType, type.SpanStart, semanticModel)}'",
+                            $"Change type to '{SymbolDisplay.GetMinimalString(info.ElementType, semanticModel, type.SpanStart)}'",
                             cancellationToken =>
                             {
                                 return ChangeTypeRefactoring.ChangeTypeAsync(

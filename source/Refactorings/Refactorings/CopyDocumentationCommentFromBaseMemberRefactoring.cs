@@ -415,7 +415,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeSymbol != null)
                 {
-                    return SymbolDisplay.GetMinimalDisplayString(typeSymbol, _position, _semanticModel)
+                    return SymbolDisplay.GetMinimalString(typeSymbol, _semanticModel, _position)
                         .Replace('<', '{')
                         .Replace('>', '}');
                 }
