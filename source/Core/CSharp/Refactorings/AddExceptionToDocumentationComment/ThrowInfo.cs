@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             INamedTypeSymbol argumentExceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentException);
 
-            if (ExceptionSymbol.EqualsOrDerivedFrom(argumentExceptionSymbol))
+            if (ExceptionSymbol.EqualsOrInheritsFrom(argumentExceptionSymbol))
             {
                 return GetParameterSymbolCore(semanticModel, cancellationToken);
             }

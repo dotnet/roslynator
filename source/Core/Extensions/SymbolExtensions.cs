@@ -838,7 +838,7 @@ namespace Roslynator.Extensions
 
             INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
 
-            return typeSymbol.EqualsOrDerivedFrom(taskSymbol);
+            return typeSymbol.EqualsOrInheritsFrom(taskSymbol);
         }
 
         public static bool IsConstructedFromTaskOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
@@ -853,7 +853,7 @@ namespace Roslynator.Extensions
             {
                 INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
 
-                return ((INamedTypeSymbol)typeSymbol).ConstructedFrom.EqualsOrDerivedFrom(taskOfT);
+                return ((INamedTypeSymbol)typeSymbol).ConstructedFrom.EqualsOrInheritsFrom(taskOfT);
             }
 
             return false;
@@ -921,13 +921,32 @@ namespace Roslynator.Extensions
                 || IsConstructedFromIEnumerableOfT(typeSymbol);
         }
 
-        public static bool EqualsOrDerivedFrom(this ITypeSymbol typeSymbol, ISymbol symbol)
+        public static bool InheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
         {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
 
-            return typeSymbol.Equals(symbol)
-                || typeSymbol.BaseTypes().Any(f => f.Equals(symbol));
+            if (type.BaseTypes().Any(f => f.Equals(baseType)))
+            {
+                return true;
+            }
+            else if (includeInterfaces)
+            {
+                return type.AllInterfaces.Any(f => f.Equals(baseType));
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool EqualsOrInheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            return type.Equals(baseType)
+                || InheritsFrom(type, baseType, includeInterfaces);
         }
 
         [DebuggerStepThrough]

@@ -118,6 +118,16 @@ namespace Roslynator.CSharp.Extensions
                 : null;
         }
 
+        public static TextSpan BracesSpan(this CastExpressionSyntax castExpression)
+        {
+            if (castExpression == null)
+                throw new ArgumentNullException(nameof(castExpression));
+
+            return TextSpan.FromBounds(
+                castExpression.OpenParenToken.Span.Start,
+                castExpression.CloseParenToken.Span.End);
+        }
+
         public static ClassDeclarationSyntax WithMembers(
             this ClassDeclarationSyntax classDeclaration,
             IEnumerable<MemberDeclarationSyntax> memberDeclarations)

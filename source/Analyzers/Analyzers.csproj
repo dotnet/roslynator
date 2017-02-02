@@ -47,6 +47,7 @@
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantCastCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveImplementationFromAbstractMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveUnreachableCodeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeParameterCodeFixProvider.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantCastDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveImplementationFromAbstractMemberDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveUnreachableCodeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveInapplicableModifierDiagnosticAnalyzer.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsOperatorRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantCastRefactoring.cs" />
     <Compile Include="Refactorings\RemoveImplementationFromAbstractMemberRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
     <Compile Include="Refactorings\MergeSwitchSectionsRefactoring.cs" />
