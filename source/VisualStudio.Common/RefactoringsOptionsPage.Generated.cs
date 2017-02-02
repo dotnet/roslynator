@@ -165,6 +165,7 @@ namespace Roslynator.VisualStudio
             ReplaceWhileStatementWithDoStatement = true;
             ReverseForLoop = true;
             SimplifyLambdaExpression = true;
+            SortMemberDeclarations = true;
             SplitAttributes = true;
             SplitSwitchLabels = true;
             SplitVariableDeclaration = true;
@@ -337,6 +338,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement, ReplaceWhileStatementWithDoStatement);
             SetIsEnabled(RefactoringIdentifiers.ReverseForLoop, ReverseForLoop);
             SetIsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression, SimplifyLambdaExpression);
+            SetIsEnabled(RefactoringIdentifiers.SortMemberDeclarations, SortMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.SplitAttributes, SplitAttributes);
             SetIsEnabled(RefactoringIdentifiers.SplitSwitchLabels, SplitSwitchLabels);
             SetIsEnabled(RefactoringIdentifiers.SplitVariableDeclaration, SplitVariableDeclaration);
@@ -1879,6 +1881,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: lambda expression with block with single single-line statement\r\nScope: body")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool SimplifyLambdaExpression
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Sort member declarations")]
+        [Description("Syntax: namespace declarations, class declarations, struct declarations, interface declarations, enum declarations\r\nScope: selected member declarations")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool SortMemberDeclarations
         {
             get;
             set;

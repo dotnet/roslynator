@@ -47,6 +47,8 @@
     <Compile Include="CSharp\DocumentationCommentGenerator.cs" />
     <Compile Include="CSharp\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
+    <Compile Include="CSharp\EnumMemberDeclarationComparer.cs" />
+    <Compile Include="CSharp\EnumMemberValueComparer.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
     <Compile Include="CSharp\Extensions\SymbolExtensions.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="CSharp\Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\Inserter.cs" />
+    <Compile Include="CSharp\MemberDeclarationSortMode.cs" />
     <Compile Include="CSharp\Negator.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentAnalysis.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RemoveCommentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceHasFlagWithBitwiseOperationRefactoring.cs" />
+    <Compile Include="CSharp\SelectedMemberDeclarationCollection.cs" />
     <Compile Include="CSharp\SwitchSectionStatementContainer.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />

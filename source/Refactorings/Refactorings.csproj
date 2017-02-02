@@ -43,6 +43,10 @@
   <ItemGroup>
     <Compile Include="Formatting\CSharpFormatter.cs" />
     <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
+    <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
@@ -253,7 +257,10 @@
     <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="SelectedExpressions.cs" />
+    <Compile Include="Refactorings\SortEnumMemberDeclarationsRefactoring.cs" />
+    <Compile Include="Refactorings\SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="StringExpressionChain.cs" />
+    <Compile Include="Refactorings\StructDeclarationRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\MemberDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\NodeSyntaxRewriter.cs" />

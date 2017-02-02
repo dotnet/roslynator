@@ -12,38 +12,26 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
-            {
-                SyntaxToken identifier = classDeclaration.Identifier;
-                ComputeRefactorings(context, classDeclaration, identifier);
-            }
+            SyntaxToken identifier = classDeclaration.Identifier;
+            ComputeRefactorings(context, classDeclaration, identifier);
         }
 
         public static void ComputeRefactorings(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
-            {
-                SyntaxToken identifier = structDeclaration.Identifier;
-                ComputeRefactorings(context, structDeclaration, identifier);
-            }
+            SyntaxToken identifier = structDeclaration.Identifier;
+            ComputeRefactorings(context, structDeclaration, identifier);
         }
 
         public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
-            {
-                SyntaxToken identifier = interfaceDeclaration.Identifier;
-                ComputeRefactorings(context, interfaceDeclaration, identifier);
-            }
+            SyntaxToken identifier = interfaceDeclaration.Identifier;
+            ComputeRefactorings(context, interfaceDeclaration, identifier);
         }
 
         public static void ComputeRefactorings(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
-            {
-                SyntaxToken identifier = enumDeclaration.Identifier;
-                ComputeRefactorings(context, enumDeclaration, identifier);
-            }
+            SyntaxToken identifier = enumDeclaration.Identifier;
+            ComputeRefactorings(context, enumDeclaration, identifier);
         }
 
         public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)

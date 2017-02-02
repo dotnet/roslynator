@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp;
@@ -8,13 +9,23 @@ using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp
 {
-    internal class MemberDeclarationComparer : IComparer<MemberDeclarationSyntax>
+    public class MemberDeclarationComparer : IComparer<MemberDeclarationSyntax>
     {
-        public static readonly MemberDeclarationComparer Instance = new MemberDeclarationComparer();
+        internal static readonly int MaxOrderIndex = 18;
 
-        private const int MaxOrderIndex = 18;
+        public MemberDeclarationComparer(MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
+        {
+            SortMode = sortMode;
+        }
+
+        public MemberDeclarationSortMode SortMode { get; }
 
         public int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y)
+        {
+            return Compare(x, y, SortMode);
+        }
+
+        private static int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y, MemberDeclarationSortMode sortMode)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -25,10 +36,34 @@ namespace Roslynator.CSharp
             if (y == null)
                 return 1;
 
-            return GetOrderIndex(x).CompareTo(GetOrderIndex(y));
+            int result = GetOrderIndex(x).CompareTo(GetOrderIndex(y));
+
+            if (sortMode == MemberDeclarationSortMode.ByKindThenByName
+                && result == 0)
+            {
+                return string.Compare(GetName(x), GetName(y), StringComparison.CurrentCulture);
+            }
+            else
+            {
+                return result;
+            }
         }
 
-        public static int GetOrderIndex(MemberDeclarationSyntax memberDeclaration)
+        public static bool IsListSorted(IList<MemberDeclarationSyntax> members, MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
+        {
+            if (members == null)
+                throw new ArgumentNullException(nameof(members));
+
+            for (int i = 0; i < members.Count - 1; i++)
+            {
+                if (Compare(members[i], members[i + 1], sortMode) > 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        internal static int GetOrderIndex(MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration.Kind())
             {
@@ -76,7 +111,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static int GetOrderIndex(SyntaxKind kind)
+        internal static int GetOrderIndex(SyntaxKind kind)
         {
             switch (kind)
             {
@@ -162,6 +197,81 @@ namespace Roslynator.CSharp
                     return SyntaxKind.IncompleteMember;
                 default:
                     return SyntaxKind.None;
+            }
+        }
+
+        private static string GetName(MemberDeclarationSyntax member)
+        {
+            switch (member.Kind())
+            {
+                case SyntaxKind.FieldDeclaration:
+                    {
+                        return ((FieldDeclarationSyntax)member).Declaration?.Variables.FirstOrDefault()?.Identifier.ValueText;
+                    }
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.EventFieldDeclaration:
+                    return ((EventFieldDeclarationSyntax)member).Declaration?.Variables.FirstOrDefault()?.Identifier.ValueText;
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)member).Identifier.ValueText;
+                case SyntaxKind.NamespaceDeclaration:
+                    return ((NamespaceDeclarationSyntax)member).Name.ToString();
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.IncompleteMember:
+                    return "";
+                default:
+                    {
+                        Debug.Assert(false, $"unknown member '{member.Kind()}'");
+                        return "";
+                    }
+            }
+        }
+
+        public static bool CanBeSortedAlphabetically(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.FieldDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.EnumDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.NamespaceDeclaration:
+                    return true;
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.IncompleteMember:
+                    return false;
+                default:
+                    {
+                        Debug.Assert(false, $"unknown member '{kind}'");
+                        return false;
+                    }
             }
         }
     }

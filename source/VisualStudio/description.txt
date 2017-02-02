@@ -661,6 +661,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#sort-member-declarations">Sort member declarations</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#split-attributes">Split attributes</a>
         </li>
         <li>
