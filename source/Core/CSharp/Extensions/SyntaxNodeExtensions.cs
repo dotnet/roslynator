@@ -341,14 +341,6 @@ namespace Roslynator.CSharp.Extensions
                 GetEndIndex(node, includeExteriorTrivia: true, trim: true));
         }
 
-        public static TNode WithTrailingSpace<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.WithTrailingTrivia(Space);
-        }
-
         public static SyntaxNode FirstAncestor(
             this SyntaxNode node,
             SyntaxKind kind,

@@ -549,7 +549,7 @@ namespace Roslynator.CSharp
                             index,
                             modifier
                                 .WithLeadingTrivia(nextModifier.LeadingTrivia)
-                                .WithTrailingSpace());
+                                .WithTrailingTrivia(Space));
                 }
             }
             else

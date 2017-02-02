@@ -329,7 +329,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             PropertyDeclarationSyntax newProperty = property
-                .WithIdentifier(property.Identifier.WithTrailingSpace())
+                .WithIdentifier(property.Identifier.WithTrailingTrivia(Space))
                 .WithExpressionBody(null)
                 .WithAccessorList(accessorList);
 

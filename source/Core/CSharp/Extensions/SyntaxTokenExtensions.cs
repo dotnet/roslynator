@@ -74,11 +74,6 @@ namespace Roslynator.CSharp.Extensions
                 || kind == kind6;
         }
 
-        public static SyntaxToken WithTrailingSpace(this SyntaxToken token)
-        {
-            return token.WithTrailingTrivia(Space);
-        }
-
         public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
         {
             SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
