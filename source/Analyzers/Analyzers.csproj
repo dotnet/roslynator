@@ -66,6 +66,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\DocumentationComment\AddParameterToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\AddDocumentationCommentRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeSwitchSectionsDiagnosticAnalyzer.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkMemberAsStaticDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\RemoveRedundantAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
     <Compile Include="Refactorings\MergeSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\DeclareEnumMemberWithZeroValueRefactoring.cs" />
