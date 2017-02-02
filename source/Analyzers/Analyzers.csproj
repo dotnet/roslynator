@@ -74,6 +74,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
+    <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConditionalAccessDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\DocumentationComment\AddParameterToDocumentationCommentRefactoring.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Refactorings\UseLinefeedAsNewLineRefactoring.cs" />
     <Compile Include="Refactorings\UseNameOfOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UsePredefinedTypeRefactoring.cs" />
+    <Compile Include="Refactorings\CallStringConcatInsteadOfStringJoinRefactoring.cs" />
     <Compile Include="Refactorings\UseStringIsNullOrEmptyMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfStatementWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyConditionalExpressionRefactoring.cs" />
