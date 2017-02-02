@@ -148,5 +148,6 @@ namespace Roslynator.CSharp
         public const string AddExceptionToDocumentationComment = Prefix + "1140";
         public const string AddParameterToDocumentationComment = Prefix + "1141";
         public const string AddTypeParameterToDocumentationComment = Prefix + "1142";
+        public const string SimplifyCoalesceExpression = Prefix + "1143";
     }
 }

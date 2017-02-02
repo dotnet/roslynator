@@ -61,6 +61,7 @@
     <Compile Include="AvoidEmbeddedStatementInIfElse.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
+    <Compile Include="CoalesceExpressionIsRedundant.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="DeclareEnumMemberWithZeroValue.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />
