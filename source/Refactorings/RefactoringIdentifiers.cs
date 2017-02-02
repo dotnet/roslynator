@@ -157,6 +157,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = "ReplaceVerbatimStringLiteralWithRegularStringLiteral";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = "ReplaceVerbatimStringLiteralWithRegularStringLiterals";
         public const string ReplaceWhileStatementWithDoStatement = "ReplaceWhileStatementWithDoStatement";
+        public const string ReplaceWhileWithFor = "ReplaceWhileWithFor";
         public const string ReverseForLoop = "ReverseForLoop";
         public const string SimplifyLambdaExpression = "SimplifyLambdaExpression";
         public const string SortMemberDeclarations = "SortMemberDeclarations";

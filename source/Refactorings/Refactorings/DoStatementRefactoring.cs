@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
                     "Replace do with while",
                     cancellationToken =>
                     {
-                        return ReplaceDoStatementWithWhileStatementRefactoring.RefactorAsync(
+                        return ReplaceDoWithWhileRefactoring.RefactorAsync(
                             context.Document,
                             doStatement,
                             cancellationToken);
