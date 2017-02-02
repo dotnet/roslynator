@@ -1430,5 +1430,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
+            title: "Member type must match overriden member type.",
+            messageFormat: "Member type must match overriden member type.",
+            category: DiagnosticCategories.ErrorFix,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -78,6 +78,7 @@
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
     <Compile Include="MarkContainingClassAsAbstract.cs" />
     <Compile Include="MarkMemberAsStatic.cs" />
+    <Compile Include="MemberTypeMustMatchOverridenMemberType.cs" />
     <Compile Include="MergeIfStatementWithNestedIfStatement.cs" />
     <Compile Include="MarkLocalVariableAsConst.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />
