@@ -1025,6 +1025,22 @@
     </Syntaxes>
     <Scope>body</Scope>
   </Refactoring>
+  <Refactoring Id="SortMemberDeclarations" Title="Sort member declarations" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>namespace declarations</Syntax>
+      <Syntax>class declarations</Syntax>
+      <Syntax>struct declarations</Syntax>
+      <Syntax>interface declarations</Syntax>
+      <Syntax>enum declarations</Syntax>
+    </Syntaxes>
+    <Scope>selected member declarations</Scope>
+    <Images>
+      <Image>SortMembersByKind</Image>
+      <Image>SortMembersByName</Image>
+      <Image>SortEnumMembersByName</Image>
+      <Image>SortEnumMembersByValue</Image>
+    </Images>
+  </Refactoring>
   <Refactoring Id="SplitAttributes" Title="Split attributes" ExtensionVersion="0.9.50">
     <Syntaxes>
       <Syntax>selected attribute list</Syntax>

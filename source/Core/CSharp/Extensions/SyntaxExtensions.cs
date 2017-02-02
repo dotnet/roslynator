@@ -163,6 +163,16 @@ namespace Roslynator.CSharp.Extensions
             return classDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
+        public static TextSpan BracesSpan(this ClassDeclarationSyntax classDeclaration)
+        {
+            if (classDeclaration == null)
+                throw new ArgumentNullException(nameof(classDeclaration));
+
+            return TextSpan.FromBounds(
+                classDeclaration.OpenBraceToken.Span.Start,
+                classDeclaration.CloseBraceToken.Span.End);
+        }
+
         public static CompilationUnitSyntax WithMembers(
             this CompilationUnitSyntax compilationUnit,
             MemberDeclarationSyntax memberDeclaration)
@@ -326,6 +336,16 @@ namespace Roslynator.CSharp.Extensions
             }
         }
 
+        public static TextSpan BracesSpan(this EnumDeclarationSyntax enumDeclaration)
+        {
+            if (enumDeclaration == null)
+                throw new ArgumentNullException(nameof(enumDeclaration));
+
+            return TextSpan.FromBounds(
+                enumDeclaration.OpenBraceToken.Span.Start,
+                enumDeclaration.CloseBraceToken.Span.End);
+        }
+
         public static TextSpan HeaderSpan(this EventDeclarationSyntax eventDeclaration)
         {
             if (eventDeclaration == null)
@@ -466,6 +486,16 @@ namespace Roslynator.CSharp.Extensions
             return TextSpan.FromBounds(
                 interfaceDeclaration.Span.Start,
                 interfaceDeclaration.Identifier.Span.End);
+        }
+
+        public static TextSpan BracesSpan(this InterfaceDeclarationSyntax interfaceDeclaration)
+        {
+            if (interfaceDeclaration == null)
+                throw new ArgumentNullException(nameof(interfaceDeclaration));
+
+            return TextSpan.FromBounds(
+                interfaceDeclaration.OpenBraceToken.Span.Start,
+                interfaceDeclaration.CloseBraceToken.Span.End);
         }
 
         public static bool IsVerbatim(this InterpolatedStringExpressionSyntax interpolatedString)
@@ -1200,6 +1230,16 @@ namespace Roslynator.CSharp.Extensions
                 namespaceDeclaration.Name?.Span.End ?? namespaceDeclaration.NamespaceKeyword.Span.End);
         }
 
+        public static TextSpan BracesSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
+        {
+            if (namespaceDeclaration == null)
+                throw new ArgumentNullException(nameof(namespaceDeclaration));
+
+            return TextSpan.FromBounds(
+                namespaceDeclaration.OpenBraceToken.Span.Start,
+                namespaceDeclaration.CloseBraceToken.Span.End);
+        }
+
         public static TextSpan HeaderSpan(this OperatorDeclarationSyntax operatorDeclaration)
         {
             if (operatorDeclaration == null)
@@ -1343,6 +1383,16 @@ namespace Roslynator.CSharp.Extensions
             return TextSpan.FromBounds(
                 structDeclaration.Span.Start,
                 structDeclaration.Identifier.Span.End);
+        }
+
+        public static TextSpan BracesSpan(this StructDeclarationSyntax structDeclaration)
+        {
+            if (structDeclaration == null)
+                throw new ArgumentNullException(nameof(structDeclaration));
+
+            return TextSpan.FromBounds(
+                structDeclaration.OpenBraceToken.Span.Start,
+                structDeclaration.CloseBraceToken.Span.End);
         }
 
         public static SwitchSectionSyntax WithoutStatements(this SwitchSectionSyntax switchSection)

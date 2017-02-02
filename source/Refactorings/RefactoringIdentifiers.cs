@@ -159,6 +159,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceWhileStatementWithDoStatement = "ReplaceWhileStatementWithDoStatement";
         public const string ReverseForLoop = "ReverseForLoop";
         public const string SimplifyLambdaExpression = "SimplifyLambdaExpression";
+        public const string SortMemberDeclarations = "SortMemberDeclarations";
         public const string SplitAttributes = "SplitAttributes";
         public const string SplitSwitchLabels = "SplitSwitchLabels";
         public const string SplitVariableDeclaration = "SplitVariableDeclaration";

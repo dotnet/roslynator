@@ -84,6 +84,8 @@
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring2.cs" />
     <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring2.cs" />
+    <Compile Include="SortEnumMemberDeclarationsRefactoring.cs" />
+    <Compile Include="SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
     <Compile Include="Tuple.cs" />
