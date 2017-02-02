@@ -114,6 +114,7 @@
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
     <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
     <Compile Include="ReplaceReturnWithYieldReturn.cs" />
+    <Compile Include="UseConditionalAccess.cs" />
     <Compile Include="UseElementAccessInsteadOfElementAt.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="UseCoalesceExpression.cs" />

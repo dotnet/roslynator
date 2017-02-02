@@ -1372,5 +1372,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor UseConditionalAccess = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseConditionalAccess,
+            title: "Use conditional access.",
+            messageFormat: "Use conditional access.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
