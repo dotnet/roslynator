@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -115,13 +116,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 string s = operand.ToFullString();
 
-                ExpressionSyntax newNode = ParseExpression(
-                    s.Substring(0, span.Length) +
-                    "?" +
-                    s.Substring(span.Length, operand.Span.Length - span.Length - trailingTrivia.Span.Length) +
-                    " == false");
+                var sb = new StringBuilder();
+                sb.Append(s, 0, span.Length);
+                sb.Append("?");
+                sb.Append(s, span.Length, operand.Span.Length - span.Length - trailingTrivia.Span.Length);
+                sb.Append(" == false");
 
-                return newNode
+                return ParseExpression(sb.ToString())
                     .PrependToLeadingTrivia(logicalNot.GetLeadingAndTrailingTrivia())
                     .WithTrailingTrivia(trailingTrivia);
             }
@@ -129,38 +130,36 @@ namespace Roslynator.CSharp.Refactorings
             {
                 string s = expression.ToFullString();
 
-                string text =
-                    s.Substring(0, span.Length) +
-                    "?" +
-                    s.Substring(span.Length, expression.Span.Length - span.Length - trailingTrivia.Span.Length);
+                var sb = new StringBuilder();
+                sb.Append(s, 0, span.Length);
+                sb.Append("?");
+                sb.Append(s, span.Length, expression.Span.Length - span.Length - trailingTrivia.Span.Length);
 
-                if (AddBooleanComparison(expressionKind))
-                    text += " == true";
+                switch (expressionKind)
+                {
+                    case SyntaxKind.LogicalOrExpression:
+                    case SyntaxKind.LogicalAndExpression:
+                    case SyntaxKind.BitwiseOrExpression:
+                    case SyntaxKind.BitwiseAndExpression:
+                    case SyntaxKind.ExclusiveOrExpression:
+                    case SyntaxKind.EqualsExpression:
+                    case SyntaxKind.NotEqualsExpression:
+                    case SyntaxKind.LessThanExpression:
+                    case SyntaxKind.LessThanOrEqualExpression:
+                    case SyntaxKind.GreaterThanExpression:
+                    case SyntaxKind.GreaterThanOrEqualExpression:
+                    case SyntaxKind.IsExpression:
+                    case SyntaxKind.AsExpression:
+                        break;
+                    default:
+                        {
+                            sb.Append(" == true");
+                            break;
+                        }
+                }
 
-                return ParseExpression(text).WithTrailingTrivia(trailingTrivia);
-            }
-        }
-
-        private static bool AddBooleanComparison(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.LogicalOrExpression:
-                case SyntaxKind.LogicalAndExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
-                case SyntaxKind.LessThanExpression:
-                case SyntaxKind.LessThanOrEqualExpression:
-                case SyntaxKind.GreaterThanExpression:
-                case SyntaxKind.GreaterThanOrEqualExpression:
-                case SyntaxKind.IsExpression:
-                case SyntaxKind.AsExpression:
-                    return false;
-                default:
-                    return true;
+                return ParseExpression(sb.ToString())
+                    .WithTrailingTrivia(trailingTrivia);
             }
         }
     }
