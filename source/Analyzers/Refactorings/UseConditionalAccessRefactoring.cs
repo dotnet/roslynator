@@ -104,9 +104,10 @@ namespace Roslynator.CSharp.Refactorings
             TextSpan span = node.Span;
 
             ExpressionSyntax expression = logicalAnd.Right;
+            SyntaxKind expressionKind = expression.Kind();
             SyntaxTriviaList trailingTrivia = expression.GetTrailingTrivia();
 
-            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+            if (expressionKind == SyntaxKind.LogicalNotExpression)
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)expression;
                 ExpressionSyntax operand = logicalNot.Operand;
@@ -128,13 +129,38 @@ namespace Roslynator.CSharp.Refactorings
             {
                 string s = expression.ToFullString();
 
-                ExpressionSyntax newNode = ParseExpression(
+                string text =
                     s.Substring(0, span.Length) +
                     "?" +
-                    s.Substring(span.Length, expression.Span.Length - span.Length - trailingTrivia.Span.Length) +
-                    " == true");
+                    s.Substring(span.Length, expression.Span.Length - span.Length - trailingTrivia.Span.Length);
 
-                return newNode.WithTrailingTrivia(trailingTrivia);
+                if (AddBooleanComparison(expressionKind))
+                    text += " == true";
+
+                return ParseExpression(text).WithTrailingTrivia(trailingTrivia);
+            }
+        }
+
+        private static bool AddBooleanComparison(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.LogicalOrExpression:
+                case SyntaxKind.LogicalAndExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.ExclusiveOrExpression:
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                case SyntaxKind.IsExpression:
+                case SyntaxKind.AsExpression:
+                    return false;
+                default:
+                    return true;
             }
         }
     }
