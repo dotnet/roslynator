@@ -15,6 +15,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
             }
 
+            if (s != null && s.Length > 0)
+            {
+            }
+
             if (s != null && !s.StartsWith("a"))
             {
             }
@@ -22,6 +26,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
             Dictionary<int, string> dic = null;
 
             if (dic != null && dic[0].StartsWith("a"))
+            {
+            }
+
+            if (dic != null && dic[0].Length > 0)
             {
             }
 
