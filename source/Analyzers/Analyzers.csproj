@@ -50,6 +50,7 @@
     <Compile Include="CodeFixProviders\RemoveRedundantCastCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveImplementationFromAbstractMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveUnreachableCodeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ThrowingOfNewNotImplementedExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
