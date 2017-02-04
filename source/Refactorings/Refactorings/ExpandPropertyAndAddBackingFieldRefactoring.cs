@@ -119,7 +119,13 @@ namespace Roslynator.CSharp.Refactorings
             if (propertyDeclaration.IsStatic())
                 modifiers = modifiers.Add(StaticKeyword());
 
-            return FieldDeclaration(modifiers, propertyDeclaration.Type, name, propertyDeclaration.Initializer);
+            return FieldDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                VariableDeclaration(
+                    propertyDeclaration.Type,
+                    name,
+                    propertyDeclaration.Initializer));
         }
     }
 }
