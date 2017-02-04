@@ -28,6 +28,17 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeTryStatement(f), SyntaxKind.TryStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
         }
 
         public void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -68,6 +79,86 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return;
 
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (TryStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ElseClauseSyntax)context.Node);
+        }
+
+        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (IfStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ForEachStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ForStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (UsingStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (WhileStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (DoStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (LockStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (FixedStatementSyntax)context.Node);
         }
     }
 }
