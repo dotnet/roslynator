@@ -122,29 +122,13 @@ namespace Roslynator.CSharp
 
         public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
         {
-            return FieldDeclaration(
-                modifiers,
-                type,
-                identifier,
-                (value != null) ? EqualsValueClause(value) : null);
-        }
-
-        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
-        {
-            return FieldDeclaration(modifiers, type, Identifier(identifier), initializer);
-        }
-
-        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
-        {
             return SyntaxFactory.FieldDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 VariableDeclaration(
                     type,
-                    VariableDeclarator(
-                        identifier,
-                        default(BracketedArgumentListSyntax),
-                        initializer)));
+                    identifier,
+                    (value != null) ? EqualsValueClause(value) : null));
         }
 
         public static ArgumentListSyntax ArgumentList(ArgumentSyntax argument)
@@ -275,6 +259,26 @@ namespace Roslynator.CSharp
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind));
             }
+        }
+
+        public static VariableDeclaratorSyntax VariableDeclarator(string identifier, EqualsValueClauseSyntax initializer)
+        {
+            return VariableDeclarator(Identifier(identifier), initializer);
+        }
+
+        public static VariableDeclaratorSyntax VariableDeclarator(SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+        {
+            return SyntaxFactory.VariableDeclarator(identifier, default(BracketedArgumentListSyntax), initializer);
+        }
+
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
+        {
+            return VariableDeclaration(type, Identifier(identifier), initializer);
+        }
+
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+        {
+            return VariableDeclaration(type, VariableDeclarator(identifier, initializer));
         }
 
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
@@ -1072,14 +1076,14 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ObjectCreationExpression(type, argumentList, default(InitializerExpressionSyntax));
         }
 
-        public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier)
+        public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer = null)
         {
             return SyntaxFactory.Parameter(
                 default(SyntaxList<AttributeListSyntax>),
                 default(SyntaxTokenList),
                 type,
                 identifier,
-                default(EqualsValueClauseSyntax));
+                initializer);
         }
 
         public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand)
@@ -1183,8 +1187,8 @@ namespace Roslynator.CSharp
         public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
         {
             VariableDeclaratorSyntax declarator = (value != null)
-                ? VariableDeclarator(identifier, default(BracketedArgumentListSyntax), EqualsValueClause(value))
-                : VariableDeclarator(identifier);
+                ? VariableDeclarator(identifier, EqualsValueClause(value))
+                : SyntaxFactory.VariableDeclarator(identifier);
 
             return SyntaxFactory.LocalDeclarationStatement(
                 SyntaxFactory.VariableDeclaration(

@@ -168,7 +168,6 @@ namespace Roslynator.CSharp.Refactorings
                         eventSymbol.Type.ToSyntax().WithSimplifierAnnotation(),
                         VariableDeclarator(
                             Identifier(HandlerIdentifier),
-                            default(BracketedArgumentListSyntax),
                             EqualsValueClause(IdentifierName(eventSymbol.Name)))));
 
                 yield return IfStatement(
