@@ -83,35 +83,164 @@ namespace Roslynator.CSharp.Refactorings
                     for (int i = 1; i < sections.Count; i++)
                     {
                         if (prevSection.Statements.LastOrDefault()?.IsKind(SyntaxKind.Block) == true)
-                        {
-                            SwitchSectionSyntax section = sections[i];
-
-                            SyntaxTriviaList trailingTrivia = prevSection.GetTrailingTrivia();
-                            SyntaxTriviaList leadingTrivia = section.GetLeadingTrivia();
-
-                            if (!IsStandardTriviaBetweenSections(trailingTrivia, leadingTrivia)
-                                && switchStatement
-                                    .SyntaxTree
-                                    .GetLineSpan(TextSpan.FromBounds(prevSection.Span.End, section.Span.Start), context.CancellationToken)
-                                    .GetLineCount() == 3)
-                            {
-                                SyntaxTrivia trivia = leadingTrivia
-                                    .SkipWhile(f => f.IsWhitespaceTrivia())
-                                    .FirstOrDefault();
-
-                                if (trivia.IsEndOfLineTrivia()
-                                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                                {
-                                    context.ReportDiagnostic(
-                                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
-                                        Location.Create(switchStatement.SyntaxTree, TextSpan.FromBounds(section.FullSpan.Start, trivia.Span.End)));
-                                }
-                            }
-                        }
+                            Analyze(context, prevSection, sections[i]);
 
                         prevSection = sections[i];
                     }
+                }
+            }
+        }
+
+        public static void Analyze(SyntaxNodeAnalysisContext context, TryStatementSyntax tryStatement)
+        {
+            BlockSyntax block = tryStatement.Block;
+
+            if (block != null)
+            {
+                SyntaxList<CatchClauseSyntax> catches = tryStatement.Catches;
+
+                if (catches.Any())
+                {
+                    SyntaxNode previousNode = block;
+
+                    foreach (CatchClauseSyntax catchClause in catches)
+                    {
+                        Analyze(context, previousNode, catchClause);
+
+                        previousNode = catchClause;
+                    }
+
+                    FinallyClauseSyntax finallyClause = tryStatement.Finally;
+
+                    if (finallyClause != null)
+                        Analyze(context, previousNode, finallyClause);
+                }
+            }
+        }
+
+        public static void Analyze(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
+        {
+            SyntaxNode parent = elseClause.Parent;
+
+            if (parent?.IsKind(SyntaxKind.IfStatement) == true)
+            {
+                var ifStatement = (IfStatementSyntax)parent;
+
+                StatementSyntax statement = ifStatement.Statement;
+
+                if (statement != null)
+                    Analyze(context, statement, elseClause);
+
+                statement = elseClause.Statement;
+
+                if (statement != null)
+                    Analyze(context, elseClause.ElseKeyword, statement);
+            }
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, CommonForEachStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, ForStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, UsingStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, WhileStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, DoStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.DoKeyword, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, LockStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        internal static void Analyze(SyntaxNodeAnalysisContext context, FixedStatementSyntax node)
+        {
+            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+        }
+
+        private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
+        {
+            if (statement != null
+                && EmbeddedStatement.IsEmbeddedStatement(statement))
+            {
+                Analyze(context, token, statement);
+            }
+        }
+
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            SyntaxNode node1,
+            SyntaxNode node2)
+        {
+            SyntaxTriviaList trailingTrivia = node1.GetTrailingTrivia();
+            SyntaxTriviaList leadingTrivia = node2.GetLeadingTrivia();
+
+            if (!IsStandardTriviaBetweenLines(trailingTrivia, leadingTrivia)
+                && node1
+                    .SyntaxTree
+                    .GetLineSpan(TextSpan.FromBounds(node1.Span.End, node2.Span.Start), context.CancellationToken)
+                    .GetLineCount() == 3)
+            {
+                SyntaxTrivia trivia = leadingTrivia
+                    .SkipWhile(f => f.IsWhitespaceTrivia())
+                    .FirstOrDefault();
+
+                if (trivia.IsEndOfLineTrivia()
+                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                        Location.Create(node1.SyntaxTree, TextSpan.FromBounds(node2.FullSpan.Start, trivia.Span.End)));
+                }
+            }
+        }
+
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            SyntaxToken token,
+            SyntaxNode node)
+        {
+            SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
+            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
+
+            if (!IsStandardTriviaBetweenLines(trailingTrivia, leadingTrivia)
+                && token
+                    .SyntaxTree
+                    .GetLineSpan(TextSpan.FromBounds(token.Span.End, node.Span.Start), context.CancellationToken)
+                    .GetLineCount() == 3)
+            {
+                SyntaxTrivia trivia = leadingTrivia
+                    .SkipWhile(f => f.IsWhitespaceTrivia())
+                    .FirstOrDefault();
+
+                if (trivia.IsEndOfLineTrivia()
+                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                        Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End)));
                 }
             }
         }
@@ -245,7 +374,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static bool IsStandardTriviaBetweenSections(SyntaxTriviaList trailingTrivia, SyntaxTriviaList leadingTrivia)
+        private static bool IsStandardTriviaBetweenLines(SyntaxTriviaList trailingTrivia, SyntaxTriviaList leadingTrivia)
         {
             if (leadingTrivia.Any()
                 && leadingTrivia.All(f => f.IsWhitespaceTrivia()))
