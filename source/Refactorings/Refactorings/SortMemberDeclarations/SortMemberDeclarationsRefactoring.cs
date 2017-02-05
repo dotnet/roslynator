@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -8,9 +9,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.SyntaxRewriters.SortMembers;
 using Roslynator.Extensions;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 {
     internal static class SortMemberDeclarationsRefactoring
     {
@@ -80,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             SelectedMemberDeclarationCollection selectedMembers,
             ImmutableArray<MemberDeclarationSyntax> selectedMemberArray)
         {
-            if (!MemberDeclarationComparer.IsListSorted(selectedMemberArray, sortMode))
+            if (!MemberDeclarationComparer.IsSorted(selectedMemberArray, sortMode))
             {
                 context.RegisterRefactoring(
                     title,
@@ -109,6 +111,26 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
 
             return await document.ReplaceNodeAsync(containingMember, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            IComparer<MemberDeclarationSyntax> memberComparer,
+            IComparer<EnumMemberDeclarationSyntax> enumMemberComparer,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            if (root.IsKind(SyntaxKind.CompilationUnit))
+            {
+                var rewriter = new SortMemberDeclarationsRewriter(memberComparer, enumMemberComparer);
+
+                SyntaxNode newRoot = rewriter.VisitCompilationUnit((CompilationUnitSyntax)root);
+
+                return document.WithSyntaxRoot(newRoot);
+            }
+
+            return document;
         }
 
         private static SyntaxKind GetSingleKindOrDefault(ImmutableArray<MemberDeclarationSyntax> members)

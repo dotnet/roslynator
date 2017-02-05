@@ -6,15 +6,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-
-    public class EnumMemberDeclarationComparer : IComparer<EnumMemberDeclarationSyntax>
+    public class EnumMemberDeclarationNameComparer : IComparer<EnumMemberDeclarationSyntax>
     {
         public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
         {
-            return ComparePrivate(x, y);
+            return CompareCore(x, y);
         }
 
-        private static int ComparePrivate(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
+        private static int CompareCore(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -28,15 +27,27 @@ namespace Roslynator.CSharp
             return string.Compare(x.Identifier.ValueText, y.Identifier.ValueText, StringComparison.CurrentCulture);
         }
 
-        public static bool IsListSorted(IList<EnumMemberDeclarationSyntax> members)
+        public static bool IsSorted(IEnumerable<EnumMemberDeclarationSyntax> members)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
 
-            for (int i = 0; i < members.Count - 1; i++)
+            using (IEnumerator<EnumMemberDeclarationSyntax> en = members.GetEnumerator())
             {
-                if (ComparePrivate(members[i], members[i + 1]) > 0)
-                    return false;
+                if (en.MoveNext())
+                {
+                    EnumMemberDeclarationSyntax enumMember1 = en.Current;
+
+                    while (en.MoveNext())
+                    {
+                        EnumMemberDeclarationSyntax enumMember2 = en.Current;
+
+                        if (CompareCore(enumMember1, enumMember2) > 0)
+                            return false;
+
+                        enumMember1 = enumMember2;
+                    }
+                }
             }
 
             return true;

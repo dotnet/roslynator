@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Refactorings.SortMemberDeclarations;
 
 namespace Roslynator.CSharp.Refactorings
 {

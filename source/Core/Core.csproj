@@ -48,8 +48,9 @@
     <Compile Include="CSharp\DocumentationCommentGenerator.cs" />
     <Compile Include="CSharp\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
-    <Compile Include="CSharp\EnumMemberDeclarationComparer.cs" />
     <Compile Include="CSharp\EnumMemberValueComparer.cs" />
+    <Compile Include="CSharp\EnumMemberDeclarationNameComparer.cs" />
+    <Compile Include="CSharp\EnumMemberDeclarationValueComparer.cs" />
     <Compile Include="CSharp\Extensions\CSharpExtensions.cs" />
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
     <Compile Include="CSharp\Extensions\SymbolExtensions.cs" />
