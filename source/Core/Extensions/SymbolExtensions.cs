@@ -473,8 +473,17 @@ namespace Roslynator.Extensions
                                 || accessibility == Accessibility.Protected
                                 || accessibility == Accessibility.ProtectedOrInternal)
                             {
-                                symbol = symbol.ContainingType;
-                                break;
+                                INamedTypeSymbol containingType = symbol.ContainingType;
+
+                                if (containingType != null)
+                                {
+                                    symbol = containingType;
+                                    break;
+                                }
+                                else
+                                {
+                                    return symbol.ContainingNamespace != null;
+                                }
                             }
                             else
                             {
