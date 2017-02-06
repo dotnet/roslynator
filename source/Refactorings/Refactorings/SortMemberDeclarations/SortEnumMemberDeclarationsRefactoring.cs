@@ -6,11 +6,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Extensions;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 {
     internal static class SortEnumMemberDeclarationsRefactoring
     {
@@ -23,29 +22,22 @@ namespace Roslynator.CSharp.Refactorings
 
             if (selectedMembers.Length > 1)
             {
-                if (!EnumMemberDeclarationComparer.IsListSorted(selectedMembers))
+                if (!EnumMemberDeclarationNameComparer.IsSorted(selectedMembers))
                 {
                     context.RegisterRefactoring(
                         "Sort enum members by name",
                         cancellationToken => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, cancellationToken));
                 }
 
-                if (selectedMembers.All(f => f.EqualsValue?.Value != null))
+                if (selectedMembers.Any(f => f.EqualsValue?.Value != null))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    List<object> values = selectedMembers
-                        .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
-                        .Where(f => f.HasConstantValue)
-                        .Select(f => f.ConstantValue)
-                        .ToList();
-
-                    if (selectedMembers.Length == values.Count
-                        && !EnumMemberValueComparer.IsListSorted(values))
+                    if (!EnumMemberDeclarationValueComparer.IsSorted(selectedMembers, semanticModel, context.CancellationToken))
                     {
                         context.RegisterRefactoring(
                             "Sort enum members by value",
-                            cancellationToken => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, values, cancellationToken));
+                            cancellationToken => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, cancellationToken));
                     }
                 }
             }
@@ -57,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<EnumMemberDeclarationSyntax> selectedMembers,
             CancellationToken cancellationToken)
         {
-            var comparer = new EnumMemberDeclarationComparer();
+            var comparer = new EnumMemberDeclarationNameComparer();
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
@@ -79,20 +71,18 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             ImmutableArray<EnumMemberDeclarationSyntax> selectedMembers,
-            List<object> values,
             CancellationToken cancellationToken)
         {
-            var comparer = new EnumMemberValueComparer();
-
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
             int firstIndex = members.IndexOf(selectedMembers[0]);
             int lastIndex = members.IndexOf(selectedMembers[selectedMembers.Length - 1]);
 
-            IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers
-                .Zip(values, (f, g) => new { EnumMember = f, Value = g })
-                .OrderBy(f => f.Value, comparer)
-                .Select(f => f.EnumMember);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            var comparer = new EnumMemberDeclarationValueComparer(semanticModel, cancellationToken);
+
+            IEnumerable<EnumMemberDeclarationSyntax> sorted = selectedMembers.OrderBy(f => f, comparer);
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = members
                 .Take(firstIndex)

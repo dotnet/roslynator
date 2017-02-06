@@ -49,15 +49,27 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool IsListSorted(IList<MemberDeclarationSyntax> members, MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
+        public static bool IsSorted(IEnumerable<MemberDeclarationSyntax> members, MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
 
-            for (int i = 0; i < members.Count - 1; i++)
+            using (IEnumerator<MemberDeclarationSyntax> en = members.GetEnumerator())
             {
-                if (Compare(members[i], members[i + 1], sortMode) > 0)
-                    return false;
+                if (en.MoveNext())
+                {
+                    MemberDeclarationSyntax member1 = en.Current;
+
+                    while (en.MoveNext())
+                    {
+                        MemberDeclarationSyntax member2 = en.Current;
+
+                        if (Compare(member1, member2, sortMode) > 0)
+                            return false;
+
+                        member1 = member2;
+                    }
+                }
             }
 
             return true;
