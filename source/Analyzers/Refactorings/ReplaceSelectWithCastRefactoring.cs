@@ -41,10 +41,9 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+            ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(invocation, cancellationToken);
 
-            if (methodSymbol != null
-                && IsEnumerableOrImmutableArrayExtensionSelectMethod(methodSymbol, semanticModel))
+            if (info.IsLinqSelect(allowImmutableArrayExtension: true))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 
@@ -152,21 +151,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
-        }
-
-        private static bool IsEnumerableOrImmutableArrayExtensionSelectMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "Select", semanticModel))
-            {
-                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
-
-                return parameter != null
-                    && Symbol.IsFunc(parameter.Type, methodSymbol.TypeArguments[0], methodSymbol.TypeArguments[1], semanticModel);
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public static async Task<Document> RefactorAsync(

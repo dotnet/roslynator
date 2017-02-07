@@ -144,5 +144,19 @@ namespace Roslynator.Extensions
                 .Compilation
                 .GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
+
+        public static IMethodSymbol GetSpeculativeMethodSymbol(
+            this SemanticModel semanticModel,
+            int position,
+            SyntaxNode expression)
+        {
+            SymbolInfo symbolInfo = ModelExtensions.GetSpeculativeSymbolInfo(
+                semanticModel,
+                position,
+                expression,
+                SpeculativeBindingOption.BindAsExpression);
+
+            return symbolInfo.Symbol as IMethodSymbol;
+        }
     }
 }

@@ -18,12 +18,14 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
-            if (methodSymbol != null
-                && Symbol.IsEnumerableMethodWithoutParameters(methodSymbol, "Count", context.SemanticModel))
+            if (semanticModel
+                .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                .IsLinqExtensionOfIEnumerableOfTWithoutParameters("Count"))
             {
-                string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, context.SemanticModel, context.CancellationToken);
+                string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, cancellationToken);
 
                 if (propertyName != null)
                 {

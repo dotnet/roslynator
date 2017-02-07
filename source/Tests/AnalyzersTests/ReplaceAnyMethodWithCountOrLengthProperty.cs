@@ -6,35 +6,26 @@ using System.Linq;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+#pragma warning disable RCS1023
     internal static class ReplaceAnyMethodWithCountOrLengthProperty
     {
         private static void Foo()
         {
             var list = new List<string>();
 
-            if (list.Any())
-            {
-            }
+            if (list.Any()) { }
 
-            if (!list.Any())
-            {
-            }
+            if (!list.Any()) { }
 
             var array = new string[0];
 
-            if (array.Any())
-            {
-            }
+            if (array.Any()) { }
 
-            if (!array.Any())
-            {
-            }
+            if (!array.Any()) { }
 
             ImmutableArray<int> ia = ImmutableArray.Create(1);
 
-            if (ia.Any())
-            {
-            }
+            if (ia.Any()) { }
         }
     }
 }

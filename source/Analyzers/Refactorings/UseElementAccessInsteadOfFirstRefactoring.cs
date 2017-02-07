@@ -19,16 +19,17 @@ namespace Roslynator.CSharp.Refactorings
     {
         internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
-            if (methodSymbol != null
-                && Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "First", context.SemanticModel)
-                && !methodSymbol.Parameters.Any())
+            if (semanticModel
+                .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
             {
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, cancellationToken);
 
                 if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
+                    && (typeSymbol.IsArrayType() || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.UseElementAccessInsteadOfFirst,

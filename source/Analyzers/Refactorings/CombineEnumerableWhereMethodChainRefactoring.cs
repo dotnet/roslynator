@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -41,27 +40,31 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (string.Equals(memberAccess2.Name?.Identifier.ValueText, "Where", StringComparison.Ordinal))
                     {
-                        IMethodSymbol invocationSymbol2 = semanticModel.GetMethodSymbol(invocation2, cancellationToken);
+                        ExtensionMethodInfo info2 = semanticModel.GetExtensionMethodInfo(invocation2, ExtensionMethodKind.Reduced, cancellationToken);
 
-                        if (invocationSymbol2 != null
-                            && invocationSymbol2?.Name.Equals("Where", StringComparison.Ordinal) == true
-                            && invocationSymbol2.Parameters.Length == 1
-                            && invocationSymbol2.ContainingType?.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true
-                            && invocationSymbol2.ReducedFrom.Parameters.First().Type.IsConstructedFromIEnumerableOfT())
+                        if (info2.IsLinqExtensionOfIEnumerableOfT("Where", parameterCount: 2))
                         {
-                            IMethodSymbol invocationSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
-
-                            if (IsWherePredicate(semanticModel, invocationSymbol2))
+                            if (Symbol.IsPredicateFunc(
+                                info2.Symbol.Parameters[1].Type,
+                                info2.Symbol.TypeArguments[0],
+                                semanticModel))
                             {
-                                if (invocationSymbol != null
-                                    && (Symbol.IsEnumerableMethodWithPredicate(invocationSymbol, "Where", semanticModel)))
+                                if (semanticModel
+                                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                                    .IsLinqWhere())
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
                             }
-                            else if (IsWherePredicateWithIndex(invocationSymbol2, semanticModel))
+                            else if (Symbol.IsPredicateFunc(
+                                info2.Symbol.Parameters[1].Type,
+                                info2.Symbol.TypeArguments[0],
+                                semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
+                                semanticModel))
                             {
-                                if (IsEnumerableMethodWithPredicateWithInt32Index(invocationSymbol, "Where", semanticModel))
+                                if (semanticModel
+                                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                                    .IsLinqWhereWithIndex())
                                 {
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
@@ -69,41 +72,6 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                 }
-            }
-        }
-
-        private static bool IsWherePredicate(SemanticModel semanticModel, IMethodSymbol methodSymbol)
-        {
-            return Symbol.IsPredicateFunc(
-                methodSymbol.Parameters[0].Type,
-                methodSymbol.TypeArguments[0],
-                semanticModel);
-        }
-
-        private static bool IsWherePredicateWithIndex(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            return Symbol.IsPredicateFunc(
-                methodSymbol.Parameters[0].Type,
-                methodSymbol.TypeArguments[0],
-                semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
-                semanticModel);
-        }
-
-        private static bool IsEnumerableMethodWithPredicateWithInt32Index(IMethodSymbol methodSymbol, string methodName, SemanticModel semanticModel)
-        {
-            if (Symbol.IsEnumerableMethod(
-                methodSymbol,
-                methodName,
-                semanticModel))
-            {
-                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
-
-                return parameter != null
-                    && Symbol.IsPredicateFunc(parameter.Type, methodSymbol.TypeArguments[0], semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), semanticModel);
-            }
-            else
-            {
-                return false;
             }
         }
 

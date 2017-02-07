@@ -31,43 +31,27 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberAccess2.Name?.Identifier.ValueText == "Where")
                     {
-                        IMethodSymbol invocationSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
 
-                        if (invocationSymbol != null
-                            && Symbol.IsEnumerableMethodWithoutParameters(invocationSymbol, methodName, context.SemanticModel))
+                        if (semanticModel
+                                .GetExtensionMethodInfo(invocation, cancellationToken)
+                                .IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodName)
+                            && semanticModel
+                                .GetExtensionMethodInfo(invocation2, cancellationToken)
+                                .IsLinqWhere(allowImmutableArrayExtension: true))
                         {
-                            IMethodSymbol invocationSymbol2 = context.SemanticModel.GetMethodSymbol(invocation2, context.CancellationToken);
+                            TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
 
-                            if (invocationSymbol2 != null
-                                && IsEnumerableOrImmutableArrayExtensionWhereMethod(invocationSymbol2, context.SemanticModel))
+                            if (!invocation.ContainsDirectives(span))
                             {
-                                TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);
-
-                                if (!invocation.ContainsDirectives(span))
-                                {
-                                    context.ReportDiagnostic(
-                                        DiagnosticDescriptors.SimplifyLinqMethodChain,
-                                        Location.Create(invocation.SyntaxTree, span));
-                                }
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.SimplifyLinqMethodChain,
+                                    Location.Create(invocation.SyntaxTree, span));
                             }
                         }
                     }
                 }
-            }
-        }
-
-        private static bool IsEnumerableOrImmutableArrayExtensionWhereMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "Where", semanticModel))
-            {
-                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
-
-                return parameter != null
-                    && Symbol.IsPredicateFunc(parameter.Type, methodSymbol.TypeArguments[0], semanticModel);
-            }
-            else
-            {
-                return false;
             }
         }
 

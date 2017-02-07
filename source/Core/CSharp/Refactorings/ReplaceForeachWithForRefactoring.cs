@@ -31,9 +31,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol?.IsErrorType() == false)
             {
-                return typeSymbol.IsArrayType()
-                   || typeSymbol.IsString()
-                   || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol);
+                return typeSymbol.IsString()
+                   || typeSymbol.IsArrayType()
+                   || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(forEachStatement.SpanStart, semanticModel) == true;
             }
 
             return false;

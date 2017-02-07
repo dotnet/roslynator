@@ -90,7 +90,6 @@
     <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
     <Compile Include="Tuple.cs" />
-    <Compile Include="UseConditionalAccess.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />
     <Compile Include="InlineMethodRefactoring_.cs" />
@@ -206,7 +205,7 @@
     <Compile Include="AddBracesToIfElseRefactoring.cs" />
     <Compile Include="AddBracesRefactoring.cs" />
     <Compile Include="AddBooleanComparisonRefactoring.cs" />
-    <Compile Include="ReplaceMethodInvocationWithElementAccessRefactoring.cs" />
+    <Compile Include="UseElementAccessInsteadOfEnumerableMethodRefactoring.cs" />
     <Compile Include="MergeAttributesRefactoring.cs" />
     <Compile Include="SplitAttributesRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
