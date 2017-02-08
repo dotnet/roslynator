@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,27 +43,23 @@ namespace Roslynator.CSharp.Refactorings
 
                             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
 
-                            INamedTypeSymbol stringSymbol = semanticModel.Compilation.GetSpecialType(SpecialType.System_String);
-
                             if (methodSymbol != null
-                                && Symbol.IsMethod(
-                                    methodSymbol: methodSymbol,
-                                    containingType: stringSymbol,
-                                    accessibility: Accessibility.Public,
-                                    isStatic: true,
-                                    returnType: stringSymbol,
-                                    name: "Join",
-                                    arity: 0))
+                                && methodSymbol.ContainingType?.IsString() == true
+                                && methodSymbol.IsPublic()
+                                && methodSymbol.IsStatic
+                                && methodSymbol.ReturnType.IsString()
+                                && string.Equals(methodSymbol.Name, "Join", StringComparison.Ordinal)
+                                && methodSymbol.Arity == 0)
                             {
                                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
                                 if (parameters.Length == 2
-                                    && parameters[0].Type.Equals(stringSymbol))
+                                    && parameters[0].Type.IsString())
                                 {
                                     IParameterSymbol parameter = parameters[1];
 
-                                    if (parameter.IsParamsOf(stringSymbol)
-                                        || parameter.IsParamsOf(semanticModel.Compilation.ObjectType)
+                                    if (parameter.IsParamsOf(SpecialType.System_String)
+                                        || parameter.IsParamsOf(SpecialType.System_Object)
                                         || parameter.Type.IsConstructedFromIEnumerableOfT())
                                     {
                                         ArgumentSyntax firstArgument = arguments.First();

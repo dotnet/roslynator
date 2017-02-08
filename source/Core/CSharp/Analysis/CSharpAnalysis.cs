@@ -576,16 +576,14 @@ namespace Roslynator.CSharp.Analysis
 
                     if (symbol?.IsField() == true)
                     {
-                        INamedTypeSymbol stringSymbol = semanticModel.Compilation.GetSpecialType(SpecialType.System_String);
+                        var fieldSymbol = (IFieldSymbol)symbol;
 
-                        if (Symbol.IsField(
-                            fieldSymbol: (IFieldSymbol)symbol,
-                            containingType: stringSymbol,
-                            accessibility: Accessibility.Public,
-                            isStatic: true,
-                            isReadOnly: true,
-                            type: stringSymbol,
-                            name: "Empty"))
+                        if (string.Equals(fieldSymbol.Name, "Empty", StringComparison.Ordinal)
+                            && fieldSymbol.ContainingType?.IsString() == true
+                            && fieldSymbol.IsPublic()
+                            && fieldSymbol.IsStatic
+                            && fieldSymbol.IsReadOnly
+                            && fieldSymbol.Type.IsString())
                         {
                             return true;
                         }
