@@ -16,7 +16,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplacePropertyWithAutoImplementedPropertyRefactoring
+    internal static class UseAutoImplementedPropertyRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                         && CheckPreprocessorDirectives(property, declarator))
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
+                            DiagnosticDescriptors.UseAutoImplementedProperty,
                             property.GetLocation());
 
                         FadeOut(context, property);
@@ -219,7 +219,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut;
+            DiagnosticDescriptor descriptor = DiagnosticDescriptors.UseAutoImplementedPropertyFadeOut;
 
             if (property.ExpressionBody != null)
             {

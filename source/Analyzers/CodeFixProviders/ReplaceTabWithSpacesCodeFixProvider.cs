@@ -16,15 +16,15 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidUsageOfTab); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseSpacesInsteadOfTab); }
         }
 
         public sealed override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             CodeAction codeAction = CodeAction.Create(
-                "Replace tab with spaces",
-                cancellationToken => AvoidUsageOfTabRefactoring.RefactorAsync(context.Document, context.Span, cancellationToken),
-                DiagnosticIdentifiers.AvoidUsageOfTab + EquivalenceKeySuffix);
+                "Use spaces instead of tab",
+                cancellationToken => UseSpacesInsteadOfTabRefactoring.RefactorAsync(context.Document, context.Span, cancellationToken),
+                DiagnosticIdentifiers.UseSpacesInsteadOfTab + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
 

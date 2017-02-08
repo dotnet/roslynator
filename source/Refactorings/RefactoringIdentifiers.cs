@@ -121,7 +121,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RenameMethodAccordingToTypeName = "RenameMethodAccordingToTypeName";
         public const string RenameParameterAccordingToTypeName = "RenameParameterAccordingToTypeName";
         public const string RenamePropertyAccordingToTypeName = "RenamePropertyAccordingToTypeName";
-        public const string ReplaceAnonymousMethodWithLambdaExpression = "ReplaceAnonymousMethodWithLambdaExpression";
         public const string ReplaceAnyWithAllOrAllWithAny = "ReplaceAnyWithAllOrAllWithAny";
         public const string ReplaceAsWithCast = "ReplaceAsWithCast";
         public const string ReplaceCastWithAs = "ReplaceCastWithAs";
@@ -130,7 +129,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceConstantWithField = "ReplaceConstantWithField";
         public const string ReplaceCountWithLengthOrLengthWithCount = "ReplaceCountWithLengthOrLengthWithCount";
         public const string ReplaceDoStatementWithWhileStatement = "ReplaceDoStatementWithWhileStatement";
-        public const string ReplaceEmptyStringLiteralWithStringEmpty = "ReplaceEmptyStringLiteralWithStringEmpty";
         public const string ReplaceEqualsExpressionWithStringEquals = "ReplaceEqualsExpressionWithStringEquals";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = "ReplaceEqualsExpressionWithStringIsNullOrEmpty";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = "ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace";
@@ -138,7 +136,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";
         public const string ReplaceForWithForEach = "ReplaceForWithForEach";
         public const string ReplaceForWithWhile = "ReplaceForWithWhile";
-        public const string ReplaceHasFlagWithBitwiseOperation = "ReplaceHasFlagWithBitwiseOperation";
         public const string ReplaceIfElseWithAssignment = "ReplaceIfElseWithAssignment";
         public const string ReplaceIfElseWithSwitch = "ReplaceIfElseWithSwitch";
         public const string ReplaceIfStatementWithReturnStatement = "ReplaceIfStatementWithReturnStatement";
@@ -153,7 +150,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = "ReplaceRegularStringLiteralWithVerbatimStringLiteral";
         public const string ReplaceStatementWithIfStatement = "ReplaceStatementWithIfStatement";
         public const string ReplaceStringContainsWithStringIndexOf = "ReplaceStringContainsWithStringIndexOf";
-        public const string ReplaceStringEmptyWithEmptyStringLiteral = "ReplaceStringEmptyWithEmptyStringLiteral";
         public const string ReplaceStringFormatWithInterpolatedString = "ReplaceStringFormatWithInterpolatedString";
         public const string ReplaceStringLiteralWithCharacterLiteral = "ReplaceStringLiteralWithCharacterLiteral";
         public const string ReplaceSwitchWithIfElse = "ReplaceSwitchWithIfElse";
@@ -172,8 +168,12 @@ namespace Roslynator.CSharp.Refactorings
         public const string SwapMemberDeclarations = "SwapMemberDeclarations";
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
+        public const string UseBitwiseOperationInsteadOfCallingHasFlag = "UseBitwiseOperationInsteadOfCallingHasFlag";
         public const string UseElementAccessInsteadOfEnumerableMethod = "UseElementAccessInsteadOfEnumerableMethod";
+        public const string UseEmptyStringLiteralInsteadOfStringEmpty = "UseEmptyStringLiteralInsteadOfStringEmpty";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";
+        public const string UseLambdaExpressionInsteadOfAnonymousMethod = "UseLambdaExpressionInsteadOfAnonymousMethod";
+        public const string UseStringEmptyInsteadOfEmptyStringLiteral = "UseStringEmptyInsteadOfEmptyStringLiteral";
         public const string WrapInCondition = "WrapInCondition";
         public const string WrapInIfDirective = "WrapInIfDirective";
         public const string WrapInRegion = "WrapInRegion";

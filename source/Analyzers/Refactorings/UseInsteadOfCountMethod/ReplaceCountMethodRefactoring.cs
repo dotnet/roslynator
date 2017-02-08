@@ -12,9 +12,9 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
+namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 {
-    internal static class ReplaceCountMethodRefactoring
+    internal static class UseInsteadOfCountMethodRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
                          .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         Diagnostic diagnostic = Diagnostic.Create(
-                            DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
+                            DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
                             Location.Create(context.Node.SyntaxTree, span),
                             ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
                             propertyName);
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.ReportDiagnostic(
-                                DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,
+                                DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
                                 binaryExpression.GetLocation());
                         }
                     }

@@ -16,7 +16,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceSelectWithCastRefactoring
+    internal static class UseCastMethodInsteadOfSelectMethodRefactoring
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,

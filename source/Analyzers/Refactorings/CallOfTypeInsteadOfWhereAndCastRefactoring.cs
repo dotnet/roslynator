@@ -14,7 +14,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceWhereAndCastWithOfTypeRefactoring
+    internal static class CallOfTypeInsteadOfWhereAndCastRefactoring
     {
         public static bool Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
         {

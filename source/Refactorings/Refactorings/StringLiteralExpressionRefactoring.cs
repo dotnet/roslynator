@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEmptyStringLiteralWithStringEmpty)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)
                 && CanReplaceWithStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(

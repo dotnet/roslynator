@@ -19,25 +19,25 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
                 await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ReplaceStringEmptyWithEmptyStringLiteral(context, semanticModel, memberAccess);
+                UseEmptyStringLiteralInsteadOfStringEmpty(context, semanticModel, memberAccess);
             }
         }
 
-        private static void ReplaceStringEmptyWithEmptyStringLiteral(RefactoringContext context, SemanticModel semanticModel, MemberAccessExpressionSyntax memberAccess)
+        private static void UseEmptyStringLiteralInsteadOfStringEmpty(RefactoringContext context, SemanticModel semanticModel, MemberAccessExpressionSyntax memberAccess)
         {
             while (memberAccess != null)
             {
-                if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, semanticModel, context.CancellationToken))
+                if (UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.CanRefactor(memberAccess, semanticModel, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        $"Replace '{memberAccess}' with \"\"",
+                        $"Use \"\" instead of '{memberAccess}'",
                         cancellationToken =>
                         {
-                            return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
+                            return UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.RefactorAsync(
                                 context.Document,
                                 memberAccess,
                                 cancellationToken);

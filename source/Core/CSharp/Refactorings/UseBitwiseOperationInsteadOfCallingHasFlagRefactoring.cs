@@ -13,9 +13,9 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ReplaceHasFlagWithBitwiseOperationRefactoring
+    public static class UseBitwiseOperationInsteadOfCallingHasFlagRefactoring
     {
-        public const string Title = "Replace 'HasFlag' with bitwise operation";
+        public const string Title = "Use bitwise operation instead of calling 'HasFlag'";
 
         public static bool CanRefactor(
             InvocationExpressionSyntax invocation,

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UsePredefinedType,
-                    DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral);
+                    DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty);
             }
         }
 
@@ -41,8 +41,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             UsePredefinedTypeRefactoring.Analyze(context, memberAccess);
 
-            if (ReplaceStringEmptyWithEmptyStringLiteralRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceStringEmptyWithEmptyStringLiteral, memberAccess.GetLocation());
+            if (UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
+                context.ReportDiagnostic(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty, memberAccess.GetLocation());
         }
     }
 }

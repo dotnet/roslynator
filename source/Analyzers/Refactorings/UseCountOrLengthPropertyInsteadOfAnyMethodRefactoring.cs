@@ -16,7 +16,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceAnyMethodWithCountOrLengthPropertyRefactoring
+    internal static class UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (propertyName != null)
                     {
-                        string messageArg = null;
+                        bool success = false;
 
                         TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
 
@@ -46,22 +46,22 @@ namespace Roslynator.CSharp.Refactorings
                                 if (logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
                                     && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                 {
-                                    messageArg = $"{propertyName} == 0";
+                                    success = true;
                                 }
                             }
                             else
                             {
-                                messageArg = $"{propertyName} > 0";
+                                success = true;
                             }
                         }
 
-                        if (messageArg != null)
+                        if (success)
                         {
                             Diagnostic diagnostic = Diagnostic.Create(
-                                DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
+                                DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
                                 Location.Create(context.Node.SyntaxTree, span),
                                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
-                                messageArg);
+                                propertyName);
 
                             context.ReportDiagnostic(diagnostic);
                         }

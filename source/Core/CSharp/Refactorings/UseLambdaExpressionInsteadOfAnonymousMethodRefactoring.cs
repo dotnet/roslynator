@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ReplaceAnonymousMethodWithLambdaExpressionRefactoring
+    public static class UseLambdaExpressionInsteadOfAnonymousMethodRefactoring
     {
         public static bool CanRefactor(AnonymousMethodExpressionSyntax anonymousMethod)
         {

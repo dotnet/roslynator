@@ -455,16 +455,16 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut = NonAsynchronousMethodNameShouldNotEndWithAsync.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor ReplaceAnonymousMethodWithLambdaExpression = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression,
-            title: "Replace anonymous method with lambda expression.",
-            messageFormat: "Replace anonymous method with lambda expression.",
+        public static readonly DiagnosticDescriptor UseLambdaExpressionInsteadOfAnonymousMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod,
+            title: "Use lambda expression instead of anonymous method.",
+            messageFormat: "Use lambda expression instead of anonymous method.",
             category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceAnonymousMethodWithLambdaExpressionFadeOut = ReplaceAnonymousMethodWithLambdaExpression.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UseLambdaExpressionInsteadOfAnonymousMethodFadeOut = UseLambdaExpressionInsteadOfAnonymousMethod.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor SimplifyBooleanComparison = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.SimplifyBooleanComparison,
@@ -737,10 +737,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceStringEmptyWithEmptyStringLiteral = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral,
-            title: "Replace string.Empty with \"\".",
-            messageFormat: "Replace string.Empty with \"\".",
+        public static readonly DiagnosticDescriptor UseEmptyStringLiteralInsteadOfStringEmpty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty,
+            title: "Use \"\" instead of string.Empty.",
+            messageFormat: "Use \"\" instead of string.Empty",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false,
@@ -756,10 +756,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceAnyMethodWithCountOrLengthProperty = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty,
-            title: "Replace 'Any' method with 'Count' or 'Length' property.",
-            messageFormat: "Replace 'Any' method with '{0}' property.",
+        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfAnyMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
+            title: "Use 'Count/Length' property instead of 'Any' method.",
+            messageFormat: "Use '{0}' property instead of 'Any' method.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -774,43 +774,43 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor ReplaceCountMethodWithCountOrLengthProperty = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty,
-            title: "Replace 'Count' method with 'Count' or 'Length' property.",
-            messageFormat: "Replace 'Count' method with '{0}' property.",
+        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod,
+            title: "Use 'Count/Length' property instead of 'Count' method.",
+            messageFormat: "Use '{0}' property instead of 'Count' method.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceCountMethodWithAnyMethod = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
-            title: "Replace 'Count' method with 'Any' method.",
-            messageFormat: "Replace 'Count' method with 'Any' method.",
+        public static readonly DiagnosticDescriptor UseAnyMethodInsteadOfCountMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod,
+            title: "Use 'Any' method instead of 'Count' method.",
+            messageFormat: "Use 'Any' method instead of 'Count' method.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplaceConditionalExpressionWithCoalesceExpression = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression,
-            title: "Replace conditional expression with coalesce expression.",
-            messageFormat: "Replace conditional expression with coalesce expression.",
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfConditionalExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
+            title: "Use coalesce expression instead of conditional expression.",
+            messageFormat: "Use coalesce expression instead of conditional expression.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplacePropertyWithAutoImplementedProperty = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplacePropertyWithAutoImplementedProperty,
-            title: "Replace property with auto-implemented property.",
-            messageFormat: "Replace property with auto-implemented property.",
+        public static readonly DiagnosticDescriptor UseAutoImplementedProperty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseAutoImplementedProperty,
+            title: "Use auto-implemented property instead of expanded property.",
+            messageFormat: "Use auto-implemented property instead of expanded property.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor ReplacePropertyWithAutoImplementedPropertyFadeOut = ReplacePropertyWithAutoImplementedProperty.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UseAutoImplementedPropertyFadeOut = UseAutoImplementedProperty.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,
@@ -830,10 +830,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor AvoidUsageOfTab = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AvoidUsageOfTab,
-            title: "Avoid usage of tab.",
-            messageFormat: "Replace tab with spaces.",
+        public static readonly DiagnosticDescriptor UseSpacesInsteadOfTab = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseSpacesInsteadOfTab,
+            title: "Use space(s) instead of tab.",
+            messageFormat: "Use space(s) instead of tab.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
@@ -904,10 +904,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseBitwiseOperationInsteadOfHasFlagMethod = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod,
-            title: "Use bitwise operation instead of 'HasFlag' method.",
-            messageFormat: "Use bitwise operation instead of 'HasFlag' method.",
+        public static readonly DiagnosticDescriptor UseBitwiseOperationInsteadOfCallingHasFlag = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag,
+            title: "Use bitwise operation instead of calling 'HasFlag'.",
+            messageFormat: "Use bitwise operation instead of calling 'HasFlag'.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true

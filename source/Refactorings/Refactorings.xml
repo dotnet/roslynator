@@ -811,12 +811,6 @@
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceAnonymousMethodWithLambdaExpression" Title="Replace anonymous method with lambda expression" ExtensionVersion="0.91.0">
-    <Syntaxes>
-      <Syntax>anonymous method</Syntax>
-    </Syntaxes>
-    <Scope>delegate keyword</Scope>
-  </Refactoring>
   <Refactoring Id="ReplaceAnyWithAllOrAllWithAny" Title="Replace Any with All (or All with Any)" ExtensionVersion="0.9.2">
     <Syntaxes>
       <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
@@ -861,11 +855,6 @@
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="ReplaceEmptyStringLiteralWithStringEmpty" Title="Replace &quot;&quot; with String.Empty" IsEnabledByDefault="false" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>empty string literal</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with String.Equals" ExtensionVersion="1.1.0">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
@@ -905,11 +894,6 @@
   <Refactoring Id="ReplaceForWithWhile" Title="Replace for statement with while statement" ExtensionVersion="1.1.90">
     <Syntaxes>
       <Syntax>for statement</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="ReplaceHasFlagWithBitwiseOperation" Title="Replace HasFlag invocation with bitwise operation" ExtensionVersion="0.91.0">
-    <Syntaxes>
-      <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceIfElseWithAssignment" Title="Replace if-else with assignment" ExtensionVersion="0.99.0">
@@ -991,11 +975,6 @@
       <Syntax>method invocation</Syntax>
     </Syntaxes>
     <Scope>method name</Scope>
-  </Refactoring>
-  <Refactoring Id="ReplaceStringEmptyWithEmptyStringLiteral" Title="Replace String.Empty with &quot;&quot;" ExtensionVersion="0.9.0">
-    <Syntaxes>
-      <Syntax>String.Empty field</Syntax>
-    </Syntaxes>
   </Refactoring>
   <Refactoring Id="ReplaceStringFormatWithInterpolatedString" Title="Replace String.Format with interpolated string" ExtensionVersion="0.9.0">
     <Syntaxes>
@@ -1109,11 +1088,21 @@
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="UseBitwiseOperationInsteadOfCallingHasFlag" Title="Use bitwise operation instead of calling 'HasFlag'" ExtensionVersion="0.91.0">
+    <Syntaxes>
+      <Syntax>Enum.HasFlag method invocation</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method" ExtensionVersion="0.9.40">
     <Syntaxes>
       <Syntax>First/Last/ElementAt method invocation</Syntax>
     </Syntaxes>
     <Scope>method name</Scope>
+  </Refactoring>
+  <Refactoring Id="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of String.Empty" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>String.Empty field</Syntax>
+    </Syntaxes>
   </Refactoring>
   <Refactoring Id="UseExpressionBodiedMember" Title="Use expression-bodied member" ExtensionVersion="0.9.60">
     <Syntaxes>
@@ -1123,6 +1112,17 @@
       <Syntax>operator</Syntax>
     </Syntaxes>
     <Scope>body or accessor list</Scope>
+  </Refactoring>
+  <Refactoring Id="UseLambdaExpressionInsteadOfAnonymousMethod" Title="Use lambda expression instead of anonymous method" ExtensionVersion="0.91.0">
+    <Syntaxes>
+      <Syntax>anonymous method</Syntax>
+    </Syntaxes>
+    <Scope>delegate keyword</Scope>
+  </Refactoring>
+  <Refactoring Id="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Use String.Empty instead of &quot;&quot;" IsEnabledByDefault="false" ExtensionVersion="0.9.0">
+    <Syntaxes>
+      <Syntax>empty string literal</Syntax>
+    </Syntaxes>
   </Refactoring>
   <Refactoring Id="WrapInCondition" Title="Wrap in condition" ExtensionVersion="0.94.0">
     <Syntaxes>

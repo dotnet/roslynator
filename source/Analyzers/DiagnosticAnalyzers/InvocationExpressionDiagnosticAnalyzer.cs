@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.CSharp.Refactorings.ReplaceCountMethod;
+using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -21,10 +21,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
-                    DiagnosticDescriptors.ReplaceAnyMethodWithCountOrLengthProperty,
-                    DiagnosticDescriptors.ReplaceCountMethodWithCountOrLengthProperty,
-                    DiagnosticDescriptors.ReplaceCountMethodWithAnyMethod,
-                    DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod,
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                    DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
+                    DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
+                    DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
                     DiagnosticDescriptors.UseCastMethodInsteadOfSelectMethod,
@@ -72,18 +72,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             case "Any":
                                 {
                                     SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.Analyze(context, invocation, memberAccess);
+                                    UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "Cast":
                                 {
-                                    ReplaceWhereAndCastWithOfTypeRefactoring.Analyze(context, invocation);
+                                    CallOfTypeInsteadOfWhereAndCastRefactoring.Analyze(context, invocation);
                                     break;
                                 }
                             case "Count":
                                 {
                                     SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    ReplaceCountMethodRefactoring.Analyze(context, invocation, memberAccess);
+                                    UseInsteadOfCountMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "First":
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                 }
                             case "Select":
                                 {
-                                    ReplaceSelectWithCastRefactoring.Analyze(context, invocation, memberAccess);
+                                    UseCastMethodInsteadOfSelectMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "Where":
@@ -133,8 +133,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 }
             }
 
-            if (ReplaceHasFlagWithBitwiseOperationRefactoring.CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfHasFlagMethod, invocation.GetLocation());
+            if (UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+                context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation.GetLocation());
 
             RemoveRedundantToStringCallRefactoring.Analyze(context, invocation);
 

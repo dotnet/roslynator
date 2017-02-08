@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.UseCoalesceExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Use ?? operator",
+                                "Use coalesce expression",
                                 cancellationToken =>
                                 {
                                     return UseCoalesceExpressionRefactoring.RefactorAsync(
