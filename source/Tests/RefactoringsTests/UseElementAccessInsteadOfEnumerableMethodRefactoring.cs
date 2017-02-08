@@ -6,7 +6,8 @@ using System.Linq;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal class ReplaceMethodInvocationWithElementAccessRefactoring
+#pragma warning disable RCS1120, RCS1121
+    internal class UseElementAccessInsteadOfEnumerableMethodRefactoring
     {
         public void SomeMethod()
         {

@@ -501,6 +501,14 @@ namespace Roslynator.Extensions
             return false;
         }
 
+        public static bool IsAccessible(this ISymbol symbol, int position, SemanticModel semanticModel)
+        {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return semanticModel.IsAccessible(position, symbol);
+        }
+
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
         {
             if (fieldSymbol == null)

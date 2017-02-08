@@ -20,20 +20,22 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocation,
             MemberAccessExpressionSyntax memberAccess)
         {
-            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
-            if (methodSymbol != null
-                && Symbol.IsEnumerableMethodWithPredicate(methodSymbol, "FirstOrDefault", context.SemanticModel))
+            if (semanticModel
+                .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                .IsLinqExtensionOfIEnumerableOfTWithPredicate("FirstOrDefault"))
             {
                 ExpressionSyntax expression = memberAccess.Expression;
 
                 if (expression != null)
                 {
-                    ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
                     if (typeSymbol != null)
                     {
-                        if (typeSymbol.IsConstructedFrom(context.SemanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)))
+                        if (typeSymbol.IsConstructedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)))
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,

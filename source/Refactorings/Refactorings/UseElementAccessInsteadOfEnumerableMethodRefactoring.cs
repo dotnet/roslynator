@@ -47,18 +47,16 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
-
-                if (methodSymbol != null
-                    && Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, methodName, semanticModel)
-                    && !methodSymbol.Parameters.Any())
+                if (semanticModel
+                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, context.CancellationToken)
+                    .IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodName, allowImmutableArrayExtension: true))
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
+                        && (typeSymbol.IsArrayType() || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
                     {
                         string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -72,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
                                         context.Document,
                                         invocation,
                                         propertyName,
-                                        context.CancellationToken);
+                                        cancellationToken);
                                 });
                         }
                     }
@@ -84,25 +82,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (invocation.ArgumentList?.Arguments.Count == 1)
+            if (invocation.ArgumentList?.Arguments.Count == 1
+                && semanticModel
+                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, context.CancellationToken)
+                    .IsLinqElementAt(allowImmutableArrayExtension: true))
             {
-                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                if (methodSymbol != null
-                    && (Symbol.IsEnumerableOrImmutableArrayExtensionMethod(methodSymbol, "ElementAt", semanticModel)
-                    && methodSymbol.SingleParameterOrDefault()?.Type.IsInt32() == true))
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
+
+                if (typeSymbol != null
+                    && (typeSymbol.IsArrayType() || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
                 {
-                    var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
-
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
-
-                    if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || Symbol.ContainsPublicIndexerWithInt32Parameter(typeSymbol)))
-                    {
-                        context.RegisterRefactoring(
-                            "Use [] instead of calling 'ElementAt'",
-                            cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
-                    }
+                    context.RegisterRefactoring(
+                        "Use [] instead of calling 'ElementAt'",
+                        cancellationToken => RefactorAsync(context.Document, invocation, null, cancellationToken));
                 }
             }
         }

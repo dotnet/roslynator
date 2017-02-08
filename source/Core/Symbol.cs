@@ -25,7 +25,7 @@ namespace Roslynator
         }
 
         public static bool IsMethod(
-            this IMethodSymbol methodSymbol,
+            IMethodSymbol methodSymbol,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
             bool isStatic,
@@ -33,10 +33,8 @@ namespace Roslynator
             string name,
             int arity)
         {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            return (containingType == null || methodSymbol.ContainingType?.Equals(containingType) == true)
+            return methodSymbol != null
+                && (containingType == null || methodSymbol.ContainingType?.Equals(containingType) == true)
                 && methodSymbol.DeclaredAccessibility == accessibility
                 && methodSymbol.IsStatic == isStatic
                 && (returnType == null || methodSymbol.ReturnType.Equals(returnType))
@@ -45,7 +43,7 @@ namespace Roslynator
         }
 
         public static bool IsProperty(
-            this IPropertySymbol propertySymbol,
+            IPropertySymbol propertySymbol,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
             bool isStatic,
@@ -65,7 +63,7 @@ namespace Roslynator
         }
 
         public static bool IsIndexer(
-            this IPropertySymbol propertySymbol,
+            IPropertySymbol propertySymbol,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
             bool isStatic,
@@ -85,7 +83,7 @@ namespace Roslynator
         }
 
         private static bool IsPropertyOrIndexer(
-            this IPropertySymbol propertySymbol,
+            IPropertySymbol propertySymbol,
             bool isIndexer,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
@@ -94,10 +92,8 @@ namespace Roslynator
             string name,
             bool isReadOnly)
         {
-            if (propertySymbol == null)
-                throw new ArgumentNullException(nameof(propertySymbol));
-
-            return propertySymbol.IsIndexer == isIndexer
+            return propertySymbol != null
+                && propertySymbol.IsIndexer == isIndexer
                 && (containingType == null || propertySymbol.ContainingType?.Equals(containingType) == true)
                 && propertySymbol.DeclaredAccessibility == accessibility
                 && propertySymbol.IsStatic == isStatic
@@ -107,7 +103,7 @@ namespace Roslynator
         }
 
         public static bool IsField(
-            this IFieldSymbol fieldSymbol,
+            IFieldSymbol fieldSymbol,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
             bool isStatic,
@@ -115,10 +111,8 @@ namespace Roslynator
             ITypeSymbol type,
             string name)
         {
-            if (fieldSymbol == null)
-                throw new ArgumentNullException(nameof(fieldSymbol));
-
-            return (containingType == null || fieldSymbol.ContainingType?.Equals(containingType) == true)
+            return fieldSymbol != null
+                && (containingType == null || fieldSymbol.ContainingType?.Equals(containingType) == true)
                 && fieldSymbol.DeclaredAccessibility == accessibility
                 && fieldSymbol.IsStatic == isStatic
                 && fieldSymbol.IsReadOnly == isReadOnly
@@ -127,16 +121,14 @@ namespace Roslynator
         }
 
         public static bool IsConst(
-            this IFieldSymbol fieldSymbol,
+            IFieldSymbol fieldSymbol,
             INamedTypeSymbol containingType,
             Accessibility accessibility,
             ITypeSymbol type,
             string name)
         {
-            if (fieldSymbol == null)
-                throw new ArgumentNullException(nameof(fieldSymbol));
-
-            return fieldSymbol.IsConst
+            return fieldSymbol != null
+                && fieldSymbol.IsConst
                 && IsField(
                     fieldSymbol: fieldSymbol,
                     containingType: containingType,
@@ -147,25 +139,24 @@ namespace Roslynator
                     name: name);
         }
 
-        public static bool ContainsPublicIndexerWithInt32Parameter(ITypeSymbol typeSymbol)
+        public static IMethodSymbol FindGetItemMethodWithInt32Parameter(ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             foreach (ISymbol symbol in typeSymbol.GetMembers("get_Item"))
             {
-                if (symbol.IsPublicInstanceMethod())
+                if (!symbol.IsStatic
+                    && symbol.IsMethod())
                 {
                     var methodSymbol = (IMethodSymbol)symbol;
 
                     if (methodSymbol.SingleParameterOrDefault()?.Type.IsInt32() == true)
-                    {
-                        return true;
-                    }
+                        return methodSymbol;
                 }
             }
 
-            return false;
+            return null;
         }
 
         public static bool IsEventHandlerOrConstructedFromEventHandlerOfT(
@@ -192,111 +183,6 @@ namespace Roslynator
 
             return typeSymbol.IsClass()
                 && typeSymbol.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Exception));
-        }
-
-        public static bool IsEnumerableMethod(
-            IMethodSymbol methodSymbol,
-            string methodName,
-            SemanticModel semanticModel)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return methodSymbol.IsExtensionMethod
-                && methodSymbol.Name == methodName
-                && IsEnumerableMethod(methodSymbol, semanticModel);
-        }
-
-        public static bool IsImmutableArrayExtensionMethod(
-            IMethodSymbol methodSymbol,
-            string methodName,
-            SemanticModel semanticModel)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return methodSymbol.IsExtensionMethod
-                && methodSymbol.Name == methodName
-                && IsImmutableArrayExtensionMethod(methodSymbol, semanticModel);
-        }
-
-        public static bool IsEnumerableOrImmutableArrayExtensionMethod(
-            IMethodSymbol methodSymbol,
-            string methodName,
-            SemanticModel semanticModel)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return methodSymbol.IsExtensionMethod
-                && methodSymbol.Name == methodName
-                && (IsEnumerableMethod(methodSymbol, semanticModel) || IsImmutableArrayExtensionMethod(methodSymbol, semanticModel));
-        }
-
-        private static bool IsEnumerableMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (IsContainingType(methodSymbol, MetadataNames.System_Linq_Enumerable, semanticModel))
-            {
-                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
-
-                IParameterSymbol parameter = (reducedFrom != null)
-                    ? reducedFrom.Parameters.First()
-                    : methodSymbol.Parameters.First();
-
-                return parameter.Type.IsConstructedFromIEnumerableOfT();
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static bool IsImmutableArrayExtensionMethod(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (IsContainingType(methodSymbol, MetadataNames.System_Linq_ImmutableArrayExtensions, semanticModel))
-            {
-                IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
-
-                IParameterSymbol parameter = (reducedFrom != null)
-                    ? reducedFrom.Parameters.First()
-                    : methodSymbol.Parameters.First();
-
-                return SymbolExtensions.IsConstructedFromImmutableArrayOfT(parameter.Type, semanticModel);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool IsEnumerableMethodWithoutParameters(IMethodSymbol methodSymbol, string methodName, SemanticModel semanticModel)
-        {
-            return IsEnumerableMethod(methodSymbol, methodName, semanticModel)
-                && !methodSymbol.Parameters.Any();
-        }
-
-        public static bool IsEnumerableMethodWithPredicate(IMethodSymbol methodSymbol, string methodName, SemanticModel semanticModel)
-        {
-            if (IsEnumerableMethod(methodSymbol, methodName, semanticModel))
-            {
-                IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
-
-                return parameter != null
-                    && IsPredicateFunc(parameter.Type, methodSymbol.TypeArguments[0], semanticModel);
-            }
-            else
-            {
-                return false;
-            }
         }
 
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)

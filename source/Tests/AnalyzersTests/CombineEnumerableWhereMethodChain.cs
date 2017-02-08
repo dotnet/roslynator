@@ -11,15 +11,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private static void Foo()
         {
             var items = new List<string>();
-            ImmutableArray<string> immutableArray = ImmutableArray.Create<string>();
+            ImmutableArray<string> ia = ImmutableArray.Create<string>();
 
             IEnumerable<string> q = items.Where(f => true).Where(f => false);
 
             q = items.Where((f, index) => true).Where((f, index) => false);
 
-            q = immutableArray.Where((f, index) => true).Where((f, index) => false);
+            q = ia.Where((f, index) => true).Where((f, index) => false);
 
-            q = immutableArray.Where(f => true).Where(f => false);
+            q = items.Where((f, index) => true).Where(f => false);
+
+            q = ia.Where(f => true).Where(f => false);
         }
     }
 }

@@ -329,5 +329,37 @@ namespace Roslynator.CSharp.Extensions
 
             return false;
         }
+
+        public static ExtensionMethodInfo GetExtensionMethodInfo(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return GetExtensionMethodInfo(semanticModel, expression, ExtensionMethodKind.OrdinaryOrReduced, cancellationToken);
+        }
+
+        public static ExtensionMethodInfo GetExtensionMethodInfo(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            ExtensionMethodKind allowedKinds,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (expression == null)
+                throw new ArgumentNullException(nameof(expression));
+
+            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
+            {
+                return ExtensionMethodInfo.Create((IMethodSymbol)symbol, semanticModel, allowedKinds);
+            }
+            else
+            {
+                return default(ExtensionMethodInfo);
+            }
+        }
     }
 }
