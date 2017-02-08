@@ -1094,5 +1094,25 @@ namespace Roslynator.Extensions
 
             return false;
         }
+
+        public static bool IsParamsOf(this IParameterSymbol parameterSymbol, SpecialType elementType)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (parameterSymbol.IsParams)
+            {
+                ITypeSymbol type = parameterSymbol.Type;
+
+                if (type.IsArrayType())
+                {
+                    var arrayType = (IArrayTypeSymbol)type;
+
+                    return arrayType.ElementType.SpecialType == elementType;
+                }
+            }
+
+            return false;
+        }
     }
 }
