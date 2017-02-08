@@ -344,13 +344,7 @@ namespace Roslynator.CSharp.Extensions
             ExtensionMethodKind allowedKinds,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+            ISymbol symbol = GetSymbol(semanticModel, expression, cancellationToken);
 
             if (symbol?.IsMethod() == true)
             {

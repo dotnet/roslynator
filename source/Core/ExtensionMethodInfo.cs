@@ -68,6 +68,9 @@ namespace Roslynator
             if (methodSymbol == null)
                 throw new ArgumentNullException(nameof(methodSymbol));
 
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             if (methodSymbol.IsExtensionMethod)
             {
                 IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
