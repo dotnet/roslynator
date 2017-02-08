@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.CSharp.Refactorings.ReplaceCountMethod;
+using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -24,9 +24,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLinqMethodChain,
-                    DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty,
-                    DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty,
-                    DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod,
+                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod,
+                    DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag,
                     DiagnosticIdentifiers.RemoveRedundantToStringCall,
                     DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
                     DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Simplify method chain",
-                                            cancellationToken => ReplaceWhereAndCastWithOfTypeRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                            cancellationToken => CallOfTypeInsteadOfWhereAndCastRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                             diagnostic.Id + EquivalenceKeySuffix);
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -90,34 +90,35 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceAnyMethodWithCountOrLengthProperty:
+                    case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
                         {
                             string propertyName = diagnostic.Properties["PropertyName"];
-                            string sign = (invocation.IsParentKind(SyntaxKind.LogicalNotExpression)) ? "==" : ">";
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Replace 'Any' with '{propertyName} {sign} 0'",
-                                cancellationToken => ReplaceAnyMethodWithCountOrLengthPropertyRefactoring.RefactorAsync(context.Document, invocation, propertyName, cancellationToken),
+                                $"Use '{propertyName}' property instead of calling 'Any'",
+                                cancellationToken => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceCountMethodWithCountOrLengthProperty:
+                    case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod:
                         {
+                            string propertyName = diagnostic.Properties["PropertyName"];
+
                             CodeAction codeAction = CodeAction.Create(
-                                $"Replace 'Count()' with '{diagnostic.Properties["PropertyName"]}'",
-                                cancellationToken => ReplaceCountMethodWithCountOrLengthPropertyRefactoring.RefactorAsync(context.Document, invocation, diagnostic.Properties["PropertyName"], cancellationToken),
+                                $"Use '{propertyName}' property instead of calling 'Count'",
+                                cancellationToken => UseCountOrLengthPropertyInsteadOfCountMethodRefactoring.RefactorAsync(context.Document, invocation, diagnostic.Properties["PropertyName"], cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.UseBitwiseOperationInsteadOfHasFlagMethod:
+                    case DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                ReplaceHasFlagWithBitwiseOperationRefactoring.Title,
-                                cancellationToken => ReplaceHasFlagWithBitwiseOperationRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.Title,
+                                cancellationToken => UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -137,7 +138,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Cast' instead of 'Select'",
-                                cancellationToken => ReplaceSelectWithCastRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                cancellationToken => UseCastMethodInsteadOfSelectMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

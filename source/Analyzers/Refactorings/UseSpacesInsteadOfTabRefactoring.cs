@@ -10,7 +10,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AvoidUsageOfTabRefactoring
+    internal static class UseSpacesInsteadOfTabRefactoring
     {
         public static void Analyze(SyntaxTreeAnalysisContext context)
         {
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                             } while (i < text.Length && text[i] == '\t');
 
                             context.ReportDiagnostic(
-                                DiagnosticDescriptors.AvoidUsageOfTab,
+                                DiagnosticDescriptors.UseSpacesInsteadOfTab,
                                 Location.Create(context.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                         }
                     }

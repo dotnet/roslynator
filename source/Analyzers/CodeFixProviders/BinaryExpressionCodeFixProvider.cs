@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.CSharp.Refactorings.ReplaceCountMethod;
+using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
-                    DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod,
+                    DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod,
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
@@ -57,11 +57,11 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceCountMethodWithAnyMethod:
+                    case DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace 'Count()' with 'Any()'",
-                                cancellationToken => ReplaceCountMethodWithAnyMethodRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                "Call 'Any' instead of 'Count'",
+                                cancellationToken => UseAnyMethodInsteadOfCountMethodRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

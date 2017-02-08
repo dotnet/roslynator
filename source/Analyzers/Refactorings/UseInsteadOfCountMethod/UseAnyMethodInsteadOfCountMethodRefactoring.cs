@@ -7,9 +7,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceCountMethod
+namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 {
-    internal static class ReplaceCountMethodWithAnyMethodRefactoring
+    internal static class UseAnyMethodInsteadOfCountMethodRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplacePropertyWithAutoImplementedProperty,
-                    DiagnosticDescriptors.ReplacePropertyWithAutoImplementedPropertyFadeOut);
+                    DiagnosticDescriptors.UseAutoImplementedProperty,
+                    DiagnosticDescriptors.UseAutoImplementedPropertyFadeOut);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var property = (PropertyDeclarationSyntax)context.Node;
 
-            ReplacePropertyWithAutoImplementedPropertyRefactoring.Analyze(context, property);
+            UseAutoImplementedPropertyRefactoring.Analyze(context, property);
         }
     }
 }

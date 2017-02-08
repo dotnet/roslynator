@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -35,12 +35,12 @@ namespace Roslynator.CSharp.CodeFixProviders
                 $"Replace '{memberAccess}' with \"\"",
                 cancellationToken =>
                 {
-                    return ReplaceStringEmptyWithEmptyStringLiteralRefactoring.RefactorAsync(
+                    return UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.RefactorAsync(
                         context.Document,
                         memberAccess,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.ReplaceStringEmptyWithEmptyStringLiteral + EquivalenceKeySuffix);
+                DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

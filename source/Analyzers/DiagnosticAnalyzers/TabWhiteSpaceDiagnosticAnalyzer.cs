@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfTab); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UseSpacesInsteadOfTab); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
         {
-            AvoidUsageOfTabRefactoring.Analyze(context);
+            UseSpacesInsteadOfTabRefactoring.Analyze(context);
         }
     }
 }

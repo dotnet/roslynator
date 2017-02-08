@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression,
-                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
+                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticDescriptors.SimplifyConditionalExpression);
             }
         }
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             ParenthesizeConditionInConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
 
-            ReplaceConditionalExpressionWithCoalesceExpressionRefactoring.Analyze(context, conditionalExpression);
+            UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
 
             SimplifyConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
         }

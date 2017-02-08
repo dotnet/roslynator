@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace anonymous method with lambda expression",
-                cancellationToken => ReplaceAnonymousMethodWithLambdaExpressionRefactoring.RefactorAsync(context.Document, anonymousMethod, cancellationToken),
-                DiagnosticIdentifiers.ReplaceAnonymousMethodWithLambdaExpression + EquivalenceKeySuffix);
+                cancellationToken => UseLambdaExpressionInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, cancellationToken),
+                DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

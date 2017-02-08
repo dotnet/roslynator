@@ -12,7 +12,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceConditionalExpressionWithCoalesceExpressionRefactoring
+    internal static class UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
         {
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.ReplaceConditionalExpressionWithCoalesceExpression,
+                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
                     conditionalExpression.GetLocation());
             }
         }

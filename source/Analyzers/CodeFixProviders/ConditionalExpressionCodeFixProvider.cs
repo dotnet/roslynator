@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
-                    DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression,
+                    DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression);
             }
         }
@@ -48,13 +48,13 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceConditionalExpressionWithCoalesceExpression:
+                    case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace ?: with ??",
+                                "Use coalesce expression",
                                 cancellationToken =>
                                 {
-                                    return ReplaceConditionalExpressionWithCoalesceExpressionRefactoring.RefactorAsync(
+                                    return UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);

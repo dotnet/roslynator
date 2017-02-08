@@ -414,9 +414,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceAnonymousMethodWithLambdaExpression" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseLambdaExpressionInsteadOfAnonymousMethod" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1048</Id>
-    <Title>Replace anonymous method with lambda expression.</Title>
+    <Title>Use lambda expression instead of anonymous method.</Title>
     <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -675,9 +675,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceStringEmptyWithEmptyStringLiteral" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1078</Id>
-    <Title>Replace string.Empty with "".</Title>
+    <Title>Use "" instead of string.Empty.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -693,9 +693,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceAnyMethodWithCountOrLengthProperty" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfAnyMethod" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
     <Id>RCS1080</Id>
-    <Title>Replace 'Any' method with 'Count' or 'Length' property.</Title>
+    <Title>Use 'Count/Length' property instead of 'Any' method.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -711,36 +711,36 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceCountMethodWithCountOrLengthProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1082</Id>
-    <Title>Replace 'Count' method with 'Count' or 'Length' property.</Title>
+    <Title>Use 'Count/Length' property instead of 'Count' method.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceCountMethodWithAnyMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseAnyMethodInsteadOfCountMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1083</Id>
-    <Title>Replace 'Count' method with 'Any' method.</Title>
+    <Title>Use 'Any' method instead of 'Count' method.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceConditionalExpressionWithCoalesceExpression" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseCoalesceExpressionInsteadOfConditionalExpression" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1084</Id>
-    <Title>Replace conditional expression with coalesce expression.</Title>
+    <Title>Use coalesce expression instead of conditional expression.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplacePropertyWithAutoImplementedProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseAutoImplementedProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
     <Id>RCS1085</Id>
-    <Title>Replace property with auto-implemented property.</Title>
+    <Title>Use auto-implemented property instead of expanded property.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -765,9 +765,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfTab" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
+  <Analyzer Identifier="UseSpacesInsteadOfTab" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
     <Id>RCS1088</Id>
-    <Title>Avoid usage of tab.</Title>
+    <Title>Use space(s) instead of tab.</Title>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -837,9 +837,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseBitwiseOperationInsteadOfHasFlagMethod" ExtensionVersion="1.1.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseBitwiseOperationInsteadOfCallingHasFlag" ExtensionVersion="1.1.2" NuGetVersion="0.0.0">
     <Id>RCS1096</Id>
-    <Title>Use bitwise operation instead of 'HasFlag' method.</Title>
+    <Title>Use bitwise operation instead of calling 'HasFlag'.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
