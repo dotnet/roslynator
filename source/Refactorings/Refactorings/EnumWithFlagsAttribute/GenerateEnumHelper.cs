@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 {
-    internal static class EnumHelper
+    internal static class GenerateEnumHelper
     {
         public static EnumMemberDeclarationSyntax CreateEnumMember(INamedTypeSymbol enumSymbol, string name, object value)
         {
@@ -56,38 +56,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             }
 
             return values;
-        }
-
-        public static IEnumerable<object> GetValues(
-            ITypeSymbol enumSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            foreach (ISymbol member in enumSymbol.GetMembers())
-            {
-                if (member.IsField())
-                {
-                    var fieldSymbol = (IFieldSymbol)member;
-
-                    if (fieldSymbol.HasConstantValue)
-                        yield return fieldSymbol.ConstantValue;
-                }
-            }
-        }
-
-        public static bool IsValueDefined(
-            object value,
-            INamedTypeSymbol enumSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            foreach (object value2 in GetValues(enumSymbol, semanticModel, cancellationToken))
-            {
-                if (value2.Equals(value))
-                    return true;
-            }
-
-            return false;
         }
     }
 }

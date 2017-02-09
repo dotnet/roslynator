@@ -50,13 +50,11 @@
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\EnumHelper.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\FlagsGenerator.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\GenerateCombinedEnumMemberRefactoring.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\GenerateEnumMemberRefactoring.cs" />
+    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumHelper.cs" />
+    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateCombinedEnumMemberRefactoring.cs" />
+    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\EnumMemberDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\GenerateEnumValuesRefactoring.cs" />
-    <Compile Include="Refactorings\EnumRefactoring\FlagsGenerationMode.cs" />
+    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumValuesRefactoring.cs" />
     <Compile Include="Refactorings\DestructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />

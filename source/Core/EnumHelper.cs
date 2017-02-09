@@ -4,21 +4,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Roslynator.Extensions;
 
-namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
+namespace Roslynator
 {
-    internal static class FlagsGenerator
+    public static class EnumHelper
     {
-        public static Optional<object> GetNewValue(
-            SpecialType specialType,
-            IEnumerable<object> reservedValues,
-            FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static IEnumerable<object> GetValues(ITypeSymbol enumSymbol)
         {
-            switch (specialType)
+            foreach (IFieldSymbol fieldSymbol in enumSymbol.GetFields())
+            {
+                if (fieldSymbol.HasConstantValue)
+                    yield return fieldSymbol.ConstantValue;
+            }
+        }
+
+        public static bool IsValueDefined(INamedTypeSymbol enumSymbol, object value)
+        {
+            foreach (object value2 in GetValues(enumSymbol))
+            {
+                if (object.Equals(value2, value))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static Optional<object> GetUniquePowerOfTwo(INamedTypeSymbol enumSymbol, bool startFromHighestExistingValue = false)
+        {
+            if (enumSymbol == null)
+                throw new ArgumentNullException(nameof(enumSymbol));
+
+            return GetUniquePowerOfTwo(
+                enumSymbol.EnumUnderlyingType.SpecialType,
+                GetValues(enumSymbol),
+                startFromHighestExistingValue);
+        }
+
+        public static Optional<object> GetUniquePowerOfTwo(
+            SpecialType enumUnderlyingType,
+            IEnumerable<object> reservedValues,
+            bool startFromHighestExistingValue = false)
+        {
+            switch (enumUnderlyingType)
             {
                 case SpecialType.System_SByte:
                     {
-                        Optional<sbyte> result = GetNewValue(reservedValues.Cast<sbyte>(), mode);
+                        Optional<sbyte> result = GetUniquePowerOfTwo(reservedValues.Cast<sbyte>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -31,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_Byte:
                     {
-                        Optional<byte> result = GetNewValue(reservedValues.Cast<byte>(), mode);
+                        Optional<byte> result = GetUniquePowerOfTwo(reservedValues.Cast<byte>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -44,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_Int16:
                     {
-                        Optional<short> result = GetNewValue(reservedValues.Cast<short>(), mode);
+                        Optional<short> result = GetUniquePowerOfTwo(reservedValues.Cast<short>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -57,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_UInt16:
                     {
-                        Optional<ushort> result = GetNewValue(reservedValues.Cast<ushort>(), mode);
+                        Optional<ushort> result = GetUniquePowerOfTwo(reservedValues.Cast<ushort>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -70,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_Int32:
                     {
-                        Optional<int> result = GetNewValue(reservedValues.Cast<int>(), mode);
+                        Optional<int> result = GetUniquePowerOfTwo(reservedValues.Cast<int>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -83,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_UInt32:
                     {
-                        Optional<uint> result = GetNewValue(reservedValues.Cast<uint>(), mode);
+                        Optional<uint> result = GetUniquePowerOfTwo(reservedValues.Cast<uint>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -96,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_Int64:
                     {
-                        Optional<long> result = GetNewValue(reservedValues.Cast<long>(), mode);
+                        Optional<long> result = GetUniquePowerOfTwo(reservedValues.Cast<long>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -109,7 +141,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                     }
                 case SpecialType.System_UInt64:
                     {
-                        Optional<ulong> result = GetNewValue(reservedValues.Cast<ulong>(), mode);
+                        Optional<ulong> result = GetUniquePowerOfTwo(reservedValues.Cast<ulong>(), startFromHighestExistingValue);
 
                         if (result.HasValue)
                         {
@@ -125,7 +157,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return default(Optional<object>);
         }
 
-        public static Optional<sbyte> GetNewValue(IEnumerable<sbyte> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -138,7 +170,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                sbyte i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 sbyte i = 1;
 
@@ -149,15 +190,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                sbyte i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<sbyte>);
@@ -173,7 +205,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<byte> GetNewValue(IEnumerable<byte> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -189,7 +221,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                byte i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 byte i = 1;
 
@@ -200,15 +241,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                byte i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<byte>);
@@ -224,7 +256,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<short> GetNewValue(IEnumerable<short> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -240,7 +272,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                short i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 short i = 1;
 
@@ -251,15 +292,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                short i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<short>);
@@ -275,7 +307,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<ushort> GetNewValue(IEnumerable<ushort> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -291,7 +323,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                ushort i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 ushort i = 1;
 
@@ -302,15 +343,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                ushort i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<ushort>);
@@ -326,7 +358,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<int> GetNewValue(IEnumerable<int> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -342,7 +374,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                int i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 int i = 1;
 
@@ -353,15 +394,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                int i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<int>);
@@ -377,7 +409,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<uint> GetNewValue(IEnumerable<uint> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -393,7 +425,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                uint i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 uint i = 1;
 
@@ -404,15 +445,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                uint i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<uint>);
@@ -428,7 +460,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<long> GetNewValue(IEnumerable<long> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -444,7 +476,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                long i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 long i = 1;
 
@@ -455,15 +496,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                long i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<long>);
@@ -479,7 +511,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             return x > 0 && (x & (x - 1)) == 0;
         }
 
-        public static Optional<ulong> GetNewValue(IEnumerable<ulong> reservedValues, FlagsGenerationMode mode = FlagsGenerationMode.None)
+        public static Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
         {
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
@@ -495,7 +527,16 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             if (values.Length == 1 && values[0] == 0)
                 return 1;
 
-            if (mode == FlagsGenerationMode.None)
+            if (startFromHighestExistingValue)
+            {
+                ulong i = values.Max();
+
+                i *= 2;
+
+                if (i > 0)
+                    return i;
+            }
+            else
             {
                 ulong i = 1;
 
@@ -506,15 +547,6 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     i *= 2;
                 }
-            }
-            else if (mode == FlagsGenerationMode.FromHighestExistingValue)
-            {
-                ulong i = values.Max();
-
-                i *= 2;
-
-                if (i > 0)
-                    return i;
             }
 
             return default(Optional<ulong>);
