@@ -10,20 +10,7 @@ namespace Roslynator
 {
     public static class Symbol
     {
-        public static bool IsEnumWithFlagsAttribute(ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return typeSymbol.IsEnum()
-                && typeSymbol
-                    .GetAttributes()
-                    .Any(f => f.AttributeClass.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)));
-        }
-
+#if DEBUG
         public static bool IsMethod(
             IMethodSymbol methodSymbol,
             INamedTypeSymbol containingType,
@@ -34,11 +21,11 @@ namespace Roslynator
             int arity)
         {
             return methodSymbol != null
-                && (containingType == null || methodSymbol.ContainingType?.Equals(containingType) == true)
+                && string.Equals(methodSymbol.Name, name, StringComparison.Ordinal)
+                && methodSymbol.ContainingType?.Equals(containingType) == true
                 && methodSymbol.DeclaredAccessibility == accessibility
                 && methodSymbol.IsStatic == isStatic
-                && (returnType == null || methodSymbol.ReturnType.Equals(returnType))
-                && (name == null || methodSymbol.Name == name)
+                && methodSymbol.ReturnType.Equals(returnType)
                 && methodSymbol.Arity == arity;
         }
 
@@ -51,15 +38,14 @@ namespace Roslynator
             string name,
             bool isReadOnly)
         {
-            return IsPropertyOrIndexer(
-                propertySymbol: propertySymbol,
-                isIndexer: false,
-                containingType: containingType,
-                accessibility: accessibility,
-                isStatic: isStatic,
-                type: type,
-                name: name,
-                isReadOnly: isReadOnly);
+            return propertySymbol != null
+                && string.Equals(propertySymbol.Name, name, StringComparison.Ordinal)
+                && !propertySymbol.IsIndexer
+                && propertySymbol.ContainingType?.Equals(containingType) == true
+                && propertySymbol.DeclaredAccessibility == accessibility
+                && propertySymbol.IsStatic == isStatic
+                && propertySymbol.Type.Equals(type)
+                && propertySymbol.IsReadOnly == isReadOnly;
         }
 
         public static bool IsIndexer(
@@ -71,34 +57,13 @@ namespace Roslynator
             string name,
             bool isReadOnly)
         {
-            return IsPropertyOrIndexer(
-                propertySymbol: propertySymbol,
-                isIndexer: true,
-                containingType: containingType,
-                accessibility: accessibility,
-                isStatic: isStatic,
-                type: type,
-                name: name,
-                isReadOnly: isReadOnly);
-        }
-
-        private static bool IsPropertyOrIndexer(
-            IPropertySymbol propertySymbol,
-            bool isIndexer,
-            INamedTypeSymbol containingType,
-            Accessibility accessibility,
-            bool isStatic,
-            ITypeSymbol type,
-            string name,
-            bool isReadOnly)
-        {
             return propertySymbol != null
-                && propertySymbol.IsIndexer == isIndexer
-                && (containingType == null || propertySymbol.ContainingType?.Equals(containingType) == true)
+                && string.Equals(propertySymbol.Name, name, StringComparison.Ordinal)
+                && propertySymbol.IsIndexer
+                && propertySymbol.ContainingType?.Equals(containingType) == true
                 && propertySymbol.DeclaredAccessibility == accessibility
                 && propertySymbol.IsStatic == isStatic
-                && (type == null || propertySymbol.Type.Equals(type))
-                && (name == null || propertySymbol.Name == name)
+                && propertySymbol.Type.Equals(type)
                 && propertySymbol.IsReadOnly == isReadOnly;
         }
 
@@ -112,12 +77,12 @@ namespace Roslynator
             string name)
         {
             return fieldSymbol != null
-                && (containingType == null || fieldSymbol.ContainingType?.Equals(containingType) == true)
+                && string.Equals(fieldSymbol.Name, name, StringComparison.Ordinal)
+                && fieldSymbol.ContainingType?.Equals(containingType) == true
                 && fieldSymbol.DeclaredAccessibility == accessibility
                 && fieldSymbol.IsStatic == isStatic
                 && fieldSymbol.IsReadOnly == isReadOnly
-                && (type == null || fieldSymbol.Type.Equals(type))
-                && (name == null || fieldSymbol.Name == name);
+                && fieldSymbol.Type.Equals(type);
         }
 
         public static bool IsConst(
@@ -129,14 +94,27 @@ namespace Roslynator
         {
             return fieldSymbol != null
                 && fieldSymbol.IsConst
-                && IsField(
-                    fieldSymbol: fieldSymbol,
-                    containingType: containingType,
-                    accessibility: accessibility,
-                    isStatic: true,
-                    isReadOnly: false,
-                    type: type,
-                    name: name);
+                && string.Equals(fieldSymbol.Name, name, StringComparison.Ordinal)
+                && fieldSymbol.ContainingType?.Equals(containingType) == true
+                && fieldSymbol.DeclaredAccessibility == accessibility
+                && fieldSymbol.IsStatic
+                && !fieldSymbol.IsReadOnly
+                && fieldSymbol.Type.Equals(type);
+        }
+#endif
+
+        public static bool IsEnumWithFlagsAttribute(ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return typeSymbol.IsEnum()
+                && typeSymbol
+                    .GetAttributes()
+                    .Any(f => f.AttributeClass.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)));
         }
 
         public static IMethodSymbol FindGetItemMethodWithInt32Parameter(ITypeSymbol typeSymbol)
