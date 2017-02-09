@@ -30,10 +30,10 @@ namespace Roslynator.CSharp.Formatting
         }
 
         public static TNode ToSingleLine<TNode>(
-            TNode condition,
+            TNode node,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            return Remover.RemoveWhitespaceOrEndOfLine(condition)
+            return Remover.RemoveWhitespaceOrEndOfLine(node, node.Span)
                 .WithFormatterAnnotation();
         }
 
