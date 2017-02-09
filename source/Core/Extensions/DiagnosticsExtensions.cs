@@ -39,6 +39,16 @@ namespace Roslynator.Extensions
         public static void ReportDiagnostic(
             this SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,
+            SyntaxTrivia trivia,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptor, trivia.GetLocation(), messageArgs));
+        }
+
+        public static void ReportDiagnostic(
+            this SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
             Location location,
             params object[] messageArgs)
         {
@@ -94,6 +104,16 @@ namespace Roslynator.Extensions
         public static void ReportDiagnostic(
             this SyntaxTreeAnalysisContext context,
             DiagnosticDescriptor descriptor,
+            SyntaxTrivia trivia,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptor, trivia.GetLocation(), messageArgs));
+        }
+
+        public static void ReportDiagnostic(
+            this SyntaxTreeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
             Location location,
             params object[] messageArgs)
         {
@@ -122,6 +142,16 @@ namespace Roslynator.Extensions
         {
             context.ReportDiagnostic(
                 Diagnostic.Create(descriptor, token.GetLocation(), messageArgs));
+        }
+
+        public static void ReportDiagnostic(
+            this SymbolAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            SyntaxTrivia trivia,
+            params object[] messageArgs)
+        {
+            context.ReportDiagnostic(
+                Diagnostic.Create(descriptor, trivia.GetLocation(), messageArgs));
         }
 
         public static void ReportDiagnostic(
