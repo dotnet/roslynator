@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UseExpressionBodiedMember,
-                block.GetLocation());
+                block);
 
             SyntaxNode parent = expression.Parent;
 
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UseExpressionBodiedMember,
-                accessorList.GetLocation());
+                accessorList);
 
             SyntaxNode parent = expression.Parent;
 

@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
-                statement.GetLocation());
+                statement);
         }
     }
 }

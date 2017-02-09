@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.RemoveBraces,
-                            block.GetLocation(),
+                            block,
                             GetName(node));
 
                         context.ReportBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block);

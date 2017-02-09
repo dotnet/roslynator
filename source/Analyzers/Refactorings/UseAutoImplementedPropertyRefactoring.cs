@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseAutoImplementedProperty,
-                            property.GetLocation());
+                            property);
 
                         if (property.ExpressionBody != null)
                         {

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         .DescendantTrivia(block.Span)
                         .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block);
                 }
             }
         }

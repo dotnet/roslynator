@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.RemoveRedundantFieldInitialization,
-                                        initializer.GetLocation());
+                                        initializer);
                                 }
                             }
                         }

@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.SimplifyNullableOfT,
-                                genericName.GetLocation());
+                                genericName);
                         }
                     }
                 }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol?.SupportsPredefinedType() == false
                     && typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName);
                 }
             }
         }

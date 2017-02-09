@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
-                ifStatement.GetLocation());
+                ifStatement);
 
             context.ReportToken(FadeOutDescriptor, nestedIf.IfKeyword);
             context.ReportToken(FadeOutDescriptor, nestedIf.OpenParenToken);

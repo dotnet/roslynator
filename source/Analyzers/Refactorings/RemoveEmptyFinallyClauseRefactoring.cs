@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                         && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
                         && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause.GetLocation());
+                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
                     }
                 }
             }

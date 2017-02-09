@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                                                         {
                                                             context.ReportDiagnostic(
                                                                 DiagnosticDescriptors.MergeLocalDeclarationWithInitialization,
-                                                                declarator.Identifier.GetLocation());
+                                                                declarator.Identifier);
 
                                                             if (value != null)
                                                                 context.ReportNode(FadeOutDescriptor, initializer);

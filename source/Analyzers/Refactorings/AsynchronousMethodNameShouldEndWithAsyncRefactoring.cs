@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
-                    methodDeclaration.Identifier.GetLocation());
+                    methodDeclaration.Identifier);
             }
         }
     }

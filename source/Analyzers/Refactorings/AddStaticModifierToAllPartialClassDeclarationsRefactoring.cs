@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
-                                classDeclaration.Identifier.GetLocation());
+                                classDeclaration.Identifier);
                         }
                     }
                 }

@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             BaseTypeSyntax baseType = GetRedundantBaseType(context, enumDeclaration);
 
             if (baseType != null)
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, baseType.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, baseType);
         }
 
         private static BaseTypeSyntax GetRedundantBaseType(SyntaxNodeAnalysisContext context, EnumDeclarationSyntax enumDeclaration)

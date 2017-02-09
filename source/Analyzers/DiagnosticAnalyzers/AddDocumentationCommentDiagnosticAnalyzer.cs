@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (ClassDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (ConstructorDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (DelegateDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (DestructorDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (EnumDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (EventDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (EventFieldDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (FieldDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (IndexerDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (InterfaceDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (MethodDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (OperatorDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (PropertyDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
 
         private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var declaration = (StructDeclarationSyntax)context.Node;
 
             if (CanRefactor(declaration, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AddDocumentationComment, declaration);
         }
     }
 }

@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
             TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.Span.Start, lambda.ArrowToken.Span.End);
 
             context.ReportDiagnostic(FadeOutDescriptor, Location.Create(invocation.SyntaxTree, span));
-            context.ReportDiagnostic(FadeOutDescriptor, invocation.ArgumentList.CloseParenToken.GetLocation());
+            context.ReportDiagnostic(FadeOutDescriptor, invocation.ArgumentList.CloseParenToken);
         }
 
         private static bool CheckLambdas(ExpressionSyntax expression1, ExpressionSyntax expression2)

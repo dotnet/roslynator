@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
-                expression.GetLocation());
+                expression);
         }
     }
 }

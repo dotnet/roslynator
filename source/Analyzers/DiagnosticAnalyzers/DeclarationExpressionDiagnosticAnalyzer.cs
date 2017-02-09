@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseVarInsteadOfExplicitType,
-                            declarationExpression.Type.GetLocation());
+                            declarationExpression.Type);
 
                         break;
                     }
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
-                            declarationExpression.Type.GetLocation());
+                            declarationExpression.Type);
 
                         break;
                     }
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
-                            declarationExpression.Type.GetLocation());
+                            declarationExpression.Type);
 
                         break;
                     }

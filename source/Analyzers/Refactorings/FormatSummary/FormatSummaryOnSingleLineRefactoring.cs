@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.FormatDocumentationSummaryOnSingleLine,
-                                summaryElement.GetLocation());
+                                summaryElement);
                         }
                     }
                 }

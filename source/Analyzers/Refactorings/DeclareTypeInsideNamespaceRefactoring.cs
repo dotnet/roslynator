@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.DeclareTypeInsideNamespace,
-                                identifier.GetLocation(),
+                                identifier,
                                 identifier.ValueText);
                         }
                     }

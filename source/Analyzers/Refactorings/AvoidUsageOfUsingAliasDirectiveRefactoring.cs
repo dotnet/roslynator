@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective,
-                    usingDirective.GetLocation());
+                    usingDirective);
             }
         }
 

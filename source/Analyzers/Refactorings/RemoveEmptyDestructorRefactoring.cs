@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
             if (destructor.Body?.Statements.Count == 0
                 && !destructor.SpanContainsDirectives())
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyDestructor, destructor.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyDestructor, destructor);
             }
         }
 

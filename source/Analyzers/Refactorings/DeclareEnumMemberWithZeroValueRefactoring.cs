@@ -41,9 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var enumDeclaration = (EnumDeclarationSyntax)node;
 
-                        context.ReportDiagnostic(DiagnosticDescriptors.DeclareEnumMemberWithZeroValue, enumDeclaration
-                            .Identifier
-                            .GetLocation());
+                        context.ReportDiagnostic(DiagnosticDescriptors.DeclareEnumMemberWithZeroValue, enumDeclaration.Identifier);
                     }
                 }
             }

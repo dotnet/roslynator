@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
-                                binaryExpression.GetLocation());
+                                binaryExpression);
                         }
                     }
                 }

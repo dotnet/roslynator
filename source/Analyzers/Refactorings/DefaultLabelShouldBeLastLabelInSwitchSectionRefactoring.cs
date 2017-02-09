@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
-                            label.GetLocation());
+                            label);
                     }
                 }
             }

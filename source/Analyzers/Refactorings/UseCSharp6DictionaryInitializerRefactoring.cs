@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseCSharp6DictionaryInitializer,
-                    initializer.GetLocation());
+                    initializer);
             }
         }
 

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.UseElementAccessInsteadOfFirst,
-                        memberAccess.Name.GetLocation());
+                        memberAccess.Name);
                 }
             }
         }

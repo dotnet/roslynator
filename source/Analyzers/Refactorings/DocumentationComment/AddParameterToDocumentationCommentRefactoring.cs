@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.AddParameterToDocumentationComment,
-                                    parameter.GetLocation());
+                                    parameter);
                             }
                         }
                     }

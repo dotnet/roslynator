@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.FormatDocumentationSummaryOnMultipleLines,
-                    summaryElement.GetLocation());
+                    summaryElement);
             }
         }
 

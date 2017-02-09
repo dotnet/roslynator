@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             if (block.IsParentKind(SyntaxKind.Block)
                 && block.Statements.Any())
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBraces, block.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBraces, block);
 
                 context.ReportBraces(DiagnosticDescriptors.RemoveRedundantBracesFadeOut, block);
             }

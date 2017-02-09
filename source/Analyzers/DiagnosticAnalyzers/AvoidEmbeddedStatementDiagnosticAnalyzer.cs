@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidEmbeddedStatement,
-                    statement.GetLocation(),
+                    statement,
                     GetName(context.Node));
             }
         }

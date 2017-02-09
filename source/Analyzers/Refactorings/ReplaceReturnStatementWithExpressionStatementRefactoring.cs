@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (CanRefactor(returnStatement, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnStatementWithExpressionStatement, returnStatement.ReturnKeyword.GetLocation(), "return");
+                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnStatementWithExpressionStatement, returnStatement.ReturnKeyword, "return");
             }
         }
 

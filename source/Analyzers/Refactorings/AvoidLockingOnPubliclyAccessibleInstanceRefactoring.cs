@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
-                            expression.GetLocation(),
+                            expression,
                             expression.ToString());
                     }
                 }

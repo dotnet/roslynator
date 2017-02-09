@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
-                                memberAccess.Name.GetLocation());
+                                memberAccess.Name);
                         }
                         else if (typeSymbol.IsArrayType())
                         {
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
-                                    memberAccess.Name.GetLocation());
+                                    memberAccess.Name);
                             }
                         }
                     }

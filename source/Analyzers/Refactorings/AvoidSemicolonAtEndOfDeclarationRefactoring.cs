@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration,
-                        semicolon.GetLocation());
+                        semicolon);
                 }
             }
         }

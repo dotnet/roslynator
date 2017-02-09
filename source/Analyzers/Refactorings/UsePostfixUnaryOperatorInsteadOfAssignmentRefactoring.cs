@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
-                assignment.GetLocation(),
+                assignment,
                 GetOperatorText(assignment));
         }
 

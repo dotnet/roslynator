@@ -13,7 +13,6 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-
     internal static class RemoveRedundantParenthesesRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)

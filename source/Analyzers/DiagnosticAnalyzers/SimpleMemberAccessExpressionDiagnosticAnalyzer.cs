@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             UsePredefinedTypeRefactoring.Analyze(context, memberAccess);
 
             if (UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.CanRefactor(memberAccess, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty, memberAccess.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty, memberAccess);
         }
     }
 }

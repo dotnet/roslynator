@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.ThrowingOfNewNotImplementedException,
-                            expression.GetLocation());
+                            expression);
                     }
                 }
             }

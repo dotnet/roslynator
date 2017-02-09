@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
                         && statement.GetSpanStartLine() == previousEndLine)
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.FormatEachStatementOnSeparateLine, statement.GetLocation());
+                        context.ReportDiagnostic(DiagnosticDescriptors.FormatEachStatementOnSeparateLine, statement);
                     }
 
                     previousEndLine = statement.GetSpanEndLine();

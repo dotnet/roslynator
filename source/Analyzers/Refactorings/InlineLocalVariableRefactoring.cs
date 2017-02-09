@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             EqualsValueClauseSyntax initializer,
             ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclaration.GetLocation());
+            context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclaration);
 
             foreach (SyntaxToken modifier in localDeclaration.Modifiers)
                 context.ReportToken(FadeOutDescriptor, modifier);

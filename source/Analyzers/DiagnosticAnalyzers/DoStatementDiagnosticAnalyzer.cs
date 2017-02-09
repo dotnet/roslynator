@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfDoStatementToCreateInfiniteLoop,
-                    doStatement.DoKeyword.GetLocation());
+                    doStatement.DoKeyword);
             }
 
             AddEmptyLineAfterLastStatementInDoStatementRefactoring.Analyze(context, doStatement);

@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveEmptyInitializer,
-                    initializer.GetLocation());
+                    initializer);
             }
         }
 

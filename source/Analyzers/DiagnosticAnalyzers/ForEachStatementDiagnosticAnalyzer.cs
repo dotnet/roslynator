@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach,
-                    forEachStatement.Type.GetLocation());
+                    forEachStatement.Type);
             }
         }
     }
