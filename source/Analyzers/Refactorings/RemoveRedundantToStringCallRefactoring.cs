@@ -43,29 +43,29 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberAccess.Name?.Identifier.ValueText.Equals("ToString", StringComparison.Ordinal) == true)
                     {
-                        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+                        MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
 
-                        if (methodSymbol?.Name?.Equals("ToString", StringComparison.Ordinal) == true
-                            && !methodSymbol.IsGenericMethod
-                            && !methodSymbol.IsExtensionMethod
-                            && methodSymbol.IsPublic()
-                            && !methodSymbol.IsStatic
-                            && !methodSymbol.Parameters.Any()
-                            && methodSymbol.ReturnType?.IsString() == true)
+                        if (info.IsValid
+                            && info.HasName("ToString")
+                            && info.IsPublic
+                            && info.IsInstance
+                            && info.IsReturnType(SpecialType.System_String)
+                            && !info.IsGenericMethod
+                            && !info.Parameters.Any())
                         {
-                            if (methodSymbol.ContainingType?.IsString() == true)
+                            if (info.IsContainingType(SpecialType.System_String))
                             {
                                 return true;
                             }
                             else if (invocation.IsParentKind(SyntaxKind.Interpolation))
                             {
-                                if (methodSymbol.ContainingType?.IsObject() == true)
+                                if (info.IsContainingType(SpecialType.System_Object))
                                 {
                                     return true;
                                 }
-                                else if (methodSymbol.IsOverride)
+                                else if (info.IsOverride)
                                 {
-                                    return methodSymbol.OverriddenMethods().Any(f => f.ContainingType?.IsObject() == true);
+                                    return info.Symbol.OverriddenMethods().Any(f => f.ContainingType?.IsObject() == true);
                                 }
                             }
                         }

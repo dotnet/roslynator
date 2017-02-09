@@ -11,37 +11,6 @@ namespace Roslynator.Extensions
 {
     public static class SymbolExtensions
     {
-        [DebuggerStepThrough]
-        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind)
-        {
-            return methodSymbol?.MethodKind == methodKind;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind1, MethodKind methodKind2)
-        {
-            if (methodSymbol == null)
-                return false;
-
-            MethodKind methodKind = methodSymbol.MethodKind;
-
-            return methodKind == methodKind1
-                || methodKind == methodKind2;
-        }
-
-        [DebuggerStepThrough]
-        public static bool IsMethodKind(this IMethodSymbol methodSymbol, MethodKind methodKind1, MethodKind methodKind2, MethodKind methodKind3)
-        {
-            if (methodSymbol == null)
-                return false;
-
-            MethodKind methodKind = methodSymbol.MethodKind;
-
-            return methodKind == methodKind1
-                || methodKind == methodKind2
-                || methodKind == methodKind3;
-        }
-
         public static IEnumerable<IMethodSymbol> OverriddenMethods(this IMethodSymbol methodSymbol)
         {
             if (methodSymbol == null)
@@ -74,6 +43,14 @@ namespace Roslynator.Extensions
             }
         }
 
+        public static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            return methodSymbol.ReducedFrom ?? methodSymbol;
+        }
+
         public static IParameterSymbol SingleParameterOrDefault(this IPropertySymbol propertySymbol)
         {
             if (propertySymbol == null)
@@ -89,14 +66,6 @@ namespace Roslynator.Extensions
             {
                 return null;
             }
-        }
-
-        public static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            return methodSymbol.ReducedFrom ?? methodSymbol;
         }
 
         public static ISymbol FindImplementedInterfaceMember(this ISymbol symbol)
@@ -336,44 +305,6 @@ namespace Roslynator.Extensions
             return symbol?.Kind == SymbolKind.TypeParameter;
         }
 
-        public static bool IsPublicProperty(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && symbol.IsProperty();
-        }
-
-        public static bool IsPublicInstanceProperty(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && !symbol.IsStatic
-                && symbol.IsProperty();
-        }
-
-        public static bool IsPublicStaticProperty(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && symbol.IsStatic
-                && symbol.IsProperty();
-        }
-
-        public static bool IsPrivateField(this ISymbol symbol)
-        {
-            return symbol?.IsPrivate() == true
-                && symbol.IsField();
-        }
-
-        public static bool IsInstanceField(this ISymbol symbol)
-        {
-            return symbol?.IsStatic == false
-                && symbol.IsField();
-        }
-
-        public static bool IsStaticField(this ISymbol symbol)
-        {
-            return symbol?.IsStatic == true
-                && symbol.IsField();
-        }
-
         public static bool IsEnumField(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Field
@@ -396,60 +327,10 @@ namespace Roslynator.Extensions
             } while (containingNamespace != null);
         }
 
-        public static bool IsStaticClass(this ITypeSymbol typeSymbol)
-        {
-            return typeSymbol?.IsStatic == true
-                && typeSymbol.IsClass();
-        }
-
-        public static bool IsInstanceClass(this ITypeSymbol typeSymbol)
-        {
-            return typeSymbol?.IsStatic == false
-                && typeSymbol.IsClass();
-        }
-
-        public static bool IsVoidMethod(this ISymbol typeSymbol)
-        {
-            return typeSymbol?.IsMethod() == true
-                && ((IMethodSymbol)typeSymbol).ReturnsVoid;
-        }
-
         public static bool IsAsyncMethod(this ISymbol symbol)
         {
             return symbol?.IsMethod() == true
                 && ((IMethodSymbol)symbol).IsAsync;
-        }
-
-        public static bool IsInstanceMethod(this ISymbol symbol)
-        {
-            return symbol?.IsStatic == false
-                && symbol.IsMethod();
-        }
-
-        public static bool IsStaticMethod(this ISymbol symbol)
-        {
-            return symbol?.IsStatic == true
-                && symbol.IsMethod();
-        }
-
-        public static bool IsPublicInstanceMethod(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && !symbol.IsStatic
-                && symbol.IsMethod();
-        }
-
-        public static bool IsPublicMethod(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && symbol.IsMethod();
-        }
-
-        public static bool IsPublicStaticMethod(this ISymbol symbol)
-        {
-            return symbol?.IsPublic() == true
-                && symbol.IsStatic
-                && symbol.IsMethod();
         }
 
         public static bool IsPubliclyVisible(this ISymbol symbol)

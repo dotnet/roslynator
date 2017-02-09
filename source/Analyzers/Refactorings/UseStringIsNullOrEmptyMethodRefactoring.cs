@@ -102,7 +102,9 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ISymbol symbol = semanticModel.GetSymbol(memberAccess.Name, cancellationToken);
 
-                                if (symbol.IsPublicInstanceProperty()
+                                if (symbol.IsPublic()
+                                    && !symbol.IsStatic
+                                    && symbol.IsProperty()
                                     && symbol.Name.Equals("Length", StringComparison.Ordinal))
                                 {
                                     return true;

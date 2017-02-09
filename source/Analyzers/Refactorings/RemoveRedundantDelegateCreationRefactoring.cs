@@ -43,24 +43,20 @@ namespace Roslynator.CSharp.Refactorings
 
                             ExpressionSyntax expression = argument.Expression;
 
-                            if (expression != null)
+                            if (expression != null
+                                && semanticModel.GetSymbol(expression, cancellationToken) is IMethodSymbol)
                             {
-                                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken);
+                                ExpressionSyntax left = assignment.Left;
 
-                                if (methodSymbol != null)
+                                if (left?.IsMissing == false
+                                    && semanticModel.GetSymbol(left, cancellationToken)?.IsEvent() == true
+                                    && !objectCreation.SpanContainsDirectives())
                                 {
-                                    ExpressionSyntax left = assignment.Left;
+                                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
 
-                                    if (left?.IsMissing == false
-                                        && semanticModel.GetSymbol(left, cancellationToken)?.IsEvent() == true
-                                        && !objectCreation.SpanContainsDirectives())
-                                    {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
-
-                                        context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
-                                        context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
-                                        context.ReportParentheses(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
-                                    }
+                                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
+                                    context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
+                                    context.ReportParentheses(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
                                 }
                             }
                         }

@@ -26,10 +26,9 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+                    ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(invocation, ExtensionMethodKind.Ordinary, context.CancellationToken);
 
-                    if (methodSymbol?.IsExtensionMethod == true
-                        && methodSymbol.MethodKind == MethodKind.Ordinary
+                    if (info.IsValid
                         && invocation.ArgumentList?.Arguments.Any() == true)
                     {
                         InvocationExpressionSyntax newInvocation = GetNewInvocation(invocation);
@@ -37,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (semanticModel
                             .GetSpeculativeMethodSymbol(invocation.SpanStart, newInvocation)?
                             .ReducedFromOrSelf()
-                            .Equals(methodSymbol.ConstructedFrom) == true)
+                            .Equals(info.Symbol.ConstructedFrom) == true)
                         {
                             context.RegisterRefactoring(
                                 "Call extension method as instance method",

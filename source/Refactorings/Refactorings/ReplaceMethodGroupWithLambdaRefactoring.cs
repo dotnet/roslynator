@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, context.CancellationToken);
+                var methodSymbol = semanticModel.GetSymbol(expression, context.CancellationToken) as IMethodSymbol;
 
                 if (methodSymbol?.IsImplicitlyDeclared == false
                     && methodSymbol.PartialDefinitionPart == null)

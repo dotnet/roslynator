@@ -19,11 +19,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, context.CancellationToken);
+            MethodInfo info = semanticModel.GetMethodInfo(invocation, context.CancellationToken);
 
-            if (methodSymbol?.Name == "Contains"
-                && methodSymbol.ContainingType?.IsString() == true
-                && methodSymbol.SingleParameterOrDefault()?.Type.IsString() == true)
+            if (info.IsValid
+                && info.HasName("Contains")
+                && info.IsContainingType(SpecialType.System_String)
+                && info.Symbol.SingleParameterOrDefault()?.Type.IsString() == true)
             {
                 context.RegisterRefactoring(
                     "Replace Contains with IndexOf",

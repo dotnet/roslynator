@@ -44,17 +44,17 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (memberAccess.Name?.Identifier.ValueText.Equals("ToCharArray", StringComparison.Ordinal) == true)
                     {
-                        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+                        MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
 
-                        if (string.Equals(methodSymbol.Name, "ToCharArray", StringComparison.Ordinal)
-                            && !methodSymbol.IsGenericMethod
-                            && !methodSymbol.IsExtensionMethod
-                            && methodSymbol.IsPublic()
-                            && !methodSymbol.IsStatic
-                            && !methodSymbol.Parameters.Any()
-                            && methodSymbol.ContainingType?.IsString() == true)
+                        if (info.IsValid
+                            && info.HasName("ToCharArray")
+                            && info.IsPublic
+                            && info.IsInstance
+                            && !info.IsGenericMethod
+                            && !info.Parameters.Any()
+                            && info.IsContainingType(SpecialType.System_String))
                         {
-                            ITypeSymbol returnType = methodSymbol.ReturnType;
+                            ITypeSymbol returnType = info.ReturnType;
 
                             if (returnType?.IsArrayType() == true)
                             {

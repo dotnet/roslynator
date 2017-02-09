@@ -32,7 +32,13 @@ namespace Roslynator
             get { return IsValid && object.ReferenceEquals(OriginalSymbol, Symbol); }
         }
 
-        public string Name
+        public IMethodSymbol Symbol { get; }
+
+        public IMethodSymbol OriginalSymbol { get; }
+
+        private SemanticModel SemanticModel { get; }
+
+        private string Name
         {
             get { return Symbol?.Name; }
         }
@@ -42,11 +48,10 @@ namespace Roslynator
             get { return (IsValid) ? Symbol.Parameters : ImmutableArray<IParameterSymbol>.Empty; }
         }
 
-        public IMethodSymbol Symbol { get; }
-
-        private IMethodSymbol OriginalSymbol { get; }
-
-        private SemanticModel SemanticModel { get; }
+        public bool HasName(string name)
+        {
+            return string.Equals(Name, name, StringComparison.Ordinal);
+        }
 
         public static ExtensionMethodInfo FromOrdinary(IMethodSymbol methodSymbol, SemanticModel semanticModel)
         {
@@ -238,11 +243,6 @@ namespace Roslynator
             }
 
             return false;
-        }
-
-        private bool HasName(string name)
-        {
-            return string.Equals(Name, name, StringComparison.Ordinal);
         }
     }
 }

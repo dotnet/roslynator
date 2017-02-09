@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression?.IsKind(SyntaxKind.InvocationExpression) == true)
             {
-                IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(expression, cancellationToken);
+                var methodSymbol = semanticModel.GetSymbol(expression, cancellationToken) as IMethodSymbol;
 
                 return methodSymbol?.ReturnType.IsTaskOrDerivedFromTask(semanticModel) == true
                     && semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) != null;
