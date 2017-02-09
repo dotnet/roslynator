@@ -34,13 +34,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IMethodSymbol GetMethodSymbol(ExpressionSyntax expression, ITypeSymbol destinationType, string methodName)
         {
-            foreach (ISymbol member in destinationType.GetMembers(methodName))
+            foreach (IMethodSymbol methodSymbol in destinationType.GetMethods(methodName))
             {
-                if (member.IsPublicMethod())
+                if (methodSymbol.IsPublic())
                 {
-                    var methodSymbol = (IMethodSymbol)member;
-
-                    if (member.IsStatic)
+                    if (methodSymbol.IsStatic)
                     {
                         if (methodSymbol.IsExtensionMethod
                             && methodSymbol.Parameters.Length == 1)

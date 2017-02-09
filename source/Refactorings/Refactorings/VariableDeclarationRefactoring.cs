@@ -70,7 +70,8 @@ namespace Roslynator.CSharp.Refactorings
                                 if (!string.IsNullOrEmpty(newName))
                                 {
                                     if (context.Settings.PrefixFieldIdentifierWithUnderscore
-                                        && symbol.IsPrivateField()
+                                        && symbol.IsPrivate()
+                                        && symbol.IsField()
                                         && !((IFieldSymbol)symbol).IsConst)
                                     {
                                         newName = Identifier.ToCamelCase(newName, prefixWithUnderscore: true);

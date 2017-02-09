@@ -40,9 +40,10 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (await CanBeAssignedFromConstructorAsync(context, declaration).ConfigureAwait(false))
                 {
-                    var list = new List<MemberDeclarationSyntax>();
-                    list.Add(declaration);
-                    return list;
+                    return new List<MemberDeclarationSyntax>()
+                    {
+                        declaration
+                    };
                 }
             }
             else if (declaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
@@ -207,7 +208,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol.IsInstanceField())
+            if (!symbol.IsStatic
+                && symbol.IsField())
             {
                 return symbol;
             }

@@ -140,7 +140,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsValidFormatMethod(ISymbol symbol)
         {
-            if (symbol.IsStaticMethod())
+            if (symbol.IsStatic
+                && symbol.IsMethod())
             {
                 var methodSymbol = (IMethodSymbol)symbol;
 

@@ -176,12 +176,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol != null)
             {
-                foreach (ISymbol member in typeSymbol.GetMembers("Add"))
+                foreach (IMethodSymbol methodSymbol in typeSymbol.GetMethods("Add"))
                 {
-                    if (member.IsPublicInstanceMethod())
+                    if (methodSymbol.IsPublic()
+                        && !methodSymbol.IsStatic)
                     {
-                        var methodSymbol = (IMethodSymbol)member;
-
                         ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
                         if (parameters.Length == 1)
@@ -209,7 +208,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (ISymbol member in typeSymbol.GetMembers("this[]"))
                 {
-                    if (member.IsPublicInstanceProperty())
+                    if (member.IsPublic()
+                        && !member.IsStatic
+                        && member.IsProperty())
                     {
                         var propertySymbol = (IPropertySymbol)member;
 

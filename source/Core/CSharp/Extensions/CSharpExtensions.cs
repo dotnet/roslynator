@@ -63,16 +63,6 @@ namespace Roslynator.CSharp.Extensions
                 .Type;
         }
 
-        public static IMethodSymbol GetMethodSymbol(
-            this SemanticModel semanticModel,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetSymbolInfo(semanticModel, expression, cancellationToken)
-                .Symbol as IMethodSymbol;
-        }
-
         public static bool IsExplicitConversion(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -353,6 +343,23 @@ namespace Roslynator.CSharp.Extensions
             else
             {
                 return default(ExtensionMethodInfo);
+            }
+        }
+
+        public static MethodInfo GetMethodInfo(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ISymbol symbol = GetSymbol(semanticModel, expression, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
+            {
+                return new MethodInfo((IMethodSymbol)symbol, semanticModel);
+            }
+            else
+            {
+                return default(MethodInfo);
             }
         }
     }
