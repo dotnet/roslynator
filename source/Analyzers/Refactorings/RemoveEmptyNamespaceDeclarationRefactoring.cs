@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,
-                        declaration.GetLocation());
+                        declaration);
                 }
             }
         }

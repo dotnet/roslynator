@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
-                    left.GetLocation());
+                    left);
             }
         }
     }

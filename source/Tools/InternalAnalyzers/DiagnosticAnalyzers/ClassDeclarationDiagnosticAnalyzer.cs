@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddDiagnosticAnalyzerSuffix,
-                    classDeclaration.Identifier.GetLocation());
+                    classDeclaration.Identifier);
             }
 
             INamedTypeSymbol codeFixProviderSymbol = context.GetTypeByMetadataName("Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider");
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddCodeFixProviderSuffix,
-                    classDeclaration.Identifier.GetLocation());
+                    classDeclaration.Identifier);
             }
 
             INamedTypeSymbol codeRefactoringProviderSymbol = context.GetTypeByMetadataName("Microsoft.CodeAnalysis.CodeRefactorings.CodeRefactoringProvider");
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddCodeRefactoringProviderSuffix,
-                    classDeclaration.Identifier.GetLocation());
+                    classDeclaration.Identifier);
             }
         }
     }

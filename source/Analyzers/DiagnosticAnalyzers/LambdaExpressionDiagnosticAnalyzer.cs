@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 CSharpSyntaxNode body = lambda.Body;
 
-                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLambdaExpression, body.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLambdaExpression, body);
 
                 var block = (BlockSyntax)body;
 

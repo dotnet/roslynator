@@ -703,7 +703,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     case SyntaxKind.PrivateKeyword:
                     case SyntaxKind.AbstractKeyword:
                         {
-                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveInapplicableModifier, modifier.GetLocation());
+                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveInapplicableModifier, modifier);
                             break;
                         }
                 }
@@ -728,7 +728,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken modifier)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveInapplicableModifier, modifier.GetLocation());
+            context.ReportDiagnostic(DiagnosticDescriptors.RemoveInapplicableModifier, modifier);
         }
     }
 }

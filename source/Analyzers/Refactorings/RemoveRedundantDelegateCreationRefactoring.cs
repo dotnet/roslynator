@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                                         && semanticModel.GetSymbol(left, cancellationToken)?.IsEvent() == true
                                         && !objectCreation.SpanContainsDirectives())
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right.GetLocation());
+                                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
 
                                         context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
                                         context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);

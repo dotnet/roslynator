@@ -65,12 +65,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if ((result & BracesAnalysisResult.AddBraces) != 0)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, ifStatement.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, ifStatement);
                 }
 
                 if ((result & BracesAnalysisResult.RemoveBraces) != 0)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement);
 
                     foreach (SyntaxNode node in ifStatement.DescendantNodes())
                     {

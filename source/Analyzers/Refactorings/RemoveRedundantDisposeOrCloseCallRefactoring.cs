@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantDisposeOrCloseCall,
-                    expressionStatement.GetLocation(),
+                    expressionStatement,
                     methodName);
             }
         }

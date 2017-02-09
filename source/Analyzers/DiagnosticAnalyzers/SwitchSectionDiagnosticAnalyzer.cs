@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddBreakStatementToSwitchSection,
-                    switchSection.GetLocation());
+                    switchSection);
             }
 
             RemoveRedundantDefaultSwitchSectionRefactoring.Analyze(context, switchSection);

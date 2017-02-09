@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.MarkClassAsStatic,
-                            classDeclaration.Identifier.GetLocation());
+                            classDeclaration.Identifier);
 
                         break;
                     }

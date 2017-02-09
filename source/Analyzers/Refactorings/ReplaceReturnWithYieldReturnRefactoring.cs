@@ -37,13 +37,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             case SyntaxKind.YieldReturnStatement:
                                 {
-                                    context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnWithYieldReturn, returnStatement.GetLocation());
+                                    context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnWithYieldReturn, returnStatement);
                                     break;
                                 }
                             case SyntaxKind.ForEachStatement:
                                 {
                                     if (!returnStatement.ContainsDirectives)
-                                        context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnWithYieldReturn, returnStatement.GetLocation());
+                                        context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnWithYieldReturn, returnStatement);
 
                                     break;
                                 }

@@ -17,13 +17,13 @@ namespace Roslynator.CSharp
         public static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token)
         {
             if (!token.IsMissing)
-                context.ReportDiagnostic(descriptor, token.GetLocation());
+                context.ReportDiagnostic(descriptor, token);
         }
 
         public static void ReportNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node)
         {
             if (!node.IsMissing)
-                context.ReportDiagnostic(descriptor, node.GetLocation());
+                context.ReportDiagnostic(descriptor, node);
         }
 
         public static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, BlockSyntax block)

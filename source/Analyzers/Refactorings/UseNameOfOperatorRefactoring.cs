@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UseNameOfOperator,
-                literalExpression.GetLocation(),
+                literalExpression,
                 text);
 
             text = literalExpression.Token.Text;

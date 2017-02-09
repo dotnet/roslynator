@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
-                    conditionalExpression.GetLocation());
+                    conditionalExpression);
             }
         }
 

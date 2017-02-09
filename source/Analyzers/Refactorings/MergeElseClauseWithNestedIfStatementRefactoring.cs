@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement,
-                            block.GetLocation());
+                            block);
 
                         context.ReportBraces(
                             DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut,

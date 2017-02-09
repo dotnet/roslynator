@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var interpolation = (InterpolationSyntax)context.Node;
 
             if (MergeInterpolationIntoInterpolatedStringRefactoring.CanRefactor(interpolation))
-                context.ReportDiagnostic(DiagnosticDescriptors.MergeInterpolationIntoInterpolatedString, interpolation.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.MergeInterpolationIntoInterpolatedString, interpolation);
         }
     }
 }

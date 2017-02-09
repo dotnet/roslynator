@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
 
             if (UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
 
             RemoveRedundantToStringCallRefactoring.Analyze(context, invocation);
 

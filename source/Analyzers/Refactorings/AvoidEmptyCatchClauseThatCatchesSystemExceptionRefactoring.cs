@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
-                                catchClause.CatchKeyword.GetLocation());
+                                catchClause.CatchKeyword);
                         }
                     }
                 }

@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         context.ReportDiagnostic(
                                             DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                                            throwStatement.Expression.GetLocation());
+                                            throwStatement.Expression);
                                     }
                                 }
                             }

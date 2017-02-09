@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddExceptionToDocumentationComment,
-                    throwStatement.GetLocation());
+                    throwStatement);
             }
         }
     }

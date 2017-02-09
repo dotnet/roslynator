@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.SimplifyLambdaExpressionParameterList,
-                    parameterList.GetLocation());
+                    parameterList);
 
                 foreach (ParameterSyntax parameter in parameters)
                 {

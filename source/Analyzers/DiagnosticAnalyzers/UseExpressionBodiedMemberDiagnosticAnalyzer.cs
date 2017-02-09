@@ -143,7 +143,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UseExpressionBodiedMember,
-                block.GetLocation());
+                block);
 
             SyntaxNode parent = expression.Parent;
 

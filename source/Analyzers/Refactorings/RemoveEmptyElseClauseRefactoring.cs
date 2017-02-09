@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                         .DescendantTrivia(elseClause.Span)
                         .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyElseClause, elseClause.GetLocation());
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyElseClause, elseClause);
                 }
             }
         }

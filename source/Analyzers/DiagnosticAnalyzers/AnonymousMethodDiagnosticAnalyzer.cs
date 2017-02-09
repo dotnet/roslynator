@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethod,
-                    anonymousMethod.GetLocation());
+                    anonymousMethod);
 
                 FadeOut(context, anonymousMethod);
             }

@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
-                                trivia.GetLocation());
+                                trivia);
                         }
                     }
                 }

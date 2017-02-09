@@ -259,7 +259,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.AddEmptyLineAfterClosingBrace,
-                                trivia.GetLocation());
+                                trivia);
                         }
                     }
                 }

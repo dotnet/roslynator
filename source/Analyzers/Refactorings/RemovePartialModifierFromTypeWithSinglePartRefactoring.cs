@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                                partialToken.GetLocation());
+                                partialToken);
                         }
                     }
                 }

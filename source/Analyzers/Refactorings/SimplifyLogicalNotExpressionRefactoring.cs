@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLogicalNotExpression, logicalNot.GetLocation());
+                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLogicalNotExpression, logicalNot);
                         break;
                     }
                 case SyntaxKind.LogicalNotExpression:

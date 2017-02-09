@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.ReplaceIfStatementWithAssignment,
-                    ifStatement.GetLocation());
+                    ifStatement);
             }
         }
 

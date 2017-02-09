@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine,
-                            statement.GetLocation());
+                            statement);
                     }
                 }
             }

@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 {
                     context.ReportDiagnostic(
                        DiagnosticDescriptors.MarkMemberAsStatic,
-                       declarator.Identifier.GetLocation());
+                       declarator.Identifier);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.MarkMemberAsStatic,
-                    methodDeclaration.Identifier.GetLocation());
+                    methodDeclaration.Identifier);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.MarkMemberAsStatic,
-                    propertyDeclaration.Identifier.GetLocation());
+                    propertyDeclaration.Identifier);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.MarkMemberAsStatic,
-                    eventDeclaration.Identifier.GetLocation());
+                    eventDeclaration.Identifier);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 {
                     context.ReportDiagnostic(
                        DiagnosticDescriptors.MarkMemberAsStatic,
-                       declarator.Identifier.GetLocation());
+                       declarator.Identifier);
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.MarkMemberAsStatic,
-                    constructorDeclaration.Identifier.GetLocation());
+                    constructorDeclaration.Identifier);
             }
         }
     }

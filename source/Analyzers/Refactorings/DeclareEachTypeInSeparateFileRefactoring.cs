@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.DeclareEachTypeInSeparateFile,
-                    token.GetLocation());
+                    token);
             }
         }
 

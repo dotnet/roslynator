@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
             if (expression?.IsMultiLine() == true)
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidMultilineExpressionBody, expression.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.AvoidMultilineExpressionBody, expression);
         }
     }
 }

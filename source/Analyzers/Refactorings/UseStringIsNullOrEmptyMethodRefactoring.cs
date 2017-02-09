@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseStringIsNullOrEmptyMethod,
-                    binaryExpression.GetLocation());
+                    binaryExpression);
             }
         }
 

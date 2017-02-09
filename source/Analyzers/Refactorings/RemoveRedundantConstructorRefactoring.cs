@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                                 .DescendantTrivia(constructor.Span)
                                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
-                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantConstructor, constructor.GetLocation());
+                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantConstructor, constructor);
                         }
                     }
                 }

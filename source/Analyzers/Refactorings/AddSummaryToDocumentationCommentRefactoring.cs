@@ -27,14 +27,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AddSummaryToDocumentationComment,
-                        summaryElement.GetLocation());
+                        summaryElement);
                 }
             }
             else
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
-                    documentationComment.GetLocation());
+                    documentationComment);
             }
         }
 

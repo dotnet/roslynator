@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.SimplifyConditionalExpression,
-                    conditionalExpression.GetLocation());
+                    conditionalExpression);
             }
         }
 

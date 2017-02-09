@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.SimplifyNestedUsingStatement,
-                    block.GetLocation());
+                    block);
 
                 context.ReportBraces(DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut, block);
             }

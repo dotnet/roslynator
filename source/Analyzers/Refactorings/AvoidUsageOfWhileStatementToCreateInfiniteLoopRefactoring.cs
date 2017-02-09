@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop,
-                        whileStatement.WhileKeyword.GetLocation());
+                        whileStatement.WhileKeyword);
                 }
             }
         }

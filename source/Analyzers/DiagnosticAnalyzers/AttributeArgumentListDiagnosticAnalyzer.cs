@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
             if (RemoveEmptyAttributeArgumentListRefactoring.CanRefactor(attributeArgumentList))
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList, attributeArgumentList.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList, attributeArgumentList);
         }
     }
 }

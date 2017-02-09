@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.SimplifyGetTypeInfoInvocation,
-                                    memberAccess.GetLocation());
+                                    memberAccess);
                             }
                         }
                     }

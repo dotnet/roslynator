@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseVarInsteadOfExplicitType,
-                            variableDeclaration.Type.GetLocation());
+                            variableDeclaration.Type);
 
                         break;
                     }
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
-                            variableDeclaration.Type.GetLocation());
+                            variableDeclaration.Type);
 
                         break;
                     }
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.ReportDiagnostic(
                             DiagnosticDescriptors.UseExplicitTypeInsteadOfVar,
-                            variableDeclaration.Type.GetLocation());
+                            variableDeclaration.Type);
 
                         break;
                     }
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach,
-                    forEachStatement.Type.GetLocation());
+                    forEachStatement.Type);
             }
         }
 

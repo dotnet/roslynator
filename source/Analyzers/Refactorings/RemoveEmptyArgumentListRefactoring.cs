@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                         && openParen.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
                         && closeParen.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyArgumentList, argumentList.GetLocation());
+                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyArgumentList, argumentList);
                     }
                 }
             }

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             if (parent != null
                 && !EmbeddedStatement.CanContainEmbeddedStatement(parent))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement.GetLocation());
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
             }
         }
 

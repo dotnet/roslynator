@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                                         {
                                             context.ReportDiagnostic(
                                                 DiagnosticDescriptors.CallStringConcatInsteadOfStringJoin,
-                                                name.GetLocation());
+                                                name);
                                         }
                                     }
                                 }

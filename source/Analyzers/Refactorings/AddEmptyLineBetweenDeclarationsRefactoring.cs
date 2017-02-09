@@ -46,13 +46,13 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
-                                        trivia.GetLocation());
+                                        trivia);
                                 }
                                 else
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
-                                        closeToken.GetLocation());
+                                        closeToken);
                                 }
                             }
                         }

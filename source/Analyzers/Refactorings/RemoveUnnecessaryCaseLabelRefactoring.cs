@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
-                                label.GetLocation());
+                                label);
                         }
                     }
                 }
