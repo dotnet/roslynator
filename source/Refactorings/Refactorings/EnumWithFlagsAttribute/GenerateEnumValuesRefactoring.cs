@@ -29,26 +29,26 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                 {
                     SpecialType specialType = enumSymbol.EnumUnderlyingType.SpecialType;
 
-                    List<object> values = EnumHelper.GetExplicitValues(enumDeclaration, semanticModel, context.CancellationToken);
+                    List<object> values = GenerateEnumHelper.GetExplicitValues(enumDeclaration, semanticModel, context.CancellationToken);
 
-                    Optional<object> optional = FlagsGenerator.GetNewValue(specialType, values);
+                    Optional<object> optional = EnumHelper.GetUniquePowerOfTwo(specialType, values);
 
                     if (optional.HasValue)
                     {
                         context.RegisterRefactoring(
                             "Generate enum values",
-                            cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, FlagsGenerationMode.None, cancellationToken));
+                            cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: false, cancellationToken: cancellationToken));
 
                         if (members.Any(f => f.EqualsValue != null))
                         {
-                            Optional<object> optional2 = FlagsGenerator.GetNewValue(specialType, values, FlagsGenerationMode.FromHighestExistingValue);
+                            Optional<object> optional2 = EnumHelper.GetUniquePowerOfTwo(specialType, values, startFromHighestExistingValue: true);
 
                             if (optional2.HasValue
                                 && !optional.Value.Equals(optional2.Value))
                             {
                                 context.RegisterRefactoring(
                                     $"Generate enum values (starting from {optional2.Value})",
-                                    cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, FlagsGenerationMode.FromHighestExistingValue, cancellationToken));
+                                    cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: true, cancellationToken: cancellationToken));
                             }
                         }
                     }
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             INamedTypeSymbol enumSymbol,
-            FlagsGenerationMode mode,
+            bool startFromHighestExistingValue,
             CancellationToken cancellationToken)
         {
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
@@ -69,13 +69,13 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
             SpecialType specialType = enumSymbol.EnumUnderlyingType.SpecialType;
 
-            List<object> values = EnumHelper.GetExplicitValues(enumDeclaration, semanticModel, cancellationToken);
+            List<object> values = GenerateEnumHelper.GetExplicitValues(enumDeclaration, semanticModel, cancellationToken);
 
             for (int i = 0; i < members.Count; i++)
             {
                 if (members[i].EqualsValue == null)
                 {
-                    Optional<object> optional = FlagsGenerator.GetNewValue(specialType, values, mode);
+                    Optional<object> optional = EnumHelper.GetUniquePowerOfTwo(specialType, values, startFromHighestExistingValue);
 
                     if (optional.HasValue)
                     {

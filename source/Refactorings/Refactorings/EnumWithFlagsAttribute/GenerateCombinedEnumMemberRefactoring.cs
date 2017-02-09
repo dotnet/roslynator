@@ -33,11 +33,11 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                         object combinedValue = GetCombinedValue(fieldSymbols, enumSymbol);
 
                         if (combinedValue != null
-                            && !EnumHelper.IsValueDefined(combinedValue, enumSymbol, semanticModel, context.CancellationToken))
+                            && !EnumHelper.IsValueDefined(enumSymbol, combinedValue))
                         {
                             string name = GetCombinedName(fieldSymbols);
 
-                            EnumMemberDeclarationSyntax newEnumMember = EnumHelper.CreateEnumMember(enumSymbol, name, combinedValue);
+                            EnumMemberDeclarationSyntax newEnumMember = GenerateEnumHelper.CreateEnumMember(enumSymbol, name, combinedValue);
 
                             int insertIndex = enumDeclaration.Members.IndexOf(selectedMembers.Last()) + 1;
 
@@ -67,42 +67,42 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
                     if (value is sbyte)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((sbyte)value))
+                        if (EnumHelper.IsPowerOfTwo((sbyte)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is byte)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((byte)value))
+                        if (EnumHelper.IsPowerOfTwo((byte)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is ushort)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((ushort)value))
+                        if (EnumHelper.IsPowerOfTwo((ushort)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is short)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((short)value))
+                        if (EnumHelper.IsPowerOfTwo((short)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is uint)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((uint)value))
+                        if (EnumHelper.IsPowerOfTwo((uint)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is int)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((int)value))
+                        if (EnumHelper.IsPowerOfTwo((int)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is ulong)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((ulong)value))
+                        if (EnumHelper.IsPowerOfTwo((ulong)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                     else if (value is long)
                     {
-                        if (FlagsGenerator.IsPowerOfTwo((long)value))
+                        if (EnumHelper.IsPowerOfTwo((long)value))
                             fieldSymbols.Add(fieldSymbol);
                     }
                 }

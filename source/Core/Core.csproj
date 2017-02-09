@@ -101,6 +101,7 @@
     <Compile Include="CSharp\SyntaxRewriters\GenerateDocumentationCommentSyntaxRewriter.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpressionRefactoring.cs" />

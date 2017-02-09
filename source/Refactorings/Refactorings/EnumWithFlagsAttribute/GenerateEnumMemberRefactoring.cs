@@ -20,11 +20,11 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
             if (Symbol.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
             {
-                object[] values = EnumHelper.GetValues(enumSymbol, semanticModel, context.CancellationToken).ToArray();
+                object[] values = EnumHelper.GetValues(enumSymbol).ToArray();
 
                 SpecialType specialType = enumSymbol.EnumUnderlyingType.SpecialType;
 
-                Optional<object> optional = FlagsGenerator.GetNewValue(specialType, values, FlagsGenerationMode.None);
+                Optional<object> optional = EnumHelper.GetUniquePowerOfTwo(specialType, values);
 
                 if (optional.HasValue)
                 {
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
                         "Generate enum member",
                         cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, optional.Value, cancellationToken));
 
-                    Optional<object> optional2 = FlagsGenerator.GetNewValue(specialType, values, FlagsGenerationMode.FromHighestExistingValue);
+                    Optional<object> optional2 = EnumHelper.GetUniquePowerOfTwo(specialType, values, startFromHighestExistingValue: true);
 
                     if (optional2.HasValue
                         && !optional.Value.Equals(optional2.Value))
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             object value,
             CancellationToken cancellationToken)
         {
-            EnumMemberDeclarationSyntax newEnumMember = EnumHelper.CreateEnumMember(enumSymbol, "EnumMember",value);
+            EnumMemberDeclarationSyntax newEnumMember = GenerateEnumHelper.CreateEnumMember(enumSymbol, "EnumMember",value);
 
             EnumDeclarationSyntax newNode = enumDeclaration.AddMembers(newEnumMember);
 
