@@ -106,7 +106,8 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol leftSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
 
             if (leftSymbol?.IsErrorType() == false
-                && leftSymbol.IsValueType)
+                && leftSymbol.IsValueType
+                && !leftSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
             {
                 return  BinaryExpressionPart.Right;
             }
