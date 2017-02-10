@@ -10,10 +10,14 @@
 * Rule set is a group of rules where each rule define "Action" for a specific analyzer.
 * Action **None** deactivates analyzer.
 * Other actions specifies that analyzer is active but it differs in how it is displayed in the IDE.
-  * **Hidden** (not visible)
-  * **Info** (visible as **Message**)
-  * **Warning** (visible as **Warning**)
-  * **Error** (visible as **Error**)
+  
+Action | Description
+--- | ---
+**None** | disabled
+**Hidden** | not visible
+**Info** | visible as **Message**
+**Warning** | visible as **Warning**
+**Error** | visible as **Error**
 
 Rule set is typically stored in a file with extension **ruleset** and it has following structure:
 
@@ -28,21 +32,26 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ## Step-by-Step Tutorial
 
-1. Create your own ruleset file (skip this step if you already have one):
-   * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
-   * Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
-   * Move ruleset file to a solution root folder (or any other location).
+### 1) Create your own ruleset file
+
+* Skip this step if you already have one
+* Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
+* Modify rule set.
+* Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
+* Move ruleset file to a solution root folder (or any other location).
 
 ![Rule Set Editor](/images/RuleSetEditor.png)
 
-2. Open ruleset file in text editor
-   * Change its name (rule set is represented in the IDE by its name).
-   * Clear existing rules (optional).
+### 2) Modify ruleset file manually
 
-3. Attach rule set to your project(s)
-   * Go to Main Menu - Analysis - Configure Code Analysis - For Solution
-   * Change rule set for each project.
-   * Change configuration and repeat previous step (optional).
+* Open ruleset file in text editor.
+* Change its name (rule set is represented in the IDE by its name).
+
+### 3) Attach rule set to project(s)
+
+* Go to Main Menu - Analysis - Configure Code Analysis - For Solution
+* Change rule set for each project.
+* Change configuration and repeat previous step (optional).
 
 ![Configure Code Analysis for Solution](/images/ConfigureCodeAnalysisForSolution.png)
 
