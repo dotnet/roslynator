@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Roslynator.CSharp.Analyzers.Tests
 {
 #pragma warning disable RCS1014
-    public static class CoalesceExpressionIsRedundant
+    public static class SimplifyCoalesceExpression
     {
         private class Foo
         {
@@ -40,6 +40,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 s = x ?? default(string);
 
                 s = x ?? x;
+
+                int? nullableInt = null;
+                i = nullableInt ?? 1;
             }
         }
     }
