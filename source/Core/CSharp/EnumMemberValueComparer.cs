@@ -2,17 +2,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Roslynator.CSharp
 {
     public class EnumMemberValueComparer : IComparer<object>
     {
-        public int Compare(object x, object y)
+        private EnumMemberValueComparer()
         {
-            return ComparePrivate(x, y);
         }
 
-        private static int ComparePrivate(object x, object y)
+        public static EnumMemberValueComparer Instance { get; } = new EnumMemberValueComparer();
+
+        public int Compare(object x, object y)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -64,6 +66,8 @@ namespace Roslynator.CSharp
                     return ((long)x).CompareTo((long)y);
             }
 
+            Debug.Assert(false, $"{nameof(EnumMemberValueComparer)} cannot compare {x.GetType()} with {y.GetType()}");
+
             return 0;
         }
 
@@ -74,7 +78,7 @@ namespace Roslynator.CSharp
 
             for (int i = 0; i < values.Count - 1; i++)
             {
-                if (ComparePrivate(values[i], values[i + 1]) > 0)
+                if (Instance.Compare(values[i], values[i + 1]) > 0)
                     return false;
             }
 
