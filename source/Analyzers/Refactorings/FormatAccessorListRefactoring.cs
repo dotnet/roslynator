@@ -192,7 +192,6 @@ namespace Roslynator.CSharp.Refactorings
                             return document;
                         }
                 }
-
             }
             else
             {

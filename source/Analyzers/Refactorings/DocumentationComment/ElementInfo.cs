@@ -6,7 +6,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal abstract class ElementInfo<TNode> where TNode : SyntaxNode
     {
-        public ElementInfo(TNode node, int insertIndex, NewLinePosition newLinePosition)
+        protected ElementInfo(TNode node, int insertIndex, NewLinePosition newLinePosition)
         {
             Node = node;
             InsertIndex = insertIndex;

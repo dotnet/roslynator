@@ -129,9 +129,7 @@ namespace Roslynator.Extensions
             return document.WithText(newSourceText);
         }
 
-        public static Task<Solution> RemoveFromSolutionAsync(
-            this Document document,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static Task<Solution> RemoveFromSolutionAsync(this Document document)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));

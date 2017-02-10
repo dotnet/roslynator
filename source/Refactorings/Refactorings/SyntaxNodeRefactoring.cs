@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInRegion,
                 RefactoringIdentifiers.WrapInIfDirective))
             {
-                SelectedTextLineCollection lines = await SelectedLinesRefactoring.GetSelectedLinesAsync(context, node).ConfigureAwait(false);
+                SelectedTextLineCollection lines = await SelectedLinesRefactoring.GetSelectedLinesAsync(context).ConfigureAwait(false);
 
                 if (lines?.Any() == true)
                 {
@@ -54,7 +54,6 @@ namespace Roslynator.CSharp.Refactorings
                    {
                        return RemoveEmptyLinesRefactoring.RefactorAsync(
                            context.Document,
-                           node,
                            context.Span,
                            cancellationToken);
                    });

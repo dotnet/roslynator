@@ -41,9 +41,6 @@ namespace Roslynator.Extensions
 
         public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxToken token)
         {
-            if (token == null)
-                throw new ArgumentNullException(nameof(token));
-
             return token.LeadingTrivia.Concat(token.TrailingTrivia);
         }
 

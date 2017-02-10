@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove file with no code",
-                                cancellationToken => context.Document.RemoveFromSolutionAsync(cancellationToken),
+                                cancellationToken => context.Document.RemoveFromSolutionAsync(),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

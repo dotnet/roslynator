@@ -32,13 +32,12 @@ namespace Roslynator
 
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-            return EnsureUniqueMemberName(baseName, containingType, cancellationToken);
+            return EnsureUniqueMemberName(baseName, containingType);
         }
 
         public static string EnsureUniqueMemberName(
             string baseName,
-            INamedTypeSymbol containingType,
-            CancellationToken cancellationToken = default(CancellationToken))
+            INamedTypeSymbol containingType)
         {
             if (containingType == null)
                 throw new ArgumentNullException(nameof(containingType));
@@ -236,14 +235,13 @@ namespace Roslynator
 
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-            return IsUniqueMemberName(name, containingType, isCaseSensitive, cancellationToken);
+            return IsUniqueMemberName(name, containingType, isCaseSensitive);
         }
 
         public static bool IsUniqueMemberName(
             string name,
             INamedTypeSymbol containingType,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            bool isCaseSensitive = true)
         {
             if (containingType == null)
                 throw new ArgumentNullException(nameof(containingType));

@@ -328,11 +328,7 @@ namespace Roslynator.CSharp.Extensions
                 .TrimTrailingTrivia();
         }
 
-        public static TextSpan TrimmedSpan(
-            this SyntaxNode node,
-            bool includeExteriorTrivia = true,
-            bool trim = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public static TextSpan TrimmedSpan(this SyntaxNode node)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
