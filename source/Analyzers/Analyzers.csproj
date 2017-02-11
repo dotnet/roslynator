@@ -52,6 +52,7 @@
     <Compile Include="CodeFixProviders\RemoveImplementationFromAbstractMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveUnreachableCodeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ThrowingOfNewNotImplementedExceptionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\TypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseGenericEventHandlerDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AvoidStaticMemberInGenericTypesRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="Refactorings\AvoidNullLiteralExpressionOnLeftSideOfBinaryExpressionRefactoring.cs" />
     <Compile Include="Refactorings\AvoidSemicolonAtEndOfDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.cs" />
+    <Compile Include="Refactorings\UseGenericEventHandlerRefactoring.cs" />
     <Compile Include="Refactorings\UseSpacesInsteadOfTabRefactoring.cs" />
     <Compile Include="Refactorings\AvoidUsageOfUsingAliasDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AvoidUsageOfWhileStatementToCreateInfiniteLoopRefactoring.cs" />

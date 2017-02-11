@@ -77,11 +77,11 @@ namespace Roslynator.Extensions
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> allInterfaces = containingType.AllInterfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = containingType.Interfaces;
 
-                for (int i = 0; i < allInterfaces.Length; i++)
+                for (int i = 0; i < interfaces.Length; i++)
                 {
-                    ImmutableArray<ISymbol> members = allInterfaces[i].GetMembers();
+                    ImmutableArray<ISymbol> members = interfaces[i].GetMembers();
 
                     for (int j = 0; j < members.Length; j++)
                     {
@@ -103,11 +103,11 @@ namespace Roslynator.Extensions
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> allInterfaces = containingType.AllInterfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = containingType.Interfaces;
 
-                for (int i = 0; i < allInterfaces.Length; i++)
+                for (int i = 0; i < interfaces.Length; i++)
                 {
-                    ImmutableArray<ISymbol> members = allInterfaces[i].GetMembers();
+                    ImmutableArray<ISymbol> members = interfaces[i].GetMembers();
 
                     for (int j = 0; j < members.Length; j++)
                     {
@@ -620,6 +620,12 @@ namespace Roslynator.Extensions
         public static bool IsEnum(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Enum;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsDelegate(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.TypeKind == TypeKind.Delegate;
         }
 
         public static bool SupportsExplicitDeclaration(this ITypeSymbol typeSymbol)

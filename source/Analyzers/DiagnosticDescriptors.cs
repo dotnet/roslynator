@@ -1493,5 +1493,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseGenericEventHandler = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseGenericEventHandler,
+            title: "Use EventHandler<T>.",
+            messageFormat: "Use EventHandler<T>.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
