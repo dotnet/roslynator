@@ -72,6 +72,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MemberTypeMustMatchOverriddenMemberTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantCastDiagnosticAnalyzer.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\AvoidStaticMemberInGenericTypesRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
