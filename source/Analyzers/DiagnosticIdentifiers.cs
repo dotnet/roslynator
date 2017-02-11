@@ -165,5 +165,6 @@ namespace Roslynator.CSharp
         public const string CompositeEnumValueContainsUndefinedFlag = Prefix + "1157";
         public const string AvoidStaticMembersInGenericTypes = Prefix + "1158";
         public const string UseGenericEventHandler = Prefix + "1159";
+        public const string AbstractTypeShouldNotHavePublicConstructors = Prefix + "1160";
     }
 }

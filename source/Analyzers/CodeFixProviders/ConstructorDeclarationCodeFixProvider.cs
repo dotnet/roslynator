@@ -21,7 +21,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
-                    DiagnosticIdentifiers.RemoveRedundantConstructor);
+                    DiagnosticIdentifiers.RemoveRedundantConstructor,
+                    DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors);
             }
         }
 
@@ -57,6 +58,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant constructor",
                                 cancellationToken => RemoveRedundantConstructorRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Change accessibility to 'protected'",
+                                cancellationToken => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
