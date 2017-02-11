@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 150+ analyzers and 170+ refactorings for C#, powered by Roslyn.
+* A collection of 160+ analyzers and 170+ refactorings for C#, powered by Roslyn.
 * [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
@@ -78,7 +78,7 @@
 * RCS1045 - Rename private field according to camel case with underscore
 * RCS1046 - Asynchronous method name should end with 'Async'
 * RCS1047 - Non-asynchronous method name should not end with 'Async'
-* RCS1048 - Replace anonymous method with lambda expression
+* RCS1048 - Use lambda expression instead of anonymous method
 * RCS1049 - Simplify boolean comparison
 * RCS1050 - Add constructor argument list
 * RCS1051 - Parenthesize condition in conditional expression
@@ -107,17 +107,17 @@
 * RCS1075 - Avoid empty catch clause that catches System.Exception
 * RCS1076 - Format declaration braces
 * RCS1077 - Simplify LINQ method chain
-* RCS1078 - Replace string.Empty with ""
+* RCS1078 - Use "" instead of string.Empty
 * RCS1079 - Throwing of new NotImplementedException
-* RCS1080 - Replace 'Any' method with 'Count' or 'Length' property
+* RCS1080 - Use 'Count/Length' property instead of 'Any' method
 * RCS1081 - Split variable declaration
-* RCS1082 - Replace 'Count' method with 'Count' or 'Length' property
-* RCS1083 - Replace 'Count' method with 'Any' method
-* RCS1084 - Replace conditional expression with coalesce expression
-* RCS1085 - Replace property with auto-implemented property
+* RCS1082 - Use 'Count/Length' property instead of 'Count' method
+* RCS1083 - Use 'Any' method instead of 'Count' method
+* RCS1084 - Use coalesce expression instead of conditional expression
+* RCS1085 - Use auto-implemented property instead of expanded property
 * RCS1086 - Use linefeed as newline
 * RCS1087 - Use carriage return + linefeed as newline
-* RCS1088 - Avoid usage of tab
+* RCS1088 - Use space(s) instead of tab
 * RCS1089 - Use postfix unary operator instead of assignment
 * RCS1090 - Call 'ConfigureAwait(false)'
 * RCS1091 - Remove empty region
@@ -125,7 +125,7 @@
 * RCS1093 - Remove file with no code
 * RCS1094 - Declare using directive on top level
 * RCS1095 - Use C# 6.0 dictionary initializer
-* RCS1096 - Use bitwise operation instead of 'HasFlag' method
+* RCS1096 - Use bitwise operation instead of calling 'HasFlag'
 * RCS1097 - Remove redundant 'ToString' call
 * RCS1098 - Avoid 'null' on the left side of a binary expression
 * RCS1099 - Default label should be last label in switch section
@@ -183,6 +183,15 @@
 * RCS1151 - Remove redundant cast
 * RCS1152 - Member type must match overriden member type
 * RCS1153 - Add empty line after closing brace
+* RCS1154 - Sort enum members
+* RCS1155 - Use StringComparison when comparing strings
+* RCS1156 - Use string.Length instead of comparison with empty string
+* RCS1157 - Composite enum value contains undefined flag
+* RCS1158 - Avoid static members in generic types
+* RCS1159 - Use EventHandler<T>
+* RCS1160 - Abstract type should not have public constructors
+* RCS1161 - Enum member should declare explicit value
+* RCS1162 - Avoid chain of assignments
 
 ### List of Refactorings
 
@@ -301,8 +310,6 @@
 * [Rename method according to type name](source/Refactorings/Refactorings.md#rename-method-according-to-type-name)
 * [Rename parameter according to its type name](source/Refactorings/Refactorings.md#rename-parameter-according-to-its-type-name)
 * [Rename property according to type name](source/Refactorings/Refactorings.md#rename-property-according-to-type-name)
-* [Replace "" with String.Empty](source/Refactorings/Refactorings.md#replace--with-stringempty)
-* [Replace anonymous method with lambda expression](source/Refactorings/Refactorings.md#replace-anonymous-method-with-lambda-expression)
 * [Replace Any with All (or All with Any)](source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any)
 * [Replace as expression with cast expression](source/Refactorings/Refactorings.md#replace-as-expression-with-cast-expression)
 * [Replace cast expression with as expression](source/Refactorings/Refactorings.md#replace-cast-expression-with-as-expression)
@@ -314,11 +321,11 @@
 * [Replace equals expression with String.Equals](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringequals)
 * [Replace equals expression with String.IsNullOrEmpty](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorempty)
 * [Replace equals expression with String.IsNullOrWhiteSpace](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace)
+* [Replace expression with constant value](source/Refactorings/Refactorings.md#replace-expression-with-constant-value)
 * [Replace field with constant](source/Refactorings/Refactorings.md#replace-field-with-constant)
 * [Replace for statement with foreach statement](source/Refactorings/Refactorings.md#replace-for-statement-with-foreach-statement)
 * [Replace for statement with while statement](source/Refactorings/Refactorings.md#replace-for-statement-with-while-statement)
 * [Replace foreach statement with for statement](source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement)
-* [Replace HasFlag invocation with bitwise operation](source/Refactorings/Refactorings.md#replace-hasflag-invocation-with-bitwise-operation)
 * [Replace if statement with return statement](source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement)
 * [Replace if-else with assignment](source/Refactorings/Refactorings.md#replace-if-else-with-assignment)
 * [Replace if-else with switch statement](source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement)
@@ -334,7 +341,6 @@
 * [Replace statement with if statement](source/Refactorings/Refactorings.md#replace-statement-with-if-statement)
 * [Replace string literal with character literal](source/Refactorings/Refactorings.md#replace-string-literal-with-character-literal)
 * [Replace String.Contains with String.IndexOf](source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof)
-* [Replace String.Empty with ""](source/Refactorings/Refactorings.md#replace-stringempty-with-)
 * [Replace String.Format with interpolated string](source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string)
 * [Replace switch statement with if-else](source/Refactorings/Refactorings.md#replace-switch-statement-with-if-else)
 * [Replace verbatim string literal with regular string literal](source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)
@@ -352,8 +358,12 @@
 * [Swap member declarations](source/Refactorings/Refactorings.md#swap-member-declarations)
 * [Swap statements in if-else](source/Refactorings/Refactorings.md#swap-statements-in-if-else)
 * [Uncomment](source/Refactorings/Refactorings.md#uncomment)
+* [Use "" instead of String.Empty](source/Refactorings/Refactorings.md#use--instead-of-stringempty)
+* [Use bitwise operation instead of calling 'HasFlag'](source/Refactorings/Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag)
 * [Use element access instead of 'First/Last'ElementAt' method](source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method)
 * [Use expression-bodied member](source/Refactorings/Refactorings.md#use-expression-bodied-member)
+* [Use lambda expression instead of anonymous method](source/Refactorings/Refactorings.md#use-lambda-expression-instead-of-anonymous-method)
+* [Use String.Empty instead of ""](source/Refactorings/Refactorings.md#use-stringempty-instead-of-)
 * [Wrap in #if directive](source/Refactorings/Refactorings.md#wrap-in-if-directive)
 * [Wrap in condition](source/Refactorings/Refactorings.md#wrap-in-condition)
 * [Wrap in region](source/Refactorings/Refactorings.md#wrap-in-region)

@@ -117,8 +117,6 @@
 [Rename method according to type name](Refactorings.md#rename-method-according-to-type-name)|x
 [Rename parameter according to its type name](Refactorings.md#rename-parameter-according-to-its-type-name)|x
 [Rename property according to type name](Refactorings.md#rename-property-according-to-type-name)|x
-[Replace "" with String\.Empty](Refactorings.md#replace--with-stringempty)|
-[Replace anonymous method with lambda expression](Refactorings.md#replace-anonymous-method-with-lambda-expression)|x
 [Replace Any with All \(or All with Any\)](Refactorings.md#replace-any-with-all-or-all-with-any)|x
 [Replace as expression with cast expression](Refactorings.md#replace-as-expression-with-cast-expression)|x
 [Replace cast expression with as expression](Refactorings.md#replace-cast-expression-with-as-expression)|x
@@ -130,11 +128,11 @@
 [Replace equals expression with String\.Equals](Refactorings.md#replace-equals-expression-with-stringequals)|x
 [Replace equals expression with String\.IsNullOrEmpty](Refactorings.md#replace-equals-expression-with-stringisnullorempty)|x
 [Replace equals expression with String\.IsNullOrWhiteSpace](Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace)|x
+[Replace expression with constant value](Refactorings.md#replace-expression-with-constant-value)|x
 [Replace field with constant](Refactorings.md#replace-field-with-constant)|x
 [Replace for statement with foreach statement](Refactorings.md#replace-for-statement-with-foreach-statement)|x
 [Replace for statement with while statement](Refactorings.md#replace-for-statement-with-while-statement)|x
 [Replace foreach statement with for statement](Refactorings.md#replace-foreach-statement-with-for-statement)|x
-[Replace HasFlag invocation with bitwise operation](Refactorings.md#replace-hasflag-invocation-with-bitwise-operation)|x
 [Replace if statement with return statement](Refactorings.md#replace-if-statement-with-return-statement)|x
 [Replace if\-else with assignment](Refactorings.md#replace-if-else-with-assignment)|x
 [Replace if\-else with switch statement](Refactorings.md#replace-if-else-with-switch-statement)|x
@@ -150,7 +148,6 @@
 [Replace statement with if statement](Refactorings.md#replace-statement-with-if-statement)|x
 [Replace string literal with character literal](Refactorings.md#replace-string-literal-with-character-literal)|x
 [Replace String\.Contains with String\.IndexOf](Refactorings.md#replace-stringcontains-with-stringindexof)|x
-[Replace String\.Empty with ""](Refactorings.md#replace-stringempty-with-)|x
 [Replace String\.Format with interpolated string](Refactorings.md#replace-stringformat-with-interpolated-string)|x
 [Replace switch statement with if\-else](Refactorings.md#replace-switch-statement-with-if-else)|x
 [Replace verbatim string literal with regular string literal](Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)|x
@@ -168,8 +165,12 @@
 [Swap member declarations](Refactorings.md#swap-member-declarations)|x
 [Swap statements in if\-else](Refactorings.md#swap-statements-in-if-else)|x
 [Uncomment](Refactorings.md#uncomment)|x
+[Use "" instead of String\.Empty](Refactorings.md#use--instead-of-stringempty)|x
+[Use bitwise operation instead of calling 'HasFlag'](Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag)|x
 [Use element access instead of 'First/Last'ElementAt' method](Refactorings.md#use-element-access-instead-of-firstlastelementat-method)|x
 [Use expression\-bodied member](Refactorings.md#use-expression-bodied-member)|x
+[Use lambda expression instead of anonymous method](Refactorings.md#use-lambda-expression-instead-of-anonymous-method)|x
+[Use String\.Empty instead of ""](Refactorings.md#use-stringempty-instead-of-)|
 [Wrap in \#if directive](Refactorings.md#wrap-in-if-directive)|x
 [Wrap in condition](Refactorings.md#wrap-in-condition)|x
 [Wrap in region](Refactorings.md#wrap-in-region)|x

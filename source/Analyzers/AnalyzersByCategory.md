@@ -2,9 +2,12 @@
 
  Category | Title | Id | Enabled by Default 
  --- | --- | --- |:---:
+Design|Abstract type should not have public constructors|RCS1160|x
 Design|Avoid empty catch clause that catches System\.Exception|RCS1075|x
 Design|Avoid locking on publicly accessible instance|RCS1059|x
+Design|Avoid static members in generic types|RCS1158|x
 Design|Call 'ConfigureAwait\(false\)'|RCS1090|x
+Design|Composite enum value contains undefined flag|RCS1157|x
 Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
@@ -32,14 +35,14 @@ Formatting|Format each statement on a separate line|RCS1026|
 Formatting|Format embedded statement on a separate line|RCS1027|
 Formatting|Format empty block|RCS1023|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
-General|Avoid usage of tab|RCS1088|
 General|Bitwise operation on enum without Flags attribute|RCS1130|x
 General|Mark local variable as const|RCS1118|x
 General|Remove unreachable code|RCS1148|x
-General|Replace string\.Empty with ""|RCS1078|
 General|Throwing of new NotImplementedException|RCS1079|x
+General|Use "" instead of string\.Empty|RCS1078|
 General|Use carriage return \+ linefeed as newline|RCS1087|
 General|Use linefeed as newline|RCS1086|
+General|Use space\(s\) instead of tab|RCS1088|
 Maintainability|Add documentation comment to publicly visible type or member|RCS1137|x
 Maintainability|Add exception to documentation comment|RCS1140|x
 Maintainability|Add parameter to documentation comment|RCS1141|x
@@ -53,22 +56,25 @@ Naming|Asynchronous method name should end with 'Async'|RCS1046|
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
 Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
-Performance|Replace 'Any' method with 'Count' or 'Length' property|RCS1080|x
-Performance|Replace 'Count' method with 'Any' method|RCS1083|x
-Performance|Replace 'Count' method with 'Count' or 'Length' property|RCS1082|x
 Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
 Performance|Use \[\] instead of calling 'First'|RCS1121|x
-Performance|Use bitwise operation instead of 'HasFlag' method|RCS1096|x
+Performance|Use 'Any' method instead of 'Count' method|RCS1083|x
+Performance|Use bitwise operation instead of calling 'HasFlag'|RCS1096|x
+Performance|Use 'Count/Length' property instead of 'Any' method|RCS1080|x
+Performance|Use 'Count/Length' property instead of 'Count' method|RCS1082|x
 Readability|Add default access modifier|RCS1018|x
 Readability|Add parentheses according to operator precedence|RCS1123|x
 Readability|Add static modifier to all partial class declarations|RCS1108|x
+Readability|Avoid chain of assignments|RCS1162|
 Readability|Avoid implicitly\-typed array|RCS1014|
 Readability|Avoid 'null' on the left side of a binary expression|RCS1098|x
 Readability|Avoid usage of using alias directive|RCS1056|
 Readability|Declare each attribute separately|RCS1052|
 Readability|Declare using directive on top level|RCS1094|
 Readability|Default label should be last label in switch section|RCS1099|x
+Readability|Enum member should declare explicit value|RCS1161|x
 Readability|Reorder modifiers|RCS1019|
+Readability|Sort enum members|RCS1154|x
 Readability|Split variable declaration|RCS1081|
 Readability|Use explicit type instead of 'var' \(even if the type is obvious\)|RCS1012|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x
@@ -115,10 +121,8 @@ Simplification|Merge interpolation into interpolated string|RCS1105|x
 Simplification|Merge local declaration with initialization|RCS1127|x
 Simplification|Merge local declaration with return statement|RCS1054|x
 Simplification|Merge switch sections with equivalent content|RCS1136|x
-Simplification|Replace conditional expression with coalesce expression|RCS1084|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
-Simplification|Replace property with auto\-implemented property|RCS1085|x
 Simplification|Simplify boolean comparison|RCS1049|x
 Simplification|Simplify coalesce expression|RCS1143|x
 Simplification|Simplify conditional expression|RCS1104|x
@@ -128,7 +132,9 @@ Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
+Simplification|Use auto\-implemented property instead of expanded property|RCS1085|x
 Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
+Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
 Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use postfix unary operator instead of assignment|RCS1089|x
@@ -147,9 +153,12 @@ Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
-Usage|Replace anonymous method with lambda expression|RCS1048|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
 Usage|Use conditional access|RCS1146|x
+Usage|Use EventHandler\<T\>|RCS1159|x
 Usage|Use expression\-bodied member|RCS1016|
+Usage|Use lambda expression instead of anonymous method|RCS1048|x
 Usage|Use predefined type|RCS1013|
 Usage|Use 'string\.IsNullOrEmpty' method|RCS1113|x
+Usage|Use string\.Length instead of comparison with empty string|RCS1156|x
+Usage|Use StringComparison when comparing strings|RCS1155|x

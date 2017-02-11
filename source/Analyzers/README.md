@@ -48,7 +48,7 @@ RCS1044|Remove original exception from throw statement|Maintainability|x
 RCS1045|Rename private field according to camel case with underscore|Naming|
 RCS1046|Asynchronous method name should end with 'Async'|Naming|
 RCS1047|Non\-asynchronous method name should not end with 'Async'|Naming|x
-RCS1048|Replace anonymous method with lambda expression|Usage|x
+RCS1048|Use lambda expression instead of anonymous method|Usage|x
 RCS1049|Simplify boolean comparison|Simplification|x
 RCS1050|Add constructor argument list|Style|
 RCS1051|Parenthesize condition in conditional expression|Style|
@@ -77,17 +77,17 @@ RCS1074|Remove redundant constructor|Redundancy|x
 RCS1075|Avoid empty catch clause that catches System\.Exception|Design|x
 RCS1076|Format declaration braces|Formatting|x
 RCS1077|Simplify LINQ method chain|Simplification|x
-RCS1078|Replace string\.Empty with ""|General|
+RCS1078|Use "" instead of string\.Empty|General|
 RCS1079|Throwing of new NotImplementedException|General|x
-RCS1080|Replace 'Any' method with 'Count' or 'Length' property|Performance|x
+RCS1080|Use 'Count/Length' property instead of 'Any' method|Performance|x
 RCS1081|Split variable declaration|Readability|
-RCS1082|Replace 'Count' method with 'Count' or 'Length' property|Performance|x
-RCS1083|Replace 'Count' method with 'Any' method|Performance|x
-RCS1084|Replace conditional expression with coalesce expression|Simplification|x
-RCS1085|Replace property with auto\-implemented property|Simplification|x
+RCS1082|Use 'Count/Length' property instead of 'Count' method|Performance|x
+RCS1083|Use 'Any' method instead of 'Count' method|Performance|x
+RCS1084|Use coalesce expression instead of conditional expression|Simplification|x
+RCS1085|Use auto\-implemented property instead of expanded property|Simplification|x
 RCS1086|Use linefeed as newline|General|
 RCS1087|Use carriage return \+ linefeed as newline|General|
-RCS1088|Avoid usage of tab|General|
+RCS1088|Use space\(s\) instead of tab|General|
 RCS1089|Use postfix unary operator instead of assignment|Simplification|x
 RCS1090|Call 'ConfigureAwait\(false\)'|Design|x
 RCS1091|Remove empty region|Redundancy|x
@@ -95,7 +95,7 @@ RCS1092|Add empty line after last statement in do statement|Formatting|
 RCS1093|Remove file with no code|Redundancy|x
 RCS1094|Declare using directive on top level|Readability|
 RCS1095|Use C\# 6\.0 dictionary initializer|Usage|x
-RCS1096|Use bitwise operation instead of 'HasFlag' method|Performance|x
+RCS1096|Use bitwise operation instead of calling 'HasFlag'|Performance|x
 RCS1097|Remove redundant 'ToString' call|Redundancy|x
 RCS1098|Avoid 'null' on the left side of a binary expression|Readability|x
 RCS1099|Default label should be last label in switch section|Readability|x
@@ -153,3 +153,12 @@ RCS1150|Call string\.Concat instead of string\.Join|Simplification|x
 RCS1151|Remove redundant cast|Redundancy|x
 RCS1152|Member type must match overriden member type|ErrorFix|x
 RCS1153|Add empty line after closing brace|Formatting|
+RCS1154|Sort enum members|Readability|x
+RCS1155|Use StringComparison when comparing strings|Usage|x
+RCS1156|Use string\.Length instead of comparison with empty string|Usage|x
+RCS1157|Composite enum value contains undefined flag|Design|x
+RCS1158|Avoid static members in generic types|Design|x
+RCS1159|Use EventHandler\<T\>|Usage|x
+RCS1160|Abstract type should not have public constructors|Design|x
+RCS1161|Enum member should declare explicit value|Readability|x
+RCS1162|Avoid chain of assignments|Readability|

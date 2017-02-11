@@ -1,7 +1,7 @@
 ﻿<h3>Introduction</h3>
 
 <p>
-    A collection of 150+ analyzers and 170+ refactorings for C#, powered by Roslyn.
+    A collection of 160+ analyzers and 170+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
@@ -21,7 +21,8 @@
     </li>  
 </ul>
 
-<h3>Options</h3>
+<h3>Settings</h3>
+<p>Analyzers can be enabled/disabled using <b>rule set</b>. Please see <a href="http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToCustomizeAnalyzers.md">How to Customize Analyzers</a>.</p>  
 <p>Refactorings can be enabled/disabled in Visual Studio options.</p>  
 <img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
 
@@ -104,7 +105,7 @@
         <li>RCS1045 - Rename private field according to camel case with underscore.</li>
         <li>RCS1046 - Asynchronous method name should end with 'Async'.</li>
         <li>RCS1047 - Non-asynchronous method name should not end with 'Async'.</li>
-        <li>RCS1048 - Replace anonymous method with lambda expression.</li>
+        <li>RCS1048 - Use lambda expression instead of anonymous method.</li>
         <li>RCS1049 - Simplify boolean comparison.</li>
         <li>RCS1050 - Add constructor argument list.</li>
         <li>RCS1051 - Parenthesize condition in conditional expression.</li>
@@ -133,17 +134,17 @@
         <li>RCS1075 - Avoid empty catch clause that catches System.Exception.</li>
         <li>RCS1076 - Format declaration braces.</li>
         <li>RCS1077 - Simplify LINQ method chain.</li>
-        <li>RCS1078 - Replace string.Empty with "".</li>
+        <li>RCS1078 - Use "" instead of string.Empty.</li>
         <li>RCS1079 - Throwing of new NotImplementedException.</li>
-        <li>RCS1080 - Replace 'Any' method with 'Count' or 'Length' property.</li>
+        <li>RCS1080 - Use 'Count/Length' property instead of 'Any' method.</li>
         <li>RCS1081 - Split variable declaration.</li>
-        <li>RCS1082 - Replace 'Count' method with 'Count' or 'Length' property.</li>
-        <li>RCS1083 - Replace 'Count' method with 'Any' method.</li>
-        <li>RCS1084 - Replace conditional expression with coalesce expression.</li>
-        <li>RCS1085 - Replace property with auto-implemented property.</li>
+        <li>RCS1082 - Use 'Count/Length' property instead of 'Count' method.</li>
+        <li>RCS1083 - Use 'Any' method instead of 'Count' method.</li>
+        <li>RCS1084 - Use coalesce expression instead of conditional expression.</li>
+        <li>RCS1085 - Use auto-implemented property instead of expanded property.</li>
         <li>RCS1086 - Use linefeed as newline.</li>
         <li>RCS1087 - Use carriage return + linefeed as newline.</li>
-        <li>RCS1088 - Avoid usage of tab.</li>
+        <li>RCS1088 - Use space(s) instead of tab.</li>
         <li>RCS1089 - Use postfix unary operator instead of assignment.</li>
         <li>RCS1090 - Call 'ConfigureAwait(false)'.</li>
         <li>RCS1091 - Remove empty region.</li>
@@ -151,7 +152,7 @@
         <li>RCS1093 - Remove file with no code.</li>
         <li>RCS1094 - Declare using directive on top level.</li>
         <li>RCS1095 - Use C# 6.0 dictionary initializer.</li>
-        <li>RCS1096 - Use bitwise operation instead of 'HasFlag' method.</li>
+        <li>RCS1096 - Use bitwise operation instead of calling 'HasFlag'.</li>
         <li>RCS1097 - Remove redundant 'ToString' call.</li>
         <li>RCS1098 - Avoid 'null' on the left side of a binary expression.</li>
         <li>RCS1099 - Default label should be last label in switch section.</li>
@@ -209,6 +210,15 @@
         <li>RCS1151 - Remove redundant cast.</li>
         <li>RCS1152 - Member type must match overriden member type.</li>
         <li>RCS1153 - Add empty line after closing brace.</li>
+        <li>RCS1154 - Sort enum members.</li>
+        <li>RCS1155 - Use StringComparison when comparing strings.</li>
+        <li>RCS1156 - Use string.Length instead of comparison with empty string.</li>
+        <li>RCS1157 - Composite enum value contains undefined flag.</li>
+        <li>RCS1158 - Avoid static members in generic types.</li>
+        <li>RCS1159 - Use EventHandler&lt;T&gt;.</li>
+        <li>RCS1160 - Abstract type should not have public constructors.</li>
+        <li>RCS1161 - Enum member should declare explicit value.</li>
+        <li>RCS1162 - Avoid chain of assignments.</li>
     </ul>
     <h3>List of Refactorings</h3>
     <ul>
@@ -558,12 +568,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-property-according-to-type-name">Rename property according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace--with-stringempty">Replace "" with String.Empty</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any">Replace Any with All (or All with Any)</a>
         </li>
         <li>
@@ -597,6 +601,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with String.IsNullOrWhiteSpace</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-expression-with-constant-value">Replace expression with constant value</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
@@ -607,9 +614,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-hasflag-invocation-with-bitwise-operation">Replace HasFlag invocation with bitwise operation</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
@@ -655,9 +659,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof">Replace String.Contains with String.IndexOf</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringempty-with-">Replace String.Empty with ""</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string">Replace String.Format with interpolated string</a>
@@ -711,10 +712,22 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#uncomment">Uncomment</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use--instead-of-stringempty">Use "" instead of String.Empty</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag">Use bitwise operation instead of calling 'HasFlag'</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method">Use element access instead of 'First/Last'ElementAt' method</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-lambda-expression-instead-of-anonymous-method">Use lambda expression instead of anonymous method</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-stringempty-instead-of-">Use String.Empty instead of ""</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-if-directive">Wrap in #if directive</a>
