@@ -70,6 +70,7 @@
     <Compile Include="DiagnosticAnalyzers\AddParameterToDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddSummaryToDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddTypeParameterToDocumentationCommentDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidChainOfAssignmentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
