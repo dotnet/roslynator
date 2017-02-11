@@ -73,6 +73,7 @@
     <Compile Include="AddStaticModifierToAllPartialClassDeclarations.cs" />
     <Compile Include="DefaultSwitchLabelShouldBeLastLabelInSection.cs" />
     <Compile Include="AvoidMultilineExpressionBodyRefactoring.cs" />
+    <Compile Include="EnumMemberShouldDeclareExplicitValue.cs" />
     <Compile Include="FormatAccessorList.cs" />
     <Compile Include="FormatEachStatementOnSeparateLine.cs" />
     <Compile Include="FormatEmbeddedStatementOnSeparateLine.cs" />

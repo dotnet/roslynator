@@ -166,5 +166,6 @@ namespace Roslynator.CSharp
         public const string AvoidStaticMembersInGenericTypes = Prefix + "1158";
         public const string UseGenericEventHandler = Prefix + "1159";
         public const string AbstractTypeShouldNotHavePublicConstructors = Prefix + "1160";
+        public const string EnumMemberShouldDeclareExplicitValue = Prefix + "1161";
     }
 }
