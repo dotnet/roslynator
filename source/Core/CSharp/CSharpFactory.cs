@@ -1176,7 +1176,7 @@ namespace Roslynator.CSharp
 
         public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
         {
-            return SyntaxFactory.GenericName(identifier, TypeArgumentList(SingletonSeparatedList(typeArgument)));
+            return SyntaxFactory.GenericName(identifier, TypeArgumentList(typeArgument));
         }
 
         public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
@@ -1207,6 +1207,11 @@ namespace Roslynator.CSharp
                 default(SyntaxList<AttributeListSyntax>),
                 identifier,
                 EqualsValueClause(value));
+        }
+
+        public static TypeArgumentListSyntax TypeArgumentList(TypeSyntax argument)
+        {
+            return SyntaxFactory.TypeArgumentList(SingletonSeparatedList(argument));
         }
     }
 }
