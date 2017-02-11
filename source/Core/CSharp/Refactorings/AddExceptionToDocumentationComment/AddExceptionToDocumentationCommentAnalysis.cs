@@ -8,7 +8,6 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
     public class AddExceptionToDocumentationCommentAnalysis
     {
-
         internal AddExceptionToDocumentationCommentAnalysis(ThrowInfo info, SyntaxTrivia documentationComment)
         {
             ThrowInfo = info;

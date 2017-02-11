@@ -40,6 +40,5 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             UseNameOfOperatorRefactoring.Analyze(context, argument);
         }
-
     }
 }
