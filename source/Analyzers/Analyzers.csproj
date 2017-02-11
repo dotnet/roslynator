@@ -81,6 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
@@ -394,6 +395,7 @@
     <Compile Include="CodeFixProviders\RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesToIfElseCodeFixProvider.cs" />
+    <Compile Include="Refactorings\UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -27,7 +27,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
                     DiagnosticIdentifiers.RemoveRedundantAsOperator,
-                    DiagnosticIdentifiers.UseConditionalAccess);
+                    DiagnosticIdentifiers.UseConditionalAccess,
+                    DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString);
             }
         }
 
@@ -120,6 +121,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Use conditional access",
                                 cancellationToken => UseConditionalAccessRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use string.Length",
+                                cancellationToken => UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

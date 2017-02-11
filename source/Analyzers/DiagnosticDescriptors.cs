@@ -1466,5 +1466,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseStringLengthInsteadOfComparisonWithEmptyString = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
+            title: "Use string.Length instead of comparison with empty string.",
+            messageFormat: "Use string.Length instead of comparison with empty string.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
