@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         $"Add identifier '{name}'",
-                                        c => RefactorAsync(context.Document, declarator, type, name, c));
+                                        c => RefactorAsync(context.Document, type, name, c));
                                 }
                             }
                         }
@@ -89,7 +89,6 @@ namespace Roslynator.CSharp.Refactorings
 
         private static async Task<Document> RefactorAsync(
             Document document,
-            VariableDeclaratorSyntax declarator,
             TypeSyntax type,
             string name,
             CancellationToken cancellationToken = default(CancellationToken))

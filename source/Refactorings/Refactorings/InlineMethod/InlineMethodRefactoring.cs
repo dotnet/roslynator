@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                         if (expression != null)
                         {
-                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, method, semanticModel, context.CancellationToken);
+                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
 
                             if (parameterInfos != null)
                             {
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                             if (statements?.Length > 0)
                             {
-                                List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, method, semanticModel, context.CancellationToken);
+                                List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
 
                                 if (parameterInfos != null)
                                 {
@@ -229,7 +229,6 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(
                 parameterInfos,
-                invocation,
                 expression,
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
@@ -281,7 +280,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 Solution solution = document.Project.Solution;
 
-                expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, invocation, expression, solution, cancellationToken).ConfigureAwait(false);
+                expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
 
                 editor.ReplaceNode(invocation, expression);
 
@@ -377,12 +376,11 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
         private static async Task<ExpressionSyntax> ReplaceParameterExpressionWithArgumentExpressionAsync(
             ParameterInfo[] parameterInfos,
-            InvocationExpressionSyntax invocation,
             ExpressionSyntax expression,
             Solution solution,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
+            ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync<ExpressionSyntax>(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
 
             return newExpression
                 .WithoutTrivia()
@@ -465,7 +463,6 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         private static List<ParameterInfo> GetParameterInfos(
             InvocationExpressionSyntax invocation,
             IMethodSymbol methodSymbol,
-            MethodDeclarationSyntax methodDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {

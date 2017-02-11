@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Extensions
             bool allowCandidate = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return DetermineParameterHelper.DetermineParameter(argument, semanticModel, allowParams, allowParams, cancellationToken);
+            return DetermineParameterHelper.DetermineParameter(argument, semanticModel, allowParams, allowCandidate, cancellationToken);
         }
 
         public static IParameterSymbol DetermineParameter(

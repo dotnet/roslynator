@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                             ExpressionSyntax expression = castExpression.Expression;
 
                             if (expression != null
-                                && CanRefactor(castExpression, type, expression, accessedExpression, context.SemanticModel, context.CancellationToken)
+                                && CanRefactor(type, expression, accessedExpression, context.SemanticModel, context.CancellationToken)
                                 && !parenthesizedExpression.SpanContainsDirectives())
                             {
                                 context.ReportDiagnostic(
@@ -54,7 +54,6 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool CanRefactor(
-            CastExpressionSyntax castExpression,
             TypeSyntax type,
             ExpressionSyntax expression,
             ExpressionSyntax accessedExpression,

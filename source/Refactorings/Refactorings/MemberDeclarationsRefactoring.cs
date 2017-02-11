@@ -54,7 +54,6 @@ namespace Roslynator.CSharp.Refactorings
                                         return ReplaceMembersAsync(
                                             context.Document,
                                             parentMember,
-                                            members,
                                             List(members.Skip(index + 1)),
                                             cancellationToken);
                                     });
@@ -66,7 +65,6 @@ namespace Roslynator.CSharp.Refactorings
                                         return ReplaceMembersAsync(
                                             context.Document,
                                             parentMember,
-                                            members,
                                             List(members.Take(index + 1)),
                                             cancellationToken);
                                     });
@@ -143,7 +141,6 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> ReplaceMembersAsync(
             Document document,
             MemberDeclarationSyntax parentMember,
-            SyntaxList<MemberDeclarationSyntax> members,
             SyntaxList<MemberDeclarationSyntax> newMembers,
             CancellationToken cancellationToken = default(CancellationToken))
         {

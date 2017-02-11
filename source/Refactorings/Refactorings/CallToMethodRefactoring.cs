@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType,
             string methodName)
         {
-            IMethodSymbol methodSymbol = GetMethodSymbol(expression, destinationType, methodName);
+            IMethodSymbol methodSymbol = GetMethodSymbol(destinationType, methodName);
 
             if (methodSymbol != null)
             {
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static IMethodSymbol GetMethodSymbol(ExpressionSyntax expression, ITypeSymbol destinationType, string methodName)
+        private static IMethodSymbol GetMethodSymbol(ITypeSymbol destinationType, string methodName)
         {
             foreach (IMethodSymbol methodSymbol in destinationType.GetMethods(methodName))
             {

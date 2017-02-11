@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
     {
         public abstract ImmutableArray<TextChange> GetTextChanges(IEnumerable<TextLine> selectedLines);
 
-        public static async Task<SelectedTextLineCollection> GetSelectedLinesAsync(RefactoringContext context, SyntaxNode node)
+        public static async Task<SelectedTextLineCollection> GetSelectedLinesAsync(RefactoringContext context)
         {
             TextSpan span = context.Span;
 

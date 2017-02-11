@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -129,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 TInterfaceSymbol interfaceMember = memberSymbol.FindImplementedInterfaceMember<TInterfaceSymbol>();
 
-                if (interfaceMember != null)
+                if (!EqualityComparer<TInterfaceSymbol>.Default.Equals(interfaceMember, default(TInterfaceSymbol)))
                 {
                     commentTrivia = CreateDocumentationCommentTrivia(interfaceMember, semanticModel, memberDeclaration.SpanStart, context.CancellationToken);
 

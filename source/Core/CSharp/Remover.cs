@@ -38,7 +38,7 @@ namespace Roslynator.CSharp
             {
                 var compilationUnit = (CompilationUnitSyntax)member.Parent;
 
-                return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member)).ConfigureAwait(false);
+                return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken).ConfigureAwait(false);
             }
             else
             {
@@ -46,11 +46,11 @@ namespace Roslynator.CSharp
 
                 if (parentMember != null)
                 {
-                    return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member)).ConfigureAwait(false);
+                    return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    return await document.RemoveNodeAsync(member, DefaultRemoveOptions).ConfigureAwait(false);
+                    return await document.RemoveNodeAsync(member, DefaultRemoveOptions, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
@@ -300,7 +300,7 @@ namespace Roslynator.CSharp
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            return document.RemoveNodeAsync(statement, GetRemoveOptions(statement));
+            return document.RemoveNodeAsync(statement, GetRemoveOptions(statement), cancellationToken);
         }
 
         public static TNode RemoveStatement<TNode>(TNode node, StatementSyntax statement) where TNode : SyntaxNode

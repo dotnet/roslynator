@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             SyntaxToken token = interpolatedString.StringStartToken;
 
-            if (token.Text.StartsWith("$"))
+            if (token.Text.StartsWith("$", StringComparison.Ordinal))
                 return new TextSpan(token.SpanStart, 1);
 
             return new TextSpan(token.SpanStart, 0);

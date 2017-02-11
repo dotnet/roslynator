@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else if (destinationType.IsArrayType())
             {
-                CallToArray(context, expression, (IArrayTypeSymbol)destinationType, semanticModel);
+                CallToArray(context, expression, semanticModel);
                 return true;
             }
             else if (destinationType.IsNamedType())
@@ -107,7 +107,6 @@ namespace Roslynator.CSharp.Refactorings
         private static void CallToArray(
             RefactoringContext context,
             ExpressionSyntax expression,
-            IArrayTypeSymbol arrayType,
             SemanticModel semanticModel)
         {
             ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, context.CancellationToken);

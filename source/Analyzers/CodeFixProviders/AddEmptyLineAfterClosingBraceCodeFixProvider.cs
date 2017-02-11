@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             Debug.Assert(trivia.IsEndOfLineTrivia(), $"{nameof(trivia)} is not EOF");
 
-            if (trivia == null)
+            if (!trivia.IsEndOfLineTrivia())
                 return;
 
             CodeAction codeAction = CodeAction.Create(

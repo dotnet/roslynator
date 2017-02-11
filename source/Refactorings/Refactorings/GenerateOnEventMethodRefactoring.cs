@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                                         && !MethodExists(eventSymbol, containingType, eventArgsSymbol))
                                     {
                                         string methodName = "On" + eventSymbol.Name;
-                                        methodName = Identifier.EnsureUniqueMemberName(methodName, containingType, context.CancellationToken);
+                                        methodName = Identifier.EnsureUniqueMemberName(methodName, containingType);
 
                                         context.RegisterRefactoring(
                                             $"Generate '{methodName}' method",
@@ -141,13 +141,12 @@ namespace Roslynator.CSharp.Refactorings
                 default(TypeParameterListSyntax),
                 ParameterList(Parameter(eventArgsType, Identifier(EventArgsIdentifier))),
                 default(SyntaxList<TypeParameterConstraintClauseSyntax>),
-                Block(CreateOnEventMethodBody(eventSymbol, eventArgsType, supportCSharp6)),
+                Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
                 default(ArrowExpressionClauseSyntax));
         }
 
         private static IEnumerable<StatementSyntax> CreateOnEventMethodBody(
             IEventSymbol eventSymbol,
-            TypeSyntax eventArgsType,
             bool supportsCSharp6)
         {
             if (supportsCSharp6)

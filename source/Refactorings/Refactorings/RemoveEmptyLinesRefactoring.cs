@@ -29,7 +29,6 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task<Document> RefactorAsync(
             Document document,
-            SyntaxNode node,
             TextSpan span,
             CancellationToken cancellationToken = default(CancellationToken))
         {

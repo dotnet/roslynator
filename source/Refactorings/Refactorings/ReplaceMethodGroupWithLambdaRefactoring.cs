@@ -71,14 +71,14 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax methodDeclaration,
             CancellationToken cancellationToken)
         {
-            ParenthesizedLambdaExpressionSyntax lambda = CreateLambdaExpression(expression, methodDeclaration)
+            ParenthesizedLambdaExpressionSyntax lambda = CreateLambdaExpression(methodDeclaration)
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(expression, lambda, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ParenthesizedLambdaExpressionSyntax CreateLambdaExpression(ExpressionSyntax expression, MethodDeclarationSyntax methodDeclaration)
+        private static ParenthesizedLambdaExpressionSyntax CreateLambdaExpression(MethodDeclarationSyntax methodDeclaration)
         {
             CSharpSyntaxNode body = GetLambdaBody(methodDeclaration);
 

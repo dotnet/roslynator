@@ -10,8 +10,8 @@ namespace Roslynator.CSharp.SyntaxRewriters
 {
     internal class GenerateDocumentationCommentSyntaxRewriter : CSharpSyntaxRewriter
     {
-        private SyntaxNode _node;
-        private DocumentationCommentGeneratorSettings _settings;
+        private readonly SyntaxNode _node;
+        private readonly DocumentationCommentGeneratorSettings _settings;
 
         public GenerateDocumentationCommentSyntaxRewriter(SyntaxNode node, DocumentationCommentGeneratorSettings settings)
         {
