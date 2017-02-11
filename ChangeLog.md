@@ -1,3 +1,25 @@
+### 1.2.13 (2017-02-11)
+
+#### Analyzers
+
+##### New Analyzers
+
+* SortEnumMembers
+* UseStringComparison
+* UseStringLengthInsteadOfComparisonWithEmptyString
+* CompositeEnumValueContainsUndefinedFlag
+* AvoidStaticMembersInGenericTypes
+* UseGenericEventHandler
+* AbstractTypeShouldNotHavePublicConstructors
+* EnumMemberShouldDeclareExplicitValue
+* AvoidChainOfAssginments
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceExpressionWithConstantValue
+
 ### 1.2.12 (2017-02-02)
 
 #### Analyzers
