@@ -1511,5 +1511,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor EnumMemberShouldDeclareExplicitValue = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue,
+            title: "Enum member should declare explicit value.",
+            messageFormat: "Enum member should declare explicit value.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

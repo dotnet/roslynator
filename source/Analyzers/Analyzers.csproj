@@ -46,6 +46,7 @@
     <Compile Include="CodeFixProviders\AddEmptyLineAfterClosingBraceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CompositeEnumValueContainsUndefinedFlagCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantCastCodeFixProvider.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MemberTypeMustMatchOverriddenMemberTypeDiagnosticAnalyzer.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\EnumMemberShouldDeclareExplicitValueRefactoring.cs" />
     <Compile Include="Refactorings\AbstractTypeShouldNotHavePublicConstructorsRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseGenericEventHandlerDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AvoidStaticMemberInGenericTypesRefactoring.cs" />
