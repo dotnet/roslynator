@@ -1502,5 +1502,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AbstractTypeShouldNotHavePublicConstructors = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors,
+            title: "Abstract type should not have public constructors.",
+            messageFormat: "Abstract type should not have public constructors.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
