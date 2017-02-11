@@ -876,6 +876,11 @@
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
+  <Refactoring Id="ReplaceExpressionWithConstantValue" Title="Replace expression with constant value" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>expression that has constant value</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceFieldWithConstant" Title="Replace field with constant" ExtensionVersion="0.9.0">
     <Syntaxes>
       <Syntax>read-only field</Syntax>
