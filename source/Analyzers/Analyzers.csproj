@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="CodeFixProviders\AddEmptyLineAfterClosingBraceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\CompositeEnumValueContainsUndefinedFlagCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantCastCodeFixProvider.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddMissingSemicolonDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MemberTypeMustMatchOverriddenMemberTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantCastDiagnosticAnalyzer.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />

@@ -561,5 +561,181 @@ namespace Roslynator
         {
             return x > 0 && (x & (x - 1)) == 0;
         }
+
+        public static bool IsComposite(sbyte value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<sbyte> Decompose(sbyte value)
+        {
+            const int maxValue = (sizeof(sbyte) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (sbyte)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(byte value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<byte> Decompose(byte value)
+        {
+            const int maxValue = (sizeof(byte) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (byte)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(short value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<short> Decompose(short value)
+        {
+            const int maxValue = (sizeof(short) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (short)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(ushort value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<ushort> Decompose(ushort value)
+        {
+            const int maxValue = (sizeof(ushort) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (ushort)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(int value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<int> Decompose(int value)
+        {
+            const int maxValue = (sizeof(int) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (int)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(uint value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<uint> Decompose(uint value)
+        {
+            const int maxValue = (sizeof(uint) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (uint)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(long value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<long> Decompose(long value)
+        {
+            const int maxValue = (sizeof(long) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (long)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
+
+        public static bool IsComposite(ulong value)
+        {
+            return value > 0
+                && (value & (value - 1)) != 0;
+        }
+
+        public static IEnumerable<ulong> Decompose(ulong value)
+        {
+            const int maxValue = (sizeof(ulong) * 8) - 1;
+
+            for (int i = 0; i < maxValue; i++)
+            {
+                var x = (ulong)(1 << i);
+
+                if (x > value)
+                    yield break;
+
+                if ((value & x) != 0)
+                    yield return x;
+            }
+        }
     }
 }

@@ -1475,5 +1475,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor CompositeEnumValueContainsUndefinedFlag = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag,
+            title: "Composite enum value contains undefined flag.",
+            messageFormat: "Composite enum value contains undefined flag {0}.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

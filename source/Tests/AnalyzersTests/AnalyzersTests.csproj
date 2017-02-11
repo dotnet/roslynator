@@ -63,6 +63,7 @@
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="SimplifyCoalesceExpression.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
+    <Compile Include="CompositeEnumValueContainsUndefinedFlag.cs" />
     <Compile Include="DeclareEnumMemberWithZeroValue.cs" />
     <Compile Include="DeclareTypeInsideNamespace.cs" />
     <Compile Include="AvoidUsageOfForStatementToCreateInfiniteLoop.cs" />
