@@ -157,6 +157,7 @@
     <Compile Include="FormatDeclarationBraces.cs" />
     <Compile Include="RemoveRedundantParentheses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UseStringLengthInsteadOfComparisonWithEmptyString.cs" />
     <Compile Include="UseVarInsteadOfExplicitType.cs" />
   </ItemGroup>
   <ItemGroup>
