@@ -1484,5 +1484,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AvoidStaticMembersInGenericTypes = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidStaticMembersInGenericTypes,
+            title: "Avoid static members in generic types.",
+            messageFormat: "Avoid static members in generic types.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
