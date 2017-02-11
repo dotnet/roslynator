@@ -1520,5 +1520,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor AvoidChainOfAssignments = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidChainOfAssignments,
+            title: "Avoid chain of assignments.",
+            messageFormat: "Avoid chain of assignments.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
