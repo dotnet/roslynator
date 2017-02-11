@@ -1359,4 +1359,85 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="SortEnumMembers" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1154</Id>
+    <Title>Sort enum members.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseStringComparison" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1155</Id>
+    <Title>Use StringComparison when comparing strings.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1156</Id>
+    <Title>Use string.Length instead of comparison with empty string.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="CompositeEnumValueContainsUndefinedFlag" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1157</Id>
+    <Title>Composite enum value contains undefined flag.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AvoidStaticMembersInGenericTypes" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1158</Id>
+    <Title>Avoid static members in generic types.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseGenericEventHandler" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1159</Id>
+    <Title>Use EventHandler&lt;T&gt;.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AbstractTypeShouldNotHavePublicConstructors" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1160</Id>
+    <Title>Abstract type should not have public constructors.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="EnumMemberShouldDeclareExplicitValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1161</Id>
+    <Title>Enum member should declare explicit value.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AvoidChainOfAssignments" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1162</Id>
+    <Title>Avoid chain of assignments.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>

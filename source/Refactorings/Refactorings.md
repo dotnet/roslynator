@@ -767,19 +767,6 @@
 
 ![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
 
-#### Replace "" with String.Empty
-
-* **Syntax**: empty string literal
-
-![Replace "" with String.Empty](../../images/refactorings/ReplaceEmptyStringLiteralWithStringEmpty.png)
-
-#### Replace anonymous method with lambda expression
-
-* **Syntax**: anonymous method
-* **Scope**: delegate keyword
-
-![Replace anonymous method with lambda expression](../../images/refactorings/ReplaceAnonymousMethodWithLambdaExpression.png)
-
 #### Replace Any with All (or All with Any)
 
 * **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
@@ -853,6 +840,12 @@
 
 ![Replace equals expression with String.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
+#### Replace expression with constant value
+
+* **Syntax**: expression that has constant value
+
+![Replace expression with constant value](../../images/refactorings/ReplaceExpressionWithConstantValue.png)
+
 #### Replace field with constant
 
 * **Syntax**: read-only field
@@ -876,12 +869,6 @@
 * **Syntax**: foreach statement
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
-
-#### Replace HasFlag invocation with bitwise operation
-
-* **Syntax**: Enum.HasFlag method invocation
-
-![Replace HasFlag invocation with bitwise operation](../../images/refactorings/ReplaceHasFlagWithBitwiseOperation.png)
 
 #### Replace if statement with return statement
 
@@ -976,12 +963,6 @@
 * **Scope**: method name
 
 ![Replace String.Contains with String.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
-
-#### Replace String.Empty with ""
-
-* **Syntax**: String.Empty field
-
-![Replace String.Empty with ""](../../images/refactorings/ReplaceStringEmptyWithEmptyStringLiteral.png)
 
 #### Replace String.Format with interpolated string
 
@@ -1098,6 +1079,18 @@
 
 ![Uncomment](../../images/refactorings/Uncomment.png)
 
+#### Use "" instead of String.Empty
+
+* **Syntax**: String.Empty field
+
+![Use "" instead of String.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
+
+#### Use bitwise operation instead of calling 'HasFlag'
+
+* **Syntax**: Enum.HasFlag method invocation
+
+![Use bitwise operation instead of calling 'HasFlag'](../../images/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.png)
+
 #### Use element access instead of 'First/Last'ElementAt' method
 
 * **Syntax**: First/Last/ElementAt method invocation
@@ -1111,6 +1104,19 @@
 * **Scope**: body or accessor list
 
 ![Use expression-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
+
+#### Use lambda expression instead of anonymous method
+
+* **Syntax**: anonymous method
+* **Scope**: delegate keyword
+
+![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
+
+#### Use String.Empty instead of ""
+
+* **Syntax**: empty string literal
+
+![Use String.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
 
 #### Wrap in #if directive
 

@@ -17,7 +17,7 @@
     </li>  
 </ul>
 
-<h3>Options</h3>
+<h3>Settings</h3>
 <p>Refactorings can be enabled/disabled in Visual Studio options.</p>  
 <img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
 
@@ -401,12 +401,6 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#rename-property-according-to-type-name">Rename property according to type name</a>
         </li>
         <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace--with-stringempty">Replace "" with String.Empty</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-anonymous-method-with-lambda-expression">Replace anonymous method with lambda expression</a>
-        </li>
-        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any">Replace Any with All (or All with Any)</a>
         </li>
         <li>
@@ -440,6 +434,9 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace">Replace equals expression with String.IsNullOrWhiteSpace</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-expression-with-constant-value">Replace expression with constant value</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-field-with-constant">Replace field with constant</a>
         </li>
         <li>
@@ -450,9 +447,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-hasflag-invocation-with-bitwise-operation">Replace HasFlag invocation with bitwise operation</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
@@ -498,9 +492,6 @@
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof">Replace String.Contains with String.IndexOf</a>
-        </li>
-        <li>
-            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringempty-with-">Replace String.Empty with ""</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string">Replace String.Format with interpolated string</a>
@@ -554,10 +545,22 @@
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#uncomment">Uncomment</a>
         </li>
         <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use--instead-of-stringempty">Use "" instead of String.Empty</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag">Use bitwise operation instead of calling 'HasFlag'</a>
+        </li>
+        <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method">Use element access instead of 'First/Last'ElementAt' method</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-expression-bodied-member">Use expression-bodied member</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-lambda-expression-instead-of-anonymous-method">Use lambda expression instead of anonymous method</a>
+        </li>
+        <li>
+            <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-stringempty-instead-of-">Use String.Empty instead of ""</a>
         </li>
         <li>
             <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-if-directive">Wrap in #if directive</a>
