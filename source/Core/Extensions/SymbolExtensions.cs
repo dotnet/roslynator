@@ -785,7 +785,23 @@ namespace Roslynator.Extensions
                 var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
                 return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
-                    && namedTypeSymbol.TypeArguments.First().Equals(typeArgument);
+                    && namedTypeSymbol.TypeArguments[0].Equals(typeArgument);
+            }
+
+            return false;
+        }
+
+        public static bool IsIEnumerableOf(this ITypeSymbol typeSymbol, SpecialType specialTypeArgument)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (typeSymbol.IsNamedType())
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
+                    && namedTypeSymbol.TypeArguments[0].SpecialType == specialTypeArgument;
             }
 
             return false;
@@ -800,7 +816,16 @@ namespace Roslynator.Extensions
                 throw new ArgumentNullException(nameof(typeArgument));
 
             return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
-                && namedTypeSymbol.TypeArguments.First().Equals(typeArgument);
+                && namedTypeSymbol.TypeArguments[0].Equals(typeArgument);
+        }
+
+        public static bool IsIEnumerableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialTypeArgument)
+        {
+            if (namedTypeSymbol == null)
+                throw new ArgumentNullException(nameof(namedTypeSymbol));
+
+            return IsConstructedFrom(namedTypeSymbol, SpecialType.System_Collections_Generic_IEnumerable_T)
+                && namedTypeSymbol.TypeArguments[0].SpecialType == specialTypeArgument;
         }
 
         public static bool IsConstructedFromIEnumerableOfT(this ITypeSymbol typeSymbol)
