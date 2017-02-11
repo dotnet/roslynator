@@ -40,6 +40,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceExpressionWithConstantValue)
+                && context.Span.IsBetweenSpans(expression))
+            {
+                await ReplaceExpressionWithConstantValueRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
+            }
         }
     }
 }

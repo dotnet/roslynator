@@ -253,6 +253,7 @@
     <Compile Include="Refactorings\MemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertySyntaxRewriter.cs" />
     <Compile Include="Refactorings\ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceExpressionWithConstantValueRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllPreprocessorDirectivesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />

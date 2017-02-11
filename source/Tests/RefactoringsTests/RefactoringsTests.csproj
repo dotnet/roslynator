@@ -72,6 +72,7 @@
     <Compile Include="ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
+    <Compile Include="ReplaceExpressionWithConstantValueRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithAssignment.cs" />
