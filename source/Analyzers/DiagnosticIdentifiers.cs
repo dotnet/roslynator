@@ -159,5 +159,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantCast = Prefix + "1151";
         public const string MemberTypeMustMatchOverriddenMemberType = Prefix + "1152";
         public const string AddEmptyLineAfterClosingBrace = Prefix + "1153";
+        public const string SortEnumMembers = Prefix + "1154";
     }
 }

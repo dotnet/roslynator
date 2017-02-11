@@ -1448,5 +1448,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor SortEnumMembers = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SortEnumMembers,
+            title: "Sort enum members.",
+            messageFormat: "Sort '{0}' members.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

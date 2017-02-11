@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -17,7 +18,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine,
+                    DiagnosticIdentifiers.SortEnumMembers);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -28,15 +34,37 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<EnumDeclarationSyntax>();
 
+            Debug.Assert(enumDeclaration != null, $"{nameof(enumDeclaration)} is null");
+
             if (enumDeclaration == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Format each enum member on a separate line",
-                cancellationToken => FormatEachEnumMemberOnSeparateLineRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
-                DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Format each enum member on a separate line",
+                                cancellationToken => FormatEachEnumMemberOnSeparateLineRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.SortEnumMembers:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Sort '{enumDeclaration.Identifier}' members",
+                                cancellationToken => SortEnumMembersRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
     }
 }
