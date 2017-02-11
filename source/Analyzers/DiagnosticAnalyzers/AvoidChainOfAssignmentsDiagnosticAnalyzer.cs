@@ -41,6 +41,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
             if (assignment.Right is AssignmentExpressionSyntax
@@ -52,6 +55,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
+            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
+                return;
+
             var equalsValue = (EqualsValueClauseSyntax)context.Node;
 
             if (equalsValue.Value is AssignmentExpressionSyntax)
