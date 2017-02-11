@@ -160,5 +160,6 @@ namespace Roslynator.CSharp
         public const string MemberTypeMustMatchOverriddenMemberType = Prefix + "1152";
         public const string AddEmptyLineAfterClosingBrace = Prefix + "1153";
         public const string SortEnumMembers = Prefix + "1154";
+        public const string UseStringComparison = Prefix + "1155";
     }
 }

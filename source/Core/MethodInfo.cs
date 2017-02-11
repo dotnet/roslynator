@@ -45,9 +45,66 @@ namespace Roslynator
             return ContainingType?.Equals(SemanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName)) == true;
         }
 
+        public bool ReturnsObject
+        {
+            get { return IsReturnType(SpecialType.System_Object); }
+        }
+
+        public bool ReturnsBoolean
+        {
+            get { return IsReturnType(SpecialType.System_Boolean); }
+        }
+
+        public bool ReturnsChar
+        {
+            get { return IsReturnType(SpecialType.System_Char); }
+        }
+
+        public bool ReturnsInt
+        {
+            get { return IsReturnType(SpecialType.System_Int32); }
+        }
+
+        public bool ReturnsString
+        {
+            get { return IsReturnType(SpecialType.System_String); }
+        }
+
+        public bool ReturnsIEnumerableOf(ITypeSymbol typeArgument)
+        {
+            return ReturnType.IsIEnumerableOf(typeArgument);
+        }
+
+        public bool ReturnsIEnumerableOf(SpecialType specialTypeArgument)
+        {
+            return ReturnType.IsIEnumerableOf(specialTypeArgument);
+        }
+
         public bool HasName(string name)
         {
             return string.Equals(Name, name, StringComparison.Ordinal);
+        }
+
+        private bool IsNullOrName(string name)
+        {
+            return name == null || HasName(name);
+        }
+
+        public bool HasParameter(SpecialType parameterType)
+        {
+            ImmutableArray<IParameterSymbol> parameters = Parameters;
+
+            return parameters.Length == 1
+                && parameters[0].Type.SpecialType == parameterType;
+        }
+
+        public bool HasParameters(SpecialType firstParameterType, SpecialType secondParameterType)
+        {
+            ImmutableArray<IParameterSymbol> parameters = Parameters;
+
+            return parameters.Length == 2
+                && parameters[0].Type.SpecialType == firstParameterType
+                && parameters[1].Type.SpecialType == secondParameterType;
         }
 
         public bool IsInstance
@@ -134,5 +191,23 @@ namespace Roslynator
         public Accessibility DeclaredAccessibility => Symbol.DeclaredAccessibility;
 
         #endregion
+
+        public bool IsPublicStaticStringMethod(string name = null, bool isGenericMethod = false)
+        {
+            return IsNullOrName(name)
+                && IsContainingType(SpecialType.System_String)
+                && IsPublic
+                && IsStatic
+                && IsGenericMethod == isGenericMethod;
+        }
+
+        public bool IsPublicInstanceStringMethod(string name = null, bool isGenericMethod = false)
+        {
+            return IsNullOrName(name)
+                && IsContainingType(SpecialType.System_String)
+                && IsPublic
+                && IsInstance
+                && IsGenericMethod == isGenericMethod;
+        }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="CodeFixProviders\EqualsValueClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddEmptyLineAfterClosingBraceDiagnosticAnalyzer.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConditionalAccessDiagnosticAnalyzer.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Refactorings\UseNameOfOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UsePredefinedTypeRefactoring.cs" />
     <Compile Include="Refactorings\CallStringConcatInsteadOfStringJoinRefactoring.cs" />
+    <Compile Include="Refactorings\UseStringComparisonRefactoring.cs" />
     <Compile Include="Refactorings\UseStringIsNullOrEmptyMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfStatementWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyConditionalExpressionRefactoring.cs" />

@@ -1457,5 +1457,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseStringComparison = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseStringComparison,
+            title: "Use StringComparison when comparing strings.",
+            messageFormat: "Use StringComparison when comparing strings.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }
