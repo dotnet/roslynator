@@ -199,6 +199,7 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
     <Analyzer Include="..\packages\CSharpAnalyzers.1.2.0\analyzers\dotnet\cs\Roslynator.Core.dll" />
     <Analyzer Include="..\packages\CSharpAnalyzers.1.2.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\RefactoringEssentials.4.4.0\analyzers\dotnet\RefactoringEssentials.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
