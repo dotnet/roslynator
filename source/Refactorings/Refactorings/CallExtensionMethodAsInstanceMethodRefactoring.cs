@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null)
             {
-                SimpleNameSyntax name = GetSimpleName(expression);
+                SyntaxNodeOrToken nodeOrToken = GetNodeOrToken(expression);
 
-                if (name?.Span.Contains(context.Span) == true)
+                if (nodeOrToken.Span.Contains(context.Span))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -54,12 +54,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static SimpleNameSyntax GetSimpleName(ExpressionSyntax expression)
+        private static SyntaxNodeOrToken GetNodeOrToken(ExpressionSyntax expression)
         {
             switch (expression.Kind())
             {
                 case SyntaxKind.IdentifierName:
                     return (SimpleNameSyntax)expression;
+                case SyntaxKind.GenericName:
+                    return ((GenericNameSyntax)expression).Identifier;
                 case SyntaxKind.SimpleMemberAccessExpression:
                     return ((MemberAccessExpressionSyntax)expression).Name;
                 case SyntaxKind.MemberBindingExpression:
