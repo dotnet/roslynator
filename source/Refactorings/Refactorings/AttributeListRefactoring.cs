@@ -156,6 +156,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ConversionOperatorDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.ConstructorDeclaration:
                     return ((ConstructorDeclarationSyntax)node).AttributeLists;
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)node).AttributeLists;
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
@@ -212,6 +214,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ConversionOperatorDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.ConstructorDeclaration:
                     return ((ConstructorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+                case SyntaxKind.IncompleteMember:
+                    return ((IncompleteMemberSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
