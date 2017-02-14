@@ -34,23 +34,23 @@
 
 * RCS1001 - Add braces
 * RCS1002 - Remove braces
-* RCS1003 - Add braces to if-else
-* RCS1004 - Remove braces from if-else
+* RCS1003 - Add braces to if\-else
+* RCS1004 - Remove braces from if\-else
 * RCS1005 - Simplify nested using statement
 * RCS1006 - Merge else clause with nested if statement
 * RCS1007 - Avoid embedded statement
-* RCS1008 - Use explicit type instead of 'var' (when the type is not obvious)
-* RCS1009 - Use explicit type instead of 'var' (foreach variable)
-* RCS1010 - Use 'var' instead of explicit type (when the type is obvious)
-* RCS1012 - Use explicit type instead of 'var' (even if the type is obvious)
+* RCS1008 - Use explicit type instead of 'var' \(when the type is not obvious\)
+* RCS1009 - Use explicit type instead of 'var' \(foreach variable\)
+* RCS1010 - Use 'var' instead of explicit type \(when the type is obvious\)
+* RCS1012 - Use explicit type instead of 'var' \(even if the type is obvious\)
 * RCS1013 - Use predefined type
-* RCS1014 - Avoid implicitly-typed array
+* RCS1014 - Avoid implicitly\-typed array
 * RCS1015 - Use nameof operator
-* RCS1016 - Use expression-bodied member
+* RCS1016 - Use expression\-bodied member
 * RCS1017 - Avoid multiline expression body
 * RCS1018 - Add default access modifier
 * RCS1019 - Reorder modifiers
-* RCS1020 - Simplify Nullable<T> to T?
+* RCS1020 - Simplify Nullable\<T\> to T?
 * RCS1021 - Simplify lambda expression
 * RCS1022 - Simplify lambda expression parameter list
 * RCS1023 - Format empty block
@@ -67,7 +67,7 @@
 * RCS1034 - Remove redundant sealed modifier
 * RCS1035 - Remove redundant comma in initializer
 * RCS1036 - Remove redundant empty line
-* RCS1037 - Remove trailing white-space
+* RCS1037 - Remove trailing white\-space
 * RCS1038 - Remove empty statement
 * RCS1039 - Remove empty attribute argument list
 * RCS1040 - Remove empty else clause
@@ -77,7 +77,7 @@
 * RCS1044 - Remove original exception from throw statement
 * RCS1045 - Rename private field according to camel case with underscore
 * RCS1046 - Asynchronous method name should end with 'Async'
-* RCS1047 - Non-asynchronous method name should not end with 'Async'
+* RCS1047 - Non\-asynchronous method name should not end with 'Async'
 * RCS1048 - Use lambda expression instead of anonymous method
 * RCS1049 - Simplify boolean comparison
 * RCS1050 - Add constructor argument list
@@ -104,27 +104,27 @@
 * RCS1072 - Remove empty namespace declaration
 * RCS1073 - Replace if statement with return statement
 * RCS1074 - Remove redundant constructor
-* RCS1075 - Avoid empty catch clause that catches System.Exception
+* RCS1075 - Avoid empty catch clause that catches System\.Exception
 * RCS1076 - Format declaration braces
 * RCS1077 - Simplify LINQ method chain
-* RCS1078 - Use "" instead of string.Empty
+* RCS1078 - Use "" instead of string\.Empty
 * RCS1079 - Throwing of new NotImplementedException
 * RCS1080 - Use 'Count/Length' property instead of 'Any' method
 * RCS1081 - Split variable declaration
 * RCS1082 - Use 'Count/Length' property instead of 'Count' method
 * RCS1083 - Use 'Any' method instead of 'Count' method
 * RCS1084 - Use coalesce expression instead of conditional expression
-* RCS1085 - Use auto-implemented property instead of expanded property
+* RCS1085 - Use auto\-implemented property instead of expanded property
 * RCS1086 - Use linefeed as newline
-* RCS1087 - Use carriage return + linefeed as newline
-* RCS1088 - Use space(s) instead of tab
+* RCS1087 - Use carriage return \+ linefeed as newline
+* RCS1088 - Use space\(s\) instead of tab
 * RCS1089 - Use postfix unary operator instead of assignment
-* RCS1090 - Call 'ConfigureAwait(false)'
+* RCS1090 - Call 'ConfigureAwait\(false\)'
 * RCS1091 - Remove empty region
 * RCS1092 - Add empty line after last statement in do statement
 * RCS1093 - Remove file with no code
 * RCS1094 - Declare using directive on top level
-* RCS1095 - Use C# 6.0 dictionary initializer
+* RCS1095 - Use C\# 6\.0 dictionary initializer
 * RCS1096 - Use bitwise operation instead of calling 'HasFlag'
 * RCS1097 - Remove redundant 'ToString' call
 * RCS1098 - Avoid 'null' on the left side of a binary expression
@@ -141,21 +141,21 @@
 * RCS1109 - Use 'Cast' method instead of 'Select' method
 * RCS1110 - Declare type inside namespace
 * RCS1111 - Add braces to switch section with multiple statements
-* RCS1112 - Combine 'Enumerable.Where' method chain
-* RCS1113 - Use 'string.IsNullOrEmpty' method
+* RCS1112 - Combine 'Enumerable\.Where' method chain
+* RCS1113 - Use 'string\.IsNullOrEmpty' method
 * RCS1114 - Remove redundant delegate creation
 * RCS1115 - Replace yield/return statement with expression statement
 * RCS1116 - Add break statement to switch section
 * RCS1117 - Add return statement that returns default value
 * RCS1118 - Mark local variable as const
 * RCS1119 - Call 'Find' method instead of 'FirstOrDefault' method
-* RCS1120 - Use [] instead of calling 'ElementAt'
-* RCS1121 - Use [] instead of calling 'First'
+* RCS1120 - Use \[\] instead of calling 'ElementAt'
+* RCS1121 - Use \[\] instead of calling 'First'
 * RCS1122 - Add missing semicolon
 * RCS1123 - Add parentheses according to operator precedence
 * RCS1124 - Inline local variable
 * RCS1125 - Mark member as static
-* RCS1126 - Avoid embedded statement in if-else
+* RCS1126 - Avoid embedded statement in if\-else
 * RCS1127 - Merge local declaration with initialization
 * RCS1128 - Use coalesce expression
 * RCS1129 - Remove redundant field initalization
@@ -164,7 +164,7 @@
 * RCS1132 - Remove redundant overriding member
 * RCS1133 - Remove redundant Dispose/Close call
 * RCS1134 - Remove redundant continue statement
-* RCS1135 - Declare enum member with zero value (when enum has FlagsAttribute)
+* RCS1135 - Declare enum member with zero value \(when enum has FlagsAttribute\)
 * RCS1136 - Merge switch sections with equivalent content
 * RCS1137 - Add documentation comment to publicly visible type or member
 * RCS1138 - Add summary to documentation comment
@@ -179,16 +179,16 @@
 * RCS1147 - Remove inapplicable modifier
 * RCS1148 - Remove unreachable code
 * RCS1149 - Remove implementation from abstract member
-* RCS1150 - Call string.Concat instead of string.Join
+* RCS1150 - Call string\.Concat instead of string\.Join
 * RCS1151 - Remove redundant cast
 * RCS1152 - Member type must match overriden member type
 * RCS1153 - Add empty line after closing brace
 * RCS1154 - Sort enum members
 * RCS1155 - Use StringComparison when comparing strings
-* RCS1156 - Use string.Length instead of comparison with empty string
+* RCS1156 - Use string\.Length instead of comparison with empty string
 * RCS1157 - Composite enum value contains undefined flag
 * RCS1158 - Avoid static members in generic types
-* RCS1159 - Use EventHandler<T>
+* RCS1159 - Use EventHandler\<T\>
 * RCS1160 - Abstract type should not have public constructors
 * RCS1161 - Enum member should declare explicit value
 * RCS1162 - Avoid chain of assignments
@@ -197,7 +197,7 @@
 
 * [Add boolean comparison](source/Refactorings/Refactorings.md#add-boolean-comparison)
 * [Add braces](source/Refactorings/Refactorings.md#add-braces)
-* [Add braces to if-else](source/Refactorings/Refactorings.md#add-braces-to-if-else)
+* [Add braces to if\-else](source/Refactorings/Refactorings.md#add-braces-to-if-else)
 * [Add braces to switch section](source/Refactorings/Refactorings.md#add-braces-to-switch-section)
 * [Add braces to switch sections](source/Refactorings/Refactorings.md#add-braces-to-switch-sections)
 * [Add cast expression](source/Refactorings/Refactorings.md#add-cast-expression)
@@ -209,9 +209,9 @@
 * [Add parameter name to parameter](source/Refactorings/Refactorings.md#add-parameter-name-to-parameter)
 * [Add using directive](source/Refactorings/Refactorings.md#add-using-directive)
 * [Add using static directive](source/Refactorings/Refactorings.md#add-using-static-directive)
-* [Call 'ConfigureAwait(false)'](source/Refactorings/Refactorings.md#call-configureawaitfalse)
+* [Call 'ConfigureAwait\(false\)'](source/Refactorings/Refactorings.md#call-configureawaitfalse)
 * [Call extension method as instance method](source/Refactorings/Refactorings.md#call-extension-method-as-instance-method)
-* [Call 'To...' method (ToString, ToArray, ToList)](source/Refactorings/Refactorings.md#call-to-method-tostring-toarray-tolist)
+* [Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](source/Refactorings/Refactorings.md#call-to-method-tostring-toarray-tolist)
 * [Change explicit type to 'var'](source/Refactorings/Refactorings.md#change-explicit-type-to-var)
 * [Change method return type to 'void'](source/Refactorings/Refactorings.md#change-method-return-type-to-void)
 * [Change method/property/indexer type according to return expression](source/Refactorings/Refactorings.md#change-methodpropertyindexer-type-according-to-return-expression)
@@ -239,7 +239,7 @@
 * [Extract declaration from using statement](source/Refactorings/Refactorings.md#extract-declaration-from-using-statement)
 * [Extract expression from condition](source/Refactorings/Refactorings.md#extract-expression-from-condition)
 * [Extract generic type](source/Refactorings/Refactorings.md#extract-generic-type)
-* [Extract statement(s)](source/Refactorings/Refactorings.md#extract-statements)
+* [Extract statement\(s\)](source/Refactorings/Refactorings.md#extract-statements)
 * [Extract type declaration to a new file](source/Refactorings/Refactorings.md#extract-type-declaration-to-a-new-file)
 * [Format accessor braces](source/Refactorings/Refactorings.md#format-accessor-braces)
 * [Format argument list](source/Refactorings/Refactorings.md#format-argument-list)
@@ -281,7 +281,7 @@
 * [Parenthesize expression](source/Refactorings/Refactorings.md#parenthesize-expression)
 * [Promote local to parameter](source/Refactorings/Refactorings.md#promote-local-to-parameter)
 * [Remove all comments](source/Refactorings/Refactorings.md#remove-all-comments)
-* [Remove all comments (except documentation comments)](source/Refactorings/Refactorings.md#remove-all-comments-except-documentation-comments)
+* [Remove all comments \(except documentation comments\)](source/Refactorings/Refactorings.md#remove-all-comments-except-documentation-comments)
 * [Remove all documentation comments](source/Refactorings/Refactorings.md#remove-all-documentation-comments)
 * [Remove all member declarations](source/Refactorings/Refactorings.md#remove-all-member-declarations)
 * [Remove all preprocessor directives](source/Refactorings/Refactorings.md#remove-all-preprocessor-directives)
@@ -289,7 +289,7 @@
 * [Remove all statements](source/Refactorings/Refactorings.md#remove-all-statements)
 * [Remove all switch sections](source/Refactorings/Refactorings.md#remove-all-switch-sections)
 * [Remove braces](source/Refactorings/Refactorings.md#remove-braces)
-* [Remove braces from if-else](source/Refactorings/Refactorings.md#remove-braces-from-if-else)
+* [Remove braces from if\-else](source/Refactorings/Refactorings.md#remove-braces-from-if-else)
 * [Remove braces from switch section](source/Refactorings/Refactorings.md#remove-braces-from-switch-section)
 * [Remove braces from switch sections](source/Refactorings/Refactorings.md#remove-braces-from-switch-sections)
 * [Remove comment](source/Refactorings/Refactorings.md#remove-comment)
@@ -310,25 +310,25 @@
 * [Rename method according to type name](source/Refactorings/Refactorings.md#rename-method-according-to-type-name)
 * [Rename parameter according to its type name](source/Refactorings/Refactorings.md#rename-parameter-according-to-its-type-name)
 * [Rename property according to type name](source/Refactorings/Refactorings.md#rename-property-according-to-type-name)
-* [Replace Any with All (or All with Any)](source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any)
+* [Replace Any with All \(or All with Any\)](source/Refactorings/Refactorings.md#replace-any-with-all-or-all-with-any)
 * [Replace as expression with cast expression](source/Refactorings/Refactorings.md#replace-as-expression-with-cast-expression)
 * [Replace cast expression with as expression](source/Refactorings/Refactorings.md#replace-cast-expression-with-as-expression)
 * [Replace conditional expression with expression](source/Refactorings/Refactorings.md#replace-conditional-expression-with-expression)
-* [Replace conditional expression with if-else](source/Refactorings/Refactorings.md#replace-conditional-expression-with-if-else)
+* [Replace conditional expression with if\-else](source/Refactorings/Refactorings.md#replace-conditional-expression-with-if-else)
 * [Replace constant with field](source/Refactorings/Refactorings.md#replace-constant-with-field)
-* [Replace Count property with Length property (or Length with Count)](source/Refactorings/Refactorings.md#replace-count-property-with-length-property-or-length-with-count)
+* [Replace Count property with Length property \(or Length with Count\)](source/Refactorings/Refactorings.md#replace-count-property-with-length-property-or-length-with-count)
 * [Replace do statement with while statement](source/Refactorings/Refactorings.md#replace-do-statement-with-while-statement)
-* [Replace equals expression with String.Equals](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringequals)
-* [Replace equals expression with String.IsNullOrEmpty](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorempty)
-* [Replace equals expression with String.IsNullOrWhiteSpace](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace)
+* [Replace equals expression with String\.Equals](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringequals)
+* [Replace equals expression with String\.IsNullOrEmpty](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorempty)
+* [Replace equals expression with String\.IsNullOrWhiteSpace](source/Refactorings/Refactorings.md#replace-equals-expression-with-stringisnullorwhitespace)
 * [Replace expression with constant value](source/Refactorings/Refactorings.md#replace-expression-with-constant-value)
 * [Replace field with constant](source/Refactorings/Refactorings.md#replace-field-with-constant)
 * [Replace for statement with foreach statement](source/Refactorings/Refactorings.md#replace-for-statement-with-foreach-statement)
 * [Replace for statement with while statement](source/Refactorings/Refactorings.md#replace-for-statement-with-while-statement)
 * [Replace foreach statement with for statement](source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement)
 * [Replace if statement with return statement](source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement)
-* [Replace if-else with assignment](source/Refactorings/Refactorings.md#replace-if-else-with-assignment)
-* [Replace if-else with switch statement](source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement)
+* [Replace if\-else with assignment](source/Refactorings/Refactorings.md#replace-if-else-with-assignment)
+* [Replace if\-else with switch statement](source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement)
 * [Replace increment operator with decrement operator](source/Refactorings/Refactorings.md#replace-increment-operator-with-decrement-operator)
 * [Replace interpolated string with interpolation expression](source/Refactorings/Refactorings.md#replace-interpolated-string-with-interpolation-expression)
 * [Replace interpolated string with string literal](source/Refactorings/Refactorings.md#replace-interpolated-string-with-string-literal)
@@ -340,9 +340,9 @@
 * [Replace regular string literal with verbatim string literal](source/Refactorings/Refactorings.md#replace-regular-string-literal-with-verbatim-string-literal)
 * [Replace statement with if statement](source/Refactorings/Refactorings.md#replace-statement-with-if-statement)
 * [Replace string literal with character literal](source/Refactorings/Refactorings.md#replace-string-literal-with-character-literal)
-* [Replace String.Contains with String.IndexOf](source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof)
-* [Replace String.Format with interpolated string](source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string)
-* [Replace switch statement with if-else](source/Refactorings/Refactorings.md#replace-switch-statement-with-if-else)
+* [Replace String\.Contains with String\.IndexOf](source/Refactorings/Refactorings.md#replace-stringcontains-with-stringindexof)
+* [Replace String\.Format with interpolated string](source/Refactorings/Refactorings.md#replace-stringformat-with-interpolated-string)
+* [Replace switch statement with if\-else](source/Refactorings/Refactorings.md#replace-switch-statement-with-if-else)
 * [Replace verbatim string literal with regular string literal](source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literal)
 * [Replace verbatim string literal with regular string literals](source/Refactorings/Refactorings.md#replace-verbatim-string-literal-with-regular-string-literals)
 * [Replace while statement with do statement](source/Refactorings/Refactorings.md#replace-while-statement-with-do-statement)
@@ -356,16 +356,16 @@
 * [Swap expressions in binary expression](source/Refactorings/Refactorings.md#swap-expressions-in-binary-expression)
 * [Swap expressions in conditional expression](source/Refactorings/Refactorings.md#swap-expressions-in-conditional-expression)
 * [Swap member declarations](source/Refactorings/Refactorings.md#swap-member-declarations)
-* [Swap statements in if-else](source/Refactorings/Refactorings.md#swap-statements-in-if-else)
+* [Swap statements in if\-else](source/Refactorings/Refactorings.md#swap-statements-in-if-else)
 * [Uncomment](source/Refactorings/Refactorings.md#uncomment)
-* [Use "" instead of String.Empty](source/Refactorings/Refactorings.md#use--instead-of-stringempty)
+* [Use "" instead of String\.Empty](source/Refactorings/Refactorings.md#use--instead-of-stringempty)
 * [Use bitwise operation instead of calling 'HasFlag'](source/Refactorings/Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag)
 * [Use element access instead of 'First/Last'ElementAt' method](source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method)
-* [Use expression-bodied member](source/Refactorings/Refactorings.md#use-expression-bodied-member)
+* [Use expression\-bodied member](source/Refactorings/Refactorings.md#use-expression-bodied-member)
 * [Use lambda expression instead of anonymous method](source/Refactorings/Refactorings.md#use-lambda-expression-instead-of-anonymous-method)
-* [Use String.Empty instead of ""](source/Refactorings/Refactorings.md#use-stringempty-instead-of-)
-* [Wrap in #if directive](source/Refactorings/Refactorings.md#wrap-in-if-directive)
+* [Use String\.Empty instead of ""](source/Refactorings/Refactorings.md#use-stringempty-instead-of-)
+* [Wrap in \#if directive](source/Refactorings/Refactorings.md#wrap-in-if-directive)
 * [Wrap in condition](source/Refactorings/Refactorings.md#wrap-in-condition)
 * [Wrap in region](source/Refactorings/Refactorings.md#wrap-in-region)
-* [Wrap in try-catch](source/Refactorings/Refactorings.md#wrap-in-try-catch)
+* [Wrap in try\-catch](source/Refactorings/Refactorings.md#wrap-in-try-catch)
 * [Wrap in using statement](source/Refactorings/Refactorings.md#wrap-in-using-statement)
