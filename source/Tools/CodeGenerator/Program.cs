@@ -22,7 +22,7 @@ namespace CodeGenerator
 
             string dirPath = args[0];
 
-            RefactoringInfo[] refactorings = RefactoringInfo
+            RefactoringDescriptor[] refactorings = RefactoringDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
                 .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
                 .ToArray();
