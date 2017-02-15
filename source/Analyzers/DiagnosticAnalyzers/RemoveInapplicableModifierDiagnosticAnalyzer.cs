@@ -444,30 +444,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             SyntaxTokenList modifiers = declaration.Modifiers;
 
-            if (modifiers.Contains(SyntaxKind.PartialKeyword))
-            {
-                foreach (SyntaxToken modifier in modifiers)
-                {
-                    switch (modifier.Kind())
-                    {
-                        case SyntaxKind.NewKeyword:
-                        case SyntaxKind.PublicKeyword:
-                        case SyntaxKind.ProtectedKeyword:
-                        case SyntaxKind.InternalKeyword:
-                        case SyntaxKind.PrivateKeyword:
-                        case SyntaxKind.VirtualKeyword:
-                        case SyntaxKind.SealedKeyword:
-                        case SyntaxKind.OverrideKeyword:
-                        case SyntaxKind.AbstractKeyword:
-                        case SyntaxKind.ExternKeyword:
-                            {
-                                ReportDiagnostic(context, modifier);
-                                break;
-                            }
-                    }
-                }
-            }
-
             SyntaxNode parent = declaration.Parent;
 
             if (parent?.IsKind(SyntaxKind.InterfaceDeclaration) == true)
@@ -478,9 +454,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 AnalyzeExplicitInterfaceImplementation(context, modifiers);
             }
-            else
+            else if (parent?.IsKind(SyntaxKind.ClassDeclaration) == true)
             {
-                AnalyzeVirtualMemberInSealedClass(context, parent, modifiers);
+                AnalyzeVirtualMemberInSealedClass(context, (ClassDeclarationSyntax)parent, modifiers);
+
+                if (modifiers.Contains(SyntaxKind.PartialKeyword))
+                    AnalyzePartialMethod(context, modifiers);
             }
 
             foreach (SyntaxToken modifier in modifiers)
@@ -490,6 +469,30 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     case SyntaxKind.ConstKeyword:
                     case SyntaxKind.ReadOnlyKeyword:
                     case SyntaxKind.VolatileKeyword:
+                        {
+                            ReportDiagnostic(context, modifier);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static void AnalyzePartialMethod(SyntaxNodeAnalysisContext context, SyntaxTokenList modifiers)
+        {
+            foreach (SyntaxToken modifier in modifiers)
+            {
+                switch (modifier.Kind())
+                {
+                    case SyntaxKind.NewKeyword:
+                    case SyntaxKind.PublicKeyword:
+                    case SyntaxKind.ProtectedKeyword:
+                    case SyntaxKind.InternalKeyword:
+                    case SyntaxKind.PrivateKeyword:
+                    case SyntaxKind.VirtualKeyword:
+                    case SyntaxKind.SealedKeyword:
+                    case SyntaxKind.OverrideKeyword:
+                    case SyntaxKind.AbstractKeyword:
+                    case SyntaxKind.ExternKeyword:
                         {
                             ReportDiagnostic(context, modifier);
                             break;
@@ -607,6 +610,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     case SyntaxKind.ProtectedKeyword:
                     case SyntaxKind.PrivateKeyword:
                     case SyntaxKind.StaticKeyword:
+                    case SyntaxKind.AbstractKeyword:
                         {
                             ReportDiagnostic(context, modifier);
                             break;
@@ -671,16 +675,17 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         private static void AnalyzeVirtualMemberInSealedClass(SyntaxNodeAnalysisContext context, SyntaxNode parent, SyntaxTokenList modifiers)
         {
             if (parent?.IsKind(SyntaxKind.ClassDeclaration) == true)
+                AnalyzeVirtualMemberInSealedClass(context, (ClassDeclarationSyntax)parent, modifiers);
+        }
+
+        private static void AnalyzeVirtualMemberInSealedClass(SyntaxNodeAnalysisContext context, ClassDeclarationSyntax classDeclaration, SyntaxTokenList modifiers)
+        {
+            if (classDeclaration.Modifiers.Contains(SyntaxKind.SealedKeyword))
             {
-                var classDeclaration = (ClassDeclarationSyntax)parent;
+                int index = modifiers.IndexOf(SyntaxKind.VirtualKeyword);
 
-                if (classDeclaration.Modifiers.Contains(SyntaxKind.SealedKeyword))
-                {
-                    int index = modifiers.IndexOf(SyntaxKind.VirtualKeyword);
-
-                    if (index != -1)
-                        ReportDiagnostic(context, modifiers[index]);
-                }
+                if (index != -1)
+                    ReportDiagnostic(context, modifiers[index]);
             }
         }
 
