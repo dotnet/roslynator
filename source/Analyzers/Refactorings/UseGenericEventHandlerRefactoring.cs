@@ -27,7 +27,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var namedType = eventSymbol.Type as INamedTypeSymbol;
 
-                if (namedType?.Arity == 0)
+                if (namedType?.Arity == 0
+                    && !namedType.Equals(context.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler)))
                 {
                     IMethodSymbol method = namedType.DelegateInvokeMethod;
 
