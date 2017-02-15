@@ -43,8 +43,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode parent = memberDeclaration.Parent;
 
-            Debug.Assert(parent?.IsKind(SyntaxKind.ClassDeclaration) == true, parent?.Kind().ToString());
-
             return parent?.IsKind(SyntaxKind.ClassDeclaration) == true
                 && !((ClassDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.SealedKeyword);
         }
