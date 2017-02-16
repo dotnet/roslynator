@@ -16,6 +16,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 add { }
                 remove { }
             }
+
+            public event EventHandler EventName3;
         }
 
         public interface FooInterface
