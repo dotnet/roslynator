@@ -93,6 +93,8 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             ExpressionSyntax newNode = Refactor(logicalAnd)
+                .WithLeadingTrivia(logicalAnd.GetLeadingTrivia())
+                .WithFormatterAnnotation()
                 .Parenthesize(moveTrivia: true)
                 .WithSimplifierAnnotation();
 
@@ -106,7 +108,6 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = logicalAnd.Right;
             SyntaxKind expressionKind = expression.Kind();
-            SyntaxTriviaList trailingTrivia = expression.GetTrailingTrivia();
 
             if (expressionKind == SyntaxKind.LogicalNotExpression)
             {
@@ -116,24 +117,26 @@ namespace Roslynator.CSharp.Refactorings
 
                 string s = operand.ToFullString();
 
+                int length = operand.GetLeadingTrivia().Span.Length + span.Length;
+
                 var sb = new StringBuilder();
-                sb.Append(s, 0, span.Length);
+                sb.Append(s, 0, length);
                 sb.Append("?");
-                sb.Append(s, span.Length, operand.Span.Length - span.Length - trailingTrivia.Span.Length);
+                sb.Append(s, length, s.Length - length);
                 sb.Append(" == false");
 
-                return ParseExpression(sb.ToString())
-                    .PrependToLeadingTrivia(logicalNot.GetLeadingAndTrailingTrivia())
-                    .WithTrailingTrivia(trailingTrivia);
+                return ParseExpression(sb.ToString());
             }
             else
             {
                 string s = expression.ToFullString();
 
+                int length = expression.GetLeadingTrivia().Span.Length + span.Length;
+
                 var sb = new StringBuilder();
-                sb.Append(s, 0, span.Length);
+                sb.Append(s, 0, length);
                 sb.Append("?");
-                sb.Append(s, span.Length, expression.Span.Length - span.Length - trailingTrivia.Span.Length);
+                sb.Append(s, length, s.Length - length);
 
                 switch (expressionKind)
                 {
@@ -158,8 +161,7 @@ namespace Roslynator.CSharp.Refactorings
                         }
                 }
 
-                return ParseExpression(sb.ToString())
-                    .WithTrailingTrivia(trailingTrivia);
+                return ParseExpression(sb.ToString());
             }
         }
     }
