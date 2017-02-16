@@ -261,6 +261,23 @@ namespace Roslynator.CSharp.Extensions
                     ?? operatorDeclaration.OperatorKeyword.Span.End);
         }
 
+        public static CSharpSyntaxNode BodyOrExpressionBody(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
+        {
+            if (conversionOperatorDeclaration == null)
+                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
+
+            BlockSyntax body = conversionOperatorDeclaration.Body;
+
+            if (body != null)
+            {
+                return body;
+            }
+            else
+            {
+                return conversionOperatorDeclaration.ExpressionBody;
+            }
+        }
+
         public static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
         {
             if (documentationComment == null)
@@ -1221,6 +1238,23 @@ namespace Roslynator.CSharp.Extensions
             return TextSpan.FromBounds(
                 operatorDeclaration.Span.Start,
                 operatorDeclaration.ParameterList?.Span.End ?? operatorDeclaration.OperatorToken.Span.End);
+        }
+
+        public static CSharpSyntaxNode BodyOrExpressionBody(this OperatorDeclarationSyntax operatorDeclaration)
+        {
+            if (operatorDeclaration == null)
+                throw new ArgumentNullException(nameof(operatorDeclaration));
+
+            BlockSyntax body = operatorDeclaration.Body;
+
+            if (body != null)
+            {
+                return body;
+            }
+            else
+            {
+                return operatorDeclaration.ExpressionBody;
+            }
         }
 
         public static PropertyDeclarationSyntax WithAttributeLists(
