@@ -13,12 +13,12 @@
 
 ![Add braces](../../images/refactorings/AddBraces.png)
 
-#### Add braces to if-else
+#### Add braces to if\-else
 
-* **Syntax**: if-else chain
+* **Syntax**: if\-else chain
 * **Scope**: embedded statement
 
-![Add braces to if-else](../../images/refactorings/AddBracesToIfElse.png)
+![Add braces to if\-else](../../images/refactorings/AddBracesToIfElse.png)
 
 #### Add braces to switch section
 
@@ -93,17 +93,17 @@
 
 #### Add using static directive
 
-* **Syntax**: member access expression (public or internal static class)
+* **Syntax**: member access expression \(public or internal static class\)
 * **Scope**: selected class name
 
 ![Add using static directive](../../images/refactorings/AddUsingStaticDirective.png)
 
-#### Call 'ConfigureAwait(false)'
+#### Call 'ConfigureAwait\(false\)'
 
 * **Syntax**: awaitable method invocation
 * **Scope**: method name
 
-![Call 'ConfigureAwait(false)'](../../images/refactorings/CallConfigureAwait.png)
+![Call 'ConfigureAwait\(false\)'](../../images/refactorings/CallConfigureAwait.png)
 
 #### Call extension method as instance method
 
@@ -111,11 +111,11 @@
 
 ![Call extension method as instance method](../../images/refactorings/CallExtensionMethodAsInstanceMethod.png)
 
-#### Call 'To...' method (ToString, ToArray, ToList)
+#### Call 'To\.\.\.' method \(ToString, ToArray, ToList\)
 
 * **Syntax**: argument, assignment expression, return statement, variable declaration
 
-![Call 'To...' method (ToString, ToArray, ToList)](../../images/refactorings/CallToMethod.png)
+![Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](../../images/refactorings/CallToMethod.png)
 
 #### Change explicit type to 'var'
 
@@ -160,7 +160,7 @@
 
 #### Check expression for null
 
-* **Syntax**: local declaration (identifier), assignment expression (left)
+* **Syntax**: local declaration \(identifier\), assignment expression \(left\)
 
 ![Check expression for null](../../images/refactorings/CheckExpressionForNull.png)
 
@@ -173,7 +173,7 @@
 
 #### Collapse to initalizer
 
-* **Syntax**: object creation followed with assignment(s)
+* **Syntax**: object creation followed with assignment\(s\)
 
 ![Collapse to initalizer](../../images/refactorings/CollapseToInitializer.png)
 
@@ -266,13 +266,13 @@
 
 #### Expand property
 
-* **Syntax**: auto-property
+* **Syntax**: auto\-property
 
 ![Expand property](../../images/refactorings/ExpandProperty.png)
 
 #### Expand property and add backing field
 
-* **Syntax**: auto-property
+* **Syntax**: auto\-property
 
 ![Expand property and add backing field](../../images/refactorings/ExpandPropertyAndAddBackingField.png)
 
@@ -297,11 +297,11 @@
 
 ![Extract generic type](../../images/refactorings/ExtractGenericType.png)
 
-#### Extract statement(s)
+#### Extract statement\(s\)
 
 * **Syntax**: else clause, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, try statement, unsafe statement, using statement, while statement
 
-![Extract statement(s)](../../images/refactorings/ExtractStatement.png)
+![Extract statement\(s\)](../../images/refactorings/ExtractStatement.png)
 
 #### Extract type declaration to a new file
 
@@ -374,19 +374,19 @@
 
 #### Generate combined enum member
 
-* **Syntax**: enum declaration (with FlagsAttribute)
+* **Syntax**: enum declaration \(with FlagsAttribute\)
 
 ![Generate combined enum member](../../images/refactorings/GenerateCombinedEnumMember.png)
 
 #### Generate enum member
 
-* **Syntax**: enum declaration (with FlagsAttribute)
+* **Syntax**: enum declaration \(with FlagsAttribute\)
 
 ![Generate enum member](../../images/refactorings/GenerateEnumMember.png)
 
 #### Generate enum values
 
-* **Syntax**: enum declaration (with FlagsAttribute)
+* **Syntax**: enum declaration \(with FlagsAttribute\)
 
 ![Generate enum values](../../images/refactorings/GenerateEnumValues.png)
 
@@ -399,7 +399,7 @@
 
 #### Generate switch sections
 
-* **Syntax**: switch statement (that is empty or contains only default section)
+* **Syntax**: switch statement \(that is empty or contains only default section\)
 
 ![Generate switch sections](../../images/refactorings/GenerateSwitchSections.png)
 
@@ -464,7 +464,7 @@
 
 #### Make member abstract
 
-* **Syntax**: non-abstract indexer/method/property in abstract class
+* **Syntax**: non\-abstract indexer/method/property in abstract class
 * **Scope**: indexer/method/property header
 
 ![Make member abstract](../../images/refactorings/MakeMemberAbstract.png)
@@ -483,7 +483,7 @@
 
 #### Mark member as static
 
-* **Syntax**: non-static field/method/property/event in static class
+* **Syntax**: non\-static field/method/property/event in static class
 
 ![Mark member as static](../../images/refactorings/MarkMemberAsStatic.png)
 
@@ -548,7 +548,7 @@
 
 #### Negate operator
 
-* **Syntax**: !=, &&, ||, <, <=, ==, >, >=
+* **Syntax**: \!=, &&, ||, \<, \<=, ==, \>, \>=
 
 ![Negate operator](../../images/refactorings/NegateOperator.png)
 
@@ -577,11 +577,11 @@
 
 ![Remove all comments](../../images/refactorings/RemoveAllComments.png)
 
-#### Remove all comments (except documentation comments)
+#### Remove all comments \(except documentation comments\)
 
 * **Syntax**: singleline/multiline comment
 
-![Remove all comments (except documentation comments)](../../images/refactorings/RemoveAllCommentsExceptDocumentationComments.png)
+![Remove all comments \(except documentation comments\)](../../images/refactorings/RemoveAllCommentsExceptDocumentationComments.png)
 
 #### Remove all documentation comments
 
@@ -629,12 +629,12 @@
 
 ![Remove braces](../../images/refactorings/RemoveBraces.png)
 
-#### Remove braces from if-else
+#### Remove braces from if\-else
 
-* **Syntax**: if-else chain
+* **Syntax**: if\-else chain
 * **Scope**: embedded statement
 
-![Remove braces from if-else](../../images/refactorings/RemoveBracesFromIfElse.png)
+![Remove braces from if\-else](../../images/refactorings/RemoveBracesFromIfElse.png)
 
 #### Remove braces from switch section
 
@@ -697,7 +697,7 @@
 
 #### Remove parameter name from argument
 
-* **Syntax**: selected argument(s)
+* **Syntax**: selected argument\(s\)
 
 ![Remove parameter name from argument](../../images/refactorings/RemoveParameterNameFromArgument.png)
 
@@ -767,12 +767,12 @@
 
 ![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
 
-#### Replace Any with All (or All with Any)
+#### Replace Any with All \(or All with Any\)
 
-* **Syntax**: Any(Func<T, bool> or All(Func<T, bool> from System.Linq.Enumerable namespace
+* **Syntax**: Any\(Func\<T, bool\> or All\(Func\<T, bool\> from System\.Linq\.Enumerable namespace
 * **Scope**: method name
 
-![Replace Any with All (or All with Any)](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
+![Replace Any with All \(or All with Any\)](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
 
 #### Replace as expression with cast expression
 
@@ -793,11 +793,11 @@
 
 ![Replace conditional expression with expression](../../images/refactorings/ReplaceConditionalExpressionWithExpression.png)
 
-#### Replace conditional expression with if-else
+#### Replace conditional expression with if\-else
 
 * **Syntax**: conditional expression
 
-![Replace conditional expression with if-else](../../images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
+![Replace conditional expression with if\-else](../../images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
 
 #### Replace constant with field
 
@@ -805,12 +805,12 @@
 
 ![Replace constant with field](../../images/refactorings/ReplaceConstantWithField.png)
 
-#### Replace Count property with Length property (or Length with Count)
+#### Replace Count property with Length property \(or Length with Count\)
 
 * **Syntax**: member access expression
 * **Scope**: name
 
-![Replace Count property with Length property (or Length with Count)](../../images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
+![Replace Count property with Length property \(or Length with Count\)](../../images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
 #### Replace do statement with while statement
 
@@ -819,26 +819,26 @@
 
 ![Replace do statement with while statement](../../images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
-#### Replace equals expression with String.Equals
+#### Replace equals expression with String\.Equals
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with String.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
+![Replace equals expression with String\.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
 
-#### Replace equals expression with String.IsNullOrEmpty
-
-* **Syntax**: equals expression, not equals expression
-* **Scope**: operator
-
-![Replace equals expression with String.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
-
-#### Replace equals expression with String.IsNullOrWhiteSpace
+#### Replace equals expression with String\.IsNullOrEmpty
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with String.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
+![Replace equals expression with String\.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
+
+#### Replace equals expression with String\.IsNullOrWhiteSpace
+
+* **Syntax**: equals expression, not equals expression
+* **Scope**: operator
+
+![Replace equals expression with String\.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
 #### Replace expression with constant value
 
@@ -848,7 +848,7 @@
 
 #### Replace field with constant
 
-* **Syntax**: read-only field
+* **Syntax**: read\-only field
 
 ![Replace field with constant](../../images/refactorings/ReplaceFieldWithConstant.png)
 
@@ -876,17 +876,17 @@
 
 ![Replace if statement with return statement](../../images/refactorings/ReplaceIfStatementWithReturnStatement.png)
 
-#### Replace if-else with assignment
+#### Replace if\-else with assignment
 
 * **Syntax**: if statement
 
-![Replace if-else with assignment](../../images/refactorings/ReplaceIfElseWithAssignment.png)
+![Replace if\-else with assignment](../../images/refactorings/ReplaceIfElseWithAssignment.png)
 
-#### Replace if-else with switch statement
+#### Replace if\-else with switch statement
 
 * **Syntax**: if statement
 
-![Replace if-else with switch statement](../../images/refactorings/ReplaceIfElseWithSwitch.png)
+![Replace if\-else with switch statement](../../images/refactorings/ReplaceIfElseWithSwitch.png)
 
 #### Replace increment operator with decrement operator
 
@@ -934,7 +934,7 @@
 
 #### Replace property with method
 
-* **Syntax**: read-only property
+* **Syntax**: read\-only property
 * **Scope**: property header
 
 ![Replace property with method](../../images/refactorings/ReplacePropertyWithMethod.png)
@@ -957,25 +957,25 @@
 
 ![Replace string literal with character literal](../../images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
-#### Replace String.Contains with String.IndexOf
+#### Replace String\.Contains with String\.IndexOf
 
 * **Syntax**: method invocation
 * **Scope**: method name
 
-![Replace String.Contains with String.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
+![Replace String\.Contains with String\.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
 
-#### Replace String.Format with interpolated string
+#### Replace String\.Format with interpolated string
 
-* **Syntax**: String.Format method
+* **Syntax**: String\.Format method
 
-![Replace String.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+![Replace String\.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
-#### Replace switch statement with if-else
+#### Replace switch statement with if\-else
 
 * **Syntax**: switch statement
 * **Scope**: switch keyword
 
-![Replace switch statement with if-else](../../images/refactorings/ReplaceSwitchWithIfElse.png)
+![Replace switch statement with if\-else](../../images/refactorings/ReplaceSwitchWithIfElse.png)
 
 #### Replace verbatim string literal with regular string literal
 
@@ -1010,7 +1010,7 @@
 
 #### Simplify lambda expression
 
-* **Syntax**: lambda expression with block with single single-line statement
+* **Syntax**: lambda expression with block with single single\-line statement
 * **Scope**: body
 
 ![Simplify lambda expression](../../images/refactorings/SimplifyLambdaExpression.png)
@@ -1066,28 +1066,28 @@
 
 ![Swap member declarations](../../images/refactorings/SwapMemberDeclarations.png)
 
-#### Swap statements in if-else
+#### Swap statements in if\-else
 
 * **Syntax**: if statement
 * **Scope**: if keyword
 
-![Swap statements in if-else](../../images/refactorings/SwapStatementsInIfElse.png)
+![Swap statements in if\-else](../../images/refactorings/SwapStatementsInIfElse.png)
 
 #### Uncomment
 
-* **Syntax**: single-line comment(s)
+* **Syntax**: single\-line comment\(s\)
 
 ![Uncomment](../../images/refactorings/Uncomment.png)
 
-#### Use "" instead of String.Empty
+#### Use "" instead of String\.Empty
 
-* **Syntax**: String.Empty field
+* **Syntax**: String\.Empty field
 
-![Use "" instead of String.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
+![Use "" instead of String\.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
 
 #### Use bitwise operation instead of calling 'HasFlag'
 
-* **Syntax**: Enum.HasFlag method invocation
+* **Syntax**: Enum\.HasFlag method invocation
 
 ![Use bitwise operation instead of calling 'HasFlag'](../../images/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.png)
 
@@ -1098,12 +1098,12 @@
 
 ![Use element access instead of 'First/Last'ElementAt' method](../../images/refactorings/UseElementAccessInsteadOfEnumerableMethod.png)
 
-#### Use expression-bodied member
+#### Use expression\-bodied member
 
 * **Syntax**: method, property, indexer, operator
 * **Scope**: body or accessor list
 
-![Use expression-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
+![Use expression\-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
 
 #### Use lambda expression instead of anonymous method
 
@@ -1112,17 +1112,17 @@
 
 ![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
 
-#### Use String.Empty instead of ""
+#### Use String\.Empty instead of ""
 
 * **Syntax**: empty string literal
 
-![Use String.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
+![Use String\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
 
-#### Wrap in #if directive
+#### Wrap in \#if directive
 
 * **Syntax**: selected lines
 
-![Wrap in #if directive](../../images/refactorings/WrapInIfDirective.png)
+![Wrap in \#if directive](../../images/refactorings/WrapInIfDirective.png)
 
 #### Wrap in condition
 
@@ -1136,11 +1136,11 @@
 
 ![Wrap in region](../../images/refactorings/WrapInRegion.png)
 
-#### Wrap in try-catch
+#### Wrap in try\-catch
 
 * **Syntax**: selected statements
 
-![Wrap in try-catch](../../images/refactorings/WrapInTryCatch.png)
+![Wrap in try\-catch](../../images/refactorings/WrapInTryCatch.png)
 
 #### Wrap in using statement
 
