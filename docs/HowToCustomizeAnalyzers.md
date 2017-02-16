@@ -30,7 +30,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 </RuleSet>
 ```
 
-## Step-by-Step Tutorial
+## Step by Step Tutorial
 
 ### 1) Create your own ruleset file
 
@@ -40,6 +40,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 * Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
 * Move ruleset file to a solution root folder (or any other location).
 
+![Open Active Rule Set](/images/OpenActiveRuleSet.png)
 ![Rule Set Editor](/images/RuleSetEditor.png)
 
 ### 2) Modify ruleset file manually
