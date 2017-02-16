@@ -19,7 +19,7 @@ namespace CodeGenerator
             DefaultNamespace = "Roslynator.VisualStudio";
         }
 
-        public CompilationUnitSyntax Generate(IEnumerable<RefactoringInfo> refactorings)
+        public CompilationUnitSyntax Generate(IEnumerable<RefactoringDescriptor> refactorings)
         {
             return CompilationUnit()
                 .WithUsings(List(new UsingDirectiveSyntax[] {
@@ -35,7 +35,7 @@ namespace CodeGenerator
                                     CreateMembers(refactorings))));
         }
 
-        private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringInfo> refactorings)
+        private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringDescriptor> refactorings)
         {
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
                 .WithModifiers(ModifierFactory.Public())
@@ -63,11 +63,11 @@ namespace CodeGenerator
                                     Argument(IdentifierName(refactoring.Identifier)))));
                     })));
 
-            foreach (RefactoringInfo info in refactorings)
+            foreach (RefactoringDescriptor info in refactorings)
                 yield return CreateRefactoringProperty(info);
         }
 
-        private PropertyDeclarationSyntax CreateRefactoringProperty(RefactoringInfo refactoring)
+        private PropertyDeclarationSyntax CreateRefactoringProperty(RefactoringDescriptor refactoring)
         {
             return PropertyDeclaration(BoolType(), refactoring.Identifier)
                 .WithAttributeLists(
@@ -82,7 +82,7 @@ namespace CodeGenerator
                         AutoImplementedSetter()));
         }
 
-        private static string CreateDescription(RefactoringInfo refactoring)
+        private static string CreateDescription(RefactoringDescriptor refactoring)
         {
             string s = "";
 

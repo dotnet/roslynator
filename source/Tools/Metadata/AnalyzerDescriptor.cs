@@ -5,9 +5,9 @@ using System.Xml.Linq;
 
 namespace Roslynator.Metadata
 {
-    public class AnalyzerInfo
+    public class AnalyzerDescriptor
     {
-        public AnalyzerInfo(
+        public AnalyzerDescriptor(
             string identifier,
             string title,
             string id,
@@ -31,13 +31,13 @@ namespace Roslynator.Metadata
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
         }
 
-        public static IEnumerable<AnalyzerInfo> LoadFromFile(string filePath)
+        public static IEnumerable<AnalyzerDescriptor> LoadFromFile(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
             foreach (XElement element in doc.Root.Elements())
             {
-                yield return new AnalyzerInfo(
+                yield return new AnalyzerDescriptor(
                     element.Attribute("Identifier").Value,
                     element.Element("Title").Value,
                     element.Element("Id").Value,

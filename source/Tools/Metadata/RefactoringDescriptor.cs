@@ -8,33 +8,33 @@ using System.Xml.Linq;
 
 namespace Roslynator.Metadata
 {
-    public class RefactoringInfo
+    public class RefactoringDescriptor
     {
-        public RefactoringInfo(
+        public RefactoringDescriptor(
             string identifier,
             string title,
             bool isEnabledByDefault,
             string extensionVersion,
             string scope,
-            IList<SyntaxInfo> syntaxes,
-            IList<ImageInfo> images)
+            IList<SyntaxDescriptor> syntaxes,
+            IList<ImageDescriptor> images)
         {
             Identifier = identifier;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
             ExtensionVersion = extensionVersion;
             Scope = scope;
-            Syntaxes = new ReadOnlyCollection<SyntaxInfo>(syntaxes);
-            Images = new ReadOnlyCollection<ImageInfo>(images);
+            Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes);
+            Images = new ReadOnlyCollection<ImageDescriptor>(images);
         }
 
-        public static IEnumerable<RefactoringInfo> LoadFromFile(string filePath)
+        public static IEnumerable<RefactoringDescriptor> LoadFromFile(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
             foreach (XElement element in doc.Root.Elements())
             {
-                yield return new RefactoringInfo(
+                yield return new RefactoringDescriptor(
                     element.Attribute("Id").Value,
                     element.Attribute("Title").Value,
                     (element.Attribute("IsEnabledByDefault") != null)
@@ -44,14 +44,14 @@ namespace Roslynator.Metadata
                     (element.Element("Scope") != null) ? element.Element("Scope").Value : null,
                     element.Element("Syntaxes")
                         .Elements("Syntax")
-                        .Select(f => new SyntaxInfo(f.Value))
+                        .Select(f => new SyntaxDescriptor(f.Value))
                         .ToList(),
                     (element.Element("Images") != null)
                         ? element.Element("Images")?
                             .Elements("Image")
-                            .Select(f => new ImageInfo(f.Value))
+                            .Select(f => new ImageDescriptor(f.Value))
                             .ToList()
-                        : new List<ImageInfo>());
+                        : new List<ImageDescriptor>());
             }
         }
 
@@ -65,20 +65,20 @@ namespace Roslynator.Metadata
 
         public string ExtensionVersion { get; }
 
-        public ReadOnlyCollection<SyntaxInfo> Syntaxes { get; }
+        public ReadOnlyCollection<SyntaxDescriptor> Syntaxes { get; }
 
-        public ReadOnlyCollection<ImageInfo> Images { get; }
+        public ReadOnlyCollection<ImageDescriptor> Images { get; }
 
-        public IEnumerable<ImageInfo> ImagesOrDefaultImage()
+        public IEnumerable<ImageDescriptor> ImagesOrDefaultImage()
         {
             if (Images.Count > 0)
             {
-                foreach (ImageInfo image in Images)
+                foreach (ImageDescriptor image in Images)
                     yield return image;
             }
             else
             {
-                yield return new ImageInfo(Identifier);
+                yield return new ImageDescriptor(Identifier);
             }
         }
 

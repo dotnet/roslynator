@@ -47,11 +47,11 @@
     <None Include="Roslynator.Metadata.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalyzerInfo.cs" />
+    <Compile Include="AnalyzerDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RefactoringInfo.cs" />
-    <Compile Include="ImageInfo.cs" />
-    <Compile Include="SyntaxInfo.cs" />
+    <Compile Include="RefactoringDescriptor.cs" />
+    <Compile Include="ImageDescriptor.cs" />
+    <Compile Include="SyntaxDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\CSharpAnalyzers.1.2.0\analyzers\dotnet\cs\Roslynator.Core.dll" />

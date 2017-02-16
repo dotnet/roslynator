@@ -2,9 +2,9 @@
 
 namespace Roslynator.Metadata
 {
-    public class SyntaxInfo
+    public class SyntaxDescriptor
     {
-        public SyntaxInfo(string name)
+        public SyntaxDescriptor(string name)
         {
             Name = name;
         }
