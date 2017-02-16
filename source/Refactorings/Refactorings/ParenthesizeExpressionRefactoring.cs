@@ -46,6 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.Argument:
                 case SyntaxKind.AttributeArgument:
                 case SyntaxKind.ThrowExpression:
+                case SyntaxKind.PredefinedType:
                     return false;
             }
 
