@@ -2,6 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 
+#pragma warning disable RCS1016, RCS1019, RCS1060, RCS1078, RCS1079, RCS1100, RCS1106, RCS1108
+
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     interface InterfaceName123
@@ -88,7 +90,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             Collection<object> Items { get; } = new Collection<object>();
 
             /// <summary>
-            /// 
+            /// ...
             /// </summary>
             /// <returns></returns>
             string /**/ MethodName()
@@ -97,7 +99,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             /// <summary>
-            /// 
+            /// ...
             /// </summary>
             /// <returns></returns>
             static /**/ string StaticMethodName()
@@ -142,6 +144,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
     partial class PartialClass
     {
         partial void PartialMethod()
+        {
+        }
+
+        protected class PartialClass2
+        {
+        }
+    }
+
+    class PartialClasss : PartialClass
+    {
+        new class PartialClass2
         {
         }
     }

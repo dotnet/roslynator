@@ -32,13 +32,13 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (declaration == null)
                 return;
 
-            var accessModifier = (Accessibility)Enum.Parse(
+            var accessibility = (Accessibility)Enum.Parse(
                 typeof(Accessibility),
                 context.Diagnostics[0].Properties[nameof(Accessibility)]);
 
             CodeAction codeAction = CodeAction.Create(
                 "Add default access modifier",
-                cancellationToken => AddDefaultAccessModifierRefactoring.RefactorAsync(context.Document, declaration, accessModifier, cancellationToken),
+                cancellationToken => AddDefaultAccessModifierRefactoring.RefactorAsync(context.Document, declaration, accessibility, cancellationToken),
                 DiagnosticIdentifiers.AddDefaultAccessModifier + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
