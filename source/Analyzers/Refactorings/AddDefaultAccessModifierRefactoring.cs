@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,8 +12,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -210,64 +209,51 @@ namespace Roslynator.CSharp.Refactorings
             return default(SyntaxToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
-            MemberDeclarationSyntax declaration,
+            MemberDeclarationSyntax memberDeclaration,
             Accessibility accessibility,
             CancellationToken cancellationToken)
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxTokenList modifiers = memberDeclaration.GetModifiers();
 
-            SyntaxToken[] accessModifiers = CreateModifiers(accessibility);
+            SyntaxTokenList newModifiers = GetNewModifiers(modifiers, accessibility);
 
-            List<SyntaxToken> modifiers = declaration.GetModifiers().ToList();
+            MemberDeclarationSyntax newNode = memberDeclaration.SetModifiers(newModifiers);
 
-            MemberDeclarationSyntax newDeclaration = declaration;
-
-            if (modifiers.Count > 0)
-            {
-                accessModifiers[0] = accessModifiers[0].WithLeadingTrivia(modifiers[0].LeadingTrivia);
-
-                modifiers[0] = modifiers[0].WithoutLeadingTrivia();
-
-                modifiers.InsertRange(0, accessModifiers);
-            }
-            else
-            {
-                SyntaxToken token = declaration.GetFirstToken();
-
-                accessModifiers[0] = accessModifiers[0].WithLeadingTrivia(token.LeadingTrivia);
-
-                modifiers = accessModifiers.ToList();
-
-                newDeclaration = declaration.ReplaceToken(
-                    token,
-                    token.WithoutLeadingTrivia());
-            }
-
-            newDeclaration = newDeclaration.SetModifiers(TokenList(modifiers));
-
-            SyntaxNode newRoot = root.ReplaceNode(declaration, newDeclaration);
-
-            return document.WithSyntaxRoot(newRoot);
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
 
-        private static SyntaxToken[] CreateModifiers(Accessibility accessModifier)
+        private static SyntaxTokenList GetNewModifiers(SyntaxTokenList modifiers, Accessibility accessibility)
         {
-            switch (accessModifier)
+            switch (accessibility)
             {
                 case Accessibility.Public:
-                    return new SyntaxToken[] { PublicKeyword() };
+                    {
+                        return Inserter.InsertModifier(modifiers, SyntaxKind.PublicKeyword);
+                    }
                 case Accessibility.Internal:
-                    return new SyntaxToken[] { InternalKeyword() };
+                    {
+                        return Inserter.InsertModifier(modifiers, SyntaxKind.InternalKeyword);
+                    }
                 case Accessibility.Protected:
-                    return new SyntaxToken[] { ProtectedKeyword() };
+                    {
+                        return Inserter.InsertModifier(modifiers, SyntaxKind.ProtectedKeyword);
+                    }
                 case Accessibility.ProtectedOrInternal:
-                    return new SyntaxToken[] { ProtectedKeyword(), InternalKeyword() };
+                    {
+                        modifiers = Inserter.InsertModifier(modifiers, SyntaxKind.ProtectedKeyword);
+                        return Inserter.InsertModifier(modifiers, SyntaxKind.InternalKeyword);
+                    }
                 case Accessibility.Private:
-                    return new SyntaxToken[] { PrivateKeyword() };
+                    {
+                        return Inserter.InsertModifier(modifiers, SyntaxKind.PrivateKeyword);
+                    }
                 default:
-                    return new SyntaxToken[0];
+                    {
+                        Debug.Assert(false, accessibility.ToString());
+                        return modifiers;
+                    }
             }
         }
     }
