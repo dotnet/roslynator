@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                             int position = memberDeclaration.SpanStart;
 
-                            TypeSyntax newType = typeSymbol.ToMinimalSyntax(semanticModel, position);
+                            TypeSyntax newType = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
 
                             string title = (memberDeclaration.IsKind(SyntaxKind.MethodDeclaration))
                                 ? "Change return type to "

@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = typeSymbol.ToMinimalSyntax(semanticModel, expression.SpanStart);
+            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
 
             DefaultExpressionSyntax defaultExpression = SyntaxFactory.DefaultExpression(type)
                 .WithTriviaFrom(expression);

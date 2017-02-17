@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var enumTypeSymbol = semanticModel.GetTypeInfo(switchStatement.Expression, cancellationToken).ConvertedType as INamedTypeSymbol;
 
-            TypeSyntax enumType = enumTypeSymbol.ToMinimalSyntax(semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
+            TypeSyntax enumType = enumTypeSymbol.ToMinimalTypeSyntax(semanticModel, switchStatement.OpenBraceToken.FullSpan.End);
 
             SwitchStatementSyntax newNode = switchStatement
                 .WithSections(List(CreateSwitchSections(enumTypeSymbol, enumType)))

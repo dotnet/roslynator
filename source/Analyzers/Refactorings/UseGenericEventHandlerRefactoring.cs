@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return GenericName(
                 Identifier(SymbolDisplay.GetMinimalString(eventHandlerSymbol, semanticModel, type.SpanStart)),
-                typeSymbol.ToMinimalSyntax(semanticModel, type.SpanStart));
+                typeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart));
         }
     }
 }
