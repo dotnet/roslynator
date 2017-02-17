@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
             return statement.ReplaceNode(
                 condition,
-                binaryExpression.Left);
+                binaryExpression.Left.TrimTrailingTrivia());
         }
 
         protected TStatement AddNestedIf(
