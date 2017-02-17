@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                                     .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
                                     .Construct(typeSymbol);
 
-                                TypeSyntax newType = newTypeSymbol.ToMinimalSyntax(semanticModel, memberType.SpanStart);
+                                TypeSyntax newType = newTypeSymbol.ToMinimalTypeSyntax(semanticModel, memberType.SpanStart);
 
                                 context.RegisterRefactoring(
                                     $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalString(newTypeSymbol, semanticModel, memberType.SpanStart)}'",

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            TypeSyntax newType = typeSymbol.ToSyntax()
+            TypeSyntax newType = typeSymbol.ToTypeSyntax()
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 

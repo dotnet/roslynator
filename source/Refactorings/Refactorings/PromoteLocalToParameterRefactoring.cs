@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (typeSymbol?.SupportsExplicitDeclaration() == true)
                                         {
-                                            type = typeSymbol.ToSyntax();
+                                            type = typeSymbol.ToTypeSyntax();
                                         }
                                         else
                                         {

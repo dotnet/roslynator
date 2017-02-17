@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            var arrayType = typeSymbol.ToMinimalSyntax(semanticModel, expression.SpanStart) as ArrayTypeSyntax;
+            var arrayType = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart) as ArrayTypeSyntax;
 
             ArrayCreationExpressionSyntax newNode = SyntaxFactory.ArrayCreationExpression(
                 expression.NewKeyword,

@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     newLocalDeclaration = newLocalDeclaration.ReplaceNode(
                         newLocalDeclaration.Declaration.Type,
-                        typeSymbol.ToMinimalSyntax(semanticModel, type.SpanStart).WithSimplifierAnnotation());
+                        typeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart).WithSimplifierAnnotation());
                 }
             }
 

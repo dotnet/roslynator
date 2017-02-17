@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             newNode = newNode.WithType(
-                typeSymbol.ToMinimalSyntax(semanticModel, type.SpanStart).WithTriviaFrom(type));
+                typeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart).WithTriviaFrom(type));
 
             return await document.ReplaceNodeAsync(variableDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }

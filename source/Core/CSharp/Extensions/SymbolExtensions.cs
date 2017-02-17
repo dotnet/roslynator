@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Extensions
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-        public static TypeSyntax ToSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat = null)
+        public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Extensions
             return ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
         }
 
-        public static TypeSyntax ToMinimalSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
+        public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -101,8 +101,8 @@ namespace Roslynator.CSharp.Extensions
                     if (type == null)
                     {
                         type = (semanticModel != null)
-                            ? typeSymbol.ToMinimalSyntax(semanticModel, position, format)
-                            : typeSymbol.ToSyntax().WithSimplifierAnnotation();
+                            ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
+                            : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
                     }
 
                     Debug.Assert(type != null);
@@ -121,8 +121,8 @@ namespace Roslynator.CSharp.Extensions
             if (type == null)
             {
                 type = (semanticModel != null)
-                    ? typeSymbol.ToMinimalSyntax(semanticModel, position, format)
-                    : typeSymbol.ToSyntax().WithSimplifierAnnotation();
+                    ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
+                    : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
             }
 
             Debug.Assert(type != null);
@@ -150,11 +150,11 @@ namespace Roslynator.CSharp.Extensions
                             if (fieldSymbol.HasConstantValue
                                 && value.Equals(fieldSymbol.ConstantValue))
                             {
-                                return SimpleMemberAccessExpression(type.ToSyntax(), IdentifierName(fieldSymbol.Name));
+                                return SimpleMemberAccessExpression(type.ToTypeSyntax(), IdentifierName(fieldSymbol.Name));
                             }
                         }
 
-                        return CastExpression(type.ToSyntax().WithSimplifierAnnotation(), ConstantExpression(value));
+                        return CastExpression(type.ToTypeSyntax().WithSimplifierAnnotation(), ConstantExpression(value));
                     }
                 }
                 else
