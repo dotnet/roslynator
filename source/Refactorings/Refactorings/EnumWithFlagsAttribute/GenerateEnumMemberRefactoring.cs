@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
             var enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken) as INamedTypeSymbol;
 
-            if (Symbol.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
+            if (SymbolUtility.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
             {
                 object[] values = EnumHelper.GetValues(enumSymbol).ToArray();
 

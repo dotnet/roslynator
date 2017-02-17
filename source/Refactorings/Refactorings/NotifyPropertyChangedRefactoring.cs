@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamedTypeSymbol containingType = propertySymbol.ContainingType;
 
                 return containingType != null
-                    && Symbol.ImplementsINotifyPropertyChanged(containingType, semanticModel);
+                    && SymbolUtility.ImplementsINotifyPropertyChanged(containingType, semanticModel);
             }
 
             return false;

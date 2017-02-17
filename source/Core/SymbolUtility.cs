@@ -8,7 +8,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator
 {
-    public static class Symbol
+    public static class SymbolUtility
     {
         public static bool IsEnumWithFlagsAttribute(ITypeSymbol typeSymbol, SemanticModel semanticModel)
         {

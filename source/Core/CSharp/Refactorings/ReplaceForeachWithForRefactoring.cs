@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return typeSymbol.IsString()
                    || typeSymbol.IsArrayType()
-                   || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(forEachStatement.SpanStart, semanticModel) == true;
+                   || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(forEachStatement.SpanStart, semanticModel) == true;
             }
 
             return false;
