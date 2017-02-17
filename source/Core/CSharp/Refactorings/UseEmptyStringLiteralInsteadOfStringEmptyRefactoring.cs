@@ -11,7 +11,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseEmptyStringLiteralInsteadOfStringEmptyRefactoring
+    internal static class UseEmptyStringLiteralInsteadOfStringEmptyRefactoring
     {
         public static bool CanRefactor(
             MemberAccessExpressionSyntax memberAccess,

@@ -14,7 +14,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 {
-    public static class InlineAliasExpressionRefactoring
+    internal static class InlineAliasExpressionRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

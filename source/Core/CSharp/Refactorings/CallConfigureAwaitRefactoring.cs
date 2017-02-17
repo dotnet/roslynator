@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class CallConfigureAwaitRefactoring
+    internal static class CallConfigureAwaitRefactoring
     {
         public static bool CanRefactor(
             AwaitExpressionSyntax awaitExpression,

@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
-    public class AddExceptionToDocumentationCommentAnalysis
+    internal class AddExceptionToDocumentationCommentAnalysis
     {
 
         internal AddExceptionToDocumentationCommentAnalysis(ThrowInfo info, SyntaxTrivia documentationComment)

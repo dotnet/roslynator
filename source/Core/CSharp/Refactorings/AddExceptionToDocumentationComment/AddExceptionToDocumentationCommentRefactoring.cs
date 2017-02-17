@@ -15,7 +15,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
-    public static class AddExceptionToDocumentationCommentRefactoring
+    internal static class AddExceptionToDocumentationCommentRefactoring
     {
         public static AddExceptionToDocumentationCommentAnalysis Analyze(
             ThrowStatementSyntax throwStatement,
