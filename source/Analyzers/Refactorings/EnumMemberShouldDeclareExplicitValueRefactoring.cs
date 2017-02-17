@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
             INamedTypeSymbol enumSymbol = fieldSymbol.ContainingType;
 
-            if (Symbol.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
+            if (SymbolUtility.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
             {
                 var enumDeclaration = (EnumDeclarationSyntax)enumMember.Parent;
                 object[] values = GetExplicitValues(enumDeclaration, semanticModel, cancellationToken).ToArray();

@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (exceptionSymbol?.IsErrorType() == false
-                && Symbol.IsException(exceptionSymbol, semanticModel))
+                && SymbolUtility.IsException(exceptionSymbol, semanticModel))
             {
                 ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
-                    && Symbol.IsException(typeSymbol, semanticModel))
+                    && SymbolUtility.IsException(typeSymbol, semanticModel))
                 {
                     SyntaxTrivia trivia = declaration.GetSingleLineDocumentationComment();
 

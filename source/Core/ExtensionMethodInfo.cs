@@ -117,7 +117,7 @@ namespace Roslynator
         public bool IsLinqWhereWithIndex()
         {
             return IsLinqExtensionOfIEnumerableOfT("Where", parameterCount: 2, allowImmutableArrayExtension: false)
-                && Roslynator.Symbol.IsPredicateFunc(Parameters[1].Type, Symbol.TypeArguments[0], SemanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), SemanticModel);
+                && Roslynator.SymbolUtility.IsPredicateFunc(Parameters[1].Type, Symbol.TypeArguments[0], SemanticModel.Compilation.GetSpecialType(SpecialType.System_Int32), SemanticModel);
         }
 
         public bool IsLinqSelect(bool allowImmutableArrayExtension = false)
@@ -138,7 +138,7 @@ namespace Roslynator
 
                         return parameters.Length == 2
                             && parameters[0].Type.IsConstructedFromIEnumerableOfT()
-                            && Roslynator.Symbol.IsFunc(parameters[1].Type, Symbol.TypeArguments[0], Symbol.TypeArguments[1], SemanticModel);
+                            && Roslynator.SymbolUtility.IsFunc(parameters[1].Type, Symbol.TypeArguments[0], Symbol.TypeArguments[1], SemanticModel);
                     }
                     else if (allowImmutableArrayExtension
                         && containingType.Equals(SemanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)))
@@ -147,7 +147,7 @@ namespace Roslynator
 
                         return parameters.Length == 2
                             && parameters[0].Type.IsConstructedFromImmutableArrayOfT(SemanticModel)
-                            && Roslynator.Symbol.IsFunc(parameters[1].Type, Symbol.TypeArguments[0], Symbol.TypeArguments[1], SemanticModel);
+                            && Roslynator.SymbolUtility.IsFunc(parameters[1].Type, Symbol.TypeArguments[0], Symbol.TypeArguments[1], SemanticModel);
                     }
                 }
             }
@@ -228,7 +228,7 @@ namespace Roslynator
 
                         return parameters.Length == parameterCount
                             && parameters[0].Type.IsConstructedFromIEnumerableOfT()
-                            && Roslynator.Symbol.IsPredicateFunc(parameters[1].Type, Symbol.TypeArguments[0], SemanticModel);
+                            && Roslynator.SymbolUtility.IsPredicateFunc(parameters[1].Type, Symbol.TypeArguments[0], SemanticModel);
                     }
                     else if (allowImmutableArrayExtension
                         && containingType.Equals(SemanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions)))
@@ -237,7 +237,7 @@ namespace Roslynator
 
                         return parameters.Length == parameterCount
                             && parameters[0].Type.IsConstructedFromImmutableArrayOfT(SemanticModel)
-                            && Roslynator.Symbol.IsPredicateFunc(parameters[1].Type, Symbol.TypeArguments[0], SemanticModel);
+                            && Roslynator.SymbolUtility.IsPredicateFunc(parameters[1].Type, Symbol.TypeArguments[0], SemanticModel);
                     }
                 }
             }

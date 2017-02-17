@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                     if (typeSymbol != null
-                        && (typeSymbol.IsArrayType() || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
+                        && (typeSymbol.IsArrayType() || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
                     {
                         string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
 
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, context.CancellationToken);
 
                 if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || Symbol.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
+                    && (typeSymbol.IsArrayType() || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
                 {
                     context.RegisterRefactoring(
                         "Use [] instead of calling 'ElementAt'",
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
                     return "Length";
                 }
 
-                if (Symbol.ImplementsICollectionOfT(typeSymbol))
+                if (SymbolUtility.ImplementsICollectionOfT(typeSymbol))
                     return "Count";
             }
 

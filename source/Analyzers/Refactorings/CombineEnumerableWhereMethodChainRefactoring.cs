@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (info2.IsLinqExtensionOfIEnumerableOfT("Where", parameterCount: 2))
                         {
-                            if (Symbol.IsPredicateFunc(
+                            if (SymbolUtility.IsPredicateFunc(
                                 info2.Symbol.Parameters[1].Type,
                                 info2.Symbol.TypeArguments[0],
                                 semanticModel))
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                                     Analyze(context, invocation, invocation2, memberAccess, memberAccess2);
                                 }
                             }
-                            else if (Symbol.IsPredicateFunc(
+                            else if (SymbolUtility.IsPredicateFunc(
                                 info2.Symbol.Parameters[1].Type,
                                 info2.Symbol.TypeArguments[0],
                                 semanticModel.Compilation.GetSpecialType(SpecialType.System_Int32),
