@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -28,7 +29,12 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantOverridingMember,
                     DiagnosticIdentifiers.AddDocumentationComment,
                     DiagnosticIdentifiers.MarkContainingClassAsAbstract,
-                    DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType);
+                    DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
+                    DiagnosticIdentifiers.AddDefaultAccessModifier,
+                    DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
+                    DiagnosticIdentifiers.RemoveRedundantSealedModifier,
+                    DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
+                    DiagnosticIdentifiers.ReorderModifiers);
             }
         }
 
@@ -149,6 +155,60 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 title,
                                 cancellationToken => MemberTypeMustMatchOverriddenMemberTypeRefactoring.RefactorAsync(context.Document, memberDeclaration, newType, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddDefaultAccessModifier:
+                        {
+                            var accessibility = (Accessibility)Enum.Parse(
+                                typeof(Accessibility),
+                                context.Diagnostics[0].Properties[nameof(Accessibility)]);
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add default access modifier",
+                                cancellationToken => AddDefaultAccessModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, accessibility, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add empty line",
+                                cancellationToken => AddEmptyLineBetweenDeclarationsRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove sealed modifier",
+                                cancellationToken => RemoveRedundantSealedModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove unnecessary semicolon",
+                                cancellationToken => AvoidSemicolonAtEndOfDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ReorderModifiers:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Reorder modifiers",
+                                cancellationToken => ReorderModifiersRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
