@@ -236,10 +236,12 @@
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0008" Action="None" />
+    <Rule Id="RECS0012" Action="None" />
     <Rule Id="RECS0015" Action="None" />
     <Rule Id="RECS0018" Action="None" />
     <Rule Id="RECS0033" Action="None" />
     <Rule Id="RECS0070" Action="None" />
+    <Rule Id="RECS0083" Action="None" />
     <Rule Id="RECS0085" Action="None" />
     <Rule Id="RECS0091" Action="None" />
     <Rule Id="RECS0104" Action="None" />

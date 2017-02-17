@@ -254,7 +254,6 @@
     <Compile Include="Refactorings\MarkClassAsStaticRefactoring.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
-    <Compile Include="CodeFixProviders\AddEmptyLineBetweenDeclarationsCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddConstructorArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
@@ -292,7 +291,6 @@
     <Compile Include="CodeFixProviders\NamespaceDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\PropertyDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveSemicolonFromEndOfDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceIfStatementWithReturnStatementCodeFixProvider.cs" />
@@ -313,7 +311,6 @@
     <Compile Include="CodeFixProviders\RemoveRedundantBracesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemovePartialModifierFromTypeWithSinglePartCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveRedundantSealedModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEachStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEmbeddedStatementOnSeparateLineCodeFixProvider.cs" />
@@ -377,9 +374,7 @@
     <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BooleanLiteralDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AttributeArgumentListDiagnosticAnalyzer.cs" />
-    <Compile Include="CodeFixProviders\AddDefaultAccessModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatBinaryOperatorOnNextLineCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReorderModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeInForEachCodeFixProvider.cs" />
