@@ -10,7 +10,7 @@ using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class MarkContainingClassAsAbstractRefactoring
+    internal static class MarkContainingClassAsAbstractRefactoring
     {
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {

@@ -11,7 +11,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class MergeInterpolationIntoInterpolatedStringRefactoring
+    internal static class MergeInterpolationIntoInterpolatedStringRefactoring
     {
         public static bool CanRefactor(InterpolationSyntax interpolation)
         {

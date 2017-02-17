@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class AttributeRefactoring
+    internal static class AttributeRefactoring
     {
         public static IEnumerable<AttributeListSyntax> SplitAttributes(AttributeListSyntax attributeList)
         {

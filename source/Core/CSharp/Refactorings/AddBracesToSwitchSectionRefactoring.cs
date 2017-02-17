@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class AddBracesToSwitchSectionRefactoring
+    internal static class AddBracesToSwitchSectionRefactoring
     {
         public const string Title = "Add braces to section";
 

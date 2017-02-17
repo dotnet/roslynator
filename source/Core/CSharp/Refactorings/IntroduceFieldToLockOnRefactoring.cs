@@ -14,7 +14,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class IntroduceFieldToLockOnRefactoring
+    internal static class IntroduceFieldToLockOnRefactoring
     {
         private const string LockObjectName = "_lockObject";
 

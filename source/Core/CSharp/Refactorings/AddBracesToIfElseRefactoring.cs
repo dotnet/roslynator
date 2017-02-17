@@ -10,7 +10,7 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class AddBracesToIfElseRefactoring
+    internal static class AddBracesToIfElseRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
