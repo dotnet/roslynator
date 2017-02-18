@@ -46,10 +46,23 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 y = "";
         }
 
+        private static void Foo(string value)
+        {
+            if (value == null)
+            {
+                value = "";
+            }
+        }
+
+        private static void Foo2(string value)
+        {
+            if (value == null)
+                value = "";
+        }
+
         private static string GetValueOrDefault()
         {
             return null;
         }
     }
-#pragma warning restore RCS1002, RCS1016
 }
