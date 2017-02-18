@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                     if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
                                     {
-                                        newName = Identifier.EnsureUniqueLocalName(newName, identifier.SpanStart, semanticModel, context.CancellationToken);
+                                        newName = Identifier.EnsureUniqueLocalName(newName, variable, semanticModel, context.CancellationToken);
 
                                         context.RegisterRefactoring(
                                             $"Rename {GetName(symbol)} to '{newName}'",

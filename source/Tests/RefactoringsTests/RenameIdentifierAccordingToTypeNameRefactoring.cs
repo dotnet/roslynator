@@ -22,6 +22,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         }
 
+        private string this[Entity x]
+        {
+            get { return null; }
+        }
+
         private class Entity
         {
         }
