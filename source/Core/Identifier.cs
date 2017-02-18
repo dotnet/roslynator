@@ -159,16 +159,34 @@ namespace Roslynator
 
             ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
 
-            Debug.Assert(containingSymbol?.IsKind(SymbolKind.Method) == true);
-
-            if (containingSymbol?.IsKind(SymbolKind.Method) == true)
+            if (containingSymbol != null)
             {
-                var methodSymbol = (IMethodSymbol)containingSymbol;
+                SymbolKind kind = containingSymbol.Kind;
 
-                foreach (IParameterSymbol symbol in methodSymbol.Parameters)
+                Debug.Assert(kind == SymbolKind.Method || kind == SymbolKind.Property, kind.ToString());
+
+                if (kind == SymbolKind.Method)
                 {
-                    if (!parameterSymbol.Equals(symbol))
-                        reservedNames.Add(symbol.Name);
+                    var methodSymbol = (IMethodSymbol)containingSymbol;
+
+                    foreach (IParameterSymbol symbol in methodSymbol.Parameters)
+                    {
+                        if (!parameterSymbol.Equals(symbol))
+                            reservedNames.Add(symbol.Name);
+                    }
+                }
+                else if (kind == SymbolKind.Property)
+                {
+                    var propertySymbol = (IPropertySymbol)containingSymbol;
+
+                    if (propertySymbol.IsIndexer)
+                    {
+                        foreach (IParameterSymbol symbol in propertySymbol.Parameters)
+                        {
+                            if (!parameterSymbol.Equals(symbol))
+                                reservedNames.Add(symbol.Name);
+                        }
+                    }
                 }
             }
 
