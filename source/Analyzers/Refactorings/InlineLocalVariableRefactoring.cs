@@ -43,9 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             SyntaxToken identifier = declarator.Identifier;
 
-                            SyntaxNode parent = localDeclaration.Parent;
-
-                            SyntaxList<StatementSyntax> statements = GetStatements(parent);
+                            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(localDeclaration);
 
                             if (statements.Any())
                             {
@@ -69,11 +67,11 @@ namespace Roslynator.CSharp.Refactorings
                                             {
                                                 TextSpan span = TextSpan.FromBounds(statements[index + 2].SpanStart, statements.Last().Span.End);
 
-                                                isReferenced = IsLocalVariableReferenced(context, parent, span, declarator, identifier);
+                                                isReferenced = IsLocalVariableReferenced(context, localDeclaration.Parent, span, declarator, identifier);
                                             }
 
                                             if (!isReferenced
-                                                && !parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, nextStatement.Span.End)))
+                                                && !localDeclaration.Parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, nextStatement.Span.End)))
                                             {
                                                 ReportDiagnostic(context, localDeclaration, declaration, identifier, initializer, right);
                                             }
@@ -93,8 +91,8 @@ namespace Roslynator.CSharp.Refactorings
                                             {
                                                 TextSpan span = TextSpan.FromBounds(expression.Span.End, statements.Last().Span.End);
 
-                                                if (!IsLocalVariableReferenced(context, parent, span, declarator, identifier)
-                                                    && !parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, expression.Span.End)))
+                                                if (!IsLocalVariableReferenced(context, localDeclaration.Parent, span, declarator, identifier)
+                                                    && !localDeclaration.Parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, expression.Span.End)))
                                                 {
                                                     ReportDiagnostic(context, localDeclaration, declaration, identifier, initializer, expression);
                                                 }
@@ -190,19 +188,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        private static SyntaxList<StatementSyntax> GetStatements(SyntaxNode node)
-        {
-            switch (node?.Kind())
-            {
-                case SyntaxKind.Block:
-                    return ((BlockSyntax)node).Statements;
-                case SyntaxKind.SwitchSection:
-                    return ((SwitchSectionSyntax)node).Statements;
-                default:
-                    return default(SyntaxList<StatementSyntax>);
-            }
         }
 
         public static async Task<Document> RefactorAsync(

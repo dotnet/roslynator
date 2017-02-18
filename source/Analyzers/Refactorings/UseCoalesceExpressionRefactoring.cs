@@ -60,9 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         StatementSyntax statementToReport = ifStatement;
 
-                                        SyntaxNode parent = ifStatement.Parent;
-
-                                        SyntaxList<StatementSyntax> statements = GetStatements(parent);
+                                        SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
 
                                         if (statements.Any())
                                         {
@@ -72,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
                                             {
                                                 StatementSyntax previousStatement = statements[index - 1];
 
-                                                if (CanRefactor(previousStatement, ifStatement, left, parent))
+                                                if (CanRefactor(previousStatement, ifStatement, left, ifStatement.Parent))
                                                     statementToReport = previousStatement;
                                             }
                                         }
@@ -179,19 +177,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
-        }
-
-        private static SyntaxList<StatementSyntax> GetStatements(SyntaxNode node)
-        {
-            switch (node?.Kind())
-            {
-                case SyntaxKind.Block:
-                    return ((BlockSyntax)node).Statements;
-                case SyntaxKind.SwitchSection:
-                    return ((SwitchSectionSyntax)node).Statements;
-                default:
-                    return default(SyntaxList<StatementSyntax>);
-            }
         }
 
         public static async Task<Document> RefactorAsync(
