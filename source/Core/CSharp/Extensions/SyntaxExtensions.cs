@@ -1394,30 +1394,12 @@ namespace Roslynator.CSharp.Extensions
             return propertyDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
 
-        public static SyntaxList<StatementSyntax> GetContainingList(this StatementSyntax statement)
-        {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
-            SyntaxNode parent = statement.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.Block:
-                    return ((BlockSyntax)parent).Statements;
-                case SyntaxKind.SwitchSection:
-                    return ((SwitchSectionSyntax)parent).Statements;
-                default:
-                    return default(SyntaxList<StatementSyntax>);
-            }
-        }
-
         public static StatementSyntax PreviousStatement(this StatementSyntax statement)
         {
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements = statement.GetContainingList();
+            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(statement);
 
             if (statements.Any())
             {
@@ -1441,7 +1423,7 @@ namespace Roslynator.CSharp.Extensions
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements = statement.GetContainingList();
+            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(statement);
 
             if (statements.Any())
             {

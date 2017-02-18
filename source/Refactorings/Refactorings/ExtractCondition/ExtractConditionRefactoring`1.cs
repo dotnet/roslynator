@@ -19,21 +19,6 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public abstract TStatement SetStatement(TStatement statement, StatementSyntax newStatement);
 
-        private StatementContainer GetStatementContainer(BinaryExpressionSyntax binaryExpression)
-        {
-            SyntaxNode node = binaryExpression.Parent.Parent;
-
-            if (node != null)
-            {
-                StatementContainer container;
-
-                if (StatementContainer.TryCreate(node, out container))
-                    return container;
-            }
-
-            return null;
-        }
-
         protected TStatement RemoveExpressionFromCondition(
             TStatement statement,
             BinaryExpressionSyntax condition,
