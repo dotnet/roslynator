@@ -207,8 +207,6 @@ namespace Roslynator.CSharp.Refactorings
 
                 int index = statements.IndexOf(statement);
 
-                StatementSyntax nextStatemnt = statements[index + 1];
-
                 switch (statement.Kind())
                 {
                     case SyntaxKind.IfStatement:
@@ -251,7 +249,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-                            return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)nextStatemnt, index, container, assignment.Right, cancellationToken).ConfigureAwait(false);
+                            return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, container, assignment.Right, cancellationToken).ConfigureAwait(false);
                         }
                     case SyntaxKind.LocalDeclarationStatement:
                         {
@@ -264,7 +262,7 @@ namespace Roslynator.CSharp.Refactorings
                                 .Initializer
                                 .Value;
 
-                            return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)nextStatemnt, index, container, value, cancellationToken).ConfigureAwait(false);
+                            return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)statements[index + 1], index, container, value, cancellationToken).ConfigureAwait(false);
                         }
                 }
             }
