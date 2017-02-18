@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string identifier = Identifier.CreateName(typeSymbol, firstCharToLower: true) ?? "x";
 
-            identifier = Identifier.EnsureUniqueLocalName(identifier, expressionStatement.SpanStart, semanticModel, cancellationToken);
+            identifier = Identifier.EnsureUniqueLocalName(identifier, expressionStatement, semanticModel, cancellationToken);
 
             ExpressionSyntax value = expressionStatement.Expression;
 

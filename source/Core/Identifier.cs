@@ -9,8 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.Extensions;
 using Roslynator.Internal;
@@ -47,80 +45,77 @@ namespace Roslynator
 
         public static string EnsureUniqueLocalName(
             string baseName,
-            int position,
+            SyntaxNode node,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
+            SyntaxNode container = FindContainer(node, semanticModel, cancellationToken);
 
-            symbols = AddLocalSymbols(symbols, position, semanticModel, cancellationToken);
+            HashSet<ISymbol> containerSymbols = GetContainerSymbols(container, semanticModel, cancellationToken);
 
-            return EnsureUniqueName(baseName, symbols);
+            IEnumerable<string> reservedNames = semanticModel
+                .LookupSymbols(node.SpanStart)
+                .Select(f => f.Name)
+                .Concat(containerSymbols.Select(f => f.Name));
+
+            return EnsureUniqueName(baseName, reservedNames);
         }
 
-        private static ImmutableArray<ISymbol> AddLocalSymbols(ImmutableArray<ISymbol> symbols, int position, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static SyntaxNode FindContainer(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(node.SpanStart, cancellationToken);
 
-            if (enclosingSymbol != null)
+            ImmutableArray<SyntaxReference> syntaxReferences = enclosingSymbol.DeclaringSyntaxReferences;
+
+            if (syntaxReferences.Length == 1)
             {
-                List<ISymbol> additionalSymbols = null;
-
-                foreach (ILocalSymbol localSymbol in GetLocalSymbols(enclosingSymbol, semanticModel, cancellationToken))
+                return syntaxReferences[0].GetSyntax(cancellationToken);
+            }
+            else
+            {
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
                 {
-                    if (!symbols.Contains(localSymbol))
-                    {
-                        if (additionalSymbols == null)
-                            additionalSymbols = new List<ISymbol>();
+                    SyntaxNode syntax = syntaxReference.GetSyntax(cancellationToken);
 
-                        additionalSymbols.Add(localSymbol);
-                    }
+                    if (syntax.SyntaxTree == semanticModel.SyntaxTree)
+                        return syntax;
                 }
+            }
 
-                if (additionalSymbols != null)
-                    symbols = symbols.AddRange(additionalSymbols);
+            return null;
+        }
+
+        private static HashSet<ISymbol> GetContainerSymbols(
+            SyntaxNode container,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            var symbols = new HashSet<ISymbol>();
+
+            foreach (SyntaxNode node in container.DescendantNodesAndSelf())
+            {
+                ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+
+                if (symbol != null
+                    && !IsAnonymousTypeProperty(symbol))
+                {
+                    symbols.Add(symbol);
+                }
             }
 
             return symbols;
         }
 
-        private static IEnumerable<ILocalSymbol> GetLocalSymbols(
-            ISymbol symbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private static bool IsAnonymousTypeProperty(ISymbol symbol)
         {
-            SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
-
-            if (syntaxReference != null)
-            {
-                var localSymbols = new List<ILocalSymbol>();
-
-                SyntaxNode node = syntaxReference.GetSyntax(cancellationToken);
-
-                foreach (SyntaxNode descendant in node.DescendantNodes())
-                {
-                    if (descendant.IsKind(SyntaxKind.LocalDeclarationStatement))
-                    {
-                        var localDeclaration = (LocalDeclarationStatementSyntax)descendant;
-
-                        VariableDeclarationSyntax declaration = localDeclaration.Declaration;
-
-                        if (declaration != null)
-                        {
-                            foreach (VariableDeclaratorSyntax variable in declaration.Variables)
-                            {
-                                ISymbol localSymbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
-
-                                if (localSymbol?.IsLocal() == true)
-                                    yield return (ILocalSymbol)localSymbol;
-                            }
-                        }
-                    }
-                }
-            }
+            return symbol.IsProperty()
+                && symbol.ContainingType.IsAnonymousType;
         }
 
         public static async Task<string> EnsureUniqueParameterNameAsync(

@@ -22,7 +22,6 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
             if (TryGet("", out var x))
             {
-
             }
         }
 
@@ -30,6 +29,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             result = null;
             return false;
+        }
+
+        private string this[Entity x]
+        {
+            get { return null; }
         }
 
         private class Entity
