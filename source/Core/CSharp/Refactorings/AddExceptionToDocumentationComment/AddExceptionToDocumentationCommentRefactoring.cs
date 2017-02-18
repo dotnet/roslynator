@@ -339,7 +339,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 sb.Append("\"/>");
 
                 if (exceptionSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
-                    sb.Append("\"/> is <c>null</c>.");
+                    sb.Append(" is <c>null</c>.");
             }
 
             sb.Append("</exception>");
