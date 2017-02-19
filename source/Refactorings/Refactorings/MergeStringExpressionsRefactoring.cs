@@ -13,13 +13,13 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeStringExpressionsRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedExpressions selectedExpressions)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, BinaryExpressionSpan binaryExpressionSpan)
         {
-            if (selectedExpressions.BinaryExpression.IsKind(SyntaxKind.AddExpression))
+            if (binaryExpressionSpan.BinaryExpression.IsKind(SyntaxKind.AddExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                StringExpressionChain chain = StringExpressionChain.TryCreate(selectedExpressions, semanticModel, context.CancellationToken);
+                StringExpressionChain chain = StringExpressionChain.TryCreate(binaryExpressionSpan, semanticModel, context.CancellationToken);
 
                 if (chain != null)
                     ComputeRefactoring(context, chain);

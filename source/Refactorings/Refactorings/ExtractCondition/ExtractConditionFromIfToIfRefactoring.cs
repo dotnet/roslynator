@@ -38,15 +38,15 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             StatementContainer container,
             BinaryExpressionSyntax condition,
-            SelectedExpressions selectedExpressions,
+            BinaryExpressionSpan binaryExpressionSpan,
             CancellationToken cancellationToken)
         {
             var ifStatement = (IfStatementSyntax)condition.Parent;
 
-            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, selectedExpressions)
+            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSpan)
                 .WithFormatterAnnotation();
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(selectedExpressions.ExpressionsText);
+            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSpan.ToString());
 
             SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
 

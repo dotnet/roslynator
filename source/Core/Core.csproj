@@ -79,7 +79,9 @@
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RemoveCommentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.cs" />
+    <Compile Include="CSharp\BinaryExpressionSpan.cs" />
     <Compile Include="CSharp\SelectedMemberDeclarationCollection.cs" />
+    <Compile Include="CSharp\StringExpressionChain.cs" />
     <Compile Include="CSharp\SwitchSectionStatementContainer.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
