@@ -168,5 +168,7 @@ namespace Roslynator.CSharp
         public const string AbstractTypeShouldNotHavePublicConstructors = Prefix + "1160";
         public const string EnumMemberShouldDeclareExplicitValue = Prefix + "1161";
         public const string AvoidChainOfAssignments = Prefix + "1162";
+        public const string UnusedParameter = Prefix + "1163";
+        public const string UnusedTypeParameter = Prefix + "1164";
     }
 }

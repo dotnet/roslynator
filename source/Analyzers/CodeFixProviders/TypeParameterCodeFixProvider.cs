@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.DocumentationComment;
+using Roslynator.CSharp.Refactorings.UnusedSyntax;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -18,7 +20,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddTypeParameterToDocumentationComment); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddTypeParameterToDocumentationComment,
+                    DiagnosticIdentifiers.UnusedTypeParameter);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -45,6 +52,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Add type parameter to documentation comment",
                                 cancellationToken => refactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UnusedTypeParameter:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Remove unused type parameter '{typeParameter.Identifier}'",
+                                cancellationToken => UnusedTypeParameterRefactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
