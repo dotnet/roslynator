@@ -65,6 +65,7 @@
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="UnusedParameter.cs" />
+    <Compile Include="NullCheckOfUnconstrainedTypeParameter.cs" />
     <Compile Include="SimplifyCoalesceExpression.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="CompositeEnumValueContainsUndefinedFlag.cs" />
