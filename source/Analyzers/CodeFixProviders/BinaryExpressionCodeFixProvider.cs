@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -30,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantAsOperator,
                     DiagnosticIdentifiers.UseConditionalAccess,
                     DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
-                    DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull);
+                    DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
+                    DiagnosticIdentifiers.ValueTypeCheckedForNull);
             }
         }
 
@@ -147,6 +150,32 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use EqualityComparer<{typeSymbol.Name}>.Default",
                                 cancellationToken => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(context.Document, binaryExpression, typeSymbol, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ValueTypeCheckedForNull:
+                        {
+                            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
+
+                            string title = null;
+
+                            if (typeSymbol.IsPredefinedValueType()
+                                || typeSymbol.GetMethods(WellKnownMemberNames.EqualityOperatorName).Any())
+                            {
+                                title = $"Replace 'null' with 'default({SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart)})'";
+                            }
+                            else
+                            {
+                                title = $"Use EqualityComparer<{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart)}>.Default";
+                            }
+
+                            CodeAction codeAction = CodeAction.Create(
+                                title,
+                                cancellationToken => ValueTypeCheckedForNullRefactoring.RefactorAsync(context.Document, binaryExpression, typeSymbol, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

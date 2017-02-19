@@ -171,5 +171,6 @@ namespace Roslynator.CSharp
         public const string UnusedParameter = Prefix + "1163";
         public const string UnusedTypeParameter = Prefix + "1164";
         public const string UnconstrainedTypeParameterCheckedForNull = Prefix + "1165";
+        public const string ValueTypeCheckedForNull = Prefix + "1166";
     }
 }
