@@ -15,7 +15,15 @@ namespace Roslynator.CSharp.Refactorings
                 await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue))
-                await IntroduceLocalFromStatementThatReturnsValueRefactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
+            {
+                ExpressionSyntax expression = expressionStatement.Expression;
+
+                if (expression?.IsMissing == false
+                    && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
+                {
+                    await IntroduceLocalFromStatementThatReturnsValueRefactoring.ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
+                }
+            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement)
                 && context.Span.IsBetweenSpans(expressionStatement))
