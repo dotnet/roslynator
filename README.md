@@ -192,6 +192,12 @@
 * RCS1160 - Abstract type should not have public constructors
 * RCS1161 - Enum member should declare explicit value
 * RCS1162 - Avoid chain of assignments
+* RCS1163 - Unused parameter
+* RCS1164 - Unused type parameter
+* RCS1165 - Unconstrained type parameter checked for null
+* RCS1166 - Value type checked for null
+* RCS1167 - Overriding member cannot change access modifiers
+* RCS1168 - Parameter name differs from base name
 
 ### List of Refactorings
 
