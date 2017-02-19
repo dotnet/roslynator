@@ -1,3 +1,16 @@
+### 1.2.14 (2017-02-19)
+
+#### Analyzers
+
+##### New Analyzers
+
+* ParameterNameDiffersFromBase
+* OverridingMemberCannotChnageAccessModifiers
+* ValueTypeCheckedForNull
+* UnconstrainedTypeParameterCheckedForNull
+* UnusedTypeParameter
+* UnusedParameter
+
 ### 1.2.13 (2017-02-11)
 
 #### Analyzers
