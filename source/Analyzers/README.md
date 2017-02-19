@@ -162,3 +162,9 @@ RCS1159|Use EventHandler\<T\>|Usage|x
 RCS1160|Abstract type should not have public constructors|Design|x
 RCS1161|Enum member should declare explicit value|Readability|x
 RCS1162|Avoid chain of assignments|Readability|
+RCS1163|Unused parameter|Redundancy|x
+RCS1164|Unused type parameter|Redundancy|x
+RCS1165|Unconstrained type parameter checked for null|Usage|x
+RCS1166|Value type checked for null|Usage|x
+RCS1167|Overriding member cannot change access modifiers|ErrorFix|x
+RCS1168|Parameter name differs from base name|Maintainability|x

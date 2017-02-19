@@ -1440,4 +1440,58 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="UnusedParameter" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1163</Id>
+    <Title>Unused parameter.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UnusedTypeParameter" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1164</Id>
+    <Title>Unused type parameter.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UnconstrainedTypeParameterCheckedForNull" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1165</Id>
+    <Title>Unconstrained type parameter checked for null.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="ValueTypeCheckedForNull" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1166</Id>
+    <Title>Value type checked for null.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="OverridingMemberCannotChangeAccessModifiers" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1167</Id>
+    <Title>Overriding member cannot change access modifiers.</Title>
+    <Category>ErrorFix</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="ParameterNameDiffersFromBase" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1168</Id>
+    <Title>Parameter name differs from base name.</Title>
+    <Category>Maintainability</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>

@@ -17,6 +17,7 @@ ErrorFix|Add return statement that returns default value|RCS1117|x
 ErrorFix|Mark containing class as abstract|RCS1144|x
 ErrorFix|Mark member as static|RCS1125|x
 ErrorFix|Member type must match overriden member type|RCS1152|x
+ErrorFix|Overriding member cannot change access modifiers|RCS1167|x
 ErrorFix|Remove implementation from abstract member|RCS1149|x
 ErrorFix|Remove inapplicable modifier|RCS1147|x
 ErrorFix|Replace return with yield return|RCS1131|x
@@ -50,6 +51,7 @@ Maintainability|Add summary element to documentation comment|RCS1139|x
 Maintainability|Add summary to documentation comment|RCS1138|x
 Maintainability|Add type parameter to documentation comment|RCS1142|x
 Maintainability|Declare each type in separate file|RCS1060|
+Maintainability|Parameter name differs from base name|RCS1168|x
 Maintainability|Remove original exception from throw statement|RCS1044|x
 Maintainability|Use nameof operator|RCS1015|x
 Naming|Asynchronous method name should end with 'Async'|RCS1046|x
@@ -112,6 +114,8 @@ Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
 Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
 Redundancy|Remove unnecessary case label|RCS1069|x
+Redundancy|Unused parameter|RCS1163|x
+Redundancy|Unused type parameter|RCS1164|x
 Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
 Simplification|Inline local variable|RCS1124|x
@@ -153,6 +157,7 @@ Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
+Usage|Unconstrained type parameter checked for null|RCS1165|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
 Usage|Use conditional access|RCS1146|x
 Usage|Use EventHandler\<T\>|RCS1159|x
@@ -162,3 +167,4 @@ Usage|Use predefined type|RCS1013|
 Usage|Use 'string\.IsNullOrEmpty' method|RCS1113|x
 Usage|Use string\.Length instead of comparison with empty string|RCS1156|x
 Usage|Use StringComparison when comparing strings|RCS1155|x
+Usage|Value type checked for null|RCS1166|x
