@@ -34,7 +34,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
-                    DiagnosticIdentifiers.ReorderModifiers);
+                    DiagnosticIdentifiers.ReorderModifiers,
+                    DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers);
             }
         }
 
@@ -214,11 +215,27 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
+                    case DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers:
+                        {
+                            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                            OverrideInfo overrideInfo = OverridingMemberCannotChangeAccessModifiersRefactoring.GetOverrideInfo(memberDeclaration, semanticModel, context.CancellationToken);
+
+                            string title = $"Change accessibility to '{OverridingMemberCannotChangeAccessModifiersRefactoring.GetAccessibilityText(overrideInfo.OverridenSymbol.DeclaredAccessibility)}'";
+
+                            CodeAction codeAction = CodeAction.Create(
+                                title,
+                                cancellationToken => OverridingMemberCannotChangeAccessModifiersRefactoring.RefactorAsync(context.Document, memberDeclaration, overrideInfo, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
                 }
             }
         }
 
-        private object GetMemberName(MemberDeclarationSyntax memberDeclaration)
+        private string GetMemberName(MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration.Kind())
             {
