@@ -64,6 +64,7 @@
     <Compile Include="AvoidEmbeddedStatementInIfElse.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
+    <Compile Include="UnusedParameter.cs" />
     <Compile Include="SimplifyCoalesceExpression.cs" />
     <Compile Include="CombineEnumerableWhereMethodChain.cs" />
     <Compile Include="CompositeEnumValueContainsUndefinedFlag.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="ReplaceReturnStatementWithExpressionStatement.cs" />
     <Compile Include="ReplaceReturnWithYieldReturn.cs" />
     <Compile Include="SortEnumMembers.cs" />
+    <Compile Include="UnusedTypeParameter.cs" />
     <Compile Include="UseConditionalAccess.cs" />
     <Compile Include="UseElementAccessInsteadOfElementAt.cs" />
     <Compile Include="UseCoalesceExpression.cs" />

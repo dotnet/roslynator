@@ -1529,5 +1529,25 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor UnusedParameter = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UnusedParameter,
+            title: "Unused parameter.",
+            messageFormat: "Unused parameter '{0}'.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
+        public static readonly DiagnosticDescriptor UnusedTypeParameter = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UnusedTypeParameter,
+            title: "Unused type parameter.",
+            messageFormat: "Unused type parameter '{0}'.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

@@ -1,0 +1,177 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
+
+namespace Roslynator.CSharp.Refactorings.UnusedSyntax
+{
+    internal abstract class UnusedSyntaxRefactoring<TNode, TListSyntax, TSyntax, TSymbol>
+        where TNode : SyntaxNode
+        where TListSyntax : SyntaxNode
+        where TSyntax : SyntaxNode
+        where TSymbol : ISymbol
+    {
+        protected abstract SyntaxTokenList GetModifiers(TNode node);
+
+        protected abstract CSharpSyntaxNode GetBody(TNode node);
+
+        protected abstract SeparatedSyntaxList<TSyntax> GetSeparatedList(TListSyntax list);
+
+        protected abstract TListSyntax GetList(TNode node);
+
+        protected abstract string GetIdentifier(TSyntax syntax);
+
+        public IEnumerable<TSyntax> Analyze(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            TListSyntax list = GetList(node);
+
+            if (list != null)
+            {
+                SeparatedSyntaxList<TSyntax> separatedList = GetSeparatedList(list);
+
+                if (separatedList.Any()
+                    && !node.IsParentKind(SyntaxKind.InterfaceDeclaration)
+                    && GetBody(node) != null
+                    && !GetModifiers(node).ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                {
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+
+                    if (symbol.FindImplementedInterfaceMember() == null)
+                    {
+                        int count = separatedList.Count(f => !f.IsMissing);
+
+                        if (count == 1)
+                        {
+                            TSyntax syntax = separatedList.First(f => !f.IsMissing);
+
+                            if (!HasReference(node, list, syntax, semanticModel, cancellationToken)
+                                && !syntax.SpanContainsDirectives())
+                            {
+                                yield return separatedList[0];
+                            }
+                        }
+                        else if (count > 1)
+                        {
+                            foreach (TSyntax syntax in FindSyntaxWithoutReference(node, list, separatedList, count, semanticModel, cancellationToken))
+                            {
+                                if (!syntax.SpanContainsDirectives())
+                                    yield return syntax;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private bool HasReference(
+            SyntaxNode node,
+            TListSyntax list,
+            TSyntax syntax,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            string name = GetIdentifier(syntax);
+
+            var symbol = default(TSymbol);
+
+            foreach (IdentifierNameSyntax identifierName in DescendantIdentifierNames(node, list.Span))
+            {
+                if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                {
+                    if (EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
+                    {
+                        symbol = (TSymbol)semanticModel.GetSymbol(syntax, cancellationToken);
+
+                        if (!(symbol is TSymbol))
+                            return true;
+                    }
+
+                    if (semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(symbol) == true)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private IEnumerable<TSyntax> FindSyntaxWithoutReference(
+            SyntaxNode node,
+            TListSyntax list,
+            SeparatedSyntaxList<TSyntax> separatedList,
+            int count,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            var names = new string[count];
+            var infos = new SyntaxInfo<TSyntax, TSymbol>[count];
+
+            for (int i = 0; i < separatedList.Count; i++)
+            {
+                if (!separatedList[i].IsMissing)
+                {
+                    names[i] = GetIdentifier(separatedList[i]);
+                    infos[i] = new SyntaxInfo<TSyntax, TSymbol>(separatedList[i]);
+                }
+            }
+
+            foreach (IdentifierNameSyntax identifierName in DescendantIdentifierNames(node, list.Span))
+            {
+                string name = identifierName.Identifier.ValueText;
+
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if (names[i] != null
+                        && string.Equals(names[i], name, StringComparison.Ordinal))
+                    {
+                        SyntaxInfo<TSyntax, TSymbol> info = infos[i];
+
+                        if (EqualityComparer<TSymbol>.Default.Equals(info.Symbol, default(TSymbol)))
+                        {
+                            var symbol = semanticModel.GetSymbol(info.Syntax, cancellationToken);
+
+                            if (symbol is TSymbol)
+                            {
+                                infos[i] = info.WithSymbol((TSymbol)symbol);
+                            }
+                            else
+                            {
+                                names[i] = null;
+                            }
+                        }
+
+                        if (infos[i].Symbol?.Equals(semanticModel.GetSymbol(identifierName, cancellationToken)) == true)
+                            names[i] = null;
+
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < names.Length; i++)
+            {
+                if (names[i] != null)
+                    yield return infos[i].Syntax;
+            }
+        }
+
+        private static IEnumerable<IdentifierNameSyntax> DescendantIdentifierNames(SyntaxNode node, TextSpan excludedSpan)
+        {
+            foreach (SyntaxNode descendant in node.DescendantNodes(node.Span))
+            {
+                if (descendant.IsKind(SyntaxKind.IdentifierName)
+                    && !excludedSpan.Contains(descendant.Span))
+                {
+                    yield return (IdentifierNameSyntax)descendant;
+                }
+            }
+        }
+    }
+}

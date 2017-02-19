@@ -77,6 +77,14 @@
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedIndexerParameterRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedMethodParameterRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring`4.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedMethodTypeParameterRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\SyntaxInfo.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyCoalesceExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MemberTypeMustMatchOverriddenMemberTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantCastDiagnosticAnalyzer.cs" />
@@ -86,6 +94,7 @@
     <Compile Include="DiagnosticAnalyzers\MarkContainingClassAsAbstractDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceReturnWithYieldReturnDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SortEnumMembersDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnusedTypeParameterDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\EnumMemberShouldDeclareExplicitValueRefactoring.cs" />
     <Compile Include="Refactorings\AbstractTypeShouldNotHavePublicConstructorsRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseGenericEventHandlerDiagnosticAnalyzer.cs" />
@@ -93,6 +102,7 @@
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConditionalAccessDiagnosticAnalyzer.cs" />
@@ -131,6 +141,7 @@
     <Compile Include="Refactorings\ReplaceReturnWithYieldReturnRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantOverridingMemberRefactoring.cs" />
     <Compile Include="Refactorings\SortEnumMembersRefactoring.cs" />
+    <Compile Include="Refactorings\UnusedSyntax\UnusedTypeParameterRefactoring.cs" />
     <Compile Include="Refactorings\UseConditionalAccessRefactoring.cs" />
     <Compile Include="Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionDiagnosticAnalyzer.cs" />

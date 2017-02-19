@@ -114,6 +114,39 @@ namespace Roslynator.CSharp.Extensions
             return tokenList.IndexOf(kind) != -1;
         }
 
+        public static bool ContainsAny(this SyntaxTokenList tokenList, SyntaxKind kind1, SyntaxKind kind2)
+        {
+            foreach (SyntaxToken token in tokenList)
+            {
+                SyntaxKind kind = token.Kind();
+
+                if (kind == kind1
+                    || kind == kind2)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool ContainsAny(this SyntaxTokenList tokenList, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            foreach (SyntaxToken token in tokenList)
+            {
+                SyntaxKind kind = token.Kind();
+
+                if (kind == kind1
+                    || kind == kind2
+                    || kind == kind3)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind)
         {
             return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(token.Parent, kind);
