@@ -63,6 +63,7 @@
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\OverridingMemberCannotChangeAccessModifiersDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddEmptyLineAfterClosingBraceDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddExceptionToDocumentationCommentDiagnosticAnalyzer.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />
+    <Compile Include="Refactorings\OverrideInfo.cs" />
+    <Compile Include="Refactorings\OverridingMemberCannotChangeAccessModifiersRefactoring.cs" />
     <Compile Include="Refactorings\UnconstrainedTypeParameterCheckedForNullRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
