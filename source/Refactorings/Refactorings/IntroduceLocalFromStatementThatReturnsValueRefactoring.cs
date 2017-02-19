@@ -14,12 +14,22 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class IntroduceLocalFromStatementThatReturnsValueRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
+        public static async Task ComputeRefactoringAsync(
+            RefactoringContext context,
+            ExpressionStatementSyntax expressionStatement)
         {
             ExpressionSyntax expression = expressionStatement.Expression;
 
-            if (expression?.IsMissing == false
-                && !(expression is AssignmentExpressionSyntax)
+            if (expression?.IsMissing == false)
+                await ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
+        }
+
+        public static async Task ComputeRefactoringAsync(
+            RefactoringContext context,
+            ExpressionStatementSyntax expressionStatement,
+            ExpressionSyntax expression)
+        {
+            if (!(expression is AssignmentExpressionSyntax)
                 && !expression.IsIncrementOrDecrementExpression())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
