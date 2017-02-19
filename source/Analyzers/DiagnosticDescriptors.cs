@@ -1558,5 +1558,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor ValueTypeCheckedForNull = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ValueTypeCheckedForNull,
+            title: "Value type checked for null.",
+            messageFormat: "Value type checked for null.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
