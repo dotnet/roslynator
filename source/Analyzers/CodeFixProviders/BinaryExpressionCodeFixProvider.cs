@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 
@@ -28,7 +29,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
                     DiagnosticIdentifiers.RemoveRedundantAsOperator,
                     DiagnosticIdentifiers.UseConditionalAccess,
-                    DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString);
+                    DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
+                    DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull);
             }
         }
 
@@ -131,6 +133,20 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Use string.Length",
                                 cancellationToken => UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull:
+                        {
+                            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Use EqualityComparer<{typeSymbol.Name}>.Default",
+                                cancellationToken => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(context.Document, binaryExpression, typeSymbol, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

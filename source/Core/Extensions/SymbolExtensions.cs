@@ -1026,5 +1026,78 @@ namespace Roslynator.Extensions
 
             return false;
         }
+
+        public static bool VerifyConstraint(this ITypeParameterSymbol typeParameterSymbol, bool allowReference, bool allowValueType, bool allowConstructor)
+        {
+            if (typeParameterSymbol == null)
+                throw new ArgumentNullException(nameof(typeParameterSymbol));
+
+            if (!CheckConstraint(typeParameterSymbol, allowReference, allowValueType, allowConstructor))
+                return false;
+
+            ImmutableArray<ITypeSymbol> constraintTypes = typeParameterSymbol.ConstraintTypes;
+
+            if (constraintTypes.Any())
+            {
+                var stack = new Stack<ITypeSymbol>(constraintTypes);
+
+                while (stack.Any())
+                {
+                    ITypeSymbol type = stack.Pop();
+
+                    switch (type.TypeKind)
+                    {
+                        case TypeKind.Class:
+                            {
+                                if (!allowReference)
+                                    return false;
+
+                                break;
+                            }
+                        case TypeKind.Struct:
+                            {
+                                if (allowValueType)
+                                    return false;
+
+                                break;
+                            }
+                        case TypeKind.Interface:
+                            {
+                                break;
+                            }
+                        case TypeKind.TypeParameter:
+                            {
+                                var typeParameterSymbol2 = (ITypeParameterSymbol)type;
+
+                                if (!CheckConstraint(typeParameterSymbol2, allowReference, allowValueType, allowConstructor))
+                                    return false;
+
+                                foreach (ITypeSymbol constraintType in typeParameterSymbol2.ConstraintTypes)
+                                    stack.Push(constraintType);
+
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Assert(false, type.TypeKind.ToString());
+                                break;
+                            }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private static bool CheckConstraint(
+            ITypeParameterSymbol typeParameterSymbol,
+            bool allowReference,
+            bool allowValueType,
+            bool allowConstructor)
+        {
+            return (allowReference || !typeParameterSymbol.HasReferenceTypeConstraint)
+                && (allowValueType || !typeParameterSymbol.HasValueTypeConstraint)
+                && (allowConstructor || !typeParameterSymbol.HasConstructorConstraint);
+        }
     }
 }

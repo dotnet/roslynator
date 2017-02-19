@@ -1549,5 +1549,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor UnconstrainedTypeParameterCheckedForNull = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
+            title: "Unconstrained type parameter checked for null.",
+            messageFormat: "Unconstrained type parameter checked for null.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

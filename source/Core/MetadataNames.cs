@@ -8,6 +8,7 @@ namespace Roslynator
         public const string System_ArgumentNullException = "System.ArgumentNullException";
         public const string System_Collections = "System.Collections";
         public const string System_Collections_Generic = "System.Collections.Generic";
+        public const string System_Collections_Generic_EqualityComparer_T = "System.Collections.Generic.EqualityComparer`1";
         public const string System_Collections_Generic_IEnumerable_T = "System.Collections.Generic.IEnumerable`1";
         public const string System_Collections_Generic_List_T = "System.Collections.Generic.List`1";
         public const string System_Collections_IEnumerable = "System.Collections.IEnumerable";
