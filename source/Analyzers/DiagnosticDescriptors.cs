@@ -1576,5 +1576,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor ParameterNameDiffersFromBase = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ParameterNameDiffersFromBase,
+            title: "Parameter name differs from base name.",
+            messageFormat: "Parameter name '{0}' differs from base name '{1}'.",
+            category: DiagnosticCategories.Maintainability,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

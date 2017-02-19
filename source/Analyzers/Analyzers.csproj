@@ -81,6 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
+    <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />
     <Compile Include="Refactorings\OverrideInfo.cs" />
     <Compile Include="Refactorings\OverridingMemberCannotChangeAccessModifiersRefactoring.cs" />
