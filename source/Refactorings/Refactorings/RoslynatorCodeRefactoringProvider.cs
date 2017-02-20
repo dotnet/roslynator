@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                 await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #if DEBUG
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is OperationCanceledException))
             {
                 Debug.WriteLine(ex.ToString());
                 Debug.Assert(false, nameof(RoslynatorCodeRefactoringProvider));
