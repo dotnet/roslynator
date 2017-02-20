@@ -102,20 +102,11 @@ namespace Roslynator
             {
                 ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
 
-                if (symbol != null
-                    && !IsAnonymousTypeProperty(symbol))
-                {
+                if (symbol?.IsAnonymousTypeProperty() == false)
                     symbols.Add(symbol);
-                }
             }
 
             return symbols;
-        }
-
-        private static bool IsAnonymousTypeProperty(ISymbol symbol)
-        {
-            return symbol.IsProperty()
-                && symbol.ContainingType.IsAnonymousType;
         }
 
         public static async Task<string> EnsureUniqueParameterNameAsync(
