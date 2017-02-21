@@ -390,6 +390,12 @@ namespace Roslynator.Extensions
             return semanticModel.IsAccessible(position, symbol);
         }
 
+        internal static bool IsAnonymousTypeProperty(this ISymbol symbol)
+        {
+            return symbol.IsProperty()
+                && symbol.ContainingType.IsAnonymousType;
+        }
+
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
         {
             if (fieldSymbol == null)
