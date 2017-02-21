@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            foreach (TypeParameterSyntax typeParameter in UnusedSyntaxRefactoring.UnusedMethodTypeParameter.Analyze(methodDeclaration, context.SemanticModel, context.CancellationToken))
+            foreach (TypeParameterSyntax typeParameter in UnusedSyntaxRefactoring.UnusedMethodTypeParameter.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken))
                 ReportDiagnostic(context, typeParameter);
         }
 
