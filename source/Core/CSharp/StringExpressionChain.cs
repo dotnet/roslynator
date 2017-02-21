@@ -119,17 +119,17 @@ namespace Roslynator.CSharp
         }
 
         public static StringExpressionChain TryCreate(
-            SelectedExpressions selectedExpressions,
+            BinaryExpressionSpan binaryExpressionSpan,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            BinaryExpressionSyntax binaryExpression = selectedExpressions.BinaryExpression;
-            ImmutableArray<ExpressionSyntax> expressions = selectedExpressions.Expressions;
+            BinaryExpressionSyntax binaryExpression = binaryExpressionSpan.BinaryExpression;
+            ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSpan.SelectedExpressions;
 
             if (binaryExpression.IsKind(SyntaxKind.AddExpression)
                 && expressions.All(expression => IsStringExpression(expression, semanticModel, cancellationToken)))
             {
-                return new StringExpressionChain(binaryExpression, expressions, selectedExpressions.Span);
+                return new StringExpressionChain(binaryExpression, expressions, binaryExpressionSpan.Span);
             }
 
             return null;

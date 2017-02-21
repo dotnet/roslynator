@@ -264,10 +264,8 @@
     <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceWhileWithForRefactoring.cs" />
-    <Compile Include="SelectedExpressions.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortEnumMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortMemberDeclarationsRefactoring.cs" />
-    <Compile Include="StringExpressionChain.cs" />
     <Compile Include="Refactorings\StructDeclarationRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\MemberDeclarationRefactoring.cs" />

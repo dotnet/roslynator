@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
@@ -8,27 +9,37 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp
 {
-    internal class SelectedExpressions
+    internal struct BinaryExpressionSpan
     {
-        private SelectedExpressions(BinaryExpressionSyntax binaryExpression, List<ExpressionSyntax> expressions, TextSpan span)
+        private BinaryExpressionSpan(BinaryExpressionSyntax binaryExpression, ImmutableArray<ExpressionSyntax> selectedExpressions, TextSpan span)
         {
             BinaryExpression = binaryExpression;
-            Expressions = ImmutableArray.CreateRange(expressions);
+            SelectedExpressions = selectedExpressions;
             Span = span;
         }
 
         public BinaryExpressionSyntax BinaryExpression { get; }
-        public ImmutableArray<ExpressionSyntax> Expressions { get; }
+        public ImmutableArray<ExpressionSyntax> SelectedExpressions { get; }
         public TextSpan Span { get; }
 
-        public static SelectedExpressions TryCreate(BinaryExpressionSyntax binaryExpression, TextSpan span)
+        public override string ToString()
         {
+            return BinaryExpression
+                .ToFullString()
+                .Substring(Span.Start - BinaryExpression.FullSpan.Start, Span.Length);
+        }
+
+        public static BinaryExpressionSpan Create(BinaryExpressionSyntax binaryExpression, TextSpan span)
+        {
+            if (binaryExpression == null)
+                throw new ArgumentNullException(nameof(binaryExpression));
+
             List<ExpressionSyntax> expressions = GetExpressions(binaryExpression, span);
 
-            if (expressions != null)
-                return new SelectedExpressions(binaryExpression, expressions, span);
-
-            return null;
+            return new BinaryExpressionSpan(
+                binaryExpression,
+                (expressions != null) ? ImmutableArray.CreateRange(expressions) : ImmutableArray<ExpressionSyntax>.Empty,
+                span);
         }
 
         private static List<ExpressionSyntax> GetExpressions(BinaryExpressionSyntax binaryExpression, TextSpan span)
@@ -77,16 +88,6 @@ namespace Roslynator.CSharp
             }
 
             return null;
-        }
-
-        public string ExpressionsText
-        {
-            get
-            {
-                return BinaryExpression
-                    .ToFullString()
-                    .Substring(Span.Start - BinaryExpression.FullSpan.Start, Span.Length);
-            }
         }
     }
 }
