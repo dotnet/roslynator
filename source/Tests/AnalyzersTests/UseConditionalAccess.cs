@@ -36,6 +36,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
             if (dic != null && !dic[0].StartsWith("a"))
             {
             }
+
+            if (s != null && s.Substring(0) == null)
+            {
+            }
         }
     }
 }
