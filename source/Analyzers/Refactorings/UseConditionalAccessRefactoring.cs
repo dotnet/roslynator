@@ -58,7 +58,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax right = logicalAndExpression.Right;
 
-            if (right?.IsMissing == false)
+            if (right?.IsMissing == false
+                && !IsEqualToNullExpression(right))
             {
                 if (right.IsKind(SyntaxKind.LogicalNotExpression))
                     right = ((PrefixUnaryExpressionSyntax)right).Operand;
@@ -85,6 +86,12 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return null;
+        }
+
+        private static bool IsEqualToNullExpression(ExpressionSyntax expression)
+        {
+            return expression.IsKind(SyntaxKind.EqualsExpression)
+                && ((BinaryExpressionSyntax)expression).Right?.IsKind(SyntaxKind.NullLiteralExpression) == true;
         }
 
         public static async Task<Document> RefactorAsync(
