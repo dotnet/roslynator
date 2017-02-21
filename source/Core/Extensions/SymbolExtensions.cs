@@ -85,8 +85,8 @@ namespace Roslynator.Extensions
 
                     for (int j = 0; j < members.Length; j++)
                     {
-                        if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[i])))
-                            return members[i];
+                        if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[j])))
+                            return members[j];
                     }
                 }
             }
