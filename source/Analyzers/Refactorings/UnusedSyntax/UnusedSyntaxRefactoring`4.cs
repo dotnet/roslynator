@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -29,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 
         protected abstract string GetIdentifier(TSyntax syntax);
 
-        public IEnumerable<TSyntax> Analyze(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public ImmutableArray<TSyntax> FindUnusedSyntax(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             TListSyntax list = GetList(node);
 
@@ -37,38 +38,40 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             {
                 SeparatedSyntaxList<TSyntax> separatedList = GetSeparatedList(list);
 
-                if (separatedList.Any()
-                    && !node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                    && GetBody(node) != null
-                    && !GetModifiers(node).ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                if (separatedList.Any())
+                    return FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+            }
+
+            return ImmutableArray<TSyntax>.Empty;
+        }
+
+        protected virtual ImmutableArray<TSyntax> FindUnusedSyntax(
+            TNode node,
+            TListSyntax list,
+            SeparatedSyntaxList<TSyntax> separatedList,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            int count = separatedList.Count(f => !f.IsMissing);
+
+            if (count == 1)
+            {
+                TSyntax syntax = separatedList.First(f => !f.IsMissing);
+
+                if (!HasReference(node, list, syntax, semanticModel, cancellationToken)
+                    && !syntax.SpanContainsDirectives())
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
-
-                    if (symbol.FindImplementedInterfaceMember() == null)
-                    {
-                        int count = separatedList.Count(f => !f.IsMissing);
-
-                        if (count == 1)
-                        {
-                            TSyntax syntax = separatedList.First(f => !f.IsMissing);
-
-                            if (!HasReference(node, list, syntax, semanticModel, cancellationToken)
-                                && !syntax.SpanContainsDirectives())
-                            {
-                                yield return separatedList[0];
-                            }
-                        }
-                        else if (count > 1)
-                        {
-                            foreach (TSyntax syntax in FindSyntaxWithoutReference(node, list, separatedList, count, semanticModel, cancellationToken))
-                            {
-                                if (!syntax.SpanContainsDirectives())
-                                    yield return syntax;
-                            }
-                        }
-                    }
+                    return ImmutableArray.Create(separatedList[0]);
                 }
             }
+            else if (count > 1)
+            {
+                return FindSyntaxWithoutReference(node, list, separatedList, count, semanticModel, cancellationToken)
+                    .Where(f => !f.SpanContainsDirectives())
+                    .ToImmutableArray();
+            }
+
+            return ImmutableArray<TSyntax>.Empty;
         }
 
         private bool HasReference(

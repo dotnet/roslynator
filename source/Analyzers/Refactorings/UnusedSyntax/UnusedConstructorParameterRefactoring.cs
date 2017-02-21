@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,6 +11,23 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
     internal class UnusedConstructorParameterRefactoring : UnusedSyntaxRefactoring<ConstructorDeclarationSyntax, ParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
+        protected override ImmutableArray<ParameterSyntax> FindUnusedSyntax(
+            ConstructorDeclarationSyntax node,
+            ParameterListSyntax list,
+            SeparatedSyntaxList<ParameterSyntax> separatedList,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (GetBody(node) != null)
+            {
+                return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+            }
+            else
+            {
+                return ImmutableArray<ParameterSyntax>.Empty;
+            }
+        }
+
         protected override CSharpSyntaxNode GetBody(ConstructorDeclarationSyntax node)
         {
             return node.BodyOrExpressionBody();

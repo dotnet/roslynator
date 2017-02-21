@@ -94,6 +94,11 @@ namespace Roslynator.Extensions
             return default(ISymbol);
         }
 
+        internal static bool ImplementsInterfaceMember(this ISymbol symbol)
+        {
+            return FindImplementedInterfaceMember(symbol) != null;
+        }
+
         public static TSymbol FindImplementedInterfaceMember<TSymbol>(this ISymbol symbol) where TSymbol : ISymbol
         {
             if (symbol == null)
@@ -123,6 +128,13 @@ namespace Roslynator.Extensions
             }
 
             return default(TSymbol);
+        }
+
+        internal static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol) where TSymbol : ISymbol
+        {
+            return !EqualityComparer<TSymbol>.Default.Equals(
+                FindImplementedInterfaceMember<TSymbol>(symbol),
+                default(TSymbol));
         }
 
         public static bool IsNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)

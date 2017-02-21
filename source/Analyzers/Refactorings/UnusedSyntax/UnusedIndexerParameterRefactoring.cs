@@ -1,13 +1,37 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
     internal class UnusedIndexerParameterRefactoring : UnusedSyntaxRefactoring<IndexerDeclarationSyntax, BracketedParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
+        protected override ImmutableArray<ParameterSyntax> FindUnusedSyntax(
+            IndexerDeclarationSyntax node,
+            BracketedParameterListSyntax list,
+            SeparatedSyntaxList<ParameterSyntax> separatedList,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (!node.IsParentKind(SyntaxKind.InterfaceDeclaration)
+                && GetBody(node) != null
+                && !GetModifiers(node).ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword)
+                && semanticModel.GetDeclaredSymbol(node, cancellationToken)?.ImplementsInterfaceMember() == false)
+            {
+                return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+            }
+            else
+            {
+                return ImmutableArray<ParameterSyntax>.Empty;
+            }
+        }
+
         protected override CSharpSyntaxNode GetBody(IndexerDeclarationSyntax node)
         {
             return node.AccessorList;
