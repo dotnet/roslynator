@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -22,12 +21,6 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (invocation == null)
-                throw new ArgumentNullException(nameof(invocation));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
             if (invocation.Expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
                 && invocation.ArgumentList?.Arguments.Count == 1)
             {
@@ -57,37 +50,54 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (invocation == null)
-                throw new ArgumentNullException(nameof(invocation));
-
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression,
                     invocation.ArgumentList.Arguments[0].Expression));
 
-            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
-            {
-                ExpressionSyntax newNode = EqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
-                    .WithTriviaFrom(invocation.Parent)
-                    .Parenthesize(moveTrivia: true)
-                    .WithSimplifierAnnotation()
-                    .WithFormatterAnnotation();
+            var binaryExpressionKind = SyntaxKind.NotEqualsExpression;
+            SyntaxNode nodeToReplace = invocation;
 
-                return await document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                ExpressionSyntax newNode = NotEqualsExpression(parenthesizedExpression, ZeroLiteralExpression())
-                    .WithTriviaFrom(invocation)
-                    .Parenthesize(moveTrivia: true)
-                    .WithSimplifierAnnotation()
-                    .WithFormatterAnnotation();
+            SyntaxNode parent = invocation.Parent;
 
-                return await document.ReplaceNodeAsync(invocation, newNode, cancellationToken).ConfigureAwait(false);
+            if (!parent.SpanContainsDirectives())
+            {
+                SyntaxKind parentKind = parent.Kind();
+
+                if (parentKind == SyntaxKind.LogicalNotExpression)
+                {
+                    binaryExpressionKind = SyntaxKind.EqualsExpression;
+                    nodeToReplace = parent;
+                }
+                else if (parentKind == SyntaxKind.EqualsExpression)
+                {
+                    ExpressionSyntax right = ((BinaryExpressionSyntax)parent).Right;
+
+                    if (right != null)
+                    {
+                        SyntaxKind rightKind = right.Kind();
+
+                        if (rightKind == SyntaxKind.TrueLiteralExpression)
+                        {
+                            binaryExpressionKind = SyntaxKind.NotEqualsExpression;
+                            nodeToReplace = parent;
+                        }
+                        else if (rightKind == SyntaxKind.FalseLiteralExpression)
+                        {
+                            binaryExpressionKind = SyntaxKind.EqualsExpression;
+                            nodeToReplace = parent;
+                        }
+                    }
+                }
             }
+
+            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, ZeroLiteralExpression())
+                .WithTriviaFrom(nodeToReplace)
+                .Parenthesize(moveTrivia: true)
+                .WithSimplifierAnnotation()
+                .WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

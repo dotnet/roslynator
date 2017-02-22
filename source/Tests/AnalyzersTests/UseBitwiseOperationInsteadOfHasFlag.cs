@@ -2,6 +2,8 @@
 
 using System.Text.RegularExpressions;
 
+#pragma warning disable RCS1023, RCS1033, RCS1049
+
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     internal class UseBitwiseOperationInsteadOfHasFlag
@@ -10,15 +12,15 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
             RegexOptions options = RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase;
 
-            if (options.HasFlag(RegexOptions.IgnoreCase))
-            {
-            }
+            if (options.HasFlag(RegexOptions.IgnoreCase)) { }
 
-            if (!options.HasFlag(RegexOptions.IgnoreCase))
-            {
-            }
+            if (!options.HasFlag(RegexOptions.IgnoreCase)) { }
 
-            bool hasFlag = Options.HasFlag(RegexOptions.IgnoreCase).Equals(true);
+            if (options.HasFlag(RegexOptions.IgnoreCase) == true) { }
+
+            if (options.HasFlag(RegexOptions.IgnoreCase) == false) { }
+
+            if ( /**/ Options.HasFlag(RegexOptions.IgnoreCase /**/ ).Equals(true)) { }
         }
 
         public RegexOptions Options { get; }
