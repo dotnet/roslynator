@@ -26,6 +26,22 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 FooMethod();
             }
 
+            public void MethodWithLocalFunction()
+            {
+                object LocalFunction()
+                {
+                    return null;
+                }
+            }
+
+            public void MethodWithVoidLocalFunction()
+            {
+                void LocalFunction()
+                {
+                    LocalFunction();
+                }
+            }
+
             public string FooProperty
             {
                 get { return string.Empty; }

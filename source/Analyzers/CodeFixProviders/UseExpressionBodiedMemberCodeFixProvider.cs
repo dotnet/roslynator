@@ -53,6 +53,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 case SyntaxKind.IndexerDeclaration:
                 case SyntaxKind.ConstructorDeclaration:
                 case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                     return true;

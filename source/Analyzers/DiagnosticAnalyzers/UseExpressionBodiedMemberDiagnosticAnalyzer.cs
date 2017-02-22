@@ -44,6 +44,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeDestructorDeclaration, SyntaxKind.DestructorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeLocalFunctionStatement, SyntaxKind.LocalFunctionStatement);
             context.RegisterSyntaxNodeAction(AnalyzeAccessorDeclaration, SyntaxKind.GetAccessorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeAccessorDeclaration, SyntaxKind.SetAccessorDeclaration);
         }
@@ -101,6 +102,21 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (declaration.ExpressionBody == null)
             {
                 BlockSyntax body = declaration.Body;
+
+                ExpressionSyntax expression = UseExpressionBodiedMemberRefactoring.GetExpression(body);
+
+                if (expression != null)
+                    AnalyzeExpression(context, body, expression);
+            }
+        }
+
+        private void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        {
+            var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
+
+            if (localFunctionStatement.ExpressionBody == null)
+            {
+                BlockSyntax body = localFunctionStatement.Body;
 
                 ExpressionSyntax expression = UseExpressionBodiedMemberRefactoring.GetExpression(body);
 

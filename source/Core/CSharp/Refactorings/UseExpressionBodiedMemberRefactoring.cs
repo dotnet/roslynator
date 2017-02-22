@@ -42,6 +42,15 @@ namespace Roslynator.CSharp.Refactorings
                 && GetExpression(declaration.Body) != null;
         }
 
+        public static bool CanRefactor(LocalFunctionStatementSyntax localFunctionStatement)
+        {
+            if (localFunctionStatement == null)
+                throw new ArgumentNullException(nameof(localFunctionStatement));
+
+            return localFunctionStatement.ExpressionBody == null
+                && GetExpression(localFunctionStatement.Body) != null;
+        }
+
         public static bool CanRefactor(OperatorDeclarationSyntax declaration)
         {
             if (declaration == null)
@@ -202,6 +211,16 @@ namespace Roslynator.CSharp.Refactorings
                         ExpressionSyntax expression = GetExpression(destructorDeclaration.Body);
 
                         return destructorDeclaration
+                            .WithExpressionBody(ArrowExpressionClause(expression))
+                            .WithBody(null)
+                            .WithSemicolonToken(SemicolonToken());
+                    }
+                case SyntaxKind.LocalFunctionStatement:
+                    {
+                        var local = (LocalFunctionStatementSyntax)node;
+                        ExpressionSyntax expression = GetExpression(local.Body);
+
+                        return local
                             .WithExpressionBody(ArrowExpressionClause(expression))
                             .WithBody(null)
                             .WithSemicolonToken(SemicolonToken());
