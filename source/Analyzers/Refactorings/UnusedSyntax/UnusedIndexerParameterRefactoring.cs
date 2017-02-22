@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 
         protected override CSharpSyntaxNode GetBody(IndexerDeclarationSyntax node)
         {
-            return node.AccessorList;
+            return (CSharpSyntaxNode)node.AccessorList ?? node.ExpressionBody;
         }
 
         protected override string GetIdentifier(ParameterSyntax syntax)

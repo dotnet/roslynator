@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-#pragma warning disable RCS1100, RCS1016, CS0168
+#pragma warning disable RCS1100, RCS1016, RCS1023, CS0168
     public static class UnusedParameter
     {
         private interface IFoo
@@ -15,13 +15,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
         private abstract class Foo : IFoo
         {
-            public void Bar(object parameter)
-            {
-            }
+            public void Bar(object parameter) { }
 
-            public virtual void Bar2(object parameter)
-            {
-            }
+            public virtual void Bar2(object parameter) { }
 
             public abstract void Bar3(object parameter);
 
@@ -36,52 +32,37 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             protected Foo(object parameter)
             {
-                object LocalFunction(object value)
-                {
-                    return null;
-                }
+                object LocalFunction(object value) => null;
             }
 
-            public string this[int index]
-            {
-                get { return ""; }
-            }
+            public string this[int index] => "";
 
-            public void Bar5(object parameter)
-            {
-            }
+            public void Bar5(object parameter) { }
 
-            public object Bar6(object parameter1, object parameter2)
-            {
-                return parameter2;
-            }
+            public object Bar6(object parameter1, object parameter2) => parameter2;
 
             /// <summary>
             /// ...
             /// </summary>
             /// <param name="parameter1"></param>
             /// <param name="parameter2"></param>
-            public void Bar7(object parameter1, object parameter2)
-            {
-            }
+            public void Bar7(object parameter1, object parameter2) { }
         }
 
         private partial class Foo2 : Foo
         {
-            public Foo2(object parameter)
-                : base(parameter)
-            {
-            }
+            public Foo2(object parameter) : base(parameter) { }
 
-            public override void Bar2(object parameter)
-            {
-            }
+            public override void Bar2(object parameter) { }
 
-            public override void Bar3(object parameter)
-            {
-            }
+            public override void Bar3(object parameter) { }
 
             partial void BarPartial<T>();
+
+            private void MethodGroup(object parameter)
+            {
+                Action<object> action = MethodGroup;
+            }
         }
 
         private partial class Foo2 : Foo
