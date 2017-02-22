@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
-            foreach (ParameterSyntax parameter in UnusedSyntaxRefactoring.UnusedConstructorParameter.FindUnusedSyntax(constructorDeclaration, context.SemanticModel, context.CancellationToken))
+            foreach (ParameterSyntax parameter in UnusedConstructorParameterRefactoring.Instance.FindUnusedSyntax(constructorDeclaration, context.SemanticModel, context.CancellationToken))
                 ReportDiagnostic(context, parameter);
         }
 
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            foreach (ParameterSyntax parameter in UnusedSyntaxRefactoring.UnusedMethodParameter.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken))
+            foreach (ParameterSyntax parameter in UnusedMethodParameterRefactoring.Instance.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken))
                 ReportDiagnostic(context, parameter);
         }
 
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            foreach (ParameterSyntax parameter in UnusedSyntaxRefactoring.UnusedIndexerParameter.FindUnusedSyntax(indexerDeclaration, context.SemanticModel, context.CancellationToken))
+            foreach (ParameterSyntax parameter in UnusedIndexerParameterRefactoring.Instance.FindUnusedSyntax(indexerDeclaration, context.SemanticModel, context.CancellationToken))
                 ReportDiagnostic(context, parameter);
         }
 
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
 
-            foreach (ParameterSyntax parameter in UnusedSyntaxRefactoring.UnusedLocalFunctionParameter.FindUnusedSyntax(localFunctionStatement, context.SemanticModel, context.CancellationToken))
+            foreach (ParameterSyntax parameter in UnusedLocalFunctionParameterRefactoring.Instance.FindUnusedSyntax(localFunctionStatement, context.SemanticModel, context.CancellationToken))
                 ReportDiagnostic(context, parameter);
         }
 

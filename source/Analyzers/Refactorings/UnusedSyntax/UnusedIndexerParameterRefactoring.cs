@@ -12,6 +12,12 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
     internal class UnusedIndexerParameterRefactoring : UnusedSyntaxRefactoring<IndexerDeclarationSyntax, BracketedParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
+        private UnusedIndexerParameterRefactoring()
+        {
+        }
+
+        public static UnusedIndexerParameterRefactoring Instance { get; } = new UnusedIndexerParameterRefactoring();
+
         protected override ImmutableArray<ParameterSyntax> FindUnusedSyntax(
             IndexerDeclarationSyntax node,
             BracketedParameterListSyntax list,

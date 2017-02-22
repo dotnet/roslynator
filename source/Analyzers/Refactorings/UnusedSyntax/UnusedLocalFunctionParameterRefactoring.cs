@@ -11,6 +11,12 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
     internal class UnusedLocalFunctionParameterRefactoring : UnusedSyntaxRefactoring<LocalFunctionStatementSyntax, ParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
+        private UnusedLocalFunctionParameterRefactoring()
+        {
+        }
+
+        public static UnusedLocalFunctionParameterRefactoring Instance { get; } = new UnusedLocalFunctionParameterRefactoring();
+
         protected override ImmutableArray<ParameterSyntax> FindUnusedSyntax(
             LocalFunctionStatementSyntax node,
             ParameterListSyntax list,

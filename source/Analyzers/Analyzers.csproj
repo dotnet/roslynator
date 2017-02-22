@@ -89,7 +89,6 @@
     <Compile Include="Refactorings\UnusedSyntax\UnusedLocalFunctionParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedLocalFunctionTypeParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedMethodParameterRefactoring.cs" />
-    <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring`4.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedMethodTypeParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\SyntaxInfo.cs" />
