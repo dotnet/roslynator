@@ -36,7 +36,7 @@ namespace CodeGenerator
 
             var optionsPagePropertiesGenerator = new OptionsPagePropertiesGenerator();
             writer.SaveCode(
-                 Path.Combine(dirPath, @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs"),
+                 Path.Combine(dirPath, @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs"),
                 optionsPagePropertiesGenerator.Generate(refactorings));
 
 #if DEBUG

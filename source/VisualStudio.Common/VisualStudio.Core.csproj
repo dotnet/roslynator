@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Roslynator.VisualStudio</RootNamespace>
-    <AssemblyName>Roslynator.VisualStudio.Common</AssemblyName>
+    <AssemblyName>Roslynator.VisualStudio.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Roslynator.VisualStudio.Common.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Roslynator.VisualStudio.Core.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -114,7 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Roslynator.VisualStudio.Common.snk" />
+    <None Include="Roslynator.VisualStudio.Core.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Refactorings\Refactorings.csproj">
