@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
 		..\ChangeLog.md = ..\ChangeLog.md
 		global.ruleset = global.ruleset
