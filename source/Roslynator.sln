@@ -38,14 +38,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugRoslynatorRefactorings
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snippets", "Tools\Snippets\Snippets.csproj", "{1429B734-120B-455C-9FB5-0CC33A45E93D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Text", "Text", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
 		..\ChangeLog.md = ..\ChangeLog.md
+		global.ruleset = global.ruleset
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md
 		..\text\ReadMe.txt = ..\text\ReadMe.txt
 		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
-		global.ruleset = global.ruleset
 		..\text\RoslynatorDescription.txt = ..\text\RoslynatorDescription.txt
 		..\text\RoslynatorRefactoringsDescription.txt = ..\text\RoslynatorRefactoringsDescription.txt
 		..\text\ToBeReleased.txt = ..\text\ToBeReleased.txt
@@ -127,12 +127,6 @@ Global
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.DebugRoslynatorRefactorings|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugInternalAnalyzers|Any CPU.ActiveCfg = Debug|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynator|Any CPU.ActiveCfg = Debug|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynatorRefactorings|Any CPU.ActiveCfg = Debug|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynatorRefactorings|Any CPU.Build.0 = Debug|Any CPU
-		{59C2BA93-6077-4F00-8F36-6A256E983C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753}.DebugInternalAnalyzers|Any CPU.ActiveCfg = Debug|Any CPU
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753}.DebugInternalAnalyzers|Any CPU.Build.0 = Debug|Any CPU
@@ -156,6 +150,12 @@ Global
 		{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}.DebugRoslynator|Any CPU.Build.0 = Debug|Any CPU
 		{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}.DebugRoslynatorRefactorings|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD9BE5D0-85C6-44D5-9A55-C801E00DB848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugInternalAnalyzers|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynator|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynatorRefactorings|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.DebugRoslynatorRefactorings|Any CPU.Build.0 = Debug|Any CPU
+		{59C2BA93-6077-4F00-8F36-6A256E983C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1429B734-120B-455C-9FB5-0CC33A45E93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1429B734-120B-455C-9FB5-0CC33A45E93D}.DebugInternalAnalyzers|Any CPU.ActiveCfg = Debug|Any CPU
 		{1429B734-120B-455C-9FB5-0CC33A45E93D}.DebugRoslynator|Any CPU.ActiveCfg = Debug|Any CPU
@@ -173,11 +173,11 @@ Global
 		{4AD2A192-847E-4942-8A72-D99C5602D5A7} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 		{2E6353C2-03AC-4DD3-8D2D-035DFFEC3BB5} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
-		{59C2BA93-6077-4F00-8F36-6A256E983C25} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{1DB4A125-FBF8-4728-ABF5-37B9DF355753} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{63A791CC-BD7C-4608-A4D9-9379B0C42F38} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{7F6F6533-E406-4225-A435-DEE22C717F48} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{AD9BE5D0-85C6-44D5-9A55-C801E00DB848} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
+		{59C2BA93-6077-4F00-8F36-6A256E983C25} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{1429B734-120B-455C-9FB5-0CC33A45E93D} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 	EndGlobalSection
 EndGlobal
