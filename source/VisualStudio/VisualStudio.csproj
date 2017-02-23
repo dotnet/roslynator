@@ -183,9 +183,9 @@
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
-    <ProjectReference Include="..\VisualStudio.Common\VisualStudio.Common.csproj">
+    <ProjectReference Include="..\VisualStudio.Core\VisualStudio.Core.csproj">
       <Project>{4ad2a192-847e-4942-8a72-d99c5602d5a7}</Project>
-      <Name>VisualStudio.Common</Name>
+      <Name>VisualStudio.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
