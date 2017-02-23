@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cleaner", "Tools\Cleaner\Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "Tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Core", "VisualStudio.Common\VisualStudio.Core.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Core", "VisualStudio.Core\VisualStudio.Core.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio", "VisualStudio\VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
 EndProject
