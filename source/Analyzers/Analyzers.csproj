@@ -215,7 +215,6 @@
     <Compile Include="Refactorings\RemoveOriginalExceptionFromThrowStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemovePartialModifierFromTypeWithSinglePartRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBaseConstructorCallRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveRedundantBracesRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantCommaInInitializerRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantConstructorRefactoring.cs" />
@@ -323,7 +322,6 @@
     <Compile Include="CodeFixProviders\ImplicitArrayCreationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParenthesizedLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEmptyInitializerCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\RemoveRedundantBracesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemovePartialModifierFromTypeWithSinglePartCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveTriviaCodeFixProvider.cs" />

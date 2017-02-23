@@ -286,17 +286,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantBraces = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveRedundantBraces,
-            title: "Remove redundant braces.",
-            messageFormat: "Remove redundant braces.",
-            category: DiagnosticCategories.Redundancy,
-            defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor RemoveRedundantBracesFadeOut = RemoveRedundantBraces.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor RemoveRedundantParentheses = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantParentheses,
             title: "Remove redundant parentheses.",

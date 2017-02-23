@@ -36,7 +36,7 @@ namespace Roslynator.CSharp
         public const string FormatSwitchSectionStatementOnSeparateLine = Prefix + "1028";
         public const string FormatBinaryOperatorOnNextLine = Prefix + "1029";
         public const string AddEmptyLineAfterEmbeddedStatement = Prefix + "1030";
-        public const string RemoveRedundantBraces = Prefix + "1031";
+        //public const string RemoveRedundantBraces = Prefix + "1031";
         public const string RemoveRedundantParentheses = Prefix + "1032";
         public const string RemoveRedundantBooleanLiteral = Prefix + "1033";
         public const string RemoveRedundantSealedModifier = Prefix + "1034";
