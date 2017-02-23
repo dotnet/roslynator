@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Extensions
@@ -406,6 +407,21 @@ namespace Roslynator.Extensions
         {
             return symbol.IsProperty()
                 && symbol.ContainingType.IsAnonymousType;
+        }
+
+        internal static SyntaxNode GetFirstSyntax(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return symbol
+                .DeclaringSyntaxReferences[0]
+                .GetSyntax(cancellationToken);
+        }
+
+        internal static SyntaxNode GetFirstSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return symbol
+                .DeclaringSyntaxReferences
+                .FirstOrDefault()?
+                .GetSyntax(cancellationToken);
         }
 
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)

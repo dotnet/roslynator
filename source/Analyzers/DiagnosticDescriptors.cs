@@ -1574,5 +1574,24 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MarkFieldAsReadOnly = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkFieldAsReadOnly,
+            title: "Mark field as read-only.",
+            messageFormat: "Mark field as read-only.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseReadOnlyAutoProperty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseReadOnlyAutoProperty,
+            title: "Use read-only auto-implemented property.",
+            messageFormat: "Use read-only auto-implemented property.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

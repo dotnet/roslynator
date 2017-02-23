@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Refactorings.MakeMemberReadOnly;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -35,7 +36,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
                     DiagnosticIdentifiers.ReorderModifiers,
-                    DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers);
+                    DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers,
+                    DiagnosticIdentifiers.MarkFieldAsReadOnly,
+                    DiagnosticIdentifiers.UseReadOnlyAutoProperty);
             }
         }
 
@@ -226,6 +229,34 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 title,
                                 cancellationToken => OverridingMemberCannotChangeAccessModifiersRefactoring.RefactorAsync(context.Document, memberDeclaration, overrideInfo, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MarkFieldAsReadOnly:
+                        {
+                            var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
+
+                            SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
+
+                            string title = (declarators.Count == 1)
+                                ? $"Mark '{declarators[0].Identifier.ValueText}' as read-only"
+                                : "Mark fields as read-only";
+
+                            CodeAction codeAction = CodeAction.Create(
+                                title,
+                                cancellationToken => MarkFieldAsReadOnlyRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseReadOnlyAutoProperty:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use read-only auto-property",
+                                cancellationToken => UseReadOnlyAutoPropertyRefactoring.RefactorAsync(context.Document, (PropertyDeclarationSyntax)memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
