@@ -1,3 +1,16 @@
+### 1.2.15 (2017-02-23)
+
+#### Analyzers
+
+##### Changes
+
+* Analyzer RemoveRedundantBraces was deleted.
+
+##### New Analyzers
+
+* MarkFieldAsReadOnly
+* UseReadOnlyAutoProperty
+
 ### 1.2.14 (2017-02-19)
 
 #### Analyzers
