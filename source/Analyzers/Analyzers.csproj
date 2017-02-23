@@ -85,7 +85,6 @@
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedIndexerParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedMethodParameterRefactoring.cs" />
-    <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedSyntaxRefactoring`4.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedMethodTypeParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\SyntaxInfo.cs" />
