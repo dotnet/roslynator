@@ -31,7 +31,6 @@ RCS1027|Format embedded statement on a separate line|Formatting|
 RCS1028|Format switch section's statement on a separate line|Formatting|
 RCS1029|Format binary operator on next line|Formatting|x
 RCS1030|Add empty line after embedded statement|Formatting|
-RCS1031|Remove redundant braces|Redundancy|x
 RCS1032|Remove redundant parentheses|Redundancy|x
 RCS1033|Remove redundant boolean literal|Redundancy|x
 RCS1034|Remove redundant sealed modifier|Redundancy|x
@@ -168,3 +167,5 @@ RCS1165|Unconstrained type parameter checked for null|Usage|x
 RCS1166|Value type checked for null|Usage|x
 RCS1167|Overriding member cannot change access modifiers|ErrorFix|x
 RCS1168|Parameter name differs from base name|Maintainability|x
+RCS1169|Mark field as read\-only|Design|x
+RCS1170|Use read\-only auto\-implemented property|Design|x
