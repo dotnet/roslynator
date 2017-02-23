@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,8 +26,14 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            foreach (ParameterSyntax parameter in UnusedMethodParameterRefactoring.Instance.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken))
-                ReportDiagnostic(context, parameter);
+            ImmutableArray<ParameterSyntax> unusedParameters = UnusedMethodParameterRefactoring.Instance.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken);
+
+            if (unusedParameters.Any()
+                && !UnusedMethodParameterRefactoring.IsReferencedAsMethodGroup(methodDeclaration, context.SemanticModel, context.CancellationToken))
+            {
+                foreach (ParameterSyntax parameter in unusedParameters)
+                    ReportDiagnostic(context, parameter);
+            }
         }
 
         public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
