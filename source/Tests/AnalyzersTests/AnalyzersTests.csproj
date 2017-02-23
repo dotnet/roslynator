@@ -65,9 +65,11 @@
     <Compile Include="AvoidEmbeddedStatementInIfElse.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
+    <Compile Include="MarkFieldAsReadOnly.cs" />
     <Compile Include="UnusedParameter.cs" />
     <Compile Include="ParameterNameDiffersFromBase.cs" />
     <Compile Include="OverridingMethodCannotChangeAccessModifiers.cs" />
+    <Compile Include="UseReadOnlyAutoProperty.cs" />
     <Compile Include="ValueTypeCheckedForNull.cs" />
     <Compile Include="NullCheckOfUnconstrainedTypeParameter.cs" />
     <Compile Include="SimplifyCoalesceExpression.cs" />
