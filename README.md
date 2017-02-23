@@ -61,7 +61,6 @@
 * RCS1028 - Format switch section's statement on a separate line
 * RCS1029 - Format binary operator on next line
 * RCS1030 - Add empty line after embedded statement
-* RCS1031 - Remove redundant braces
 * RCS1032 - Remove redundant parentheses
 * RCS1033 - Remove redundant boolean literal
 * RCS1034 - Remove redundant sealed modifier
@@ -198,6 +197,8 @@
 * RCS1166 - Value type checked for null
 * RCS1167 - Overriding member cannot change access modifiers
 * RCS1168 - Parameter name differs from base name
+* RCS1169 - Mark field as read\-only
+* RCS1170 - Use read\-only auto\-implemented property
 
 ### List of Refactorings
 

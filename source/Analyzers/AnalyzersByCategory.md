@@ -11,6 +11,8 @@ Design|Composite enum value contains undefined flag|RCS1157|x
 Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
+Design|Mark field as read\-only|RCS1169|x
+Design|Use read\-only auto\-implemented property|RCS1170|x
 ErrorFix|Add break statement to switch section|RCS1116|x
 ErrorFix|Add missing semicolon|RCS1122|
 ErrorFix|Add return statement that returns default value|RCS1117|x
@@ -97,7 +99,6 @@ Redundancy|Remove partial modifier from type with a single part|RCS1043|x
 Redundancy|Remove redundant 'as' operator|RCS1145|x
 Redundancy|Remove redundant base constructor call|RCS1071|x
 Redundancy|Remove redundant boolean literal|RCS1033|x
-Redundancy|Remove redundant braces|RCS1031|x
 Redundancy|Remove redundant cast|RCS1151|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
 Redundancy|Remove redundant constructor|RCS1074|x

@@ -261,15 +261,6 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
-    <Id>RCS1031</Id>
-    <Title>Remove redundant braces.</Title>
-    <Category>Redundancy</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="RemoveRedundantParentheses" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
     <Id>RCS1032</Id>
     <Title>Remove redundant parentheses.</Title>
@@ -1492,6 +1483,24 @@
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="MarkFieldAsReadOnly" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1169</Id>
+    <Title>Mark field as read-only.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseReadOnlyAutoProperty" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1170</Id>
+    <Title>Use read-only auto-implemented property.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
 </Analyzers>
