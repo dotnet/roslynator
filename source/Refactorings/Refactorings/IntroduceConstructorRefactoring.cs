@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (!symbol.IsStatic
+            if (symbol?.IsStatic == false
                 && symbol.IsField())
             {
                 return symbol;
