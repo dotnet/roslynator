@@ -49,7 +49,8 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (newType?.IsErrorType() == false
                                             && !memberTypeSymbol.Equals(newType)
-                                            && !memberSymbol.IsOverride)
+                                            && !memberSymbol.IsOverride
+                                            && !memberSymbol.ImplementsInterfaceMember())
                                         {
                                             if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
                                             {

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -43,6 +44,35 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public int GetValues4()
         {
             yield break;
+        }
+
+        private interface IInterfaceName
+        {
+            string MethodName();
+        }
+
+        private class ClassName : IInterfaceName
+        {
+            public string MethodName()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class Base
+        {
+            public virtual string MethodName()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class Derived : Base
+        {
+            public override string MethodName()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
