@@ -191,13 +191,11 @@ namespace Roslynator.Extensions
             } while (@namespace != null);
         }
 
-        [DebuggerStepThrough]
         public static bool IsKind(this ISymbol symbol, SymbolKind kind)
         {
             return symbol?.Kind == kind;
         }
 
-        [DebuggerStepThrough]
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2)
         {
             if (symbol == null)
@@ -209,7 +207,6 @@ namespace Roslynator.Extensions
                 || kind == kind2;
         }
 
-        [DebuggerStepThrough]
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
         {
             if (symbol == null)
@@ -222,97 +219,81 @@ namespace Roslynator.Extensions
                 || kind == kind3;
         }
 
-        [DebuggerStepThrough]
         public static bool IsPublic(this ISymbol symbol)
         {
             return symbol?.DeclaredAccessibility == Accessibility.Public;
         }
 
-        [DebuggerStepThrough]
         public static bool IsInternal(this ISymbol symbol)
         {
             return symbol?.DeclaredAccessibility == Accessibility.Internal;
         }
 
-        [DebuggerStepThrough]
         public static bool IsProtected(this ISymbol symbol)
         {
             return symbol?.DeclaredAccessibility == Accessibility.Protected;
         }
 
-        [DebuggerStepThrough]
         public static bool IsPrivate(this ISymbol symbol)
         {
             return symbol?.DeclaredAccessibility == Accessibility.Private;
         }
 
-        [DebuggerStepThrough]
         public static bool IsArrayType(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.ArrayType;
         }
 
-        [DebuggerStepThrough]
         public static bool IsDynamicType(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.DynamicType;
         }
 
-        [DebuggerStepThrough]
         public static bool IsErrorType(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.ErrorType;
         }
 
-        [DebuggerStepThrough]
         public static bool IsEvent(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Event;
         }
 
-        [DebuggerStepThrough]
         public static bool IsField(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Field;
         }
 
-        [DebuggerStepThrough]
         public static bool IsLocal(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Local;
         }
 
-        [DebuggerStepThrough]
         public static bool IsMethod(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Method;
         }
 
-        [DebuggerStepThrough]
         public static bool IsNamedType(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.NamedType;
         }
 
-        [DebuggerStepThrough]
         public static bool IsNamespace(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Namespace;
         }
 
-        [DebuggerStepThrough]
         public static bool IsParameter(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Parameter;
         }
 
-        [DebuggerStepThrough]
         public static bool IsProperty(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Property;
         }
 
-        [DebuggerStepThrough]
         public static bool IsTypeParameter(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.TypeParameter;
@@ -552,37 +533,31 @@ namespace Roslynator.Extensions
             return false;
         }
 
-        [DebuggerStepThrough]
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Void;
         }
 
-        [DebuggerStepThrough]
         public static bool IsInt32(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Int32;
         }
 
-        [DebuggerStepThrough]
         public static bool IsBoolean(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Boolean;
         }
 
-        [DebuggerStepThrough]
         public static bool IsString(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_String;
         }
 
-        [DebuggerStepThrough]
         public static bool IsObject(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Object;
         }
 
-        [DebuggerStepThrough]
         public static bool IsChar(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Char;
@@ -632,31 +607,26 @@ namespace Roslynator.Extensions
             return false;
         }
 
-        [DebuggerStepThrough]
         public static bool IsClass(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Class;
         }
 
-        [DebuggerStepThrough]
         public static bool IsInterface(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Interface;
         }
 
-        [DebuggerStepThrough]
         public static bool IsStruct(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Struct;
         }
 
-        [DebuggerStepThrough]
         public static bool IsEnum(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Enum;
         }
 
-        [DebuggerStepThrough]
         public static bool IsDelegate(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Delegate;
@@ -912,13 +882,11 @@ namespace Roslynator.Extensions
                 || InheritsFrom(type, baseType, includeInterfaces);
         }
 
-        [DebuggerStepThrough]
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind)
         {
             return typeSymbol?.TypeKind == typeKind;
         }
 
-        [DebuggerStepThrough]
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind1, TypeKind typeKind2)
         {
             if (typeSymbol == null)
@@ -930,7 +898,6 @@ namespace Roslynator.Extensions
                 || typeKind == typeKind2;
         }
 
-        [DebuggerStepThrough]
         public static bool IsTypeKind(this ITypeSymbol typeSymbol, TypeKind typeKind1, TypeKind typeKind2, TypeKind typeKind3)
         {
             if (typeSymbol == null)
