@@ -91,12 +91,12 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    string oldName = identifier.ValueText;
-
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                     if (typeSymbol?.IsErrorType() == false)
                     {
+                        string oldName = identifier.ValueText;
+
                         string newName = Identifier.CreateName(
                             typeSymbol,
                             firstCharToLower: true);
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                             context.RegisterRefactoring(
-                                $"Rename local to '{newName}'",
+                                $"Rename '{oldName}' to '{newName}'",
                                 cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                         }
                     }

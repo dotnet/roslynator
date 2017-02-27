@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (isUnique)
                                 {
                                     context.RegisterRefactoring(
-                                        $"Rename field to '{newName}'",
+                                        $"Rename '{fieldSymbol.Name}' to '{newName}'",
                                         cancellationToken => Renamer.RenameSymbolAsync(context.Document, fieldSymbol, newName, cancellationToken));
                                 }
                             }

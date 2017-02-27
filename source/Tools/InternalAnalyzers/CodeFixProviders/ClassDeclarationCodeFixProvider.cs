@@ -65,10 +65,11 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
-            string newName = classDeclaration.Identifier.ValueText + GetSuffix(diagnostic);
+            string oldName = classDeclaration.Identifier.ValueText;
+            string newName = oldName + GetSuffix(diagnostic);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Rename class to '{newName}'",
+                $"Rename '{oldName}' to '{newName}'",
                 cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken),
                 DiagnosticIdentifiers.AddCodeFixProviderSuffix);
 

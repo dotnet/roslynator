@@ -60,16 +60,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                     {
                         case DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync:
                             {
-                                string newName = methodDeclaration.Identifier.ValueText;
+                                string oldName = methodDeclaration.Identifier.ValueText;
 
-                                newName = await Identifier.EnsureUniqueAsyncMethodNameAsync(
+                                string newName = await Identifier.EnsureUniqueAsyncMethodNameAsync(
                                     methodSymbol,
-                                    newName,
+                                    oldName,
                                     document.Project.Solution,
                                     cancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
-                                    $"Rename method to '{newName}'",
+                                    $"Rename '{oldName}' to '{newName}'",
                                     c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     cancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
-                                    $"Rename method to '{newName}'",
+                                    $"Rename '{name}' to '{newName}'",
                                     c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 

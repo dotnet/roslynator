@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                     newName = await Identifier.EnsureUniqueParameterNameAsync(parameterSymbol, newName, context.Solution, context.CancellationToken).ConfigureAwait(false);
 
                     context.RegisterRefactoring(
-                        $"Rename parameter to '{newName}'",
+                        $"Rename '{name}' to '{newName}'",
                         cancellationToken => Renamer.RenameSymbolAsync(context.Document, parameterSymbol, newName, cancellationToken));
                 }
             }

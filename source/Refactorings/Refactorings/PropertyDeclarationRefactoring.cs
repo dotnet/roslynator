@@ -130,9 +130,11 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (!string.IsNullOrEmpty(newName))
                             {
+                                string oldName = identifier.ValueText;
+
                                 newName = StringUtility.FirstCharToUpper(newName);
 
-                                if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
+                                if (!string.Equals(oldName, newName, StringComparison.Ordinal))
                                 {
                                     ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
@@ -145,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
                                     if (isUnique)
                                     {
                                         context.RegisterRefactoring(
-                                            $"Rename property to '{newName}'",
+                                            $"Rename '{oldName}' to '{newName}'",
                                             cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
                                     }
                                 }
