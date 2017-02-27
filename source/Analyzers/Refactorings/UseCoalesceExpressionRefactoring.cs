@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (!IfElseChain.IsPartOfChain(ifStatement))
+            if (!IfElseChain.IsPartOfChain(ifStatement)
+                && !IsPartOfLazyInitialization(ifStatement))
             {
                 ExpressionSyntax condition = ifStatement.Condition;
 
@@ -83,6 +84,15 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement)
+        {
+            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
+
+            return statements.Count == 2
+                && statements.IndexOf(ifStatement) == 0
+                && statements[1].IsKind(SyntaxKind.ReturnStatement);
         }
 
         private static bool CanRefactor(

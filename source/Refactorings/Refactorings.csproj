@@ -42,8 +42,6 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Formatting\CSharpFormatter.cs" />
-    <Compile Include="Formatting\BinaryExpressionToMultiLineRewriter.cs" />
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />

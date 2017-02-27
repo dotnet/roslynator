@@ -1593,5 +1593,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor SimplifyLazilyInitializedProperty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SimplifyLazilyInitializedProperty,
+            title: "Simplify lazily initialized property.",
+            messageFormat: "Simplify lazily initialized property.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

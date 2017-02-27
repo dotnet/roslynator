@@ -45,6 +45,7 @@
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\Formatting\CSharpFormatter.cs" />
     <Compile Include="CSharp\DocumentationCommentGenerator.cs" />
     <Compile Include="CSharp\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="CSharp\Extensions\SyntaxTokenListExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTriviaExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTriviaListExtensions.cs" />
+    <Compile Include="CSharp\Formatting\BinaryExpressionToMultiLineRewriter.cs" />
     <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\Inserter.cs" />
     <Compile Include="CSharp\MemberDeclarationSortMode.cs" />
