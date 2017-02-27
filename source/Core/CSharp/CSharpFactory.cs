@@ -791,20 +791,6 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.LogicalAndExpression, left, operatorToken, right);
         }
 
-        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right, bool addParenthesesIfNecessary)
-        {
-            if (addParenthesesIfNecessary)
-            {
-                return LogicalAndExpression(
-                    ParenthesizeIfNecessary(left, SyntaxKind.LogicalAndExpression),
-                    ParenthesizeIfNecessary(right, SyntaxKind.LogicalAndExpression));
-            }
-            else
-            {
-                return LogicalAndExpression(left, right);
-            }
-        }
-
         public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);
@@ -813,32 +799,6 @@ namespace Roslynator.CSharp
         public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.LogicalOrExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right, bool addParenthesesIfNecessary)
-        {
-            if (addParenthesesIfNecessary)
-            {
-                return LogicalOrExpression(
-                    ParenthesizeIfNecessary(left, SyntaxKind.LogicalOrExpression),
-                    ParenthesizeIfNecessary(right, SyntaxKind.LogicalOrExpression));
-            }
-            else
-            {
-                return LogicalOrExpression(left, right);
-            }
-        }
-
-        private static ExpressionSyntax ParenthesizeIfNecessary(ExpressionSyntax expression, SyntaxKind parentKind)
-        {
-            if (CSharpAnalysis.GetOperatorPrecedence(expression) > CSharpAnalysis.GetOperatorPrecedence(parentKind))
-            {
-                return expression.Parenthesize(moveTrivia: true);
-            }
-            else
-            {
-                return expression;
-            }
         }
 
         public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)

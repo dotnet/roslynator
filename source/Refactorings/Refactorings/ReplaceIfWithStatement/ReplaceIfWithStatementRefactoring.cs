@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
+using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -110,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceIfWithStatement
                             case SyntaxKind.TrueLiteralExpression:
                                 return LogicalOrExpression(Negator.LogicallyNegate(condition), expression1);
                             case SyntaxKind.FalseLiteralExpression:
-                                return LogicalAndExpression(condition, expression1, addParenthesesIfNecessary: true);
+                                return LogicalAndExpression(condition.Parenthesize().WithSimplifierAnnotation(), expression1.Parenthesize().WithSimplifierAnnotation());
                             default:
                                 return LogicalOrExpression(ParenthesizedExpression(LogicalAndExpression(condition, expression1)), expression2);
                         }
