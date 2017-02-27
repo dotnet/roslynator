@@ -55,5 +55,34 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             return Enumerable.Range(0, 0).OrderByDescending(f => f);
         }
+
+        private interface IInterfaceName
+        {
+            string MethodName();
+        }
+
+        private class ClassName : IInterfaceName
+        {
+            public string MethodName()
+            {
+                return new object();
+            }
+        }
+
+        private class Base
+        {
+            public virtual string MethodName()
+            {
+                return null;
+            }
+        }
+
+        private class Derived : Base
+        {
+            public override string MethodName()
+            {
+                return new object();
+            }
+        }
     }
 }

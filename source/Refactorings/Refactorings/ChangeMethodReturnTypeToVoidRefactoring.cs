@@ -28,7 +28,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (!IsAsyncMethodThatReturnsTask(methodDeclaration, semanticModel, context.CancellationToken))
+                        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                        if (methodSymbol?.IsOverride == false
+                            && !methodSymbol.ImplementsInterfaceMember()
+                            && !IsAsyncMethodThatReturnsTask(methodSymbol, semanticModel))
                         {
                             ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
 
@@ -52,20 +56,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool IsAsyncMethodThatReturnsTask(
-            MethodDeclarationSyntax methodDeclaration,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static bool IsAsyncMethodThatReturnsTask(IMethodSymbol methodSymbol, SemanticModel semanticModel)
         {
-            IMethodSymbol methodSymbol = semanticModel
-                .GetDeclaredSymbol(methodDeclaration, cancellationToken);
-
-            if (methodSymbol?.IsAsync == true
-                && methodSymbol.ReturnType?.IsErrorType() == false)
+            if (methodSymbol.IsAsync)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                ITypeSymbol returnType = methodSymbol.ReturnType;
 
-                return methodSymbol.ReturnType.Equals(taskSymbol);
+                return returnType?.IsErrorType() == false
+                    && returnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task));
             }
 
             return false;
