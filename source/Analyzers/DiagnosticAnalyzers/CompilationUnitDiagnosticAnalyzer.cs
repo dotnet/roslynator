@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -41,7 +42,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             DeclareEachTypeInSeparateFileRefactoring.Analyze(context, compilationUnit);
 
-            if (compilationUnit.Span == compilationUnit.EndOfFileToken.Span)
+            SyntaxToken token = compilationUnit.EndOfFileToken;
+
+            if (compilationUnit.Span == token.Span
+                && !token.HasTrailingTrivia
+                && token.LeadingTrivia.All(f => !f.IsDirective))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveFileWithNoCode,
