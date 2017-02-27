@@ -113,7 +113,9 @@ namespace Roslynator.CSharp.Refactorings
                             if (methodSymbol.IsAsync)
                                 newName += "Async";
 
-                            if (!string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
+                            string oldName = identifier.ValueText;
+
+                            if (!string.Equals(oldName, newName, StringComparison.Ordinal))
                             {
                                 bool isUnique = await Identifier.IsUniqueMemberNameAsync(
                                     methodSymbol,
@@ -124,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (isUnique)
                                 {
                                     context.RegisterRefactoring(
-                                       $"Rename method to '{newName}'",
+                                       $"Rename '{oldName}' to '{newName}'",
                                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, methodSymbol, newName, cancellationToken));
                                 }
                             }

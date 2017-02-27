@@ -49,15 +49,16 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (typeSymbol != null)
                             {
+                                string oldName = identifier.ValueText;
                                 string newName = Identifier.CreateName(typeSymbol, firstCharToLower: true);
 
                                 if (!string.IsNullOrEmpty(newName)
-                                    && !string.Equals(identifier.ValueText, newName, StringComparison.Ordinal))
+                                    && !string.Equals(oldName, newName, StringComparison.Ordinal))
                                 {
                                     newName = Identifier.EnsureUniqueLocalName(newName, singleVariableDesignation, semanticModel, context.CancellationToken);
 
                                     context.RegisterRefactoring(
-                                        $"Rename local to '{newName}'",
+                                        $"Rename '{oldName}' to '{newName}'",
                                         cancellationToken => Renamer.RenameSymbolAsync(context.Document, localSymbol, newName, cancellationToken));
                                 }
                             }
