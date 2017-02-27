@@ -118,9 +118,8 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
 
             BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(
-                ifStatement.Condition,
-                nestedIf.Condition,
-                addParenthesesIfNecessary: true);
+                ifStatement.Condition.Parenthesize().WithSimplifierAnnotation(),
+                nestedIf.Condition.Parenthesize().WithSimplifierAnnotation());
 
             IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
                 .WithCondition(newCondition)
