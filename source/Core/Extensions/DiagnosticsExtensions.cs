@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -169,16 +168,6 @@ namespace Roslynator.Extensions
             string fullyQualifiedMetadataName)
         {
             return context.SemanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
-        }
-
-        public static bool HasTag(this Diagnostic diagnostic, string tag)
-        {
-            return diagnostic?.Descriptor.CustomTags.Contains(tag) == true;
-        }
-
-        public static bool IsCompilerDiagnostic(this Diagnostic diagnostic)
-        {
-            return HasTag(diagnostic, WellKnownDiagnosticTags.Compiler);
         }
     }
 }

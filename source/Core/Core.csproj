@@ -104,6 +104,7 @@
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="EnumHelper.cs" />
+    <Compile Include="Extensions\DiagnosticExtensions.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="SymbolUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
