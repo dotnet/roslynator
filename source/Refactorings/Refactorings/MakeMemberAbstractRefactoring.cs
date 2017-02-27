@@ -17,19 +17,28 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            return !propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+            return !modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && !modifiers.Contains(SyntaxKind.StaticKeyword)
                 && IsAbstractClass(propertyDeclaration.Parent);
         }
 
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {
-            return !methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+
+            return !modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && !modifiers.Contains(SyntaxKind.StaticKeyword)
                 && IsAbstractClass(methodDeclaration.Parent);
         }
 
         public static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration)
         {
-            return !indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword)
+            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+            return !modifiers.Contains(SyntaxKind.AbstractKeyword)
+                && !modifiers.Contains(SyntaxKind.StaticKeyword)
                 && IsAbstractClass(indexerDeclaration.Parent);
         }
 
