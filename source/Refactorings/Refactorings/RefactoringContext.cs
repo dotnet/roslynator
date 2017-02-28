@@ -237,6 +237,11 @@ namespace Roslynator.CSharp.Refactorings
                             await CommaTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
                             break;
                         }
+                    case SyntaxKind.SemicolonToken:
+                        {
+                            SemicolonTokenRefactoring.ComputeRefactorings(this, token);
+                            break;
+                        }
                 }
             }
         }
