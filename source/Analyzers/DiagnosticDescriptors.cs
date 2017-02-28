@@ -300,7 +300,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteral = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantBooleanLiteral,
             title: "Remove redundant boolean literal.",
-            messageFormat: "Remove redundant boolean literal.",
+            messageFormat: "Remove redundant '{0}'.",
             category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,

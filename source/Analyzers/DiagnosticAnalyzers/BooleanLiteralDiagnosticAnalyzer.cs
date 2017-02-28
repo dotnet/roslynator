@@ -133,8 +133,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 {
                     case AnalysisResult.Boolean:
                         {
-                            RemoveRedundantBooleanLiteralRefactoring.
-                                ReportDiagnostic(context, binaryExpression, left, right, left);
+                            RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
                             break;
                         }
                     case AnalysisResult.LogicalNotWithNullableBoolean:
@@ -170,7 +169,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         case AnalysisResult.Boolean:
                             {
-                                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, right);
+                                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
                                 break;
                             }
                         case AnalysisResult.LogicalNotWithNullableBoolean:
@@ -192,11 +191,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             if (left.IsKind(kind))
             {
-                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, left);
+                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
             }
             else if (right.IsKind(kind))
             {
-                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right, right);
+                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
             }
         }
 

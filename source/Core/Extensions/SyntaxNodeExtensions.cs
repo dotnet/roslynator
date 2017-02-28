@@ -185,5 +185,20 @@ namespace Roslynator.Extensions
         {
             return SeparatedList(nodes);
         }
+
+        internal static string ToString(this SyntaxNode node, TextSpan span)
+        {
+            return GetSubstring(node, node.ToString(), span);
+        }
+
+        internal static string ToFullString(this SyntaxNode node, TextSpan span)
+        {
+            return GetSubstring(node, node.ToFullString(), span);
+        }
+
+        private static string GetSubstring(SyntaxNode node, string s, TextSpan span)
+        {
+            return s.Substring(span.Start - node.SpanStart, span.Length);
+        }
     }
 }

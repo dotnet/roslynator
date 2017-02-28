@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             ExpressionSyntax condition = forStatement.Condition;
 
             if (condition?.IsKind(SyntaxKind.TrueLiteralExpression) == true)
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition);
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition, condition.ToString());
         }
     }
 }
