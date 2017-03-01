@@ -1611,5 +1611,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfIf = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
+            title: "Use coalesce expression instead of if.",
+            messageFormat: "Use coalesce expression instead of if.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

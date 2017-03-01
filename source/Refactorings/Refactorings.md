@@ -870,18 +870,6 @@
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
 
-#### Replace if statement with return statement
-
-* **Syntax**: if statement
-
-![Replace if statement with return statement](../../images/refactorings/ReplaceIfStatementWithReturnStatement.png)
-
-#### Replace if\-else with assignment
-
-* **Syntax**: if statement
-
-![Replace if\-else with assignment](../../images/refactorings/ReplaceIfElseWithAssignment.png)
-
 #### Replace if\-else with switch statement
 
 * **Syntax**: if statement
@@ -1008,6 +996,12 @@
 
 ![Reverse for loop](../../images/refactorings/ReverseForLoop.png)
 
+#### Simplify if
+
+* **Syntax**: if statement
+
+![Simplify if](../../images/refactorings/SimplifyIf.png)
+
 #### Simplify lambda expression
 
 * **Syntax**: lambda expression with block with single single\-line statement
@@ -1090,6 +1084,18 @@
 * **Syntax**: Enum\.HasFlag method invocation
 
 ![Use bitwise operation instead of calling 'HasFlag'](../../images/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.png)
+
+#### Use coalesce expression instead of if
+
+* **Syntax**: if statement
+
+![Use coalesce expression instead of if](../../images/refactorings/UseCoalesceExpressionInsteadOfIf.png)
+
+#### Use conditional expression instead of if
+
+* **Syntax**: if statement
+
+![Use conditional expression instead of if](../../images/refactorings/UseConditionalExpressionInsteadOfIf.png)
 
 #### Use element access instead of 'First/Last'ElementAt' method
 

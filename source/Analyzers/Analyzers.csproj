@@ -84,6 +84,7 @@
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />

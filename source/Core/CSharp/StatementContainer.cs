@@ -90,7 +90,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Assert(parent == null, parent.Kind().ToString());
+                        Debug.Assert(parent == null || EmbeddedStatement.IsEmbeddedStatement(statement), parent.Kind().ToString());
                         return default(SyntaxList<StatementSyntax>);
                     }
             }

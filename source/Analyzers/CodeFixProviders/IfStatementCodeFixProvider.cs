@@ -2,12 +2,17 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.DiagnosticAnalyzers;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Refactorings.If;
+using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -21,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
-                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment);
+                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
+                    DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf);
             }
         }
 
@@ -32,6 +38,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             IfStatementSyntax ifStatement = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<IfStatementSyntax>();
+
+            Debug.Assert(ifStatement != null, $"{nameof(ifStatement)} is null");
 
             if (ifStatement == null)
                 return;
@@ -67,6 +75,24 @@ namespace Roslynator.CSharp.CodeFixProviders
                                         ifStatement,
                                         cancellationToken);
                                 },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf:
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            IfRefactoring refactoring = IfRefactoring.Analyze(
+                                ifStatement,
+                                UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.AnalysisOptions,
+                                semanticModel,
+                                context.CancellationToken).FirstOrDefault();
+
+                            CodeAction codeAction = CodeAction.Create(
+                                refactoring.Title,
+                                cancellationToken => refactoring.RefactorAsync(context.Document, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -2,14 +2,18 @@
 
 using System.Collections.Generic;
 
+#pragma warning disable CS0162, RCS1118, RCS1171
+
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal static class ReplaceIfStatementWithReturnStatementRefactoring
+    internal static class UseInsteadOfIfRefactoring
     {
         private static bool Foo()
         {
             bool condition = false;
             bool x = false;
+            bool y = false;
+            bool z = false;
 
             if (condition)
             {
@@ -65,13 +69,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return x;
             }
 
-            if (condition)
+            if (x)
             {
                 return true;
             }
             else
             {
-                return x;
+                return y;
             }
 
             if (condition)
@@ -92,13 +96,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
                 return false;
             }
 
-            if (condition)
+            if (x)
             {
-                return x;
+                return y;
             }
             else
             {
-                return !x;
+                return z;
             }
         }
 
@@ -195,6 +199,47 @@ namespace Roslynator.CSharp.Refactorings.Tests
             else
             {
                 yield return y;
+            }
+        }
+
+        public static bool Foo4()
+        {
+            bool condition = false;
+            bool x = false;
+
+            if (condition)
+            {
+                x = true;
+            }
+            else
+            {
+                x = false;
+            }
+
+            return x;
+        }
+
+        private static string Foo5()
+        {
+            string x = null;
+            string y = null;
+
+            if (x != null)
+            {
+                return x;
+            }
+            else
+            {
+                return y;
+            }
+
+            if (x == null)
+            {
+                return y;
+            }
+            else
+            {
+                return x;
             }
         }
 
