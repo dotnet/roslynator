@@ -30,7 +30,14 @@ namespace Roslynator
 
             INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-            return EnsureUniqueMemberName(baseName, containingType);
+            if (containingType != null)
+            {
+                return EnsureUniqueMemberName(baseName, containingType);
+            }
+            else
+            {
+                return EnsureUniqueName(baseName, semanticModel.LookupSymbols(position));
+            }
         }
 
         public static string EnsureUniqueMemberName(
