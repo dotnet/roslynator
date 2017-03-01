@@ -179,5 +179,6 @@ namespace Roslynator.CSharp
         public const string SimplifyLazilyInitializedProperty = Prefix + "1171";
         public const string UseIsOperatorInsteadOfAsOperator = Prefix + "1172";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "1173";
+        public const string RemoveRedundantAsyncAwait = Prefix + "1174";
     }
 }
