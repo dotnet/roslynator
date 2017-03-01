@@ -24,5 +24,10 @@ namespace Roslynator.CSharp
         {
             return _block.WithStatements(statements);
         }
+
+        public override StatementContainer WithStatements(SyntaxList<StatementSyntax> statements)
+        {
+            return new BlockStatementContainer(_block.WithStatements(statements));
+        }
     }
 }

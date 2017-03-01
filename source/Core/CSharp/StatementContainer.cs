@@ -20,6 +20,8 @@ namespace Roslynator.CSharp
 
         public abstract SyntaxList<StatementSyntax> Statements { get; }
 
+        public abstract StatementContainer WithStatements(SyntaxList<StatementSyntax> statements);
+
         public abstract SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements);
 
         public virtual SyntaxNode NodeWithStatements(IEnumerable<StatementSyntax> statements)
@@ -51,6 +53,24 @@ namespace Roslynator.CSharp
                         container = null;
                         return false;
                     }
+            }
+        }
+
+        public static StatementContainer Create(StatementSyntax statement)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            SyntaxNode parent = statement.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.Block:
+                    return new BlockStatementContainer((BlockSyntax)parent);
+                case SyntaxKind.SwitchSection:
+                    return new SwitchSectionStatementContainer((SwitchSectionSyntax)parent);
+                default:
+                    throw new InvalidOperationException();
             }
         }
 
