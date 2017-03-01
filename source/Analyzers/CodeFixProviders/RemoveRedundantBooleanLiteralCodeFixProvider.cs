@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Extensions;
@@ -50,6 +51,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     {
                         RegisterCodeFix(
                             context,
+                            node.ToString(),
                             cancellationToken =>
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
@@ -65,13 +67,18 @@ namespace Roslynator.CSharp.CodeFixProviders
                 case SyntaxKind.LogicalAndExpression:
                 case SyntaxKind.LogicalOrExpression:
                     {
+                        var binaryExpression = (BinaryExpressionSyntax)node;
+
+                        TextSpan span = RemoveRedundantBooleanLiteralRefactoring.GetSpanToRemove(binaryExpression, binaryExpression.Left, binaryExpression.Right);
+
                         RegisterCodeFix(
                             context,
+                            binaryExpression.ToString(span),
                             cancellationToken =>
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
                                     context.Document,
-                                    (BinaryExpressionSyntax)node,
+                                    binaryExpression,
                                     cancellationToken);
                             });
 
@@ -80,10 +87,30 @@ namespace Roslynator.CSharp.CodeFixProviders
             }
         }
 
-        private static void RegisterCodeFix(CodeFixContext context, Func<CancellationToken, Task<Document>> createChangedDocument)
+        private static string GetTextToRemove(BinaryExpressionSyntax binaryExpression)
+        {
+            ExpressionSyntax left = binaryExpression.Left;
+            ExpressionSyntax right = binaryExpression.Right;
+            SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+            if (left.IsBooleanLiteralExpression())
+            {
+                return binaryExpression.ToString(TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End));
+            }
+            else if (right.IsBooleanLiteralExpression())
+            {
+                return binaryExpression.ToString(TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End));
+            }
+
+            Debug.Assert(false, binaryExpression.ToString());
+
+            return "";
+        }
+
+        private static void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
         {
             CodeAction codeAction = CodeAction.Create(
-                "Remove redundant boolean literal",
+                $"Remove redundant '{textToRemove}'",
                 createChangedDocument,
                 DiagnosticIdentifiers.RemoveRedundantBooleanLiteral + EquivalenceKeySuffix);
 

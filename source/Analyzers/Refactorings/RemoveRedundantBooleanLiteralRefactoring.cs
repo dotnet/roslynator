@@ -21,25 +21,30 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNodeAnalysisContext context,
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax left,
-            ExpressionSyntax right,
-            ExpressionSyntax expression)
+            ExpressionSyntax right)
         {
             if (!binaryExpression.SpanContainsDirectives())
             {
-                var span = default(TextSpan);
-
-                if (expression.Equals(left))
-                {
-                    span = TextSpan.FromBounds(left.SpanStart, binaryExpression.OperatorToken.Span.End);
-                }
-                else
-                {
-                    span = TextSpan.FromBounds(binaryExpression.OperatorToken.SpanStart, right.Span.End);
-                }
+                TextSpan span = GetSpanToRemove(binaryExpression, left, right);
 
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
-                    Location.Create(binaryExpression.SyntaxTree, span));
+                    Location.Create(binaryExpression.SyntaxTree, span),
+                    binaryExpression.ToString(span));
+            }
+        }
+
+        public static TextSpan GetSpanToRemove(BinaryExpressionSyntax binaryExpression, ExpressionSyntax left, ExpressionSyntax right)
+        {
+            SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+            if (left.IsBooleanLiteralExpression())
+            {
+                return TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End);
+            }
+            else
+            {
+                return TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End);
             }
         }
 
