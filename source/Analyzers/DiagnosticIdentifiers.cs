@@ -176,5 +176,6 @@ namespace Roslynator.CSharp
         public const string ParameterNameDiffersFromBase = Prefix + "1168";
         public const string MarkFieldAsReadOnly = Prefix + "1169";
         public const string UseReadOnlyAutoProperty = Prefix + "1170";
+        public const string SimplifyLazilyInitializedProperty = Prefix + "1171";
     }
 }
