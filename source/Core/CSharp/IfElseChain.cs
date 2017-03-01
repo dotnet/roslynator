@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -10,8 +12,48 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp
 {
-    public static class IfElseChain
+    public class IfElseChain
     {
+        public ImmutableArray<SyntaxNode> Nodes { get; }
+
+        private IfElseChain(IfStatementSyntax ifStatement)
+        {
+            Nodes = ImmutableArray.CreateRange(GetChain(ifStatement));
+        }
+
+        public bool EndsWithIf
+        {
+            get { return Nodes.Last().IsKind(SyntaxKind.IfStatement); }
+        }
+
+        public bool EndsWithElse
+        {
+            get { return Nodes.Last().IsKind(SyntaxKind.ElseClause); }
+        }
+
+        public bool IsSimpleIf
+        {
+            get { return Nodes.Length == 1; }
+        }
+
+        public bool IsSimpleIfElse
+        {
+            get
+            {
+                return Nodes.Length == 2
+                    && Nodes[0].IsKind(SyntaxKind.IfStatement)
+                    && Nodes[1].IsKind(SyntaxKind.ElseClause);
+            }
+        }
+
+        public static IfElseChain Create(IfStatementSyntax ifStatement)
+        {
+            if (ifStatement == null)
+                throw new ArgumentNullException(nameof(ifStatement));
+
+            return new IfElseChain(ifStatement);
+        }
+
         public static IEnumerable<SyntaxNode> GetChain(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
