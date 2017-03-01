@@ -64,6 +64,7 @@
     <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\Inserter.cs" />
     <Compile Include="CSharp\MemberDeclarationSortMode.cs" />
+    <Compile Include="CSharp\Internal\ModifierRemover.cs" />
     <Compile Include="CSharp\Negator.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentAnalysis.cs" />

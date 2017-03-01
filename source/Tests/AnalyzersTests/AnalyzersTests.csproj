@@ -66,6 +66,7 @@
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="MarkFieldAsReadOnly.cs" />
     <Compile Include="RemoveFileWithNoCode2.cs" />
+    <Compile Include="RemoveRedundantAsyncAwait.cs" />
     <Compile Include="SimplifyLazilyInitializedProperty.cs" />
     <Compile Include="UnusedParameter.cs" />
     <Compile Include="ParameterNameDiffersFromBase.cs" />

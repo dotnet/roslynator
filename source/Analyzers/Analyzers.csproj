@@ -50,6 +50,7 @@
     <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\RemoveRedundantAsyncAwaitCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantCastCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveImplementationFromAbstractMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveUnreachableCodeCodeFixProvider.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsyncAwaitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyLazilyInitializedPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\UseReadOnlyAutoPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLazilyInitializedPropertyRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedIndexerParameterRefactoring.cs" />

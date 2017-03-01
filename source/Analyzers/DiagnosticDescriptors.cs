@@ -1620,5 +1620,16 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwait = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantAsyncAwait,
+            title: "Remove redundant async/await.",
+            messageFormat: "Remove redundant async/await.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwaitFadeOut = RemoveRedundantAsyncAwait.CreateFadeOut();
     }
 }
