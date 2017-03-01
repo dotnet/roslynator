@@ -97,6 +97,7 @@ Redundancy|Remove enum default underlying type|RCS1042|x
 Redundancy|Remove file with no code|RCS1093|x
 Redundancy|Remove partial modifier from type with a single part|RCS1043|x
 Redundancy|Remove redundant 'as' operator|RCS1145|x
+Redundancy|Remove redundant async/await|RCS1174|x
 Redundancy|Remove redundant base constructor call|RCS1071|x
 Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant cast|RCS1151|x
@@ -133,6 +134,7 @@ Simplification|Simplify coalesce expression|RCS1143|x
 Simplification|Simplify conditional expression|RCS1104|x
 Simplification|Simplify lambda expression parameter list|RCS1022|
 Simplification|Simplify lambda expression|RCS1021|x
+Simplification|Simplify lazily initialized property|RCS1171|x
 Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
@@ -140,8 +142,10 @@ Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
 Simplification|Use auto\-implemented property instead of expanded property|RCS1085|x
 Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
+Simplification|Use coalesce expression instead of if|RCS1173|x
 Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
+Simplification|Use is operator instead of as operator|RCS1172|x
 Simplification|Use postfix unary operator instead of assignment|RCS1089|x
 Simplification|Use 'var' instead of explicit type \(when the type is obvious\)|RCS1010|x
 Style|Add braces to if\-else|RCS1003|x

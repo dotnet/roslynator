@@ -1,5 +1,5 @@
 ﻿## Roslynator
-* A collection of 160+ analyzers and 170+ refactorings for C#, powered by Roslyn.
+* A collection of 170+ analyzers and 170+ refactorings for C#, powered by Roslyn.
 * [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
@@ -199,6 +199,10 @@
 * RCS1168 - Parameter name differs from base name
 * RCS1169 - Mark field as read\-only
 * RCS1170 - Use read\-only auto\-implemented property
+* RCS1171 - Simplify lazily initialized property
+* RCS1172 - Use is operator instead of as operator
+* RCS1173 - Use coalesce expression instead of if
+* RCS1174 - Remove redundant async/await
 
 ### List of Refactorings
 
@@ -333,6 +337,7 @@
 * [Replace for statement with foreach statement](source/Refactorings/Refactorings.md#replace-for-statement-with-foreach-statement)
 * [Replace for statement with while statement](source/Refactorings/Refactorings.md#replace-for-statement-with-while-statement)
 * [Replace foreach statement with for statement](source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement)
+* [Replace hexadecimal literal with decimal literal](source/Refactorings/Refactorings.md#replace-hexadecimal-literal-with-decimal-literal)
 * [Replace if\-else with switch statement](source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement)
 * [Replace increment operator with decrement operator](source/Refactorings/Refactorings.md#replace-increment-operator-with-decrement-operator)
 * [Replace interpolated string with interpolation expression](source/Refactorings/Refactorings.md#replace-interpolated-string-with-interpolation-expression)
@@ -374,6 +379,7 @@
 * [Use String\.Empty instead of ""](source/Refactorings/Refactorings.md#use-stringempty-instead-of-)
 * [Wrap in \#if directive](source/Refactorings/Refactorings.md#wrap-in-if-directive)
 * [Wrap in condition](source/Refactorings/Refactorings.md#wrap-in-condition)
+* [Wrap in else clause](source/Refactorings/Refactorings.md#wrap-in-else-clause)
 * [Wrap in region](source/Refactorings/Refactorings.md#wrap-in-region)
 * [Wrap in try\-catch](source/Refactorings/Refactorings.md#wrap-in-try-catch)
 * [Wrap in using statement](source/Refactorings/Refactorings.md#wrap-in-using-statement)

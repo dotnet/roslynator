@@ -133,6 +133,7 @@
 [Replace for statement with foreach statement](Refactorings.md#replace-for-statement-with-foreach-statement)|x
 [Replace for statement with while statement](Refactorings.md#replace-for-statement-with-while-statement)|x
 [Replace foreach statement with for statement](Refactorings.md#replace-foreach-statement-with-for-statement)|x
+[Replace hexadecimal literal with decimal literal](Refactorings.md#replace-hexadecimal-literal-with-decimal-literal)|x
 [Replace if\-else with switch statement](Refactorings.md#replace-if-else-with-switch-statement)|x
 [Replace increment operator with decrement operator](Refactorings.md#replace-increment-operator-with-decrement-operator)|x
 [Replace interpolated string with interpolation expression](Refactorings.md#replace-interpolated-string-with-interpolation-expression)|x
@@ -174,6 +175,7 @@
 [Use String\.Empty instead of ""](Refactorings.md#use-stringempty-instead-of-)|
 [Wrap in \#if directive](Refactorings.md#wrap-in-if-directive)|x
 [Wrap in condition](Refactorings.md#wrap-in-condition)|x
+[Wrap in else clause](Refactorings.md#wrap-in-else-clause)|x
 [Wrap in region](Refactorings.md#wrap-in-region)|x
 [Wrap in try\-catch](Refactorings.md#wrap-in-try-catch)|x
 [Wrap in using statement](Refactorings.md#wrap-in-using-statement)|x

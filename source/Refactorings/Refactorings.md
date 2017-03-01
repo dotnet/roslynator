@@ -870,6 +870,12 @@
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
 
+#### Replace hexadecimal literal with decimal literal
+
+* **Syntax**: hexadecimal literal
+
+![Replace hexadecimal literal with decimal literal](../../images/refactorings/ReplaceHexadecimalLiteralWithDecimalLiteral.png)
+
 #### Replace if\-else with switch statement
 
 * **Syntax**: if statement
@@ -1135,6 +1141,12 @@
 * **Syntax**: selected statements
 
 ![Wrap in condition](../../images/refactorings/WrapInCondition.png)
+
+#### Wrap in else clause
+
+* **Syntax**: statement
+
+![Wrap in else clause](../../images/refactorings/WrapInElseClause.png)
 
 #### Wrap in region
 
