@@ -177,6 +177,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "UseLambdaExpressionInsteadOfAnonymousMethod";
         public const string UseStringEmptyInsteadOfEmptyStringLiteral = "UseStringEmptyInsteadOfEmptyStringLiteral";
         public const string WrapInCondition = "WrapInCondition";
+        public const string WrapInElseClause = "WrapInElseClause";
         public const string WrapInIfDirective = "WrapInIfDirective";
         public const string WrapInRegion = "WrapInRegion";
         public const string WrapInTryCatch = "WrapInTryCatch";

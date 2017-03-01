@@ -274,6 +274,7 @@
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
+    <Compile Include="WrapInElseClauseRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

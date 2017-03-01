@@ -745,6 +745,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-condition">Wrap in condition</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-else-clause">Wrap in else clause</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#wrap-in-region">Wrap in region</a>
     </li>
     <li>
