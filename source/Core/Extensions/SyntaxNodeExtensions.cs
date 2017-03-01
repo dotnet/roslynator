@@ -176,16 +176,6 @@ namespace Roslynator.Extensions
             return node.WithAdditionalAnnotations(Simplifier.Annotation);
         }
 
-        public static SyntaxList<TNode> ToSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
-        {
-            return List(nodes);
-        }
-
-        public static SeparatedSyntaxList<TNode> ToSeparatedSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
-        {
-            return SeparatedList(nodes);
-        }
-
         internal static string ToString(this SyntaxNode node, TextSpan span)
         {
             return GetSubstring(node, node.ToString(), span);

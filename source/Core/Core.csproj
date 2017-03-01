@@ -55,7 +55,7 @@
     <Compile Include="CSharp\CSharpGeneratedCodeAnalyzer.cs" />
     <Compile Include="CSharp\Extensions\SymbolExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxNodeExtensions.cs" />
-    <Compile Include="CSharp\Extensions\SyntaxNodeOrTokenExtensions.cs" />
+    <Compile Include="CSharp\Extensions\EnumerableExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTokenExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTokenListExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTriviaExtensions.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\DiagnosticExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="SymbolUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
