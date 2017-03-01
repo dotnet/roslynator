@@ -75,6 +75,7 @@
     <Compile Include="ReplaceExpressionWithConstantValueRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />
+    <Compile Include="ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring.cs" />
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="UseInsteadOfIfRefactoring.cs" />

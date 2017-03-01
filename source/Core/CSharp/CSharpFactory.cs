@@ -44,7 +44,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static ExpressionSyntax ConstantExpression(object value)
+        public static LiteralExpressionSyntax ConstantExpression(object value)
         {
             if (value == null)
                 return NullLiteralExpression();

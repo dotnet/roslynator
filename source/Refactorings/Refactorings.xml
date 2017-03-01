@@ -901,6 +901,11 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="ReplaceHexadecimalLiteralWithDecimalLiteral" Title="Replace hexadecimal literal with decimal literal" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>hexadecimal literal</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="ReplaceIfElseWithSwitch" Title="Replace if-else with switch statement" ExtensionVersion="1.0.8">
     <Syntaxes>
       <Syntax>if statement</Syntax>
