@@ -607,6 +607,15 @@ namespace Roslynator.CSharp.Extensions
             return s;
         }
 
+        public static bool IsHexadecimalNumericLiteral(this LiteralExpressionSyntax literalExpression)
+        {
+            if (literalExpression == null)
+                throw new ArgumentNullException(nameof(literalExpression));
+
+            return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
+                && literalExpression.Token.Text.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
+        }
+
         public static CSharpSyntaxNode BodyOrExpressionBody(this LocalFunctionStatementSyntax localFunctionStatement)
         {
             if (localFunctionStatement == null)

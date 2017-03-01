@@ -448,6 +448,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-hexadecimal-literal-with-decimal-literal">Replace hexadecimal literal with decimal literal</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement">Replace if-else with switch statement</a>
     </li>
     <li>

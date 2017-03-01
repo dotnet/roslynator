@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
+    <Compile Include="HexadecimalLiteralInfo.cs" />
+    <Compile Include="HexadecimalLiteralSuffixKind.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCastWithAsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceWhileWithForRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortEnumMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\StructDeclarationRefactoring.cs" />

@@ -143,6 +143,7 @@ namespace Roslynator.VisualStudio
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
             ReplaceForWithWhile = true;
+            ReplaceHexadecimalLiteralWithDecimalLiteral = true;
             ReplaceIfElseWithSwitch = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithInterpolationExpression = true;
@@ -323,6 +324,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithWhile, ReplaceForWithWhile);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, ReplaceHexadecimalLiteralWithDecimalLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
@@ -1675,6 +1677,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: for statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceForWithWhile
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Replace hexadecimal literal with decimal literal")]
+        [Description("Syntax: hexadecimal literal")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ReplaceHexadecimalLiteralWithDecimalLiteral
         {
             get;
             set;
