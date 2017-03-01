@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanBeReplacedWithCoalesceExpression(ConditionalExpressionSyntax conditionalExpression)
         {
-            ExpressionSyntax condition = conditionalExpression.Condition.Unparenthesize();
+            ExpressionSyntax condition = conditionalExpression.Condition.WalkDownParentheses();
 
             if (condition.IsKind(SyntaxKind.EqualsExpression))
             {
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
                     return binaryExpression.Left.IsEquivalentTo(
-                        conditionalExpression.WhenFalse.Unparenthesize(),
+                        conditionalExpression.WhenFalse.WalkDownParentheses(),
                         topLevel: false);
                 }
             }
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
                     return binaryExpression.Left.IsEquivalentTo(
-                        conditionalExpression.WhenTrue.Unparenthesize(),
+                        conditionalExpression.WhenTrue.WalkDownParentheses(),
                         topLevel: false);
                 }
             }
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.Unparenthesize();
+            var binaryExpression = (BinaryExpressionSyntax)conditionalExpression.Condition.WalkDownParentheses();
 
             ExpressionSyntax left = (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
                 ? conditionalExpression.WhenFalse
