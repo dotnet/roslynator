@@ -108,6 +108,7 @@
     <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfElseWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromWhileToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\SelectedSwitchSectionsRefactoring.cs" />
+    <Compile Include="Refactorings\SemicolonTokenRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortMemberDeclarationsRewriter.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingDirectiveRefactoring.cs" />
