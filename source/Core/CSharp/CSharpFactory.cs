@@ -831,6 +831,16 @@ namespace Roslynator.CSharp
             return BinaryExpression(SyntaxKind.AsExpression, expression, operatorToken, type);
         }
 
+        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax expression, TypeSyntax type)
+        {
+            return BinaryExpression(SyntaxKind.IsExpression, expression, type);
+        }
+
+        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax expression, SyntaxToken operatorToken, TypeSyntax type)
+        {
+            return BinaryExpression(SyntaxKind.IsExpression, expression, operatorToken, type);
+        }
+
         public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return BinaryExpression(SyntaxKind.AddExpression, left, right);

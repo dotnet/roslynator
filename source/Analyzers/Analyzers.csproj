@@ -83,6 +83,7 @@
     <Compile Include="DiagnosticAnalyzers\SimplifyLazilyInitializedPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
+    <Compile Include="Refactorings\UseIsOperatorInsteadOfAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />
     <Compile Include="Refactorings\OverrideInfo.cs" />
     <Compile Include="Refactorings\OverridingMemberCannotChangeAccessModifiersRefactoring.cs" />

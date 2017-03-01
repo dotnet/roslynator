@@ -382,12 +382,9 @@ namespace Roslynator.CSharp.Extensions
             }
         }
 
-        public static ExpressionSyntax Unparenthesize(this ExpressionSyntax expression)
+        public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
-            while (expression.IsKind(SyntaxKind.ParenthesizedExpression))
+            while (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
                 expression = ((ParenthesizedExpressionSyntax)expression).Expression;
 
             return expression;

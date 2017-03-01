@@ -1602,5 +1602,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseIsOperatorInsteadOfAsOperator = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator,
+            title: "Use is operator instead of as operator.",
+            messageFormat: "Use is operator instead of as operator.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }
