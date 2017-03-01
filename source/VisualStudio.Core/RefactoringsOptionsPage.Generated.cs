@@ -143,9 +143,7 @@ namespace Roslynator.VisualStudio
             ReplaceForEachWithFor = true;
             ReplaceForWithForEach = true;
             ReplaceForWithWhile = true;
-            ReplaceIfElseWithAssignment = true;
             ReplaceIfElseWithSwitch = true;
-            ReplaceIfStatementWithReturnStatement = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
@@ -165,6 +163,7 @@ namespace Roslynator.VisualStudio
             ReplaceWhileStatementWithDoStatement = true;
             ReplaceWhileWithFor = true;
             ReverseForLoop = true;
+            SimplifyIf = true;
             SimplifyLambdaExpression = true;
             SortMemberDeclarations = true;
             SplitAttributes = true;
@@ -176,6 +175,8 @@ namespace Roslynator.VisualStudio
             SwapStatementsInIfElse = true;
             Uncomment = true;
             UseBitwiseOperationInsteadOfCallingHasFlag = true;
+            UseCoalesceExpressionInsteadOfIf = true;
+            UseConditionalExpressionInsteadOfIf = true;
             UseElementAccessInsteadOfEnumerableMethod = true;
             UseEmptyStringLiteralInsteadOfStringEmpty = true;
             UseExpressionBodiedMember = true;
@@ -321,9 +322,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, ReplaceForEachWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithWhile, ReplaceForWithWhile);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithAssignment, ReplaceIfElseWithAssignment);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceIfStatementWithReturnStatement, ReplaceIfStatementWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
@@ -343,6 +342,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement, ReplaceWhileStatementWithDoStatement);
             SetIsEnabled(RefactoringIdentifiers.ReplaceWhileWithFor, ReplaceWhileWithFor);
             SetIsEnabled(RefactoringIdentifiers.ReverseForLoop, ReverseForLoop);
+            SetIsEnabled(RefactoringIdentifiers.SimplifyIf, SimplifyIf);
             SetIsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression, SimplifyLambdaExpression);
             SetIsEnabled(RefactoringIdentifiers.SortMemberDeclarations, SortMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.SplitAttributes, SplitAttributes);
@@ -354,6 +354,8 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
             SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
             SetIsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, UseBitwiseOperationInsteadOfCallingHasFlag);
+            SetIsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, UseCoalesceExpressionInsteadOfIf);
+            SetIsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, UseConditionalExpressionInsteadOfIf);
             SetIsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod, UseElementAccessInsteadOfEnumerableMethod);
             SetIsEnabled(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty, UseEmptyStringLiteralInsteadOfStringEmpty);
             SetIsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember, UseExpressionBodiedMember);
@@ -1677,30 +1679,10 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
-        [DisplayName("Replace if-else with assignment")]
-        [Description("Syntax: if statement")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceIfElseWithAssignment
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
         [DisplayName("Replace if-else with switch statement")]
         [Description("Syntax: if statement")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIfElseWithSwitch
-        {
-            get;
-            set;
-        }
-
-        [Category(RefactoringCategory)]
-        [DisplayName("Replace if statement with return statement")]
-        [Description("Syntax: if statement")]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceIfStatementWithReturnStatement
         {
             get;
             set;
@@ -1897,6 +1879,16 @@ namespace Roslynator.VisualStudio
         }
 
         [Category(RefactoringCategory)]
+        [DisplayName("Simplify if")]
+        [Description("Syntax: if statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool SimplifyIf
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
         [DisplayName("Simplify lambda expression")]
         [Description("Syntax: lambda expression with block with single single-line statement\r\nScope: body")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
@@ -2001,6 +1993,26 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: Enum.HasFlag method invocation")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool UseBitwiseOperationInsteadOfCallingHasFlag
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Use coalesce expression instead of if")]
+        [Description("Syntax: if statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool UseCoalesceExpressionInsteadOfIf
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Use conditional expression instead of if")]
+        [Description("Syntax: if statement")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool UseConditionalExpressionInsteadOfIf
         {
             get;
             set;

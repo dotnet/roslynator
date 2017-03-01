@@ -133,8 +133,6 @@
 [Replace for statement with foreach statement](Refactorings.md#replace-for-statement-with-foreach-statement)|x
 [Replace for statement with while statement](Refactorings.md#replace-for-statement-with-while-statement)|x
 [Replace foreach statement with for statement](Refactorings.md#replace-foreach-statement-with-for-statement)|x
-[Replace if statement with return statement](Refactorings.md#replace-if-statement-with-return-statement)|x
-[Replace if\-else with assignment](Refactorings.md#replace-if-else-with-assignment)|x
 [Replace if\-else with switch statement](Refactorings.md#replace-if-else-with-switch-statement)|x
 [Replace increment operator with decrement operator](Refactorings.md#replace-increment-operator-with-decrement-operator)|x
 [Replace interpolated string with interpolation expression](Refactorings.md#replace-interpolated-string-with-interpolation-expression)|x
@@ -155,6 +153,7 @@
 [Replace while statement with do statement](Refactorings.md#replace-while-statement-with-do-statement)|x
 [Replace while statement with for statement](Refactorings.md#replace-while-statement-with-for-statement)|x
 [Reverse for loop](Refactorings.md#reverse-for-loop)|x
+[Simplify if](Refactorings.md#simplify-if)|x
 [Simplify lambda expression](Refactorings.md#simplify-lambda-expression)|x
 [Sort member declarations](Refactorings.md#sort-member-declarations)|x
 [Split attributes](Refactorings.md#split-attributes)|x
@@ -167,6 +166,8 @@
 [Uncomment](Refactorings.md#uncomment)|x
 [Use "" instead of String\.Empty](Refactorings.md#use--instead-of-stringempty)|x
 [Use bitwise operation instead of calling 'HasFlag'](Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag)|x
+[Use coalesce expression instead of if](Refactorings.md#use-coalesce-expression-instead-of-if)|x
+[Use conditional expression instead of if](Refactorings.md#use-conditional-expression-instead-of-if)|x
 [Use element access instead of 'First/Last'ElementAt' method](Refactorings.md#use-element-access-instead-of-firstlastelementat-method)|x
 [Use expression\-bodied member](Refactorings.md#use-expression-bodied-member)|x
 [Use lambda expression instead of anonymous method](Refactorings.md#use-lambda-expression-instead-of-anonymous-method)|x

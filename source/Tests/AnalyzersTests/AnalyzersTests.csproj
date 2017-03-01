@@ -72,6 +72,7 @@
     <Compile Include="ParameterNameDiffersFromBase.cs" />
     <Compile Include="OverridingMethodCannotChangeAccessModifiers.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
+    <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
     <Compile Include="ValueTypeCheckedForNull.cs" />
     <Compile Include="NullCheckOfUnconstrainedTypeParameter.cs" />

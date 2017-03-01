@@ -901,17 +901,7 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="ReplaceIfElseWithAssignment" Title="Replace if-else with assignment" ExtensionVersion="0.99.0">
-    <Syntaxes>
-      <Syntax>if statement</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="ReplaceIfElseWithSwitch" Title="Replace if-else with switch statement" ExtensionVersion="1.0.8">
-    <Syntaxes>
-      <Syntax>if statement</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="ReplaceIfStatementWithReturnStatement" Title="Replace if statement with return statement" ExtensionVersion="1.1.7">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1023,6 +1013,11 @@
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="SimplifyIf" Title="Simplify if" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="SimplifyLambdaExpression" Title="Simplify lambda expression" ExtensionVersion="0.9.80">
     <Syntaxes>
       <Syntax>lambda expression with block with single single-line statement</Syntax>
@@ -1096,6 +1091,16 @@
   <Refactoring Id="UseBitwiseOperationInsteadOfCallingHasFlag" Title="Use bitwise operation instead of calling 'HasFlag'" ExtensionVersion="0.91.0">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="UseCoalesceExpressionInsteadOfIf" Title="Use coalesce expression instead of if" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="UseConditionalExpressionInsteadOfIf" Title="Use conditional expression instead of if" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method" ExtensionVersion="0.9.40">

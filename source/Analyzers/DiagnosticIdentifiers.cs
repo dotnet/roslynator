@@ -178,5 +178,6 @@ namespace Roslynator.CSharp
         public const string UseReadOnlyAutoProperty = Prefix + "1170";
         public const string SimplifyLazilyInitializedProperty = Prefix + "1171";
         public const string UseIsOperatorInsteadOfAsOperator = Prefix + "1172";
+        public const string UseCoalesceExpressionInsteadOfIf = Prefix + "1173";
     }
 }

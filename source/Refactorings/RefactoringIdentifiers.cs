@@ -137,9 +137,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceForEachWithFor = "ReplaceForEachWithFor";
         public const string ReplaceForWithForEach = "ReplaceForWithForEach";
         public const string ReplaceForWithWhile = "ReplaceForWithWhile";
-        public const string ReplaceIfElseWithAssignment = "ReplaceIfElseWithAssignment";
         public const string ReplaceIfElseWithSwitch = "ReplaceIfElseWithSwitch";
-        public const string ReplaceIfStatementWithReturnStatement = "ReplaceIfStatementWithReturnStatement";
         public const string ReplaceIncrementOperatorWithDecrementOperator = "ReplaceIncrementOperatorWithDecrementOperator";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = "ReplaceInterpolatedStringWithInterpolationExpression";
         public const string ReplaceInterpolatedStringWithStringLiteral = "ReplaceInterpolatedStringWithStringLiteral";
@@ -159,6 +157,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceWhileStatementWithDoStatement = "ReplaceWhileStatementWithDoStatement";
         public const string ReplaceWhileWithFor = "ReplaceWhileWithFor";
         public const string ReverseForLoop = "ReverseForLoop";
+        public const string SimplifyIf = "SimplifyIf";
         public const string SimplifyLambdaExpression = "SimplifyLambdaExpression";
         public const string SortMemberDeclarations = "SortMemberDeclarations";
         public const string SplitAttributes = "SplitAttributes";
@@ -170,6 +169,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string SwapStatementsInIfElse = "SwapStatementsInIfElse";
         public const string Uncomment = "Uncomment";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = "UseBitwiseOperationInsteadOfCallingHasFlag";
+        public const string UseCoalesceExpressionInsteadOfIf = "UseCoalesceExpressionInsteadOfIf";
+        public const string UseConditionalExpressionInsteadOfIf = "UseConditionalExpressionInsteadOfIf";
         public const string UseElementAccessInsteadOfEnumerableMethod = "UseElementAccessInsteadOfEnumerableMethod";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = "UseEmptyStringLiteralInsteadOfStringEmpty";
         public const string UseExpressionBodiedMember = "UseExpressionBodiedMember";

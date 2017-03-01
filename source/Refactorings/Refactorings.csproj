@@ -86,11 +86,6 @@
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrWhiteSpaceRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfWithStatementRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfWithStatementRefactoring`1.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfAndReturnWithReturnRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfWithReturnRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfWithYieldReturnRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceExpressionStatementWithIfStatementRefactoring.cs" />
@@ -110,7 +105,6 @@
     <Compile Include="Refactorings\IntroduceAndInitialize\IntroduceAndInitializeFieldRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\RewriterInfo.cs" />
     <Compile Include="Refactorings\ReplaceConditionalExpressionWithExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfWithStatement\ReplaceIfElseWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromWhileToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\SelectedSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\SemicolonTokenRefactoring.cs" />

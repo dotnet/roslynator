@@ -622,12 +622,6 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-foreach-statement-with-for-statement">Replace foreach statement with for statement</a>
     </li>
     <li>
-        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-statement-with-return-statement">Replace if statement with return statement</a>
-    </li>
-    <li>
-        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-else-with-assignment">Replace if-else with assignment</a>
-    </li>
-    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#replace-if-else-with-switch-statement">Replace if-else with switch statement</a>
     </li>
     <li>
@@ -688,6 +682,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#reverse-for-loop">Reverse for loop</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#simplify-if">Simplify if</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#simplify-lambda-expression">Simplify lambda expression</a>
     </li>
     <li>
@@ -722,6 +719,12 @@
     </li>
     <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-bitwise-operation-instead-of-calling-hasflag">Use bitwise operation instead of calling 'HasFlag'</a>
+    </li>
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-coalesce-expression-instead-of-if">Use coalesce expression instead of if</a>
+    </li>
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-conditional-expression-instead-of-if">Use conditional expression instead of if</a>
     </li>
     <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#use-element-access-instead-of-firstlastelementat-method">Use element access instead of 'First/Last'ElementAt' method</a>
