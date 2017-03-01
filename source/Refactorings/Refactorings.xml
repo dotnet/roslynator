@@ -1139,6 +1139,11 @@
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="WrapInElseClause" Title="Wrap in else clause" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="WrapInIfDirective" Title="Wrap in #if directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
