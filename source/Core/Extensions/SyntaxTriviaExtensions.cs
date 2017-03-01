@@ -81,13 +81,5 @@ namespace Roslynator.Extensions
                 return -1;
             }
         }
-
-        public static SyntaxTriviaList ToTriviaList(this IEnumerable<SyntaxTrivia> trivia)
-        {
-            if (trivia == null)
-                throw new ArgumentNullException(nameof(trivia));
-
-            return SyntaxFactory.TriviaList(trivia);
-        }
     }
 }
