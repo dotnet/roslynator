@@ -169,3 +169,7 @@ RCS1167|Overriding member cannot change access modifiers|ErrorFix|x
 RCS1168|Parameter name differs from base name|Maintainability|x
 RCS1169|Mark field as read\-only|Design|x
 RCS1170|Use read\-only auto\-implemented property|Design|x
+RCS1171|Simplify lazily initialized property|Simplification|x
+RCS1172|Use is operator instead of as operator|Simplification|x
+RCS1173|Use coalesce expression instead of if|Simplification|x
+RCS1174|Remove redundant async/await|Redundancy|x

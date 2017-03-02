@@ -1503,4 +1503,40 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="SimplifyLazilyInitializedProperty" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1171</Id>
+    <Title>Simplify lazily initialized property.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseIsOperatorInsteadOfAsOperator" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1172</Id>
+    <Title>Use is operator instead of as operator.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseCoalesceExpressionInsteadOfIf" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1173</Id>
+    <Title>Use coalesce expression instead of if.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="RemoveRedundantAsyncAwait" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+    <Id>RCS1174</Id>
+    <Title>Remove redundant async/await.</Title>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>

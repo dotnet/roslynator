@@ -1,7 +1,7 @@
 ﻿<h3>Introduction</h3>
 
 <p>
-    A collection of 160+ analyzers and 170+ refactorings for C#, powered by Roslyn.
+    A collection of 170+ analyzers and 170+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
@@ -225,6 +225,10 @@
     <li>RCS1168 - Parameter name differs from base name.</li>
     <li>RCS1169 - Mark field as read-only.</li>
     <li>RCS1170 - Use read-only auto-implemented property.</li>
+    <li>RCS1171 - Simplify lazily initialized property.</li>
+    <li>RCS1172 - Use is operator instead of as operator.</li>
+    <li>RCS1173 - Use coalesce expression instead of if.</li>
+    <li>RCS1174 - Remove redundant async/await.</li>
 </ul>
 <h3>List of Refactorings</h3>
 <ul>
