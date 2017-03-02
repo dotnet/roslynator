@@ -1,3 +1,21 @@
+### 1.2.16 (2017-03-02)
+
+#### Analyzers
+
+##### New Analyzers
+
+* SimplifyLazilyInitializedProperty
+* UseIsOperatorInsteadOfAsOperator
+* UseCoalesceOperatorInsteadOfIf
+* RemoveRedundantAsyncAwait
+
+#### Refactorings
+
+##### New Refactorings
+
+* ReplaceHexadecimalLiteralWithDecimalLiteral
+* WrapInElseClause
+
 ### 1.2.15 (2017-02-23)
 
 #### Analyzers
