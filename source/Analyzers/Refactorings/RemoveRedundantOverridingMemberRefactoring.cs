@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -49,6 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                                     ISymbol symbol = context.SemanticModel.GetSymbol(simpleName, context.CancellationToken);
 
                                     if (overriddenMethod.Equals(symbol)
+                                        && CheckDefaultValues(methodSymbol, overriddenMethod)
                                         && !methodDeclaration.ContainsDirectives)
                                     {
                                         context.ReportDiagnostic(
@@ -62,6 +64,35 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool CheckDefaultValues(IMethodSymbol methodSymbol, IMethodSymbol baseMethodSymbol)
+        {
+            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+            ImmutableArray<IParameterSymbol> baseParameters = baseMethodSymbol.Parameters;
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].HasExplicitDefaultValue)
+                {
+                    if (baseParameters[i].HasExplicitDefaultValue)
+                    {
+                        if (!Equals(parameters[i].ExplicitDefaultValue, baseParameters[i].ExplicitDefaultValue))
+                            return false;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (baseParameters[i].HasExplicitDefaultValue)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static ExpressionSyntax GetMethodExpression(MethodDeclarationSyntax methodDeclaration)
