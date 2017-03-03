@@ -78,14 +78,14 @@ namespace Roslynator.CSharp.Refactorings
                         return ((OperatorDeclarationSyntax)node)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ReturnStatement(expression)));
+                            .WithBody(CreateBlock(expression));
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
                         return ((ConversionOperatorDeclarationSyntax)node)
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ReturnStatement(expression)));
+                            .WithBody(CreateBlock(expression));
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings
                         return accessor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ReturnStatement(expression)));
+                            .WithBody(CreateBlock(expression));
                     }
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
@@ -129,11 +129,25 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        private static BlockSyntax CreateBlock(ExpressionSyntax expression)
+        {
+            if (expression.IsKind(SyntaxKind.ThrowExpression))
+            {
+                return Block(ExpressionStatement(expression));
+            }
+            else
+            {
+                return Block(ReturnStatement(expression));
+            }
+        }
+
         private static BlockSyntax CreateBlock(ExpressionSyntax expression, MethodDeclarationSyntax methodDeclaration)
         {
             TypeSyntax returnType = methodDeclaration.ReturnType;
 
-            if (returnType == null || returnType.IsVoid())
+            if (returnType == null
+                || returnType.IsVoid()
+                || expression.IsKind(SyntaxKind.ThrowExpression))
             {
                 return Block(ExpressionStatement(expression));
             }
