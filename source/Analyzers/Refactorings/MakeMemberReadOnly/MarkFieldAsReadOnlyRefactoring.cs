@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
         {
             using (IEnumerator<IFieldSymbol> en = containingType
                 .GetFields()
-                .Where(f => !f.IsConst && !f.IsReadOnly && !f.IsImplicitlyDeclared)
+                .Where(f => !f.IsConst && f.IsPrivate() && !f.IsReadOnly && !f.IsImplicitlyDeclared)
                 .GetEnumerator())
             {
                 if (en.MoveNext())
