@@ -17,9 +17,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateOnEventMethodRefactoring
     {
-        private const string HandlerIdentifier = "handler";
-        private const string EventArgsIdentifier = "e";
-
         public static async Task ComputeRefactoringAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
             SemanticModel semanticModel = null;
@@ -139,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),
                 default(TypeParameterListSyntax),
-                ParameterList(Parameter(eventArgsType, Identifier(EventArgsIdentifier))),
+                ParameterList(Parameter(eventArgsType, Identifier(Identifier.DefaultEventArgsVariableName))),
                 default(SyntaxList<TypeParameterConstraintClauseSyntax>),
                 Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
                 default(ArrowExpressionClauseSyntax));
@@ -158,7 +155,7 @@ namespace Roslynator.CSharp.Refactorings
                             MemberBindingExpression(IdentifierName("Invoke")),
                             ArgumentList(
                                 Argument(ThisExpression()),
-                                Argument(IdentifierName(EventArgsIdentifier))))));
+                                Argument(IdentifierName(Identifier.DefaultEventArgsVariableName))))));
             }
             else
             {
@@ -166,17 +163,17 @@ namespace Roslynator.CSharp.Refactorings
                     VariableDeclaration(
                         eventSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
                         VariableDeclarator(
-                            Identifier(HandlerIdentifier),
+                            Identifier(Identifier.DefaultEventHandlerVariableName),
                             EqualsValueClause(IdentifierName(eventSymbol.Name)))));
 
                 yield return IfStatement(
                     NotEqualsExpression(
-                        IdentifierName(HandlerIdentifier),
+                        IdentifierName(Identifier.DefaultEventHandlerVariableName),
                         NullLiteralExpression()),
                     ExpressionStatement(
                         InvocationExpression(
-                            IdentifierName(HandlerIdentifier),
-                            ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(EventArgsIdentifier))))));
+                            IdentifierName(Identifier.DefaultEventHandlerVariableName),
+                            ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(Identifier.DefaultEventArgsVariableName))))));
             }
         }
     }
