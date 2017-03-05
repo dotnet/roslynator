@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                     if (!string.Equals(oldName, newName, StringComparison.Ordinal))
                                     {
-                                        newName = Identifier.EnsureUniqueLocalName(newName, variable, semanticModel, context.CancellationToken);
+                                        newName = Identifier.EnsureUniqueLocalName(newName, variable.SpanStart, semanticModel, context.CancellationToken);
 
                                         context.RegisterRefactoring(
                                             $"Rename '{oldName}' to '{newName}'",

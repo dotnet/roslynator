@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!string.IsNullOrEmpty(newName)
                             && !string.Equals(newName, oldName, StringComparison.Ordinal))
                         {
-                            newName = Identifier.EnsureUniqueLocalName(newName, forEachStatement, semanticModel, context.CancellationToken);
+                            newName = Identifier.EnsureUniqueLocalName(newName, forEachStatement.SpanStart, semanticModel, context.CancellationToken);
 
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
