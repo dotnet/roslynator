@@ -46,6 +46,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
             yield break;
         }
 
+        public int GetValues5()
+        {
+            throw new Exception();
+        }
+
         private interface IInterfaceName
         {
             string MethodName();

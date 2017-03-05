@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -23,37 +22,49 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     BlockSyntax body = methodDeclaration.Body;
 
-                    if (body?.Statements.Count > 0
-                        && !methodDeclaration.IsIterator())
+                    if (body != null)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        SyntaxList<StatementSyntax> statements = body.Statements;
 
-                        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-                        if (methodSymbol?.IsOverride == false
-                            && !methodSymbol.ImplementsInterfaceMember()
-                            && !IsAsyncMethodThatReturnsTask(methodSymbol, semanticModel))
+                        if (statements.Any()
+                            && !ContainsOnlyThrowStatement(statements)
+                            && !methodDeclaration.IsIterator())
                         {
-                            ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (analysis.Succeeded
-                                && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
+                            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                            if (methodSymbol?.IsOverride == false
+                                && !methodSymbol.ImplementsInterfaceMember()
+                                && !IsAsyncMethodThatReturnsTask(methodSymbol, semanticModel))
                             {
-                                context.RegisterRefactoring(
-                                    "Change return type to 'void'",
-                                    cancellationToken =>
-                                    {
-                                        return ChangeTypeRefactoring.ChangeTypeAsync(
-                                            context.Document,
-                                            returnType,
-                                            CSharpFactory.VoidType(),
-                                            cancellationToken);
-                                    });
+                                ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
+
+                                if (analysis.Succeeded
+                                    && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
+                                {
+                                    context.RegisterRefactoring(
+                                        "Change return type to 'void'",
+                                        cancellationToken =>
+                                        {
+                                            return ChangeTypeRefactoring.ChangeTypeAsync(
+                                                context.Document,
+                                                returnType,
+                                                CSharpFactory.VoidType(),
+                                                cancellationToken);
+                                        });
+                                }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private static bool ContainsOnlyThrowStatement(SyntaxList<StatementSyntax> statements)
+        {
+            return statements.Count == 1
+                && statements[0].IsKind(SyntaxKind.ThrowStatement);
         }
 
         private static bool IsAsyncMethodThatReturnsTask(IMethodSymbol methodSymbol, SemanticModel semanticModel)
