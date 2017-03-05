@@ -124,7 +124,7 @@
     <Compile Include="RemoveRedundantDisposeOrCloseCall.cs" />
     <Compile Include="RemoveRedundantEmptyLine.cs" />
     <Compile Include="RemoveRedundantFieldInitialization.cs" />
-    <Compile Include="RemoveRedundantOverridenMember.cs" />
+    <Compile Include="RemoveRedundantOverridingMember.cs" />
     <Compile Include="RemoveRedundantSealedModifier.cs" />
     <Compile Include="RemoveRedundantStringToCharArrayCall.cs" />
     <Compile Include="RemoveRedundantToStringCall.cs" />
