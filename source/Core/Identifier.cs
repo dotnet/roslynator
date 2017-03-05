@@ -52,31 +52,28 @@ namespace Roslynator
 
         public static string EnsureUniqueLocalName(
             string baseName,
-            SyntaxNode node,
+            int position,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            SyntaxNode container = FindContainer(node, semanticModel, cancellationToken);
+            SyntaxNode container = FindContainer(position, semanticModel, cancellationToken);
 
             HashSet<ISymbol> containerSymbols = GetContainerSymbols(container, semanticModel, cancellationToken);
 
             IEnumerable<string> reservedNames = semanticModel
-                .LookupSymbols(node.SpanStart)
+                .LookupSymbols(position)
                 .Select(f => f.Name)
                 .Concat(containerSymbols.Select(f => f.Name));
 
             return EnsureUniqueName(baseName, reservedNames);
         }
 
-        private static SyntaxNode FindContainer(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static SyntaxNode FindContainer(int position, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(node.SpanStart, cancellationToken);
+            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
             ImmutableArray<SyntaxReference> syntaxReferences = enclosingSymbol.DeclaringSyntaxReferences;
 

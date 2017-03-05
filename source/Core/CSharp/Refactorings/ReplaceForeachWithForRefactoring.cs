@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
 
-            string identifier = Identifier.EnsureUniqueLocalName("i", forEachStatement.Statement, semanticModel, cancellationToken);
+            string identifier = Identifier.EnsureUniqueLocalName("i", forEachStatement.Statement.SpanStart, semanticModel, cancellationToken);
 
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
