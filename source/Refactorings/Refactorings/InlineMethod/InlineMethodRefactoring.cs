@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -44,11 +42,11 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                             {
                                 context.RegisterRefactoring(
                                     "Inline method",
-                                    c => InlineMethodAsync(context.Document, invocation, expression, parameterInfos.ToArray(), c));
+                                    c => InlineMethodAsync(context.Document, invocation, expression, methodSymbol, parameterInfos.ToArray(), semanticModel, c));
 
                                 context.RegisterRefactoring(
                                     "Inline and remove method",
-                                    c => InlineAndRemoveMethodAsync(context.Document, invocation, method, expression, parameterInfos.ToArray(), c));
+                                    c => InlineAndRemoveMethodAsync(context.Document, invocation, method, expression, methodSymbol, parameterInfos.ToArray(), semanticModel, c));
                             }
                         }
                         else if (methodSymbol.ReturnsVoid
@@ -66,11 +64,11 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                                     context.RegisterRefactoring(
                                         "Inline method",
-                                        c => InlineMethodAsync(context.Document, expressionStatement, statements, parameterInfos.ToArray(), c));
+                                        c => InlineMethodAsync(context.Document, expressionStatement, statements, methodSymbol, parameterInfos.ToArray(), semanticModel, c));
 
                                     context.RegisterRefactoring(
                                         "Inline and remove method",
-                                        c => InlineAndRemoveMethodAsync(context.Document, expressionStatement, method, statements, parameterInfos.ToArray(), c));
+                                        c => InlineAndRemoveMethodAsync(context.Document, expressionStatement, method, statements, methodSymbol, parameterInfos.ToArray(), semanticModel, c));
                                 }
                             }
                         }
@@ -199,19 +197,23 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
         private static ExpressionSyntax GetExpression(MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration.Body != null)
+            BlockSyntax body = methodDeclaration.Body;
+
+            if (body != null)
             {
-                SyntaxList<StatementSyntax> statements = methodDeclaration.Body.Statements;
+                SyntaxList<StatementSyntax> statements = body.Statements;
 
                 if (statements.Count == 1)
                 {
                     StatementSyntax statement = statements[0];
 
-                    if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        return ((ReturnStatementSyntax)statement).Expression;
-
-                    if (statement.IsKind(SyntaxKind.ExpressionStatement))
-                        return ((ExpressionStatementSyntax)statement).Expression;
+                    switch (statement.Kind())
+                    {
+                        case SyntaxKind.ReturnStatement:
+                            return ((ReturnStatementSyntax)statement).Expression;
+                        case SyntaxKind.ExpressionStatement:
+                            return ((ExpressionStatementSyntax)statement).Expression;
+                    }
                 }
 
                 return null;
@@ -220,49 +222,54 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             return methodDeclaration.ExpressionBody?.Expression;
         }
 
-        private static async Task<Document> InlineMethodAsync(
+        private static Task<Document> InlineMethodAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             ExpressionSyntax expression,
+            IMethodSymbol methodSymbol,
             ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(
-                parameterInfos,
+            ExpressionSyntax newExpression = RewriteExpression(
                 expression,
-                document.Project.Solution,
-                cancellationToken).ConfigureAwait(false);
+                methodSymbol,
+                parameterInfos,
+                semanticModel,
+                cancellationToken);
 
-            return await document.ReplaceNodeAsync(invocation, expression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, newExpression, cancellationToken);
         }
 
-        private static async Task<Document> InlineMethodAsync(
+        private static Task<Document> InlineMethodAsync(
             Document document,
             ExpressionStatementSyntax expressionStatement,
             StatementSyntax[] statements,
+            IMethodSymbol methodSymbol,
             ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            statements = await ReplaceParameterExpressionWithArgumentExpressionAsync(
-                parameterInfos,
+            statements = RewriteStatements(
                 statements,
-                document.Project.Solution,
-                cancellationToken).ConfigureAwait(false);
+                methodSymbol,
+                parameterInfos,
+                semanticModel,
+                cancellationToken);
 
             statements[0] = statements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-            if (expressionStatement.IsParentKind(SyntaxKind.Block))
+            StatementContainer container;
+            if (StatementContainer.TryCreate(expressionStatement, out container))
             {
-                var block = (BlockSyntax)expressionStatement.Parent;
+                SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, statements));
 
-                BlockSyntax newBlock = block.WithStatements(block.Statements.ReplaceRange(expressionStatement, statements));
-
-                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
             }
             else
             {
-                return await document.ReplaceNodeAsync(expressionStatement, Block(statements), cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(expressionStatement, Block(statements), cancellationToken);
             }
         }
 
@@ -271,36 +278,32 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             InvocationExpressionSyntax invocation,
             MethodDeclarationSyntax methodDeclaration,
             ExpressionSyntax expression,
+            IMethodSymbol methodSymbol,
             ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (invocation.SyntaxTree.Equals(methodDeclaration.SyntaxTree))
             {
                 DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
-                Solution solution = document.Project.Solution;
+                ExpressionSyntax newExpression = RewriteExpression(expression, methodSymbol, parameterInfos, semanticModel, cancellationToken);
 
-                expression = await ReplaceParameterExpressionWithArgumentExpressionAsync(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
-
-                editor.ReplaceNode(invocation, expression);
+                editor.ReplaceNode(invocation, newExpression);
 
                 editor.RemoveNode(methodDeclaration);
 
-                document = editor.GetChangedDocument();
-
-                return document.Project.Solution;
+                return editor.GetChangedDocument().Solution();
             }
             else
             {
-                Solution solution = document.Project.Solution;
+                Document newDocument = await InlineMethodAsync(document, invocation, expression, methodSymbol, parameterInfos, semanticModel, cancellationToken).ConfigureAwait(false);
 
-                document = await InlineMethodAsync(document, invocation, expression, parameterInfos, cancellationToken).ConfigureAwait(false);
+                DocumentId documentId = document.Solution().GetDocumentId(methodDeclaration.SyntaxTree);
 
-                DocumentId documentId = solution.GetDocumentId(methodDeclaration.SyntaxTree);
+                newDocument = await Remover.RemoveMemberAsync(newDocument.Solution().GetDocument(documentId), methodDeclaration, cancellationToken).ConfigureAwait(false);
 
-                solution = document.Project.Solution;
-
-                return await RemoveMethodAsync(solution.GetDocument(documentId), methodDeclaration, cancellationToken).ConfigureAwait(false);
+                return newDocument.Solution();
             }
         }
 
@@ -309,31 +312,31 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             ExpressionStatementSyntax expressionStatement,
             MethodDeclarationSyntax methodDeclaration,
             StatementSyntax[] statements,
+            IMethodSymbol methodSymbol,
             ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (expressionStatement.SyntaxTree.Equals(methodDeclaration.SyntaxTree))
             {
                 DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
-                Solution solution = document.Project.Solution;
-
-                StatementSyntax[] newStatements = await ReplaceParameterExpressionWithArgumentExpressionAsync(
-                    parameterInfos,
+                StatementSyntax[] newStatements = RewriteStatements(
                     statements,
-                    solution,
-                    cancellationToken).ConfigureAwait(false);
+                    methodSymbol,
+                    parameterInfos,
+                    semanticModel,
+                    cancellationToken);
 
                 newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
                 newStatements[statements.Length - 1] = newStatements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-                if (expressionStatement.Parent.IsKind(SyntaxKind.Block))
+                StatementContainer container;
+                if (StatementContainer.TryCreate(expressionStatement, out container))
                 {
-                    var block = (BlockSyntax)expressionStatement.Parent;
+                    SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, newStatements));
 
-                    BlockSyntax newBlock = block.WithStatements(block.Statements.ReplaceRange(expressionStatement, newStatements));
-
-                    editor.ReplaceNode(block, newBlock);
+                    editor.ReplaceNode(container.Node, newNode);
                 }
                 else
                 {
@@ -342,45 +345,28 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 editor.RemoveNode(methodDeclaration);
 
-                document = editor.GetChangedDocument();
-
-                return document.Project.Solution;
+                return editor.GetChangedDocument().Solution();
             }
             else
             {
-                Solution solution = document.Project.Solution;
+                Document newDocument = await InlineMethodAsync(document, expressionStatement, statements, methodSymbol, parameterInfos, semanticModel, cancellationToken).ConfigureAwait(false);
 
-                document = await InlineMethodAsync(document, expressionStatement, statements, parameterInfos, cancellationToken).ConfigureAwait(false);
+                DocumentId documentId = document.Solution().GetDocumentId(methodDeclaration.SyntaxTree);
 
-                DocumentId documentId = solution.GetDocumentId(methodDeclaration.SyntaxTree);
+                newDocument = await Remover.RemoveMemberAsync(newDocument.Solution().GetDocument(documentId), methodDeclaration, cancellationToken).ConfigureAwait(false);
 
-                solution = document.Project.Solution;
-
-                return await RemoveMethodAsync(solution.GetDocument(documentId), methodDeclaration, cancellationToken).ConfigureAwait(false);
+                return newDocument.Solution();
             }
         }
 
-        private static async Task<Solution> RemoveMethodAsync(
-            Document document,
-            MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            root = root.RemoveNode(methodDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-
-            document = document.WithSyntaxRoot(root);
-
-            return document.Project.Solution;
-        }
-
-        private static async Task<ExpressionSyntax> ReplaceParameterExpressionWithArgumentExpressionAsync(
-            ParameterInfo[] parameterInfos,
+        private static ExpressionSyntax RewriteExpression(
             ExpressionSyntax expression,
-            Solution solution,
+            IMethodSymbol methodSymbol,
+            ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newExpression = await ReplaceParameterExpressionWithArgumentExpressionAsync<ExpressionSyntax>(parameterInfos, expression, solution, cancellationToken).ConfigureAwait(false);
+            ExpressionSyntax newExpression = RewriteNode(expression, methodSymbol, parameterInfos, semanticModel, cancellationToken);
 
             return newExpression
                 .WithoutTrivia()
@@ -389,57 +375,79 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 .WithFormatterAnnotation();
         }
 
-        private static async Task<StatementSyntax[]> ReplaceParameterExpressionWithArgumentExpressionAsync(
-            ParameterInfo[] parameterInfos,
+        private static StatementSyntax[] RewriteStatements(
             StatementSyntax[] statements,
-            Solution solution,
+            IMethodSymbol methodSymbol,
+            ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var newStatements = new List<StatementSyntax>();
+            var newStatements = new StatementSyntax[statements.Length];
 
             for (int i = 0; i < statements.Length; i++)
             {
-                StatementSyntax newStatement = await ReplaceParameterExpressionWithArgumentExpressionAsync(
-                    parameterInfos,
+                StatementSyntax newStatement = RewriteNode(
                     statements[i],
-                    solution,
-                    cancellationToken).ConfigureAwait(false);
+                    methodSymbol,
+                    parameterInfos,
+                    semanticModel,
+                    cancellationToken);
 
-                newStatements.Add(newStatement.WithFormatterAnnotation());
+                newStatements[i] = newStatement.WithFormatterAnnotation();
             }
 
-            return newStatements.ToArray();
+            return newStatements;
         }
 
-        private static async Task<TNode> ReplaceParameterExpressionWithArgumentExpressionAsync<TNode>(
-            ParameterInfo[] parameterInfos,
+        private static TNode RewriteNode<TNode>(
             TNode node,
-            Solution solution,
+            IMethodSymbol methodSymbol,
+            ParameterInfo[] parameterInfos,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken) where TNode : SyntaxNode
         {
             var dic = new Dictionary<IdentifierNameSyntax, ExpressionSyntax>();
 
-            TextSpan expressionSpan = node.Span;
-
-            foreach (ParameterInfo parameterInfo in parameterInfos)
+            foreach (SyntaxNode descendant in node.DescendantNodes(node.Span))
             {
-                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(parameterInfo.ParameterSymbol, solution, cancellationToken).ConfigureAwait(false);
-
-                foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
+                if (descendant.IsKind(SyntaxKind.IdentifierName))
                 {
-                    foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
+                    var identifierName = (IdentifierNameSyntax)descendant;
+
+                    ISymbol symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
+
+                    if (symbol != null)
                     {
-                        if (!referenceLocation.IsImplicit)
+                        if (symbol.IsParameter())
                         {
-                            TextSpan span = referenceLocation.Location.SourceSpan;
-
-                            if (expressionSpan.Contains(span))
+                            for (int i = 0; i < parameterInfos.Length; i++)
                             {
-                                IdentifierNameSyntax identifierName = node
-                                   .FindNode(span, getInnermostNodeForTie: true)
-                                   .FirstAncestorOrSelf<IdentifierNameSyntax>();
+                                if (parameterInfos[i].ParameterSymbol.Equals(symbol))
+                                {
+                                    dic.Add(identifierName, parameterInfos[i].Expression);
+                                    break;
+                                }
+                            }
+                        }
+                        else if (symbol.IsStatic
+                            && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                        {
+                            INamedTypeSymbol containingType = symbol.ContainingType;
 
-                                dic.Add(identifierName, parameterInfo.Expression);
+                            if (containingType != null)
+                            {
+                                if (containingType.Equals(methodSymbol.ContainingType))
+                                {
+                                    dic.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
+                                }
+                                else
+                                {
+                                    foreach (INamedTypeSymbol baseType in methodSymbol.ContainingType.BaseTypes())
+                                    {
+                                        dic.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(baseType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }

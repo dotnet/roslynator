@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+#pragma warning disable RCS1138, RCS1141
+
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public partial class InlineMethodRefactoring
@@ -33,6 +35,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
             x = z.ExtensionMethod2(x, y).ExtensionMethod2(x, y);
 
             z.InstanceMethod(x, y);
+
+            switch (true)
+            {
+                case true:
+                    Entity.VoidMethod(x, y);
+                    break;
+            }
         }
 
         /// <summary>
@@ -67,6 +76,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
             public static void VoidMethod(Entity p1, Entity p2)
             {
 #if DEBUG
+                Entity.Method(p1, p2);
+                Method(p1, p2);
                 var a = p1 + p2 + p2;
                 var b = p1 + p2 + p2;
             }

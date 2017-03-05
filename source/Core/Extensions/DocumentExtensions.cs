@@ -362,5 +362,10 @@ namespace Roslynator.Extensions
 
             return document.WithSyntaxRoot(newRoot);
         }
+
+        internal static Solution Solution(this Document document)
+        {
+            return document.Project.Solution;
+        }
     }
 }
