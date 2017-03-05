@@ -180,5 +180,6 @@ namespace Roslynator.CSharp
         public const string UseIsOperatorInsteadOfAsOperator = Prefix + "1172";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "1173";
         public const string RemoveRedundantAsyncAwait = Prefix + "1174";
+        public const string UnusedThisParameter = Prefix + "1175";
     }
 }

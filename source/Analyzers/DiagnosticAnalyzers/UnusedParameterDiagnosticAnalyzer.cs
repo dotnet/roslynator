@@ -14,7 +14,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnusedParameter); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UnusedParameter,
+                    DiagnosticDescriptors.UnusedThisParameter);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
