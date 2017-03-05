@@ -17,6 +17,15 @@ namespace Roslynator
 {
     public static class Identifier
     {
+        public const string DefaultVariableName = "x";
+        public const string DefaultForVariableName = "i";
+        public const string DefaultForEachVariableName = "item";
+        public const string DefaultEventArgsVariableName = "e";
+        public const string DefaultEventHandlerVariableName = "handler";
+        public const string DefaultNamespaceName = "Namespace";
+        public const string DefaultEnumMemberName = "EnumMember";
+        public const string DefaultTypeParameterName = "T";
+
         private static StringComparer OrdinalComparer { get; } = StringComparer.Ordinal;
 
         public static string EnsureUniqueMemberName(

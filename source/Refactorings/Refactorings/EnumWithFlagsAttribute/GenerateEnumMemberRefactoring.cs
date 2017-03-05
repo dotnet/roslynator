@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             object value,
             CancellationToken cancellationToken)
         {
-            EnumMemberDeclarationSyntax newEnumMember = GenerateEnumHelper.CreateEnumMember(enumSymbol, "EnumMember",value);
+            EnumMemberDeclarationSyntax newEnumMember = GenerateEnumHelper.CreateEnumMember(enumSymbol, Identifier.DefaultEnumMemberName, value);
 
             EnumDeclarationSyntax newNode = enumDeclaration.AddMembers(newEnumMember);
 
