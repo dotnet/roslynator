@@ -35,15 +35,17 @@ namespace Roslynator.CSharp
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            if (member.Parent.IsKind(SyntaxKind.CompilationUnit))
+            SyntaxNode parent = member.Parent;
+
+            if (parent?.IsKind(SyntaxKind.CompilationUnit) == true)
             {
-                var compilationUnit = (CompilationUnitSyntax)member.Parent;
+                var compilationUnit = (CompilationUnitSyntax)parent;
 
                 return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                var parentMember = (MemberDeclarationSyntax)member.Parent;
+                var parentMember = (MemberDeclarationSyntax)parent;
 
                 if (parentMember != null)
                 {
