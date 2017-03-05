@@ -8,6 +8,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
 #pragma warning disable RCS1100, RCS1016, RCS1023, CS0168
     public static class UnusedParameter
     {
+        private static void ExtensionMethod(this Foo foo, object parameter)
+        {
+        }
+
         private interface IFoo
         {
             void Bar(object parameter);
@@ -23,7 +27,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             private void EventHandlerMethod(object sender, EventArgs args) { }
 
-            private void EventHandlerMethod2(object sender, CancelEventArgs args) { }
+            private void EventHandlerMethod2(object sender, ConsoleCancelEventArgs args) { }
 
             public void Bar4(object parameter)
             {

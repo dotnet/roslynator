@@ -1631,5 +1631,15 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwaitFadeOut = RemoveRedundantAsyncAwait.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor UnusedThisParameter = new DiagnosticDescriptor(
+        id: DiagnosticIdentifiers.UnusedThisParameter,
+        title: "Unused this parameter.",
+        messageFormat: "Unused this parameter '{0}'.",
+        category: DiagnosticCategories.Redundancy,
+        defaultSeverity: DiagnosticSeverity.Info,
+        isEnabledByDefault: true,
+        customTags: WellKnownDiagnosticTags.Unnecessary
+    );
     }
 }

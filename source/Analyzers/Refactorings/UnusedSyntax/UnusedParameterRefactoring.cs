@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
             foreach (ParameterSyntax parameter in UnusedConstructorParameterRefactoring.Instance.FindUnusedSyntax(constructorDeclaration, context.SemanticModel, context.CancellationToken))
-                ReportDiagnostic(context, parameter);
+                ReportUnusedParameter(context, parameter);
         }
 
         public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
@@ -32,7 +32,16 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 && !UnusedMethodParameterRefactoring.IsReferencedAsMethodGroup(methodDeclaration, context.SemanticModel, context.CancellationToken))
             {
                 foreach (ParameterSyntax parameter in unusedParameters)
-                    ReportDiagnostic(context, parameter);
+                {
+                    if (parameter.IsThis())
+                    {
+                        ReportUnusedThisParameter(context, parameter);
+                    }
+                    else
+                    {
+                        ReportUnusedParameter(context, parameter);
+                    }
+                }
             }
         }
 
@@ -41,14 +50,22 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             foreach (ParameterSyntax parameter in UnusedIndexerParameterRefactoring.Instance.FindUnusedSyntax(indexerDeclaration, context.SemanticModel, context.CancellationToken))
-                ReportDiagnostic(context, parameter);
+                ReportUnusedParameter(context, parameter);
         }
 
-        private static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            ParameterSyntax parameter)
+        private static void ReportUnusedParameter(SyntaxNodeAnalysisContext context, ParameterSyntax parameter)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.UnusedParameter, parameter, parameter.Identifier.ValueText);
+            ReportDiagnostic(context, DiagnosticDescriptors.UnusedParameter, parameter);
+        }
+
+        private static void ReportUnusedThisParameter(SyntaxNodeAnalysisContext context, ParameterSyntax parameter)
+        {
+            ReportDiagnostic(context, DiagnosticDescriptors.UnusedThisParameter, parameter);
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ParameterSyntax parameter)
+        {
+            context.ReportDiagnostic(descriptor, parameter, parameter.Identifier.ValueText);
         }
 
         public static Task<Document> RefactorAsync(

@@ -1263,6 +1263,11 @@ namespace Roslynator.CSharp.Extensions
             }
         }
 
+        public static bool IsThis(this ParameterSyntax parameter)
+        {
+            return parameter?.Modifiers.Contains(SyntaxKind.ThisKeyword) == true;
+        }
+
         public static PropertyDeclarationSyntax WithAttributeLists(
             this PropertyDeclarationSyntax propertyDeclaration,
             params AttributeListSyntax[] attributeLists)
