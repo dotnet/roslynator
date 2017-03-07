@@ -1403,6 +1403,11 @@ namespace Roslynator.CSharp.Extensions
             return switchSection.WithStatements(default(SyntaxList<StatementSyntax>));
         }
 
+        public static bool IsDefault(this SwitchSectionSyntax switchSection)
+        {
+            return switchSection.Labels.Any(f => f.IsKind(SyntaxKind.DefaultSwitchLabel));
+        }
+
         public static int LastIndexOf<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
         {
             return list.LastIndexOf(f => f.IsKind(kind));
