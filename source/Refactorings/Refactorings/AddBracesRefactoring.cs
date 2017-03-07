@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                     IfStatementSyntax topmostIf = GetTopmostIf(statement);
 
                     if (topmostIf?.Else != null
-                        && GetEmbeddedStatements(topmostIf).Any(f => f != statement))
+                        && IfElseChain.GetEmbeddedStatements(topmostIf).Any(f => f != statement))
                     {
                         context.RegisterRefactoring(
                             "Add braces to if-else",
@@ -58,38 +57,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             return context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(statement)
                 && EmbeddedStatement.IsEmbeddedStatement(statement);
-        }
-
-        private static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax topmostIf)
-        {
-            foreach (SyntaxNode node in IfElseChain.GetChain(topmostIf))
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.IfStatement:
-                        {
-                            var ifStatement = (IfStatementSyntax)node;
-
-                            StatementSyntax statement = ifStatement.Statement;
-
-                            if (statement?.IsKind(SyntaxKind.Block) == false)
-                                yield return statement;
-
-                            break;
-                        }
-                    case SyntaxKind.ElseClause:
-                        {
-                            var elseClause = (ElseClauseSyntax)node;
-
-                            StatementSyntax statement = elseClause.Statement;
-
-                            if (statement?.IsKind(SyntaxKind.Block) == false)
-                                yield return statement;
-
-                            break;
-                        }
-                }
-            }
         }
 
         private static IfStatementSyntax GetTopmostIf(StatementSyntax statement)

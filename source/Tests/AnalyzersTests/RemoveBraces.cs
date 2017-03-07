@@ -3,70 +3,94 @@
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable RCS1126
+
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class RemoveBraces
     {
-        private static void Foo(object x, object y)
+        private static void Foo()
         {
             bool f = false;
             var items = new List<object>();
 
             if (f)
             {
-                Foo(x, y);
+                Foo();
             }
 
             if (f)
             {
-                Foo(x, y);
+                Foo();
             }
             else
             {
-                Foo(x, y);
+                Foo();
+            }
+
+            if (f)
+            {
+                Foo();
+            }
+            else if (f)
+            {
+                Foo();
+            }
+
+            if (f)
+            {
+                Foo();
+            }
+            else if (f)
+            {
+                Foo();
+            }
+            else
+            {
+                Foo();
             }
 
             foreach (object item in items)
             {
-                Foo(x, y);
+                Foo();
             }
 
             foreach ((string, string) item in Tuple.Values)
             {
-                Foo(x, y);
+                Foo();
             }
 
             for (int i = 0; i < items.Count; i++)
             {
-                Foo(x, y);
+                Foo();
             }
 
             using ((IDisposable)null)
             {
-                Foo(x, y);
+                Foo();
             }
 
             while (f)
             {
-                Foo(x, y);
+                Foo();
             }
 
             do
             {
-                Foo(x, y);
+                Foo();
             }
             while (f);
 
             lock (null)
             {
-                Foo(x, y);
+                Foo();
             }
 
             unsafe
             {
                 fixed ()
                 {
-                    Foo(x, y);
+                    Foo();
                 }
             }
         }

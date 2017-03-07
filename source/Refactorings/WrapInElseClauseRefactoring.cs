@@ -38,12 +38,13 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 var ifStatement = (IfStatementSyntax)prevStatement;
 
-                                if (!IfElseChain.GetChain(ifStatement)
-                                        .Last()
-                                        .IsKind(SyntaxKind.ElseClause)
-                                    && IfElseChain.GetChain(ifStatement)
-                                        .Where(f => f.IsKind(SyntaxKind.IfStatement))
-                                        .All(f => IsLastStatementReturnStatement((IfStatementSyntax)f)))
+                                IfElseChain chain = IfElseChain.Create(ifStatement);
+
+                                if (chain.EndsWithIf
+                                    && chain
+                                        .Nodes
+                                        .Where(f => f.IsIf)
+                                        .All(f => IsLastStatementReturnStatement(f)))
                                 {
                                     context.RegisterRefactoring(
                                         "Wrap in else",

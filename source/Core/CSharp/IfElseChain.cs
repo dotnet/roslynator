@@ -12,23 +12,63 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp
 {
-    public class IfElseChain
+    public struct IfElseChain : IEquatable<IfElseChain>
     {
-        public ImmutableArray<SyntaxNode> Nodes { get; }
+        public ImmutableArray<IfStatementOrElseClause> Nodes { get; }
 
         private IfElseChain(IfStatementSyntax ifStatement)
         {
-            Nodes = ImmutableArray.CreateRange(GetChain(ifStatement));
+            ImmutableArray<IfStatementOrElseClause>.Builder builder = ImmutableArray.CreateBuilder<IfStatementOrElseClause>();
+
+            builder.Add(ifStatement);
+
+            while (true)
+            {
+                ElseClauseSyntax elseClause = ifStatement.Else;
+
+                if (elseClause != null)
+                {
+                    StatementSyntax statement = elseClause?.Statement;
+
+                    if (statement?.IsKind(SyntaxKind.IfStatement) == true)
+                    {
+                        ifStatement = (IfStatementSyntax)statement;
+
+                        builder.Add(ifStatement);
+                    }
+                    else
+                    {
+                        builder.Add(elseClause);
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            Nodes = builder.ToImmutableArray();
+        }
+
+        public bool IsDefault
+        {
+            get { return Nodes.IsDefault; }
+        }
+
+        public IfStatementSyntax TopmostIf
+        {
+            get { return Nodes[0].AsIf(); }
         }
 
         public bool EndsWithIf
         {
-            get { return Nodes.Last().IsKind(SyntaxKind.IfStatement); }
+            get { return Nodes.Last().IsIf; }
         }
 
         public bool EndsWithElse
         {
-            get { return Nodes.Last().IsKind(SyntaxKind.ElseClause); }
+            get { return Nodes.Last().IsElse; }
         }
 
         public bool IsSimpleIf
@@ -41,8 +81,8 @@ namespace Roslynator.CSharp
             get
             {
                 return Nodes.Length == 2
-                    && Nodes[0].IsKind(SyntaxKind.IfStatement)
-                    && Nodes[1].IsKind(SyntaxKind.ElseClause);
+                    && Nodes[0].IsIf
+                    && Nodes[1].IsElse;
             }
         }
 
@@ -54,31 +94,109 @@ namespace Roslynator.CSharp
             return new IfElseChain(ifStatement);
         }
 
-        public static IEnumerable<SyntaxNode> GetChain(IfStatementSyntax ifStatement)
+        public bool Equals(IfElseChain other)
+        {
+            if (IsDefault)
+            {
+                return other.IsDefault;
+            }
+            else
+            {
+                return !other.IsDefault
+                    || TopmostIf == other.TopmostIf;
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is IfElseChain
+                && Equals((IfElseChain)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            if (IsDefault)
+            {
+                return 0;
+            }
+            else
+            {
+                return TopmostIf.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(IfElseChain left, IfElseChain right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(IfElseChain left, IfElseChain right)
+        {
+            return !left.Equals(right);
+        }
+
+        public static IEnumerable<IfStatementOrElseClause> GetChain(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            ifStatement = GetTopmostIf(ifStatement);
+            yield return ifStatement;
 
             while (true)
             {
-                yield return ifStatement;
+                var elseClause = ifStatement.Else;
 
-                IfStatementSyntax tmp = GetNextIf(ifStatement);
-
-                if (tmp != null)
+                if (elseClause != null)
                 {
-                    ifStatement = tmp;
+                    StatementSyntax statement = elseClause.Statement;
+
+                    if (statement?.IsKind(SyntaxKind.IfStatement) == true)
+                    {
+                        ifStatement = (IfStatementSyntax)statement;
+                        yield return ifStatement;
+                    }
+                    else
+                    {
+                        yield return elseClause;
+                        yield break;
+                    }
                 }
                 else
                 {
-                    break;
+                    yield break;
                 }
             }
+        }
 
-            if (ifStatement.Else != null)
-                yield return ifStatement.Else;
+        internal static IEnumerable<IfStatementSyntax> GetIfStatements(IfStatementSyntax ifStatement)
+        {
+            foreach (IfStatementOrElseClause ifOrElse in GetChain(ifStatement))
+            {
+                if (ifOrElse.IsIf)
+                    yield return ifOrElse.AsIf();
+            }
+        }
+
+        internal static IEnumerable<BlockSyntax> GetBlockStatements(IfStatementSyntax ifStatement)
+        {
+            foreach (IfStatementOrElseClause ifOrElse in GetChain(ifStatement))
+            {
+                StatementSyntax statement = ifOrElse.Statement;
+
+                if (statement?.IsKind(SyntaxKind.Block) == true)
+                    yield return (BlockSyntax)statement;
+            }
+        }
+
+        internal static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax ifStatement)
+        {
+            foreach (IfStatementOrElseClause ifOrElse in GetChain(ifStatement))
+            {
+                StatementSyntax statement = ifOrElse.Statement;
+
+                if (statement?.IsKind(SyntaxKind.Block) == false)
+                    yield return statement;
+            }
         }
 
         public static IfStatementSyntax GetTopmostIf(ElseClauseSyntax elseClause)
@@ -144,8 +262,10 @@ namespace Roslynator.CSharp
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            if (ifStatement.Else?.Statement?.IsKind(SyntaxKind.IfStatement) == true)
-                return (IfStatementSyntax)ifStatement.Else.Statement;
+            StatementSyntax statement = ifStatement.Else?.Statement;
+
+            if (statement?.IsKind(SyntaxKind.IfStatement) == true)
+                return (IfStatementSyntax)statement;
 
             return null;
         }
@@ -155,10 +275,14 @@ namespace Roslynator.CSharp
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
-            if (ifStatement.IsParentKind(SyntaxKind.ElseClause)
-                && ifStatement.Parent.IsParentKind(SyntaxKind.IfStatement))
+            SyntaxNode parent = ifStatement.Parent;
+
+            if (parent?.IsKind(SyntaxKind.ElseClause) == true)
             {
-                return (IfStatementSyntax)ifStatement.Parent.Parent;
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.IfStatement) == true)
+                    return (IfStatementSyntax)parent;
             }
 
             return null;

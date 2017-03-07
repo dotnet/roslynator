@@ -22,9 +22,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (IfElseChain.GetChain(ifStatement)
-                    .Where(f => f.IsKind(SyntaxKind.IfStatement))
-                    .All(f => IsValidIf((IfStatementSyntax)f, semanticModel, context.CancellationToken)))
+                if (IfElseChain.GetIfStatements(ifStatement)
+                    .All(f => IsValidIf(f, semanticModel, context.CancellationToken)))
                 {
                     string title = (IfElseChain.IsPartOfChain(ifStatement))
                         ? "Replace if-else with switch"
@@ -210,11 +209,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(IfStatementSyntax ifStatement)
         {
-            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
             {
-                if (node.IsKind(SyntaxKind.IfStatement))
+                if (ifOrElse.IsIf)
                 {
-                    ifStatement = (IfStatementSyntax)node;
+                    ifStatement = ifOrElse.AsIf();
 
                     var condition = ifStatement.Condition as BinaryExpressionSyntax;
 
@@ -229,9 +228,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
                 else
                 {
-                    var elseClause = (ElseClauseSyntax)node;
-
-                    yield return DefaultSwitchSection(AddBreakStatementIfNecessary(elseClause.Statement));
+                    yield return DefaultSwitchSection(AddBreakStatementIfNecessary(ifOrElse.Statement));
                 }
             }
         }

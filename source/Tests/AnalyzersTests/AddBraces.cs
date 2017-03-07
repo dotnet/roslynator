@@ -26,6 +26,28 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     x,
                     y);
 
+            if (f)
+                Foo(
+                    x,
+                    y);
+            else if (f)
+                Foo(
+                    x,
+                    y);
+
+            if (f)
+                Foo(
+                    x,
+                    y);
+            else if (f)
+                Foo(
+                    x,
+                    y);
+            else
+                Foo(
+                    x,
+                    y);
+
             foreach (object item in items)
                 Foo(
                     x,
