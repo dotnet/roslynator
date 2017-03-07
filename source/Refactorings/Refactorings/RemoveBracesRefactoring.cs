@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             bool success = false;
 
-            foreach (BlockSyntax block in GetBlocks(topmostIf))
+            foreach (BlockSyntax block in IfElseChain.GetBlockStatements(topmostIf))
             {
                 if (block == selectedBlock)
                 {
@@ -103,38 +103,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        private static IEnumerable<BlockSyntax> GetBlocks(IfStatementSyntax topmostIf)
-        {
-            foreach (SyntaxNode node in IfElseChain.GetChain(topmostIf))
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.IfStatement:
-                        {
-                            var ifStatement = (IfStatementSyntax)node;
-
-                            StatementSyntax statement = ifStatement.Statement;
-
-                            if (statement?.IsKind(SyntaxKind.Block) == true)
-                                yield return (BlockSyntax)statement;
-
-                            break;
-                        }
-                    case SyntaxKind.ElseClause:
-                        {
-                            var elseClause = (ElseClauseSyntax)node;
-
-                            StatementSyntax statement = elseClause.Statement;
-
-                            if (statement?.IsKind(SyntaxKind.Block) == true)
-                                yield return (BlockSyntax)statement;
-
-                            break;
-                        }
-                }
-            }
         }
 
         private static IfStatementSyntax GetTopmostIf(BlockSyntax block)

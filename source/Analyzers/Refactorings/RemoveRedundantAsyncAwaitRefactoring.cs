@@ -198,46 +198,23 @@ namespace Roslynator.CSharp.Refactorings
         {
             HashSet<AwaitExpressionSyntax> awaitExpressions = null;
 
-            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
             {
-                SyntaxKind kind = node.Kind();
-
-                if (kind == SyntaxKind.IfStatement)
+                if (ifOrElse.IsElse
+                    && !endsWithElse)
                 {
-                    AwaitExpressionSyntax awaitExpression = GetLastReturnAwaitExpressionOfDefault(((IfStatementSyntax)node).Statement);
-
-                    if (awaitExpression != null)
-                    {
-                        (awaitExpressions ?? (awaitExpressions = new HashSet<AwaitExpressionSyntax>())).Add(awaitExpression);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return null;
                 }
-                else if (kind == SyntaxKind.ElseClause)
-                {
-                    if (endsWithElse)
-                    {
-                        AwaitExpressionSyntax awaitExpression = GetLastReturnAwaitExpressionOfDefault(((ElseClauseSyntax)node).Statement);
 
-                        if (awaitExpression != null)
-                        {
-                            (awaitExpressions ?? (awaitExpressions = new HashSet<AwaitExpressionSyntax>())).Add(awaitExpression);
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                AwaitExpressionSyntax awaitExpression = GetLastReturnAwaitExpressionOfDefault(ifOrElse.Statement);
+
+                if (awaitExpression != null)
+                {
+                    (awaitExpressions ?? (awaitExpressions = new HashSet<AwaitExpressionSyntax>())).Add(awaitExpression);
                 }
                 else
                 {
-                    Debug.Assert(false, kind.ToString());
+                    return null;
                 }
             }
 

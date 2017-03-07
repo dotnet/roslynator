@@ -165,11 +165,11 @@ namespace Roslynator.CSharp.Analysis
 
             int cnt = 0;
 
-            foreach (SyntaxNode node in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
             {
                 cnt++;
 
-                StatementSyntax statement = GetStatement(node);
+                StatementSyntax statement = ifOrElse.Statement;
 
                 if (!anyHasEmbedded && !statement.IsKind(SyntaxKind.Block))
                     anyHasEmbedded = true;
@@ -224,18 +224,6 @@ namespace Roslynator.CSharp.Analysis
             return !statement.IsKind(SyntaxKind.LocalDeclarationStatement)
                 && !statement.IsKind(SyntaxKind.LabeledStatement)
                 && statement.IsSingleLine();
-        }
-
-        private static StatementSyntax GetStatement(SyntaxNode node)
-        {
-            if (node.IsKind(SyntaxKind.IfStatement))
-            {
-                return ((IfStatementSyntax)node).Statement;
-            }
-            else
-            {
-                return ((ElseClauseSyntax)node).Statement;
-            }
         }
 
         public static bool IsNamespaceInScope(

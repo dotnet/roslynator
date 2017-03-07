@@ -65,6 +65,7 @@
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="MarkFieldAsReadOnly.cs" />
+    <Compile Include="RemoveBraces.cs" />
     <Compile Include="RemoveFileWithNoCode2.cs" />
     <Compile Include="RemoveRedundantAsyncAwait.cs" />
     <Compile Include="SimplifyLazilyInitializedProperty.cs" />
