@@ -62,6 +62,8 @@
     <Compile Include="CSharp\Extensions\SyntaxTriviaExtensions.cs" />
     <Compile Include="CSharp\Extensions\SyntaxTriviaListExtensions.cs" />
     <Compile Include="CSharp\Formatting\BinaryExpressionToMultiLineRewriter.cs" />
+    <Compile Include="CSharp\HexadecimalLiteralInfo.cs" />
+    <Compile Include="CSharp\HexadecimalLiteralSuffixKind.cs" />
     <Compile Include="CSharp\IfElseChain.cs" />
     <Compile Include="CSharp\IfStatementOrElseClause.cs" />
     <Compile Include="CSharp\Inserter.cs" />
