@@ -17,9 +17,9 @@ using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Documentation
 {
-    public static partial class DocumentationCommentGenerator
+    public static class DocumentationCommentGenerator
     {
-        public static MemberDeclarationSyntax GenerateAndInsert(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
+        public static MemberDeclarationSyntax AddNewDocumentationComment(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
@@ -35,6 +35,34 @@ namespace Roslynator.CSharp.Documentation
             SyntaxTriviaList newLeadingTrivia = inserter.InsertRange(comment);
 
             return memberDeclaration.WithLeadingTrivia(newLeadingTrivia);
+        }
+
+        public static MemberDeclarationSyntax AddNewDocumentationComment(
+            MemberDeclarationSyntax memberDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return AddNewDocumentationComment(memberDeclaration, null, semanticModel, cancellationToken);
+        }
+
+        public static MemberDeclarationSyntax AddNewDocumentationComment(
+            MemberDeclarationSyntax memberDeclaration,
+            DocumentationCommentGeneratorSettings settings,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            if (CanGenerateFromBase(memberDeclaration.Kind()))
+            {
+                BaseDocumentationCommentInfo info = GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
+
+                if (info.Success)
+                    return Inserter.InsertDocumentationComment(memberDeclaration, info.Trivia, indent: true);
+            }
+
+            return AddNewDocumentationComment(memberDeclaration, settings);
         }
 
         public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
@@ -83,14 +111,46 @@ namespace Roslynator.CSharp.Documentation
             }
         }
 
-        public static async Task<Document> GenerateAndInsertAsync(Document document, DocumentationCommentGeneratorSettings settings = null, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<Document> AddNewDocumentationCommentsAsync(Document document, DocumentationCommentGeneratorSettings settings = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = Rewriter.GenerateAndInsert(root, settings);
+            var rewriter = new AddNewDocumentationCommentRewriter(settings);
+
+            SyntaxNode newRoot = rewriter.Visit(root);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
+        public static async Task<Document> AddBaseOrNewDocumentationCommentsAsync(
+            Document document,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            return await AddBaseOrNewDocumentationCommentsAsync(document, semanticModel, null, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static async Task<Document> AddBaseOrNewDocumentationCommentsAsync(
+            Document document,
+            SemanticModel semanticModel,
+            DocumentationCommentGeneratorSettings settings = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            var rewriter = new AddBaseOrNewDocumentationCommentRewriter(settings, semanticModel, cancellationToken);
+
+            SyntaxNode newRoot = rewriter.Visit(root);
 
             return document.WithSyntaxRoot(newRoot);
         }

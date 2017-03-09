@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
                     newNode = Inserter.InsertDocumentationComment(memberDeclaration, info.Trivia, indent: true);
             }
 
-            newNode = newNode ?? DocumentationCommentGenerator.GenerateAndInsert(memberDeclaration);
+            newNode = newNode ?? DocumentationCommentGenerator.AddNewDocumentationComment(memberDeclaration);
 
             return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
