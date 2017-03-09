@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Documentation;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
@@ -110,14 +111,28 @@ namespace Roslynator.CSharp.Refactorings
             return semanticModel.ContainsCompilerDiagnostic(CSharpErrorCodes.MissingXmlComment, span, cancellationToken);
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
+            bool copyCommentFromBaseIfAvailable,
             CancellationToken cancellationToken)
         {
-            MemberDeclarationSyntax newNode = DocumentationCommentGenerator.GenerateAndAttach(memberDeclaration);
+            MemberDeclarationSyntax newNode = null;
 
-            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
+            if (copyCommentFromBaseIfAvailable
+                && DocumentationCommentGenerator.CanGenerateFromBase(memberDeclaration.Kind()))
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                BaseDocumentationCommentInfo info = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
+
+                if (info.Success)
+                    newNode = Inserter.InsertDocumentationComment(memberDeclaration, info.Trivia, indent: true);
+            }
+
+            newNode = newNode ?? DocumentationCommentGenerator.GenerateAndInsert(memberDeclaration);
+
+            return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
