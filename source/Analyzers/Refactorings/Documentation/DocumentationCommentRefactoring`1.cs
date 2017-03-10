@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         {
             MemberDeclarationSyntax memberDeclaration = GetMemberDeclaration(node);
 
-            DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationCommentTriviaSyntax();
+            DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationComment();
 
             SeparatedSyntaxList<TNode> typeParameters = GetContainingList(node);
 

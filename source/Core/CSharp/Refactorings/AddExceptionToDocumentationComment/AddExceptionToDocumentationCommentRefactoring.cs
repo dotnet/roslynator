@@ -55,19 +55,14 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
                     if (containingMember != null)
                     {
-                        SyntaxTrivia trivia = containingMember.GetSingleLineDocumentationComment();
+                        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
-                        if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                        if (comment != null
+                            && !ContainsException(comment, exceptionSymbol, semanticModel, cancellationToken))
                         {
-                            var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                            ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
 
-                            if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
-                                && !ContainsException(comment, exceptionSymbol, semanticModel, cancellationToken))
-                            {
-                                ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
-
-                                return new AddExceptionToDocumentationCommentAnalysis(throwInfo, trivia);
-                            }
+                            return new AddExceptionToDocumentationCommentAnalysis(throwInfo, comment.ParentTrivia);
                         }
                     }
                 }
@@ -123,17 +118,12 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 if (typeSymbol?.IsErrorType() == false
                     && SymbolUtility.IsException(typeSymbol, semanticModel))
                 {
-                    SyntaxTrivia trivia = declaration.GetSingleLineDocumentationComment();
+                    DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
 
-                    if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                    if (comment != null
+                        && !ContainsException(comment, typeSymbol, semanticModel, cancellationToken))
                     {
-                        var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
-
-                        if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true
-                            && !ContainsException(comment, typeSymbol, semanticModel, cancellationToken))
-                        {
-                            return ThrowInfo.Create(node, typeSymbol, declarationSymbol);
-                        }
+                        return ThrowInfo.Create(node, typeSymbol, declarationSymbol);
                     }
                 }
             }
@@ -222,7 +212,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 .GetSyntaxAsync(cancellationToken)
                 .ConfigureAwait(false) as MemberDeclarationSyntax;
 
-            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
+            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationCommentTrivia();
 
             ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
 

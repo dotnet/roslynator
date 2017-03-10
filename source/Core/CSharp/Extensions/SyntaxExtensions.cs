@@ -565,7 +565,7 @@ namespace Roslynator.CSharp.Extensions
                 && literalExpression.Token.Text.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
         }
 
-        public static SyntaxTrivia GetSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
+        public static SyntaxTrivia GetSingleLineDocumentationCommentTrivia(this MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
@@ -575,12 +575,12 @@ namespace Roslynator.CSharp.Extensions
                 .FirstOrDefault(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
         }
 
-        internal static DocumentationCommentTriviaSyntax GetSingleLineDocumentationCommentTriviaSyntax(this MemberDeclarationSyntax memberDeclaration)
+        public static DocumentationCommentTriviaSyntax GetSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
 
-            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
+            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationCommentTrivia();
 
             if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
             {
