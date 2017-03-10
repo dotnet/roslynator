@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         {
             if (typeParameters.Any())
             {
-                DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationCommentTriviaSyntax();
+                DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationComment();
 
                 if (comment != null)
                 {

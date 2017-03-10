@@ -2,14 +2,18 @@
 
 using System;
 
+#pragma warning disable RCS1118
+
 namespace Roslynator.CSharp.Refactorings.Test
 {
     internal class AddExceptionToDocumentationCommentRefactoring
     {
         /// <summary>
-        /// 
+        /// .
         /// </summary>
         /// <param name="parameter"></param>
+        /// <param name="parameter2"></param>
+        /// <param name="parameter3"></param>
         public void Foo(object parameter, object parameter2, object parameter3)
         {
             if (parameter == null)
@@ -28,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.Test
         }
 
         /// <summary>
-        /// 
+        /// .
         /// </summary>
         public string FooProperty
         {
@@ -47,7 +51,6 @@ namespace Roslynator.CSharp.Refactorings.Test
 
         public class Exception<T> : Exception
         {
-
         }
     }
 }
