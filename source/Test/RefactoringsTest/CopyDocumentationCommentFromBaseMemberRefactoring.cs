@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+#pragma warning disable RCS1132, RCS1163
+
 namespace Roslynator.CSharp.Refactorings.Test
 {
     internal class CopyDocumentationCommentFromBaseMemberRefactoring
@@ -18,7 +20,6 @@ namespace Roslynator.CSharp.Refactorings.Test
 
         private class ObjectCollection : Collection<List<object>>
         {
-
             public ObjectCollection(IList<List<object>> list) : base(list)
             {
             }
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings.Test
         public class BaseClass
         {
             /// <summary>
-            /// 
+            /// constructor
             /// </summary>
             /// <param name="value"></param>
             public BaseClass(string value)
@@ -76,6 +77,35 @@ namespace Roslynator.CSharp.Refactorings.Test
         public class DerivedClass : BaseClass
         {
             public DerivedClass(string value)
+                : base(value)
+            {
+            }
+
+            public override string FooMethod()
+            {
+                return base.FooMethod();
+            }
+
+            public override string this[int index]
+            {
+                get { return base[index]; }
+            }
+
+            public override string FooProperty
+            {
+                get { return base.FooProperty; }
+
+                set { base.FooProperty = value; }
+            }
+
+            public override event EventHandler FooEventField;
+
+            public override event EventHandler FooEvent;
+        }
+
+        public class DerivedClass2 : DerivedClass
+        {
+            public DerivedClass2(string value)
                 : base(value)
             {
             }

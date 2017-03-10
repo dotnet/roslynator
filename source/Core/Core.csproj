@@ -44,9 +44,12 @@
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\Documentation\BaseDocumentationCommentInfo.cs" />
+    <Compile Include="CSharp\Documentation\DocumentationCommentInserter.cs" />
+    <Compile Include="CSharp\Documentation\BaseDocumentationCommentOrigin.cs" />
     <Compile Include="CSharp\Formatting\CSharpFormatter.cs" />
-    <Compile Include="CSharp\DocumentationCommentGenerator.cs" />
-    <Compile Include="CSharp\DocumentationCommentGeneratorSettings.cs" />
+    <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.cs" />
+    <Compile Include="CSharp\Documentation\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatement.cs" />
     <Compile Include="CSharp\EnumMemberValueComparer.cs" />
     <Compile Include="CSharp\EnumMemberDeclarationNameComparer.cs" />
@@ -126,7 +129,7 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="CSharp\SyntaxRewriters\GenerateDocumentationCommentSyntaxRewriter.cs" />
+    <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.Rewriter.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="EnumHelper.cs" />

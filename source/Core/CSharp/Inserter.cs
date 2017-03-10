@@ -4,6 +4,7 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -12,6 +13,18 @@ namespace Roslynator.CSharp
 {
     public static class Inserter
     {
+        public static MemberDeclarationSyntax InsertDocumentationComment(MemberDeclarationSyntax memberDeclaration, SyntaxTrivia comment, bool indent = false)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            DocumentationCommentInserter inserter = DocumentationCommentInserter.Create(memberDeclaration);
+
+            SyntaxTriviaList newLeadingTrivia = inserter.Insert(comment, indent: indent);
+
+            return memberDeclaration.WithLeadingTrivia(newLeadingTrivia);
+        }
+
         public static MemberDeclarationSyntax InsertModifier(MemberDeclarationSyntax memberDeclaration, SyntaxToken modifier)
         {
             if (memberDeclaration == null)

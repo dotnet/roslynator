@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1016, RCS1100, RCS1106, RCS1138
+#pragma warning disable RCS1016, RCS1100, RCS1106, RCS1138, RCS1163, RCS1164
     /// <summary>
     /// 
     /// </summary>
@@ -91,6 +91,23 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
 
             public delegate void DelegateName<T>(object parameter);
+
+            public class BaseClass
+            {
+                /// <summary>
+                /// virtual method
+                /// </summary>
+                public virtual void VirtualMethod()
+                {
+                }
+            }
+
+            public class DerivedClass : BaseClass
+            {
+                public override void VirtualMethod()
+                {
+                }
+            }
         }
 
         /// <summary>
