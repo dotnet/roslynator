@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -19,23 +20,85 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
         {
-            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
+            bool containsInheritDoc = false;
+            bool containsSummaryElement = false;
 
-            if (summaryElement != null)
+            foreach (XmlNodeSyntax node in documentationComment.Content)
             {
-                if (IsSummaryMissing(summaryElement))
+                SyntaxKind kind = node.Kind();
+
+                if (kind == SyntaxKind.XmlElement)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddSummaryToDocumentationComment,
-                        summaryElement);
+                    var element = (XmlElementSyntax)node;
+
+                    string name = element.StartTag?.Name?.LocalName.ValueText;
+
+                    if (name != null)
+                    {
+                        if (IsInheritDoc(name))
+                        {
+                            containsInheritDoc = true;
+                        }
+                        else if (IsSummary(name))
+                        {
+                            if (IsSummaryMissing(element))
+                            {
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.AddSummaryToDocumentationComment,
+                                    element);
+                            }
+
+                            containsSummaryElement = true;
+                        }
+
+                        if (containsInheritDoc && containsSummaryElement)
+                            break;
+                    }
+                }
+                else if (kind == SyntaxKind.XmlEmptyElement)
+                {
+                    var element = (XmlEmptyElementSyntax)node;
+
+                    string name = element.Name?.LocalName.ValueText;
+
+                    if (name != null)
+                    {
+                        if (IsInheritDoc(name))
+                        {
+                            containsInheritDoc = true;
+                        }
+                        else if (IsSummary(name))
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.AddSummaryToDocumentationComment,
+                                element);
+
+                            containsSummaryElement = true;
+                        }
+
+                        if (containsInheritDoc && containsSummaryElement)
+                            break;
+                    }
                 }
             }
-            else
+
+            if (!containsSummaryElement
+                && !containsInheritDoc)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
                     documentationComment);
             }
+        }
+
+        private static bool IsSummary(string name)
+        {
+            return string.Equals(name, "summary", StringComparison.Ordinal);
+        }
+
+        private static bool IsInheritDoc(string name)
+        {
+            return string.Equals(name, "inheritdoc", StringComparison.Ordinal);
         }
 
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)

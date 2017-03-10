@@ -38,9 +38,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         {
             MemberDeclarationSyntax memberDeclaration = GetMemberDeclaration(node);
 
-            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
-
-            var comment = (DocumentationCommentTriviaSyntax)trivia.GetStructure();
+            DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationCommentTriviaSyntax();
 
             SeparatedSyntaxList<TNode> typeParameters = GetContainingList(node);
 
@@ -195,7 +193,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
             foreach (XmlElementSyntax element in comment.Elements(ElementName))
             {
-                string name = DocumentationCommentRefactoring.GetNameAttributeValue(element);
+                string name = DocumentationCommentRefactoring.GetAttributeValue(element, "name");
 
                 if (!dic.ContainsKey(name))
                     dic.Add(name, element);
