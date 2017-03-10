@@ -5,27 +5,13 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
 {
     public static class CSharpFactory
     {
-        public static SyntaxTrivia IndentTrivia(int indentSize = 4)
-        {
-            if (indentSize == 4)
-            {
-                return Whitespace("    ");
-            }
-            else
-            {
-                return Whitespace(new string(' ', indentSize));
-            }
-        }
-
+        #region Trivia
         public static SyntaxTrivia EmptyWhitespaceTrivia()
         {
             return SyntaxTrivia(SyntaxKind.WhitespaceTrivia, string.Empty);
@@ -43,327 +29,47 @@ namespace Roslynator.CSharp
                     return CarriageReturnLineFeed;
             }
         }
+        #endregion
 
-        public static LiteralExpressionSyntax ConstantExpression(object value)
-        {
-            if (value == null)
-                return NullLiteralExpression();
-
-            if (value is bool)
-                return ((bool)value) ? TrueLiteralExpression() : FalseLiteralExpression();
-
-            if (value is char)
-                return CharacterLiteralExpression((char)value);
-
-            if (value is sbyte)
-                return NumericLiteralExpression((sbyte)value);
-
-            if (value is byte)
-                return NumericLiteralExpression((byte)value);
-
-            if (value is short)
-                return NumericLiteralExpression((short)value);
-
-            if (value is ushort)
-                return NumericLiteralExpression((ushort)value);
-
-            if (value is int)
-                return NumericLiteralExpression((int)value);
-
-            if (value is uint)
-                return NumericLiteralExpression((uint)value);
-
-            if (value is long)
-                return NumericLiteralExpression((long)value);
-
-            if (value is ulong)
-                return NumericLiteralExpression((ulong)value);
-
-            if (value is decimal)
-                return NumericLiteralExpression((decimal)value);
-
-            if (value is float)
-                return NumericLiteralExpression((float)value);
-
-            if (value is double)
-                return NumericLiteralExpression((double)value);
-
-            return StringLiteralExpression(value.ToString());
-        }
-
-        public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right);
-        }
-
-        public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, operatorToken, right);
-        }
-
-        public static ExpressionStatementSyntax SimpleAssignmentExpressionStatement(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return ExpressionStatement(SimpleAssignmentExpression(left, right));
-        }
-
-        public static AttributeListSyntax AttributeList(AttributeSyntax attribute)
-        {
-            return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
-        }
-
-        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, ExpressionSyntax value = null)
-        {
-            return FieldDeclaration(
-                modifiers,
-                type,
-                Identifier(identifier),
-                value);
-        }
-
-        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
-        {
-            return SyntaxFactory.FieldDeclaration(
-                default(SyntaxList<AttributeListSyntax>),
-                modifiers,
-                VariableDeclaration(
-                    type,
-                    identifier,
-                    (value != null) ? EqualsValueClause(value) : null));
-        }
-
-        public static ArgumentListSyntax ArgumentList(ArgumentSyntax argument)
-        {
-            return SyntaxFactory.ArgumentList(SingletonSeparatedList(argument));
-        }
-
-        public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
-        {
-            return SyntaxFactory.ArgumentList(SeparatedList(arguments));
-        }
-
-        public static AttributeArgumentListSyntax AttributeArgumentList(AttributeArgumentSyntax attributeArgument)
-        {
-            return SyntaxFactory.AttributeArgumentList(SingletonSeparatedList(attributeArgument));
-        }
-
-        public static AttributeArgumentListSyntax AttributeArgumentList(params AttributeArgumentSyntax[] attributeArguments)
-        {
-            return SyntaxFactory.AttributeArgumentList(SeparatedList(attributeArguments));
-        }
-
-        public static NamespaceDeclarationSyntax NamespaceDeclaration(string name)
-        {
-            return SyntaxFactory.NamespaceDeclaration(IdentifierName(name));
-        }
-
-        public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, SimpleNameSyntax name)
-        {
-            return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, name);
-        }
-
-        public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, SyntaxToken operatorToken, SimpleNameSyntax name)
-        {
-            return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
-        }
-
-        public static InvocationExpressionSyntax InvocationExpression(string name)
-        {
-            return SyntaxFactory.InvocationExpression(IdentifierName(name));
-        }
-
-        public static InvocationExpressionSyntax InvocationExpression(string name, ArgumentSyntax argument)
-        {
-            return InvocationExpression(name, ArgumentList(argument));
-        }
-
-        public static InvocationExpressionSyntax InvocationExpression(string name, ArgumentListSyntax argumentList)
-        {
-            return SyntaxFactory.InvocationExpression(IdentifierName(name), argumentList);
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, string name)
-        {
-            return SimpleMemberInvocationExpression(expression, IdentifierName(name));
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name)
-        {
-            return SyntaxFactory.InvocationExpression(SimpleMemberAccessExpression(expression, name));
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, string name, ArgumentSyntax argument)
-        {
-            return SimpleMemberInvocationExpression(expression, name, ArgumentList(argument));
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, string name, ArgumentListSyntax argumentList)
-        {
-            return SimpleMemberInvocationExpression(expression, IdentifierName(name), argumentList);
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentSyntax argument)
-        {
-            return SimpleMemberInvocationExpression(expression, name, ArgumentList(argument));
-        }
-
-        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentListSyntax argumentList)
-        {
-            return SyntaxFactory.InvocationExpression(SimpleMemberAccessExpression(expression, name), argumentList);
-        }
-
-        public static AccessorDeclarationSyntax Getter(BlockSyntax body = null)
-        {
-            return AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, body);
-        }
-
-        public static AccessorDeclarationSyntax AutoImplementedGetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
-        {
-            return AutoImplementedAccessor(SyntaxKind.GetAccessorDeclaration, modifiers);
-        }
-
-        public static AccessorDeclarationSyntax Setter(BlockSyntax body = null)
-        {
-            return AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, body);
-        }
-
-        public static AccessorDeclarationSyntax AutoImplementedSetter(SyntaxTokenList modifiers = default(SyntaxTokenList))
-        {
-            return AutoImplementedAccessor(SyntaxKind.SetAccessorDeclaration, modifiers);
-        }
-
-        private static AccessorDeclarationSyntax AutoImplementedAccessor(SyntaxKind kind, SyntaxTokenList modifiers = default(SyntaxTokenList))
-        {
-            return AccessorDeclaration(
-                kind,
-                default(SyntaxList<AttributeListSyntax>),
-                modifiers,
-                Token(GetAccessorDeclarationKeywordKind(kind)),
-                default(BlockSyntax),
-                SemicolonToken());
-        }
-
-        private static SyntaxKind GetAccessorDeclarationKeywordKind(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.GetAccessorDeclaration:
-                    return SyntaxKind.GetKeyword;
-                case SyntaxKind.SetAccessorDeclaration:
-                    return SyntaxKind.SetKeyword;
-                case SyntaxKind.AddAccessorDeclaration:
-                    return SyntaxKind.AddKeyword;
-                case SyntaxKind.RemoveAccessorDeclaration:
-                    return SyntaxKind.RemoveKeyword;
-                case SyntaxKind.UnknownAccessorDeclaration:
-                    return SyntaxKind.IdentifierToken;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(kind));
-            }
-        }
-
-        public static VariableDeclaratorSyntax VariableDeclarator(string identifier, EqualsValueClauseSyntax initializer)
-        {
-            return VariableDeclarator(Identifier(identifier), initializer);
-        }
-
-        public static VariableDeclaratorSyntax VariableDeclarator(SyntaxToken identifier, EqualsValueClauseSyntax initializer)
-        {
-            return SyntaxFactory.VariableDeclarator(identifier, default(BracketedArgumentListSyntax), initializer);
-        }
-
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
-        {
-            return VariableDeclaration(type, Identifier(identifier), initializer);
-        }
-
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
-        {
-            return VariableDeclaration(type, VariableDeclarator(identifier, initializer));
-        }
-
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
-        {
-            return SyntaxFactory.VariableDeclaration(type, SingletonSeparatedList(variable));
-        }
-
-        public static SyntaxToken SemicolonToken()
-        {
-            return Token(SyntaxKind.SemicolonToken);
-        }
-
-        public static SyntaxToken CommaToken()
-        {
-            return Token(SyntaxKind.CommaToken);
-        }
-
+        #region Token
         public static SyntaxToken NoneToken()
         {
             return Token(SyntaxKind.None);
         }
 
-        public static SyntaxToken DoKeyword()
+        public static SyntaxToken TildeToken()
         {
-            return Token(SyntaxKind.DoKeyword);
+            return Token(SyntaxKind.TildeToken);
         }
 
-        public static SyntaxToken WhileKeyword()
+        public static SyntaxToken ExclamationToken()
         {
-            return Token(SyntaxKind.WhileKeyword);
+            return Token(SyntaxKind.ExclamationToken);
         }
 
-        public static SyntaxToken UsingKeyword()
+        public static SyntaxToken DollarToken()
         {
-            return Token(SyntaxKind.UsingKeyword);
+            return Token(SyntaxKind.DollarToken);
         }
 
-        public static SyntaxToken StaticKeyword()
+        public static SyntaxToken PercentToken()
         {
-            return Token(SyntaxKind.StaticKeyword);
+            return Token(SyntaxKind.PercentToken);
         }
 
-        public static SyntaxToken ReadOnlyKeyword()
+        public static SyntaxToken CaretToken()
         {
-            return Token(SyntaxKind.ReadOnlyKeyword);
+            return Token(SyntaxKind.CaretToken);
         }
 
-        public static SyntaxToken ConstKeyword()
+        public static SyntaxToken AmpersandToken()
         {
-            return Token(SyntaxKind.ConstKeyword);
+            return Token(SyntaxKind.AmpersandToken);
         }
 
-        public static SyntaxToken EqualsToken()
+        public static SyntaxToken AsteriskToken()
         {
-            return Token(SyntaxKind.EqualsToken);
-        }
-
-        public static SyntaxToken GreaterThanToken()
-        {
-            return Token(SyntaxKind.GreaterThanToken);
-        }
-
-        public static SyntaxToken GreaterThanEqualsToken()
-        {
-            return Token(SyntaxKind.GreaterThanEqualsToken);
-        }
-
-        public static SyntaxToken LessThanToken()
-        {
-            return Token(SyntaxKind.LessThanToken);
-        }
-
-        public static SyntaxToken LessThanEqualsToken()
-        {
-            return Token(SyntaxKind.LessThanEqualsToken);
-        }
-
-        public static SyntaxToken EqualsGreaterThanToken()
-        {
-            return Token(SyntaxKind.EqualsGreaterThanToken);
-        }
-
-        public static SyntaxToken ExclamationEqualsToken()
-        {
-            return Token(SyntaxKind.ExclamationEqualsToken);
+            return Token(SyntaxKind.AsteriskToken);
         }
 
         public static SyntaxToken OpenParenToken()
@@ -374,6 +80,21 @@ namespace Roslynator.CSharp
         public static SyntaxToken CloseParenToken()
         {
             return Token(SyntaxKind.CloseParenToken);
+        }
+
+        public static SyntaxToken MinusToken()
+        {
+            return Token(SyntaxKind.MinusToken);
+        }
+
+        public static SyntaxToken PlusToken()
+        {
+            return Token(SyntaxKind.PlusToken);
+        }
+
+        public static SyntaxToken EqualsToken()
+        {
+            return Token(SyntaxKind.EqualsToken);
         }
 
         public static SyntaxToken OpenBraceToken()
@@ -396,9 +117,109 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.CloseBracketToken);
         }
 
-        public static SyntaxToken AsyncKeyword()
+        public static SyntaxToken BarToken()
         {
-            return Token(SyntaxKind.AsyncKeyword);
+            return Token(SyntaxKind.BarToken);
+        }
+
+        public static SyntaxToken BackslashToken()
+        {
+            return Token(SyntaxKind.BackslashToken);
+        }
+
+        public static SyntaxToken ColonToken()
+        {
+            return Token(SyntaxKind.ColonToken);
+        }
+
+        public static SyntaxToken SemicolonToken()
+        {
+            return Token(SyntaxKind.SemicolonToken);
+        }
+
+        public static SyntaxToken DoubleQuoteToken()
+        {
+            return Token(SyntaxKind.DoubleQuoteToken);
+        }
+
+        public static SyntaxToken SingleQuoteToken()
+        {
+            return Token(SyntaxKind.SingleQuoteToken);
+        }
+
+        public static SyntaxToken LessThanToken()
+        {
+            return Token(SyntaxKind.LessThanToken);
+        }
+
+        public static SyntaxToken CommaToken()
+        {
+            return Token(SyntaxKind.CommaToken);
+        }
+
+        public static SyntaxToken GreaterThanToken()
+        {
+            return Token(SyntaxKind.GreaterThanToken);
+        }
+
+        public static SyntaxToken DotToken()
+        {
+            return Token(SyntaxKind.DotToken);
+        }
+
+        public static SyntaxToken QuestionToken()
+        {
+            return Token(SyntaxKind.QuestionToken);
+        }
+
+        public static SyntaxToken HashToken()
+        {
+            return Token(SyntaxKind.HashToken);
+        }
+
+        public static SyntaxToken SlashToken()
+        {
+            return Token(SyntaxKind.SlashToken);
+        }
+
+        public static SyntaxToken SlashGreaterThanToken()
+        {
+            return Token(SyntaxKind.SlashGreaterThanToken);
+        }
+
+        public static SyntaxToken LessThanSlashToken()
+        {
+            return Token(SyntaxKind.LessThanSlashToken);
+        }
+
+        public static SyntaxToken XmlCommentStartToken()
+        {
+            return Token(SyntaxKind.XmlCommentStartToken);
+        }
+
+        public static SyntaxToken XmlCommentEndToken()
+        {
+            return Token(SyntaxKind.XmlCommentEndToken);
+        }
+
+        public static SyntaxToken XmlCDataStartToken()
+        {
+            return Token(SyntaxKind.XmlCDataStartToken);
+        }
+
+        public static SyntaxToken XmlCDataEndToken()
+        {
+            return Token(SyntaxKind.XmlCDataEndToken);
+        }
+
+        public static SyntaxToken XmlProcessingInstructionStartToken()
+        {
+            return Token(SyntaxKind.XmlProcessingInstructionStartToken);
+        }
+
+        public static SyntaxToken XmlProcessingInstructionEndToken()
+        {
+            return Token(SyntaxKind.XmlProcessingInstructionEndToken);
         }
 
         public static SyntaxToken BarBarToken()
@@ -411,16 +232,6 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.AmpersandAmpersandToken);
         }
 
-        public static SyntaxToken QuestionToken()
-        {
-            return Token(SyntaxKind.QuestionToken);
-        }
-
-        public static SyntaxToken ColonToken()
-        {
-            return Token(SyntaxKind.ColonToken);
-        }
-
         public static SyntaxToken MinusMinusToken()
         {
             return Token(SyntaxKind.MinusMinusToken);
@@ -431,39 +242,104 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.PlusPlusToken);
         }
 
-        public static SyntaxToken ReturnKeyword()
+        public static SyntaxToken ColonColonToken()
         {
-            return Token(SyntaxKind.ReturnKeyword);
+            return Token(SyntaxKind.ColonColonToken);
         }
 
-        public static SyntaxToken ForKeyword()
+        public static SyntaxToken QuestionQuestionToken()
         {
-            return Token(SyntaxKind.ForKeyword);
+            return Token(SyntaxKind.QuestionQuestionToken);
         }
 
-        public static SyntaxToken ForEachKeyword()
+        public static SyntaxToken MinusGreaterThanToken()
         {
-            return Token(SyntaxKind.ForEachKeyword);
+            return Token(SyntaxKind.MinusGreaterThanToken);
         }
 
-        public static SyntaxToken ThrowKeyword()
+        public static SyntaxToken ExclamationEqualsToken()
         {
-            return Token(SyntaxKind.ThrowKeyword);
+            return Token(SyntaxKind.ExclamationEqualsToken);
         }
 
-        private static SyntaxToken Token(SyntaxKind syntaxKind)
+        public static SyntaxToken EqualsEqualsToken()
         {
-            return SyntaxFactory.Token(syntaxKind);
+            return Token(SyntaxKind.EqualsEqualsToken);
         }
 
-        public static SyntaxToken StringKeyword()
+        public static SyntaxToken EqualsGreaterThanToken()
         {
-            return Token(SyntaxKind.StringKeyword);
+            return Token(SyntaxKind.EqualsGreaterThanToken);
         }
 
-        public static SyntaxToken IntKeyword()
+        public static SyntaxToken LessThanEqualsToken()
         {
-            return Token(SyntaxKind.IntKeyword);
+            return Token(SyntaxKind.LessThanEqualsToken);
+        }
+
+        public static SyntaxToken LessThanLessThanToken()
+        {
+            return Token(SyntaxKind.LessThanLessThanToken);
+        }
+
+        public static SyntaxToken LessThanLessThanEqualsToken()
+        {
+            return Token(SyntaxKind.LessThanLessThanEqualsToken);
+        }
+
+        public static SyntaxToken GreaterThanEqualsToken()
+        {
+            return Token(SyntaxKind.GreaterThanEqualsToken);
+        }
+
+        public static SyntaxToken GreaterThanGreaterThanToken()
+        {
+            return Token(SyntaxKind.GreaterThanGreaterThanToken);
+        }
+
+        public static SyntaxToken GreaterThanGreaterThanEqualsToken()
+        {
+            return Token(SyntaxKind.GreaterThanGreaterThanEqualsToken);
+        }
+
+        public static SyntaxToken SlashEqualsToken()
+        {
+            return Token(SyntaxKind.SlashEqualsToken);
+        }
+
+        public static SyntaxToken AsteriskEqualsToken()
+        {
+            return Token(SyntaxKind.AsteriskEqualsToken);
+        }
+
+        public static SyntaxToken BarEqualsToken()
+        {
+            return Token(SyntaxKind.BarEqualsToken);
+        }
+
+        public static SyntaxToken AmpersandEqualsToken()
+        {
+            return Token(SyntaxKind.AmpersandEqualsToken);
+        }
+
+        public static SyntaxToken PlusEqualsToken()
+        {
+            return Token(SyntaxKind.PlusEqualsToken);
+        }
+
+        public static SyntaxToken MinusEqualsToken()
+        {
+            return Token(SyntaxKind.MinusEqualsToken);
+        }
+
+        public static SyntaxToken CaretEqualsToken()
+        {
+            return Token(SyntaxKind.CaretEqualsToken);
+        }
+
+        public static SyntaxToken PercentEqualsToken()
+        {
+            return Token(SyntaxKind.PercentEqualsToken);
         }
 
         public static SyntaxToken BoolKeyword()
@@ -471,29 +347,14 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.BoolKeyword);
         }
 
-        public static SyntaxToken VoidKeyword()
+        public static SyntaxToken ByteKeyword()
         {
-            return Token(SyntaxKind.VoidKeyword);
-        }
-
-        public static SyntaxToken ObjectKeyword()
-        {
-            return Token(SyntaxKind.ObjectKeyword);
-        }
-
-        public static SyntaxToken CharKeyword()
-        {
-            return Token(SyntaxKind.CharKeyword);
+            return Token(SyntaxKind.ByteKeyword);
         }
 
         public static SyntaxToken SByteKeyword()
         {
             return Token(SyntaxKind.SByteKeyword);
-        }
-
-        public static SyntaxToken ByteKeyword()
-        {
-            return Token(SyntaxKind.ByteKeyword);
         }
 
         public static SyntaxToken ShortKeyword()
@@ -504,6 +365,11 @@ namespace Roslynator.CSharp
         public static SyntaxToken UShortKeyword()
         {
             return Token(SyntaxKind.UShortKeyword);
+        }
+
+        public static SyntaxToken IntKeyword()
+        {
+            return Token(SyntaxKind.IntKeyword);
         }
 
         public static SyntaxToken UIntKeyword()
@@ -521,9 +387,9 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.ULongKeyword);
         }
 
-        public static SyntaxToken DecimalKeyword()
+        public static SyntaxToken DoubleKeyword()
         {
-            return Token(SyntaxKind.DecimalKeyword);
+            return Token(SyntaxKind.DoubleKeyword);
         }
 
         public static SyntaxToken FloatKeyword()
@@ -531,99 +397,154 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.FloatKeyword);
         }
 
-        public static SyntaxToken DoubleKeyword()
+        public static SyntaxToken DecimalKeyword()
         {
-            return Token(SyntaxKind.DoubleKeyword);
+            return Token(SyntaxKind.DecimalKeyword);
         }
 
-        public static PredefinedTypeSyntax StringType()
+        public static SyntaxToken StringKeyword()
         {
-            return PredefinedType(SyntaxKind.StringKeyword);
+            return Token(SyntaxKind.StringKeyword);
         }
 
-        public static PredefinedTypeSyntax IntType()
+        public static SyntaxToken CharKeyword()
         {
-            return PredefinedType(SyntaxKind.IntKeyword);
+            return Token(SyntaxKind.CharKeyword);
         }
 
-        public static PredefinedTypeSyntax BoolType()
+        public static SyntaxToken VoidKeyword()
         {
-            return PredefinedType(SyntaxKind.BoolKeyword);
+            return Token(SyntaxKind.VoidKeyword);
         }
 
-        public static PredefinedTypeSyntax VoidType()
+        public static SyntaxToken ObjectKeyword()
         {
-            return PredefinedType(SyntaxKind.VoidKeyword);
+            return Token(SyntaxKind.ObjectKeyword);
         }
 
-        public static PredefinedTypeSyntax ObjectType()
+        public static SyntaxToken TypeOfKeyword()
         {
-            return PredefinedType(SyntaxKind.ObjectKeyword);
+            return Token(SyntaxKind.TypeOfKeyword);
         }
 
-        public static PredefinedTypeSyntax CharType()
+        public static SyntaxToken SizeOfKeyword()
         {
-            return PredefinedType(SyntaxKind.CharKeyword);
+            return Token(SyntaxKind.SizeOfKeyword);
         }
 
-        public static PredefinedTypeSyntax SByteType()
+        public static SyntaxToken NullKeyword()
         {
-            return PredefinedType(SyntaxKind.SByteKeyword);
+            return Token(SyntaxKind.NullKeyword);
         }
 
-        public static PredefinedTypeSyntax ByteType()
+        public static SyntaxToken TrueKeyword()
         {
-            return PredefinedType(SyntaxKind.ByteKeyword);
+            return Token(SyntaxKind.TrueKeyword);
         }
 
-        public static PredefinedTypeSyntax ShortType()
+        public static SyntaxToken FalseKeyword()
         {
-            return PredefinedType(SyntaxKind.ShortKeyword);
+            return Token(SyntaxKind.FalseKeyword);
         }
 
-        public static PredefinedTypeSyntax UShortType()
+        public static SyntaxToken IfKeyword()
         {
-            return PredefinedType(SyntaxKind.UShortKeyword);
+            return Token(SyntaxKind.IfKeyword);
         }
 
-        public static PredefinedTypeSyntax UIntType()
+        public static SyntaxToken ElseKeyword()
         {
-            return PredefinedType(SyntaxKind.UIntKeyword);
+            return Token(SyntaxKind.ElseKeyword);
         }
 
-        public static PredefinedTypeSyntax LongType()
+        public static SyntaxToken WhileKeyword()
         {
-            return PredefinedType(SyntaxKind.LongKeyword);
+            return Token(SyntaxKind.WhileKeyword);
         }
 
-        public static PredefinedTypeSyntax ULongType()
+        public static SyntaxToken ForKeyword()
         {
-            return PredefinedType(SyntaxKind.ULongKeyword);
+            return Token(SyntaxKind.ForKeyword);
         }
 
-        public static PredefinedTypeSyntax DecimalType()
+        public static SyntaxToken ForEachKeyword()
         {
-            return PredefinedType(SyntaxKind.DecimalKeyword);
+            return Token(SyntaxKind.ForEachKeyword);
         }
 
-        public static PredefinedTypeSyntax SingleType()
+        public static SyntaxToken DoKeyword()
         {
-            return PredefinedType(SyntaxKind.FloatKeyword);
+            return Token(SyntaxKind.DoKeyword);
         }
 
-        public static PredefinedTypeSyntax DoubleType()
+        public static SyntaxToken SwitchKeyword()
         {
-            return PredefinedType(SyntaxKind.DoubleKeyword);
+            return Token(SyntaxKind.SwitchKeyword);
         }
 
-        private static PredefinedTypeSyntax PredefinedType(SyntaxKind syntaxKind)
+        public static SyntaxToken CaseKeyword()
         {
-            return SyntaxFactory.PredefinedType(Token(syntaxKind));
+            return Token(SyntaxKind.CaseKeyword);
+        }
+
+        public static SyntaxToken DefaultKeyword()
+        {
+            return Token(SyntaxKind.DefaultKeyword);
+        }
+
+        public static SyntaxToken TryKeyword()
+        {
+            return Token(SyntaxKind.TryKeyword);
+        }
+
+        public static SyntaxToken CatchKeyword()
+        {
+            return Token(SyntaxKind.CatchKeyword);
+        }
+
+        public static SyntaxToken FinallyKeyword()
+        {
+            return Token(SyntaxKind.FinallyKeyword);
+        }
+
+        public static SyntaxToken LockKeyword()
+        {
+            return Token(SyntaxKind.LockKeyword);
+        }
+
+        public static SyntaxToken GotoKeyword()
+        {
+            return Token(SyntaxKind.GotoKeyword);
+        }
+
+        public static SyntaxToken BreakKeyword()
+        {
+            return Token(SyntaxKind.BreakKeyword);
+        }
+
+        public static SyntaxToken ContinueKeyword()
+        {
+            return Token(SyntaxKind.ContinueKeyword);
+        }
+
+        public static SyntaxToken ReturnKeyword()
+        {
+            return Token(SyntaxKind.ReturnKeyword);
+        }
+
+        public static SyntaxToken ThrowKeyword()
+        {
+            return Token(SyntaxKind.ThrowKeyword);
         }
 
         public static SyntaxToken PublicKeyword()
         {
             return Token(SyntaxKind.PublicKeyword);
+        }
+
+        public static SyntaxToken PrivateKeyword()
+        {
+            return Token(SyntaxKind.PrivateKeyword);
         }
 
         public static SyntaxToken InternalKeyword()
@@ -636,19 +557,49 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.ProtectedKeyword);
         }
 
-        public static SyntaxToken PrivateKeyword()
+        public static SyntaxToken StaticKeyword()
         {
-            return Token(SyntaxKind.PrivateKeyword);
+            return Token(SyntaxKind.StaticKeyword);
         }
 
-        public static SyntaxToken PartialKeyword()
+        public static SyntaxToken ReadOnlyKeyword()
         {
-            return Token(SyntaxKind.PartialKeyword);
+            return Token(SyntaxKind.ReadOnlyKeyword);
         }
 
-        public static SyntaxToken VirtualKeyword()
+        public static SyntaxToken SealedKeyword()
         {
-            return Token(SyntaxKind.VirtualKeyword);
+            return Token(SyntaxKind.SealedKeyword);
+        }
+
+        public static SyntaxToken ConstKeyword()
+        {
+            return Token(SyntaxKind.ConstKeyword);
+        }
+
+        public static SyntaxToken FixedKeyword()
+        {
+            return Token(SyntaxKind.FixedKeyword);
+        }
+
+        public static SyntaxToken StackAllocKeyword()
+        {
+            return Token(SyntaxKind.StackAllocKeyword);
+        }
+
+        public static SyntaxToken VolatileKeyword()
+        {
+            return Token(SyntaxKind.VolatileKeyword);
+        }
+
+        public static SyntaxToken NewKeyword()
+        {
+            return Token(SyntaxKind.NewKeyword);
+        }
+
+        public static SyntaxToken OverrideKeyword()
+        {
+            return Token(SyntaxKind.OverrideKeyword);
         }
 
         public static SyntaxToken AbstractKeyword()
@@ -656,21 +607,1316 @@ namespace Roslynator.CSharp
             return Token(SyntaxKind.AbstractKeyword);
         }
 
+        public static SyntaxToken VirtualKeyword()
+        {
+            return Token(SyntaxKind.VirtualKeyword);
+        }
+
+        public static SyntaxToken EventKeyword()
+        {
+            return Token(SyntaxKind.EventKeyword);
+        }
+
+        public static SyntaxToken ExternKeyword()
+        {
+            return Token(SyntaxKind.ExternKeyword);
+        }
+
+        public static SyntaxToken RefKeyword()
+        {
+            return Token(SyntaxKind.RefKeyword);
+        }
+
+        public static SyntaxToken OutKeyword()
+        {
+            return Token(SyntaxKind.OutKeyword);
+        }
+
+        public static SyntaxToken InKeyword()
+        {
+            return Token(SyntaxKind.InKeyword);
+        }
+
+        public static SyntaxToken IsKeyword()
+        {
+            return Token(SyntaxKind.IsKeyword);
+        }
+
+        public static SyntaxToken AsKeyword()
+        {
+            return Token(SyntaxKind.AsKeyword);
+        }
+
+        public static SyntaxToken ParamsKeyword()
+        {
+            return Token(SyntaxKind.ParamsKeyword);
+        }
+
+        public static SyntaxToken ArgListKeyword()
+        {
+            return Token(SyntaxKind.ArgListKeyword);
+        }
+
+        public static SyntaxToken MakeRefKeyword()
+        {
+            return Token(SyntaxKind.MakeRefKeyword);
+        }
+
+        public static SyntaxToken RefTypeKeyword()
+        {
+            return Token(SyntaxKind.RefTypeKeyword);
+        }
+
+        public static SyntaxToken RefValueKeyword()
+        {
+            return Token(SyntaxKind.RefValueKeyword);
+        }
+
+        public static SyntaxToken ThisKeyword()
+        {
+            return Token(SyntaxKind.ThisKeyword);
+        }
+
+        public static SyntaxToken BaseKeyword()
+        {
+            return Token(SyntaxKind.BaseKeyword);
+        }
+
+        public static SyntaxToken NamespaceKeyword()
+        {
+            return Token(SyntaxKind.NamespaceKeyword);
+        }
+
+        public static SyntaxToken UsingKeyword()
+        {
+            return Token(SyntaxKind.UsingKeyword);
+        }
+
+        public static SyntaxToken ClassKeyword()
+        {
+            return Token(SyntaxKind.ClassKeyword);
+        }
+
+        public static SyntaxToken StructKeyword()
+        {
+            return Token(SyntaxKind.StructKeyword);
+        }
+
+        public static SyntaxToken InterfaceKeyword()
+        {
+            return Token(SyntaxKind.InterfaceKeyword);
+        }
+
+        public static SyntaxToken EnumKeyword()
+        {
+            return Token(SyntaxKind.EnumKeyword);
+        }
+
+        public static SyntaxToken DelegateKeyword()
+        {
+            return Token(SyntaxKind.DelegateKeyword);
+        }
+
+        public static SyntaxToken CheckedKeyword()
+        {
+            return Token(SyntaxKind.CheckedKeyword);
+        }
+
+        public static SyntaxToken UncheckedKeyword()
+        {
+            return Token(SyntaxKind.UncheckedKeyword);
+        }
+
+        public static SyntaxToken UnsafeKeyword()
+        {
+            return Token(SyntaxKind.UnsafeKeyword);
+        }
+
+        public static SyntaxToken OperatorKeyword()
+        {
+            return Token(SyntaxKind.OperatorKeyword);
+        }
+
+        public static SyntaxToken ExplicitKeyword()
+        {
+            return Token(SyntaxKind.ExplicitKeyword);
+        }
+
+        public static SyntaxToken ImplicitKeyword()
+        {
+            return Token(SyntaxKind.ImplicitKeyword);
+        }
+
         public static SyntaxToken YieldKeyword()
         {
             return Token(SyntaxKind.YieldKeyword);
         }
 
-        public static SyntaxToken BreakKeyword()
+        public static SyntaxToken PartialKeyword()
         {
-            return Token(SyntaxKind.BreakKeyword);
+            return Token(SyntaxKind.PartialKeyword);
         }
 
-        public static IdentifierNameSyntax VarType()
+        public static SyntaxToken AliasKeyword()
         {
-            return IdentifierName("var");
+            return Token(SyntaxKind.AliasKeyword);
         }
 
+        public static SyntaxToken GlobalKeyword()
+        {
+            return Token(SyntaxKind.GlobalKeyword);
+        }
+
+        public static SyntaxToken AssemblyKeyword()
+        {
+            return Token(SyntaxKind.AssemblyKeyword);
+        }
+
+        public static SyntaxToken ModuleKeyword()
+        {
+            return Token(SyntaxKind.ModuleKeyword);
+        }
+
+        public static SyntaxToken TypeKeyword()
+        {
+            return Token(SyntaxKind.TypeKeyword);
+        }
+
+        public static SyntaxToken FieldKeyword()
+        {
+            return Token(SyntaxKind.FieldKeyword);
+        }
+
+        public static SyntaxToken MethodKeyword()
+        {
+            return Token(SyntaxKind.MethodKeyword);
+        }
+
+        public static SyntaxToken ParamKeyword()
+        {
+            return Token(SyntaxKind.ParamKeyword);
+        }
+
+        public static SyntaxToken PropertyKeyword()
+        {
+            return Token(SyntaxKind.PropertyKeyword);
+        }
+
+        public static SyntaxToken TypeVarKeyword()
+        {
+            return Token(SyntaxKind.TypeVarKeyword);
+        }
+
+        public static SyntaxToken GetKeyword()
+        {
+            return Token(SyntaxKind.GetKeyword);
+        }
+
+        public static SyntaxToken SetKeyword()
+        {
+            return Token(SyntaxKind.SetKeyword);
+        }
+
+        public static SyntaxToken AddKeyword()
+        {
+            return Token(SyntaxKind.AddKeyword);
+        }
+
+        public static SyntaxToken RemoveKeyword()
+        {
+            return Token(SyntaxKind.RemoveKeyword);
+        }
+
+        public static SyntaxToken WhereKeyword()
+        {
+            return Token(SyntaxKind.WhereKeyword);
+        }
+
+        public static SyntaxToken FromKeyword()
+        {
+            return Token(SyntaxKind.FromKeyword);
+        }
+
+        public static SyntaxToken GroupKeyword()
+        {
+            return Token(SyntaxKind.GroupKeyword);
+        }
+
+        public static SyntaxToken JoinKeyword()
+        {
+            return Token(SyntaxKind.JoinKeyword);
+        }
+
+        public static SyntaxToken IntoKeyword()
+        {
+            return Token(SyntaxKind.IntoKeyword);
+        }
+
+        public static SyntaxToken LetKeyword()
+        {
+            return Token(SyntaxKind.LetKeyword);
+        }
+
+        public static SyntaxToken ByKeyword()
+        {
+            return Token(SyntaxKind.ByKeyword);
+        }
+
+        public static SyntaxToken SelectKeyword()
+        {
+            return Token(SyntaxKind.SelectKeyword);
+        }
+
+        public static SyntaxToken OrderByKeyword()
+        {
+            return Token(SyntaxKind.OrderByKeyword);
+        }
+
+        public static SyntaxToken OnKeyword()
+        {
+            return Token(SyntaxKind.OnKeyword);
+        }
+
+        public static SyntaxToken EqualsKeyword()
+        {
+            return Token(SyntaxKind.EqualsKeyword);
+        }
+
+        public static SyntaxToken AscendingKeyword()
+        {
+            return Token(SyntaxKind.AscendingKeyword);
+        }
+
+        public static SyntaxToken DescendingKeyword()
+        {
+            return Token(SyntaxKind.DescendingKeyword);
+        }
+
+        public static SyntaxToken NameOfKeyword()
+        {
+            return Token(SyntaxKind.NameOfKeyword);
+        }
+
+        public static SyntaxToken AsyncKeyword()
+        {
+            return Token(SyntaxKind.AsyncKeyword);
+        }
+
+        public static SyntaxToken AwaitKeyword()
+        {
+            return Token(SyntaxKind.AwaitKeyword);
+        }
+
+        public static SyntaxToken WhenKeyword()
+        {
+            return Token(SyntaxKind.WhenKeyword);
+        }
+
+        public static SyntaxToken ElifKeyword()
+        {
+            return Token(SyntaxKind.ElifKeyword);
+        }
+
+        public static SyntaxToken EndIfKeyword()
+        {
+            return Token(SyntaxKind.EndIfKeyword);
+        }
+
+        public static SyntaxToken RegionKeyword()
+        {
+            return Token(SyntaxKind.RegionKeyword);
+        }
+
+        public static SyntaxToken EndRegionKeyword()
+        {
+            return Token(SyntaxKind.EndRegionKeyword);
+        }
+
+        public static SyntaxToken DefineKeyword()
+        {
+            return Token(SyntaxKind.DefineKeyword);
+        }
+
+        public static SyntaxToken UndefKeyword()
+        {
+            return Token(SyntaxKind.UndefKeyword);
+        }
+
+        public static SyntaxToken WarningKeyword()
+        {
+            return Token(SyntaxKind.WarningKeyword);
+        }
+
+        public static SyntaxToken ErrorKeyword()
+        {
+            return Token(SyntaxKind.ErrorKeyword);
+        }
+
+        public static SyntaxToken LineKeyword()
+        {
+            return Token(SyntaxKind.LineKeyword);
+        }
+
+        public static SyntaxToken PragmaKeyword()
+        {
+            return Token(SyntaxKind.PragmaKeyword);
+        }
+
+        public static SyntaxToken HiddenKeyword()
+        {
+            return Token(SyntaxKind.HiddenKeyword);
+        }
+
+        public static SyntaxToken ChecksumKeyword()
+        {
+            return Token(SyntaxKind.ChecksumKeyword);
+        }
+
+        public static SyntaxToken DisableKeyword()
+        {
+            return Token(SyntaxKind.DisableKeyword);
+        }
+
+        public static SyntaxToken RestoreKeyword()
+        {
+            return Token(SyntaxKind.RestoreKeyword);
+        }
+
+        public static SyntaxToken ReferenceKeyword()
+        {
+            return Token(SyntaxKind.ReferenceKeyword);
+        }
+
+        public static SyntaxToken LoadKeyword()
+        {
+            return Token(SyntaxKind.LoadKeyword);
+        }
+
+        public static SyntaxToken InterpolatedStringStartToken()
+        {
+            return Token(SyntaxKind.InterpolatedStringStartToken);
+        }
+
+        public static SyntaxToken InterpolatedStringEndToken()
+        {
+            return Token(SyntaxKind.InterpolatedStringEndToken);
+        }
+
+        public static SyntaxToken InterpolatedVerbatimStringStartToken()
+        {
+            return Token(SyntaxKind.InterpolatedVerbatimStringStartToken);
+        }
+
+        public static SyntaxToken UnderscoreToken()
+        {
+            return Token(SyntaxKind.UnderscoreToken);
+        }
+
+        public static SyntaxToken OmittedTypeArgumentToken()
+        {
+            return Token(SyntaxKind.OmittedTypeArgumentToken);
+        }
+
+        public static SyntaxToken OmittedArraySizeExpressionToken()
+        {
+            return Token(SyntaxKind.OmittedArraySizeExpressionToken);
+        }
+
+        public static SyntaxToken EndOfDirectiveToken()
+        {
+            return Token(SyntaxKind.EndOfDirectiveToken);
+        }
+
+        public static SyntaxToken EndOfDocumentationCommentToken()
+        {
+            return Token(SyntaxKind.EndOfDocumentationCommentToken);
+        }
+
+        public static SyntaxToken EndOfFileToken()
+        {
+            return Token(SyntaxKind.EndOfFileToken);
+        }
+
+        private static SyntaxToken Token(SyntaxKind syntaxKind)
+        {
+            return SyntaxFactory.Token(syntaxKind);
+        }
+        #endregion
+
+        #region PredefinedType
+        public static PredefinedTypeSyntax BoolType()
+        {
+            return PredefinedType(SyntaxKind.BoolKeyword);
+        }
+
+        public static PredefinedTypeSyntax ByteType()
+        {
+            return PredefinedType(SyntaxKind.ByteKeyword);
+        }
+
+        public static PredefinedTypeSyntax SByteType()
+        {
+            return PredefinedType(SyntaxKind.SByteKeyword);
+        }
+
+        public static PredefinedTypeSyntax IntType()
+        {
+            return PredefinedType(SyntaxKind.IntKeyword);
+        }
+
+        public static PredefinedTypeSyntax UIntType()
+        {
+            return PredefinedType(SyntaxKind.UIntKeyword);
+        }
+
+        public static PredefinedTypeSyntax ShortType()
+        {
+            return PredefinedType(SyntaxKind.ShortKeyword);
+        }
+
+        public static PredefinedTypeSyntax UShortType()
+        {
+            return PredefinedType(SyntaxKind.UShortKeyword);
+        }
+
+        public static PredefinedTypeSyntax LongType()
+        {
+            return PredefinedType(SyntaxKind.LongKeyword);
+        }
+
+        public static PredefinedTypeSyntax ULongType()
+        {
+            return PredefinedType(SyntaxKind.ULongKeyword);
+        }
+
+        public static PredefinedTypeSyntax FloatType()
+        {
+            return PredefinedType(SyntaxKind.FloatKeyword);
+        }
+
+        public static PredefinedTypeSyntax DoubleType()
+        {
+            return PredefinedType(SyntaxKind.DoubleKeyword);
+        }
+
+        public static PredefinedTypeSyntax DecimalType()
+        {
+            return PredefinedType(SyntaxKind.DecimalKeyword);
+        }
+
+        public static PredefinedTypeSyntax StringType()
+        {
+            return PredefinedType(SyntaxKind.StringKeyword);
+        }
+
+        public static PredefinedTypeSyntax CharType()
+        {
+            return PredefinedType(SyntaxKind.CharKeyword);
+        }
+
+        public static PredefinedTypeSyntax ObjectType()
+        {
+            return PredefinedType(SyntaxKind.ObjectKeyword);
+        }
+
+        public static PredefinedTypeSyntax VoidType()
+        {
+            return PredefinedType(SyntaxKind.VoidKeyword);
+        }
+
+        private static PredefinedTypeSyntax PredefinedType(SyntaxKind syntaxKind)
+        {
+            return SyntaxFactory.PredefinedType(Token(syntaxKind));
+        }
+        #endregion
+
+        #region List
+        public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
+        {
+            return SyntaxFactory.ArgumentList(SeparatedList(arguments));
+        }
+
+        public static ArgumentListSyntax SingletonArgumentList(ArgumentSyntax argument)
+        {
+            return SyntaxFactory.ArgumentList(SingletonSeparatedList(argument));
+        }
+
+        public static BracketedArgumentListSyntax BracketedArgumentList(params ArgumentSyntax[] arguments)
+        {
+            return SyntaxFactory.BracketedArgumentList(SeparatedList(arguments));
+        }
+
+        public static BracketedArgumentListSyntax SingletonBracketedArgumentList(ArgumentSyntax argument)
+        {
+            return SyntaxFactory.BracketedArgumentList(SingletonSeparatedList(argument));
+        }
+
+        public static AttributeListSyntax SingletonAttributeList(AttributeSyntax attribute)
+        {
+            return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
+        }
+
+        public static AttributeListSyntax AttributeList(params AttributeSyntax[] attributes)
+        {
+            return SyntaxFactory.AttributeList(SeparatedList(attributes));
+        }
+
+        public static AttributeArgumentListSyntax AttributeArgumentList(params AttributeArgumentSyntax[] attributeArguments)
+        {
+            return SyntaxFactory.AttributeArgumentList(SeparatedList(attributeArguments));
+        }
+
+        public static AttributeArgumentListSyntax SingletonAttributeArgumentList(AttributeArgumentSyntax attributeArgument)
+        {
+            return SyntaxFactory.AttributeArgumentList(SingletonSeparatedList(attributeArgument));
+        }
+
+        public static AccessorListSyntax AccessorList(params AccessorDeclarationSyntax[] accessors)
+        {
+            return SyntaxFactory.AccessorList(List(accessors));
+        }
+
+        public static AccessorListSyntax SingletonAccessorList(AccessorDeclarationSyntax accessor)
+        {
+            return SyntaxFactory.AccessorList(SingletonList(accessor));
+        }
+
+        public static ParameterListSyntax SingletonParameterList(ParameterSyntax parameter)
+        {
+            return SyntaxFactory.ParameterList(SingletonSeparatedList(parameter));
+        }
+
+        public static ParameterListSyntax ParameterList(params ParameterSyntax[] parameters)
+        {
+            return SyntaxFactory.ParameterList(SeparatedList(parameters));
+        }
+
+        public static BracketedParameterListSyntax SingletonBracketedParameterList(ParameterSyntax parameter)
+        {
+            return SyntaxFactory.BracketedParameterList(SingletonSeparatedList(parameter));
+        }
+
+        public static BracketedParameterListSyntax BracketedParameterList(params ParameterSyntax[] parameters)
+        {
+            return SyntaxFactory.BracketedParameterList(SeparatedList(parameters));
+        }
+
+        public static TypeArgumentListSyntax SingletonTypeArgumentList(TypeSyntax argument)
+        {
+            return SyntaxFactory.TypeArgumentList(SingletonSeparatedList(argument));
+        }
+
+        public static TypeArgumentListSyntax TypeArgumentList(params TypeSyntax[] arguments)
+        {
+            return SyntaxFactory.TypeArgumentList(SeparatedList(arguments));
+        }
+
+        public static TypeParameterListSyntax SingletonTypeParameterList(TypeParameterSyntax parameter)
+        {
+            return SyntaxFactory.TypeParameterList(SingletonSeparatedList(parameter));
+        }
+
+        public static TypeParameterListSyntax TypeParameterList(params TypeParameterSyntax[] parameters)
+        {
+            return SyntaxFactory.TypeParameterList(SeparatedList(parameters));
+        }
+
+        public static BaseListSyntax SingletonBaseList(BaseTypeSyntax type)
+        {
+            return SyntaxFactory.BaseList(SingletonSeparatedList(type));
+        }
+
+        public static BaseListSyntax SingletonBaseList(SyntaxToken colonToken, BaseTypeSyntax baseType)
+        {
+            return SyntaxFactory.BaseList(colonToken, SingletonSeparatedList(baseType));
+        }
+
+        public static BaseListSyntax BaseList(params BaseTypeSyntax[] types)
+        {
+            return SyntaxFactory.BaseList(SeparatedList(types));
+        }
+        #endregion
+
+        #region MemberDeclaration
+        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, ExpressionSyntax value)
+        {
+            return EnumMemberDeclaration(Identifier(name), value);
+        }
+
+        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(SyntaxToken identifier, ExpressionSyntax value)
+        {
+            return SyntaxFactory.EnumMemberDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                identifier,
+                EqualsValueClause(value));
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, ExpressionSyntax value = null)
+        {
+            return FieldDeclaration(
+                modifiers,
+                type,
+                Identifier(identifier),
+                value);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
+        {
+            return FieldDeclaration(
+                modifiers,
+                type,
+                Identifier(identifier),
+                initializer);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+        {
+            return FieldDeclaration(
+                modifiers,
+                type,
+                identifier,
+                (value != null) ? EqualsValueClause(value) : null);
+        }
+
+        public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+        {
+            return SyntaxFactory.FieldDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                VariableDeclaration(
+                    type,
+                    identifier,
+                    initializer));
+        }
+
+        public static MethodDeclarationSyntax MethodDeclaration(
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
+        {
+            return SyntaxFactory.MethodDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                returnType,
+                default(ExplicitInterfaceSpecifierSyntax),
+                identifier,
+                default(TypeParameterListSyntax),
+                parameterList,
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                body,
+                default(ArrowExpressionClauseSyntax));
+        }
+
+        public static NamespaceDeclarationSyntax NamespaceDeclaration(string name)
+        {
+            return SyntaxFactory.NamespaceDeclaration(IdentifierName(name));
+        }
+
+        public static PropertyDeclarationSyntax AutoPropertyDeclaration(AutoPropertyKind kind, TypeSyntax type, string name)
+        {
+            return AutoPropertyDeclaration(
+                kind,
+                default(SyntaxTokenList),
+                type,
+                name);
+        }
+
+        public static PropertyDeclarationSyntax AutoPropertyDeclaration(AutoPropertyKind kind, SyntaxTokenList modifiers, TypeSyntax type, string name)
+        {
+            return AutoPropertyDeclaration(
+                kind,
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                type,
+                default(ExplicitInterfaceSpecifierSyntax),
+                Identifier(name));
+        }
+
+        public static PropertyDeclarationSyntax AutoPropertyDeclaration(
+            AutoPropertyKind kind,
+            SyntaxList<AttributeListSyntax> attributeLists,
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier,
+            SyntaxToken identifier)
+        {
+            switch (kind)
+            {
+                case AutoPropertyKind.None:
+                    {
+                        return PropertyDeclaration(
+                            attributeLists,
+                            modifiers,
+                            type,
+                            explicitInterfaceSpecifier,
+                            identifier,
+                            AccessorList(
+                                AutoGetAccessorDeclaration(),
+                                AutoSetAccessorDeclaration()));
+                    }
+                case AutoPropertyKind.WithPrivateSet:
+                    {
+                        return PropertyDeclaration(
+                            attributeLists,
+                            modifiers,
+                            type,
+                            explicitInterfaceSpecifier,
+                            identifier,
+                            AccessorList(
+                                AutoGetAccessorDeclaration(),
+                                AutoSetAccessorDeclaration(ModifierFactory.Private())));
+                    }
+                case AutoPropertyKind.ReadOnly:
+                    {
+                        return PropertyDeclaration(
+                            attributeLists,
+                            modifiers,
+                            type,
+                            explicitInterfaceSpecifier,
+                            identifier,
+                            SingletonAccessorList(AutoGetAccessorDeclaration()));
+                    }
+                default:
+                    {
+                        Debug.Assert(false, kind.ToString());
+                        throw new ArgumentOutOfRangeException(nameof(kind));
+                    }
+            }
+        }
+        #endregion
+
+        #region AccessorDeclaration
+        public static AccessorDeclarationSyntax GetAccessorDeclaration(BlockSyntax body)
+        {
+            return AccessorDeclaration(SyntaxKind.GetAccessorDeclaration, body);
+        }
+
+        public static AccessorDeclarationSyntax SetAccessorDeclaration(BlockSyntax body)
+        {
+            return AccessorDeclaration(SyntaxKind.SetAccessorDeclaration, body);
+        }
+
+        public static AccessorDeclarationSyntax AddAccessorDeclaration(BlockSyntax body)
+        {
+            return AccessorDeclaration(SyntaxKind.AddAccessorDeclaration, body);
+        }
+
+        public static AccessorDeclarationSyntax RemoveAccessorDeclaration(BlockSyntax body)
+        {
+            return AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, body);
+        }
+
+        public static AccessorDeclarationSyntax AutoGetAccessorDeclaration(SyntaxTokenList modifiers = default(SyntaxTokenList))
+        {
+            return AutoAccessorDeclaration(SyntaxKind.GetAccessorDeclaration, modifiers);
+        }
+
+        public static AccessorDeclarationSyntax AutoSetAccessorDeclaration(SyntaxTokenList modifiers = default(SyntaxTokenList))
+        {
+            return AutoAccessorDeclaration(SyntaxKind.SetAccessorDeclaration, modifiers);
+        }
+
+        private static AccessorDeclarationSyntax AutoAccessorDeclaration(SyntaxKind kind, SyntaxTokenList modifiers = default(SyntaxTokenList))
+        {
+            return AccessorDeclaration(
+                kind,
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                Token(AccessorDeclarationKeywordKind(kind)),
+                default(BlockSyntax),
+                SemicolonToken());
+        }
+
+        private static SyntaxKind AccessorDeclarationKeywordKind(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.GetAccessorDeclaration:
+                    return SyntaxKind.GetKeyword;
+                case SyntaxKind.SetAccessorDeclaration:
+                    return SyntaxKind.SetKeyword;
+                case SyntaxKind.AddAccessorDeclaration:
+                    return SyntaxKind.AddKeyword;
+                case SyntaxKind.RemoveAccessorDeclaration:
+                    return SyntaxKind.RemoveKeyword;
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxKind.IdentifierToken;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        #endregion
+
+        #region Statement
+        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
+        {
+            return LocalDeclarationStatement(type, Identifier(identifier), value);
+        }
+
+        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
+        {
+            VariableDeclaratorSyntax declarator = (value != null)
+                ? VariableDeclarator(identifier, EqualsValueClause(value))
+                : SyntaxFactory.VariableDeclarator(identifier);
+
+            return SyntaxFactory.LocalDeclarationStatement(
+                SyntaxFactory.VariableDeclaration(
+                    type,
+                    SingletonSeparatedList(declarator)));
+        }
+
+        public static YieldStatementSyntax YieldReturnStatement(ExpressionSyntax expression)
+        {
+            return YieldStatement(SyntaxKind.YieldReturnStatement, expression);
+        }
+
+        public static YieldStatementSyntax YieldBreakStatement()
+        {
+            return YieldStatement(SyntaxKind.YieldBreakStatement);
+        }
+
+        public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
+        {
+            return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
+        }
+
+        public static ExpressionStatementSyntax SimpleAssignmentStatement(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return ExpressionStatement(SimpleAssignmentExpression(left, right));
+        }
+        #endregion
+
+        #region BinaryExpression
+        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AddExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AddExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.SubtractExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.SubtractExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax MultiplyExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.MultiplyExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax MultiplyExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.MultiplyExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax DivideExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.DivideExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax DivideExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.DivideExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax ModuloExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.ModuloExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax ModuloExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.ModuloExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LeftShiftExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LeftShiftExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LeftShiftExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LeftShiftExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax RightShiftExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.RightShiftExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax RightShiftExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.RightShiftExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax ExclusiveOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.ExclusiveOrExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax ExclusiveOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.ExclusiveOrExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.EqualsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.EqualsExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.IsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.IsExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AsExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.AsExpression, left, operatorToken, right);
+        }
+
+        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.CoalesceExpression, left, right);
+        }
+
+        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return BinaryExpression(SyntaxKind.CoalesceExpression, left, operatorToken, right);
+        }
+        #endregion
+
+        #region PrefixUnaryExpression
+        public static PrefixUnaryExpressionSyntax UnaryPlusExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.UnaryPlusExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax UnaryPlusExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.UnaryPlusExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax UnaryMinusExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.UnaryMinusExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax UnaryMinusExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.UnaryMinusExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax BitwiseNotExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.BitwiseNotExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax BitwiseNotExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.BitwiseNotExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PreDecrementExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PreDecrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax AddressOfExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.AddressOfExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax AddressOfExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.AddressOfExpression, operatorToken, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PointerIndirectionExpression(ExpressionSyntax operand)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PointerIndirectionExpression, operand);
+        }
+
+        public static PrefixUnaryExpressionSyntax PointerIndirectionExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PrefixUnaryExpression(SyntaxKind.PointerIndirectionExpression, operatorToken, operand);
+        }
+        #endregion
+
+        #region PostfixUnaryExpression
+        public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, operand);
+        }
+
+        public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, operand, operatorToken);
+        }
+
+        public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand);
+        }
+
+        public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand, operatorToken);
+        }
+        #endregion
+
+        #region AssignmentExpression
+        public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax AddAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.AddAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax AddAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.AddAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax SubtractAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.SubtractAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax SubtractAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.SubtractAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax MultiplyAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.MultiplyAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax MultiplyAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.MultiplyAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax DivideAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.DivideAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax DivideAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.DivideAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax ModuloAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.ModuloAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax ModuloAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.ModuloAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax AndAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.AndAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax AndAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.AndAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax ExclusiveOrAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.ExclusiveOrAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax ExclusiveOrAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.ExclusiveOrAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax OrAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.OrAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax OrAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.OrAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax LeftShiftAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.LeftShiftAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax LeftShiftAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.LeftShiftAssignmentExpression, left, operatorToken, right);
+        }
+
+        public static AssignmentExpressionSyntax RightShiftAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.RightShiftAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax RightShiftAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.RightShiftAssignmentExpression, left, operatorToken, right);
+        }
+        #endregion
+
+        #region LiteralExpression
         public static LiteralExpressionSyntax StringLiteralExpression(string value)
         {
             return LiteralExpression(
@@ -741,11 +1987,6 @@ namespace Roslynator.CSharp
                 Literal(value));
         }
 
-        public static LiteralExpressionSyntax ZeroLiteralExpression()
-        {
-            return NumericLiteralExpression(0);
-        }
-
         public static LiteralExpressionSyntax TrueLiteralExpression()
         {
             return LiteralExpression(SyntaxKind.TrueLiteralExpression);
@@ -760,340 +2001,182 @@ namespace Roslynator.CSharp
         {
             return LiteralExpression(SyntaxKind.NullLiteralExpression);
         }
+        #endregion
 
-        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        #region Expression
+        public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, ArgumentListSyntax argumentList)
         {
-            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, right);
+            return SyntaxFactory.ObjectCreationExpression(type, argumentList, default(InitializerExpressionSyntax));
         }
 
-        public static BinaryExpressionSyntax BitwiseAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, SimpleNameSyntax name)
         {
-            return BinaryExpression(SyntaxKind.BitwiseAndExpression, left, operatorToken, right);
+            return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, name);
         }
 
-        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, SyntaxToken operatorToken, SimpleNameSyntax name)
         {
-            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, right);
+            return MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, operatorToken, name);
         }
 
-        public static BinaryExpressionSyntax BitwiseOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name)
         {
-            return BinaryExpression(SyntaxKind.BitwiseOrExpression, left, operatorToken, right);
+            return InvocationExpression(SimpleMemberAccessExpression(expression, name));
         }
 
-        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentSyntax argument)
         {
-            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, right);
+            return SimpleMemberInvocationExpression(expression, name, SingletonArgumentList(argument));
         }
 
-        public static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentListSyntax argumentList)
         {
-            return BinaryExpression(SyntaxKind.LogicalAndExpression, left, operatorToken, right);
+            return InvocationExpression(SimpleMemberAccessExpression(expression, name), argumentList);
         }
 
-        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        public static InvocationExpressionSyntax NameOf(string identifier)
         {
-            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, right);
+            return InvocationExpression(
+                IdentifierName("nameof"),
+                SingletonArgumentList(
+                    Argument(IdentifierName(identifier))));
         }
 
-        public static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static LiteralExpressionSyntax ConstantExpression(object value)
         {
-            return BinaryExpression(SyntaxKind.LogicalOrExpression, left, operatorToken, right);
+            if (value == null)
+                return NullLiteralExpression();
+
+            if (value is bool)
+                return ((bool)value) ? TrueLiteralExpression() : FalseLiteralExpression();
+
+            if (value is char)
+                return CharacterLiteralExpression((char)value);
+
+            if (value is sbyte)
+                return NumericLiteralExpression((sbyte)value);
+
+            if (value is byte)
+                return NumericLiteralExpression((byte)value);
+
+            if (value is short)
+                return NumericLiteralExpression((short)value);
+
+            if (value is ushort)
+                return NumericLiteralExpression((ushort)value);
+
+            if (value is int)
+                return NumericLiteralExpression((int)value);
+
+            if (value is uint)
+                return NumericLiteralExpression((uint)value);
+
+            if (value is long)
+                return NumericLiteralExpression((long)value);
+
+            if (value is ulong)
+                return NumericLiteralExpression((ulong)value);
+
+            if (value is decimal)
+                return NumericLiteralExpression((decimal)value);
+
+            if (value is float)
+                return NumericLiteralExpression((float)value);
+
+            if (value is double)
+                return NumericLiteralExpression((double)value);
+
+            return StringLiteralExpression(value.ToString());
+        }
+        #endregion
+
+        public static IdentifierNameSyntax VarType()
+        {
+            return IdentifierName("var");
         }
 
-        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
         {
-            return BinaryExpression(SyntaxKind.EqualsExpression, left, right);
+            return SyntaxFactory.GenericName(identifier, SingletonTypeArgumentList(typeArgument));
         }
 
-        public static BinaryExpressionSyntax EqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static VariableDeclaratorSyntax VariableDeclarator(string identifier, EqualsValueClauseSyntax initializer)
         {
-            return BinaryExpression(SyntaxKind.EqualsExpression, left, operatorToken, right);
+            return VariableDeclarator(Identifier(identifier), initializer);
         }
 
-        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, ExpressionSyntax right)
+        public static VariableDeclaratorSyntax VariableDeclarator(SyntaxToken identifier, EqualsValueClauseSyntax initializer)
         {
-            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, right);
+            return SyntaxFactory.VariableDeclarator(identifier, default(BracketedArgumentListSyntax), initializer);
         }
 
-        public static BinaryExpressionSyntax NotEqualsExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
         {
-            return BinaryExpression(SyntaxKind.NotEqualsExpression, left, operatorToken, right);
+            return VariableDeclaration(type, Identifier(identifier), initializer);
         }
 
-        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax expression, TypeSyntax type)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
         {
-            return BinaryExpression(SyntaxKind.AsExpression, expression, type);
+            return VariableDeclaration(type, VariableDeclarator(identifier, initializer));
         }
 
-        public static BinaryExpressionSyntax AsExpression(ExpressionSyntax expression, SyntaxToken operatorToken, TypeSyntax type)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)
         {
-            return BinaryExpression(SyntaxKind.AsExpression, expression, operatorToken, type);
+            return SyntaxFactory.VariableDeclaration(type, SingletonSeparatedList(variable));
         }
 
-        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax expression, TypeSyntax type)
+        public static UsingDirectiveSyntax UsingStaticDirective(string name)
         {
-            return BinaryExpression(SyntaxKind.IsExpression, expression, type);
+            return UsingStaticDirective(ParseName(name));
         }
 
-        public static BinaryExpressionSyntax IsExpression(ExpressionSyntax expression, SyntaxToken operatorToken, TypeSyntax type)
+        public static UsingDirectiveSyntax UsingStaticDirective(NameSyntax name)
         {
-            return BinaryExpression(SyntaxKind.IsExpression, expression, operatorToken, type);
-        }
-
-        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.AddExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.AddExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.SubtractExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.SubtractExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.LessThanExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax LessThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.LessThanExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax LessThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.LessThanOrEqualExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax GreaterThanExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.GreaterThanExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax GreaterThanOrEqualExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.GreaterThanOrEqualExpression, left, operatorToken, right);
-        }
-
-        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.CoalesceExpression, left, right);
-        }
-
-        public static BinaryExpressionSyntax CoalesceExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            return BinaryExpression(SyntaxKind.CoalesceExpression, left, operatorToken, right);
-        }
-
-        public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand)
-        {
-            return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand);
-        }
-
-        public static PrefixUnaryExpressionSyntax LogicalNotExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
-        {
-            return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operatorToken, operand);
-        }
-
-        public static AttributeSyntax Attribute(string name, ExpressionSyntax argumentExpression)
-        {
-            return Attribute(IdentifierName(name), argumentExpression);
+            return UsingDirective(
+                StaticKeyword(),
+                default(NameEqualsSyntax),
+                name);
         }
 
         public static AttributeSyntax Attribute(NameSyntax name, ExpressionSyntax argumentExpression)
         {
             return SyntaxFactory.Attribute(
                 name,
-                AttributeArgumentList(AttributeArgument(argumentExpression)));
+                SingletonAttributeArgumentList(AttributeArgument(argumentExpression)));
         }
 
-        public static InvocationExpressionSyntax NameOf(string identifier)
-        {
-            return InvocationExpression(
-                "nameof",
-                ArgumentList(
-                    Argument(IdentifierName(identifier))));
-        }
-
-        public static UsingDirectiveSyntax UsingStaticDirective(string name)
-        {
-            return UsingDirective(
-                StaticKeyword(),
-                default(NameEqualsSyntax),
-                ParseName(name));
-        }
-
-        public static TryStatementSyntax TryStatement(BlockSyntax block, CatchClauseSyntax @catch, FinallyClauseSyntax @finally = null)
-        {
-            return SyntaxFactory.TryStatement(block, SingletonList(@catch), @finally);
-        }
-
-        public static PropertyDeclarationSyntax PropertyDeclaration(PropertyKind kind, TypeSyntax type, string name)
-        {
-            return PropertyDeclaration(
-                kind,
-                default(SyntaxTokenList),
-                type,
-                name);
-        }
-
-        public static PropertyDeclarationSyntax PropertyDeclaration(PropertyKind kind, SyntaxTokenList modifiers, TypeSyntax type, string name)
-        {
-            return PropertyDeclaration(
-                kind,
-                default(SyntaxList<AttributeListSyntax>),
-                modifiers,
-                type,
-                default(ExplicitInterfaceSpecifierSyntax),
-                name);
-        }
-
-        public static PropertyDeclarationSyntax PropertyDeclaration(
-            PropertyKind kind,
-            SyntaxList<AttributeListSyntax> attributeLists,
-            SyntaxTokenList modifiers,
-            TypeSyntax type,
-            ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier,
-            string name)
-        {
-            switch (kind)
-            {
-                case PropertyKind.AutoProperty:
-                    {
-                        return SyntaxFactory.PropertyDeclaration(
-                            attributeLists,
-                            modifiers,
-                            type,
-                            explicitInterfaceSpecifier,
-                            Identifier(name),
-                            AccessorList(
-                                AutoImplementedGetter(),
-                                AutoImplementedSetter()));
-                    }
-                case PropertyKind.AutoPropertyWithPrivateSet:
-                    {
-                        return SyntaxFactory.PropertyDeclaration(
-                            attributeLists,
-                            modifiers,
-                            type,
-                            explicitInterfaceSpecifier,
-                            Identifier(name),
-                            AccessorList(
-                                AutoImplementedGetter(),
-                                AutoImplementedSetter(TokenList(PrivateKeyword()))));
-                    }
-                case PropertyKind.ReadOnlyAutoProperty:
-                    {
-                        return SyntaxFactory.PropertyDeclaration(
-                            attributeLists,
-                            modifiers,
-                            type,
-                            explicitInterfaceSpecifier,
-                            Identifier(name),
-                            AccessorList(AutoImplementedGetter()));
-                    }
-                default:
-                    {
-                        Debug.Assert(false, kind.ToString());
-                        throw new ArgumentOutOfRangeException(nameof(kind));
-                    }
-            }
-        }
-
-        public static AccessorListSyntax AccessorList(params AccessorDeclarationSyntax[] accessors)
-        {
-            return SyntaxFactory.AccessorList(List(accessors));
-        }
-
-        public static YieldStatementSyntax YieldReturnStatement(ExpressionSyntax expression)
-        {
-            return YieldStatement(SyntaxKind.YieldReturnStatement, expression);
-        }
-
-        public static YieldStatementSyntax YieldBreakStatement()
-        {
-            return YieldStatement(SyntaxKind.YieldBreakStatement);
-        }
-
-        public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, ArgumentListSyntax argumentList)
-        {
-            return SyntaxFactory.ObjectCreationExpression(type, argumentList, default(InitializerExpressionSyntax));
-        }
-
-        public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer = null)
+        public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax @default = null)
         {
             return SyntaxFactory.Parameter(
                 default(SyntaxList<AttributeListSyntax>),
                 default(SyntaxTokenList),
                 type,
                 identifier,
-                initializer);
+                @default);
         }
 
-        public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand)
+        public static TypeParameterConstraintClauseSyntax TypeParameterConstraintClause(
+            string name,
+            TypeParameterConstraintSyntax typeParameterConstraint)
         {
-            return PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, operand);
+            return TypeParameterConstraintClause(IdentifierName(name), typeParameterConstraint);
         }
 
-        public static PrefixUnaryExpressionSyntax PreIncrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        public static TypeParameterConstraintClauseSyntax TypeParameterConstraintClause(
+            IdentifierNameSyntax identifierName,
+            TypeParameterConstraintSyntax typeParameterConstraint)
         {
-            return PrefixUnaryExpression(SyntaxKind.PreIncrementExpression, operatorToken, operand);
+            return SyntaxFactory.TypeParameterConstraintClause(identifierName, SingletonSeparatedList(typeParameterConstraint));
         }
 
-        public static PrefixUnaryExpressionSyntax PreDecrementExpression(ExpressionSyntax operand)
+        public static ClassOrStructConstraintSyntax ClassConstraint()
         {
-            return PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, operand);
+            return ClassOrStructConstraint(SyntaxKind.ClassConstraint, ClassKeyword());
         }
 
-        public static PrefixUnaryExpressionSyntax PreDecrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        public static ClassOrStructConstraintSyntax StructConstraint()
         {
-            return PrefixUnaryExpression(SyntaxKind.PreDecrementExpression, operatorToken, operand);
-        }
-
-        public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand)
-        {
-            return PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, operand);
-        }
-
-        public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
-        {
-            return PostfixUnaryExpression(SyntaxKind.PostIncrementExpression, operand, operatorToken);
-        }
-
-        public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand)
-        {
-            return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand);
-        }
-
-        public static PostfixUnaryExpressionSyntax PostDecrementExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
-        {
-            return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand, operatorToken);
+            return ClassOrStructConstraint(SyntaxKind.StructConstraint, StructKeyword());
         }
 
         public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax argumentList = null)
@@ -1104,16 +2187,6 @@ namespace Roslynator.CSharp
         public static ConstructorInitializerSyntax ThisConstructorInitializer(ArgumentListSyntax argumentList = null)
         {
             return ConstructorInitializer(SyntaxKind.ThisConstructorInitializer, argumentList);
-        }
-
-        public static ParameterListSyntax ParameterList(ParameterSyntax parameter)
-        {
-            return SyntaxFactory.ParameterList(SingletonSeparatedList(parameter));
-        }
-
-        public static ParameterListSyntax ParameterList(params ParameterSyntax[] parameters)
-        {
-            return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
 
         public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, StatementSyntax statement)
@@ -1139,49 +2212,7 @@ namespace Roslynator.CSharp
         public static ImplicitElementAccessSyntax ImplicitElementAccess(ExpressionSyntax expression)
         {
             return SyntaxFactory.ImplicitElementAccess(
-                BracketedArgumentList(
-                    SingletonSeparatedList(
-                        Argument(expression))));
-        }
-
-        public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
-        {
-            return SyntaxFactory.GenericName(identifier, TypeArgumentList(typeArgument));
-        }
-
-        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
-        {
-            return LocalDeclarationStatement(type, Identifier(identifier), value);
-        }
-
-        public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, SyntaxToken identifier, ExpressionSyntax value = null)
-        {
-            VariableDeclaratorSyntax declarator = (value != null)
-                ? VariableDeclarator(identifier, EqualsValueClause(value))
-                : SyntaxFactory.VariableDeclarator(identifier);
-
-            return SyntaxFactory.LocalDeclarationStatement(
-                SyntaxFactory.VariableDeclaration(
-                    type,
-                    SingletonSeparatedList(declarator)));
-        }
-
-        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, ExpressionSyntax value)
-        {
-            return EnumMemberDeclaration(Identifier(name), value);
-        }
-
-        public static EnumMemberDeclarationSyntax EnumMemberDeclaration(SyntaxToken identifier, ExpressionSyntax value)
-        {
-            return SyntaxFactory.EnumMemberDeclaration(
-                default(SyntaxList<AttributeListSyntax>),
-                identifier,
-                EqualsValueClause(value));
-        }
-
-        public static TypeArgumentListSyntax TypeArgumentList(TypeSyntax argument)
-        {
-            return SyntaxFactory.TypeArgumentList(SingletonSeparatedList(argument));
+                SingletonBracketedArgumentList(Argument(expression)));
         }
     }
 }

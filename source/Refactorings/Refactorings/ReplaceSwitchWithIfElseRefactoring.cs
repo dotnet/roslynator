@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -91,15 +92,13 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = switchSection.Labels.Count - 1; i >= 0; i--)
             {
-                BinaryExpressionSyntax equalsExpression = BinaryExpression(
-                    SyntaxKind.EqualsExpression,
+                BinaryExpressionSyntax equalsExpression = EqualsExpression(
                     switchStatement.Expression,
                     ((CaseSwitchLabelSyntax)switchSection.Labels[i]).Value);
 
                 if (condition != null)
                 {
-                    condition = BinaryExpression(
-                        SyntaxKind.LogicalOrExpression,
+                    condition = LogicalOrExpression(
                         equalsExpression,
                         condition);
                 }

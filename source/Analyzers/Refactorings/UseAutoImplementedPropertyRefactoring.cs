@@ -438,7 +438,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (property.ExpressionBody != null)
             {
-                return AccessorList(AutoImplementedGetter())
+                return SingletonAccessorList(AutoGetAccessorDeclaration())
                     .WithTriviaFrom(property.ExpressionBody);
             }
             else

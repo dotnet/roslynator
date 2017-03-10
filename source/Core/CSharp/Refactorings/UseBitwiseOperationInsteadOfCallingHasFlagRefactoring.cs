@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, ZeroLiteralExpression())
+            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, NumericLiteralExpression(0))
                 .WithTriviaFrom(nodeToReplace)
                 .Parenthesize(moveTrivia: true)
                 .WithSimplifierAnnotation()

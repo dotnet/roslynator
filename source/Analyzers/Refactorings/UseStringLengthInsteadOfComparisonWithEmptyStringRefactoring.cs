@@ -77,15 +77,14 @@ namespace Roslynator.CSharp.Refactorings
             if (CSharpAnalysis.IsEmptyString(left, semanticModel, cancellationToken))
             {
                 newNode = binaryExpression
-                    .WithLeft(ZeroLiteralExpression())
+                    .WithLeft(NumericLiteralExpression(0))
                     .WithRight(CreateConditionalAccess(right));
-
             }
             else if (CSharpAnalysis.IsEmptyString(right, semanticModel, cancellationToken))
             {
                 newNode = binaryExpression
                     .WithLeft(CreateConditionalAccess(left))
-                    .WithRight(ZeroLiteralExpression());
+                    .WithRight(NumericLiteralExpression(0));
             }
             else
             {

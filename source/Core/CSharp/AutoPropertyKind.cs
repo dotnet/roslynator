@@ -2,10 +2,10 @@
 
 namespace Roslynator.CSharp
 {
-    public enum PropertyKind
+    public enum AutoPropertyKind
     {
-        AutoProperty,
-        AutoPropertyWithPrivateSet,
-        ReadOnlyAutoProperty,
+        None,
+        WithPrivateSet,
+        ReadOnly,
     }
 }

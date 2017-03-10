@@ -301,7 +301,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
-                "Equals",
+                IdentifierName("Equals"),
                 ArgumentList(
                     CreateArgument(left),
                     CreateArgument(right),

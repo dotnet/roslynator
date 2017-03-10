@@ -41,10 +41,9 @@ namespace CodeGenerator
                 .WithModifiers(ModifierFactory.Public())
                 .WithBody(Block(refactorings.Select(refactoring =>
                     {
-                        return ExpressionStatement(
-                            SimpleAssignmentExpression(
+                        return SimpleAssignmentStatement(
                                 IdentifierName(refactoring.Identifier),
-                                (refactoring.IsEnabledByDefault) ? TrueLiteralExpression() : FalseLiteralExpression()));
+                                (refactoring.IsEnabledByDefault) ? TrueLiteralExpression() : FalseLiteralExpression());
                     })));
 
             yield return MethodDeclaration(VoidType(), "Apply")
@@ -71,15 +70,15 @@ namespace CodeGenerator
         {
             return PropertyDeclaration(BoolType(), refactoring.Identifier)
                 .WithAttributeLists(
-                    AttributeList(Attribute("Category", IdentifierName("RefactoringCategory"))),
-                    AttributeList(Attribute("DisplayName", StringLiteralExpression(refactoring.Title))),
-                    AttributeList(Attribute("Description", StringLiteralExpression(CreateDescription(refactoring)))),
-                    AttributeList(Attribute("TypeConverter", TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
+                    SingletonAttributeList(Attribute(IdentifierName("Category"), IdentifierName("RefactoringCategory"))),
+                    SingletonAttributeList(Attribute(IdentifierName("DisplayName"), StringLiteralExpression(refactoring.Title))),
+                    SingletonAttributeList(Attribute(IdentifierName("Description"), StringLiteralExpression(CreateDescription(refactoring)))),
+                    SingletonAttributeList(Attribute(IdentifierName("TypeConverter"), TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
                 .WithModifiers(ModifierFactory.Public())
                 .WithAccessorList(
                     AccessorList(
-                        AutoImplementedGetter(),
-                        AutoImplementedSetter()));
+                        AutoGetAccessorDeclaration(),
+                        AutoSetAccessorDeclaration()));
         }
 
         private static string CreateDescription(RefactoringDescriptor refactoring)

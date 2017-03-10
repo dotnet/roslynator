@@ -105,10 +105,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (initializerValue != null)
             {
-                ExpressionStatementSyntax expressionStatement = ExpressionStatement(
-                    SimpleAssignmentExpression(
+                ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
                         IdentifierName(identifier),
-                        initializerValue));
+                        initializerValue);
 
                 expressionStatement = expressionStatement.WithFormatterAnnotation();
 

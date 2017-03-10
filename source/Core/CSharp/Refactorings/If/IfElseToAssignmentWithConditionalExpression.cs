@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings.If
         {
             ConditionalExpressionSyntax conditionalExpression = IfRefactoringHelper.CreateConditionalExpression(IfStatement.Condition, Right1, Right2);
 
-            ExpressionStatementSyntax newNode = SimpleAssignmentExpressionStatement(Left, conditionalExpression)
+            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(Left, conditionalExpression)
                 .WithTriviaFrom(IfStatement)
                 .WithFormatterAnnotation();
 

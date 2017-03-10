@@ -48,15 +48,13 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
                 declaration.Variables[0].Initializer.Value,
-                BinaryExpression(
-                    SyntaxKind.SubtractExpression,
+                SubtractExpression(
                     ((BinaryExpressionSyntax)forStatement.Condition).Right,
-                    LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(1))));
+                    NumericLiteralExpression(1)));
 
-            BinaryExpressionSyntax newCondition = BinaryExpression(
-                SyntaxKind.GreaterThanOrEqualExpression,
+            BinaryExpressionSyntax newCondition = GreaterThanOrEqualExpression(
                 ((BinaryExpressionSyntax)forStatement.Condition).Left,
-                LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal(0)));
+                NumericLiteralExpression(0));
 
             SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
                 incrementor,

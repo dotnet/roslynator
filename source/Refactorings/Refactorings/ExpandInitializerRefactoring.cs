@@ -293,33 +293,30 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (left.IsKind(SyntaxKind.ImplicitElementAccess))
                     {
-                        yield return ExpressionStatement(
-                            SimpleAssignmentExpression(
+                        yield return SimpleAssignmentStatement(
                                 ElementAccessExpression(
                                     initializedExpression,
                                     ((ImplicitElementAccessSyntax)left).ArgumentList),
-                                right));
+                                right);
                     }
                     else
                     {
-                        yield return ExpressionStatement(
-                            SimpleAssignmentExpression(
+                        yield return SimpleAssignmentStatement(
                                 SimpleMemberAccessExpression(
                                     initializedExpression,
                                     (IdentifierNameSyntax)left),
-                                right));
+                                right);
                     }
                 }
                 else if (kind == SyntaxKind.ComplexElementInitializerExpression)
                 {
                     var elementInitializer = (InitializerExpressionSyntax)expression;
 
-                    yield return ExpressionStatement(
-                        SimpleAssignmentExpression(
+                    yield return SimpleAssignmentStatement(
                             ElementAccessExpression(
                                 initializedExpression,
                                 BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
-                            elementInitializer.Expressions[1]));
+                            elementInitializer.Expressions[1]);
                 }
                 else
                 {
@@ -328,7 +325,7 @@ namespace Roslynator.CSharp.Refactorings
                             SimpleMemberAccessExpression(
                                 initializedExpression,
                                 IdentifierName("Add")),
-                            ArgumentList(Argument(expression))
+                            SingletonArgumentList(Argument(expression))
                         )
                     );
                 }

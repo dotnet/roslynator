@@ -213,8 +213,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BinaryExpressionSyntax CreateAddExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
-            return BinaryExpression(
-                SyntaxKind.AddExpression,
+            return AddExpression(
                 left,
                 Token(SyntaxTriviaList.Empty, SyntaxKind.PlusToken, ParseTrailingTrivia("\r\n")),
                 right);

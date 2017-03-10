@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 Right1.WithoutTrivia().Parenthesize().WithSimplifierAnnotation(),
                 Right2.WithoutTrivia().Parenthesize().WithSimplifierAnnotation());
 
-            ExpressionStatementSyntax newNode = SimpleAssignmentExpressionStatement(Left.WithoutTrivia(), coalesceExpression)
+            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(Left.WithoutTrivia(), coalesceExpression)
                 .WithTriviaFrom(IfStatement)
                 .WithFormatterAnnotation();
 

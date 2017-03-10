@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
         {
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
-                MethodName,
+                IdentifierName(MethodName),
                 Argument(binaryExpression.Left));
 
             if (binaryExpression.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))

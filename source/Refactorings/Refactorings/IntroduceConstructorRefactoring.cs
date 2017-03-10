@@ -277,10 +277,9 @@ namespace Roslynator.CSharp.Refactorings
                 string name = GetIdentifier(member).ValueText;
                 string parameterName = Identifier.ToCamelCase(name);
 
-                statements.Add(ExpressionStatement(
-                    SimpleAssignmentExpression(
+                statements.Add(SimpleAssignmentStatement(
                         IdentifierName(name),
-                        IdentifierName(parameterName))));
+                        IdentifierName(parameterName)));
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),

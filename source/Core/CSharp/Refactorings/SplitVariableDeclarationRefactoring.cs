@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -136,7 +137,7 @@ namespace Roslynator.CSharp.Refactorings
                     statement2.Modifiers,
                     VariableDeclaration(
                         statement2.Declaration.Type,
-                        SingletonSeparatedList(variables[i])));
+                        variables[i]));
 
                 if (i == 0)
                     newStatement = newStatement.WithLeadingTrivia(statement.GetLeadingTrivia());
@@ -161,7 +162,7 @@ namespace Roslynator.CSharp.Refactorings
                     declaration2.Modifiers,
                     VariableDeclaration(
                         declaration2.Declaration.Type,
-                        SingletonSeparatedList(variables[i])));
+                        variables[i]));
 
                 if (i == 0)
                     newDeclaration = newDeclaration.WithLeadingTrivia(declaration.GetLeadingTrivia());
@@ -186,7 +187,7 @@ namespace Roslynator.CSharp.Refactorings
                     fieldDeclaration2.Modifiers,
                     VariableDeclaration(
                         fieldDeclaration2.Declaration.Type,
-                        SingletonSeparatedList(variables[i])));
+                        variables[i]));
 
                 if (i == 0)
                     newDeclaration = newDeclaration.WithLeadingTrivia(fieldDeclaration.GetLeadingTrivia());

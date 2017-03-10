@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 {
@@ -30,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
             ExpressionSyntax newNode = invocation.WithExpression(memberAccess);
 
             if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-                newNode = PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, newNode);
+                newNode = LogicalNotExpression(newNode);
 
             newNode = newNode.WithTriviaFrom(binaryExpression);
 

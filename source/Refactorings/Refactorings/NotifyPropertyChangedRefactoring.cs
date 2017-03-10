@@ -99,20 +99,20 @@ namespace Roslynator.CSharp.Refactorings
                 argumentExpression = StringLiteralExpression(propertyName);
             }
 
-            return Setter(
+            return SetAccessorDeclaration(
                 Block(
                     IfStatement(
                         NotEqualsExpression(
                             fieldIdentifierName,
                             IdentifierName("value")),
                         Block(
-                            SimpleAssignmentExpressionStatement(
+                            SimpleAssignmentStatement(
                                 fieldIdentifierName,
                                 IdentifierName("value")),
                             ExpressionStatement(
                                 InvocationExpression(
-                                    "OnPropertyChanged",
-                                    ArgumentList(Argument(argumentExpression))))))));
+                                    IdentifierName("OnPropertyChanged"),
+                                    SingletonArgumentList(Argument(argumentExpression))))))));
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)

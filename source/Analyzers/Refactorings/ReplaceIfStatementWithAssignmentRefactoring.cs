@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
             if (assignment.Right.IsKind(SyntaxKind.FalseLiteralExpression))
                 condition = Negator.LogicallyNegate(condition);
 
-            ExpressionStatementSyntax newNode = SimpleAssignmentExpressionStatement(assignment.Left, condition)
+            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(assignment.Left, condition)
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
