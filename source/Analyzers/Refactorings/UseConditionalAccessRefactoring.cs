@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -18,21 +17,27 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax logicalAndExpression)
         {
-            ExpressionSyntax expression = FindExpressionThanCanBeNull(logicalAndExpression);
+            ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAndExpression);
 
             if (expression != null)
             {
-                SyntaxNode node = FindConditionallyAccessedNode(expression, logicalAndExpression);
+                ExpressionSyntax right = logicalAndExpression.Right?.WalkDownParentheses();
 
-                if (node != null
-                    && !node.SpanContainsDirectives())
+                if (right != null
+                    && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+                    SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
+
+                    if (node != null
+                        && !node.SpanContainsDirectives())
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+                    }
                 }
             }
         }
 
-        private static ExpressionSyntax FindExpressionThanCanBeNull(BinaryExpressionSyntax logicalAndExpression)
+        private static ExpressionSyntax FindExpressionCheckedForNull(BinaryExpressionSyntax logicalAndExpression)
         {
             ExpressionSyntax left = logicalAndExpression.Left;
 
@@ -47,51 +52,64 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static SyntaxNode FindConditionallyAccessedNode(BinaryExpressionSyntax logicalAndExpression)
+        private static SyntaxNode FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
         {
-            ExpressionSyntax expression = FindExpressionThanCanBeNull(logicalAndExpression);
+            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+                expression = ((PrefixUnaryExpressionSyntax)expression).Operand;
 
-            return FindConditionallyAccessedNode(expression, logicalAndExpression);
-        }
+            SyntaxKind kind = expressionToFind.Kind();
 
-        private static SyntaxNode FindConditionallyAccessedNode(ExpressionSyntax expression, BinaryExpressionSyntax logicalAndExpression)
-        {
-            ExpressionSyntax right = logicalAndExpression.Right;
+            SyntaxToken firstToken = expression.GetFirstToken();
 
-            if (right?.IsMissing == false
-                && !IsEqualToNullExpression(right))
+            int start = firstToken.SpanStart;
+
+            SyntaxNode node = firstToken.Parent;
+
+            while (node?.SpanStart == start)
             {
-                if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                    right = ((PrefixUnaryExpressionSyntax)right).Operand;
-
-                SyntaxKind expressionKind = expression.Kind();
-
-                SyntaxToken firstToken = right.GetFirstToken();
-
-                int start = firstToken.SpanStart;
-
-                SyntaxNode node = firstToken.Parent;
-
-                while (node?.SpanStart == start)
+                if (kind == node.Kind()
+                    && node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
+                    && expressionToFind.IsEquivalentTo(node, topLevel: false))
                 {
-                    if (expressionKind == node.Kind()
-                        && node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
-                        && expression.IsEquivalentTo(node, topLevel: false))
-                    {
-                        return node;
-                    }
-
-                    node = node.Parent;
+                    return node;
                 }
+
+                node = node.Parent;
             }
 
             return null;
         }
 
-        private static bool IsEqualToNullExpression(ExpressionSyntax expression)
+        private static bool ValidateRightExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            return expression.IsKind(SyntaxKind.EqualsExpression)
-                && ((BinaryExpressionSyntax)expression).Right?.IsKind(SyntaxKind.NullLiteralExpression) == true;
+            SyntaxKind kind = expression.Kind();
+
+            if (kind == SyntaxKind.EqualsExpression)
+            {
+                return ((BinaryExpressionSyntax)expression)
+                    .Right?
+                    .WalkDownParentheses()
+                    .HasConstantNonNullValue(semanticModel, cancellationToken) == true;
+            }
+            else if (kind == SyntaxKind.NotEqualsExpression)
+            {
+                return ((BinaryExpressionSyntax)expression)
+                    .Right?
+                    .WalkDownParentheses()
+                    .IsKind(SyntaxKind.NullLiteralExpression) == true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private static bool HasConstantNonNullValue(this ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+
+            return optional.HasValue
+                && optional.Value != null;
         }
 
         public static async Task<Document> RefactorAsync(
@@ -99,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax logicalAnd,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = Refactor(logicalAnd)
+            ExpressionSyntax newNode = CreateExpressionWithConditionalAccess(logicalAnd)
                 .WithLeadingTrivia(logicalAnd.GetLeadingTrivia())
                 .WithFormatterAnnotation()
                 .Parenthesize(moveTrivia: true)
@@ -108,23 +126,29 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ExpressionSyntax Refactor(BinaryExpressionSyntax logicalAnd)
+        private static ExpressionSyntax CreateExpressionWithConditionalAccess(BinaryExpressionSyntax logicalAnd)
         {
-            SyntaxNode node = FindConditionallyAccessedNode(logicalAnd);
-            TextSpan span = node.Span;
+            ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAnd);
 
-            ExpressionSyntax expression = logicalAnd.Right;
-            SyntaxKind expressionKind = expression.Kind();
+            ExpressionSyntax right = logicalAnd.Right;
 
-            if (expressionKind == SyntaxKind.LogicalNotExpression)
+            ExpressionSyntax rightWithoutParentheses = right.WalkDownParentheses();
+
+            SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(
+                expression,
+                rightWithoutParentheses.WalkDownParentheses());
+
+            SyntaxKind kind = rightWithoutParentheses.Kind();
+
+            if (kind == SyntaxKind.LogicalNotExpression)
             {
-                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+                var logicalNot = (PrefixUnaryExpressionSyntax)rightWithoutParentheses;
                 ExpressionSyntax operand = logicalNot.Operand;
                 SyntaxToken operatorToken = logicalNot.OperatorToken;
 
                 string s = operand.ToFullString();
 
-                int length = operand.GetLeadingTrivia().Span.Length + span.Length;
+                int length = node.Span.End - operand.FullSpan.Start;
 
                 var sb = new StringBuilder();
                 sb.Append(s, 0, length);
@@ -136,16 +160,16 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                string s = expression.ToFullString();
+                string s = right.ToFullString();
 
-                int length = expression.GetLeadingTrivia().Span.Length + span.Length;
+                int length = node.Span.End - right.FullSpan.Start;
 
                 var sb = new StringBuilder();
                 sb.Append(s, 0, length);
                 sb.Append("?");
                 sb.Append(s, length, s.Length - length);
 
-                switch (expressionKind)
+                switch (kind)
                 {
                     case SyntaxKind.LogicalOrExpression:
                     case SyntaxKind.LogicalAndExpression:
