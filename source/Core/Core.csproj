@@ -44,6 +44,7 @@
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\Documentation\AddBaseOrNewDocumentationCommentRewriter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentInfo.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentInserter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentOrigin.cs" />
@@ -129,7 +130,7 @@
     <Compile Include="CSharp\Refactorings\SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
-    <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.Rewriter.cs" />
+    <Compile Include="CSharp\Documentation\AddNewDocumentationCommentRewriter.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="EnumHelper.cs" />
