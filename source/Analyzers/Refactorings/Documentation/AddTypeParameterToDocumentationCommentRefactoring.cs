@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
@@ -23,22 +21,21 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             MemberDeclarationSyntax memberDeclaration,
             SeparatedSyntaxList<TypeParameterSyntax> typeParameters)
         {
-            if (typeParameters.Any(f => !f.IsMissing))
+            if (typeParameters.Any())
             {
-                SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
+                DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationCommentTriviaSyntax();
 
-                if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                if (comment != null)
                 {
-                    var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                    bool containsInheritDoc = false;
+                    HashSet<string> names = DocumentationCommentRefactoring.GetAttributeValues(comment, "typeparam", "name", out containsInheritDoc);
 
-                    if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true)
+                    if (!containsInheritDoc)
                     {
-                        var names = new HashSet<string>(DocumentationCommentRefactoring.GetNameAttributeValues(comment, "typeparam"));
-
                         foreach (TypeParameterSyntax typeParameter in typeParameters)
                         {
                             if (!typeParameter.IsMissing
-                                && !names.Contains(typeParameter.Identifier.ValueText))
+                                && names?.Contains(typeParameter.Identifier.ValueText) != true)
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.AddTypeParameterToDocumentationComment,

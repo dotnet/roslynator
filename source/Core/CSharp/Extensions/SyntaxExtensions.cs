@@ -575,6 +575,24 @@ namespace Roslynator.CSharp.Extensions
                 .FirstOrDefault(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
         }
 
+        internal static DocumentationCommentTriviaSyntax GetSingleLineDocumentationCommentTriviaSyntax(this MemberDeclarationSyntax memberDeclaration)
+        {
+            if (memberDeclaration == null)
+                throw new ArgumentNullException(nameof(memberDeclaration));
+
+            SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
+
+            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+            {
+                var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+
+                if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true)
+                    return comment;
+            }
+
+            return null;
+        }
+
         public static bool HasSingleLineDocumentationComment(this MemberDeclarationSyntax memberDeclaration)
         {
             if (memberDeclaration == null)

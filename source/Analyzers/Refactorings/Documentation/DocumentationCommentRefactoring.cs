@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,18 +12,62 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal static class DocumentationCommentRefactoring
     {
-        public static IEnumerable<string> GetNameAttributeValues(DocumentationCommentTriviaSyntax comment, string localName)
+        public static HashSet<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName, string attributeName, out bool containsInheritDoc)
         {
-            foreach (XmlElementSyntax element in comment.Elements(localName))
-            {
-                string name = GetNameAttributeValue(element);
+            containsInheritDoc = false;
+            HashSet<string> elements = null;
 
-                if (name != null)
-                    yield return name;
+            foreach (XmlNodeSyntax node in comment.Content)
+            {
+                SyntaxKind kind = node.Kind();
+
+                if (kind == SyntaxKind.XmlElement)
+                {
+                    var element = (XmlElementSyntax)node;
+
+                    string name = element.StartTag?.Name?.LocalName.ValueText;
+
+                    if (name != null)
+                    {
+                        if (IsInheritDoc(name))
+                        {
+                            containsInheritDoc = true;
+                            return null;
+                        }
+                        else if (string.Equals(name, elementName, StringComparison.Ordinal))
+                        {
+                            string value = GetAttributeValue(element, attributeName);
+
+                            if (value != null)
+                                (elements ?? (elements = new HashSet<string>())).Add(value);
+                        }
+                    }
+                }
+
+                if (kind == SyntaxKind.XmlEmptyElement)
+                {
+                    var element = (XmlEmptyElementSyntax)node;
+
+                    string name = element?.Name?.LocalName.ValueText;
+
+                    if (name != null
+                        && IsInheritDoc(name))
+                    {
+                        containsInheritDoc = true;
+                        return null;
+                    }
+                }
             }
+
+            return elements;
         }
 
-        public static string GetNameAttributeValue(XmlElementSyntax element)
+        private static bool IsInheritDoc(string name)
+        {
+            return string.Equals(name, "inheritdoc", StringComparison.Ordinal);
+        }
+
+        public static string GetAttributeValue(XmlElementSyntax element, string attributeName)
         {
             XmlElementStartTagSyntax startTag = element.StartTag;
 
@@ -36,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                     {
                         var nameAttribute = (XmlNameAttributeSyntax)attribute;
 
-                        if (nameAttribute.Name?.LocalName.ValueText == "name")
+                        if (nameAttribute.Name?.LocalName.ValueText == attributeName)
                         {
                             IdentifierNameSyntax identifierName = nameAttribute.Identifier;
 

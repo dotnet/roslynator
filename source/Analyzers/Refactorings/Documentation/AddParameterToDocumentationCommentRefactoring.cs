@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
@@ -23,22 +21,21 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             MemberDeclarationSyntax memberDeclaration,
             SeparatedSyntaxList<ParameterSyntax> parameters)
         {
-            if (parameters.Any(f => !f.IsMissing))
+            if (parameters.Any())
             {
-                SyntaxTrivia trivia = memberDeclaration.GetSingleLineDocumentationComment();
+                DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationCommentTriviaSyntax();
 
-                if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                if (comment != null)
                 {
-                    var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                    bool containsInheritDoc = false;
+                    HashSet<string> names = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "name", out containsInheritDoc);
 
-                    if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) == true)
+                    if (!containsInheritDoc)
                     {
-                        var names = new HashSet<string>(DocumentationCommentRefactoring.GetNameAttributeValues(comment, "param"));
-
                         foreach (ParameterSyntax parameter in parameters)
                         {
                             if (!parameter.IsMissing
-                                && !names.Contains(parameter.Identifier.ValueText))
+                                && names?.Contains(parameter.Identifier.ValueText) != true)
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.AddParameterToDocumentationComment,
