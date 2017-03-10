@@ -41,8 +41,6 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="HexadecimalLiteralInfo.cs" />
-    <Compile Include="HexadecimalLiteralSuffixKind.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
@@ -271,7 +269,7 @@
     <Compile Include="Refactorings\ModifyExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
-    <Compile Include="WrapInElseClauseRefactoring.cs" />
+    <Compile Include="Refactorings\WrapInElseClauseRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
