@@ -790,16 +790,16 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseAutoImplementedProperty = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseAutoImplementedProperty,
-            title: "Use auto-implemented property instead of expanded property.",
-            messageFormat: "Use auto-implemented property instead of expanded property.",
+        public static readonly DiagnosticDescriptor UseAutoProperty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseAutoProperty,
+            title: "Use auto-implemented property.",
+            messageFormat: "Use auto-implemented property.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseAutoImplementedPropertyFadeOut = UseAutoImplementedProperty.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UseAutoPropertyFadeOut = UseAutoProperty.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseLinefeedAsNewLine,

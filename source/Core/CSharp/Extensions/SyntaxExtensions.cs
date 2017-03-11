@@ -17,26 +17,26 @@ namespace Roslynator.CSharp.Extensions
 {
     public static class SyntaxExtensions
     {
-        public static bool IsAutoImplementedGetter(this AccessorDeclarationSyntax accessorDeclaration)
+        public static bool IsAutoGetter(this AccessorDeclarationSyntax accessorDeclaration)
         {
-            return IsAutoImplemented(accessorDeclaration, SyntaxKind.GetAccessorDeclaration);
+            return IsAutoAccessor(accessorDeclaration, SyntaxKind.GetAccessorDeclaration);
         }
 
-        public static bool IsAutoImplementedSetter(this AccessorDeclarationSyntax accessorDeclaration)
+        public static bool IsAutoSetter(this AccessorDeclarationSyntax accessorDeclaration)
         {
-            return IsAutoImplemented(accessorDeclaration, SyntaxKind.SetAccessorDeclaration);
+            return IsAutoAccessor(accessorDeclaration, SyntaxKind.SetAccessorDeclaration);
         }
 
-        private static bool IsAutoImplemented(this AccessorDeclarationSyntax accessorDeclaration, SyntaxKind kind)
+        private static bool IsAutoAccessor(this AccessorDeclarationSyntax accessorDeclaration, SyntaxKind kind)
         {
             if (accessorDeclaration == null)
                 throw new ArgumentNullException(nameof(accessorDeclaration));
 
             return accessorDeclaration.IsKind(kind)
-                && IsAutoImplemented(accessorDeclaration);
+                && IsAutoAccessor(accessorDeclaration);
         }
 
-        private static bool IsAutoImplemented(this AccessorDeclarationSyntax accessorDeclaration)
+        private static bool IsAutoAccessor(this AccessorDeclarationSyntax accessorDeclaration)
         {
             return accessorDeclaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
                 && accessorDeclaration.BodyOrExpressionBody() == null;
