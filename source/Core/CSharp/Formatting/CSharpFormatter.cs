@@ -341,15 +341,24 @@ namespace Roslynator.CSharp.Formatting
         private static AccessorDeclarationSyntax ToMultiLine(AccessorDeclarationSyntax accessor)
         {
             BlockSyntax body = accessor.Body;
-            SyntaxToken closeBrace = body.CloseBraceToken;
 
-            AccessorDeclarationSyntax newAccessor = accessor
-                .WithBody(
-                    body.WithCloseBraceToken(
-                        closeBrace.WithLeadingTrivia(
-                            closeBrace.LeadingTrivia.Add(NewLineTrivia()))));
+            if (body != null)
+            {
+                SyntaxToken closeBrace = body.CloseBraceToken;
 
-            return newAccessor.WithFormatterAnnotation();
+                if (!closeBrace.IsMissing)
+                {
+                    AccessorDeclarationSyntax newAccessor = accessor
+                   .WithBody(
+                       body.WithCloseBraceToken(
+                           closeBrace.WithLeadingTrivia(
+                               closeBrace.LeadingTrivia.Add(NewLineTrivia()))));
+
+                    return newAccessor.WithFormatterAnnotation();
+                }
+            }
+
+            return accessor;
         }
 
         private static string GetLineIndent(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))

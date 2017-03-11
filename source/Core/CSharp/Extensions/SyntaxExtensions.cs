@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Extensions
         private static bool IsAutoImplemented(this AccessorDeclarationSyntax accessorDeclaration)
         {
             return accessorDeclaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
-                && accessorDeclaration.Body == null;
+                && accessorDeclaration.BodyOrExpressionBody() == null;
         }
 
         public static AccessorDeclarationSyntax WithoutSemicolonToken(

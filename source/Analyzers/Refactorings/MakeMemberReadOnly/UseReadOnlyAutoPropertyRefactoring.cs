@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                             var accessor = setMethod.GetFirstSyntaxOrDefault(context.CancellationToken) as AccessorDeclarationSyntax;
 
                             if (accessor != null
-                                && accessor.Body == null)
+                                && accessor.BodyOrExpressionBody() == null)
                             {
                                 if (properties == null)
                                     properties = new HashSet<ISymbol>();

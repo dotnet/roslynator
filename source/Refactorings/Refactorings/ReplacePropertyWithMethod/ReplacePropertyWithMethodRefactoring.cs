@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 
                     if (accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
                     {
-                        if (accessor.Body != null)
+                        if (accessor.BodyOrExpressionBody() != null)
                         {
                             return true;
                         }
