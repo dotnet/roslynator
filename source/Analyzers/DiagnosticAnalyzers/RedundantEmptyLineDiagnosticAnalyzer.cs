@@ -43,6 +43,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
         }
 
         public void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -118,6 +120,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             RemoveRedundantEmptyLineRefactoring.Analyze(context, (FixedStatementSyntax)context.Node);
+        }
+
+        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
+        {
+            RemoveRedundantEmptyLineRefactoring.Analyze(context, (AccessorListSyntax)context.Node);
         }
     }
 }

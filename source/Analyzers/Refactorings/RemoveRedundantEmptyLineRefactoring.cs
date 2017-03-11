@@ -269,6 +269,17 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        public static void Analyze(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
+        {
+            SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
+
+            if (accessors.Any())
+            {
+                AnalyzeStart(context, accessors.First(), accessorList.OpenBraceToken);
+                AnalyzeEnd(context, accessors.Last(), accessorList.CloseBraceToken);
+            }
+        }
+
         private static void AnalyzeStart(
             SyntaxNodeAnalysisContext context,
             SyntaxNode node,

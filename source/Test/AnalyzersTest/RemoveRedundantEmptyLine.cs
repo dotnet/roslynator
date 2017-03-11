@@ -13,6 +13,17 @@ namespace Roslynator.CSharp.Analyzers.Test
     public static class RemoveRedundantEmptyLine
     {
 
+        private static string _propertyName;
+
+
+        public static string PropertyName
+        {
+
+            get { return _propertyName; }
+            set { _propertyName = value; }
+
+        }
+
         public static void Foo()
         {
 
