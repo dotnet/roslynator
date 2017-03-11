@@ -19,7 +19,7 @@ namespace CodeGenerator
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
                             ClassDeclaration("RefactoringIdentifiers")
-                                .WithModifiers(ModifierFactory.PublicStatic())
+                                .WithModifiers(Modifiers.PublicStatic())
                                 .WithMembers(
                                     CreateMembers(refactorings))));
         }
@@ -32,7 +32,7 @@ namespace CodeGenerator
 
         private static MemberDeclarationSyntax CreateConstantDeclaration(string name)
         {
-            return FieldDeclaration(ModifierFactory.PublicConst(), StringType(), name, StringLiteralExpression(name));
+            return FieldDeclaration(Modifiers.PublicConst(), StringType(), name, StringLiteralExpression(name));
         }
     }
 }

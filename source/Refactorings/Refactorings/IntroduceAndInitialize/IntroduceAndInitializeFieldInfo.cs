@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override MemberDeclarationSyntax CreateDeclaration()
         {
-            return FieldDeclaration(ModifierFactory.PrivateReadOnly(), Type, Name);
+            return FieldDeclaration(Modifiers.PrivateReadOnly(), Type, Name);
         }
     }
 }

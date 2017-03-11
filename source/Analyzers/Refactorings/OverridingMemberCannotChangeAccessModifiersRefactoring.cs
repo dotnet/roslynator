@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (index == -1)
             {
-                foreach (SyntaxToken modifier in ModifierFactory.FromAccessibility(newAccessibility))
+                foreach (SyntaxToken modifier in Modifiers.FromAccessibility(newAccessibility))
                     newModifiers = Inserter.InsertModifier(newModifiers, modifier);
             }
             else

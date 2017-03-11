@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
-                    ModifierFactory.FromAccessibility(parameterSymbol.DeclaredAccessibility),
+                    Modifiers.FromAccessibility(parameterSymbol.DeclaredAccessibility),
                     parameterSymbol.Type.ToMinimalTypeSyntax(semanticModel, position),
                     Identifier(parameterSymbol.Name),
                     @default));
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                ModifierFactory.FromAccessibility(methodSymbol.DeclaredAccessibility),
+                Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
                 Identifier(name),
                 ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),

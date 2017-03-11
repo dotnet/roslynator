@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                ModifierFactory.Public(),
+                Modifiers.Public(),
                 Identifier(identifierText),
                 ParameterList(SeparatedList(parameters)),
                 default(ConstructorInitializerSyntax),

@@ -130,8 +130,8 @@ namespace Roslynator.CSharp.Refactorings
             return MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 (eventSymbol.ContainingType.IsSealed || eventSymbol.ContainingType.IsStruct())
-                    ? ModifierFactory.Private()
-                    : ModifierFactory.ProtectedVirtual(),
+                    ? Modifiers.Private()
+                    : Modifiers.ProtectedVirtual(),
                 VoidType(),
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),
