@@ -25,6 +25,7 @@ namespace Roslynator
         public const string System_Func_T3 = "System.Func`3";
         public const string System_IEquatable_T = "System.IEquatable`1";
         public const string System_InvalidOperationException = "System.InvalidOperationException";
+        public const string System_Linq = "System.Linq";
         public const string System_Linq_Enumerable = "System.Linq.Enumerable";
         public const string System_Linq_ImmutableArrayExtensions = "System.Linq.ImmutableArrayExtensions";
         public const string System_Linq_IOrderedEnumerable_T = "System.Linq.IOrderedEnumerable`1";

@@ -180,6 +180,31 @@ namespace Roslynator.CSharp
             return TokenList(PrivateKeyword(), PartialKeyword());
         }
 
+        public static SyntaxTokenList PublicStaticPartial()
+        {
+            return TokenList(PublicKeyword(), StaticKeyword(), PartialKeyword());
+        }
+
+        public static SyntaxTokenList InternalStaticPartial()
+        {
+            return TokenList(InternalKeyword(), StaticKeyword(), PartialKeyword());
+        }
+
+        public static SyntaxTokenList PrivateStaticPartial()
+        {
+            return TokenList(PrivateKeyword(), StaticKeyword(), PartialKeyword());
+        }
+
+        public static SyntaxTokenList Out()
+        {
+            return TokenList(OutKeyword());
+        }
+
+        public static SyntaxTokenList Ref()
+        {
+            return TokenList(RefKeyword());
+        }
+
         public static SyntaxTokenList FromAccessibility(Accessibility accessibility)
         {
             switch (accessibility)

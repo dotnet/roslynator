@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Roslynator.VisualStudio.RefactoringsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Roslynator.VisualStudio"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <DataTemplate x:Key="gridViewHeaderArrowUpTemplate">
+      <Grid>
+        <Path Margin="0" x:Name="arrow" HorizontalAlignment="Center"
+              StrokeThickness="1"                                   
+              Fill="Black"
+              Data="M 0,0 L 3,3 L -3,3 L 0,0"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding}">
+        </TextBlock>
+      </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="gridViewHeaderArrowDownTemplate">
+      <Grid>
+        <Path Margin="0" x:Name="arrow" HorizontalAlignment="Center"
+              StrokeThickness="1"                                   
+              Fill="Black"
+              Data="M 0,3 L -3,0 L 3,0 L 0,3"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
+      </Grid>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid>
+    <ListView Name="lsvRefactorings" 
+              ItemsSource="{Binding Refactorings}" 
+              SelectionMode="Single"
+              GridViewColumnHeader.Click="GridViewColumnHeader_Click">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"></GridViewColumn>
+          <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}"></GridViewColumn>
+          <GridViewColumn Header="Enabled">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <CheckBox IsChecked="{Binding Enabled}" />
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+        </GridView>
+      </ListView.View>
+    </ListView>
+  </Grid>
+</UserControl>

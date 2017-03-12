@@ -1,78 +1,105 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 namespace Roslynator.CSharp.Refactorings
 {
     public sealed class RefactoringSettings
     {
-        private RefactoringIdentifierSet _disabledRefactorings;
-
         public RefactoringSettings()
         {
-            _disabledRefactorings = new RefactoringIdentifierSet();
+            DisabledRefactorings = new RefactoringIdentifierSet();
         }
+
+        public static RefactoringSettings Current { get; } = new RefactoringSettings();
+
+        public RefactoringIdentifierSet DisabledRefactorings { get; set; }
 
         public bool PrefixFieldIdentifierWithUnderscore { get; set; } = true;
 
-        public bool IsRefactoringEnabled(string identifier)
+        public void Reset()
         {
-            return !_disabledRefactorings.Contains(identifier);
+            PrefixFieldIdentifierWithUnderscore = true;
+            DisabledRefactorings.Clear();
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier, string identifier2)
+        public bool IsRefactoringEnabled(string id)
         {
-            return IsRefactoringEnabled(identifier)
-                || IsRefactoringEnabled(identifier2);
+            return !DisabledRefactorings.Contains(id);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier, string identifier2, string identifier3)
+        public bool IsAnyRefactoringEnabled(string id, string id2)
         {
-            return IsRefactoringEnabled(identifier)
-                || IsRefactoringEnabled(identifier2)
-                || IsRefactoringEnabled(identifier3);
+            return IsRefactoringEnabled(id)
+                || IsRefactoringEnabled(id2);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier, string identifier2, string identifier3, string identifier4)
+        public bool IsAnyRefactoringEnabled(string id, string id2, string id3)
         {
-            return IsRefactoringEnabled(identifier)
-                || IsRefactoringEnabled(identifier2)
-                || IsRefactoringEnabled(identifier3)
-                || IsRefactoringEnabled(identifier4);
+            return IsRefactoringEnabled(id)
+                || IsRefactoringEnabled(id2)
+                || IsRefactoringEnabled(id3);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier, string identifier2, string identifier3, string identifier4, string identifier5)
+        public bool IsAnyRefactoringEnabled(string id, string id2, string id3, string id4)
         {
-            return IsRefactoringEnabled(identifier)
-                || IsRefactoringEnabled(identifier2)
-                || IsRefactoringEnabled(identifier3)
-                || IsRefactoringEnabled(identifier4)
-                || IsRefactoringEnabled(identifier5);
+            return IsRefactoringEnabled(id)
+                || IsRefactoringEnabled(id2)
+                || IsRefactoringEnabled(id3)
+                || IsRefactoringEnabled(id4);
+        }
+
+        public bool IsAnyRefactoringEnabled(string id, string id2, string id3, string id4, string id5)
+        {
+            return IsRefactoringEnabled(id)
+                || IsRefactoringEnabled(id2)
+                || IsRefactoringEnabled(id3)
+                || IsRefactoringEnabled(id4)
+                || IsRefactoringEnabled(id5);
         }
 
         public bool IsAnyRefactoringEnabled(
-            string identifier,
-            string identifier2,
-            string identifier3,
-            string identifier4,
-            string identifier5,
-            string identifier6)
+            string id,
+            string id2,
+            string id3,
+            string id4,
+            string id5,
+            string id6)
         {
-            return IsRefactoringEnabled(identifier)
-                || IsRefactoringEnabled(identifier2)
-                || IsRefactoringEnabled(identifier3)
-                || IsRefactoringEnabled(identifier4)
-                || IsRefactoringEnabled(identifier5)
-                || IsRefactoringEnabled(identifier6);
+            return IsRefactoringEnabled(id)
+                || IsRefactoringEnabled(id2)
+                || IsRefactoringEnabled(id3)
+                || IsRefactoringEnabled(id4)
+                || IsRefactoringEnabled(id5)
+                || IsRefactoringEnabled(id6);
         }
 
-        public void SetIsRefactoringEnabled(string identifier, bool isEnabled)
+        public void DisableRefactoring(string id)
+        {
+#if DEBUG
+            Debug.WriteLineIf(DisabledRefactorings.Add(id), $"refactoring {id} disabled");
+#else
+            DisabledRefactorings.Add(id);
+#endif
+        }
+
+        public void EnableRefactoring(string id)
+        {
+#if DEBUG
+            Debug.WriteLineIf(DisabledRefactorings.Remove(id), $"refactoring {id} enabled");
+#else
+            DisabledRefactorings.Remove(id);
+#endif
+        }
+
+        public void SetRefactoring(string id, bool isEnabled)
         {
             if (isEnabled)
             {
-                _disabledRefactorings.Remove(identifier);
+                EnableRefactoring(id);
             }
             else
             {
-                _disabledRefactorings.Add(identifier);
+                DisableRefactoring(id);
             }
         }
     }

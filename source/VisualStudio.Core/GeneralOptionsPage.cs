@@ -7,7 +7,7 @@ using Roslynator.VisualStudio.TypeConverters;
 
 namespace Roslynator.VisualStudio
 {
-    public partial class GeneralOptionsPage : DialogPage
+    public class GeneralOptionsPage : DialogPage
     {
         public GeneralOptionsPage()
         {
@@ -20,15 +20,19 @@ namespace Roslynator.VisualStudio
         [TypeConverter(typeof(YesNoConverter))]
         public bool PrefixFieldIdentifierWithUnderscore { get; set; }
 
-        public void Apply()
+        [Category("General")]
+        [Browsable(false)]
+        public string ApplicationVersion { get; set; }
+
+        public void ApplyTo(RefactoringSettings settings)
         {
-            RoslynatorCodeRefactoringProvider.DefaultSettings.PrefixFieldIdentifierWithUnderscore = PrefixFieldIdentifierWithUnderscore;
+            settings.PrefixFieldIdentifierWithUnderscore = PrefixFieldIdentifierWithUnderscore;
         }
 
         protected override void OnApply(PageApplyEventArgs e)
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
-                Apply();
+                ApplyTo(RefactoringSettings.Current);
 
             base.OnApply(e);
         }

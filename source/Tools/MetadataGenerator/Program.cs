@@ -9,12 +9,15 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Refactorings;
 using Roslynator.Metadata;
 
 namespace MetadataGenerator
 {
     internal static class Program
     {
+        private static readonly StringComparer _invariantComparer = StringComparer.InvariantCulture;
+
         private static void Main(string[] args)
         {
             if (args == null || args.Length == 0)
@@ -28,18 +31,18 @@ namespace MetadataGenerator
 
             string dirPath = args[0];
 
-            SortRefactoringsInFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"));
+            SortRefactoringsAndAddMissingIds(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"));
 
             RefactoringDescriptor[] refactorings = RefactoringDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
-                .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
+                .OrderBy(f => f.Identifier, _invariantComparer)
                 .ToArray();
 
             Console.WriteLine($"number of refactorings: {refactorings.Length}");
 
             AnalyzerDescriptor[] analyzers = AnalyzerDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Analyzers\Analyzers.xml"))
-                .OrderBy(f => f.Id, StringComparer.InvariantCulture)
+                .OrderBy(f => f.Id, _invariantComparer)
                 .ToArray();
 
             Console.WriteLine($"number of analyzers: {analyzers.Length}");
@@ -108,15 +111,42 @@ namespace MetadataGenerator
             }
         }
 
-        public static void SortRefactoringsInFile(string filePath)
+        public static void SortRefactoringsAndAddMissingIds(string filePath)
         {
             XDocument doc = XDocument.Load(filePath, LoadOptions.PreserveWhitespace);
 
             XElement root = doc.Root;
 
-            IOrderedEnumerable<XElement> newElements = root
+            IEnumerable<XElement> newElements = root
                 .Elements()
-                .OrderBy(f => f.Attribute("Id").Value);
+                .OrderBy(f => f.Attribute("Identifier").Value, _invariantComparer);
+
+            if (newElements.Any(f => f.Attribute("Id") == null))
+            {
+                int maxValue = newElements.Where(f => f.Attribute("Id") != null)
+                    .Select(f => int.Parse(f.Attribute("Id").Value.Substring(2)))
+                    .DefaultIfEmpty()
+                    .Max();
+
+                int idNumber = maxValue + 1;
+
+                newElements = newElements.Select(f =>
+                {
+                    if (f.Attribute("Id") != null)
+                    {
+                        return f;
+                    }
+                    else
+                    {
+                        string id = $"{RefactoringIdentifiers.Prefix}{idNumber.ToString().PadLeft(4, '0')}";
+                        f.ReplaceAttributes(new XAttribute("Id", id), f.Attributes());
+                        idNumber++;
+                        return f;
+                    }
+                });
+            }
+
+            newElements = newElements.OrderBy(f => f.Attribute("Id").Value, _invariantComparer);
 
             root.ReplaceAll(newElements);
 

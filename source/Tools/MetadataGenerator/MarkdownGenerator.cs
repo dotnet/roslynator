@@ -118,11 +118,13 @@ namespace MetadataGenerator
                 sw.WriteLine("## Roslynator Refactorings");
                 sw.WriteLine();
 
-                sw.WriteLine(" Title | Enabled by Default ");
-                sw.WriteLine(" --- |:---:");
+                sw.WriteLine("Id | Title | Enabled by Default ");
+                sw.WriteLine("--- | --- |:---:");
 
                 foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, StringComparer))
                 {
+                    sw.Write(info.Id);
+                    sw.Write('|');
                     sw.Write($"[{info.Title.TrimEnd('.').EscapeMarkdown()}](Refactorings.md#{info.GetGitHubHref()})");
                     sw.Write('|');
                     sw.Write((info.IsEnabledByDefault) ? "x" : "");
