@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,10 +41,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (await CanBeAssignedFromConstructorAsync(context, declaration).ConfigureAwait(false))
                 {
-                    return new List<MemberDeclarationSyntax>()
-                    {
-                        declaration
-                    };
+                    return new List<MemberDeclarationSyntax>() { declaration };
                 }
             }
             else if (declaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
@@ -54,10 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (await CanBeAssignedFromConstructorAsync(context, member).ConfigureAwait(false))
                     {
-                        if (list == null)
-                            list = new List<MemberDeclarationSyntax>();
-
-                        list.Add(member);
+                        (list ?? (list = new List<MemberDeclarationSyntax>())).Add(member);
                     }
                 }
 
@@ -90,37 +85,50 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration)
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            CancellationToken cancellationToken = context.CancellationToken;
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-            if (symbol != null
-                && !symbol.IsStatic
-                && propertyDeclaration.Parent != null
-                && propertyDeclaration.Parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            if (symbol?.IsStatic == false
+                && propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
             {
-                if (propertyDeclaration.ExpressionBody != null)
+                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+
+                if (expressionBody != null)
                 {
-                    ExpressionSyntax expression = propertyDeclaration.ExpressionBody?.Expression;
+                    ExpressionSyntax expression = expressionBody?.Expression;
 
                     if (expression != null)
-                        return GetBackingFieldSymbol(expression, semanticModel, context.CancellationToken) != null;
+                        return GetBackingFieldSymbol(expression, semanticModel, cancellationToken) != null;
                 }
                 else
                 {
                     AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
                     if (getter != null)
-                    {
-                        if (getter.Body == null)
-                            return true;
-
-                        if (getter.Body.Statements.Count == 1)
-                            return GetBackingFieldSymbol(getter.Body.Statements[0], semanticModel, context.CancellationToken) != null;
-                    }
+                        return CanPropertyBeAssignedFromConstructor(getter, semanticModel, cancellationToken);
                 }
             }
 
             return false;
+        }
+
+        private static bool CanPropertyBeAssignedFromConstructor(
+            AccessorDeclarationSyntax getter,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            BlockSyntax body = getter.Body;
+
+            if (body != null)
+            {
+                SyntaxList<StatementSyntax> statements = body.Statements;
+
+                return statements.Count == 1
+                    && GetBackingFieldSymbol(statements[0], semanticModel, cancellationToken) != null;
+            }
+
+            return true;
         }
 
         private static async Task<bool> CanFieldBeAssignedFromConstructorAsync(
@@ -161,25 +169,37 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var propertyDeclaration = (PropertyDeclarationSyntax)member;
 
-                if (propertyDeclaration.ExpressionBody?.Expression != null)
-                {
-                    ISymbol symbol2 = GetBackingFieldSymbol(propertyDeclaration.ExpressionBody.Expression, semanticModel, context.CancellationToken);
+                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-                    if (symbol.Equals(symbol2))
-                        return true;
+                if (expressionBody != null)
+                {
+                    ExpressionSyntax expression = expressionBody.Expression;
+
+                    return expression != null
+                        && symbol.Equals(GetBackingFieldSymbol(expression, semanticModel, context.CancellationToken));
                 }
                 else
                 {
                     AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-                    if (getter?.Body?.Statements.Count == 1)
-                    {
-                        ISymbol symbol2 = GetBackingFieldSymbol(getter.Body.Statements[0], semanticModel, context.CancellationToken);
-
-                        if (symbol.Equals(symbol2))
-                            return true;
-                    }
+                    if (getter != null)
+                        return IsBackingField(getter, symbol, semanticModel, context.CancellationToken);
                 }
+            }
+
+            return false;
+        }
+
+        private static bool IsBackingField(AccessorDeclarationSyntax getter, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            BlockSyntax getterBody = getter.Body;
+
+            if (getterBody != null)
+            {
+                SyntaxList<StatementSyntax> statements = getterBody.Statements;
+
+                return statements.Count == 1
+                    && symbol.Equals(GetBackingFieldSymbol(statements[0], semanticModel, cancellationToken));
             }
 
             return false;
@@ -206,16 +226,35 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+            if (IsIdentifierNameOptionallyQualifiedWithThis(expression))
+            {
+                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol?.IsStatic == false
-                && symbol.IsField())
-            {
-                return symbol;
+                if (symbol?.IsStatic == false
+                    && symbol.IsField())
+                {
+                    return symbol;
+                }
             }
-            else
+
+            return null;
+        }
+
+        private static bool IsIdentifierNameOptionallyQualifiedWithThis(ExpressionSyntax expression)
+        {
+            switch (expression.Kind())
             {
-                return null;
+                case SyntaxKind.IdentifierName:
+                    return true;
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                        return memberAccess.Expression.IsKind(SyntaxKind.ThisExpression)
+                            && memberAccess.Name.IsKind(SyntaxKind.IdentifierName);
+                    }
+                default:
+                    return false;
             }
         }
 
@@ -326,9 +365,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxToken GetPropertyIdentifier(PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration.ExpressionBody != null)
+            ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+
+            if (expressionBody != null)
             {
-                ExpressionSyntax expression = propertyDeclaration.ExpressionBody?.Expression;
+                ExpressionSyntax expression = expressionBody.Expression;
 
                 if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
                     return ((IdentifierNameSyntax)expression).Identifier;
@@ -337,15 +378,41 @@ namespace Roslynator.CSharp.Refactorings
             {
                 AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
-                if (getter?.Body != null)
+                if (getter != null)
                 {
-                    var returnStatement = (ReturnStatementSyntax)getter.Body.Statements[0];
+                    BlockSyntax getterBody = getter.Body;
 
-                    return ((IdentifierNameSyntax)returnStatement.Expression).Identifier;
+                    if (getterBody != null)
+                    {
+                        var returnStatement = (ReturnStatementSyntax)getterBody.Statements[0];
+
+                        return GetIdentifier(returnStatement.Expression);
+                    }
                 }
             }
 
             return propertyDeclaration.Identifier;
+        }
+
+        private static SyntaxToken GetIdentifier(ExpressionSyntax expression)
+        {
+            switch (expression.Kind())
+            {
+                case SyntaxKind.IdentifierName:
+                    return ((IdentifierNameSyntax)expression).Identifier;
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                        var identifierName = (IdentifierNameSyntax)memberAccess.Name;
+
+                        return identifierName.Identifier;
+                    }
+            }
+
+            Debug.Assert(false, expression.Kind().ToString());
+
+            return default(SyntaxToken);
         }
     }
 }

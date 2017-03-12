@@ -23,6 +23,14 @@ namespace Roslynator.CSharp.Refactorings.Test
                 get { return _value; }
                 set { _value = value; }
             }
+
+            private string _value2;
+
+            public string Value2
+            {
+                get => _value2;
+                set => _value2 = value;
+            }
         }
     }
 }

@@ -6,11 +6,40 @@ namespace Roslynator.CSharp.Refactorings.Test
     {
         private class Entity
         {
-            private string _name;
+            private readonly string _name;
+
+            private int _property;
+            private int _property2;
+            private int _property3;
+            private int _property4;
 
             public string Name => _name;
 
-            public int Value { get; set; }
+            public int AutoProperty { get; set; }
+
+            public int Property
+            {
+                get { return _property; }
+                set { _property = value; }
+            }
+
+            public int Property2
+            {
+                get { return this._property2; }
+                set { this._property2 = value; }
+            }
+
+            public int Property3
+            {
+                get => _property3;
+                set => _property3 = value;
+            }
+
+            public int Property4
+            {
+                get => this._property4;
+                set => this._property4 = value;
+            }
         }
     }
 }

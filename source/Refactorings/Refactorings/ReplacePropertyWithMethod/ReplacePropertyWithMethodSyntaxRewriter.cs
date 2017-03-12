@@ -115,15 +115,14 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 
             if (getterBody != null)
             {
-                methodBody = Block(getterBody.Statements)
-                    .WithTrailingTrivia(property.GetTrailingTrivia());
+                methodBody = Block(getterBody.Statements);
             }
             else
             {
-                methodBody = Block(
-                    ReturnStatement(property.Initializer.Value)
-                        .WithTrailingTrivia(property.GetTrailingTrivia()));
+                methodBody = Block(ReturnStatement(property.Initializer.Value));
             }
+
+            methodBody = methodBody.WithTrailingTrivia(property.GetTrailingTrivia());
 
             MethodDeclarationSyntax method = MethodDeclaration(
                 property.AttributeLists,

@@ -32,8 +32,15 @@ namespace Roslynator.CSharp.Refactorings.Test
             set { _value2 = value; }
         }
 
+        private string _value3;
+
+        public string Value3
+        {
+            get => _value3;
+            set => _value3 = value;
+        }
 #if DEBUG
-        public string Value3 { get; } = new string(' ', 1); /**/
+        public string Value4 { get; } = new string(' ', 1); /**/
 #endif
 
         private class Foo
@@ -41,6 +48,11 @@ namespace Roslynator.CSharp.Refactorings.Test
             public bool IsFoo
             {
                 get { return false; }
+            }
+
+            public bool IsFoo2
+            {
+                get => false;
             }
 
             public bool Bar()

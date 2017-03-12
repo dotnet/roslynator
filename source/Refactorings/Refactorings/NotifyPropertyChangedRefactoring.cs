@@ -20,25 +20,26 @@ namespace Roslynator.CSharp.Refactorings
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
-            if (setter?.Body?.Statements.Count == 1)
+            if (setter != null)
             {
-                StatementSyntax statement = setter.Body.Statements[0];
+                BlockSyntax body = setter.Body;
 
-                if (statement.IsKind(SyntaxKind.ExpressionStatement))
+                if (body != null)
                 {
-                    var expressionStatement = (ExpressionStatementSyntax)statement;
+                    SyntaxList<StatementSyntax> statements = body.Statements;
 
-                    if (expressionStatement.Expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+                    if (statements.Count == 1)
                     {
-                        var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+                        StatementSyntax statement = statements[0];
 
-                        if (assignment.Left?.IsKind(SyntaxKind.IdentifierName) == true
-                            && assignment.Right?.IsKind(SyntaxKind.IdentifierName) == true)
+                        if (statement.IsKind(SyntaxKind.ExpressionStatement))
                         {
-                            var identifierName = (IdentifierNameSyntax)assignment.Right;
+                            var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                            if (identifierName.Identifier.ValueText == "value")
-                                return await ImplementsINotifyPropertyChangedAsync(context, property).ConfigureAwait(false);
+                            ExpressionSyntax expression = expressionStatement.Expression;
+
+                            return expression != null
+                                && await CanRefactorAsync(context, property, expression).ConfigureAwait(false);
                         }
                     }
                 }
@@ -47,20 +48,33 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static async Task<bool> ImplementsINotifyPropertyChangedAsync(
+        private static async Task<bool> CanRefactorAsync(
             RefactoringContext context,
-            PropertyDeclarationSyntax property)
+            PropertyDeclarationSyntax property,
+            ExpressionSyntax expression)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, context.CancellationToken);
-
-            if (propertySymbol != null)
+            if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
             {
-                INamedTypeSymbol containingType = propertySymbol.ContainingType;
+                var assignment = (AssignmentExpressionSyntax)expression;
 
-                return containingType != null
-                    && SymbolUtility.ImplementsINotifyPropertyChanged(containingType, semanticModel);
+                ExpressionSyntax left = assignment.Left;
+                ExpressionSyntax right = assignment.Right;
+
+                if (left?.IsKind(SyntaxKind.IdentifierName) == true
+                    && right?.IsKind(SyntaxKind.IdentifierName) == true)
+                {
+                    var identifierName = (IdentifierNameSyntax)right;
+
+                    if (identifierName.Identifier.ValueText == "value")
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        INamedTypeSymbol containingType = semanticModel.GetDeclaredSymbol(property, context.CancellationToken)?.ContainingType;
+
+                        return containingType != null
+                            && SymbolUtility.ImplementsINotifyPropertyChanged(containingType, semanticModel);
+                    }
+                }
             }
 
             return false;
