@@ -332,7 +332,7 @@ namespace Roslynator
             }
         }
 
-        private static string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+        public static string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
         {
             return EnsureUniqueName(baseName, symbols, GetStringComparison(isCaseSensitive));
         }

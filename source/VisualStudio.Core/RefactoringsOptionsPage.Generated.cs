@@ -24,6 +24,7 @@ namespace Roslynator.VisualStudio
             AddIdentifierToVariableDeclaration = true;
             AddParameterNameToArgument = true;
             AddParameterNameToParameter = true;
+            AddTypeParameter = true;
             AddUsingDirective = true;
             AddUsingStaticDirective = true;
             CallConfigureAwait = true;
@@ -206,6 +207,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, AddIdentifierToVariableDeclaration);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToArgument, AddParameterNameToArgument);
             SetIsEnabled(RefactoringIdentifiers.AddParameterNameToParameter, AddParameterNameToParameter);
+            SetIsEnabled(RefactoringIdentifiers.AddTypeParameter, AddTypeParameter);
             SetIsEnabled(RefactoringIdentifiers.AddUsingDirective, AddUsingDirective);
             SetIsEnabled(RefactoringIdentifiers.AddUsingStaticDirective, AddUsingStaticDirective);
             SetIsEnabled(RefactoringIdentifiers.CallConfigureAwait, CallConfigureAwait);
@@ -489,6 +491,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: parameter\r\nScope: missing identifier")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool AddParameterNameToParameter
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Add type parameter")]
+        [Description("Syntax: class declaration, struct declaration, interface declaration, delegate declaration, method declaration, local function")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool AddTypeParameter
         {
             get;
             set;

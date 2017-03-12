@@ -269,6 +269,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-parameter-name-to-parameter">Add parameter name to parameter</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-type-parameter">Add type parameter</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#add-using-directive">Add using directive</a>
     </li>
     <li>

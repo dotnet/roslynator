@@ -36,11 +36,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
-            {
-                SyntaxToken identifier = delegateDeclaration.Identifier;
-                ComputeRefactorings(context, delegateDeclaration, identifier);
-            }
+            SyntaxToken identifier = delegateDeclaration.Identifier;
+            ComputeRefactorings(context, delegateDeclaration, identifier);
         }
 
         private static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax memberDeclaration, SyntaxToken identifier)
