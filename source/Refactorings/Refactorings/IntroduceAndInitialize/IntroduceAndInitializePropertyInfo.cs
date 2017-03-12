@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 ? AutoPropertyKind.ReadOnly
                 : AutoPropertyKind.WithPrivateSet;
 
-            return AutoPropertyDeclaration(propertyKind, ModifierFactory.Public(), Type, Name);
+            return AutoPropertyDeclaration(propertyKind, Modifiers.Public(), Type, Name);
         }
     }
 }

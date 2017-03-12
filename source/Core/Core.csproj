@@ -155,7 +155,7 @@
     <Compile Include="Text\Extensions\TextSpanExtensions.cs" />
     <Compile Include="Internal\CreateNameFromTypeSymbol.cs" />
     <Compile Include="MetadataNames.cs" />
-    <Compile Include="CSharp\ModifierFactory.cs" />
+    <Compile Include="CSharp\Modifiers.cs" />
     <Compile Include="Identifier.cs" />
     <Compile Include="Text\SelectedTextLineCollection.cs" />
     <Compile Include="CSharp\SelectedStatementCollection.cs" />

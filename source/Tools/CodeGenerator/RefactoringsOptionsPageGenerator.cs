@@ -30,7 +30,7 @@ namespace CodeGenerator
                     NamespaceDeclaration(DefaultNamespace)
                         .WithMembers(
                             ClassDeclaration("RefactoringsOptionsPage")
-                                .WithModifiers(ModifierFactory.PublicPartial())
+                                .WithModifiers(Modifiers.PublicPartial())
                                 .WithMembers(
                                     CreateMembers(refactorings))));
         }
@@ -38,7 +38,7 @@ namespace CodeGenerator
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringDescriptor> refactorings)
         {
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
-                .WithModifiers(ModifierFactory.Public())
+                .WithModifiers(Modifiers.Public())
                 .WithBody(Block(refactorings.Select(refactoring =>
                     {
                         return SimpleAssignmentStatement(
@@ -47,7 +47,7 @@ namespace CodeGenerator
                     })));
 
             yield return MethodDeclaration(VoidType(), "Apply")
-                .WithModifiers(ModifierFactory.Public())
+                .WithModifiers(Modifiers.Public())
                 .WithBody(
                     Block(refactorings.Select(refactoring =>
                     {
@@ -74,7 +74,7 @@ namespace CodeGenerator
                     SingletonAttributeList(Attribute(IdentifierName("DisplayName"), StringLiteralExpression(refactoring.Title))),
                     SingletonAttributeList(Attribute(IdentifierName("Description"), StringLiteralExpression(CreateDescription(refactoring)))),
                     SingletonAttributeList(Attribute(IdentifierName("TypeConverter"), TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
-                .WithModifiers(ModifierFactory.Public())
+                .WithModifiers(Modifiers.Public())
                 .WithAccessorList(
                     AccessorList(
                         AutoGetAccessorDeclaration(),

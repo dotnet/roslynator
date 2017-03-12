@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            SyntaxTokenList modifiers = ModifierFactory.Private();
+            SyntaxTokenList modifiers = Modifiers.Private();
 
             if (propertyDeclaration.IsStatic())
                 modifiers = modifiers.Add(StaticKeyword());

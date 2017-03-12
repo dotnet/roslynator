@@ -1356,7 +1356,7 @@ namespace Roslynator.CSharp
                             identifier,
                             AccessorList(
                                 AutoGetAccessorDeclaration(),
-                                AutoSetAccessorDeclaration(ModifierFactory.Private())));
+                                AutoSetAccessorDeclaration(Modifiers.Private())));
                     }
                 case AutoPropertyKind.ReadOnly:
                     {

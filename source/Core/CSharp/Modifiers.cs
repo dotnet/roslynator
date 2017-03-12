@@ -8,7 +8,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    public static class ModifierFactory
+    public static class Modifiers
     {
         public static SyntaxTokenList None()
         {
