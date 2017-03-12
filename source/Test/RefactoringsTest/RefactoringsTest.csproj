@@ -45,6 +45,7 @@
     <Compile Include="ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="FormatAttributeArgumentListRefactoring.cs" />
+    <Compile Include="ImplementIEquatableOfTRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />

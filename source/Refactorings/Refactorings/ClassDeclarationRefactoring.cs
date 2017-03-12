@@ -17,6 +17,9 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateBaseConstructors))
                 await GenerateBaseConstructorsRefactoring.ComputeRefactoringAsync(context, classDeclaration).ConfigureAwait(false);
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementIEquatableOfT))
+                await ImplementIEquatableOfTRefactoring.ComputeRefactoringAsync(context, classDeclaration).ConfigureAwait(false);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
                 && classDeclaration.BracesSpan().Contains(context.Span))
             {

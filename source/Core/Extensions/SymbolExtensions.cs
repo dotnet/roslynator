@@ -607,6 +607,25 @@ namespace Roslynator.Extensions
             return false;
         }
 
+        public static bool Implements(this ITypeSymbol typeSymbol, ITypeSymbol interfaceSymbol)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (interfaceSymbol == null)
+                throw new ArgumentNullException(nameof(interfaceSymbol));
+
+            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+            for (int i = 0; i < allInterfaces.Length; i++)
+            {
+                if (allInterfaces[i].Equals(interfaceSymbol))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool IsClass(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Class;

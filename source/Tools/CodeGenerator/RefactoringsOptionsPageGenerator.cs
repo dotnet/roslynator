@@ -53,7 +53,7 @@ namespace CodeGenerator
                     {
                         return ExpressionStatement(
                             InvocationExpression(
-                                "SetIsEnabled",
+                                IdentifierName("SetIsEnabled"),
                                 ArgumentList(
                                     Argument(
                                         SimpleMemberAccessExpression(

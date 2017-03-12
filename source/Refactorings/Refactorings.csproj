@@ -46,6 +46,7 @@
     <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\ImplementIEquatableOfTRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LocalFunctionStatementRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />

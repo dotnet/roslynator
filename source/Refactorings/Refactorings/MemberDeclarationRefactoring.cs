@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.StructDeclaration:
                     {
-                        StructDeclarationRefactoring.ComputeRefactorings(context, (StructDeclarationSyntax)member);
+                        await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, (StructDeclarationSyntax)member).ConfigureAwait(false);
                         break;
                     }
                 case SyntaxKind.InterfaceDeclaration:
