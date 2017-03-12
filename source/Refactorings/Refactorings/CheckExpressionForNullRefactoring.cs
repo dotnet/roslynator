@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax value = variableDeclarator?.Initializer?.Value;
 
-                    if (!value.IsKind(SyntaxKind.NullLiteralExpression)
+                    if (value?.IsKind(SyntaxKind.NullLiteralExpression) == false
                         && CanBeEqualToNull(value))
                     {
                         SyntaxToken identifier = variableDeclarator.Identifier;
@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ExpressionSyntax right = assignment.Right;
 
-                    if (!right.IsKind(SyntaxKind.NullLiteralExpression)
+                    if (right?.IsKind(SyntaxKind.NullLiteralExpression) == false
                         && CanBeEqualToNull(right)
                         && !NullCheckExists(left, expressionStatement))
                     {
