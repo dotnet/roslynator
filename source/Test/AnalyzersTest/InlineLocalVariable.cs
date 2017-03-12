@@ -33,12 +33,27 @@ namespace Roslynator.CSharp.Analyzers.Test
             string x = s;
         }
 
-        private static void Foo22()
+        private static void FooForEach()
         {
             IEnumerable<int> items = Enumerable.Range(0, 10);
             foreach (int item in items)
             {
             }
+        }
+
+        private static bool FooSwitch()
+        {
+            string x = "";
+
+            switch (x)
+            {
+                case "a":
+                    return true;
+                case "b":
+                    return false;
+            }
+
+            return false;
         }
 
         private static void Foo3()

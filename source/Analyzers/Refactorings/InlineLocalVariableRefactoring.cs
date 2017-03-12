@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,11 +18,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class InlineLocalVariableRefactoring
     {
-        public static DiagnosticDescriptor FadeOutDescriptor
-        {
-            get { return DiagnosticDescriptors.InlineLocalVariableFadeOut; }
-        }
-
         public static void Analyze(SyntaxNodeAnalysisContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
             VariableDeclarationSyntax declaration = localDeclaration.Declaration;
@@ -41,8 +37,6 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (value != null)
                         {
-                            SyntaxToken identifier = declarator.Identifier;
-
                             SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(localDeclaration);
 
                             if (statements.Any())
@@ -55,11 +49,15 @@ namespace Roslynator.CSharp.Refactorings
 
                                     ExpressionSyntax right = GetAssignedValue(nextStatement);
 
+                                    SyntaxToken identifier = declarator.Identifier;
+
                                     if (right?.IsKind(SyntaxKind.IdentifierName) == true)
                                     {
                                         var identifierName = (IdentifierNameSyntax)right;
 
-                                        if (identifier.ValueText == identifierName.Identifier.ValueText)
+                                        string name = identifier.ValueText;
+
+                                        if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                                         {
                                             bool isReferenced = false;
 
@@ -67,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                                             {
                                                 TextSpan span = TextSpan.FromBounds(statements[index + 2].SpanStart, statements.Last().Span.End);
 
-                                                isReferenced = IsLocalVariableReferenced(context, localDeclaration.Parent, span, declarator, identifier);
+                                                isReferenced = IsLocalVariableReferenced(declarator, name, localDeclaration.Parent, span, context.SemanticModel, context.CancellationToken);
                                             }
 
                                             if (!isReferenced
@@ -81,27 +79,46 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         var forEachStatement = (ForEachStatementSyntax)nextStatement;
 
-                                        ExpressionSyntax expression = forEachStatement.Expression;
+                                        Analyze(context, statements, localDeclaration, declaration, declarator, identifier, initializer, forEachStatement.Expression);
+                                    }
+                                    else if (nextStatement.IsKind(SyntaxKind.SwitchStatement))
+                                    {
+                                        var switchStatement = (SwitchStatementSyntax)nextStatement;
 
-                                        if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
-                                        {
-                                            var identifierName = (IdentifierNameSyntax)expression;
-
-                                            if (identifier.ValueText == identifierName.Identifier.ValueText)
-                                            {
-                                                TextSpan span = TextSpan.FromBounds(expression.Span.End, statements.Last().Span.End);
-
-                                                if (!IsLocalVariableReferenced(context, localDeclaration.Parent, span, declarator, identifier)
-                                                    && !localDeclaration.Parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, expression.Span.End)))
-                                                {
-                                                    ReportDiagnostic(context, localDeclaration, declaration, identifier, initializer, expression);
-                                                }
-                                            }
-                                        }
+                                        Analyze(context, statements, localDeclaration, declaration, declarator, identifier, initializer, switchStatement.Expression);
                                     }
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            SyntaxList<StatementSyntax> statements,
+            LocalDeclarationStatementSyntax localDeclaration,
+            VariableDeclarationSyntax declaration,
+            VariableDeclaratorSyntax declarator,
+            SyntaxToken identifier,
+            EqualsValueClauseSyntax initializer,
+            ExpressionSyntax expression)
+        {
+            if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
+            {
+                var identifierName = (IdentifierNameSyntax)expression;
+
+                string name = identifier.ValueText;
+
+                if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                {
+                    TextSpan span = TextSpan.FromBounds(expression.Span.End, statements.Last().Span.End);
+
+                    if (!IsLocalVariableReferenced(declarator, name, localDeclaration.Parent, span, context.SemanticModel, context.CancellationToken)
+                        && !localDeclaration.Parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.SpanStart, expression.Span.End)))
+                    {
+                        ReportDiagnostic(context, localDeclaration, declaration, identifier, initializer, expression);
                     }
                 }
             }
@@ -118,13 +135,13 @@ namespace Roslynator.CSharp.Refactorings
             context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclaration);
 
             foreach (SyntaxToken modifier in localDeclaration.Modifiers)
-                context.ReportToken(FadeOutDescriptor, modifier);
+                context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, modifier);
 
-            context.ReportNode(FadeOutDescriptor, declaration.Type);
-            context.ReportToken(FadeOutDescriptor, identifier);
-            context.ReportToken(FadeOutDescriptor, initializer.EqualsToken);
-            context.ReportToken(FadeOutDescriptor, localDeclaration.SemicolonToken);
-            context.ReportNode(FadeOutDescriptor, expression);
+            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, declaration.Type);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, identifier);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, initializer.EqualsToken);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclaration.SemicolonToken);
+            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, expression);
         }
 
         private static ExpressionSyntax GetAssignedValue(StatementSyntax statement)
@@ -162,11 +179,26 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool IsLocalVariableReferenced(
-            SyntaxNodeAnalysisContext context,
+            VariableDeclaratorSyntax declarator,
+            string name,
             SyntaxNode node,
             TextSpan span,
-            VariableDeclaratorSyntax declarator,
-            SyntaxToken identifier)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
+
+            return symbol?.IsErrorType() == false
+                && IsLocalVariableReferenced(symbol, name, node, span, semanticModel, cancellationToken);
+        }
+
+        private static bool IsLocalVariableReferenced(
+            ISymbol symbol,
+            string name,
+            SyntaxNode node,
+            TextSpan span,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             foreach (SyntaxNode descendant in node.DescendantNodes(span))
             {
@@ -174,15 +206,10 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var identifierName = (IdentifierNameSyntax)descendant;
 
-                    if (identifier.ValueText == identifierName.Identifier.ValueText)
+                    if (string.Equals(identifierName.Identifier.ValueText, name, StringComparison.Ordinal)
+                        && symbol.Equals(semanticModel.GetSymbol(identifierName, cancellationToken)))
                     {
-                        ISymbol symbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken);
-
-                        if (symbol?.IsLocal() == true
-                            && symbol.Equals(context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken)))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
@@ -272,6 +299,12 @@ namespace Roslynator.CSharp.Refactorings
                         var forEachStatement = (ForEachStatementSyntax)statement;
 
                         return forEachStatement.WithExpression(newValue.WithTriviaFrom(forEachStatement.Expression));
+                    }
+                case SyntaxKind.SwitchStatement:
+                    {
+                        var switchStatement = (SwitchStatementSyntax)statement;
+
+                        return switchStatement.WithExpression(newValue.WithTriviaFrom(switchStatement.Expression));
                     }
                 default:
                     {
