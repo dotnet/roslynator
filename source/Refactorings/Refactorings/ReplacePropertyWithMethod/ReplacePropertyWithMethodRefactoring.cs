@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
                             return true;
                         }
                         else if (context.SupportsCSharp6
-                            && accessor.IsAutoImplementedGetter()
+                            && accessor.IsAutoGetter()
                             && propertyDeclaration.Initializer?.Value != null)
                         {
                             return true;

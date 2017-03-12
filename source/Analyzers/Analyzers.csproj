@@ -255,7 +255,7 @@
     <Compile Include="Refactorings\ReorderModifiersRefactoring.cs" />
     <Compile Include="Refactorings\UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UseInsteadOfCountMethod\ReplaceCountMethodRefactoring.cs" />
-    <Compile Include="Refactorings\UseAutoImplementedPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\UseAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceReturnStatementWithExpressionStatementRefactoring.cs" />
     <Compile Include="Refactorings\UseCastMethodInsteadOfSelectMethodRefactoring.cs" />
     <Compile Include="Refactorings\CallOfTypeInsteadOfWhereAndCastRefactoring.cs" />

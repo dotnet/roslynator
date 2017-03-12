@@ -90,7 +90,7 @@ namespace Roslynator.CSharp
         public const string UseCountOrLengthPropertyInsteadOfCountMethod = Prefix + "1082";
         public const string UseAnyMethodInsteadOfCountMethod = Prefix + "1083";
         public const string UseCoalesceExpressionInsteadOfConditionalExpression = Prefix + "1084";
-        public const string UseAutoImplementedProperty = Prefix + "1085";
+        public const string UseAutoProperty = Prefix + "1085";
         public const string UseLinefeedAsNewLine = Prefix + "1086";
         public const string UseCarriageReturnAndLinefeedAsNewLine = Prefix + "1087";
         public const string UseSpacesInsteadOfTab = Prefix + "1088";

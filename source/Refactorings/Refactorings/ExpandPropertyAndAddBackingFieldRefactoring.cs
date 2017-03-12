@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int propertyIndex = members.IndexOf(propertyDeclaration);
 
-            if (IsReadOnlyAutoImplementedProperty(propertyDeclaration))
+            if (IsReadOnlyAutoProperty(propertyDeclaration))
             {
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
@@ -65,12 +65,11 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
 
-        private static bool IsReadOnlyAutoImplementedProperty(PropertyDeclarationSyntax propertyDeclaration)
+        private static bool IsReadOnlyAutoProperty(PropertyDeclarationSyntax propertyDeclaration)
         {
             AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
 
-            return accessorList != null
-                && accessorList.Getter()?.IsAutoImplementedGetter() == true
+            return accessorList?.Getter()?.IsAutoGetter() == true
                 && accessorList.Setter() == null;
         }
 
