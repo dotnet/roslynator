@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             if (propertyDeclaration.ExpressionBody != null)
             {
                 accessorList = accessorList
-                    .AddAccessors(Getter().WithSemicolonToken(SemicolonToken()));
+                    .AddAccessors(AutoGetAccessorDeclaration());
             }
             else
             {
@@ -128,8 +128,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 accessorList = accessorList
                     .AddAccessors(
-                        Getter()
-                            .WithSemicolonToken(SemicolonToken()));
+                        AutoGetAccessorDeclaration());
             }
             else
             {

@@ -64,12 +64,9 @@ namespace Roslynator.CSharp.Refactorings
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
                     IntType(),
-                    SingletonSeparatedList(
-                        VariableDeclarator(identifier)
-                            .WithInitializer(
-                                EqualsValueClause(
-                                    ZeroLiteralExpression())))),
-                initializers: SeparatedList<ExpressionSyntax>(),
+                    identifier,
+                    EqualsValueClause(NumericLiteralExpression(0))),
+                initializers: default(SeparatedSyntaxList<ExpressionSyntax>),
                 condition: LessThanExpression(
                     IdentifierName(identifier),
                     SimpleMemberAccessExpression(

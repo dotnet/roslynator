@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             BlockSyntax block = CreateBlock(expression);
 
-            AccessorListSyntax accessorList = AccessorList(Getter(block));
+            AccessorListSyntax accessorList = SingletonAccessorList(GetAccessorDeclaration(block));
 
             if (expression.IsSingleLine())
             {

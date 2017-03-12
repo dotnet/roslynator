@@ -141,9 +141,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BlockSyntax CreateBlock(ExpressionSyntax left, ExpressionSyntax right)
         {
-            return Block(
-                ExpressionStatement(
-                    SimpleAssignmentExpression(left, right)));
+            return Block(SimpleAssignmentStatement(left, right));
         }
 
         private static LocalDeclarationStatementSyntax GetLocalDeclaration(this ExpressionSyntax expression)

@@ -35,8 +35,8 @@ namespace Roslynator.CSharp.Refactorings
         private static EventDeclarationSyntax ExpandEvent(EventFieldDeclarationSyntax eventDeclaration)
         {
             AccessorListSyntax accessorList = AccessorList(
-                AccessorDeclaration(SyntaxKind.AddAccessorDeclaration, Block()),
-                AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration, Block()));
+                AddAccessorDeclaration(Block()),
+                RemoveAccessorDeclaration(Block()));
 
             accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList)
                 .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));

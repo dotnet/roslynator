@@ -96,10 +96,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 AccessorDeclarationSyntax newSetter = setter
                     .WithBody(Block(
-                        ExpressionStatement(
-                            SimpleAssignmentExpression(
+                        SimpleAssignmentStatement(
                                 IdentifierName(name),
-                                IdentifierName("value")))))
+                                IdentifierName("value"))))
                     .WithoutSemicolonToken();
 
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
@@ -114,18 +113,16 @@ namespace Roslynator.CSharp.Refactorings
 
         private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
         {
-            SyntaxTokenList modifiers = TokenList(PrivateKeyword());
+            SyntaxTokenList modifiers = ModifierFactory.Private();
 
             if (propertyDeclaration.IsStatic())
                 modifiers = modifiers.Add(StaticKeyword());
 
             return FieldDeclaration(
-                default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                VariableDeclaration(
-                    propertyDeclaration.Type,
-                    name,
-                    propertyDeclaration.Initializer));
+                propertyDeclaration.Type,
+                name,
+                propertyDeclaration.Initializer);
         }
     }
 }

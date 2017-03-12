@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Extensions
                 case SpecialType.System_Decimal:
                 case SpecialType.System_Single:
                 case SpecialType.System_Double:
-                    return ZeroLiteralExpression();
+                    return NumericLiteralExpression(0);
             }
 
             if (typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Extensions
                 }
                 else
                 {
-                    return ZeroLiteralExpression();
+                    return NumericLiteralExpression(0);
                 }
             }
 

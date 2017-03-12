@@ -33,11 +33,9 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public virtual ExpressionStatementSyntax CreateAssignment()
         {
-            AssignmentExpressionSyntax assignment = SimpleAssignmentExpression(
+            return SimpleAssignmentStatement(
                 CreateAssignmentLeft(),
                 IdentifierName(Parameter.Identifier.WithoutTrivia()));
-
-            return ExpressionStatement(assignment);
         }
 
         private ExpressionSyntax CreateAssignmentLeft()

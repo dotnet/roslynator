@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -107,12 +108,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
-                BinaryExpressionSyntax binaryExpression = BinaryExpression(
-                    SyntaxKind.EqualsExpression,
+                BinaryExpressionSyntax binaryExpression = EqualsExpression(
                     memberAccess,
-                    LiteralExpression(
-                        SyntaxKind.NumericLiteralExpression,
-                        Literal(0)));
+                    NumericLiteralExpression(0));
 
                 newRoot = root.ReplaceNode(
                     invocation.Parent,
@@ -120,12 +118,9 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                BinaryExpressionSyntax binaryExpression = BinaryExpression(
-                    SyntaxKind.GreaterThanExpression,
+                BinaryExpressionSyntax binaryExpression = GreaterThanExpression(
                     memberAccess,
-                    LiteralExpression(
-                        SyntaxKind.NumericLiteralExpression,
-                        Literal(0)));
+                    NumericLiteralExpression(0));
 
                 newRoot = root.ReplaceNode(
                     invocation,

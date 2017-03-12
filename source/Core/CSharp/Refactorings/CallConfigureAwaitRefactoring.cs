@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
             InvocationExpressionSyntax newInvocation = InvocationExpression(
                 SimpleMemberAccessExpression(invocation.WithoutTrailingTrivia(), IdentifierName("ConfigureAwait")),
-                ArgumentList(Argument(FalseLiteralExpression())));
+                SingletonArgumentList(Argument(FalseLiteralExpression())));
 
             newInvocation = newInvocation.WithTrailingTrivia(invocation.GetTrailingTrivia());
 

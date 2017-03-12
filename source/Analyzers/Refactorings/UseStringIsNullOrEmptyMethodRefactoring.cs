@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
-                "IsNullOrEmpty",
+                IdentifierName("IsNullOrEmpty"),
                 Argument(expression));
 
             if (left.IsKind(SyntaxKind.NotEqualsExpression))

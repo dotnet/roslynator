@@ -75,8 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 ? conditionalExpression.WhenTrue
                 : conditionalExpression.WhenFalse;
 
-            BinaryExpressionSyntax newNode = SyntaxFactory.BinaryExpression(
-                SyntaxKind.CoalesceExpression,
+            BinaryExpressionSyntax newNode = CSharpFactory.CoalesceExpression(
                 left.WithoutTrivia(),
                 right.WithoutTrivia());
 

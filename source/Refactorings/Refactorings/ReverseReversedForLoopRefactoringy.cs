@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
                 initializerValue,
-                ZeroLiteralExpression());
+                NumericLiteralExpression(0));
 
             BinaryExpressionSyntax newCondition = ((BinaryExpressionSyntax)forStatement.Condition)
                 .WithOperatorToken(LessThanToken())
