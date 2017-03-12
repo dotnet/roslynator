@@ -10,6 +10,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
         {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
+                AddTypeParameterRefactoring.ComputeRefactoring(context, interfaceDeclaration);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, interfaceDeclaration);
 

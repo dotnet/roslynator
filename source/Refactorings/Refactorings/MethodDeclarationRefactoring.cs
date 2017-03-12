@@ -40,6 +40,9 @@ namespace Roslynator.CSharp.Refactorings
                     cancellationToken => MarkContainingClassAsAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
+                AddTypeParameterRefactoring.ComputeRefactoring(context, methodDeclaration);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
                 && methodDeclaration.HeaderSpan().Contains(context.Span)
                 && ReplaceMethodWithPropertyRefactoring.CanRefactor(methodDeclaration))

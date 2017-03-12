@@ -8,6 +8,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
         {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
+                AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && localFunctionStatement.Body?.Span.Contains(context.Span) == true
                 && UseExpressionBodiedMemberRefactoring.CanRefactor(localFunctionStatement))

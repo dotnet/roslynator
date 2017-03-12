@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.DelegateDeclaration:
                     {
-                        ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, (DelegateDeclarationSyntax)member);
+                        DelegateDeclarationRefactoring.ComputeRefactorings(context, (DelegateDeclarationSyntax)member);
                         break;
                     }
                 case SyntaxKind.MethodDeclaration:

@@ -42,9 +42,11 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ChangeDeclarationExpressionTypeRefactoring.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
+    <Compile Include="Refactorings\DelegateDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\ImplementIEquatableOfTRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />

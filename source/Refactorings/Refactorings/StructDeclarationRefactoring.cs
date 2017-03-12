@@ -11,6 +11,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
+                AddTypeParameterRefactoring.ComputeRefactoring(context, structDeclaration);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, structDeclaration);
 

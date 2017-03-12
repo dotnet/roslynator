@@ -83,6 +83,16 @@
     </Syntaxes>
     <Scope>missing identifier</Scope>
   </Refactoring>
+  <Refactoring Id="AddTypeParameter" Title="Add type parameter" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>class declaration</Syntax>
+      <Syntax>struct declaration</Syntax>
+      <Syntax>interface declaration</Syntax>
+      <Syntax>delegate declaration</Syntax>
+      <Syntax>method declaration</Syntax>
+      <Syntax>local function</Syntax>
+    </Syntaxes>
+  </Refactoring>
   <Refactoring Id="AddUsingDirective" Title="Add using directive" ExtensionVersion="0.97.0">
     <Syntaxes>
       <Syntax>qualified name</Syntax>

@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
+    <Compile Include="AddTypeParameterRefactoring.cs" />
     <Compile Include="CallConfigureAwaitRefactoring.cs" />
     <Compile Include="CallToMethodRefactoring.cs" />
     <Compile Include="CheckExpressionForNullRefactoring.cs" />
