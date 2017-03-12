@@ -410,6 +410,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#generate-switch-sections">Generate switch sections</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#implement-iequatablet">Implement IEquatable&lt;T&gt;</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#initialize-local-with-default-value">Initialize local with default value</a>
     </li>
     <li>

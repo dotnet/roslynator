@@ -446,6 +446,14 @@
     </Syntaxes>
     <Scope>parameter identifier</Scope>
   </Refactoring>
+  <Refactoring Id="ImplementIEquatableOfT" Title="Implement IEquatable&lt;T&gt;" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>class declaration</Syntax>
+      <Syntax>struct declaration</Syntax>
+      <Syntax>interface declaration</Syntax>
+    </Syntaxes>
+    <Scope>base list</Scope>
+  </Refactoring>
   <Refactoring Id="InitializeLocalWithDefaultValue" Title="Initialize local with default value" ExtensionVersion="0.92.0">
     <Syntaxes>
       <Syntax>local declaration without initializer</Syntax>

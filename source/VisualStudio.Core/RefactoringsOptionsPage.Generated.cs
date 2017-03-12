@@ -71,6 +71,7 @@ namespace Roslynator.VisualStudio
             GenerateEnumValues = true;
             GenerateEventInvokingMethod = true;
             GenerateSwitchSections = true;
+            ImplementIEquatableOfT = true;
             InitializeLocalWithDefaultValue = true;
             InlineAliasExpression = true;
             InlineMethod = true;
@@ -252,6 +253,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.GenerateEnumValues, GenerateEnumValues);
             SetIsEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod, GenerateEventInvokingMethod);
             SetIsEnabled(RefactoringIdentifiers.GenerateSwitchSections, GenerateSwitchSections);
+            SetIsEnabled(RefactoringIdentifiers.ImplementIEquatableOfT, ImplementIEquatableOfT);
             SetIsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue, InitializeLocalWithDefaultValue);
             SetIsEnabled(RefactoringIdentifiers.InlineAliasExpression, InlineAliasExpression);
             SetIsEnabled(RefactoringIdentifiers.InlineMethod, InlineMethod);
@@ -957,6 +959,16 @@ namespace Roslynator.VisualStudio
         [Description("Syntax: switch statement (that is empty or contains only default section)")]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool GenerateSwitchSections
+        {
+            get;
+            set;
+        }
+
+        [Category(RefactoringCategory)]
+        [DisplayName("Implement IEquatable<T>")]
+        [Description("Syntax: class declaration, struct declaration, interface declaration\r\nScope: base list")]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool ImplementIEquatableOfT
         {
             get;
             set;

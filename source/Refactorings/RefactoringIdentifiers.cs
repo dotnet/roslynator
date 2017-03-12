@@ -65,6 +65,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string GenerateEnumValues = "GenerateEnumValues";
         public const string GenerateEventInvokingMethod = "GenerateEventInvokingMethod";
         public const string GenerateSwitchSections = "GenerateSwitchSections";
+        public const string ImplementIEquatableOfT = "ImplementIEquatableOfT";
         public const string InitializeLocalWithDefaultValue = "InitializeLocalWithDefaultValue";
         public const string InlineAliasExpression = "InlineAliasExpression";
         public const string InlineMethod = "InlineMethod";
