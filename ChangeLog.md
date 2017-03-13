@@ -1,3 +1,22 @@
+### 1.2.50 (2017-03-13)
+
+* Improved options page with a list of refactorings.
+  * Refactorings are displayed in WPF control instead of property grid.
+  * Each refactoring has an identifier 'RR....' to avoid confusion with analyzers.
+
+#### Analyzers
+
+##### New Analyzers
+
+* UnusedThisParameter
+
+#### Refactorings
+
+##### New Refactorings
+
+* ImplementIEquatableOfT
+* AddTypeParameter
+
 ### 1.2.16 (2017-03-02)
 
 #### Analyzers
