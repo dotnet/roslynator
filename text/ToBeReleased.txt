@@ -1,5 +1,0 @@
-﻿#### Refactorings
-
-##### New Refactorings
-
-* ReplaceStringContainsWithStringIndexOf
