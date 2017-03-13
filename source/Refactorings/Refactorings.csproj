@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
+    <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="Refactorings\ClassDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\DelegateDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\EnumDeclarationRefactoring.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
-    <Compile Include="RefactoringIdentifiers.cs" />
+    <Compile Include="RefactoringIdentifiers.Generated.cs" />
     <Compile Include="RefactoringIdentifierSet.cs" />
     <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactorings\ExtractTypeDeclarationToNewFileRefactoring.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="Refactorings\RemoveBracesFromSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesToSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\InsertInterpolationRefactoring.cs" />
-    <Compile Include="Refactorings\RoslynatorCodeRefactoringProvider.cs" />
+    <Compile Include="Refactorings\DefaultCodeRefactoringProvider.cs" />
     <Compile Include="Refactorings\ParenthesizeExpressionRefactoring.cs" />
     <Compile Include="Refactorings\InterpolatedStringTextRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllStatementsRefactoring.cs" />

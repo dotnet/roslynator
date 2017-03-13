@@ -24,19 +24,18 @@ namespace CodeGenerator
 
             RefactoringDescriptor[] refactorings = RefactoringDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
-                .OrderBy(f => f.Identifier, StringComparer.InvariantCulture)
                 .ToArray();
 
             var writer = new CodeFileWriter();
 
             var refactoringIdentifiersGenerator = new RefactoringIdentifiersGenerator();
             writer.SaveCode(
-                 Path.Combine(dirPath, @"Refactorings\RefactoringIdentifiers.cs"),
+                Path.Combine(dirPath, @"Refactorings\RefactoringIdentifiers.Generated.cs"),
                 refactoringIdentifiersGenerator.Generate(refactorings));
 
             var optionsPagePropertiesGenerator = new OptionsPagePropertiesGenerator();
             writer.SaveCode(
-                 Path.Combine(dirPath, @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs"),
+                Path.Combine(dirPath, @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs"),
                 optionsPagePropertiesGenerator.Generate(refactorings));
 
 #if DEBUG

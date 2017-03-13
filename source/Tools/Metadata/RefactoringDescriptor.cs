@@ -11,6 +11,7 @@ namespace Roslynator.Metadata
     public class RefactoringDescriptor
     {
         public RefactoringDescriptor(
+            string id,
             string identifier,
             string title,
             bool isEnabledByDefault,
@@ -19,6 +20,7 @@ namespace Roslynator.Metadata
             IList<SyntaxDescriptor> syntaxes,
             IList<ImageDescriptor> images)
         {
+            Id = id;
             Identifier = identifier;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
@@ -35,7 +37,10 @@ namespace Roslynator.Metadata
             foreach (XElement element in doc.Root.Elements())
             {
                 yield return new RefactoringDescriptor(
-                    element.Attribute("Id").Value,
+                    (element.Attribute("Id") != null)
+                        ? element.Attribute("Id").Value
+                        : null,
+                    element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
                     (element.Attribute("IsEnabledByDefault") != null)
                         ? bool.Parse(element.Attribute("IsEnabledByDefault").Value)
@@ -54,6 +59,8 @@ namespace Roslynator.Metadata
                         : new List<ImageDescriptor>());
             }
         }
+
+        public string Id { get; }
 
         public string Identifier { get; }
 

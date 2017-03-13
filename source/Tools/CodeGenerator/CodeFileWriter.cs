@@ -15,7 +15,7 @@ namespace CodeGenerator
 
         public string CodeFileHeader { get; set; } = "// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.";
 
-        public void SaveCode(string path, CompilationUnitSyntax compilationUnit)
+        public void SaveCode(string path, CompilationUnitSyntax compilationUnit, bool normalizeWhitespace = true)
         {
             if (!File.Exists(path))
             {
@@ -23,8 +23,8 @@ namespace CodeGenerator
                 return;
             }
 
-            compilationUnit = compilationUnit
-                .NormalizeWhitespace();
+            if (normalizeWhitespace)
+                compilationUnit = compilationUnit.NormalizeWhitespace();
 
             compilationUnit = AddHeader(compilationUnit);
 
