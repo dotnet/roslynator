@@ -1187,4 +1187,9 @@
     </Syntaxes>
     <Scope>base list</Scope>
   </Refactoring>
+    <Refactoring Id="RR0180" Identifier="ReplaceStringLiteralWithStringFormat" Title="Replace string literal with string.Format invocation" ExtensionVersion="0.0.0">
+    <Syntaxes>
+      <Syntax>string literal</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>
