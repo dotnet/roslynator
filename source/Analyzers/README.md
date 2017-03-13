@@ -83,7 +83,7 @@ RCS1081|Split variable declaration|Readability|
 RCS1082|Use 'Count/Length' property instead of 'Count' method|Performance|x
 RCS1083|Use 'Any' method instead of 'Count' method|Performance|x
 RCS1084|Use coalesce expression instead of conditional expression|Simplification|x
-RCS1085|Use auto\-implemented property instead of expanded property|Simplification|x
+RCS1085|Use auto\-implemented property|Simplification|x
 RCS1086|Use linefeed as newline|General|
 RCS1087|Use carriage return \+ linefeed as newline|General|
 RCS1088|Use space\(s\) instead of tab|General|
@@ -173,3 +173,4 @@ RCS1171|Simplify lazily initialized property|Simplification|x
 RCS1172|Use is operator instead of as operator|Simplification|x
 RCS1173|Use coalesce expression instead of if|Simplification|x
 RCS1174|Remove redundant async/await|Redundancy|x
+RCS1175|Unused this parameter|Redundancy|x

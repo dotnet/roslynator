@@ -139,7 +139,7 @@
     <li>RCS1082 - Use 'Count/Length' property instead of 'Count' method.</li>
     <li>RCS1083 - Use 'Any' method instead of 'Count' method.</li>
     <li>RCS1084 - Use coalesce expression instead of conditional expression.</li>
-    <li>RCS1085 - Use auto-implemented property instead of expanded property.</li>
+    <li>RCS1085 - Use auto-implemented property.</li>
     <li>RCS1086 - Use linefeed as newline.</li>
     <li>RCS1087 - Use carriage return + linefeed as newline.</li>
     <li>RCS1088 - Use space(s) instead of tab.</li>
@@ -229,6 +229,7 @@
     <li>RCS1172 - Use is operator instead of as operator.</li>
     <li>RCS1173 - Use coalesce expression instead of if.</li>
     <li>RCS1174 - Remove redundant async/await.</li>
+    <li>RCS1175 - Unused this parameter.</li>
 </ul>
 <h3>List of Refactorings</h3>
 <ul>
