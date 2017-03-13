@@ -26,16 +26,28 @@
         <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
       </Grid>
     </DataTemplate>
+    <Style TargetType="Button">
+      <Setter Property="MinWidth" Value="75"/>
+      <Setter Property="MinHeight" Value="25"/>
+      <Setter Property="Margin" Value="0,5,5,0"/>
+    </Style>
   </UserControl.Resources>
-  <Grid>
-    <ListView Name="lsvRefactorings" 
+  <DockPanel Focusable="False" LastChildFill="True">
+    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
+      <Button Content="Enable All" Click="EnableAllButton_Click" />
+      <Button Content="Disable All" Click="DisableAllButton_Click" />
+    </WrapPanel>
+    <ListView Grid.Row="0" Grid.Column="0"
+              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+              ScrollViewer.VerticalScrollBarVisibility="Auto"
+              Name="lsvRefactorings" 
               ItemsSource="{Binding Refactorings}" 
               SelectionMode="Single"
               GridViewColumnHeader.Click="GridViewColumnHeader_Click">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"></GridViewColumn>
-          <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}"></GridViewColumn>
+          <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}" Width="300"></GridViewColumn>
           <GridViewColumn Header="Enabled">
             <GridViewColumn.CellTemplate>
               <DataTemplate>
@@ -46,5 +58,5 @@
         </GridView>
       </ListView.View>
     </ListView>
-  </Grid>
+  </DockPanel>
 </UserControl>

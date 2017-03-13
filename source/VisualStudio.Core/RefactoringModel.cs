@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.ComponentModel;
+
 namespace Roslynator.VisualStudio
 {
-    public class RefactoringModel
+    public class RefactoringModel : INotifyPropertyChanged
     {
+        private bool _enabled;
+
         public RefactoringModel(string id, string title, bool enabled)
         {
             Id = id;
@@ -15,6 +19,25 @@ namespace Roslynator.VisualStudio
 
         public string Title { get; }
 
-        public bool Enabled { get; set; }
+        public bool Enabled
+        {
+            get { return _enabled; }
+
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    OnPropertyChanged(nameof(Enabled));
+                }
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -83,5 +83,17 @@ namespace Roslynator.VisualStudio
             dataView.SortDescriptions.Add(sortDescription);
             dataView.Refresh();
         }
+
+        private void EnableAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (RefactoringModel refactoring in Refactorings)
+                refactoring.Enabled = true;
+        }
+
+        private void DisableAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (RefactoringModel refactoring in Refactorings)
+                refactoring.Enabled = false;
+        }
     }
 }

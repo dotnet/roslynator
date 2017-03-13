@@ -44,17 +44,23 @@ namespace CodeGenerator
             yield return ConstructorDeclaration("RefactoringsOptionsPage")
                 .WithModifiers(Modifiers.Public())
                 .WithBody(Block(
-                    SimpleAssignmentStatement(
-                        IdentifierName("DisabledRefactorings"),
-                        ParseExpression(
-                            "$\"" +
-                            string.Join(",", refactorings
-                                .Where(f => !f.IsEnabledByDefault)
-                                .OrderBy(f => f.Identifier, InvariantComparer)
-                                .Select(f => $"{{RefactoringIdentifiers.{f.Identifier}}}")) +
-                            "\""))));
+                    refactorings
+                        .Where(f => ShouldGenerateProperty(f))
+                        .Select(f => ExpressionStatement(ParseExpression($"{f.Identifier} = {TrueOrFalseLiteralExpression(f.IsEnabledByDefault)}")))
+                        .Concat(new StatementSyntax[]
+                        {
+                            SimpleAssignmentStatement(
+                                IdentifierName("DisabledRefactorings"),
+                                ParseExpression(
+                                    "$\"" +
+                                    string.Join(",", refactorings
+                                        .Where(f => !f.IsEnabledByDefault)
+                                        .OrderBy(f => f.Identifier, InvariantComparer)
+                                        .Select(f => $"{{RefactoringIdentifiers.{f.Identifier}}}")) +
+                                    "\""))
+                        })));
 
-            yield return MethodDeclaration(VoidType(), "MigrateValuesFromIdentifierProperties")
+        yield return MethodDeclaration(VoidType(), "MigrateValuesFromIdentifierProperties")
                 .WithModifiers(Modifiers.Public())
                 .WithParameterList(ParameterList())
                 .WithBody(
@@ -112,6 +118,11 @@ namespace CodeGenerator
                            AutoGetAccessorDeclaration(),
                            AutoSetAccessorDeclaration()));
             }
+        }
+
+        private LiteralExpressionSyntax TrueOrFalseLiteralExpression(bool value)
+        {
+            return (value) ? TrueLiteralExpression() : FalseLiteralExpression();
         }
 
         private static bool ShouldGenerateProperty(RefactoringDescriptor refactoring)
