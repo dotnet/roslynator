@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.Analyzers</id>
-    <version>1.2.0</version>
+    <version>1.3.0-beta</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
@@ -13,7 +13,7 @@
 
   - This package can be used with Visual Studio 2017.
   - This package supersedes package CSharpAnalyzers that can be used with Visual Studio 2015.
-  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 2.0.0-rc2.</description>
+  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 2.0.0.</description>
     <summary>A collection of 170+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2017 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
