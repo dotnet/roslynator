@@ -24,7 +24,7 @@
 <h3>Settings</h3>
 <p>Analyzers can be enabled/disabled using <b>rule set</b>. Please see <a href="http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToCustomizeAnalyzers.md">How to Customize Analyzers</a>.</p>  
 <p>Refactorings can be enabled/disabled in Visual Studio options.</p>  
-<img src="http://pihrt.net/images/roslyn/RefactoringsOptions.png" alt="Refactorings Options">
+<img src="http://pihrt.net/images/roslynator/RefactoringsOptions.png" alt="Refactorings Options">
 
 <h3>List of Related Products</h3>
 
