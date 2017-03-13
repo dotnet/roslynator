@@ -84,6 +84,12 @@
 
 ![Add parameter name to parameter](../../images/refactorings/AddParameterNameToParameter.png)
 
+#### Add type parameter
+
+* **Syntax**: class declaration, struct declaration, interface declaration, delegate declaration, method declaration, local function
+
+![Add type parameter](../../images/refactorings/AddTypeParameter.png)
+
 #### Add using directive
 
 * **Syntax**: qualified name
@@ -402,6 +408,13 @@
 * **Syntax**: switch statement \(that is empty or contains only default section\)
 
 ![Generate switch sections](../../images/refactorings/GenerateSwitchSections.png)
+
+#### Implement IEquatable\<T\>
+
+* **Syntax**: class declaration, struct declaration, interface declaration
+* **Scope**: base list
+
+![Implement IEquatable\<T\>](../../images/refactorings/ImplementIEquatableOfT.png)
 
 #### Initialize local with default value
 

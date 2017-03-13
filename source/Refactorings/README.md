@@ -14,6 +14,7 @@ RR0009|[Add exception to documentation comment](Refactorings.md#add-exception-to
 RR0010|[Add identifier to variable declaration](Refactorings.md#add-identifier-to-variable-declaration)|x
 RR0011|[Add parameter name to argument](Refactorings.md#add-parameter-name-to-argument)|x
 RR0012|[Add parameter name to parameter](Refactorings.md#add-parameter-name-to-parameter)|x
+RR0178|[Add type parameter](Refactorings.md#add-type-parameter)|x
 RR0013|[Add using directive](Refactorings.md#add-using-directive)|x
 RR0014|[Add using static directive](Refactorings.md#add-using-static-directive)|x
 RR0015|[Call 'ConfigureAwait\(false\)'](Refactorings.md#call-configureawaitfalse)|x
@@ -61,6 +62,7 @@ RR0056|[Generate enum member](Refactorings.md#generate-enum-member)|x
 RR0057|[Generate enum values](Refactorings.md#generate-enum-values)|x
 RR0058|[Generate event invoking method](Refactorings.md#generate-event-invoking-method)|x
 RR0059|[Generate switch sections](Refactorings.md#generate-switch-sections)|x
+RR0179|[Implement IEquatable\<T\>](Refactorings.md#implement-iequatablet)|x
 RR0060|[Initialize local with default value](Refactorings.md#initialize-local-with-default-value)|x
 RR0061|[Inline alias expression](Refactorings.md#inline-alias-expression)|x
 RR0062|[Inline method](Refactorings.md#inline-method)|x

@@ -113,7 +113,7 @@
 * RCS1082 - Use 'Count/Length' property instead of 'Count' method
 * RCS1083 - Use 'Any' method instead of 'Count' method
 * RCS1084 - Use coalesce expression instead of conditional expression
-* RCS1085 - Use auto\-implemented property instead of expanded property
+* RCS1085 - Use auto\-implemented property
 * RCS1086 - Use linefeed as newline
 * RCS1087 - Use carriage return \+ linefeed as newline
 * RCS1088 - Use space\(s\) instead of tab
@@ -203,6 +203,7 @@
 * RCS1172 - Use is operator instead of as operator
 * RCS1173 - Use coalesce expression instead of if
 * RCS1174 - Remove redundant async/await
+* RCS1175 - Unused this parameter
 
 ### List of Refactorings
 
@@ -218,6 +219,7 @@
 * [Add identifier to variable declaration](source/Refactorings/Refactorings.md#add-identifier-to-variable-declaration)
 * [Add parameter name to argument](source/Refactorings/Refactorings.md#add-parameter-name-to-argument)
 * [Add parameter name to parameter](source/Refactorings/Refactorings.md#add-parameter-name-to-parameter)
+* [Add type parameter](source/Refactorings/Refactorings.md#add-type-parameter)
 * [Add using directive](source/Refactorings/Refactorings.md#add-using-directive)
 * [Add using static directive](source/Refactorings/Refactorings.md#add-using-static-directive)
 * [Call 'ConfigureAwait\(false\)'](source/Refactorings/Refactorings.md#call-configureawaitfalse)
@@ -265,6 +267,7 @@
 * [Generate enum values](source/Refactorings/Refactorings.md#generate-enum-values)
 * [Generate event invoking method](source/Refactorings/Refactorings.md#generate-event-invoking-method)
 * [Generate switch sections](source/Refactorings/Refactorings.md#generate-switch-sections)
+* [Implement IEquatable\<T\>](source/Refactorings/Refactorings.md#implement-iequatablet)
 * [Initialize local with default value](source/Refactorings/Refactorings.md#initialize-local-with-default-value)
 * [Inline alias expression](source/Refactorings/Refactorings.md#inline-alias-expression)
 * [Inline method](source/Refactorings/Refactorings.md#inline-method)

@@ -117,6 +117,7 @@ Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
 Redundancy|Remove unnecessary case label|RCS1069|x
 Redundancy|Unused parameter|RCS1163|x
+Redundancy|Unused this parameter|RCS1175|x
 Redundancy|Unused type parameter|RCS1164|x
 Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
@@ -139,7 +140,7 @@ Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
-Simplification|Use auto\-implemented property instead of expanded property|RCS1085|x
+Simplification|Use auto\-implemented property|RCS1085|x
 Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
 Simplification|Use coalesce expression instead of if|RCS1173|x
