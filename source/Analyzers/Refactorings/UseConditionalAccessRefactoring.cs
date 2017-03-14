@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null)
             {
-                ExpressionSyntax right = logicalAndExpression.Right?.WalkDownParentheses();
+                ExpressionSyntax right = logicalAndExpression.Right;
 
                 if (right != null
                     && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken))
@@ -131,17 +131,15 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax right = logicalAnd.Right;
 
-            ExpressionSyntax rightWithoutParentheses = right.WalkDownParentheses();
-
             SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(
                 expression,
-                rightWithoutParentheses.WalkDownParentheses());
+                right);
 
-            SyntaxKind kind = rightWithoutParentheses.Kind();
+            SyntaxKind kind = right.Kind();
 
             if (kind == SyntaxKind.LogicalNotExpression)
             {
-                var logicalNot = (PrefixUnaryExpressionSyntax)rightWithoutParentheses;
+                var logicalNot = (PrefixUnaryExpressionSyntax)right;
                 ExpressionSyntax operand = logicalNot.Operand;
                 SyntaxToken operatorToken = logicalNot.OperatorToken;
 
