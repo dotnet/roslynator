@@ -60,11 +60,19 @@ namespace Roslynator.CSharp.Analyzers.Test
             if (s != null &&
                 s.StartsWith("a")) { }
 
+            if (s != null
+                && s.StartsWith("a") //
+                && s.StartsWith("a")) { }
+
             if (s != null &&
                 s.Length > 1) { }
 
             if (s != null &&
                 !s.StartsWith("a")) { }
+
+            if (s != null
+                && !s.StartsWith("a") //
+                && !s.StartsWith("a")) { }
 
             if (s != null &&
                 (!s.StartsWith("a"))) { }
