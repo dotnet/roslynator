@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
 
         private static AccessorListSyntax CreateAccessorList(BlockSyntax block, bool singleline)
         {
-            AccessorListSyntax accessorList = SingletonAccessorList(GetAccessorDeclaration(block));
+            AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
             if (singleline)
                 accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);

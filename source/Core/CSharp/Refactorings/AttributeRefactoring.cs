@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = 0; i < attributes.Count; i++)
             {
-                AttributeListSyntax list = SingletonAttributeList(attributes[i]);
+                AttributeListSyntax list = AttributeList(attributes[i]);
 
                 if (i == 0)
                     list = list.WithLeadingTrivia(attributeList.GetLeadingTrivia());

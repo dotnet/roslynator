@@ -325,7 +325,7 @@ namespace Roslynator.CSharp.Refactorings
                             SimpleMemberAccessExpression(
                                 initializedExpression,
                                 IdentifierName("Add")),
-                            SingletonArgumentList(Argument(expression))
+                            ArgumentList(Argument(expression))
                         )
                     );
                 }
