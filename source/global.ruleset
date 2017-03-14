@@ -227,12 +227,18 @@
     <Rule Id="IDE0026WithoutSuggestion" Action="None" />
     <Rule Id="IDE0027" Action="None" />
     <Rule Id="IDE0027WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0028" Action="Info" />
+    <Rule Id="IDE0029" Action="Info" />
     <Rule Id="IDE0030" Action="None" />
     <Rule Id="IDE0030WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0031" Action="Info" />
+    <Rule Id="IDE1005" Action="Info" />
+    <Rule Id="IDE1006" Action="Info" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Features" RuleNamespace="Microsoft.CodeAnalysis.Features">
     <Rule Id="IDE0010" Action="None" />
     <Rule Id="IDE0010WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0033" Action="Info" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0008" Action="None" />

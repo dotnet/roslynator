@@ -137,8 +137,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                 {
                     var methodSymbol = semanticModel.GetSymbol(methodName, cancellationToken) as IMethodSymbol;
 
-                    if (methodSymbol != null
-                        && methodSymbol.MethodKind == MethodKind.ReducedExtension
+                    if (methodSymbol?.MethodKind == MethodKind.ReducedExtension
                         && methodSymbol.ReducedFrom.Parameters.Length == 2
                         && methodSymbol.ReducedFrom.Parameters[0].Type.Equals(typeSymbol)
                         && methodSymbol.ReducedFrom.Parameters[1].Type.Equals(syntaxKindSymbol))
