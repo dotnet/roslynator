@@ -57,19 +57,21 @@ namespace Roslynator.CSharp.Refactorings.If
                     {
                         if (options.CheckSpanDirectives(ifStatement))
                         {
-                            StatementSyntax statement1 = GetSingleStatementOrDefault(ifStatement);
+                            StatementSyntax statement1 = ifStatement.GetSingleStatementOrDefault();
 
                             if (statement1 != null)
                             {
-                                StatementSyntax statement2 = GetSingleStatementOrDefault(elseClause);
+                                SyntaxKind kind1 = statement1.Kind();
 
-                                if (statement2 != null)
+                                if (kind1 == SyntaxKind.ExpressionStatement
+                                    || kind1 == SyntaxKind.ReturnStatement
+                                    || kind1 == SyntaxKind.YieldReturnStatement)
                                 {
-                                    SyntaxKind kind = statement1.Kind();
+                                    StatementSyntax statement2 = elseClause.GetSingleStatementOrDefault();
 
-                                    if (kind == statement2.Kind())
+                                    if (statement2?.IsKind(kind1) == true)
                                     {
-                                        switch (kind)
+                                        switch (kind1)
                                         {
                                             case SyntaxKind.ExpressionStatement:
                                                 {
@@ -273,7 +275,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
             if (condition?.IsMissing == false)
             {
-                StatementSyntax statement = GetSingleStatementOrDefault(ifStatement);
+                StatementSyntax statement = ifStatement.GetSingleStatementOrDefault();
 
                 if (statement?.IsKind(SyntaxKind.ReturnStatement) == true
                     && options.CheckSpanDirectives(ifStatement, TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))

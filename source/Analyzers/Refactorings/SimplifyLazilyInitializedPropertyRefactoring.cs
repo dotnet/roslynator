@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             string fieldName = identifierName.Identifier.ValueText;
 
-                            StatementSyntax statement = GetSingleStatementOrDefault(ifStatement);
+                            StatementSyntax statement = ifStatement.GetSingleStatementOrDefault();
 
                             if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                             {
@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var returnStatement = (ReturnStatementSyntax)statements[1];
 
-            var expressionStatement = (ExpressionStatementSyntax)GetSingleStatementOrDefault(ifStatement);
+            var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
@@ -184,20 +184,6 @@ namespace Roslynator.CSharp.Refactorings
             BlockSyntax newBlock = block.WithStatements(newStatements);
 
             return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
-        }
-
-        private static StatementSyntax GetSingleStatementOrDefault(IfStatementSyntax ifStatement)
-        {
-            StatementSyntax statement = ifStatement.Statement;
-
-            if (statement?.IsKind(SyntaxKind.Block) == true)
-            {
-                return ((BlockSyntax)statement).SingleStatementOrDefault();
-            }
-            else
-            {
-                return statement;
-            }
         }
     }
 }

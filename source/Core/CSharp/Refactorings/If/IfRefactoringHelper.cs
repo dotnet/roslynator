@@ -29,46 +29,6 @@ namespace Roslynator.CSharp.Refactorings.If
             return node?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true;
         }
 
-        public static StatementSyntax GetSingleStatementOrDefault(IfStatementSyntax ifStatement)
-        {
-            StatementSyntax statement = ifStatement.Statement;
-
-            if (statement != null)
-            {
-                return GetSingleStatementOrDefault(statement);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public static StatementSyntax GetSingleStatementOrDefault(ElseClauseSyntax elseClause)
-        {
-            StatementSyntax statement = elseClause?.Statement;
-
-            if (statement?.IsKind(SyntaxKind.IfStatement) == false)
-            {
-                return GetSingleStatementOrDefault(statement);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
-        {
-            if (statement.IsKind(SyntaxKind.Block))
-            {
-                return ((BlockSyntax)statement).SingleStatementOrDefault();
-            }
-            else
-            {
-                return statement;
-            }
-        }
-
         public static ConditionalExpressionSyntax CreateConditionalExpression(ExpressionSyntax condition, ExpressionSyntax whenTrue, ExpressionSyntax whenFalse)
         {
             if (!condition.IsKind(SyntaxKind.ParenthesizedExpression))

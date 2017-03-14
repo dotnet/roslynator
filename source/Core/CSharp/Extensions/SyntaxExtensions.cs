@@ -468,6 +468,28 @@ namespace Roslynator.CSharp.Extensions
             return TextSpan.FromBounds(forStatement.OpenParenToken.Span.Start, forStatement.CloseParenToken.Span.End);
         }
 
+        internal static StatementSyntax GetSingleStatementOrDefault(this IfStatementSyntax ifStatement)
+        {
+            return GetSingleStatementOrDefault(ifStatement.Statement);
+        }
+
+        internal static StatementSyntax GetSingleStatementOrDefault(this ElseClauseSyntax elseClause)
+        {
+            return GetSingleStatementOrDefault(elseClause.Statement);
+        }
+
+        private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
+        {
+            if (statement?.IsKind(SyntaxKind.Block) == true)
+            {
+                return ((BlockSyntax)statement).SingleStatementOrDefault();
+            }
+            else
+            {
+                return statement;
+            }
+        }
+
         public static TextSpan HeaderSpan(this IndexerDeclarationSyntax indexerDeclaration)
         {
             if (indexerDeclaration == null)

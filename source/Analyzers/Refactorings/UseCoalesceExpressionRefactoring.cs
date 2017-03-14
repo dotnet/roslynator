@@ -41,9 +41,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                         {
-                            StatementSyntax blockOrStatement = ifStatement.Statement;
-
-                            StatementSyntax childStatement = GetSingleStatementOrDefault(blockOrStatement);
+                            StatementSyntax childStatement = ifStatement.GetSingleStatementOrDefault();
 
                             if (childStatement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                             {
@@ -172,28 +170,6 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
-        {
-            if (statement != null)
-            {
-                if (statement.IsKind(SyntaxKind.Block))
-                {
-                    var block = (BlockSyntax)statement;
-
-                    SyntaxList<StatementSyntax> statements = block.Statements;
-
-                    if (statements.Count == 1)
-                        return statements[0];
-                }
-                else
-                {
-                    return statement;
-                }
-            }
-
-            return null;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
@@ -213,7 +189,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var ifStatement = (IfStatementSyntax)statement;
 
-                            var expressionStatement = (ExpressionStatementSyntax)GetSingleStatementOrDefault(ifStatement.Statement);
+                            var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
                             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
@@ -290,7 +266,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            var expressionStatement = (ExpressionStatementSyntax)GetSingleStatementOrDefault(ifStatement.Statement);
+            var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
