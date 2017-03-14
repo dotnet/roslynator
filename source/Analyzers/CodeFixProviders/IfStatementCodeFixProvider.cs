@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 ifStatement,
                                 UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.AnalysisOptions,
                                 semanticModel,
-                                context.CancellationToken).FirstOrDefault();
+                                context.CancellationToken).First();
 
                             CodeAction codeAction = CodeAction.Create(
                                 refactoring.Title,

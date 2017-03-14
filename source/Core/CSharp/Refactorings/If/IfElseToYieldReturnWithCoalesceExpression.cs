@@ -24,6 +24,11 @@ namespace Roslynator.CSharp.Refactorings.If
             get { return "Use coalesce expression"; }
         }
 
+        public override bool IsYield
+        {
+            get { return true; }
+        }
+
         protected override StatementSyntax CreateStatement(ExpressionSyntax expression)
         {
             return YieldReturnStatement(expression);

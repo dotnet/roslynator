@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections;
 using System.Collections.Generic;
 
 #pragma warning disable RCS1002, RCS1004, RCS1007, RCS1126, CS0162
@@ -10,9 +11,9 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public static void MethodName()
         {
-            object x = null;
-            object y = null;
-            object z = null;
+            Derived x = null;
+            Derived2 y = null;
+            Base z = null;
 
             if (x != null)
             {
@@ -43,10 +44,10 @@ namespace Roslynator.CSharp.Analyzers.Test
                 z = x;
         }
 
-        public static object MethodName2()
+        private static Base MethodName2()
         {
-            object x = null;
-            object y = null;
+            Derived x = null;
+            Derived2 y = null;
 
             if (x != null)
             {
@@ -77,10 +78,10 @@ namespace Roslynator.CSharp.Analyzers.Test
                 return x;
         }
 
-        public static object MethodName3()
+        private static Base MethodName3()
         {
-            object x = null;
-            object y = null;
+            Derived x = null;
+            Derived2 y = null;
 
             if (x != null)
             {
@@ -107,10 +108,10 @@ namespace Roslynator.CSharp.Analyzers.Test
             return x;
         }
 
-        public static IEnumerable<object> MethodName4()
+        private static IEnumerable<Base> MethodName4()
         {
-            object x = null;
-            object y = null;
+            Derived x = null;
+            Derived2 y = null;
 
             if (x != null)
             {
@@ -139,6 +140,52 @@ namespace Roslynator.CSharp.Analyzers.Test
                 yield return y;
             else
                 yield return x;
+        }
+
+        private static IEnumerable MethodName5()
+        {
+            Derived x = null;
+            Derived2 y = null;
+
+            if (x != null)
+            {
+                yield return x;
+            }
+            else
+            {
+                yield return y;
+            }
+
+            if (x != null)
+                yield return x;
+            else
+                yield return y;
+
+            if (x == null)
+            {
+                yield return y;
+            }
+            else
+            {
+                yield return x;
+            }
+
+            if (x == null)
+                yield return y;
+            else
+                yield return x;
+        }
+
+        private class Base
+        {
+        }
+
+        private class Derived : Base
+        {
+        }
+
+        private class Derived2 : Base
+        {
         }
     }
 }
