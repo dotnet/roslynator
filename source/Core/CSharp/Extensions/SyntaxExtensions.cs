@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Extensions
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             return (statements.Count == 1)
-                ? statements.First()
+                ? statements[0]
                 : null;
         }
 
@@ -1462,6 +1462,18 @@ namespace Roslynator.CSharp.Extensions
             return TextSpan.FromBounds(
                 structDeclaration.OpenBraceToken.Span.Start,
                 structDeclaration.CloseBraceToken.Span.End);
+        }
+
+        public static StatementSyntax SingleStatementOrDefault(this SwitchSectionSyntax switchSection)
+        {
+            if (switchSection == null)
+                throw new ArgumentNullException(nameof(switchSection));
+
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+            return (statements.Count == 1)
+                ? statements[0]
+                : null;
         }
 
         public static SwitchSectionSyntax WithoutStatements(this SwitchSectionSyntax switchSection)

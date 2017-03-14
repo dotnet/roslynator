@@ -121,16 +121,16 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static SyntaxList<StatementSyntax> GetStatements(SwitchSectionSyntax prev)
+        private static SyntaxList<StatementSyntax> GetStatements(SwitchSectionSyntax section)
         {
-            SyntaxList<StatementSyntax> statements = prev.Statements;
+            SyntaxList<StatementSyntax> statements = section.Statements;
 
             if (statements.Count == 1)
             {
-                StatementSyntax firstStatement = statements.First();
+                StatementSyntax statement = statements[0];
 
-                if (firstStatement.IsKind(SyntaxKind.Block))
-                    return ((BlockSyntax)firstStatement).Statements;
+                if (statement.IsKind(SyntaxKind.Block))
+                    return ((BlockSyntax)statement).Statements;
             }
 
             return statements;

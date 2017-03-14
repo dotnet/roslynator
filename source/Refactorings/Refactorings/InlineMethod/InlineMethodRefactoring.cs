@@ -107,16 +107,13 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             if (body != null)
             {
-                SyntaxList<StatementSyntax> statements = body.Statements;
+                StatementSyntax statement = body.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
+                switch (statement?.Kind())
                 {
-                    StatementSyntax statement = statements[0];
-
-                    if (statement.IsKind(SyntaxKind.ReturnStatement))
+                    case SyntaxKind.ReturnStatement:
                         return ((ReturnStatementSyntax)statement).Expression;
-
-                    if (statement.IsKind(SyntaxKind.ExpressionStatement))
+                    case SyntaxKind.ExpressionStatement:
                         return ((ExpressionStatementSyntax)statement).Expression;
                 }
 
@@ -201,19 +198,14 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             if (body != null)
             {
-                SyntaxList<StatementSyntax> statements = body.Statements;
+                StatementSyntax statement = body.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
+                switch (statement?.Kind())
                 {
-                    StatementSyntax statement = statements[0];
-
-                    switch (statement.Kind())
-                    {
-                        case SyntaxKind.ReturnStatement:
-                            return ((ReturnStatementSyntax)statement).Expression;
-                        case SyntaxKind.ExpressionStatement:
-                            return ((ExpressionStatementSyntax)statement).Expression;
-                    }
+                    case SyntaxKind.ReturnStatement:
+                        return ((ReturnStatementSyntax)statement).Expression;
+                    case SyntaxKind.ExpressionStatement:
+                        return ((ExpressionStatementSyntax)statement).Expression;
                 }
 
                 return null;

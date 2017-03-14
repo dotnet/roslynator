@@ -26,21 +26,16 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (body != null)
                 {
-                    SyntaxList<StatementSyntax> statements = body.Statements;
+                    StatementSyntax statement = body.SingleStatementOrDefault();
 
-                    if (statements.Count == 1)
+                    if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                     {
-                        StatementSyntax statement = statements[0];
+                        var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                        if (statement.IsKind(SyntaxKind.ExpressionStatement))
-                        {
-                            var expressionStatement = (ExpressionStatementSyntax)statement;
+                        ExpressionSyntax expression = expressionStatement.Expression;
 
-                            ExpressionSyntax expression = expressionStatement.Expression;
-
-                            return expression != null
-                                && await CanRefactorAsync(context, property, expression).ConfigureAwait(false);
-                        }
+                        return expression != null
+                            && await CanRefactorAsync(context, property, expression).ConfigureAwait(false);
                     }
                 }
                 else
