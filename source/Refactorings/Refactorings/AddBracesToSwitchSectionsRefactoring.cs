@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Add braces to sections";
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             SwitchSectionSyntax[] sections,
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithSections(List(newSections))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
     }
 }

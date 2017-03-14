@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
         private const string AmpersandQuote = "@" + Quote;
         private const string Backslash = @"\";
 
-        public static async Task<Document> ReplaceWithInterpolatedStringAsync(
+        public static Task<Document> ReplaceWithInterpolatedStringAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             int interpolationStartIndex = -1,
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
                 .WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, interpolatedString, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, interpolatedString, cancellationToken);
         }
 
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                 && literalExpression.Token.ValueText.Length == 0;
         }
 
-        public static async Task<Document> ReplaceWithStringEmptyAsync(
+        public static Task<Document> ReplaceWithStringEmptyAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -60,10 +60,10 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static async Task<Document> ReplaceWithRegularStringLiteralAsync(
+        public static Task<Document> ReplaceWithRegularStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -73,10 +73,10 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax newNode = ParseRegularStringLiteral(s)
                 .WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static async Task<Document> ReplaceWithRegularStringLiteralsAsync(
+        public static Task<Document> ReplaceWithRegularStringLiteralsAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -85,10 +85,10 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static async Task<Document> ReplaceWithVerbatimStringLiteralAsync(
+        public static Task<Document> ReplaceWithVerbatimStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (LiteralExpressionSyntax)ParseExpression(AmpersandQuote + s + Quote)
                 .WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
         private static string CreateRegularStringLiteral(string text)

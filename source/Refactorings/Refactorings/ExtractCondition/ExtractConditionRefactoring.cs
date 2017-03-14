@@ -120,6 +120,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                                 cancellationToken => refactoring.RefactorAsync(context.Document, (WhileStatementSyntax)parent, binaryExpression, expression, cancellationToken));
                                         }
                                     }
+
                                     break;
                                 }
                         }

@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     .Accessors.All(f => f.Body == null) == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
         }
 
         internal static PropertyDeclarationSyntax ReplaceAbstractWithVirtual(PropertyDeclarationSyntax propertyDeclaration)

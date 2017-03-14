@@ -21,13 +21,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override string Name
         {
-            get
-            {
-                if (_name == null)
-                    _name = StringUtility.FirstCharToUpper(ParameterName);
-
-                return _name;
-            }
+            get { return _name ?? (_name = StringUtility.FirstCharToUpper(ParameterName)); }
         }
 
         public override SyntaxKind Kind

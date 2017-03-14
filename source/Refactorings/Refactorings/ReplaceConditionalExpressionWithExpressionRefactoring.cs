@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = expression.WithTriviaFrom(parent);
 
-            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parent, newNode, cancellationToken);
         }
     }
 }

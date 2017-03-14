@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithCondition(newCondition)
                 .WithIncrementors(newIncrementors);
 
-            return await document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
         }
     }
 }

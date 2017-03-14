@@ -131,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
             return default(ExpressionSyntax);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTrailingTrivia(member.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(member, newMember, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(member, newMember, cancellationToken);
         }
 
         private static MemberDeclarationSyntax GetNewMember(MemberDeclarationSyntax declaration)

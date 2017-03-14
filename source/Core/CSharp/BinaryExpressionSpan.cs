@@ -58,10 +58,7 @@ namespace Roslynator.CSharp
                 if (right?.IsMissing == false
                     && span.Contains(right.Span))
                 {
-                    if (expressions == null)
-                        expressions = new List<ExpressionSyntax>();
-
-                    expressions.Add(right);
+                    (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(right);
 
                     if (span.Start >= right.FullSpan.Start
                         && span.Start <= right.SpanStart)

@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ThrowStatementSyntax throwStatement,
             CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveNode(throwStatement.Expression, SyntaxRemoveOptions.KeepExteriorTrivia)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken);
         }
     }
 }

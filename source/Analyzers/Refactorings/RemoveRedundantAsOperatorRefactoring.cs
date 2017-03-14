@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithFormatterAnnotation();
             }
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
     }
 }

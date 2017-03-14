@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
                 .AppendToTrailingTrivia(CSharpFactory.NewLineTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statement, newNode, cancellationToken);
         }
     }
 }

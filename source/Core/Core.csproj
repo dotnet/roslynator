@@ -137,6 +137,7 @@
     <Compile Include="Extensions\DiagnosticExtensions.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="SymbolUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />

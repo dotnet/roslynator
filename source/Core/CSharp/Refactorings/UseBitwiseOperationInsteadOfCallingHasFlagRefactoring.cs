@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithSimplifierAnnotation()
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken);
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

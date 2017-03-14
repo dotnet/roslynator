@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings.If
 {
     internal abstract class IfToReturnWithConditionalExpression : IfRefactoring
     {
-        public IfToReturnWithConditionalExpression(
+        protected IfToReturnWithConditionalExpression(
             IfStatementSyntax ifStatement,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2) : base(ifStatement)

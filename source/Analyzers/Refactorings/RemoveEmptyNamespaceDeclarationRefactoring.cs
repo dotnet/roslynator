@@ -32,12 +32,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             NamespaceDeclarationSyntax declaration,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(declaration, GetRemoveOptions(declaration), cancellationToken).ConfigureAwait(false);
+            return document.RemoveNodeAsync(declaration, GetRemoveOptions(declaration), cancellationToken);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(NamespaceDeclarationSyntax declaration)

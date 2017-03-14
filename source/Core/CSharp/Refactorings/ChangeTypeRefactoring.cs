@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ChangeTypeRefactoring
     {
-        public static async Task<Document> ChangeTypeAsync(
+        public static Task<Document> ChangeTypeAsync(
            Document document,
            TypeSyntax type,
            ITypeSymbol typeSymbol,
@@ -32,10 +32,10 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(type)
                 .WithSimplifierAnnotation();
 
-            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(type, newType, cancellationToken);
         }
 
-        public static async Task<Document> ChangeTypeAsync(
+        public static Task<Document> ChangeTypeAsync(
             Document document,
             TypeSyntax type,
             TypeSyntax newType,
@@ -50,10 +50,10 @@ namespace Roslynator.CSharp.Refactorings
             if (newType == null)
                 throw new ArgumentNullException(nameof(newType));
 
-            return await document.ReplaceNodeAsync(type, newType.WithTriviaFrom(type), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(type, newType.WithTriviaFrom(type), cancellationToken);
         }
 
-        public static async Task<Document> ChangeTypeToVarAsync(
+        public static Task<Document> ChangeTypeToVarAsync(
             Document document,
             TypeSyntax type,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
             IdentifierNameSyntax newType = VarType().WithTriviaFrom(type);
 
-            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(type, newType, cancellationToken);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InterpolationSyntax interpolation,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
             var newInterpolatedString = (InterpolatedStringExpressionSyntax)SyntaxFactory.ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            return await document.ReplaceNodeAsync(interpolatedString, newInterpolatedString, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(interpolatedString, newInterpolatedString, cancellationToken);
         }
     }
 }

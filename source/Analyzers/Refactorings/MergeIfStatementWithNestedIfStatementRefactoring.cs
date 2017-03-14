@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithCondition(newCondition)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }
 
         private static IfStatementSyntax GetNewIfStatement(IfStatementSyntax ifStatement, IfStatementSyntax ifStatement2)

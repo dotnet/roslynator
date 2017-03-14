@@ -77,14 +77,14 @@ namespace Roslynator.CSharp.Refactorings
                 || body.CloseBraceToken.Span.Contains(span);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             MemberDeclarationSyntax newNode = RemoveAllStatements(member);
 
-            return await document.ReplaceNodeAsync(member, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(member, newNode, cancellationToken);
         }
 
         private static MemberDeclarationSyntax RemoveAllStatements(MemberDeclarationSyntax member)

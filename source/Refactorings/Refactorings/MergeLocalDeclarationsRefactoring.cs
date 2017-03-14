@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
             return true;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             StatementContainer container,
             LocalDeclarationStatementSyntax[] localDeclarations,
@@ -101,10 +101,10 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 1; i < localDeclarations.Length; i++)
                 newStatements = newStatements.RemoveAt(index + 1);
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 container.Node,
                 container.NodeWithStatements(newStatements),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

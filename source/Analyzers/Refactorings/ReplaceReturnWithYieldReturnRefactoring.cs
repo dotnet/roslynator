@@ -70,8 +70,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-                if (containingSymbol == null)
-                    containingSymbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, cancellationToken);
+                containingSymbol = containingSymbol ?? semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, cancellationToken);
 
                 if (containingSymbol?.IsKind(SymbolKind.Method) == true)
                 {
@@ -97,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
                         {
                             if (semanticModel
-                                .ClassifyConversion(expression, namedTypeSymbol.TypeArguments.First())
+                                .ClassifyConversion(expression, namedTypeSymbol.TypeArguments[0])
                                 .IsImplicit)
                             {
                                 return SyntaxKind.YieldReturnStatement;

@@ -46,10 +46,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                             if (accessor != null
                                 && accessor.Body == null)
                             {
-                                if (properties == null)
-                                    properties = new HashSet<ISymbol>();
-
-                                properties.Add(propertySymbol);
+                                (properties ?? (properties = new HashSet<ISymbol>())).Add(propertySymbol);
                             }
                         }
                     }

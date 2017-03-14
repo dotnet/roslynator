@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
         where TSyntax : SyntaxNode
         where TListSyntax : SyntaxNode
     {
-        public NodeInListRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
+        protected NodeInListRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
         {
             ListSyntax = listSyntax;
             List = list;

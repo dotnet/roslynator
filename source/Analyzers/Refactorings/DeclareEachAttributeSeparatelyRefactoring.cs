@@ -16,15 +16,15 @@ namespace Roslynator.CSharp.Refactorings
             return attributeList.Attributes.Count > 1;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AttributeListSyntax attributeList,
             CancellationToken cancellationToken)
         {
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 attributeList,
                 AttributeRefactoring.SplitAttributes(attributeList).Select(f => f.WithFormatterAnnotation()),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

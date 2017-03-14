@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
         }
 
         private static BinaryExpressionSyntax CreateNewExpression(ExpressionSyntax expression)

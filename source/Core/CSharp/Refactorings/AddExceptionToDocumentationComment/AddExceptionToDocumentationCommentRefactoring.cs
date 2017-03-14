@@ -259,8 +259,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-            var throwInfos = new List<ThrowInfo>();
-            throwInfos.Add(throwInfo);
+            var throwInfos = new List<ThrowInfo>() { throwInfo };
 
             foreach (ThrowInfo info in GetOtherUndocumentedExceptions(memberDeclaration, declarationSymbol, node => node != throwInfo.Node, semanticModel, cancellationToken))
             {

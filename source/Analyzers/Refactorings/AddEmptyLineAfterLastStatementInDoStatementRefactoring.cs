@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
 
-            return await document.ReplaceNodeAsync(statement, newStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
         }
     }
 }

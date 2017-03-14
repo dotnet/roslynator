@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveStatementsFromSwitchSectionsRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             ImmutableArray<SwitchSectionSyntax> sections,
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(List(newSections));
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
     }
 }

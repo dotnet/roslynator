@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
             return document;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             FieldDeclarationSyntax fieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -119,10 +119,10 @@ namespace Roslynator.CSharp.Refactorings
 
             FieldDeclarationSyntax newNode = AddStaticModifier(fieldDeclaration);
 
-            return await document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MethodDeclarationSyntax methodDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -135,10 +135,10 @@ namespace Roslynator.CSharp.Refactorings
 
             MethodDeclarationSyntax newNode = AddStaticModifier(methodDeclaration);
 
-            return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -151,10 +151,10 @@ namespace Roslynator.CSharp.Refactorings
 
             PropertyDeclarationSyntax newNode = AddStaticModifier(propertyDeclaration);
 
-            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             EventDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -167,10 +167,10 @@ namespace Roslynator.CSharp.Refactorings
 
             EventDeclarationSyntax newNode = AddStaticModifier(eventDeclaration);
 
-            return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             EventFieldDeclarationSyntax eventFieldDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -183,10 +183,10 @@ namespace Roslynator.CSharp.Refactorings
 
             EventFieldDeclarationSyntax newNode = AddStaticModifier(eventFieldDeclaration);
 
-            return await document.ReplaceNodeAsync(eventFieldDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(eventFieldDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -199,7 +199,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ConstructorDeclarationSyntax newNode = AddStaticModifier(constructorDeclaration);
 
-            return await document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken);
         }
 
         public static FieldDeclarationSyntax AddStaticModifier(FieldDeclarationSyntax fieldDeclaration)

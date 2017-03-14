@@ -98,12 +98,9 @@ namespace Roslynator.CSharp.Extensions
 
                 if (fieldSymbol != null)
                 {
-                    if (type == null)
-                    {
-                        type = (semanticModel != null)
+                    type = type ?? ((semanticModel != null)
                             ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                            : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
-                    }
+                            : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation());
 
                     Debug.Assert(type != null);
 
@@ -118,12 +115,9 @@ namespace Roslynator.CSharp.Extensions
             if (typeSymbol.IsReferenceType)
                 return NullLiteralExpression();
 
-            if (type == null)
-            {
-                type = (semanticModel != null)
-                    ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                    : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
-            }
+            type = type ?? ((semanticModel != null)
+                ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
+                : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation());
 
             Debug.Assert(type != null);
 

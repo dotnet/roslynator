@@ -17,8 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var expression = lambda.Body as ExpressionSyntax;
 
-            return expression != null
-                && expression.Span.Contains(context.Span);
+            return expression?.Span.Contains(context.Span) == true;
         }
 
         public static async Task<Document> RefactorAsync(

@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             get { return "Extract condition to nested if"; }
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
@@ -30,10 +30,10 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             IfStatementSyntax newNode = AddNestedIf(newIfStatement, expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             BinaryExpressionSyntax condition,
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             newNode = AddNestedIf(newNode, expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }
     }
 }

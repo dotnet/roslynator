@@ -60,12 +60,7 @@ namespace Roslynator.Extensions
                 Debug.Assert(node != null);
 
                 if (node != null)
-                {
-                    if (nodes == null)
-                        nodes = new List<SyntaxNode>();
-
-                    nodes.Add(node);
-                }
+                    (nodes ?? (nodes = new List<SyntaxNode>())).Add(node);
             }
 
             if (nodes != null)
@@ -257,7 +252,7 @@ namespace Roslynator.Extensions
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static async Task<Document> InsertNodeBeforeAsync(
+        public static Task<Document> InsertNodeBeforeAsync(
             this Document document,
             SyntaxNode nodeInList,
             SyntaxNode newNode,
@@ -266,7 +261,7 @@ namespace Roslynator.Extensions
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
 
-            return await InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken).ConfigureAwait(false);
+            return InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken);
         }
 
         public static async Task<Document> InsertNodesBeforeAsync(
@@ -291,7 +286,7 @@ namespace Roslynator.Extensions
             return document.WithSyntaxRoot(newRoot);
         }
 
-        public static async Task<Document> InsertNodeAfterAsync(
+        public static Task<Document> InsertNodeAfterAsync(
             this Document document,
             SyntaxNode nodeInList,
             SyntaxNode newNode,
@@ -300,7 +295,7 @@ namespace Roslynator.Extensions
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
 
-            return await InsertNodesAfterAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken).ConfigureAwait(false);
+            return InsertNodesAfterAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken);
         }
 
         public static async Task<Document> InsertNodesAfterAsync(

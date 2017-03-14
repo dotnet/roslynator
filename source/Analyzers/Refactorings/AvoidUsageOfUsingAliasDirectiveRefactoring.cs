@@ -22,12 +22,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken).ConfigureAwait(false);
+            return InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken);
         }
     }
 }

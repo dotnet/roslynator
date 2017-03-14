@@ -73,10 +73,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                if (typeSymbols == null)
-                                    typeSymbols = new HashSet<ITypeSymbol>();
-
-                                typeSymbols.Add(typeSymbol);
+                                (typeSymbols ?? (typeSymbols = new HashSet<ITypeSymbol>())).Add(typeSymbol);
                             }
                         }
 

@@ -28,8 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
 
-                    if (node != null
-                        && !node.SpanContainsDirectives())
+                    if (node?.SpanContainsDirectives() == false)
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
                     }
@@ -112,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                 && optional.Value != null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax logicalAnd,
             CancellationToken cancellationToken)
@@ -123,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Parenthesize(moveTrivia: true)
                 .WithSimplifierAnnotation();
 
-            return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken);
         }
 
         private static ExpressionSyntax CreateExpressionWithConditionalAccess(BinaryExpressionSyntax logicalAnd)

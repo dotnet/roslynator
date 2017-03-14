@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConstructorDeclarationSyntax constructor,
             CancellationToken cancellationToken)
@@ -45,11 +45,11 @@ namespace Roslynator.CSharp.Refactorings
                     .WithParameterList(parameterList.WithTrailingTrivia(initializer.GetTrailingTrivia()))
                     .WithInitializer(null);
 
-                return await document.ReplaceNodeAsync(constructor, newConstructor, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(constructor, newConstructor, cancellationToken);
             }
             else
             {
-                return await document.RemoveNodeAsync(initializer, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
+                return document.RemoveNodeAsync(initializer, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken);
             }
         }
     }

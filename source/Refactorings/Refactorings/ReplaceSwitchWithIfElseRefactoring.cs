@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(switchStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken);
         }
 
         private static IfStatementSyntax Refactor(SwitchStatementSyntax switchStatement)

@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken)
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (UsingStatementSyntax)rewriter.Visit(usingStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(usingStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(usingStatement, newNode, cancellationToken);
         }
 
         private class SyntaxRewriter : CSharpSyntaxRewriter

@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
             return true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
         }
     }
 }

@@ -28,8 +28,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
                 {
                     VariableDeclaratorSyntax variable = declaration.SingleVariableOrDefault();
 
-                    if (variable != null
-                        && variable.Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
+                    if (variable?.Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
                         && declaration.Type != null)
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -50,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
         public override UsingStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
         {
-            var localDeclaration = (LocalDeclarationStatementSyntax)statements.First();
+            var localDeclaration = (LocalDeclarationStatementSyntax)statements[0];
 
             UsingStatementSyntax usingStatement = UsingStatement(
                 localDeclaration.Declaration.WithoutTrivia(),

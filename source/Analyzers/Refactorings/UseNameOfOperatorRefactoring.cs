@@ -88,9 +88,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (parameterList != null)
                     {
-                        SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
-
-                        foreach (ParameterSyntax parameter in parameters)
+                        foreach (ParameterSyntax parameter in parameterList.Parameters)
                             yield return parameter;
                     }
                 }
@@ -157,7 +155,7 @@ namespace Roslynator.CSharp.Refactorings
             return string.Equals(a, b, StringComparison.Ordinal);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken)
@@ -165,7 +163,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax newNode = CSharpFactory.NameOf(literalExpression.Token.ValueText)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
     }
 }

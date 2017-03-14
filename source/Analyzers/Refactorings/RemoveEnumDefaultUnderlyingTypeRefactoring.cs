@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BaseTypeSyntax baseType,
             CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveNode(GetNodeToRemove(baseType, baseList), SyntaxRemoveOptions.KeepExteriorTrivia)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken);
         }
 
         private static SyntaxNode GetNodeToRemove(BaseTypeSyntax baseType, BaseListSyntax baseList)

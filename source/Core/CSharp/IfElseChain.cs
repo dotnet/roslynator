@@ -144,7 +144,7 @@ namespace Roslynator.CSharp
 
             while (true)
             {
-                var elseClause = ifStatement.Else;
+                ElseClauseSyntax elseClause = ifStatement.Else;
 
                 if (elseClause != null)
                 {

@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchSectionSyntax newSwitchSection = switchSection.WithLabels(labels);
 
-            return await document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken);
         }
     }
 }

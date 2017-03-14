@@ -45,20 +45,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             var parent = constructor.Parent as MemberDeclarationSyntax;
 
-            return parent != null
-                && parent
+            return parent?
                     .GetMembers()
                     .OfType<ConstructorDeclarationSyntax>()
-                    .All(f => f.Equals(constructor)
-                        || f.IsStatic());
+                    .All(f => f.Equals(constructor) || f.IsStatic()) == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken)
         {
-            return await Remover.RemoveMemberAsync(document, constructorDeclaration, cancellationToken).ConfigureAwait(false);
+            return Remover.RemoveMemberAsync(document, constructorDeclaration, cancellationToken);
         }
     }
 }

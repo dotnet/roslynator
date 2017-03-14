@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ImmutableArray<Diagnostic> diagnostics = context.SemanticModel.GetDiagnostics(label.Span, context.CancellationToken);
 
-                foreach (Diagnostic diagnostic in diagnostics)
+                for (int i = 0; i < diagnostics.Length; i++)
                 {
-                    switch (diagnostic.Id)
+                    switch (diagnostics[i].Id)
                     {
                         case "CS0163":
                         case "CS8070":
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = switchSection.AddStatements(BreakStatement());
             }
 
-            return await document.ReplaceNodeAsync(switchSection, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchSection, newNode, cancellationToken);
         }
     }
 }

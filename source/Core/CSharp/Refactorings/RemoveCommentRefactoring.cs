@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveCommentRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SyntaxTrivia comment,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken newToken = GetNewToken(comment.Token, comment)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceTokenAsync(comment.Token, newToken, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceTokenAsync(comment.Token, newToken, cancellationToken);
         }
 
         private static SyntaxToken GetNewToken(SyntaxToken token, SyntaxTrivia comment)

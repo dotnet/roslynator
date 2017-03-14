@@ -347,7 +347,7 @@ namespace Roslynator.CSharp.Refactorings
             return document;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             SyntaxList<StatementSyntax> statements,
@@ -369,7 +369,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(new IfStatementSyntax[] { ifStatement })
                 .Concat(statements.Skip(lastStatementIndex + 1));
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
         }
 
         private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default(SyntaxList<StatementSyntax>))

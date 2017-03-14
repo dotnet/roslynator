@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                 && assignmentExpression.Right?.IsMissing == false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignmentExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(assignmentExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(assignmentExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(assignmentExpression, newNode, cancellationToken);
         }
 
         private static SyntaxKind GetBinaryExpressionKind(AssignmentExpressionSyntax assignmentExpression)

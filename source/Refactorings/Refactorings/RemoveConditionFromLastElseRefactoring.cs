@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                         .WithTrailingTrivia(ifStatement.CloseParenToken.TrailingTrivia))
                 .WithStatement(ifStatement.Statement);
 
-            return await document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             }
         }
 
-        private async Task<Document> RefactorAsync(
+        private Task<Document> RefactorAsync(
             Document document,
             TStatement statement,
             ExpressionSyntax expression,
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
                 .WithTriviaFrom(statement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statement, ifStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
         }
 
         private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax expression)
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             return Block(SetExpression(statement.WithoutLeadingTrivia(), expression));
         }
 
-        private async Task<Document> RefactorAsync(
+        private Task<Document> RefactorAsync(
             Document document,
             TStatement statement,
             ConditionalExpressionSyntax conditionalExpression,
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
                 .WithTriviaFrom(statement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statement, ifStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
         }
     }
 }

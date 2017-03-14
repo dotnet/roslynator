@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken)
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax newBlock = block.WithStatements(newStatements);
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
     }
 }

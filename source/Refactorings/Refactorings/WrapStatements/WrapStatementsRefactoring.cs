@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
     {
         public abstract TStatement CreateStatement(ImmutableArray<StatementSyntax> statements);
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             SelectedStatementCollection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
         }
     }
 }

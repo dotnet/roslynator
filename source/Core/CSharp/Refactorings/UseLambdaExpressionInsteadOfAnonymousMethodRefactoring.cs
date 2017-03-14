@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             return anonymousMethod.ParameterList?.IsMissing == false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AnonymousMethodExpressionSyntax anonymousMethod,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(anonymousMethod)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(anonymousMethod, lambda, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(anonymousMethod, lambda, cancellationToken);
         }
     }
 }

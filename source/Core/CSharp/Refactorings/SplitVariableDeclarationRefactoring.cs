@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> SplitLocalDeclarationAsync(
+        private static Task<Document> SplitLocalDeclarationAsync(
             Document document,
             LocalDeclarationStatementSyntax statement,
             CancellationToken cancellationToken)
@@ -86,10 +86,10 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax newBlock = block.WithStatements(newStatements);
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
 
-        private static async Task<Document> SplitFieldDeclarationAsync(
+        private static Task<Document> SplitFieldDeclarationAsync(
             Document document,
             FieldDeclarationSyntax declaration,
             CancellationToken cancellationToken)
@@ -104,10 +104,10 @@ namespace Roslynator.CSharp.Refactorings
 
             MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
 
-            return await document.ReplaceNodeAsync(containingMember, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }
 
-        private static async Task<Document> SplitEventFieldDeclarationAsync(
+        private static Task<Document> SplitEventFieldDeclarationAsync(
             Document document,
             EventFieldDeclarationSyntax declaration,
             CancellationToken cancellationToken)
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
 
             MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
 
-            return await document.ReplaceNodeAsync(containingMember, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }
 
         private static IEnumerable<LocalDeclarationStatementSyntax> SplitLocalDeclaration(LocalDeclarationStatementSyntax statement)

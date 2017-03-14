@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UncommentRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SyntaxTrivia comment,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
             IEnumerable<TextChange> textChanges = GetTextChanges(triviaList, index);
 
-            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
+            return document.WithTextChangesAsync(textChanges, cancellationToken);
         }
 
         private static IEnumerable<TextChange> GetTextChanges(SyntaxTriviaList triviaList, int index)

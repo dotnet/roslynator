@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BlockSyntax block,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -137,14 +137,14 @@ namespace Roslynator.CSharp.Refactorings
                     .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
                     .WithFormatterAnnotation();
 
-                return await document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
             }
             else
             {
                 StatementSyntax newNode = statement.TrimLeadingTrivia()
                     .WithFormatterAnnotation();
 
-                return await document.ReplaceNodeAsync(block, newNode, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(block, newNode, cancellationToken);
             }
         }
     }

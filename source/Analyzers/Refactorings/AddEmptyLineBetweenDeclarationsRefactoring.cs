@@ -194,7 +194,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken)
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = memberDeclaration
                 .WithTrailingTrivia(memberDeclaration.GetTrailingTrivia().Add(CSharpFactory.NewLineTrivia()));
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
 
         private struct TokenPair

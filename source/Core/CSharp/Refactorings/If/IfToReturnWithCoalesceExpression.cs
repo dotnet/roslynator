@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.If
 {
     internal abstract class IfToReturnWithCoalesceExpression : IfRefactoring
     {
-        public IfToReturnWithCoalesceExpression(
+        protected IfToReturnWithCoalesceExpression(
             IfStatementSyntax ifStatement,
             ExpressionSyntax left,
             ExpressionSyntax right) : base(ifStatement)

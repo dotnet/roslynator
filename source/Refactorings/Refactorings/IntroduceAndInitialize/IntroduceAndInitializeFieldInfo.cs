@@ -22,13 +22,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override string Name
         {
-            get
-            {
-                if (_name == null)
-                    _name = Roslynator.Identifier.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore);
-
-                return _name;
-            }
+            get { return _name ?? (_name = Identifier.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore)); }
         }
 
         public override SyntaxKind Kind

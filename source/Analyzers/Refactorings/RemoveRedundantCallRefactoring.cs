@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantCallRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken)
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newExpression = newExpression.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(invocation, newExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, newExpression, cancellationToken);
         }
     }
 }

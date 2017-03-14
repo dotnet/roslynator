@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceForWithWhileRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
             statements[0] = statements[0].WithLeadingTrivia(forStatement.GetLeadingTrivia());
 
-            return await document.ReplaceNodeAsync(forStatement, statements, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(forStatement, statements, cancellationToken);
         }
     }
 }

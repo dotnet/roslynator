@@ -38,12 +38,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LockStatementSyntax lockStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await IntroduceFieldToLockOnRefactoring.RefactorAsync(document, lockStatement, cancellationToken).ConfigureAwait(false);
+            return IntroduceFieldToLockOnRefactoring.RefactorAsync(document, lockStatement, cancellationToken);
         }
     }
 }

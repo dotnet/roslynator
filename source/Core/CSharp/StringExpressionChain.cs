@@ -163,10 +163,7 @@ namespace Roslynator.CSharp
                         if (right.IsKind(SyntaxKind.StringLiteralExpression)
                             || IsString(right, semanticModel, cancellationToken))
                         {
-                            if (expressions == null)
-                                expressions = new List<ExpressionSyntax>();
-
-                            expressions.Add(right);
+                            (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(right);
 
                             ExpressionSyntax left = binaryExpression.Left;
 

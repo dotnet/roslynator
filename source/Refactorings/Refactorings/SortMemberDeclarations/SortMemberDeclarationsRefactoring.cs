@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             SelectedMemberDeclarationCollection selectedMembers,
             MemberDeclarationSortMode sortMode,
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
 
-            return await document.ReplaceNodeAsync(containingMember, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
         private static SyntaxKind GetSingleKindOrDefault(ImmutableArray<MemberDeclarationSyntax> members)
         {
-            SyntaxKind kind = members.First().Kind();
+            SyntaxKind kind = members[0].Kind();
 
             for (int i = 1; i < members.Length; i++)
             {

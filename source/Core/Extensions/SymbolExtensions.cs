@@ -34,14 +34,9 @@ namespace Roslynator.Extensions
 
             ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-            if (parameters.Length == 1)
-            {
-                return parameters.First();
-            }
-            else
-            {
-                return null;
-            }
+            return (parameters.Length == 1)
+                ? parameters[0]
+                : null;
         }
 
         public static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
@@ -59,14 +54,9 @@ namespace Roslynator.Extensions
 
             ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
 
-            if (parameters.Length == 1)
-            {
-                return parameters.First();
-            }
-            else
-            {
-                return null;
-            }
+            return (parameters.Length == 1)
+                ? parameters[0]
+                : null;
         }
 
         public static ISymbol FindImplementedInterfaceMember(this ISymbol symbol)

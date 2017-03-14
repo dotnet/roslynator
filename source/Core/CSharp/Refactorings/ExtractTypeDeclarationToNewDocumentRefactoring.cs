@@ -40,8 +40,8 @@ namespace Roslynator.CSharp.Refactorings
 
             string documentName = GetDocumentName(memberDeclaration, semanticModel, cancellationToken);
 
-            var folders = new List<string>(document.Folders.Count + 1);
-            folders.Add(document.Project.Name);
+            var folders = new List<string>(document.Folders.Count + 1) { document.Project.Name };
+
             folders.AddRange(document.Folders);
 
             document = document.Project.AddDocument(
@@ -93,10 +93,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (kind == SyntaxKind.NamespaceDeclaration)
                 {
-                    if (namespaces == null)
-                        namespaces = new Stack<NamespaceDeclarationSyntax>();
-
-                    namespaces.Push((NamespaceDeclarationSyntax)member);
+                    (namespaces ?? (namespaces = new Stack<NamespaceDeclarationSyntax>())).Push((NamespaceDeclarationSyntax)member);
                 }
                 else if (IsTypeDeclaration(kind))
                 {

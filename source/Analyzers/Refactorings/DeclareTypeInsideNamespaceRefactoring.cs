@@ -22,9 +22,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (symbol.ContainingNamespace?.IsGlobalNamespace == true)
             {
-                ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
                 {
                     SyntaxNode node = syntaxReference.GetSyntax(context.CancellationToken);
 

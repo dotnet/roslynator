@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             LiteralExpressionSyntax newLiteralExpression,
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             newLiteralExpression = newLiteralExpression.WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, newLiteralExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newLiteralExpression, cancellationToken);
         }
     }
 }

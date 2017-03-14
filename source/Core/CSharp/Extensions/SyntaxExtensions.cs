@@ -268,14 +268,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = conversionOperatorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return conversionOperatorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)conversionOperatorDeclaration.ExpressionBody;
         }
 
         public static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
@@ -1224,14 +1217,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = methodDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return methodDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)methodDeclaration.ExpressionBody;
         }
 
         public static TextSpan HeaderSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
@@ -1271,14 +1257,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = operatorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return operatorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)operatorDeclaration.ExpressionBody;
         }
 
         public static bool IsThis(this ParameterSyntax parameter)

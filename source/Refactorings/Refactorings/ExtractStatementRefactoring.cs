@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -104,11 +104,11 @@ namespace Roslynator.CSharp.Refactorings
 
                 newBlock = newBlock.WithStatements(newBlock.Statements.InsertRange(index + 1, newNodes));
 
-                return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
             }
             else
             {
-                return await document.ReplaceNodeAsync(statement.Parent, newNodes, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(statement.Parent, newNodes, cancellationToken);
             }
         }
 
@@ -118,8 +118,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
-                list = new List<SyntaxTrivia>();
-                list.Add(CSharpFactory.NewLineTrivia());
+                list = new List<SyntaxTrivia>() { CSharpFactory.NewLineTrivia() };
             }
             else
             {

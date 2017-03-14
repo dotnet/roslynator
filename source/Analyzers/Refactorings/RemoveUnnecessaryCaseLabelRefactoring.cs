@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             CaseSwitchLabelSyntax label,
             CancellationToken cancellationToken)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             SwitchSectionSyntax newNode = switchSection.RemoveNode(label, GetRemoveOptions(label))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchSection, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchSection, newNode, cancellationToken);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)

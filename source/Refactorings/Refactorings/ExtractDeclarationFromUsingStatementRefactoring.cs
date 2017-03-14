@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(context.Document, usingStatement, cancellationToken));
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             UsingStatementSyntax usingStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -56,9 +56,8 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax newBlock = block.WithStatements(block.Statements.RemoveAt(index));
 
-            var statements = new List<StatementSyntax>();
+            var statements = new List<StatementSyntax>() { SyntaxFactory.LocalDeclarationStatement(usingStatement.Declaration) };
 
-            statements.Add(SyntaxFactory.LocalDeclarationStatement(usingStatement.Declaration));
             statements.AddRange(GetStatements(usingStatement));
 
             if (statements.Count > 0)
@@ -74,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithStatements(newBlock.Statements.InsertRange(index, statements))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
 
         private static IEnumerable<StatementSyntax> GetStatements(UsingStatementSyntax usingStatement)

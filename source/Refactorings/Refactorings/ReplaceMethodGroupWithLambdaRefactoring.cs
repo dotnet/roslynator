@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             MethodDeclarationSyntax methodDeclaration,
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(expression, lambda, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, lambda, cancellationToken);
         }
 
         private static ParenthesizedLambdaExpressionSyntax CreateLambdaExpression(MethodDeclarationSyntax methodDeclaration)

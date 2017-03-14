@@ -26,13 +26,7 @@ namespace Roslynator.CSharp
 
         public string Suffix
         {
-            get
-            {
-                if (_suffix == null)
-                    _suffix = ParseSuffix();
-
-                return _suffix;
-            }
+            get { return _suffix ?? (_suffix = ParseSuffix()); }
         }
 
         public bool HasSuffix

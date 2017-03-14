@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.RemoveNodeAsync(statement, GetRemoveOptions(statement), cancellationToken);
         }
 
-        private static async Task<Document> DuplicateStatementAsync(
+        private static Task<Document> DuplicateStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -207,7 +207,7 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
 
         private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
@@ -223,7 +223,7 @@ namespace Roslynator.CSharp.Refactorings
             return removeOptions;
         }
 
-        private static async Task<Document> RemoveAllSwitchSectionsAsync(
+        private static Task<Document> RemoveAllSwitchSectionsAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -232,7 +232,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithSections(default(SyntaxList<SwitchSectionSyntax>))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
     }
 }

@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
-        private async Task<Document> RefactorAsync(
+        private Task<Document> RefactorAsync(
             Document document,
             SyntaxNode node,
             CancellationToken cancellationToken)
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             newNode = AddMissingToken(newNode, semicolonToken);
 
-            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
         private SyntaxNode AddMissingToken(SyntaxNode node, SyntaxToken semicolonToken)

@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken)
@@ -189,7 +189,7 @@ namespace Roslynator.CSharp.Refactorings
                 memberAccess2.WithName(genericName.WithIdentifier(Identifier("OfType"))),
                 invocation.ArgumentList.WithArguments(SeparatedList<ArgumentSyntax>()));
 
-            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
         }
     }
 }

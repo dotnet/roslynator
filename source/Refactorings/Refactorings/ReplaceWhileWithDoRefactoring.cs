@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceWhileWithDoRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             WhileStatementSyntax whileStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(whileStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(whileStatement, doStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(whileStatement, doStatement, cancellationToken);
         }
     }
 }

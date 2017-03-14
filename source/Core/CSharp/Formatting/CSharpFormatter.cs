@@ -19,14 +19,14 @@ namespace Roslynator.CSharp.Formatting
 {
     internal static class CSharpFormatter
     {
-        public static async Task<Document> ToSingleLineAsync<TNode>(
+        public static Task<Document> ToSingleLineAsync<TNode>(
             Document document,
             TNode condition,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
             TNode newNode = ToSingleLine(condition);
 
-            return await document.ReplaceNodeAsync(condition, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(condition, newNode, cancellationToken);
         }
 
         public static TNode ToSingleLine<TNode>(TNode node) where TNode : SyntaxNode
@@ -97,14 +97,14 @@ namespace Roslynator.CSharp.Formatting
             return await document.ReplaceNodeAsync(parent, newParent, cancellationToken).ConfigureAwait(false);
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ConditionalExpressionSyntax newNode = ToMultiLine(conditionalExpression, cancellationToken);
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
 
         public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default(CancellationToken))
@@ -121,14 +121,14 @@ namespace Roslynator.CSharp.Formatting
                     conditionalExpression.WhenFalse.WithoutTrailingTrivia());
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             ParameterListSyntax parameterList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ParameterListSyntax newNode = ToMultiLine(parameterList);
 
-            return await document.ReplaceNodeAsync(parameterList, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
         }
 
         public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default(CancellationToken))
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.Formatting
                 parameterList.CloseParenToken);
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.Formatting
             InitializerExpressionSyntax newNode = ToMultiLine(initializer, cancellationToken)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(initializer, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(initializer, newNode, cancellationToken);
         }
 
         public static InitializerExpressionSyntax ToMultiLine(InitializerExpressionSyntax initializer, CancellationToken cancellationToken)
@@ -198,14 +198,14 @@ namespace Roslynator.CSharp.Formatting
             }
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             ArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ArgumentListSyntax newNode = ToMultiLine(argumentList);
 
-            return await document.ReplaceNodeAsync(argumentList, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
         }
 
         public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
@@ -240,7 +240,7 @@ namespace Roslynator.CSharp.Formatting
                 argumentList.CloseParenToken.WithoutLeadingTrivia());
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             MemberAccessExpressionSyntax[] expressions,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -267,17 +267,17 @@ namespace Roslynator.CSharp.Formatting
 
             newNode = newNode.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             AttributeArgumentListSyntax newNode = ToMultiLine(argumentList, cancellationToken);
 
-            return await document.ReplaceNodeAsync(argumentList, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
         }
 
         private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
@@ -312,7 +312,7 @@ namespace Roslynator.CSharp.Formatting
                 argumentList.CloseParenToken.WithoutLeadingTrivia());
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -325,17 +325,17 @@ namespace Roslynator.CSharp.Formatting
 
             var newCondition = (ExpressionSyntax)rewriter.Visit(condition);
 
-            return await document.ReplaceNodeAsync(condition, newCondition, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(condition, newCondition, cancellationToken);
         }
 
-        public static async Task<Document> ToMultiLineAsync(
+        public static Task<Document> ToMultiLineAsync(
             Document document,
             AccessorDeclarationSyntax accessor,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             AccessorDeclarationSyntax newAccessor = ToMultiLine(accessor);
 
-            return await document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken);
         }
 
         private static AccessorDeclarationSyntax ToMultiLine(AccessorDeclarationSyntax accessor)

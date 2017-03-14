@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             return statement.WithStatement(newStatement);
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
@@ -44,10 +44,10 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             newNode = AddNestedIf(newNode, expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             newNode = AddNestedIf(newNode, binaryExpressionSpan)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
         }
     }
 }

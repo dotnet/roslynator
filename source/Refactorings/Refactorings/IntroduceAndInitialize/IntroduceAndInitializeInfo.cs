@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 {
     internal abstract class IntroduceAndInitializeInfo
     {
-        public IntroduceAndInitializeInfo(ParameterSyntax parameter)
+        protected IntroduceAndInitializeInfo(ParameterSyntax parameter)
         {
             Parameter = parameter;
             ParameterName = parameter.Identifier.ValueText;

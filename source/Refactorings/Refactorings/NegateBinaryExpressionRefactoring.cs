@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
             return binaryExpression;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = Negator.LogicallyNegate(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
     }
 }

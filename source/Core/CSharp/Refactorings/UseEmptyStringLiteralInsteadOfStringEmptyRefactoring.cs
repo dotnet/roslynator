@@ -30,8 +30,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var fieldSymbol = semanticModel.GetSymbol(memberAccess.Name, cancellationToken) as IFieldSymbol;
 
-                return fieldSymbol != null
-                    && fieldSymbol.IsPublic()
+                return fieldSymbol?.IsPublic() == true
                     && fieldSymbol.IsReadOnly
                     && fieldSymbol.IsStatic
                     && fieldSymbol.ContainingType?.IsString() == true;
@@ -40,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberAccessExpressionSyntax node,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -48,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax newNode = CSharpFactory.StringLiteralExpression("")
                 .WithTriviaFrom(node);
 
-            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
     }
 }

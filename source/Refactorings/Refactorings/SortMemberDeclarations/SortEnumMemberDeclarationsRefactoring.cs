@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             }
         }
 
-        private static async Task<Document> SortByNameAsync(
+        private static Task<Document> SortByNameAsync(
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             ImmutableArray<EnumMemberDeclarationSyntax> selectedMembers,
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
         }
 
         private static async Task<Document> SortByValueAsync(

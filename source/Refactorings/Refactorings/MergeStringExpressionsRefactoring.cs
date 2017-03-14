@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> ToInterpolatedStringAsync(
+        private static Task<Document> ToInterpolatedStringAsync(
             Document document,
             StringExpressionChain chain,
             CancellationToken cancellationToken)
@@ -95,10 +95,10 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
 
-        public static async Task<Document> ToStringLiteralAsync(
+        public static Task<Document> ToStringLiteralAsync(
             Document document,
             StringExpressionChain chain,
             bool multiline,
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
     }
 }

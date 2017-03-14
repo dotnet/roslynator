@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AttributeArgumentSyntax argument,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentSyntax previousArgument = argumentList.Arguments[index - 1]
                 .WithTriviaFrom(argument);
 
-            return await document.ReplaceNodeAsync(argument, previousArgument, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(argument, previousArgument, cancellationToken);
         }
     }
 }

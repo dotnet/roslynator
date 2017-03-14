@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             get { return "Extract condition to if"; }
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             StatementContainer container,
             BinaryExpressionSyntax condition,
@@ -31,10 +31,10 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
             SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
 
-            return await document.ReplaceNodeAsync(container.Node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             StatementContainer container,
             BinaryExpressionSyntax condition,
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
             SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
 
-            return await document.ReplaceNodeAsync(container.Node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
         }
 
         private static SyntaxNode AddNextIf(

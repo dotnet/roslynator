@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ParenthesizedExpressionSyntax parenthesizedExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -162,10 +162,10 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(parenthesizedExpression.CloseParenToken.LeadingTrivia)
                 .Concat(parenthesizedExpression.GetTrailingTrivia());
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 parenthesizedExpression,
                 expression.WithLeadingTrivia(leading).WithTrailingTrivia(trailing),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

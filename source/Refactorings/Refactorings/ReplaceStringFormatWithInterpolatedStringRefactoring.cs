@@ -170,8 +170,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 var literalExpression = node.Expression as LiteralExpressionSyntax;
 
-                if (literalExpression != null
-                    && literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+                if (literalExpression?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
                 {
                     var index = (int)literalExpression.Token.Value;
 

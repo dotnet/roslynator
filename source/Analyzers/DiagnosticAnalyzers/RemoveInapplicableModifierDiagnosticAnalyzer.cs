@@ -50,9 +50,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (ClassDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -139,9 +137,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -173,9 +169,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (DelegateDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -205,9 +199,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (DestructorDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -241,9 +233,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (EnumDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -444,9 +434,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (InterfaceDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -541,9 +529,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (OperatorDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {
@@ -617,9 +603,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             var declaration = (StructDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = declaration.Modifiers;
-
-            foreach (SyntaxToken modifier in modifiers)
+            foreach (SyntaxToken modifier in declaration.Modifiers)
             {
                 switch (modifier.Kind())
                 {

@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax property,
             bool supportsCSharp6,
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(property)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(setter, newSetter, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(setter, newSetter, cancellationToken);
         }
 
         private static AccessorDeclarationSyntax CreateSetter(IdentifierNameSyntax fieldIdentifierName, string propertyName, bool supportsCSharp6)

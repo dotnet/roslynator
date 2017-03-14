@@ -232,7 +232,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             StatementContainer statementContainer,
             StatementSyntax statement,
@@ -274,7 +274,7 @@ namespace Roslynator.CSharp.Refactorings
                 .NodeWithStatements(newStatements.InsertRange(index + 1, expressions))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statementContainer.Node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statementContainer.Node, newNode, cancellationToken);
         }
 
         private static IEnumerable<ExpressionStatementSyntax> Refactor(

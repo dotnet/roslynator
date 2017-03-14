@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax newInvocation = invocation2.WithExpression(
                 memberAccess2.WithName(memberAccess.Name.WithTriviaFrom(memberAccess2.Name)));
 
-            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
         }
     }
 }

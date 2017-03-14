@@ -73,9 +73,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
             if (startTag != null)
             {
-                SyntaxList<XmlAttributeSyntax> attributes = startTag.Attributes;
-
-                foreach (XmlAttributeSyntax attribute in attributes)
+                foreach (XmlAttributeSyntax attribute in startTag.Attributes)
                 {
                     if (attribute.IsKind(SyntaxKind.XmlNameAttribute))
                     {

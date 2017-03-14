@@ -155,7 +155,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
                 {
-                    switch (namedTypeSymbol.ConstructedFrom.TypeArguments.First().SpecialType)
+                    switch (namedTypeSymbol.ConstructedFrom.TypeArguments[0].SpecialType)
                     {
                         case SpecialType.System_Boolean:
                         case SpecialType.System_Char:
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, switchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ifStatement, switchStatement, cancellationToken);
         }
 
         private static ExpressionSyntax GetSwitchExpression(IfStatementSyntax ifStatement)

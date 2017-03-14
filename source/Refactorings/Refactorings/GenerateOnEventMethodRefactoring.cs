@@ -29,8 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (context.Span.IsContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
                     {
-                        if (semanticModel == null)
-                            semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        semanticModel = semanticModel ?? await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken) as IEventSymbol;
 
@@ -100,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             EventFieldDeclarationSyntax eventFieldDeclaration,
             IEventSymbol eventSymbol,
@@ -117,7 +116,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<MemberDeclarationSyntax> newMembers = Inserter.InsertMember(members, method);
 
-            return await document.ReplaceNodeAsync(containingMember, containingMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(containingMember, containingMember.SetMembers(newMembers), cancellationToken);
         }
 
         private static MethodDeclarationSyntax CreateOnEventMethod(

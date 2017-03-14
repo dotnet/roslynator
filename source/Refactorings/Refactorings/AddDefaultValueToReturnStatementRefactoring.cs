@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol.IsAsync)
             {
                 if (returnType.IsConstructedFromTaskOfT(semanticModel))
-                    return ((INamedTypeSymbol)returnType).TypeArguments.First();
+                    return ((INamedTypeSymbol)returnType).TypeArguments[0];
             }
             else if (!returnType.IsIEnumerableOrConstructedFromIEnumerableOfT())
             {
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ReturnStatementSyntax returnStatement,
             ITypeSymbol typeSymbol,
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ReturnStatementSyntax newReturnStatement = returnStatement.WithExpression(expression);
 
-            return await document.ReplaceNodeAsync(returnStatement, newReturnStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(returnStatement, newReturnStatement, cancellationToken);
         }
     }
 }

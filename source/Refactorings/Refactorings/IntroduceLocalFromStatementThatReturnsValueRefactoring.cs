@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             if (addAwait)
-                typeSymbol = ((INamedTypeSymbol)typeSymbol).TypeArguments.First();
+                typeSymbol = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
             string identifier = Identifier.CreateName(typeSymbol, firstCharToLower: true) ?? Identifier.DefaultVariableName;
 

@@ -78,12 +78,12 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             RegionDirectiveTriviaSyntax regionDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await Remover.RemoveRegionAsync(document, regionDirective, cancellationToken).ConfigureAwait(false);
+            return Remover.RemoveRegionAsync(document, regionDirective, cancellationToken);
         }
     }
 }
