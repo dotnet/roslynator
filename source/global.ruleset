@@ -302,5 +302,13 @@
     <Rule Id="RCS1096" Action="Warning" />
     <Rule Id="RCS1101" Action="Info" />
     <Rule Id="RCS1111" Action="Info" />
+    <Rule Id="RCS1124" Action="Info" />
+    <Rule Id="RCS1129" Action="Info" />
+    <Rule Id="RCS1133" Action="Info" />
+    <Rule Id="RCS1136" Action="Info" />
+    <Rule Id="RCS1143" Action="Info" />
+    <Rule Id="RCS1153" Action="Info" />
+    <Rule Id="RCS1161" Action="Hidden" />
+    <Rule Id="RCS1162" Action="Info" />
   </Rules>
 </RuleSet>

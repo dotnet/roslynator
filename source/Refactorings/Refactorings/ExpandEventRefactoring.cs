@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                 && eventDeclaration.Declaration?.Variables.Count == 1;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             EventFieldDeclarationSyntax eventDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(eventDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
         }
 
         private static EventDeclarationSyntax ExpandEvent(EventFieldDeclarationSyntax eventDeclaration)

@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             INamedTypeSymbol enumSymbol,
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 
             EnumDeclarationSyntax newNode = enumDeclaration.AddMembers(newEnumMember);
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
         }
     }
 }

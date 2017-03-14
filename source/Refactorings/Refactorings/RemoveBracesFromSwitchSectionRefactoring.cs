@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
                 && statements[0].IsKind(SyntaxKind.Block);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithStatements(block.Statements)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken);
         }
     }
 }

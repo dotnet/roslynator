@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
         }
 
-        private async Task<Document> RefactorAsync(
+        private Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
     }
 }

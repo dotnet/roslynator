@@ -21,14 +21,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ArrowExpressionClauseSyntax arrowExpressionClause = GetArrowExpressionClause(semicolonToken);
 
-                if (arrowExpressionClause?.IsMissing == false)
+                if (arrowExpressionClause?.IsMissing == false
+                    && ExpandExpressionBodyRefactoring.CanRefactor(arrowExpressionClause))
                 {
-                    if (ExpandExpressionBodyRefactoring.CanRefactor(arrowExpressionClause))
-                    {
-                        context.RegisterRefactoring(
-                            "Expand expression body",
-                            cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken));
-                    }
+                    context.RegisterRefactoring(
+                        "Expand expression body",
+                        cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken));
                 }
             }
         }

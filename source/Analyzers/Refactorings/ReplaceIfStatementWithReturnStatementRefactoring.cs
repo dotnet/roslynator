@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 newReturnStatement = newReturnStatement.WithTriviaFrom(ifStatement);
 
-                return await document.ReplaceNodeAsync(ifStatement, newReturnStatement, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(ifStatement, newReturnStatement, cancellationToken);
             }
             else
             {
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Refactorings
                     .RemoveAt(index)
                     .ReplaceAt(index, newReturnStatement);
 
-                return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken);
             }
         }
 

@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 list = list.AddAttributes(lists[i].Attributes.ToArray());
 
             return list
-                .WithLeadingTrivia(lists.First().GetLeadingTrivia())
+                .WithLeadingTrivia(lists[0].GetLeadingTrivia())
                 .WithTrailingTrivia(lists.Last().GetTrailingTrivia())
                 .WithFormatterAnnotation();
         }

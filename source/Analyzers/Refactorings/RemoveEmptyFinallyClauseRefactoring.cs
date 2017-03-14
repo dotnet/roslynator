@@ -24,8 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     BlockSyntax block = finallyClause.Block;
 
-                    if (block != null
-                        && !block.Statements.Any()
+                    if (block?.Statements.Any() == false
                         && finallyClause.FinallyKeyword.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
                         && block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
                         && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())

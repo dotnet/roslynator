@@ -20,12 +20,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             DestructorDeclarationSyntax destructorDeclaration,
             CancellationToken cancellationToken)
         {
-            return await Remover.RemoveMemberAsync(document, destructorDeclaration, cancellationToken).ConfigureAwait(false);
+            return Remover.RemoveMemberAsync(document, destructorDeclaration, cancellationToken);
         }
     }
 }

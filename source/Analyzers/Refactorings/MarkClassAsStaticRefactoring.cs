@@ -103,12 +103,12 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
-            return await InsertModifierRefactoring.RefactorAsync(document, classDeclaration, SyntaxKind.StaticKeyword, cancellationToken).ConfigureAwait(false);
+            return InsertModifierRefactoring.RefactorAsync(document, classDeclaration, SyntaxKind.StaticKeyword, cancellationToken);
         }
     }
 }

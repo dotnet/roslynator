@@ -32,12 +32,10 @@ namespace Roslynator.CSharp.Refactorings
 
                 foreach (AttributeArgumentSyntax argument in argumentList.Arguments)
                 {
-                    if (argument.Expression != null && context.Span.Contains(argument.Expression.Span))
+                    if (argument.Expression != null
+                        && context.Span.Contains(argument.Expression.Span))
                     {
-                        if (arguments == null)
-                            arguments = new List<AttributeArgumentSyntax>();
-
-                        arguments.Add(argument);
+                        (arguments ?? (arguments = new List<AttributeArgumentSyntax>())).Add(argument);
                     }
                 }
 
@@ -96,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<Document> RemoveParameterNameFromArgumentsAsync(
+        private static Task<Document> RemoveParameterNameFromArgumentsAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
             AttributeArgumentSyntax[] arguments,
@@ -105,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
             AttributeArgumentListSyntax newArgumentList = RemoveParameterNameSyntaxRewriter.VisitNode(argumentList, arguments)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken);
         }
 
         private static AttributeArgumentSyntax AddParameterName(

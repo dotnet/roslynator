@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
                                             var memberAccessExpressionType = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken) as INamedTypeSymbol;
 
                                             if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() == true
-                                                && typeArguments[0].Equals(memberAccessExpressionType.TypeArguments.First())
+                                                && typeArguments[0].Equals(memberAccessExpressionType.TypeArguments[0])
                                                 && !invocation.ContainsDirectives(TextSpan.FromBounds(memberAccessExpression.Span.End, invocation.Span.End)))
                                             {
                                                 context.ReportDiagnostic(

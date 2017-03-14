@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax newInitializer = initializer
                 .WithExpressions(newExpressions);
 
-            return await document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
         }
     }
 }

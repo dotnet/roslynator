@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             object constantValue,
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax newExpression = CSharpFactory.ConstantExpression(constantValue);
 
-            return await document.ReplaceNodeAsync(expression, newExpression.WithTriviaFrom(expression), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, newExpression.WithTriviaFrom(expression), cancellationToken);
         }
     }
 }

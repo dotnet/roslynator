@@ -52,14 +52,14 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
             return false;
         }
 
-        public async Task<Document> RefactorAsync(
+        public Task<Document> RefactorAsync(
             Document document,
             SelectedTextLineCollection lines,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ImmutableArray<TextChange> textChanges = GetTextChanges(lines);
 
-            return await document.WithTextChangesAsync(textChanges, cancellationToken).ConfigureAwait(false);
+            return document.WithTextChangesAsync(textChanges, cancellationToken);
         }
     }
 }

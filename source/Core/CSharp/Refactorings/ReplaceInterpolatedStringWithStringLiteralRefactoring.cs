@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 || (contents.Count == 1 && contents[0].IsKind(SyntaxKind.InterpolatedStringText));
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InterpolatedStringExpressionSyntax interpolatedString,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
         }
 
         private static string UnescapeBraces(string s)

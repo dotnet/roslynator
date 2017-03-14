@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ContinueStatementSyntax continueStatement,
             CancellationToken cancellationToken)
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newBlock = Remover.RemoveStatement(block, continueStatement);
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
     }
 }

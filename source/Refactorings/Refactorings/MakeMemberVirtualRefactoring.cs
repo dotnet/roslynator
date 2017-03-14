@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             IndexerDeclarationSyntax indexerDeclaration,
             CancellationToken cancellationToken)
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(indexerDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
         }
 
         private static IndexerDeclarationSyntax ExpandIndexer(IndexerDeclarationSyntax indexerDeclaration)

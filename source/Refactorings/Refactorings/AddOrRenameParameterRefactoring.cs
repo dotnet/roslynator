@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> AddParameterNameToParameterAsync(
+        private static Task<Document> AddParameterNameToParameterAsync(
             Document document,
             ParameterSyntax parameter,
             string name,
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithIdentifier(SyntaxFactory.Identifier(name).WithTrailingTrivia(parameter.Type.GetTrailingTrivia()))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(parameter, newParameter, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
         }
     }
 }

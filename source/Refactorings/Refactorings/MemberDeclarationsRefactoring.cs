@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             return -1;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax parentMember,
             SyntaxList<MemberDeclarationSyntax> members,
@@ -132,10 +132,10 @@ namespace Roslynator.CSharp.Refactorings
             newMembers = newMembers
                 .Replace(newMembers[index + 1], member);
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 parentMember,
                 parentMember.SetMembers(newMembers),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         private static Task<Document> ReplaceMembersAsync(

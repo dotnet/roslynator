@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MethodDeclarationSyntax method,
             LocalDeclarationStatementSyntax localDeclaration,
@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newMethod = newMethod.AddParameterListParameters(newParameter);
 
-            return await document.ReplaceNodeAsync(method, newMethod, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(method, newMethod, cancellationToken);
         }
     }
 }

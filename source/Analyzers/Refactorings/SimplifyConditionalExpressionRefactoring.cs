@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithoutTrailingTrivia();
             }
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
     }
 }

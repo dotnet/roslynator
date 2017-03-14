@@ -51,10 +51,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (!IsAnySymbolReferenced(localDeclaration, selectedStatements.ToImmutableArray(), selectedStatements.LastIndex + 1, semanticModel, context.CancellationToken))
                             {
-                                if (localDeclarations == null)
-                                    localDeclarations = new List<LocalDeclarationStatementSyntax>();
-
-                                localDeclarations.Add(localDeclaration);
+                                (localDeclarations ?? (localDeclarations = new List<LocalDeclarationStatementSyntax>())).Add(localDeclaration);
                             }
                             else
                             {
@@ -71,10 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 if (CanBeInitializer(expression))
                                 {
-                                    if (expressions == null)
-                                        expressions = new List<ExpressionSyntax>();
-
-                                    expressions.Add(expression);
+                                    (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(expression);
                                 }
                                 else
                                 {

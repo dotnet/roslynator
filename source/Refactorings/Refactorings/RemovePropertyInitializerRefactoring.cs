@@ -13,11 +13,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            return propertyDeclaration.Initializer != null
-                && propertyDeclaration.Initializer.Span.Contains(context.Span);
+            return propertyDeclaration.Initializer?.Span.Contains(context.Span) == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -28,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
         }
     }
 }

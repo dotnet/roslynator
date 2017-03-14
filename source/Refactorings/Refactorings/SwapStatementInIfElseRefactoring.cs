@@ -28,17 +28,14 @@ namespace Roslynator.CSharp.Refactorings
             {
                 StatementSyntax falseStatement = ifStatement.Else?.Statement;
 
-                if (falseStatement != null
-                    && !falseStatement.IsKind(SyntaxKind.IfStatement))
-                {
+                if (falseStatement?.IsKind(SyntaxKind.IfStatement) == false)
                     return true;
-                }
             }
 
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -53,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchStatementSyntax newSwitchStatement = GetNewSwitchStatement(switchSection, switchStatement);
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
 
         private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)

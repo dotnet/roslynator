@@ -25,8 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
-                if (symbol != null
-                    && !symbol.IsStatic)
+                if (symbol?.IsStatic == false)
                 {
                     INamedTypeSymbol baseSymbol = symbol.BaseType;
 
@@ -46,8 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             if (en.MoveNext())
                             {
-                                var constructors = new List<IMethodSymbol>();
-                                constructors.Add(en.Current);
+                                var constructors = new List<IMethodSymbol>() { en.Current };
 
                                 string title = "Generate base constructor";
 

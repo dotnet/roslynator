@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                 || conversion.IsImplicit;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken)
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
                     .AppendToTrailingTrivia(initializer.CloseBraceToken.GetLeadingAndTrailingTrivia())
                     .WithFormatterAnnotation());
 
-            return await document.ReplaceNodeAsync(initializer, assignment, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(initializer, assignment, cancellationToken);
         }
     }
 }

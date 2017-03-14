@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ParenthesizedExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, newExpression, cancellationToken);
         }
     }
 }

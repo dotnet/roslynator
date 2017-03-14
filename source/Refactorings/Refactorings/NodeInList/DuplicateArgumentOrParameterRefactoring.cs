@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
         where TSyntax : SyntaxNode
         where TListSyntax : SyntaxNode
     {
-        public DuplicateArgumentOrParameterRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
+        protected DuplicateArgumentOrParameterRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
             : base(listSyntax, list)
         {
         }
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
             }
         }
 
-        protected async Task<Document> RefactorAsync(
+        protected Task<Document> RefactorAsync(
             Document document,
             int nodeIndex,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
                 GetTokenBefore(nodeIndex),
                 GetTokenAfter(nodeIndex));
 
-            return await document.ReplaceNodeAsync(ListSyntax, Rewrite(info), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(ListSyntax, Rewrite(info), cancellationToken);
         }
     }
 }

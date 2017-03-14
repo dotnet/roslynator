@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken)
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(forStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(forStatement, whileStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(forStatement, whileStatement, cancellationToken);
         }
     }
 }

@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings
             return true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             OverrideInfo overrideInfo,
@@ -213,7 +213,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return await document.ReplaceNodeAsync(memberDeclaration, memberDeclaration.SetModifiers(newModifiers), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberDeclaration, memberDeclaration.SetModifiers(newModifiers), cancellationToken);
         }
 
         private static SyntaxToken CreateAccessModifier(Accessibility accessibility)

@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
             context.ReportDiagnostic(DiagnosticDescriptors.UsePredefinedType, expression);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SyntaxNode node,
             ITypeSymbol typeSymbol,
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(node)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(node, newType, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(node, newType, cancellationToken);
         }
     }
 }

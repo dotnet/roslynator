@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithTriviaFrom(parent)
                     .WithFormatterAnnotation();
 
-                return await document.ReplaceNodeAsync(parent, equalsExpression, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(parent, equalsExpression, cancellationToken);
             }
             else
             {
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithTriviaFrom(invocation)
                     .WithFormatterAnnotation();
 
-                return await document.ReplaceNodeAsync(invocation, notEqualsExpression, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(invocation, notEqualsExpression, cancellationToken);
             }
         }
     }

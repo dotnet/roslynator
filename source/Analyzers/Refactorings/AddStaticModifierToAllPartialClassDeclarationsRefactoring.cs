@@ -47,10 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                             }
                             else if (!classDeclaration.ContainsDirectives(modifiers.Span))
                             {
-                                if (classDeclarations == null)
-                                    classDeclarations = new List<ClassDeclarationSyntax>();
-
-                                classDeclarations.Add(classDeclaration);
+                                (classDeclarations ?? (classDeclarations = new List<ClassDeclarationSyntax>())).Add(classDeclaration);
                             }
                         }
                     }
@@ -69,16 +66,16 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await InsertModifierRefactoring.RefactorAsync(
+            return InsertModifierRefactoring.RefactorAsync(
                 document,
                 classDeclaration,
                 SyntaxKind.StaticKeyword,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

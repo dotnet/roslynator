@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 
                         if (EqualityComparer<TSymbol>.Default.Equals(info.Symbol, default(TSymbol)))
                         {
-                            var symbol = semanticModel.GetSymbol(info.Syntax, cancellationToken);
+                            ISymbol symbol = semanticModel.GetSymbol(info.Syntax, cancellationToken);
 
                             if (symbol is TSymbol)
                             {

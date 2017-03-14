@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BlockSyntax block,
             CancellationToken cancellationToken)
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
                 .TrimLeadingTrivia()
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(block, statement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, statement, cancellationToken);
         }
     }
 }

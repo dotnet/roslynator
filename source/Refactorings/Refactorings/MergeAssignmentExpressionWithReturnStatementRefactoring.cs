@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ExpressionStatementSyntax statement,
             ReturnStatementSyntax returnStatement,
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newStatements = newStatements.Replace(newStatements[index], newReturnStatement);
 
-            return await document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, block.WithStatements(newStatements), cancellationToken);
         }
     }
 }

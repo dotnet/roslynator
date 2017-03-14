@@ -22,12 +22,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             EmptyStatementSyntax emptyStatement,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(emptyStatement, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
+            return document.RemoveNodeAsync(emptyStatement, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken);
         }
     }
 }

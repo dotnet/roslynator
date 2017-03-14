@@ -171,7 +171,7 @@ namespace Roslynator.CSharp.Refactorings
             return parameter1?.Identifier.ValueText.Equals(parameter2.Identifier.ValueText, StringComparison.Ordinal) == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken)
@@ -191,7 +191,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newInvocation = newInvocation.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
         }
 
         private static ExpressionSyntax GetCondition(InvocationExpressionSyntax invocation)

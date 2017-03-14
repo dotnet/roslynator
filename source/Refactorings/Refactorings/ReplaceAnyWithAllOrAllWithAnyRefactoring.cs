@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocationExpression,
             string memberName,
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
                 .ReplaceNode(expression, Negator.LogicallyNegate(expression))
                 .WithExpression(newMemberAccessExpression);
 
-            return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
         }
     }
 }

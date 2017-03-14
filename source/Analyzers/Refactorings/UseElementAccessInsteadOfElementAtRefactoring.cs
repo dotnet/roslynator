@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
                     SingletonSeparatedList(Argument(argumentExpression)),
                     CloseBracketToken().WithTriviaFrom(argumentList.CloseParenToken)));
 
-            return await document.ReplaceNodeAsync(invocation, elementAccess, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(invocation, elementAccess, cancellationToken);
         }
     }
 }

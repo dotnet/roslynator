@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
@@ -88,10 +88,10 @@ namespace Roslynator.CSharp.Refactorings
                 Debug.Assert(false, binaryExpression.ToString());
             }
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken)
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Refactorings
                 newForStatement = forStatement.RemoveNode(forStatement.Condition, SyntaxRemoveOptions.KeepExteriorTrivia);
             }
 
-            return await document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
         }
     }
 }

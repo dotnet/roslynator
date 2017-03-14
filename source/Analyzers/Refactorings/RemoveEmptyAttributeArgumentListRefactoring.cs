@@ -15,12 +15,12 @@ namespace Roslynator.CSharp.Refactorings
             return !attributeArgumentList.Arguments.Any();
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AttributeArgumentListSyntax attributeArgumentList,
             CancellationToken cancellationToken)
         {
-            return await document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, cancellationToken).ConfigureAwait(false);
+            return document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, cancellationToken);
         }
     }
 }

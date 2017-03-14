@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             return arrowExpressionClause.Parent?.SupportsExpressionBody() == true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ArrowExpressionClauseSyntax arrowExpressionClause,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parent, newNode, cancellationToken);
         }
 
         private static SyntaxNode Refactor(SyntaxNode node, ExpressionSyntax expression)

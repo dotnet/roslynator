@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -17,12 +16,12 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 {
     internal abstract class IntroduceAndInitializeRefactoring
     {
-        public IntroduceAndInitializeRefactoring(IntroduceAndInitializeInfo info)
+        protected IntroduceAndInitializeRefactoring(IntroduceAndInitializeInfo info)
         {
             Infos = ImmutableArray.Create(info);
         }
 
-        public IntroduceAndInitializeRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
+        protected IntroduceAndInitializeRefactoring(IEnumerable<IntroduceAndInitializeInfo> infos)
         {
             Infos = infos.ToImmutableArray();
         }

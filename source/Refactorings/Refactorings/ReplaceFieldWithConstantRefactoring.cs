@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             FieldDeclarationSyntax node,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithModifiers(modifiers)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
     }
 }

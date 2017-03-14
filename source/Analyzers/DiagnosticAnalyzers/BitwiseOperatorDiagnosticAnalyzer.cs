@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -70,15 +71,17 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             if (typeSymbol?.IsEnum() == true)
             {
-                INamedTypeSymbol flagsAttribute = null;
+                ImmutableArray<AttributeData> attributes = typeSymbol.GetAttributes();
 
-                foreach (AttributeData attributeData in typeSymbol.GetAttributes())
+                if (attributes.Any())
                 {
-                    if (flagsAttribute == null)
-                        flagsAttribute = semanticModel.Compilation.GetTypeByMetadataName("System.FlagsAttribute");
+                    INamedTypeSymbol flagsAttribute = semanticModel.GetTypeByMetadataName("System.FlagsAttribute");
 
-                    if (attributeData.AttributeClass.Equals(flagsAttribute))
-                        return false;
+                    for (int i = 0; i < attributes.Length; i++)
+                    {
+                        if (attributes[i].AttributeClass.Equals(flagsAttribute))
+                            return false;
+                    }
                 }
 
                 return true;

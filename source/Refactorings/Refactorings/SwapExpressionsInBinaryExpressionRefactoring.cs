@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxKind.FalseLiteralExpression) == false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithLeft(right.WithTriviaFrom(left))
                 .WithRight(left.WithTriviaFrom(right));
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
 
         private static SyntaxKind GetOperatorTokenKind(SyntaxKind operatorKind)

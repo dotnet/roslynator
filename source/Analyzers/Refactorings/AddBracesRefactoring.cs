@@ -75,14 +75,14 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
             BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(statement, block, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(statement, block, cancellationToken);
         }
     }
 }

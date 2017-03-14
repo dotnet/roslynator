@@ -159,8 +159,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
 
-                    return symbol != null
-                        && !symbol.IsStatic
+                    return symbol?.IsStatic == false
                         && !parentMember
                             .GetMembers()
                             .Any(member => IsBackingField(member, symbol, context, semanticModel));
@@ -282,7 +281,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax declaration,
             List<MemberDeclarationSyntax> assignableMembers,
@@ -299,7 +298,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = parentMember.SetMembers(newMembers)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(parentMember, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parentMember, newNode, cancellationToken);
         }
 
         private static string GetConstructorIdentifierText(MemberDeclarationSyntax declaration)

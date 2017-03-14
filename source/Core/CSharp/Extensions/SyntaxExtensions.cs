@@ -58,14 +58,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = accessorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return accessorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)accessorDeclaration.ExpressionBody;
         }
 
         public static AccessorDeclarationSyntax Getter(this AccessorListSyntax accessorList)
@@ -273,14 +266,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = constructorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return constructorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)constructorDeclaration.ExpressionBody;
         }
 
         public static TextSpan HeaderSpan(this ConversionOperatorDeclarationSyntax operatorDeclaration)
@@ -302,14 +288,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = conversionOperatorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return conversionOperatorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)conversionOperatorDeclaration.ExpressionBody;
         }
 
         public static CSharpSyntaxNode BodyOrExpressionBody(this DestructorDeclarationSyntax destructorDeclaration)
@@ -319,14 +298,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = destructorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return destructorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)destructorDeclaration.ExpressionBody;
         }
 
         public static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
@@ -623,14 +595,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = localFunctionStatement.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return localFunctionStatement.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)localFunctionStatement.ExpressionBody;
         }
 
         public static SyntaxTrivia GetSingleLineDocumentationCommentTrivia(this MemberDeclarationSyntax memberDeclaration)
@@ -1302,14 +1267,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = methodDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return methodDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)methodDeclaration.ExpressionBody;
         }
 
         public static TextSpan HeaderSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
@@ -1349,14 +1307,7 @@ namespace Roslynator.CSharp.Extensions
 
             BlockSyntax body = operatorDeclaration.Body;
 
-            if (body != null)
-            {
-                return body;
-            }
-            else
-            {
-                return operatorDeclaration.ExpressionBody;
-            }
+            return body ?? (CSharpSyntaxNode)operatorDeclaration.ExpressionBody;
         }
 
         public static bool IsThis(this ParameterSyntax parameter)

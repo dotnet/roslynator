@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class NegateBooleanLiteralRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newNode = newNode.WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
     }
 }

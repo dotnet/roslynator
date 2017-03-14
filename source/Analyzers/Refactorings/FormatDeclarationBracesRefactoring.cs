@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax declaration,
             CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax newNode = GetNewDeclaration(declaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(declaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(declaration, newNode, cancellationToken);
         }
 
         private static MemberDeclarationSyntax GetNewDeclaration(MemberDeclarationSyntax declaration)

@@ -136,8 +136,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 ExpressionSyntax expression = UseExpressionBodiedMemberRefactoring.GetExpression(body);
 
-                if (expression != null
-                    && expression.IsSingleLine())
+                if (expression?.IsSingleLine() == true)
                 {
                     var accessorList = accessor.Parent as AccessorListSyntax;
 

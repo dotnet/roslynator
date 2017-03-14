@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTrailingTrivia(node.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
         private static SyntaxNode GetNewNode(SyntaxNode node)

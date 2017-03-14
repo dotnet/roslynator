@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName = null,
@@ -138,10 +138,10 @@ namespace Roslynator.CSharp.Refactorings
                     SingletonSeparatedList(
                         Argument(CreateArgumentExpression(invocation, memberAccess, propertyName)))));
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 invocation,
                 elementAccess.WithTriviaFrom(invocation),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         private static ExpressionSyntax CreateArgumentExpression(

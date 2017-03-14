@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LambdaExpressionSyntax lambdaExpressionSyntax,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(lambdaExpressionSyntax)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(lambdaExpressionSyntax, newLambda, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(lambdaExpressionSyntax, newLambda, cancellationToken);
         }
 
         private static LambdaExpressionSyntax Refactor(LambdaExpressionSyntax lambda)

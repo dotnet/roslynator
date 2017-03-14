@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
                 && context.Span.IsBetweenSpans(conditionalExpression);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newConditionalExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(conditionalExpression, newConditionalExpression, cancellationToken);
         }
     }
 }

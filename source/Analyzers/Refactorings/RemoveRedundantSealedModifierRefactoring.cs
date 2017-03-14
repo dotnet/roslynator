@@ -46,14 +46,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode newNode = Remover.RemoveModifier(memberDeclaration, SyntaxKind.SealedKeyword);
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
     }
 }

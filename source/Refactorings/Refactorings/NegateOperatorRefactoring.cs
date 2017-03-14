@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SyntaxToken operatorToken,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -37,10 +37,10 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken newToken = SyntaxFactory.Token(GetNegatedOperatorKind(operatorToken))
                 .WithTriviaFrom(operatorToken);
 
-            return await document.ReplaceTokenAsync(
+            return document.ReplaceTokenAsync(
                 operatorToken,
                 newToken,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         private static SyntaxKind GetNegatedOperatorKind(SyntaxToken operatorToken)

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (LiteralExpressionSyntax)ParseExpression($"'{GetCharacterLiteralText(literalExpression)}'")
                 .WithTriviaFrom(literalExpression);
 
-            return await document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
         private static string GetCharacterLiteralText(LiteralExpressionSyntax literalExpression)

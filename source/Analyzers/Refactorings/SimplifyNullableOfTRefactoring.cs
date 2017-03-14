@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             TypeSyntax type,
             TypeSyntax nullableType,
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(type)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(type, newType, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(type, newType, cancellationToken);
         }
     }
 }

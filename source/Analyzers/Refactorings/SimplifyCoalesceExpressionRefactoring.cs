@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax expression,
@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithSimplifierAnnotation()
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
 
         private enum BinaryExpressionPart

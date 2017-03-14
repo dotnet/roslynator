@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
             CancellationToken cancellationToken)
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTrailingTrivia(trailingTrivia)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(objectCreation, newExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(objectCreation, newExpression, cancellationToken);
         }
     }
 }

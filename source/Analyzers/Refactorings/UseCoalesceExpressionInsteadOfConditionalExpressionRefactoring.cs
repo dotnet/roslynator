@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
@@ -79,10 +79,10 @@ namespace Roslynator.CSharp.Refactorings
                 left.WithoutTrivia(),
                 right.WithoutTrivia());
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 conditionalExpression,
                 newNode.WithTriviaFrom(conditionalExpression),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

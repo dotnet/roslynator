@@ -9,7 +9,7 @@ namespace Roslynator.Rename
 {
     public static class Renamer
     {
-        public static async Task<Solution> RenameSymbolAsync(
+        public static Task<Solution> RenameSymbolAsync(
             Document document,
             ISymbol symbol,
             string newName,
@@ -20,12 +20,12 @@ namespace Roslynator.Rename
 
             Solution solution = document.Project.Solution;
 
-            return await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
+            return Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
                 solution,
                 symbol,
                 newName,
                 solution.Workspace.Options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
     }
 }

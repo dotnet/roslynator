@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
             SelectedStatementCollection selectedStatements,
@@ -143,10 +143,10 @@ namespace Roslynator.CSharp.Refactorings
                 count--;
             }
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 container.Node,
                 container.NodeWithStatements(newStatements),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ExpressionStatementSyntax[] expressionStatements)

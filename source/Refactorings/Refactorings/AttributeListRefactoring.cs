@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> SplitAsync(
+        public static Task<Document> SplitAsync(
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
@@ -81,13 +81,13 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = index + attributeLists.Length; i < lists.Count; i++)
                 newLists.Add(lists[i]);
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 member,
                 member.SetAttributeLists(newLists.ToSyntaxList()),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
-        public static async Task<Document> MergeAsync(
+        public static Task<Document> MergeAsync(
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
@@ -107,10 +107,10 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = index + attributeLists.Length; i < lists.Count; i++)
                 newLists.Add(lists[i]);
 
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 member,
                 member.SetAttributeLists(newLists.ToSyntaxList()),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public static SyntaxList<AttributeListSyntax> GetAttributeLists(this SyntaxNode node)

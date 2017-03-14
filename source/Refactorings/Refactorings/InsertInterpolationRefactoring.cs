@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InterpolatedStringExpressionSyntax interpolatedString,
             TextSpan span,
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
             var newNode = (InterpolatedStringExpressionSyntax)ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);
 
-            return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
         }
     }
 }

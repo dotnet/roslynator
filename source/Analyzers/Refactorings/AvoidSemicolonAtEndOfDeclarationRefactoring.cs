@@ -70,14 +70,14 @@ namespace Roslynator.CSharp.Refactorings
             return default(SyntaxToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken)
         {
             MemberDeclarationSyntax newMemberDeclaration = GetNewMemberDeclaration(memberDeclaration);
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
         }
 
         private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax memberDeclaration)

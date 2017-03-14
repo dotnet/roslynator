@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             GenericNameSyntax genericName,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Arguments[0]
                 .WithTriviaFrom(genericName);
 
-            return await document.ReplaceNodeAsync(genericName, typeSyntax, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(genericName, typeSyntax, cancellationToken);
         }
     }
 }

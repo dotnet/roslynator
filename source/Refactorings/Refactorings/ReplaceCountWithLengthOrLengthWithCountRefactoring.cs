@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             MemberAccessExpressionSyntax memberAccess,
             string newName,
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithName(SyntaxFactory.IdentifierName(newName))
                 .WithTriviaFrom(memberAccess.Name);
 
-            return await document.ReplaceNodeAsync(memberAccess, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberAccess, newNode, cancellationToken);
         }
 
         private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)

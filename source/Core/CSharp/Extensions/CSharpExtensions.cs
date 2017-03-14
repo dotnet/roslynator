@@ -141,25 +141,15 @@ namespace Roslynator.CSharp.Extensions
                 case SpecialType.System_Char:
                     return semanticModel.IsConstantValue(expression, '\0', cancellationToken);
                 case SpecialType.System_SByte:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Byte:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Int16:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_UInt16:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Int32:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_UInt32:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Int64:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_UInt64:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Decimal:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Single:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
                 case SpecialType.System_Double:
                     return semanticModel.IsConstantValue(expression, cancellationToken);
             }
@@ -171,19 +161,12 @@ namespace Roslynator.CSharp.Extensions
                 switch (underlyingType.SpecialType)
                 {
                     case SpecialType.System_SByte:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_Byte:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_Int16:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_UInt16:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_Int32:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_UInt32:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_Int64:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
                     case SpecialType.System_UInt64:
                         return semanticModel.IsConstantValue(expression, cancellationToken);
                 }

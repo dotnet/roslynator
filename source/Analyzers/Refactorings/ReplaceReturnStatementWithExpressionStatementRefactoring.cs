@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ReturnStatementSyntax returnStatement,
             CancellationToken cancellationToken)
@@ -69,10 +69,10 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(returnStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             YieldStatementSyntax yieldStatement,
             CancellationToken cancellationToken)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(yieldStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(yieldStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(yieldStatement, newNode, cancellationToken);
         }
     }
 }

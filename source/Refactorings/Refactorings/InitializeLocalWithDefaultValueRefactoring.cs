@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             LocalDeclarationStatementSyntax localDeclaration,
             VariableDeclaratorSyntax declarator,
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithSemicolonToken(SemicolonToken().WithTrailingTrivia(newDeclarator.GetTrailingTrivia()));
             }
 
-            return await document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
         }
 
         private static VariableDeclaratorSyntax GetNewDeclarator(

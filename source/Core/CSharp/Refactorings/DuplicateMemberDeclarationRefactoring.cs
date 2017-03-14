@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class DuplicateMemberDeclarationRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
 
-            return await document.ReplaceNodeAsync(member.Parent, Refactor(member), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(member.Parent, Refactor(member), cancellationToken);
         }
 
         private static SyntaxNode Refactor(MemberDeclarationSyntax member)

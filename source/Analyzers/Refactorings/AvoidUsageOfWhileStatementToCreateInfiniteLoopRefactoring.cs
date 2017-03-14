@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             WhileStatementSyntax whileStatement,
             CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(whileStatement)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);
         }
     }
 }

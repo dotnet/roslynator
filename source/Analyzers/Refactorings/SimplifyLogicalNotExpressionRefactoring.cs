@@ -39,12 +39,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             PrefixUnaryExpressionSyntax logicalNot,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await document.ReplaceNodeAsync(logicalNot, GetNewNode(logicalNot), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(logicalNot, GetNewNode(logicalNot), cancellationToken);
         }
 
         private static ExpressionSyntax GetNewNode(PrefixUnaryExpressionSyntax logicalNot)

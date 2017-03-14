@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             SwitchLabelSyntax[] selectedLabels,
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newSwitchStatement = newSwitchStatement.WithSections(newSections);
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(SwitchSectionSyntax switchSection, SwitchLabelSyntax[] selectedLabels)

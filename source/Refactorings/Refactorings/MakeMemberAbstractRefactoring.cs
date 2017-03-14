@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                 && ((ClassDeclarationSyntax)node).Modifiers.Contains(SyntaxKind.AbstractKeyword);
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(memberDeclaration)
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
         }
 
         private static MemberDeclarationSyntax MakeAbstract(MemberDeclarationSyntax memberDeclaration)

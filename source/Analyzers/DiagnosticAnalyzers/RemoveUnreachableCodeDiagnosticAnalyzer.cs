@@ -34,11 +34,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             SyntaxNode node = breakStatement.Parent;
 
-            while (node != null
-                && node.IsKind(SyntaxKind.Block))
-            {
+            while (node?.IsKind(SyntaxKind.Block) == true)
                 node = node.Parent;
-            }
 
             if (node?.IsKind(SyntaxKind.SwitchSection) == true
                 && context.SemanticModel.ContainsCompilerDiagnostic(CSharpErrorCodes.UnreachableCodeDetected, breakStatement.Span, context.CancellationToken))

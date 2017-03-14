@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                 GetOperatorText(assignment));
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignment,
             SyntaxKind kind,
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTrailingTrivia(GetTrailingTrivia(assignment))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(assignment, postfixUnary, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(assignment, postfixUnary, cancellationToken);
         }
 
         private static List<SyntaxTrivia> GetTrailingTrivia(AssignmentExpressionSyntax assignment)

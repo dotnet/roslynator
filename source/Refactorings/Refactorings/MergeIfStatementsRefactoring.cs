@@ -45,10 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (en.Current.IsKind(SyntaxKind.IfStatement))
                     {
-                        if (ifStatements == null)
-                            ifStatements = new List<IfStatementSyntax>();
-
-                        ifStatements.Add((IfStatementSyntax)en.Current);
+                        (ifStatements ?? (ifStatements = new List<IfStatementSyntax>())).Add((IfStatementSyntax)en.Current);
                     }
                     else
                     {
@@ -60,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             return ifStatements;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             StatementContainer container,
             ImmutableArray<IfStatementSyntax> ifStatements,
@@ -83,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 1; i < ifStatements.Length; i++)
                 newStatements = newStatements.RemoveAt(index + 1);
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
         }
 
         private static BinaryExpressionSyntax CreateCondition(ImmutableArray<IfStatementSyntax> ifStatements)
@@ -152,9 +149,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                var statements = new List<StatementSyntax>();
-                statements.Add(ifStatement.Statement);
-                return statements;
+                return new List<StatementSyntax>() { ifStatement.Statement };
             }
         }
     }

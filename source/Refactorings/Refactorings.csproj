@@ -42,6 +42,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />

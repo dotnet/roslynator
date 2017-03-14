@@ -267,7 +267,7 @@ namespace Roslynator.CSharp.Refactorings
             return document;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             IfStatementSyntax ifStatement,
@@ -304,7 +304,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Remove(ifStatement)
                 .ReplaceAt(statementIndex, newStatement);
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
         }
     }
 }

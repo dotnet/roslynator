@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             TypeSyntax type,
             string name,
@@ -101,10 +101,10 @@ namespace Roslynator.CSharp.Refactorings
 
             var textChange = new TextChange(span, " " + name);
 
-            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+            return document.WithTextChangeAsync(textChange, cancellationToken);
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ExpressionStatementSyntax expressionStatement,
             string name,
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = newNode.WithTriviaFrom(expressionStatement);
             }
 
-            return await document.ReplaceNodeAsync(expressionStatement, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expressionStatement, newNode, cancellationToken);
         }
     }
 }

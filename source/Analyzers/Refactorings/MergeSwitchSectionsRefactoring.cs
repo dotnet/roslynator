@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings
             return statements;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             int numberOfAdditionalSectionsToMerge,
@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
 
-            return await document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
         }
     }
 }
