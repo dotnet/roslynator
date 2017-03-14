@@ -1136,7 +1136,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ArgumentList(SeparatedList(arguments));
         }
 
-        public static ArgumentListSyntax SingletonArgumentList(ArgumentSyntax argument)
+        public static ArgumentListSyntax ArgumentList(ArgumentSyntax argument)
         {
             return SyntaxFactory.ArgumentList(SingletonSeparatedList(argument));
         }
@@ -1146,12 +1146,12 @@ namespace Roslynator.CSharp
             return SyntaxFactory.BracketedArgumentList(SeparatedList(arguments));
         }
 
-        public static BracketedArgumentListSyntax SingletonBracketedArgumentList(ArgumentSyntax argument)
+        public static BracketedArgumentListSyntax BracketedArgumentList(ArgumentSyntax argument)
         {
             return SyntaxFactory.BracketedArgumentList(SingletonSeparatedList(argument));
         }
 
-        public static AttributeListSyntax SingletonAttributeList(AttributeSyntax attribute)
+        public static AttributeListSyntax AttributeList(AttributeSyntax attribute)
         {
             return SyntaxFactory.AttributeList(SingletonSeparatedList(attribute));
         }
@@ -1166,7 +1166,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.AttributeArgumentList(SeparatedList(attributeArguments));
         }
 
-        public static AttributeArgumentListSyntax SingletonAttributeArgumentList(AttributeArgumentSyntax attributeArgument)
+        public static AttributeArgumentListSyntax AttributeArgumentList(AttributeArgumentSyntax attributeArgument)
         {
             return SyntaxFactory.AttributeArgumentList(SingletonSeparatedList(attributeArgument));
         }
@@ -1176,12 +1176,12 @@ namespace Roslynator.CSharp
             return SyntaxFactory.AccessorList(List(accessors));
         }
 
-        public static AccessorListSyntax SingletonAccessorList(AccessorDeclarationSyntax accessor)
+        public static AccessorListSyntax AccessorList(AccessorDeclarationSyntax accessor)
         {
             return SyntaxFactory.AccessorList(SingletonList(accessor));
         }
 
-        public static ParameterListSyntax SingletonParameterList(ParameterSyntax parameter)
+        public static ParameterListSyntax ParameterList(ParameterSyntax parameter)
         {
             return SyntaxFactory.ParameterList(SingletonSeparatedList(parameter));
         }
@@ -1191,7 +1191,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ParameterList(SeparatedList(parameters));
         }
 
-        public static BracketedParameterListSyntax SingletonBracketedParameterList(ParameterSyntax parameter)
+        public static BracketedParameterListSyntax BracketedParameterList(ParameterSyntax parameter)
         {
             return SyntaxFactory.BracketedParameterList(SingletonSeparatedList(parameter));
         }
@@ -1201,7 +1201,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.BracketedParameterList(SeparatedList(parameters));
         }
 
-        public static TypeArgumentListSyntax SingletonTypeArgumentList(TypeSyntax argument)
+        public static TypeArgumentListSyntax TypeArgumentList(TypeSyntax argument)
         {
             return SyntaxFactory.TypeArgumentList(SingletonSeparatedList(argument));
         }
@@ -1211,7 +1211,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.TypeArgumentList(SeparatedList(arguments));
         }
 
-        public static TypeParameterListSyntax SingletonTypeParameterList(TypeParameterSyntax parameter)
+        public static TypeParameterListSyntax TypeParameterList(TypeParameterSyntax parameter)
         {
             return SyntaxFactory.TypeParameterList(SingletonSeparatedList(parameter));
         }
@@ -1221,12 +1221,12 @@ namespace Roslynator.CSharp
             return SyntaxFactory.TypeParameterList(SeparatedList(parameters));
         }
 
-        public static BaseListSyntax SingletonBaseList(BaseTypeSyntax type)
+        public static BaseListSyntax BaseList(BaseTypeSyntax type)
         {
             return SyntaxFactory.BaseList(SingletonSeparatedList(type));
         }
 
-        public static BaseListSyntax SingletonBaseList(SyntaxToken colonToken, BaseTypeSyntax baseType)
+        public static BaseListSyntax BaseList(SyntaxToken colonToken, BaseTypeSyntax baseType)
         {
             return SyntaxFactory.BaseList(colonToken, SingletonSeparatedList(baseType));
         }
@@ -1376,7 +1376,7 @@ namespace Roslynator.CSharp
                             type,
                             explicitInterfaceSpecifier,
                             identifier,
-                            SingletonAccessorList(AutoGetAccessorDeclaration()));
+                            AccessorList(AutoGetAccessorDeclaration()));
                     }
                 default:
                     {
@@ -2026,7 +2026,7 @@ namespace Roslynator.CSharp
 
         public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentSyntax argument)
         {
-            return SimpleMemberInvocationExpression(expression, name, SingletonArgumentList(argument));
+            return SimpleMemberInvocationExpression(expression, name, ArgumentList(argument));
         }
 
         public static InvocationExpressionSyntax SimpleMemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentListSyntax argumentList)
@@ -2038,7 +2038,7 @@ namespace Roslynator.CSharp
         {
             return InvocationExpression(
                 IdentifierName("nameof"),
-                SingletonArgumentList(
+                ArgumentList(
                     Argument(IdentifierName(identifier))));
         }
 
@@ -2097,7 +2097,7 @@ namespace Roslynator.CSharp
 
         public static GenericNameSyntax GenericName(SyntaxToken identifier, TypeSyntax typeArgument)
         {
-            return SyntaxFactory.GenericName(identifier, SingletonTypeArgumentList(typeArgument));
+            return SyntaxFactory.GenericName(identifier, TypeArgumentList(typeArgument));
         }
 
         public static VariableDeclaratorSyntax VariableDeclarator(string identifier, EqualsValueClauseSyntax initializer)
@@ -2142,7 +2142,7 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.Attribute(
                 name,
-                SingletonAttributeArgumentList(AttributeArgument(argumentExpression)));
+                AttributeArgumentList(AttributeArgument(argumentExpression)));
         }
 
         public static ParameterSyntax Parameter(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax @default = null)
@@ -2212,7 +2212,7 @@ namespace Roslynator.CSharp
         public static ImplicitElementAccessSyntax ImplicitElementAccess(ExpressionSyntax expression)
         {
             return SyntaxFactory.ImplicitElementAccess(
-                SingletonBracketedArgumentList(Argument(expression)));
+                BracketedArgumentList(Argument(expression)));
         }
     }
 }

@@ -109,9 +109,9 @@ namespace CodeGenerator
             {
                 yield return PropertyDeclaration(BoolType(), info.Identifier)
                    .WithAttributeLists(
-                       SingletonAttributeList(Attribute(IdentifierName("Browsable"), FalseLiteralExpression())),
-                       SingletonAttributeList(Attribute(IdentifierName("Category"), IdentifierName("RefactoringCategory"))),
-                       SingletonAttributeList(Attribute(IdentifierName("TypeConverter"), TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
+                       AttributeList(Attribute(IdentifierName("Browsable"), FalseLiteralExpression())),
+                       AttributeList(Attribute(IdentifierName("Category"), IdentifierName("RefactoringCategory"))),
+                       AttributeList(Attribute(IdentifierName("TypeConverter"), TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
                    .WithModifiers(Modifiers.Public())
                    .WithAccessorList(
                        AccessorList(

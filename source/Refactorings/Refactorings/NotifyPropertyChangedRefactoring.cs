@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
                             ExpressionStatement(
                                 InvocationExpression(
                                     IdentifierName("OnPropertyChanged"),
-                                    SingletonArgumentList(Argument(argumentExpression))))))));
+                                    ArgumentList(Argument(argumentExpression))))))));
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)

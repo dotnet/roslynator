@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Refactorings
                     ThrowStatement(
                         ObjectCreationExpression(
                             type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
-                            argumentList: SingletonArgumentList(Argument(NameOf(parameters[i].Identifier.ValueText))),
+                            argumentList: ArgumentList(Argument(NameOf(parameters[i].Identifier.ValueText))),
                             initializer: default(InitializerExpressionSyntax))));
 
                 if (i > 0)

@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Refactorings
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),
                 default(TypeParameterListSyntax),
-                SingletonParameterList(Parameter(eventArgsType, Identifier(Identifier.DefaultEventArgsVariableName))),
+                ParameterList(Parameter(eventArgsType, Identifier(Identifier.DefaultEventArgsVariableName))),
                 default(SyntaxList<TypeParameterConstraintClauseSyntax>),
                 Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
                 default(ArrowExpressionClauseSyntax));

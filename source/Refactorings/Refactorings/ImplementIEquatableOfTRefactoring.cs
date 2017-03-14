@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (baseList == null)
             {
-                baseList = SingletonBaseList(baseType);
+                baseList = BaseList(baseType);
 
                 TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
 
@@ -214,7 +214,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (baseList == null)
             {
-                baseList = SingletonBaseList(baseType);
+                baseList = BaseList(baseType);
 
                 TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
 
