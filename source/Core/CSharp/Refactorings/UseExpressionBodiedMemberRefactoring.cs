@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -92,15 +93,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (block != null)
             {
-                SyntaxList<StatementSyntax> statements = block.Statements;
+                StatementSyntax statement = block.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
-                {
-                    StatementSyntax statement = statements[0];
-
-                    if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        return ((ReturnStatementSyntax)statement).Expression;
-                }
+                if (statement?.IsKind(SyntaxKind.ReturnStatement) == true)
+                    return ((ReturnStatementSyntax)statement).Expression;
             }
 
             return default(ExpressionSyntax);
@@ -110,21 +106,14 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (block != null)
             {
-                SyntaxList<StatementSyntax> statements = block.Statements;
+                StatementSyntax statement = block.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
+                switch (statement?.Kind())
                 {
-                    StatementSyntax statement = statements[0];
-                    SyntaxKind kind = statement.Kind();
-
-                    if (kind == SyntaxKind.ReturnStatement)
-                    {
+                    case SyntaxKind.ReturnStatement:
                         return ((ReturnStatementSyntax)statement).Expression;
-                    }
-                    else if (kind == SyntaxKind.ExpressionStatement)
-                    {
+                    case SyntaxKind.ExpressionStatement:
                         return ((ExpressionStatementSyntax)statement).Expression;
-                    }
                 }
             }
 

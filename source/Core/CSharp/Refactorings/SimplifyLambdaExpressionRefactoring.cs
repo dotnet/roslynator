@@ -25,30 +25,26 @@ namespace Roslynator.CSharp.Refactorings
             if (body?.IsKind(SyntaxKind.Block) == true)
             {
                 var block = (BlockSyntax)body;
-                SyntaxList<StatementSyntax> statements = block.Statements;
 
-                if (statements.Count == 1)
+                StatementSyntax statement = block.SingleStatementOrDefault();
+
+                if (statement?.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement) == true)
                 {
-                    StatementSyntax statement = statements[0];
+                    ExpressionSyntax expression = GetExpression(statement);
 
-                    if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
+                    if (expression?.IsSingleLine() == true)
                     {
-                        ExpressionSyntax expression = GetExpression(statement);
+                        TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
 
-                        if (expression?.IsSingleLine() == true)
+                        if (lambda
+                            .DescendantTrivia(span)
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
-                            TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
+                            span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
 
-                            if (lambda
+                            return lambda
                                 .DescendantTrivia(span)
-                                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                            {
-                                span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
-
-                                return lambda
-                                    .DescendantTrivia(span)
-                                    .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                            }
+                                .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                         }
                     }
                 }

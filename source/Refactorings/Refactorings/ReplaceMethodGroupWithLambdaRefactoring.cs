@@ -104,11 +104,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (body != null)
             {
-                SyntaxList<StatementSyntax> statements = body.Statements;
+                StatementSyntax statement = body.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
+                if (statement != null)
                 {
-                    ExpressionSyntax expression = GetStatementExpression(statements.First());
+                    ExpressionSyntax expression = GetStatementExpression(statement);
 
                     if (expression?.IsMissing == false)
                         return expression;

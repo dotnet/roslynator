@@ -53,18 +53,13 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var block = (BlockSyntax)childStatement;
 
-                SyntaxList<StatementSyntax> statements = block.Statements;
+                StatementSyntax statement = block.SingleStatementOrDefault();
 
-                if (statements.Count == 1)
+                if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false
+                    && statement.IsSingleLine()
+                    && EmbeddedStatement.FormattingSupportsEmbeddedStatement(node))
                 {
-                    StatementSyntax statement = statements[0];
-
-                    if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)
-                        && statement.IsSingleLine()
-                        && EmbeddedStatement.FormattingSupportsEmbeddedStatement(node))
-                    {
-                        return block;
-                    }
+                    return block;
                 }
             }
 
