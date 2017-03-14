@@ -35,15 +35,13 @@ namespace Roslynator.Metadata
             foreach (XElement element in doc.Root.Elements())
             {
                 yield return new RefactoringDescriptor(
-                    (element.Attribute("Id") != null)
-                        ? element.Attribute("Id").Value
-                        : null,
+                    element.Attribute("Id")?.Value,
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
                     (element.Attribute("IsEnabledByDefault") != null)
                         ? bool.Parse(element.Attribute("IsEnabledByDefault").Value)
                         : true,
-                    (element.Element("Scope") != null) ? element.Element("Scope").Value : null,
+                    element.Element("Scope")?.Value,
                     element.Element("Syntaxes")
                         .Elements("Syntax")
                         .Select(f => new SyntaxDescriptor(f.Value))

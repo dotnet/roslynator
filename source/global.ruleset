@@ -210,6 +210,12 @@
     <Rule Id="CA2243" Action="Warning" />
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
+    <Rule Id="IDE0028" Action="Info" />
+    <Rule Id="IDE0029" Action="Info" />
+    <Rule Id="IDE0031" Action="Info" />
+    <Rule Id="IDE1005" Action="Info" />
+    <Rule Id="IDE1006" Action="Info" />
+    <Rule Id="IDE0033" Action="Info" />
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0002" Action="None" />
     <Rule Id="RECS0008" Action="None" />
