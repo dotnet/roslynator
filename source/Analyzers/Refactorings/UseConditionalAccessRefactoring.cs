@@ -148,12 +148,14 @@ namespace Roslynator.CSharp.Refactorings
                 string s = operand.ToFullString();
 
                 int length = node.Span.End - operand.FullSpan.Start;
+                int trailingLength = operand.GetTrailingTrivia().Span.Length;
 
                 var sb = new StringBuilder();
                 sb.Append(s, 0, length);
                 sb.Append("?");
-                sb.Append(s, length, s.Length - length);
+                sb.Append(s, length, s.Length - length - trailingLength);
                 sb.Append(" == false");
+                sb.Append(s, s.Length - trailingLength, trailingLength);
 
                 return ParseExpression(sb.ToString());
             }
@@ -162,11 +164,12 @@ namespace Roslynator.CSharp.Refactorings
                 string s = right.ToFullString();
 
                 int length = node.Span.End - right.FullSpan.Start;
+                int trailingLength = right.GetTrailingTrivia().Span.Length;
 
                 var sb = new StringBuilder();
                 sb.Append(s, 0, length);
                 sb.Append("?");
-                sb.Append(s, length, s.Length - length);
+                sb.Append(s, length, s.Length - length - trailingLength);
 
                 switch (kind)
                 {
@@ -190,6 +193,8 @@ namespace Roslynator.CSharp.Refactorings
                             break;
                         }
                 }
+
+                sb.Append(s, s.Length - trailingLength, trailingLength);
 
                 return ParseExpression(sb.ToString());
             }
