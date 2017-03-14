@@ -1,3 +1,7 @@
+### 1.2.51 (2017-03-14)
+
+* Bug fixes.
+
 ### 1.2.50 (2017-03-13)
 
 * Improved options page with a list of refactorings.
