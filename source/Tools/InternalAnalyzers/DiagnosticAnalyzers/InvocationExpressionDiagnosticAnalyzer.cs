@@ -17,7 +17,9 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
     public class InvocationExpressionDiagnosticAnalyzer : DiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(DiagnosticDescriptors.ReplaceIsKindMethodInvocation);
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ReplaceIsKindMethodInvocation); }
+        }
 
         public override void Initialize(AnalysisContext context)
         {
@@ -33,37 +35,53 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
         {
             var invocation = (InvocationExpressionSyntax)context.Node;
 
-            if (invocation.Expression != null
-                && invocation.ArgumentList?.Arguments.Count == 1)
+            ExpressionSyntax expression = invocation.Expression;
+
+            if (expression != null)
             {
-                SimpleNameSyntax methodName = GetMethodName(invocation.Expression);
+                ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-                if (string.Equals(methodName.Identifier.ValueText, "IsKind", StringComparison.Ordinal))
+                if (argumentList != null)
                 {
-                    ArgumentSyntax argument = invocation.ArgumentList.Arguments[0];
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-                    if (argument?.Expression != null)
+                    if (arguments.Count == 1)
                     {
-                        SemanticModel semanticModel = context.SemanticModel;
+                        SimpleNameSyntax methodName = GetMethodName(expression);
 
-                        INamedTypeSymbol syntaxKindSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
-
-                        if (syntaxKindSymbol != null)
+                        if (string.Equals(methodName.Identifier.ValueText, "IsKind", StringComparison.Ordinal))
                         {
-                            ISymbol argumentSymbol = semanticModel.GetSymbol(argument.Expression, context.CancellationToken);
+                            ArgumentSyntax argument = arguments[0];
 
-                            if (argumentSymbol.IsField()
-                                && argumentSymbol.ContainingType?.Equals(syntaxKindSymbol) == true
-                                && CanRefactor(methodName, argumentSymbol.Name, syntaxKindSymbol, semanticModel, context.CancellationToken))
+                            if (argument?.Expression != null)
                             {
-                                Location location = Location.Create(
-                                    invocation.SyntaxTree,
-                                    TextSpan.FromBounds(methodName.Span.Start, invocation.Span.End));
+                                SemanticModel semanticModel = context.SemanticModel;
 
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.ReplaceIsKindMethodInvocation,
-                                    location,
-                                    CreateProperties(argumentSymbol.Name));
+                                INamedTypeSymbol syntaxKindSymbol = semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
+
+                                if (syntaxKindSymbol != null)
+                                {
+                                    ExpressionSyntax argumentExpression = argument.Expression;
+
+                                    if (argumentExpression != null)
+                                    {
+                                        ISymbol argumentSymbol = semanticModel.GetSymbol(argumentExpression, context.CancellationToken);
+
+                                        if (argumentSymbol.IsField()
+                                            && argumentSymbol.ContainingType?.Equals(syntaxKindSymbol) == true
+                                            && CanRefactor(methodName, argumentSymbol.Name, syntaxKindSymbol, semanticModel, context.CancellationToken))
+                                        {
+                                            Location location = Location.Create(
+                                                invocation.SyntaxTree,
+                                                TextSpan.FromBounds(methodName.Span.Start, invocation.Span.End));
+
+                                            context.ReportDiagnostic(
+                                                DiagnosticDescriptors.ReplaceIsKindMethodInvocation,
+                                                location,
+                                                CreateProperties(argumentSymbol.Name));
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
