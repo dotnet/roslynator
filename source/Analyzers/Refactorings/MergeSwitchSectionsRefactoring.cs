@@ -86,18 +86,9 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool AreEquivalent(SyntaxList<StatementSyntax> statements, SyntaxList<StatementSyntax> statements2)
         {
-            if (statements.Count == 1)
-            {
-                if (statements2.Count == 1)
-                    return AreEquivalent(statements.First(), statements2.First());
-            }
-            else if (statements.Count == 2)
-            {
-                if (statements2.Count == 2)
-                    return AreEquivalent(statements.First(), statements2.First());
-            }
-
-            return false;
+            return statements.Count == 1
+                && statements2.Count == 1
+                && AreEquivalent(statements[0], statements2[0]);
         }
 
         private static bool AreEquivalent(StatementSyntax statement, StatementSyntax statement2)
