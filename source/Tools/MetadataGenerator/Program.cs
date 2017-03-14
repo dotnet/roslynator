@@ -170,23 +170,12 @@ namespace MetadataGenerator
 
                 AnalyzerDescriptor analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, descriptor.Id, StringComparison.CurrentCulture));
 
-                string extensionVersion = "0.0.0";
-                string nugetVersion = "0.0.0";
-
-                if (analyzer != null)
-                {
-                    extensionVersion = analyzer.ExtensionVersion;
-                    nugetVersion = analyzer.NuGetVersion;
-                }
-
                 analyzer = new AnalyzerDescriptor(
                     fieldInfo.Name,
                     descriptor.Title.ToString(),
                     descriptor.Id,
                     descriptor.Category,
                     descriptor.DefaultSeverity.ToString(),
-                    extensionVersion,
-                    nugetVersion,
                     descriptor.IsEnabledByDefault,
                     descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Unnecessary),
                     fieldInfos.Any(f => f.Name == fieldInfo.Name + "FadeOut"));
@@ -194,8 +183,6 @@ namespace MetadataGenerator
                 root.Add(new XElement(
                     "Analyzer",
                     new XAttribute("Identifier", analyzer.Identifier),
-                    new XAttribute("ExtensionVersion", analyzer.ExtensionVersion),
-                    new XAttribute("NuGetVersion", analyzer.NuGetVersion),
                     new XElement("Id", analyzer.Id),
                     new XElement("Title", analyzer.Title),
                     new XElement("Category", analyzer.Category),

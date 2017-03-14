@@ -13,8 +13,6 @@ namespace Roslynator.Metadata
             string id,
             string category,
             string defaultSeverity,
-            string extensionVersion,
-            string nuGetVersion,
             bool isEnabledByDefault,
             bool supportsFadeOut,
             bool supportsFadeOutAnalyzer)
@@ -24,8 +22,6 @@ namespace Roslynator.Metadata
             Id = id;
             Category = category;
             DefaultSeverity = defaultSeverity;
-            ExtensionVersion = extensionVersion;
-            NuGetVersion = nuGetVersion;
             IsEnabledByDefault = isEnabledByDefault;
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
@@ -43,8 +39,6 @@ namespace Roslynator.Metadata
                     element.Element("Id").Value,
                     element.Element("Category").Value,
                     element.Element("DefaultSeverity").Value,
-                    element.Attribute("ExtensionVersion").Value,
-                    element.Attribute("NuGetVersion").Value,
                     bool.Parse(element.Element("IsEnabledByDefault").Value),
                     bool.Parse(element.Element("SupportsFadeOut").Value),
                     bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value));
@@ -54,10 +48,6 @@ namespace Roslynator.Metadata
         public string Identifier { get; }
 
         public string Title { get; }
-
-        public string ExtensionVersion { get; }
-
-        public string NuGetVersion { get; }
 
         public string Id { get; }
 
