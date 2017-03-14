@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 if (!HasReference(node, list, syntax, semanticModel, cancellationToken)
                     && !syntax.SpanContainsDirectives())
                 {
-                    return ImmutableArray.Create(separatedList[0]);
+                    return ImmutableArray.Create(syntax);
                 }
             }
             else if (count > 1)
@@ -116,12 +116,17 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             var names = new string[count];
             var infos = new SyntaxInfo<TSyntax, TSymbol>[count];
 
-            for (int i = 0; i < separatedList.Count; i++)
             {
-                if (!separatedList[i].IsMissing)
+                int i = 0;
+                foreach (TSyntax syntax in separatedList)
                 {
-                    names[i] = GetIdentifier(separatedList[i]);
-                    infos[i] = new SyntaxInfo<TSyntax, TSymbol>(separatedList[i]);
+                    if (!syntax.IsMissing)
+                    {
+                        names[i] = GetIdentifier(syntax);
+                        infos[i] = new SyntaxInfo<TSyntax, TSymbol>(syntax);
+
+                        i++;
+                    }
                 }
             }
 
