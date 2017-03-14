@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="AddBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddBraces">
     <Id>RCS1001</Id>
     <Title>Add braces.</Title>
     <Category>Style</Category>
@@ -9,7 +9,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveBraces" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveBraces">
     <Id>RCS1002</Id>
     <Title>Remove braces.</Title>
     <Category>Style</Category>
@@ -18,7 +18,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddBracesToIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddBracesToIfElse">
     <Id>RCS1003</Id>
     <Title>Add braces to if-else.</Title>
     <Category>Style</Category>
@@ -27,7 +27,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveBracesFromIfElse" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveBracesFromIfElse">
     <Id>RCS1004</Id>
     <Title>Remove braces from if-else.</Title>
     <Category>Style</Category>
@@ -36,7 +36,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyNestedUsingStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="SimplifyNestedUsingStatement">
     <Id>RCS1005</Id>
     <Title>Simplify nested using statement.</Title>
     <Category>Simplification</Category>
@@ -45,7 +45,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeElseClauseWithNestedIfStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="MergeElseClauseWithNestedIfStatement">
     <Id>RCS1006</Id>
     <Title>Merge else clause with nested if statement.</Title>
     <Category>Simplification</Category>
@@ -54,7 +54,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AvoidEmbeddedStatement">
     <Id>RCS1007</Id>
     <Title>Avoid embedded statement.</Title>
     <Category>Style</Category>
@@ -63,7 +63,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitTypeInsteadOfVar" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVar">
     <Id>RCS1008</Id>
     <Title>Use explicit type instead of 'var' (when the type is not obvious).</Title>
     <Category>Readability</Category>
@@ -72,7 +72,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitTypeInsteadOfVarInForEach" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVarInForEach">
     <Id>RCS1009</Id>
     <Title>Use explicit type instead of 'var' (foreach variable).</Title>
     <Category>Readability</Category>
@@ -81,7 +81,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseVarInsteadOfExplicitType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseVarInsteadOfExplicitType">
     <Id>RCS1010</Id>
     <Title>Use 'var' instead of explicit type (when the type is obvious).</Title>
     <Category>Simplification</Category>
@@ -90,7 +90,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitTypeInsteadOfVarEvenIfObvious" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVarEvenIfObvious">
     <Id>RCS1012</Id>
     <Title>Use explicit type instead of 'var' (even if the type is obvious).</Title>
     <Category>Readability</Category>
@@ -99,7 +99,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UsePredefinedType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UsePredefinedType">
     <Id>RCS1013</Id>
     <Title>Use predefined type.</Title>
     <Category>Usage</Category>
@@ -108,7 +108,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidImplicitlyTypedArray" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AvoidImplicitlyTypedArray">
     <Id>RCS1014</Id>
     <Title>Avoid implicitly-typed array.</Title>
     <Category>Readability</Category>
@@ -117,7 +117,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseNameOfOperator" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseNameOfOperator">
     <Id>RCS1015</Id>
     <Title>Use nameof operator.</Title>
     <Category>Maintainability</Category>
@@ -126,7 +126,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExpressionBodiedMember" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseExpressionBodiedMember">
     <Id>RCS1016</Id>
     <Title>Use expression-bodied member.</Title>
     <Category>Usage</Category>
@@ -135,7 +135,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidMultilineExpressionBody" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AvoidMultilineExpressionBody">
     <Id>RCS1017</Id>
     <Title>Avoid multiline expression body.</Title>
     <Category>Style</Category>
@@ -144,7 +144,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddDefaultAccessModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddDefaultAccessModifier">
     <Id>RCS1018</Id>
     <Title>Add default access modifier.</Title>
     <Category>Readability</Category>
@@ -153,7 +153,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReorderModifiers" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="ReorderModifiers">
     <Id>RCS1019</Id>
     <Title>Reorder modifiers.</Title>
     <Category>Readability</Category>
@@ -162,7 +162,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyNullableOfT" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="SimplifyNullableOfT">
     <Id>RCS1020</Id>
     <Title>Simplify Nullable&lt;T&gt; to T?.</Title>
     <Category>Simplification</Category>
@@ -171,7 +171,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpression" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="SimplifyLambdaExpression">
     <Id>RCS1021</Id>
     <Title>Simplify lambda expression.</Title>
     <Category>Simplification</Category>
@@ -180,7 +180,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpressionParameterList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="SimplifyLambdaExpressionParameterList">
     <Id>RCS1022</Id>
     <Title>Simplify lambda expression parameter list.</Title>
     <Category>Simplification</Category>
@@ -189,7 +189,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEmptyBlock" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatEmptyBlock">
     <Id>RCS1023</Id>
     <Title>Format empty block.</Title>
     <Category>Formatting</Category>
@@ -198,7 +198,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatAccessorList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatAccessorList">
     <Id>RCS1024</Id>
     <Title>Format accessor list.</Title>
     <Category>Formatting</Category>
@@ -207,7 +207,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine">
     <Id>RCS1025</Id>
     <Title>Format each enum member on a separate line.</Title>
     <Category>Formatting</Category>
@@ -216,7 +216,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEachStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatEachStatementOnSeparateLine">
     <Id>RCS1026</Id>
     <Title>Format each statement on a separate line.</Title>
     <Category>Formatting</Category>
@@ -225,7 +225,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine">
     <Id>RCS1027</Id>
     <Title>Format embedded statement on a separate line.</Title>
     <Category>Formatting</Category>
@@ -234,7 +234,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatSwitchSectionStatementOnSeparateLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatSwitchSectionStatementOnSeparateLine">
     <Id>RCS1028</Id>
     <Title>Format switch section's statement on a separate line.</Title>
     <Category>Formatting</Category>
@@ -243,7 +243,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatBinaryOperatorOnNextLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="FormatBinaryOperatorOnNextLine">
     <Id>RCS1029</Id>
     <Title>Format binary operator on next line.</Title>
     <Category>Formatting</Category>
@@ -252,7 +252,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement">
     <Id>RCS1030</Id>
     <Title>Add empty line after embedded statement.</Title>
     <Category>Formatting</Category>
@@ -261,7 +261,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantParentheses" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveRedundantParentheses">
     <Id>RCS1032</Id>
     <Title>Remove redundant parentheses.</Title>
     <Category>Redundancy</Category>
@@ -270,7 +270,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBooleanLiteral" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveRedundantBooleanLiteral">
     <Id>RCS1033</Id>
     <Title>Remove redundant boolean literal.</Title>
     <Category>Redundancy</Category>
@@ -279,7 +279,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantSealedModifier" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveRedundantSealedModifier">
     <Id>RCS1034</Id>
     <Title>Remove redundant sealed modifier.</Title>
     <Category>Redundancy</Category>
@@ -288,7 +288,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantCommaInInitializer" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveRedundantCommaInInitializer">
     <Id>RCS1035</Id>
     <Title>Remove redundant comma in initializer.</Title>
     <Category>Redundancy</Category>
@@ -297,7 +297,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantEmptyLine" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveRedundantEmptyLine">
     <Id>RCS1036</Id>
     <Title>Remove redundant empty line.</Title>
     <Category>Redundancy</Category>
@@ -306,7 +306,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveTrailingWhitespace" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveTrailingWhitespace">
     <Id>RCS1037</Id>
     <Title>Remove trailing white-space.</Title>
     <Category>Redundancy</Category>
@@ -315,7 +315,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveEmptyStatement">
     <Id>RCS1038</Id>
     <Title>Remove empty statement.</Title>
     <Category>Redundancy</Category>
@@ -324,7 +324,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyAttributeArgumentList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveEmptyAttributeArgumentList">
     <Id>RCS1039</Id>
     <Title>Remove empty attribute argument list.</Title>
     <Category>Redundancy</Category>
@@ -333,7 +333,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyElseClause" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveEmptyElseClause">
     <Id>RCS1040</Id>
     <Title>Remove empty else clause.</Title>
     <Category>Redundancy</Category>
@@ -342,7 +342,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyInitializer" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveEmptyInitializer">
     <Id>RCS1041</Id>
     <Title>Remove empty initializer.</Title>
     <Category>Redundancy</Category>
@@ -351,7 +351,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEnumDefaultUnderlyingType" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveEnumDefaultUnderlyingType">
     <Id>RCS1042</Id>
     <Title>Remove enum default underlying type.</Title>
     <Category>Redundancy</Category>
@@ -360,7 +360,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart">
     <Id>RCS1043</Id>
     <Title>Remove partial modifier from type with a single part.</Title>
     <Category>Redundancy</Category>
@@ -369,7 +369,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveOriginalExceptionFromThrowStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RemoveOriginalExceptionFromThrowStatement">
     <Id>RCS1044</Id>
     <Title>Remove original exception from throw statement.</Title>
     <Category>Maintainability</Category>
@@ -378,7 +378,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RenamePrivateFieldAccordingToCamelCaseWithUnderscore" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="RenamePrivateFieldAccordingToCamelCaseWithUnderscore">
     <Id>RCS1045</Id>
     <Title>Rename private field according to camel case with underscore.</Title>
     <Category>Naming</Category>
@@ -387,7 +387,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AsynchronousMethodNameShouldEndWithAsync" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AsynchronousMethodNameShouldEndWithAsync">
     <Id>RCS1046</Id>
     <Title>Asynchronous method name should end with 'Async'.</Title>
     <Category>Naming</Category>
@@ -396,7 +396,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="NonAsynchronousMethodNameShouldNotEndWithAsync" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="NonAsynchronousMethodNameShouldNotEndWithAsync">
     <Id>RCS1047</Id>
     <Title>Non-asynchronous method name should not end with 'Async'.</Title>
     <Category>Naming</Category>
@@ -405,7 +405,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseLambdaExpressionInsteadOfAnonymousMethod" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="UseLambdaExpressionInsteadOfAnonymousMethod">
     <Id>RCS1048</Id>
     <Title>Use lambda expression instead of anonymous method.</Title>
     <Category>Usage</Category>
@@ -414,7 +414,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyBooleanComparison" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="SimplifyBooleanComparison">
     <Id>RCS1049</Id>
     <Title>Simplify boolean comparison.</Title>
     <Category>Simplification</Category>
@@ -423,7 +423,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddConstructorArgumentList" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="AddConstructorArgumentList">
     <Id>RCS1050</Id>
     <Title>Add constructor argument list.</Title>
     <Category>Style</Category>
@@ -432,7 +432,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ParenthesizeConditionInConditionalExpression" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="ParenthesizeConditionInConditionalExpression">
     <Id>RCS1051</Id>
     <Title>Parenthesize condition in conditional expression.</Title>
     <Category>Style</Category>
@@ -441,7 +441,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareEachAttributeSeparately" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="DeclareEachAttributeSeparately">
     <Id>RCS1052</Id>
     <Title>Declare each attribute separately.</Title>
     <Category>Readability</Category>
@@ -450,7 +450,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement" ExtensionVersion="0.9.0" NuGetVersion="0.9.0">
+  <Analyzer Identifier="MergeLocalDeclarationWithReturnStatement">
     <Id>RCS1054</Id>
     <Title>Merge local declaration with return statement.</Title>
     <Category>Simplification</Category>
@@ -459,7 +459,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidSemicolonAtEndOfDeclaration" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AvoidSemicolonAtEndOfDeclaration">
     <Id>RCS1055</Id>
     <Title>Avoid semicolon at the end of declaration.</Title>
     <Category>Redundancy</Category>
@@ -468,7 +468,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfUsingAliasDirective" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AvoidUsageOfUsingAliasDirective">
     <Id>RCS1056</Id>
     <Title>Avoid usage of using alias directive.</Title>
     <Category>Readability</Category>
@@ -477,7 +477,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarations" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AddEmptyLineBetweenDeclarations">
     <Id>RCS1057</Id>
     <Title>Add empty line between declarations.</Title>
     <Category>Formatting</Category>
@@ -486,7 +486,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCompoundAssignment" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="UseCompoundAssignment">
     <Id>RCS1058</Id>
     <Title>Use compound assignment.</Title>
     <Category>Simplification</Category>
@@ -495,7 +495,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidLockingOnPubliclyAccessibleInstance" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="AvoidLockingOnPubliclyAccessibleInstance">
     <Id>RCS1059</Id>
     <Title>Avoid locking on publicly accessible instance.</Title>
     <Category>Design</Category>
@@ -504,7 +504,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareEachTypeInSeparateFile" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="DeclareEachTypeInSeparateFile">
     <Id>RCS1060</Id>
     <Title>Declare each type in separate file.</Title>
     <Category>Maintainability</Category>
@@ -513,7 +513,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement" ExtensionVersion="0.9.20" NuGetVersion="0.9.20">
+  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement">
     <Id>RCS1061</Id>
     <Title>Merge if statement with nested if statement.</Title>
     <Category>Simplification</Category>
@@ -522,7 +522,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolation" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
+  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolation">
     <Id>RCS1062</Id>
     <Title>Avoid interpolated string with no interpolation.</Title>
     <Category>Redundancy</Category>
@@ -531,7 +531,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
+  <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop">
     <Id>RCS1063</Id>
     <Title>Avoid usage of do statement to create an infinite loop.</Title>
     <Category>Style</Category>
@@ -540,7 +540,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfForStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
+  <Analyzer Identifier="AvoidUsageOfForStatementToCreateInfiniteLoop">
     <Id>RCS1064</Id>
     <Title>Avoid usage of for statement to create an infinite loop.</Title>
     <Category>Style</Category>
@@ -549,7 +549,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidUsageOfWhileStatementToCreateInfiniteLoop" ExtensionVersion="0.9.30" NuGetVersion="0.9.30">
+  <Analyzer Identifier="AvoidUsageOfWhileStatementToCreateInfiniteLoop">
     <Id>RCS1065</Id>
     <Title>Avoid usage of while statement to create an inifinite loop.</Title>
     <Category>Style</Category>
@@ -558,7 +558,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyFinallyClause" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveEmptyFinallyClause">
     <Id>RCS1066</Id>
     <Title>Remove empty finally clause.</Title>
     <Category>Redundancy</Category>
@@ -567,7 +567,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyArgumentList" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveEmptyArgumentList">
     <Id>RCS1067</Id>
     <Title>Remove empty argument list.</Title>
     <Category>Style</Category>
@@ -576,7 +576,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLogicalNotExpression" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="SimplifyLogicalNotExpression">
     <Id>RCS1068</Id>
     <Title>Simplify logical not expression.</Title>
     <Category>Simplification</Category>
@@ -585,7 +585,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveUnnecessaryCaseLabel" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveUnnecessaryCaseLabel">
     <Id>RCS1069</Id>
     <Title>Remove unnecessary case label.</Title>
     <Category>Redundancy</Category>
@@ -594,7 +594,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantDefaultSwitchSection" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveRedundantDefaultSwitchSection">
     <Id>RCS1070</Id>
     <Title>Remove redundant default switch section.</Title>
     <Category>Redundancy</Category>
@@ -603,7 +603,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBaseConstructorCall" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveRedundantBaseConstructorCall">
     <Id>RCS1071</Id>
     <Title>Remove redundant base constructor call.</Title>
     <Category>Redundancy</Category>
@@ -612,7 +612,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyNamespaceDeclaration" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveEmptyNamespaceDeclaration">
     <Id>RCS1072</Id>
     <Title>Remove empty namespace declaration.</Title>
     <Category>Redundancy</Category>
@@ -621,7 +621,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceIfStatementWithReturnStatement" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="ReplaceIfStatementWithReturnStatement">
     <Id>RCS1073</Id>
     <Title>Replace if statement with return statement.</Title>
     <Category>Simplification</Category>
@@ -630,7 +630,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantConstructor" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="RemoveRedundantConstructor">
     <Id>RCS1074</Id>
     <Title>Remove redundant constructor.</Title>
     <Category>Redundancy</Category>
@@ -639,7 +639,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmptyCatchClauseThatCatchesSystemException" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="AvoidEmptyCatchClauseThatCatchesSystemException">
     <Id>RCS1075</Id>
     <Title>Avoid empty catch clause that catches System.Exception.</Title>
     <Category>Design</Category>
@@ -648,7 +648,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatDeclarationBraces" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="FormatDeclarationBraces">
     <Id>RCS1076</Id>
     <Title>Format declaration braces.</Title>
     <Category>Formatting</Category>
@@ -657,7 +657,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLinqMethodChain" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="SimplifyLinqMethodChain">
     <Id>RCS1077</Id>
     <Title>Simplify LINQ method chain.</Title>
     <Category>Simplification</Category>
@@ -666,7 +666,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmpty">
     <Id>RCS1078</Id>
     <Title>Use "" instead of string.Empty.</Title>
     <Category>General</Category>
@@ -675,7 +675,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ThrowingOfNewNotImplementedException" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="ThrowingOfNewNotImplementedException">
     <Id>RCS1079</Id>
     <Title>Throwing of new NotImplementedException.</Title>
     <Category>General</Category>
@@ -684,7 +684,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfAnyMethod" ExtensionVersion="0.9.40" NuGetVersion="0.9.40">
+  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfAnyMethod">
     <Id>RCS1080</Id>
     <Title>Use 'Count/Length' property instead of 'Any' method.</Title>
     <Category>Performance</Category>
@@ -693,7 +693,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SplitVariableDeclaration" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="SplitVariableDeclaration">
     <Id>RCS1081</Id>
     <Title>Split variable declaration.</Title>
     <Category>Readability</Category>
@@ -702,7 +702,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod">
     <Id>RCS1082</Id>
     <Title>Use 'Count/Length' property instead of 'Count' method.</Title>
     <Category>Performance</Category>
@@ -711,7 +711,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseAnyMethodInsteadOfCountMethod" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseAnyMethodInsteadOfCountMethod">
     <Id>RCS1083</Id>
     <Title>Use 'Any' method instead of 'Count' method.</Title>
     <Category>Performance</Category>
@@ -720,7 +720,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCoalesceExpressionInsteadOfConditionalExpression" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseCoalesceExpressionInsteadOfConditionalExpression">
     <Id>RCS1084</Id>
     <Title>Use coalesce expression instead of conditional expression.</Title>
     <Category>Simplification</Category>
@@ -729,7 +729,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseAutoProperty" ExtensionVersion="0.9.50" NuGetVersion="0.9.50">
+  <Analyzer Identifier="UseAutoProperty">
     <Id>RCS1085</Id>
     <Title>Use auto-implemented property.</Title>
     <Category>Simplification</Category>
@@ -738,7 +738,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
+  <Analyzer Identifier="UseLinefeedAsNewLine">
     <Id>RCS1086</Id>
     <Title>Use linefeed as newline.</Title>
     <Category>General</Category>
@@ -747,7 +747,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
+  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
     <Id>RCS1087</Id>
     <Title>Use carriage return + linefeed as newline.</Title>
     <Category>General</Category>
@@ -756,7 +756,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseSpacesInsteadOfTab" ExtensionVersion="1.0.2" NuGetVersion="1.1.0">
+  <Analyzer Identifier="UseSpacesInsteadOfTab">
     <Id>RCS1088</Id>
     <Title>Use space(s) instead of tab.</Title>
     <Category>General</Category>
@@ -765,7 +765,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
+  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment">
     <Id>RCS1089</Id>
     <Title>Use postfix unary operator instead of assignment.</Title>
     <Category>Simplification</Category>
@@ -774,7 +774,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CallConfigureAwait" ExtensionVersion="1.0.3" NuGetVersion="1.1.0">
+  <Analyzer Identifier="CallConfigureAwait">
     <Id>RCS1090</Id>
     <Title>Call 'ConfigureAwait(false)'.</Title>
     <Category>Design</Category>
@@ -783,7 +783,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyRegion" ExtensionVersion="1.0.6" NuGetVersion="1.1.0">
+  <Analyzer Identifier="RemoveEmptyRegion">
     <Id>RCS1091</Id>
     <Title>Remove empty region.</Title>
     <Category>Redundancy</Category>
@@ -792,7 +792,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement" ExtensionVersion="1.0.8" NuGetVersion="1.1.0">
+  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement">
     <Id>RCS1092</Id>
     <Title>Add empty line after last statement in do statement.</Title>
     <Category>Formatting</Category>
@@ -801,7 +801,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveFileWithNoCode" ExtensionVersion="1.1.1" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveFileWithNoCode">
     <Id>RCS1093</Id>
     <Title>Remove file with no code.</Title>
     <Category>Redundancy</Category>
@@ -810,7 +810,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareUsingDirectiveOnTopLevel" ExtensionVersion="1.1.1" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DeclareUsingDirectiveOnTopLevel">
     <Id>RCS1094</Id>
     <Title>Declare using directive on top level.</Title>
     <Category>Readability</Category>
@@ -819,7 +819,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCSharp6DictionaryInitializer" ExtensionVersion="1.1.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCSharp6DictionaryInitializer">
     <Id>RCS1095</Id>
     <Title>Use C# 6.0 dictionary initializer.</Title>
     <Category>Usage</Category>
@@ -828,7 +828,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseBitwiseOperationInsteadOfCallingHasFlag" ExtensionVersion="1.1.2" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseBitwiseOperationInsteadOfCallingHasFlag">
     <Id>RCS1096</Id>
     <Title>Use bitwise operation instead of calling 'HasFlag'.</Title>
     <Category>Performance</Category>
@@ -837,7 +837,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantToStringCall" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantToStringCall">
     <Id>RCS1097</Id>
     <Title>Remove redundant 'ToString' call.</Title>
     <Category>Redundancy</Category>
@@ -846,7 +846,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression">
     <Id>RCS1098</Id>
     <Title>Avoid 'null' on the left side of a binary expression.</Title>
     <Category>Readability</Category>
@@ -855,7 +855,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DefaultLabelShouldBeLastLabelInSwitchSection" ExtensionVersion="1.1.3" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DefaultLabelShouldBeLastLabelInSwitchSection">
     <Id>RCS1099</Id>
     <Title>Default label should be last label in switch section.</Title>
     <Category>Readability</Category>
@@ -864,7 +864,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatDocumentationSummaryOnSingleLine" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="FormatDocumentationSummaryOnSingleLine">
     <Id>RCS1100</Id>
     <Title>Format documentation summary on a single line.</Title>
     <Category>Formatting</Category>
@@ -873,7 +873,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatDocumentationSummaryOnMultipleLines" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="FormatDocumentationSummaryOnMultipleLines">
     <Id>RCS1101</Id>
     <Title>Format documentation summary on multiple lines.</Title>
     <Category>Formatting</Category>
@@ -882,7 +882,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkClassAsStatic" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MarkClassAsStatic">
     <Id>RCS1102</Id>
     <Title>Mark class as static.</Title>
     <Category>Design</Category>
@@ -891,7 +891,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceIfStatementWithAssignment" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ReplaceIfStatementWithAssignment">
     <Id>RCS1103</Id>
     <Title>Replace if statement with assignment.</Title>
     <Category>Simplification</Category>
@@ -900,7 +900,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyConditionalExpression" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="SimplifyConditionalExpression">
     <Id>RCS1104</Id>
     <Title>Simplify conditional expression.</Title>
     <Category>Simplification</Category>
@@ -909,7 +909,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeInterpolationIntoInterpolatedString" ExtensionVersion="1.1.4" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MergeInterpolationIntoInterpolatedString">
     <Id>RCS1105</Id>
     <Title>Merge interpolation into interpolated string.</Title>
     <Category>Simplification</Category>
@@ -918,7 +918,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyDestructor" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveEmptyDestructor">
     <Id>RCS1106</Id>
     <Title>Remove empty destructor.</Title>
     <Category>Redundancy</Category>
@@ -927,7 +927,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantStringToCharArrayCall" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantStringToCharArrayCall">
     <Id>RCS1107</Id>
     <Title>Remove redundant 'ToCharArray' call.</Title>
     <Category>Redundancy</Category>
@@ -936,7 +936,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations">
     <Id>RCS1108</Id>
     <Title>Add static modifier to all partial class declarations.</Title>
     <Category>Readability</Category>
@@ -945,7 +945,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCastMethodInsteadOfSelectMethod" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCastMethodInsteadOfSelectMethod">
     <Id>RCS1109</Id>
     <Title>Use 'Cast' method instead of 'Select' method.</Title>
     <Category>Simplification</Category>
@@ -954,7 +954,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareTypeInsideNamespace" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DeclareTypeInsideNamespace">
     <Id>RCS1110</Id>
     <Title>Declare type inside namespace.</Title>
     <Category>Design</Category>
@@ -963,7 +963,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddBracesToSwitchSectionWithMultipleStatements" ExtensionVersion="1.1.5" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddBracesToSwitchSectionWithMultipleStatements">
     <Id>RCS1111</Id>
     <Title>Add braces to switch section with multiple statements.</Title>
     <Category>Style</Category>
@@ -972,7 +972,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CombineEnumerableWhereMethodChain" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
+  <Analyzer Identifier="CombineEnumerableWhereMethodChain">
     <Id>RCS1112</Id>
     <Title>Combine 'Enumerable.Where' method chain.</Title>
     <Category>Simplification</Category>
@@ -981,7 +981,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseStringIsNullOrEmptyMethod" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseStringIsNullOrEmptyMethod">
     <Id>RCS1113</Id>
     <Title>Use 'string.IsNullOrEmpty' method.</Title>
     <Category>Usage</Category>
@@ -990,7 +990,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantDelegateCreation" ExtensionVersion="1.1.6" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantDelegateCreation">
     <Id>RCS1114</Id>
     <Title>Remove redundant delegate creation.</Title>
     <Category>Redundancy</Category>
@@ -999,7 +999,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceReturnStatementWithExpressionStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ReplaceReturnStatementWithExpressionStatement">
     <Id>RCS1115</Id>
     <Title>Replace yield/return statement with expression statement.</Title>
     <Category>ErrorFix</Category>
@@ -1008,7 +1008,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddBreakStatementToSwitchSection" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddBreakStatementToSwitchSection">
     <Id>RCS1116</Id>
     <Title>Add break statement to switch section.</Title>
     <Category>ErrorFix</Category>
@@ -1017,7 +1017,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddReturnStatementThatReturnsDefaultValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddReturnStatementThatReturnsDefaultValue">
     <Id>RCS1117</Id>
     <Title>Add return statement that returns default value.</Title>
     <Category>ErrorFix</Category>
@@ -1026,7 +1026,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkLocalVariableAsConst" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MarkLocalVariableAsConst">
     <Id>RCS1118</Id>
     <Title>Mark local variable as const.</Title>
     <Category>General</Category>
@@ -1035,7 +1035,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CallFindMethodInsteadOfFirstOrDefaultMethod" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="CallFindMethodInsteadOfFirstOrDefaultMethod">
     <Id>RCS1119</Id>
     <Title>Call 'Find' method instead of 'FirstOrDefault' method.</Title>
     <Category>Performance</Category>
@@ -1044,7 +1044,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseElementAccessInsteadOfElementAt" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseElementAccessInsteadOfElementAt">
     <Id>RCS1120</Id>
     <Title>Use [] instead of calling 'ElementAt'.</Title>
     <Category>Performance</Category>
@@ -1053,7 +1053,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseElementAccessInsteadOfFirst" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseElementAccessInsteadOfFirst">
     <Id>RCS1121</Id>
     <Title>Use [] instead of calling 'First'.</Title>
     <Category>Performance</Category>
@@ -1062,7 +1062,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddMissingSemicolon" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddMissingSemicolon">
     <Id>RCS1122</Id>
     <Title>Add missing semicolon.</Title>
     <Category>ErrorFix</Category>
@@ -1071,7 +1071,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddParenthesesAccordingToOperatorPrecedence" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddParenthesesAccordingToOperatorPrecedence">
     <Id>RCS1123</Id>
     <Title>Add parentheses according to operator precedence.</Title>
     <Category>Readability</Category>
@@ -1080,7 +1080,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="InlineLocalVariable" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="InlineLocalVariable">
     <Id>RCS1124</Id>
     <Title>Inline local variable.</Title>
     <Category>Simplification</Category>
@@ -1089,7 +1089,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkMemberAsStatic" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MarkMemberAsStatic">
     <Id>RCS1125</Id>
     <Title>Mark member as static.</Title>
     <Category>ErrorFix</Category>
@@ -1098,7 +1098,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmbeddedStatementInIfElse" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidEmbeddedStatementInIfElse">
     <Id>RCS1126</Id>
     <Title>Avoid embedded statement in if-else.</Title>
     <Category>Style</Category>
@@ -1107,7 +1107,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeLocalDeclarationWithInitialization" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MergeLocalDeclarationWithInitialization">
     <Id>RCS1127</Id>
     <Title>Merge local declaration with initialization.</Title>
     <Category>Simplification</Category>
@@ -1116,7 +1116,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCoalesceExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCoalesceExpression">
     <Id>RCS1128</Id>
     <Title>Use coalesce expression.</Title>
     <Category>Simplification</Category>
@@ -1125,7 +1125,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantFieldInitialization" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantFieldInitialization">
     <Id>RCS1129</Id>
     <Title>Remove redundant field initalization.</Title>
     <Category>Redundancy</Category>
@@ -1134,7 +1134,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="BitwiseOperationOnEnumWithoutFlagsAttribute" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="BitwiseOperationOnEnumWithoutFlagsAttribute">
     <Id>RCS1130</Id>
     <Title>Bitwise operation on enum without Flags attribute.</Title>
     <Category>General</Category>
@@ -1143,7 +1143,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceReturnWithYieldReturn" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ReplaceReturnWithYieldReturn">
     <Id>RCS1131</Id>
     <Title>Replace return with yield return.</Title>
     <Category>ErrorFix</Category>
@@ -1152,7 +1152,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantOverridingMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantOverridingMember">
     <Id>RCS1132</Id>
     <Title>Remove redundant overriding member.</Title>
     <Category>Redundancy</Category>
@@ -1161,7 +1161,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantDisposeOrCloseCall" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantDisposeOrCloseCall">
     <Id>RCS1133</Id>
     <Title>Remove redundant Dispose/Close call.</Title>
     <Category>Redundancy</Category>
@@ -1170,7 +1170,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantContinueStatement" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantContinueStatement">
     <Id>RCS1134</Id>
     <Title>Remove redundant continue statement.</Title>
     <Category>Redundancy</Category>
@@ -1179,7 +1179,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="DeclareEnumMemberWithZeroValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="DeclareEnumMemberWithZeroValue">
     <Id>RCS1135</Id>
     <Title>Declare enum member with zero value (when enum has FlagsAttribute).</Title>
     <Category>Design</Category>
@@ -1188,7 +1188,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeSwitchSectionsWithEquivalentContent" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MergeSwitchSectionsWithEquivalentContent">
     <Id>RCS1136</Id>
     <Title>Merge switch sections with equivalent content.</Title>
     <Category>Simplification</Category>
@@ -1197,7 +1197,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddDocumentationComment">
     <Id>RCS1137</Id>
     <Title>Add documentation comment to publicly visible type or member.</Title>
     <Category>Maintainability</Category>
@@ -1206,7 +1206,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddSummaryToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddSummaryToDocumentationComment">
     <Id>RCS1138</Id>
     <Title>Add summary to documentation comment.</Title>
     <Category>Maintainability</Category>
@@ -1215,7 +1215,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddSummaryElementToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddSummaryElementToDocumentationComment">
     <Id>RCS1139</Id>
     <Title>Add summary element to documentation comment.</Title>
     <Category>Maintainability</Category>
@@ -1224,7 +1224,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddExceptionToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddExceptionToDocumentationComment">
     <Id>RCS1140</Id>
     <Title>Add exception to documentation comment.</Title>
     <Category>Maintainability</Category>
@@ -1233,7 +1233,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddParameterToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddParameterToDocumentationComment">
     <Id>RCS1141</Id>
     <Title>Add parameter to documentation comment.</Title>
     <Category>Maintainability</Category>
@@ -1242,7 +1242,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddTypeParameterToDocumentationComment" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddTypeParameterToDocumentationComment">
     <Id>RCS1142</Id>
     <Title>Add type parameter to documentation comment.</Title>
     <Category>Maintainability</Category>
@@ -1251,7 +1251,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyCoalesceExpression" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="SimplifyCoalesceExpression">
     <Id>RCS1143</Id>
     <Title>Simplify coalesce expression.</Title>
     <Category>Simplification</Category>
@@ -1260,7 +1260,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkContainingClassAsAbstract" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MarkContainingClassAsAbstract">
     <Id>RCS1144</Id>
     <Title>Mark containing class as abstract.</Title>
     <Category>ErrorFix</Category>
@@ -1269,7 +1269,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantAsOperator" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantAsOperator">
     <Id>RCS1145</Id>
     <Title>Remove redundant 'as' operator.</Title>
     <Category>Redundancy</Category>
@@ -1278,7 +1278,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseConditionalAccess" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseConditionalAccess">
     <Id>RCS1146</Id>
     <Title>Use conditional access.</Title>
     <Category>Usage</Category>
@@ -1287,7 +1287,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveInapplicableModifier" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveInapplicableModifier">
     <Id>RCS1147</Id>
     <Title>Remove inapplicable modifier.</Title>
     <Category>ErrorFix</Category>
@@ -1296,7 +1296,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveUnreachableCode" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveUnreachableCode">
     <Id>RCS1148</Id>
     <Title>Remove unreachable code.</Title>
     <Category>General</Category>
@@ -1305,7 +1305,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveImplementationFromAbstractMember" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveImplementationFromAbstractMember">
     <Id>RCS1149</Id>
     <Title>Remove implementation from abstract member.</Title>
     <Category>ErrorFix</Category>
@@ -1314,7 +1314,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CallStringConcatInsteadOfStringJoin" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="CallStringConcatInsteadOfStringJoin">
     <Id>RCS1150</Id>
     <Title>Call string.Concat instead of string.Join.</Title>
     <Category>Simplification</Category>
@@ -1323,7 +1323,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantCast" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantCast">
     <Id>RCS1151</Id>
     <Title>Remove redundant cast.</Title>
     <Category>Redundancy</Category>
@@ -1332,7 +1332,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType">
     <Id>RCS1152</Id>
     <Title>Member type must match overriden member type.</Title>
     <Category>ErrorFix</Category>
@@ -1341,7 +1341,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterClosingBrace" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AddEmptyLineAfterClosingBrace">
     <Id>RCS1153</Id>
     <Title>Add empty line after closing brace.</Title>
     <Category>Formatting</Category>
@@ -1350,7 +1350,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SortEnumMembers" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="SortEnumMembers">
     <Id>RCS1154</Id>
     <Title>Sort enum members.</Title>
     <Category>Readability</Category>
@@ -1359,7 +1359,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseStringComparison" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseStringComparison">
     <Id>RCS1155</Id>
     <Title>Use StringComparison when comparing strings.</Title>
     <Category>Usage</Category>
@@ -1368,7 +1368,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString">
     <Id>RCS1156</Id>
     <Title>Use string.Length instead of comparison with empty string.</Title>
     <Category>Usage</Category>
@@ -1377,7 +1377,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CompositeEnumValueContainsUndefinedFlag" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="CompositeEnumValueContainsUndefinedFlag">
     <Id>RCS1157</Id>
     <Title>Composite enum value contains undefined flag.</Title>
     <Category>Design</Category>
@@ -1386,7 +1386,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidStaticMembersInGenericTypes" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidStaticMembersInGenericTypes">
     <Id>RCS1158</Id>
     <Title>Avoid static members in generic types.</Title>
     <Category>Design</Category>
@@ -1395,7 +1395,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseGenericEventHandler" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseGenericEventHandler">
     <Id>RCS1159</Id>
     <Title>Use EventHandler&lt;T&gt;.</Title>
     <Category>Usage</Category>
@@ -1404,7 +1404,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AbstractTypeShouldNotHavePublicConstructors" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AbstractTypeShouldNotHavePublicConstructors">
     <Id>RCS1160</Id>
     <Title>Abstract type should not have public constructors.</Title>
     <Category>Design</Category>
@@ -1413,7 +1413,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="EnumMemberShouldDeclareExplicitValue" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="EnumMemberShouldDeclareExplicitValue">
     <Id>RCS1161</Id>
     <Title>Enum member should declare explicit value.</Title>
     <Category>Readability</Category>
@@ -1422,7 +1422,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidChainOfAssignments" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="AvoidChainOfAssignments">
     <Id>RCS1162</Id>
     <Title>Avoid chain of assignments.</Title>
     <Category>Readability</Category>
@@ -1431,7 +1431,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UnusedParameter" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UnusedParameter">
     <Id>RCS1163</Id>
     <Title>Unused parameter.</Title>
     <Category>Redundancy</Category>
@@ -1440,7 +1440,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UnusedTypeParameter" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UnusedTypeParameter">
     <Id>RCS1164</Id>
     <Title>Unused type parameter.</Title>
     <Category>Redundancy</Category>
@@ -1449,7 +1449,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UnconstrainedTypeParameterCheckedForNull" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UnconstrainedTypeParameterCheckedForNull">
     <Id>RCS1165</Id>
     <Title>Unconstrained type parameter checked for null.</Title>
     <Category>Usage</Category>
@@ -1458,7 +1458,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ValueTypeCheckedForNull" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ValueTypeCheckedForNull">
     <Id>RCS1166</Id>
     <Title>Value type checked for null.</Title>
     <Category>Usage</Category>
@@ -1467,7 +1467,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="OverridingMemberCannotChangeAccessModifiers" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="OverridingMemberCannotChangeAccessModifiers">
     <Id>RCS1167</Id>
     <Title>Overriding member cannot change access modifiers.</Title>
     <Category>ErrorFix</Category>
@@ -1476,7 +1476,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ParameterNameDiffersFromBase" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="ParameterNameDiffersFromBase">
     <Id>RCS1168</Id>
     <Title>Parameter name differs from base name.</Title>
     <Category>Maintainability</Category>
@@ -1485,7 +1485,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkFieldAsReadOnly" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="MarkFieldAsReadOnly">
     <Id>RCS1169</Id>
     <Title>Mark field as read-only.</Title>
     <Category>Design</Category>
@@ -1494,7 +1494,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseReadOnlyAutoProperty" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseReadOnlyAutoProperty">
     <Id>RCS1170</Id>
     <Title>Use read-only auto-implemented property.</Title>
     <Category>Design</Category>
@@ -1503,7 +1503,7 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLazilyInitializedProperty" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="SimplifyLazilyInitializedProperty">
     <Id>RCS1171</Id>
     <Title>Simplify lazily initialized property.</Title>
     <Category>Simplification</Category>
@@ -1512,7 +1512,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseIsOperatorInsteadOfAsOperator" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseIsOperatorInsteadOfAsOperator">
     <Id>RCS1172</Id>
     <Title>Use is operator instead of as operator.</Title>
     <Category>Simplification</Category>
@@ -1521,7 +1521,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCoalesceExpressionInsteadOfIf" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UseCoalesceExpressionInsteadOfIf">
     <Id>RCS1173</Id>
     <Title>Use coalesce expression instead of if.</Title>
     <Category>Simplification</Category>
@@ -1530,7 +1530,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantAsyncAwait" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="RemoveRedundantAsyncAwait">
     <Id>RCS1174</Id>
     <Title>Remove redundant async/await.</Title>
     <Category>Redundancy</Category>
@@ -1539,7 +1539,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UnusedThisParameter" ExtensionVersion="0.0.0" NuGetVersion="0.0.0">
+  <Analyzer Identifier="UnusedThisParameter">
     <Id>RCS1175</Id>
     <Title>Unused this parameter.</Title>
     <Category>Redundancy</Category>
