@@ -8,36 +8,48 @@ namespace Roslynator.CSharp.Analyzers.Test
 #pragma warning disable RCS1002, RCS1016
     public static class UseCoalesceExpression
     {
-        private static void Foo(string value, string value2)
+        private static void IfStatement()
         {
+            string x = null;
+            string y = null;
+
             // a
-            if (value == null)
+            if (x == null)
             {
                 // b
-                value = "";
+                x = (true) ? "" : "";
             }
 
-            if (value2 == null)
-                value2 = "";
+            if (y == null)
+                y = "";
+        }
 
+        private static void LocalDeclarationStatement()
+        {
             string x = GetValueOrDefault();
 
             if (x == null)
             {
-                x = "";
-            }
-
-            x = GetValueOrDefault();
-
-            if (x == null)
-            {
-                x = "";
+                x = (true) ? "" : "";
             }
 
             string y = GetValueOrDefault();
 
             if (y == null)
                 y = "";
+        }
+
+        private static void ExpressionStatement()
+        {
+            string x = null;
+            string y = null;
+
+            x = GetValueOrDefault();
+
+            if (x == null)
+            {
+                x = (true) ? "" : "";
+            }
 
             y = GetValueOrDefault();
 
@@ -46,15 +58,15 @@ namespace Roslynator.CSharp.Analyzers.Test
                 y = "";
         }
 
-        private static void Foo(string value)
+        private static void SingleIfStatement(string value)
         {
             if (value == null)
             {
-                value = "";
+                value = (true) ? "" : "";
             }
         }
 
-        private static void Foo2(string value)
+        private static void SingleIfStatement2(string value)
         {
             if (value == null)
                 value = "";

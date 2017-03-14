@@ -215,9 +215,18 @@ namespace Roslynator.CSharp.Refactorings
                             ExpressionSyntax left = assignment.Left;
                             ExpressionSyntax right = assignment.Right;
 
-                            BinaryExpressionSyntax coalesceExpression = CoalesceExpression(
-                                left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
-                                right.WithLeadingTrivia(Space));
+                            ParenthesizedExpressionSyntax newLeft = left
+                                .WithoutLeadingTrivia()
+                                .WithTrailingTrivia(Space)
+                                .Parenthesize(moveTrivia: true)
+                                .WithSimplifierAnnotation();
+
+                            ParenthesizedExpressionSyntax newRight = right
+                                    .WithLeadingTrivia(Space)
+                                    .Parenthesize(moveTrivia: true)
+                                    .WithSimplifierAnnotation();
+
+                            BinaryExpressionSyntax coalesceExpression = CoalesceExpression(newLeft, newRight);
 
                             AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
 
@@ -280,11 +289,17 @@ namespace Roslynator.CSharp.Refactorings
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-            ExpressionSyntax right = assignment.Right;
+            ExpressionSyntax left = expression
+                .WithoutTrailingTrivia()
+                .Parenthesize(moveTrivia: true)
+                .WithSimplifierAnnotation();
 
-            BinaryExpressionSyntax newNode = CoalesceExpression(
-                expression.WithoutTrailingTrivia(),
-                right.WithTrailingTrivia(expression.GetTrailingTrivia()));
+            ExpressionSyntax right = assignment.Right
+                .WithTrailingTrivia(expression.GetTrailingTrivia())
+                .Parenthesize(moveTrivia: true)
+                .WithSimplifierAnnotation();
+
+            BinaryExpressionSyntax newNode = CoalesceExpression(left, right);
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 
