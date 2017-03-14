@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -30,12 +31,17 @@ namespace Roslynator.CSharp.Refactorings.If
             get { return "Use coalesce expression"; }
         }
 
+        public override bool IsYield
+        {
+            get { return false; }
+        }
+
         protected override StatementSyntax CreateStatement(ExpressionSyntax expression)
         {
             return ReturnStatement(expression);
         }
 
-        public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken)
+        public override async Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken)
         {
             StatementContainer container = StatementContainer.Create(IfStatement);
 
@@ -43,10 +49,17 @@ namespace Roslynator.CSharp.Refactorings.If
 
             int index = statements.IndexOf(IfStatement);
 
+            ExpressionSyntax left = Left.WithoutTrivia();
+            ExpressionSyntax right = Right.WithoutTrivia();
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            right = AddCastExpressionIfNecessary(right, semanticModel, IfStatement.SpanStart, cancellationToken);
+
             StatementSyntax newNode = CreateStatement(
                 CoalesceExpression(
-                    Left.WithoutTrivia().Parenthesize().WithSimplifierAnnotation(),
-                    Right.WithoutTrivia().Parenthesize().WithSimplifierAnnotation()));
+                    left.Parenthesize().WithSimplifierAnnotation(),
+                    right.Parenthesize().WithSimplifierAnnotation()));
 
             newNode = newNode
                 .WithLeadingTrivia(IfStatement.GetLeadingTrivia())
@@ -57,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 .RemoveAt(index)
                 .ReplaceAt(index, newNode);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
         }
     }
 }
