@@ -55,28 +55,33 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     var assignment = (AssignmentExpressionSyntax)expression;
 
-                                    if (assignment.Left?.IsEquivalentTo(left, topLevel: false) == true
-                                        && assignment.Right?.IsMissing == false
-                                        && !ifStatement.SpanContainsDirectives())
+                                    if (assignment.Left?.IsEquivalentTo(left, topLevel: false) == true)
                                     {
-                                        StatementSyntax statementToReport = ifStatement;
+                                        ExpressionSyntax assignmentRight = assignment.Right;
 
-                                        SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
-
-                                        if (statements.Any())
+                                        if (assignmentRight?.IsMissing == false
+                                            && assignmentRight.IsSingleLine()
+                                            && !ifStatement.SpanContainsDirectives())
                                         {
-                                            int index = statements.IndexOf(ifStatement);
+                                            StatementSyntax statementToReport = ifStatement;
 
-                                            if (index > 0)
+                                            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
+
+                                            if (statements.Any())
                                             {
-                                                StatementSyntax previousStatement = statements[index - 1];
+                                                int index = statements.IndexOf(ifStatement);
 
-                                                if (CanRefactor(previousStatement, ifStatement, left, ifStatement.Parent))
-                                                    statementToReport = previousStatement;
+                                                if (index > 0)
+                                                {
+                                                    StatementSyntax previousStatement = statements[index - 1];
+
+                                                    if (CanRefactor(previousStatement, ifStatement, left, ifStatement.Parent))
+                                                        statementToReport = previousStatement;
+                                                }
                                             }
-                                        }
 
-                                        context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, statementToReport);
+                                            context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, statementToReport);
+                                        }
                                     }
                                 }
                             }
