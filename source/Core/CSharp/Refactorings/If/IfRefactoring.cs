@@ -264,7 +264,7 @@ namespace Roslynator.CSharp.Refactorings.If
                     {
                         var ifStatement = (IfStatementSyntax)statement1;
 
-                        if (!IfElseChain.IsPartOfChain(ifStatement))
+                        if (ifStatement.IsSimpleIf())
                             return Analyze(ifStatement, (ReturnStatementSyntax)statement2, options, semanticModel, cancellationToken);
                     }
                 }

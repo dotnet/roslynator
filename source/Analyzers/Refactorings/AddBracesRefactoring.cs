@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement)
         {
             if (!statement.IsKind(SyntaxKind.IfStatement)
-                || !IfElseChain.IsPartOfChain((IfStatementSyntax)statement))
+                || ((IfStatementSyntax)statement).IsSimpleIf())
             {
                 StatementSyntax embeddedStatement = GetEmbeddedStatementThatShouldBeInsideBlock(statement);
 

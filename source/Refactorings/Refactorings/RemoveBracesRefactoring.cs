@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             bool success = false;
 
-            foreach (BlockSyntax block in IfElseChain.GetBlockStatements(topmostIf))
+            foreach (BlockSyntax block in GetBlockStatements(topmostIf))
             {
                 if (block == selectedBlock)
                 {
@@ -89,6 +89,17 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return success;
+        }
+
+        private static IEnumerable<BlockSyntax> GetBlockStatements(IfStatementSyntax ifStatement)
+        {
+            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
+            {
+                StatementSyntax statement = ifOrElse.Statement;
+
+                if (statement?.IsKind(SyntaxKind.Block) == true)
+                    yield return (BlockSyntax)statement;
+            }
         }
 
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)

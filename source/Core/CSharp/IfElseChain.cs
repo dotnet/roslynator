@@ -177,28 +177,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static IEnumerable<BlockSyntax> GetBlockStatements(IfStatementSyntax ifStatement)
-        {
-            foreach (IfStatementOrElseClause ifOrElse in GetChain(ifStatement))
-            {
-                StatementSyntax statement = ifOrElse.Statement;
-
-                if (statement?.IsKind(SyntaxKind.Block) == true)
-                    yield return (BlockSyntax)statement;
-            }
-        }
-
-        internal static IEnumerable<StatementSyntax> GetEmbeddedStatements(IfStatementSyntax ifStatement)
-        {
-            foreach (IfStatementOrElseClause ifOrElse in GetChain(ifStatement))
-            {
-                StatementSyntax statement = ifOrElse.Statement;
-
-                if (statement?.IsKind(SyntaxKind.Block) == false)
-                    yield return statement;
-            }
-        }
-
         public static IfStatementSyntax GetTopmostIf(ElseClauseSyntax elseClause)
         {
             if (elseClause == null)
@@ -219,7 +197,7 @@ namespace Roslynator.CSharp
 
             while (true)
             {
-                IfStatementSyntax parentIf = GetParentIf(ifStatement);
+                IfStatementSyntax parentIf = GetPreviousIf(ifStatement);
 
                 if (parentIf != null)
                 {
@@ -232,21 +210,6 @@ namespace Roslynator.CSharp
             }
 
             return ifStatement;
-        }
-
-        private static IfStatementSyntax GetParentIf(IfStatementSyntax ifStatement)
-        {
-            SyntaxNode parent = ifStatement.Parent;
-
-            if (parent?.IsKind(SyntaxKind.ElseClause) == true)
-            {
-                parent = parent.Parent;
-
-                if (parent?.IsKind(SyntaxKind.IfStatement) == true)
-                    return (IfStatementSyntax)parent;
-            }
-
-            return null;
         }
 
         public static bool IsTopmostIf(IfStatementSyntax ifStatement)
@@ -286,15 +249,6 @@ namespace Roslynator.CSharp
             }
 
             return null;
-        }
-
-        public static bool IsPartOfChain(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
-
-            return ifStatement.Else != null
-                || ifStatement.IsParentKind(SyntaxKind.ElseClause);
         }
 
         public static bool IsEndOfChain(ElseClauseSyntax elseClause)

@@ -41,13 +41,13 @@ namespace Roslynator.CSharp.Refactorings.If
             }
             else
             {
-                if (IfElseChain.IsPartOfChain(ifStatement))
+                if (ifStatement.IsSimpleIf())
                 {
-                    return new IfElseToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
+                    return new IfReturnToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
                 }
                 else
                 {
-                    return new IfReturnToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
+                    return new IfElseToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
                 }
             }
         }

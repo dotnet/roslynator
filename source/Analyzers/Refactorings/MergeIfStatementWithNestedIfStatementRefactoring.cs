@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (!IfElseChain.IsPartOfChain(ifStatement)
+            if (ifStatement.IsSimpleIf()
                 && CheckCondition(ifStatement.Condition))
             {
                 IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);

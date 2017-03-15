@@ -473,6 +473,24 @@ namespace Roslynator.CSharp.Extensions
             return GetSingleStatementOrDefault(ifStatement.Statement);
         }
 
+        public static bool IsSimpleIf(this IfStatementSyntax ifStatement)
+        {
+            if (ifStatement == null)
+                throw new ArgumentNullException(nameof(ifStatement));
+
+            return !ifStatement.IsParentKind(SyntaxKind.ElseClause)
+                && ifStatement.Else == null;
+        }
+
+        public static bool IsSimpleIfElse(this IfStatementSyntax ifStatement)
+        {
+            if (ifStatement == null)
+                throw new ArgumentNullException(nameof(ifStatement));
+
+            return !ifStatement.IsParentKind(SyntaxKind.ElseClause)
+                && ifStatement.Else?.Statement?.IsKind(SyntaxKind.IfStatement) == false;
+        }
+
         internal static StatementSyntax GetSingleStatementOrDefault(this ElseClauseSyntax elseClause)
         {
             return GetSingleStatementOrDefault(elseClause.Statement);
