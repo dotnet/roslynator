@@ -85,11 +85,16 @@
     <Compile Include="CSharp\Refactorings\If\IfAnalysisOptions.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToAssignmentWithCoalesceExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToAssignmentWithConditionalExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\AssignmentAndIfElseToAssignmentWithConditionalExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\LocalDeclarationAndIfElseAssignmentWithConditionalExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\If\IfRefactoringHelper.cs" />
     <Compile Include="CSharp\Refactorings\If\IfReturnToReturnWithBooleanExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfReturnToReturnWithCoalesceExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfReturnToReturnWithConditionalExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression`1.cs" />
+    <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression.cs" />
+    <Compile Include="CSharp\SimpleAssignmentInfo.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringKind.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToReturnWithCoalesceExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfToReturnWithBooleanExpression.cs" />

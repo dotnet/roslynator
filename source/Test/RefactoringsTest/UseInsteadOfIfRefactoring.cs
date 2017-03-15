@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class UseInsteadOfIfRefactoring
     {
-        private static bool Foo()
+        private static bool IfElse()
         {
             bool condition = false;
             bool x = false;
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             }
         }
 
-        private static bool Foo2()
+        private static bool IfReturn()
         {
             bool condition = false;
             bool x = false;
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             return !x;
         }
 
-        public static IEnumerable<bool> Foo3()
+        public static IEnumerable<bool> IfElseToYieldReturnWithConditionalExpression()
         {
             bool condition = false;
             bool x = false;
@@ -202,10 +202,29 @@ namespace Roslynator.CSharp.Refactorings.Test
             }
         }
 
-        public static bool Foo4()
+        public static bool IfElseToAssignmentWithConditionalExpression()
         {
             bool condition = false;
+
             bool x = false;
+
+            if (condition)
+            {
+                x = true;
+            }
+            else
+            {
+                x = false;
+            }
+
+            bool y;
+
+            if (condition)
+                y = true;
+            else
+                y = false;
+
+            x = false;
 
             if (condition)
             {
@@ -219,7 +238,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             return x;
         }
 
-        private static string Foo5()
+        private static string IfElseToReturnWithCoalesceExpression()
         {
             string x = null;
             string y = null;

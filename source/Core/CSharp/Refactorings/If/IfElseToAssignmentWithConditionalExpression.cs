@@ -9,38 +9,22 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
-    internal class IfElseToAssignmentWithConditionalExpression : IfRefactoring
+    internal class IfElseToAssignmentWithConditionalExpression : ToAssignmentWithConditionalExpression
     {
         internal IfElseToAssignmentWithConditionalExpression(
             IfStatementSyntax ifStatement,
             ExpressionSyntax left,
             ExpressionSyntax right1,
-            ExpressionSyntax right2) : base(ifStatement)
+            ExpressionSyntax right2) : base(ifStatement, right1, right2)
         {
             Left = left;
-            Right1 = right1;
-            Right2 = right2;
-        }
-
-        public override RefactoringKind Kind
-        {
-            get { return RefactoringKind.IfElseToAssignmentWithConditionalExpression; }
-        }
-
-        public override string Title
-        {
-            get { return "Use conditional expression"; }
         }
 
         public ExpressionSyntax Left { get; }
 
-        public ExpressionSyntax Right1 { get; }
-
-        public ExpressionSyntax Right2 { get; }
-
         public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            ConditionalExpressionSyntax conditionalExpression = IfRefactoringHelper.CreateConditionalExpression(IfStatement.Condition, Right1, Right2);
+            ConditionalExpressionSyntax conditionalExpression = IfRefactoringHelper.CreateConditionalExpression(IfStatement.Condition, WhenTrue, WhenFalse);
 
             ExpressionStatementSyntax newNode = SimpleAssignmentStatement(Left, conditionalExpression)
                 .WithTriviaFrom(IfStatement)
