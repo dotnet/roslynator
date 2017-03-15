@@ -11,7 +11,7 @@ namespace Roslynator.VisualStudio
     public partial class RefactoringsControl : UserControl
     {
         private GridViewColumnHeader _lastClickedHeader;
-        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+        private ListSortDirection _lastDirection;
 
         public RefactoringsControl()
         {
