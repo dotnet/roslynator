@@ -63,9 +63,8 @@ namespace Roslynator.CSharp.Refactorings
                                         {
                                             StatementSyntax statementToReport = ifStatement;
 
-                                            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
-
-                                            if (statements.Any())
+                                            SyntaxList<StatementSyntax> statements;
+                                            if (ifStatement.TryGetContainingList(out statements))
                                             {
                                                 int index = statements.IndexOf(ifStatement);
 
@@ -91,9 +90,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement)
         {
-            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(ifStatement);
+            SyntaxList<StatementSyntax> statements;
 
-            return statements.Count == 2
+            return ifStatement.TryGetContainingList(out statements)
+                && statements.Count == 2
                 && statements.IndexOf(ifStatement) == 0
                 && statements[1].IsKind(SyntaxKind.ReturnStatement);
         }

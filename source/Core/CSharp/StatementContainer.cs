@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -71,28 +70,6 @@ namespace Roslynator.CSharp
                     return new SwitchSectionStatementContainer((SwitchSectionSyntax)parent);
                 default:
                     throw new InvalidOperationException();
-            }
-        }
-
-        internal static SyntaxList<StatementSyntax> GetStatements(StatementSyntax statement)
-        {
-            SyntaxNode parent = statement?.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.Block:
-                    {
-                        return ((BlockSyntax)parent).Statements;
-                    }
-                case SyntaxKind.SwitchSection:
-                    {
-                        return ((SwitchSectionSyntax)parent).Statements;
-                    }
-                default:
-                    {
-                        Debug.Assert(parent == null || EmbeddedStatement.IsEmbeddedStatement(statement), parent.Kind().ToString());
-                        return default(SyntaxList<StatementSyntax>);
-                    }
             }
         }
     }

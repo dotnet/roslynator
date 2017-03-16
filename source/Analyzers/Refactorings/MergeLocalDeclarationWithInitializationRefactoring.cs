@@ -35,9 +35,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (variables.Any())
                     {
-                        SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(localDeclaration);
-
-                        if (statements.Any())
+                        SyntaxList<StatementSyntax> statements;
+                        if (localDeclaration.TryGetContainingList(out statements))
                         {
                             int index = statements.IndexOf(localDeclaration);
 

@@ -1419,9 +1419,8 @@ namespace Roslynator.CSharp.Extensions
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(statement);
-
-            if (statements.Any())
+            SyntaxList<StatementSyntax> statements;
+            if (statement.TryGetContainingList(out statements))
             {
                 int index = statements.IndexOf(statement);
 
@@ -1443,9 +1442,8 @@ namespace Roslynator.CSharp.Extensions
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements = StatementContainer.GetStatements(statement);
-
-            if (statements.Any())
+            SyntaxList<StatementSyntax> statements;
+            if (statement.TryGetContainingList(out statements))
             {
                 int index = statements.IndexOf(statement);
 
@@ -1460,6 +1458,31 @@ namespace Roslynator.CSharp.Extensions
             }
 
             return null;
+        }
+
+        public static bool TryGetContainingList(this StatementSyntax statement, out SyntaxList<StatementSyntax> statements)
+        {
+            SyntaxNode parent = statement?.Parent;
+
+            switch (parent?.Kind())
+            {
+                case SyntaxKind.Block:
+                    {
+                        statements = ((BlockSyntax)parent).Statements;
+                        return true;
+                    }
+                case SyntaxKind.SwitchSection:
+                    {
+                        statements = ((SwitchSectionSyntax)parent).Statements;
+                        return true;
+                    }
+                default:
+                    {
+                        Debug.Assert(parent == null || EmbeddedStatement.IsEmbeddedStatement(statement), parent.Kind().ToString());
+                        statements = default(SyntaxList<StatementSyntax>);
+                        return false;
+                    }
+            }
         }
 
         public static TextSpan HeaderSpan(this StructDeclarationSyntax structDeclaration)
