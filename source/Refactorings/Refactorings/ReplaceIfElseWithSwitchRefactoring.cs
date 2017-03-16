@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Syntax;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -22,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (IfElseChain.GetIfStatements(ifStatement)
+                if (GetIfStatements(ifStatement)
                     .All(f => IsValidIf(f, semanticModel, context.CancellationToken)))
                 {
                     string title = (ifStatement.IsSimpleIf())
@@ -33,6 +34,15 @@ namespace Roslynator.CSharp.Refactorings
                         title,
                         cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
                 }
+            }
+        }
+
+        private static IEnumerable<IfStatementSyntax> GetIfStatements(IfStatementSyntax ifStatement)
+        {
+            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
+            {
+                if (ifOrElse.IsIf)
+                    yield return ifOrElse.AsIf();
             }
         }
 
