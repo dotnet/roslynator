@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -65,14 +66,19 @@ namespace Roslynator.Extensions
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.ContainsDirectives(node.Span);
+            Debug.Assert((node.ContainsDirectives
+                && !node.GetLeadingTrivia().Any(f => f.IsDirective)
+                && !node.GetTrailingTrivia().Any(f => f.IsDirective)) == node.ContainsDirectives(node.Span), nameof(SpanContainsDirectives));
+
+            return node.ContainsDirectives
+                && !node.GetLeadingTrivia().Any(f => f.IsDirective)
+                && !node.GetTrailingTrivia().Any(f => f.IsDirective);
         }
 
         public static bool ContainsDirectives(this SyntaxNode node, TextSpan span)
         {
-            return node
-                .DescendantTrivia(span)
-                .Any(f => f.IsDirective);
+            return node.ContainsDirectives
+                && node.DescendantTrivia(span).Any(f => f.IsDirective);
         }
 
         public static TNode WithTriviaFrom<TNode>(this TNode syntax, SyntaxToken token) where TNode : SyntaxNode
