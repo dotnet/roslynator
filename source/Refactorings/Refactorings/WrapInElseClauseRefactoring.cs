@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -94,16 +93,16 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxList<StatementSyntax> statements = container.Statements;
 
-            IEnumerable<IfStatementSyntax> chain = IfElseChain.GetChain(ifStatement).Cast<IfStatementSyntax>();
+            IfElseChain chain = IfElseChain.Create(ifStatement);
 
             StatementSyntax statement = returnStatement;
 
-            if (chain.Any(f => f.Statement?.IsKind(SyntaxKind.Block) == true))
+            if (chain.Nodes.Any(f => f.Statement?.IsKind(SyntaxKind.Block) == true))
                 statement = Block(statement);
 
             ElseClauseSyntax elseClause = ElseClause(statement).WithFormatterAnnotation();
 
-            IfStatementSyntax lastIfStatement = chain.Last();
+            IfStatementSyntax lastIfStatement = chain.Nodes.Last();
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 lastIfStatement,
