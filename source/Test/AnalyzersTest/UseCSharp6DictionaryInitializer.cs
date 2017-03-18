@@ -13,7 +13,11 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             var dic = new Dictionary<int, string>() { { 0, "0" } };
 
-            dic = new Dictionary<int, string>() { { 0, "0" }, { 0, "1" } };
+            dic = new Dictionary<int, string>()
+            {
+                { 0, "0" },
+                { 0, "1" }
+            };
 
             dic = new Dictionary<int, string>() { [0] = null };
 
