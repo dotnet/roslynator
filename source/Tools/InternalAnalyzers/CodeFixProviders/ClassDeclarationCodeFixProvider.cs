@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CodeFixes.Extensions;
 using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Internal.CodeFixProviders
@@ -61,7 +62,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
             ClassDeclarationSyntax classDeclaration,
             Diagnostic diagnostic)
         {
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
