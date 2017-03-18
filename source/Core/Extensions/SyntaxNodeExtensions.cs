@@ -66,10 +66,6 @@ namespace Roslynator.Extensions
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            Debug.Assert((node.ContainsDirectives
-                && !node.GetLeadingTrivia().Any(f => f.IsDirective)
-                && !node.GetTrailingTrivia().Any(f => f.IsDirective)) == node.ContainsDirectives(node.Span), nameof(SpanContainsDirectives));
-
             return node.ContainsDirectives
                 && !node.GetLeadingTrivia().Any(f => f.IsDirective)
                 && !node.GetTrailingTrivia().Any(f => f.IsDirective);
