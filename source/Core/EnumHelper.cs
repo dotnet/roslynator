@@ -210,9 +210,6 @@ namespace Roslynator
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             byte[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
 
             if (values.Length == 0)
@@ -258,9 +255,6 @@ namespace Roslynator
 
         public static Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
@@ -312,9 +306,6 @@ namespace Roslynator
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             ushort[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
 
             if (values.Length == 0)
@@ -360,9 +351,6 @@ namespace Roslynator
 
         public static Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
@@ -414,9 +402,6 @@ namespace Roslynator
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             uint[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
 
             if (values.Length == 0)
@@ -465,9 +450,6 @@ namespace Roslynator
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             long[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
 
             if (values.Length == 0)
@@ -513,9 +495,6 @@ namespace Roslynator
 
         public static Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
         {
-            if (reservedValues == null)
-                throw new ArgumentNullException(nameof(reservedValues));
-
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
