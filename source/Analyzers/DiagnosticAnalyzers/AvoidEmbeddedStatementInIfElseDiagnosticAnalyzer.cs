@@ -2,14 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -55,23 +53,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidEmbeddedStatementInIfElse,
                     statement,
-                    GetName(node));
-            }
-        }
-
-        private static string GetName(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.IfStatement:
-                    return "if statement";
-                case SyntaxKind.ElseClause:
-                    return "else clause";
-                default:
-                    {
-                        Debug.Assert(false, node.Kind().ToString());
-                        return "";
-                    }
+                    node.GetTitle());
             }
         }
     }

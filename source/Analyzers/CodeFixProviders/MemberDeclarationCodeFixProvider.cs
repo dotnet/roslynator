@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.MarkMemberAsStatic:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                $"Mark {GetMemberName(memberDeclaration)} as static",
+                                $"Mark {memberDeclaration.GetTitle()} as static",
                                 cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.RemoveRedundantOverridingMember:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                $"Remove redundant overridding {GetMemberName(memberDeclaration)}",
+                                $"Remove redundant overridding {memberDeclaration.GetTitle()}",
                                 cancellationToken => Remover.RemoveMemberAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
@@ -272,29 +272,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                 }
             }
-        }
-
-        private string GetMemberName(MemberDeclarationSyntax memberDeclaration)
-        {
-            switch (memberDeclaration.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    return "method";
-                case SyntaxKind.ConstructorDeclaration:
-                    return "constructor";
-                case SyntaxKind.PropertyDeclaration:
-                    return "property";
-                case SyntaxKind.IndexerDeclaration:
-                    return "indexer";
-                case SyntaxKind.FieldDeclaration:
-                    return "field";
-                case SyntaxKind.EventDeclaration:
-                case SyntaxKind.EventFieldDeclaration:
-                    return "event";
-            }
-
-            Debug.Assert(false, memberDeclaration.Kind().ToString());
-            return "member";
         }
     }
 }
