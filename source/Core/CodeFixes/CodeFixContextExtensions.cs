@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Roslynator.Extensions
+namespace Roslynator.CodeFixes.Extensions
 {
-    public static class CodeFixContextExtensions
+    internal static class CodeFixContextExtensions
     {
         public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
         {

@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System;
 using System.Threading;
 using Roslynator.Extensions;
+using Roslynator.CodeFixes.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             SyntaxToken token = root.FindToken(context.Span.Start);
 
