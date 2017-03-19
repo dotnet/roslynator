@@ -10,6 +10,17 @@ namespace Roslynator.CSharp.Analyzers.Test
         [Flags]
         private enum FooWithFlags
         {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F
+        }
+
+        [Flags]
+        private enum FooWithFlags2
+        {
             A = 1,
             B,
             C = 4,
@@ -19,6 +30,16 @@ namespace Roslynator.CSharp.Analyzers.Test
         }
 
         private enum FooWithoutFlags
+        {
+            _,
+            A,
+            B,
+            C,
+            D,
+            E,
+        }
+
+        private enum FooWithoutFlags2
         {
             _,
             A = 1,
