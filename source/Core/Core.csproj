@@ -68,7 +68,8 @@
     <Compile Include="CSharp\HexadecimalLiteralInfo.cs" />
     <Compile Include="CSharp\HexadecimalLiteralSuffixKind.cs" />
     <Compile Include="CSharp\IfElseChain.cs" />
-    <Compile Include="CSharp\IfStatementOrElseClause.cs" />
+    <Compile Include="CSharp\Syntax\IfStatement.cs" />
+    <Compile Include="CSharp\Syntax\IfStatementOrElseClause.cs" />
     <Compile Include="CSharp\Inserter.cs" />
     <Compile Include="CSharp\MemberDeclarationSortMode.cs" />
     <Compile Include="CSharp\Internal\ModifierRemover.cs" />
