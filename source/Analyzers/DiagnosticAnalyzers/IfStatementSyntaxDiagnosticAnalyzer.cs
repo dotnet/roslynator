@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Diagnostics.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
