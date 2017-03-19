@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             FileLinePositionSpan fileSpan = GetFileLinePositionSpan(member, context.CancellationToken);
 
             context.RegisterRefactoring(
-                $"Comment out {MemberDeclarationRefactoring.GetMemberName(member)}",
+                $"Comment out {member.GetTitle()}",
                 cancellationToken =>
                 {
                     return RefactorAsync(

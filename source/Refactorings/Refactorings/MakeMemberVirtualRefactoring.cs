@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 && IsContainedInNonSealedClass(methodDeclaration))
             {
                 context.RegisterRefactoring(
-                    GetTitle("method"),
+                    GetTitle(methodDeclaration),
                     cancellationToken => RefactorAsync(context.Document, methodDeclaration, cancellationToken));
             }
         }
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                 && IsContainedInNonSealedClass(indexerDeclaration))
             {
                 context.RegisterRefactoring(
-                    GetTitle("indexer"),
+                    GetTitle(indexerDeclaration),
                     cancellationToken => RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
             }
         }
@@ -47,9 +47,9 @@ namespace Roslynator.CSharp.Refactorings
                 && !((ClassDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.SealedKeyword);
         }
 
-        private static string GetTitle(string member)
+        private static string GetTitle(MemberDeclarationSyntax member)
         {
-            return $"Make {member} virtual";
+            return $"Make {member.GetTitle()} virtual";
         }
 
         private static async Task<Document> RefactorAsync(

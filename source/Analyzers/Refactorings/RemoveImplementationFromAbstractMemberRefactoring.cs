@@ -80,59 +80,11 @@ namespace Roslynator.CSharp.Refactorings
             context.ReportDiagnostic(DiagnosticDescriptors.RemoveImplementationFromAbstractMember, node, GetName(declaration));
         }
 
-        private static object GetName(SyntaxNode declaration)
+        private static string GetName(SyntaxNode declaration)
         {
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                        {
-                            return "interface method";
-                        }
-                        else
-                        {
-                            return "abstract method";
-                        }
-                    }
-                case SyntaxKind.PropertyDeclaration:
-                    {
-                        if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                        {
-                            return "interface property";
-                        }
-                        else
-                        {
-                            return "abstract property";
-                        }
-                    }
-                case SyntaxKind.IndexerDeclaration:
-                    {
-                        if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                        {
-                            return "interface indexer";
-                        }
-                        else
-                        {
-                            return "abstract indexer";
-                        }
-                    }
-                case SyntaxKind.EventDeclaration:
-                    {
-                        if (declaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                        {
-                            return "interface event";
-                        }
-                        else
-                        {
-                            return "abstract event";
-                        }
-                    }
-            }
-
-            Debug.Assert(false, declaration.Kind().ToString());
-
-            return "member";
+            return ((declaration.IsParentKind(SyntaxKind.InterfaceDeclaration)) ? "interface" : "abstract")
+                + " "
+                + declaration.GetTitle();
         }
 
         public static async Task<Document> RefactorAsync(Document document, SyntaxNode node, CancellationToken cancellationToken)

@@ -101,54 +101,23 @@ namespace Roslynator.CSharp.Refactorings
 
         private static string GetTitle(MemberDeclarationSyntax memberDeclaration, BaseDocumentationCommentOrigin origin)
         {
-            const string s = "Add comment from ";
+            string s;
 
             if (origin == BaseDocumentationCommentOrigin.BaseMember)
             {
-                switch (memberDeclaration.Kind())
-                {
-                    case SyntaxKind.ConstructorDeclaration:
-                        return s + "base constructor";
-                    case SyntaxKind.MethodDeclaration:
-                        return s + "base method";
-                    case SyntaxKind.PropertyDeclaration:
-                        return s + "base property";
-                    case SyntaxKind.IndexerDeclaration:
-                        return s + "base indexer";
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.EventFieldDeclaration:
-                        return s + "base event";
-                    default:
-                        {
-                            Debug.Assert(false, memberDeclaration.Kind().ToString());
-                            return s + "base member";
-                        }
-                }
+                s = "base";
             }
             else if (origin == BaseDocumentationCommentOrigin.InterfaceMember)
             {
-                switch (memberDeclaration.Kind())
-                {
-                    case SyntaxKind.MethodDeclaration:
-                        return s + "interface method";
-                    case SyntaxKind.PropertyDeclaration:
-                        return s + "interface property";
-                    case SyntaxKind.IndexerDeclaration:
-                        return s + "interface indexer";
-                    case SyntaxKind.EventDeclaration:
-                    case SyntaxKind.EventFieldDeclaration:
-                        return s + "interface event";
-                    default:
-                        {
-                            Debug.Assert(false, memberDeclaration.Kind().ToString());
-                            return s + "interface member";
-                        }
-                }
+                s = "interface";
+            }
+            else
+            {
+                Debug.Assert(false, origin.ToString());
+                s = "base";
             }
 
-            Debug.Assert(false, origin.ToString());
-
-            return s + "base member";
+            return $"Add comment from {s} {memberDeclaration.GetTitle()}";
         }
 
         public static Task<Document> RefactorAsync(

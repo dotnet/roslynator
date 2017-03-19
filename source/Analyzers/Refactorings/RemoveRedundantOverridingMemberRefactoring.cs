@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                                         context.ReportDiagnostic(
                                             DiagnosticDescriptors.RemoveRedundantOverridingMember,
                                             methodDeclaration,
-                                            "method");
+                                            methodDeclaration.GetTitle());
                                     }
                                 }
                             }
@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantOverridingMember,
                     propertyDeclaration,
-                    "property");
+                    propertyDeclaration.GetTitle());
             }
         }
 
@@ -261,7 +261,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.RemoveRedundantOverridingMember,
                     indexerDeclaration,
-                    "indexer");
+                    indexerDeclaration.GetTitle());
             }
         }
 

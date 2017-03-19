@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -9,12 +10,75 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Extensions;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Extensions
 {
     public static class SyntaxNodeExtensions
     {
+        internal static string GetTitle(this SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.IfStatement:
+                    return "if statement";
+                case SyntaxKind.ElseClause:
+                    return "else clause";
+                case SyntaxKind.DoStatement:
+                    return "do statement";
+                case SyntaxKind.ForEachStatement:
+                    return "foreach statement";
+                case SyntaxKind.ForStatement:
+                    return "for statement";
+                case SyntaxKind.UsingStatement:
+                    return "using statement";
+                case SyntaxKind.WhileStatement:
+                    return "while statement";
+                case SyntaxKind.LockStatement:
+                    return "lock statement";
+                case SyntaxKind.FixedStatement:
+                    return "fixed statement";
+                case SyntaxKind.MethodDeclaration:
+                    return "method";
+                case SyntaxKind.OperatorDeclaration:
+                    return "operator method";
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return "conversion method";
+                case SyntaxKind.ConstructorDeclaration:
+                    return "constructor";
+                case SyntaxKind.PropertyDeclaration:
+                    return "property";
+                case SyntaxKind.IndexerDeclaration:
+                    return "indexer";
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    return "event";
+                case SyntaxKind.FieldDeclaration:
+                    return "field";
+                case SyntaxKind.NamespaceDeclaration:
+                    return "namespace";
+                case SyntaxKind.ClassDeclaration:
+                    return "class";
+                case SyntaxKind.StructDeclaration:
+                    return "struct";
+                case SyntaxKind.InterfaceDeclaration:
+                    return "interface";
+                case SyntaxKind.EnumDeclaration:
+                    return "enum";
+                default:
+                    {
+                        Debug.Assert(false, node.Kind().ToString());
+
+                        if (node is StatementSyntax)
+                            return "statement";
+
+                        if (node is MemberDeclarationSyntax)
+                            return "member";
+
+                        return "";
+                    }
+            }
+        }
+
         internal static bool IsNestedMethod(this SyntaxNode node)
         {
             return node?.IsKind(
