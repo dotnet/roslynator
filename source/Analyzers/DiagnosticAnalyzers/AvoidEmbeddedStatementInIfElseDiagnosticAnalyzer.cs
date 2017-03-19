@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -35,7 +36,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             SyntaxNode node = context.Node;
 
-            if (IfElseChain.IsPartOfChain((IfStatementSyntax)node))
+            if (!((IfStatementSyntax)node).IsSimpleIf())
                 Analyze(context, node);
         }
 

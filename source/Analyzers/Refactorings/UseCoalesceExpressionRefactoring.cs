@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (!IfElseChain.IsPartOfChain(ifStatement)
+            if (ifStatement.IsSimpleIf()
                 && !IsPartOfLazyInitialization(ifStatement))
             {
                 ExpressionSyntax condition = ifStatement.Condition;

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node = context.Node;
 
             if (!node.IsKind(SyntaxKind.IfStatement)
-                || !IfElseChain.IsPartOfChain((IfStatementSyntax)node))
+                || ((IfStatementSyntax)node).IsSimpleIf())
             {
                 BlockSyntax block = GetBlockThatCanBeEmbeddedStatement(node);
 

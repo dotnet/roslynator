@@ -25,9 +25,9 @@ namespace Roslynator.CSharp.Refactorings
                 if (IfElseChain.GetIfStatements(ifStatement)
                     .All(f => IsValidIf(f, semanticModel, context.CancellationToken)))
                 {
-                    string title = (IfElseChain.IsPartOfChain(ifStatement))
-                        ? "Replace if-else with switch"
-                        : "Replace if with switch";
+                    string title = (ifStatement.IsSimpleIf())
+                        ? "Replace if with switch"
+                        : "Replace if-else with switch";
 
                     context.RegisterRefactoring(
                         title,
