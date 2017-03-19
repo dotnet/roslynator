@@ -16,22 +16,12 @@ namespace Roslynator.VisualStudio
     {
         private const string RefactoringCategory = "Refactoring";
 
-        private RefactoringsControl _refactoringsControl = new RefactoringsControl();
-        private HashSet<string> _disabledRefactorings = new HashSet<string>();
+        private readonly RefactoringsControl _refactoringsControl = new RefactoringsControl();
+        private readonly HashSet<string> _disabledRefactorings = new HashSet<string>();
 
         protected override UIElement Child
         {
             get { return _refactoringsControl; }
-        }
-
-        public override void LoadSettingsFromStorage()
-        {
-            base.LoadSettingsFromStorage();
-        }
-
-        public override void SaveSettingsToStorage()
-        {
-            base.SaveSettingsToStorage();
         }
 
         [Category(RefactoringCategory)]
