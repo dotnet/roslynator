@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -251,13 +252,107 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 StatementSyntax[] statements = selectedStatements.ToArray();
 
-                if (statements[0].IsKind(SyntaxKind.IfStatement)
-                    && statements[1].IsKind(SyntaxKind.ReturnStatement))
-                {
-                    var ifStatement = (IfStatementSyntax)statements[0];
+                StatementSyntax statement1 = statements[0];
+                StatementSyntax statement2 = statements[1];
 
-                    if (!IfElseChain.IsPartOfChain(ifStatement))
-                        return Analyze(ifStatement, (ReturnStatementSyntax)statements[1], options, semanticModel, cancellationToken);
+                SyntaxKind kind1 = statement1.Kind();
+                SyntaxKind kind2 = statement2.Kind();
+
+                if (kind1 == SyntaxKind.IfStatement)
+                {
+                    if (kind2 == SyntaxKind.ReturnStatement)
+                    {
+                        var ifStatement = (IfStatementSyntax)statement1;
+
+                        if (!IfElseChain.IsPartOfChain(ifStatement))
+                            return Analyze(ifStatement, (ReturnStatementSyntax)statement2, options, semanticModel, cancellationToken);
+                    }
+                }
+                else if (options.UseConditionalExpression)
+                {
+                    if (kind1 == SyntaxKind.LocalDeclarationStatement)
+                    {
+                        if (kind2 == SyntaxKind.IfStatement)
+                            return Analyze((LocalDeclarationStatementSyntax)statement1, (IfStatementSyntax)statement2, options);
+                    }
+                    else if (kind1 == SyntaxKind.ExpressionStatement)
+                    {
+                        if (kind2 == SyntaxKind.IfStatement)
+                            return Analyze((ExpressionStatementSyntax)statement1, (IfStatementSyntax)statement2, options);
+                    }
+                }
+            }
+
+            return ImmutableArray<IfRefactoring>.Empty;
+        }
+
+        private static ImmutableArray<IfRefactoring> Analyze(
+            LocalDeclarationStatementSyntax localDeclarationStatement,
+            IfStatementSyntax ifStatement,
+            IfAnalysisOptions options)
+        {
+            VariableDeclaratorSyntax declarator = localDeclarationStatement.Declaration?.SingleVariableOrDefault();
+
+            if (declarator != null)
+            {
+                ElseClauseSyntax elseClause = ifStatement.Else;
+
+                if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
+                {
+                    SimpleAssignmentInfo info1 = SimpleAssignmentInfo.FromStatement(ifStatement.GetSingleStatementOrDefault());
+
+                    if (info1.IsValid)
+                    {
+                        SimpleAssignmentInfo info2 = SimpleAssignmentInfo.FromStatement(elseClause.GetSingleStatementOrDefault());
+
+                        if (info2.IsValid
+                            && info1.Left.IsKind(SyntaxKind.IdentifierName)
+                            && info2.Left.IsKind(SyntaxKind.IdentifierName))
+                        {
+                            string identifier1 = ((IdentifierNameSyntax)info1.Left).Identifier.ValueText;
+                            string identifier2 = ((IdentifierNameSyntax)info2.Left).Identifier.ValueText;
+
+                            if (string.Equals(identifier1, identifier2, StringComparison.Ordinal)
+                                && string.Equals(identifier1, declarator.Identifier.ValueText, StringComparison.Ordinal)
+                                && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(localDeclarationStatement.SpanStart, ifStatement.Span.End)))
+                            {
+                                return new LocalDeclarationAndIfElseAssignmentWithConditionalExpression(localDeclarationStatement, ifStatement, info1.Right, info2.Right).ToImmutableArray();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return ImmutableArray<IfRefactoring>.Empty;
+        }
+
+        private static ImmutableArray<IfRefactoring> Analyze(
+            ExpressionStatementSyntax expressionStatement,
+            IfStatementSyntax ifStatement,
+            IfAnalysisOptions options)
+        {
+            SimpleAssignmentInfo info = SimpleAssignmentInfo.FromStatement(expressionStatement);
+
+            if (info.IsValid)
+            {
+                ElseClauseSyntax elseClause = ifStatement.Else;
+
+                if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
+                {
+                    SimpleAssignmentInfo info1 = SimpleAssignmentInfo.FromStatement(ifStatement.GetSingleStatementOrDefault());
+
+                    if (info1.IsValid)
+                    {
+                        SimpleAssignmentInfo info2 = SimpleAssignmentInfo.FromStatement(elseClause.GetSingleStatementOrDefault());
+
+                        if (info2.IsValid
+                            && info1.Left.IsEquivalentTo(info2.Left, topLevel: false)
+                            && info1.Left.IsEquivalentTo(info.Left, topLevel: false)
+                            && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
+                        {
+                            return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, info.Right, ifStatement, info1.Right, info2.Right).ToImmutableArray();
+                        }
+                    }
                 }
             }
 
