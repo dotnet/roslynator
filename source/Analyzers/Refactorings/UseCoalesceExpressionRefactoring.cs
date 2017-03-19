@@ -15,6 +15,7 @@ using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {

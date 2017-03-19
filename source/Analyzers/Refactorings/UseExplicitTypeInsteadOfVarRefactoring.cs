@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis;
-using Roslynator.Extensions;
+using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {

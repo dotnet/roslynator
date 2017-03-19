@@ -137,6 +137,8 @@
     <Compile Include="CSharp\Refactorings\SplitVariableDeclarationRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseExpressionBodiedMemberRefactoring.cs" />
     <Compile Include="CSharp\Documentation\AddNewDocumentationCommentRewriter.cs" />
+    <Compile Include="Diagnostics\SyntaxNodeAnalysisContextExtensions.cs" />
+    <Compile Include="Diagnostics\SyntaxTreeAnalysisContextExtensions.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="EnumHelper.cs" />
@@ -154,7 +156,7 @@
     <Compile Include="CSharp\Remover.cs" />
     <Compile Include="CSharp\MemberDeclarationComparer.cs" />
     <Compile Include="UniqueNameGenerator.cs" />
-    <Compile Include="Extensions\DiagnosticsExtensions.cs" />
+    <Compile Include="Diagnostics\SymbolAnalysisContextExtensions.cs" />
     <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\SymbolExtensions.cs" />

@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using System.Collections.Immutable;
+using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
