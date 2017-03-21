@@ -564,6 +564,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.AddTypeParameter, "Add type parameter", IsEnabled(RefactoringIdentifiers.AddTypeParameter)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.ImplementIEquatableOfT, "Implement IEquatable<T>", IsEnabled(RefactoringIdentifiers.ImplementIEquatableOfT)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.ReplaceStringLiteralWithStringFormat, "Replace string literal with string.Format invocation", IsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithStringFormat)));
         }
 
         public void ApplyTo(RefactoringSettings settings)
@@ -716,6 +717,7 @@ namespace Roslynator.VisualStudio
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf, IsEnabled(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf));
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, IsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString));
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral, IsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral));
+            settings.SetRefactoring(RefactoringIdentifiers.ReplaceStringLiteralWithStringFormat, IsEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithStringFormat));
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceSwitchWithIfElse, IsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse));
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral));
             settings.SetRefactoring(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals));

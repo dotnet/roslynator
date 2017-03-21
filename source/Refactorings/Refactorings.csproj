@@ -281,6 +281,7 @@
     <Compile Include="Refactorings\UsingDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\ThrowStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapInElseClauseRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStringLiteralWithStringFormatRefactoring.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -102,6 +102,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral))
                 await ReplaceStringLiteralWithCharacterLiteralRefactoring.ComputeRefactoringAsync(context, literalExpression).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithStringFormat))
+                await ReplaceStringLiteralWithStringFormatRefactoring.ComputeRefactoringsAsync(context, literalExpression).ConfigureAwait(false);
         }
 
         private static int GetStartIndex(RefactoringContext context, LiteralExpressionSyntax literalExpression)
