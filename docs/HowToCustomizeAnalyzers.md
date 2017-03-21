@@ -32,25 +32,25 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ## Step by Step Tutorial
 
-### 1) Create your own ruleset file
+### 1) Create Your Own Rule Set File
 
 * Skip this step if you already have one.
 * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
 * Modify rule set.
 * Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
-* Move ruleset file to a solution root folder (or any other location).
+* Move rule set file to a solution root folder (or any other location).
 
 ![Open Active Rule Set](/images/OpenActiveRuleSet.png)
 ![Rule Set Editor](/images/RuleSetEditor.png)
 
-### 2) Modify ruleset file manually
+### 2) Modify Rule Set File Manually
 
-* Open ruleset file in text editor.
+* Open rule set file in text editor.
 * Change its name (rule set is represented in the IDE by its name).
 
-![Edit RuleSet File](/images/EditRuleSetFile.png)
+![Edit Rule Set File](/images/EditRuleSetFile.png)
 
-### 3) Attach rule set to project(s)
+### 3) Attach Rule Set to Project(s)
 
 * Go to Main Menu - Analysis - Configure Code Analysis - For Solution
 * Change rule set for each project.
