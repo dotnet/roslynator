@@ -34,7 +34,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ### 1) Create your own ruleset file
 
-* Skip this step if you already have one
+* Skip this step if you already have one.
 * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
 * Modify rule set.
 * Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
@@ -47,6 +47,8 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 * Open ruleset file in text editor.
 * Change its name (rule set is represented in the IDE by its name).
+
+![Edit RuleSet File](/images/EditRuleSetFile.png)
 
 ### 3) Attach rule set to project(s)
 
