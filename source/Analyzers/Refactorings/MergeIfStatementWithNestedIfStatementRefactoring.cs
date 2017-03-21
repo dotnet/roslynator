@@ -16,14 +16,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeIfStatementWithNestedIfStatementRefactoring
     {
-        private static DiagnosticDescriptor FadeOutDescriptor
-        {
-            get { return DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut; }
-        }
-
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (ifStatement.IsSimpleIf()
+            if (ifStatement.Else == null
                 && CheckCondition(ifStatement.Condition))
             {
                 IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
@@ -41,18 +36,16 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, IfStatementSyntax nestedIf)
         {
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
-                ifStatement);
+            context.ReportDiagnostic(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement, ifStatement);
 
-            context.ReportToken(FadeOutDescriptor, nestedIf.IfKeyword);
-            context.ReportToken(FadeOutDescriptor, nestedIf.OpenParenToken);
-            context.ReportToken(FadeOutDescriptor, nestedIf.CloseParenToken);
+            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.IfKeyword);
+            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.OpenParenToken);
+            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                context.ReportBraces(FadeOutDescriptor, (BlockSyntax)nestedIf.Statement);
+                context.ReportBraces(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, (BlockSyntax)nestedIf.Statement);
             }
         }
 
@@ -92,12 +85,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.Block:
                     {
-                        var block = (BlockSyntax)statement;
+                        SyntaxList<StatementSyntax> statements = ((BlockSyntax)statement).Statements;
 
-                        if (block.Statements.Count == 1
-                            && block.Statements[0].IsKind(SyntaxKind.IfStatement))
+                        if (statements.Count == 1
+                            && statements[0].IsKind(SyntaxKind.IfStatement))
                         {
-                            return (IfStatementSyntax)block.Statements[0];
+                            return (IfStatementSyntax)statements[0];
                         }
 
                         break;
