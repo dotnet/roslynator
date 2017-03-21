@@ -46,6 +46,8 @@
     <Compile Include="ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="FormatAttributeArgumentListRefactoring.cs" />
+    <Compile Include="GenerateCombinedEnumMemberRefactoring.cs" />
+    <Compile Include="GenerateEnumValuesRefactoring.cs" />
     <Compile Include="ImplementIEquatableOfTRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring.cs" />
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
+    <Compile Include="GenerateEnumMemberRefactoring.cs" />
     <Compile Include="UseInsteadOfIfRefactoring.cs" />
     <Compile Include="ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
@@ -93,7 +96,7 @@
     <Compile Include="SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
-    <Compile Include="WrapInElseRefactoring.cs" />
+    <Compile Include="WrapInElseClauseRefactoring.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />

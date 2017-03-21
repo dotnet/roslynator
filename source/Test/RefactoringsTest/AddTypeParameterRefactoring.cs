@@ -6,6 +6,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class AddTypeParameterRefactoring
     {
+        public static void Foo()
+        {
+        }
+
         private static void Foo(object T)
         {
             object T2 = null;
