@@ -12,10 +12,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using static Roslynator.CSharp.CSharpFactory;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Roslynator.CSharp.Syntax;
 using Roslynator.Diagnostics.Extensions;
+using Roslynator.Extensions;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -28,62 +28,32 @@ namespace Roslynator.CSharp.Refactorings
             if (ifStatement.IsSimpleIf()
                 && !IsPartOfLazyInitialization(ifStatement))
             {
-                ExpressionSyntax condition = ifStatement.Condition;
-
-                if (condition?.IsKind(SyntaxKind.EqualsExpression) == true)
+                EqualsToNullExpression equalsToNull;
+                if (EqualsToNullExpression.TryCreate(ifStatement.Condition, out equalsToNull))
                 {
-                    var equalsExpression = (BinaryExpressionSyntax)condition;
-
-                    ExpressionSyntax left = equalsExpression.Left;
-
-                    if (left != null)
+                    SimpleAssignmentExpression assignment;
+                    if (SimpleAssignmentExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment)
+                        && assignment.Left.IsEquivalentTo(equalsToNull.Left, topLevel: false)
+                        && assignment.Right.IsSingleLine()
+                        && !ifStatement.SpanContainsDirectives())
                     {
-                        ExpressionSyntax right = equalsExpression.Right;
+                        StatementSyntax fixableStatement = ifStatement;
 
-                        if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                        SyntaxList<StatementSyntax> statements;
+                        if (ifStatement.TryGetContainingList(out statements))
                         {
-                            StatementSyntax childStatement = ifStatement.GetSingleStatementOrDefault();
+                            int index = statements.IndexOf(ifStatement);
 
-                            if (childStatement?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                            if (index > 0)
                             {
-                                var expressionStatement = (ExpressionStatementSyntax)childStatement;
+                                StatementSyntax previousStatement = statements[index - 1];
 
-                                ExpressionSyntax expression = expressionStatement.Expression;
-
-                                if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                                {
-                                    var assignment = (AssignmentExpressionSyntax)expression;
-
-                                    if (assignment.Left?.IsEquivalentTo(left, topLevel: false) == true)
-                                    {
-                                        ExpressionSyntax assignmentRight = assignment.Right;
-
-                                        if (assignmentRight?.IsMissing == false
-                                            && assignmentRight.IsSingleLine()
-                                            && !ifStatement.SpanContainsDirectives())
-                                        {
-                                            StatementSyntax statementToReport = ifStatement;
-
-                                            SyntaxList<StatementSyntax> statements;
-                                            if (ifStatement.TryGetContainingList(out statements))
-                                            {
-                                                int index = statements.IndexOf(ifStatement);
-
-                                                if (index > 0)
-                                                {
-                                                    StatementSyntax previousStatement = statements[index - 1];
-
-                                                    if (CanRefactor(previousStatement, ifStatement, left, ifStatement.Parent))
-                                                        statementToReport = previousStatement;
-                                                }
-                                            }
-
-                                            context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, statementToReport);
-                                        }
-                                    }
-                                }
+                                if (CanRefactor(previousStatement, ifStatement, equalsToNull.Left, ifStatement.Parent))
+                                    fixableStatement = previousStatement;
                             }
                         }
+
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, fixableStatement);
                     }
                 }
             }
@@ -92,7 +62,6 @@ namespace Roslynator.CSharp.Refactorings
         private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement)
         {
             SyntaxList<StatementSyntax> statements;
-
             return ifStatement.TryGetContainingList(out statements)
                 && statements.Count == 2
                 && statements.IndexOf(ifStatement) == 0
@@ -208,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings
                                     .Parenthesize(moveTrivia: true)
                                     .WithSimplifierAnnotation();
 
-                            BinaryExpressionSyntax coalesceExpression = CoalesceExpression(newLeft, newRight);
+                            BinaryExpressionSyntax coalesceExpression = CSharpFactory.CoalesceExpression(newLeft, newRight);
 
                             AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
 
@@ -281,7 +250,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Parenthesize(moveTrivia: true)
                 .WithSimplifierAnnotation();
 
-            BinaryExpressionSyntax newNode = CoalesceExpression(left, right);
+            BinaryExpressionSyntax newNode = CSharpFactory.CoalesceExpression(left, right);
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 

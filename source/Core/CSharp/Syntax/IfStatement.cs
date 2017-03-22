@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -50,7 +49,7 @@ namespace Roslynator.CSharp.Syntax
             Nodes = builder.ToImmutableArray();
         }
 
-        public bool IsDefault
+        private bool IsDefault
         {
             get { return Nodes.IsDefault; }
         }
@@ -62,12 +61,12 @@ namespace Roslynator.CSharp.Syntax
 
         public bool EndsWithIf
         {
-            get { return Nodes.Last().IsIf; }
+            get { return Nodes[Nodes.Length - 1].IsIf; }
         }
 
         public bool EndsWithElse
         {
-            get { return Nodes.Last().IsElse; }
+            get { return Nodes[Nodes.Length - 1].IsElse; }
         }
 
         public bool IsSimpleIf
@@ -102,7 +101,7 @@ namespace Roslynator.CSharp.Syntax
             else
             {
                 return !other.IsDefault
-                    || TopmostIf == other.TopmostIf;
+                    && TopmostIf == other.TopmostIf;
             }
         }
 
@@ -114,14 +113,7 @@ namespace Roslynator.CSharp.Syntax
 
         public override int GetHashCode()
         {
-            if (IsDefault)
-            {
-                return 0;
-            }
-            else
-            {
-                return TopmostIf.GetHashCode();
-            }
+            return (IsDefault) ? 0 : TopmostIf.GetHashCode();
         }
 
         public static bool operator ==(IfStatement left, IfStatement right)
