@@ -1,0 +1,14 @@
+## Inline using static
+
+Property | Value
+--- | --- 
+Id | RR0180
+Title | Inline using static
+Syntax | using static directive
+Enabled by Default | yes
+
+### Usage
+
+![Inline using static](../../images/refactorings/InlineUsingStatic.png)
+
+[full list of refactorings](Refactorings.md)

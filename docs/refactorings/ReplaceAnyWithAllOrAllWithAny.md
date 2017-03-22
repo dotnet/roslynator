@@ -1,0 +1,15 @@
+## Replace Any with All (or All with Any)
+
+Property | Value
+--- | --- 
+Id | RR0116
+Title | Replace Any with All \(or All with Any\)
+Syntax | Any\(Func\<T, bool\> or All\(Func\<T, bool\> from System\.Linq\.Enumerable namespace
+Scope | method name
+Enabled by Default | yes
+
+### Usage
+
+![Replace Any with All \(or All with Any\)](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
+
+[full list of refactorings](Refactorings.md)

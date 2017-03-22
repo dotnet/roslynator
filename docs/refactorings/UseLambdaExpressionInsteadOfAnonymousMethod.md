@@ -1,0 +1,15 @@
+## Use lambda expression instead of anonymous method
+
+Property | Value
+--- | --- 
+Id | RR0170
+Title | Use lambda expression instead of anonymous method
+Syntax | anonymous method
+Scope | delegate keyword
+Enabled by Default | yes
+
+### Usage
+
+![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
+
+[full list of refactorings](Refactorings.md)

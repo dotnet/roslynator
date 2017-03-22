@@ -1,0 +1,14 @@
+## Remove property initializer
+
+Property | Value
+--- | --- 
+Id | RR0107
+Title | Remove property initializer
+Syntax | property initializer
+Enabled by Default | yes
+
+### Usage
+
+![Remove property initializer](../../images/refactorings/RemovePropertyInitializer.png)
+
+[full list of refactorings](Refactorings.md)

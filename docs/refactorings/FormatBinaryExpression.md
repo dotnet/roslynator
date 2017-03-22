@@ -1,0 +1,14 @@
+## Format binary expression
+
+Property | Value
+--- | --- 
+Id | RR0049
+Title | Format binary expression
+Syntax | logical and/or expression, bitwise and/or expression
+Enabled by Default | yes
+
+### Usage
+
+![Format binary expression](../../images/refactorings/FormatBinaryExpression.png)
+
+[full list of refactorings](Refactorings.md)

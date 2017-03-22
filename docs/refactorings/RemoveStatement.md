@@ -1,0 +1,15 @@
+## Remove statement
+
+Property | Value
+--- | --- 
+Id | RR0109
+Title | Remove statement
+Syntax | do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
+Scope | open/close brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove statement](../../images/refactorings/RemoveStatement.png)
+
+[full list of refactorings](Refactorings.md)

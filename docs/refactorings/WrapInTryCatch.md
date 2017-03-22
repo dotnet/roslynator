@@ -1,0 +1,14 @@
+## Wrap in try-catch
+
+Property | Value
+--- | --- 
+Id | RR0176
+Title | Wrap in try\-catch
+Syntax | selected statements
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in try\-catch](../../images/refactorings/WrapInTryCatch.png)
+
+[full list of refactorings](Refactorings.md)

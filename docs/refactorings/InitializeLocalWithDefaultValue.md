@@ -1,0 +1,15 @@
+## Initialize local with default value
+
+Property | Value
+--- | --- 
+Id | RR0060
+Title | Initialize local with default value
+Syntax | local declaration without initializer
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Initialize local with default value](../../images/refactorings/InitializeLocalWithDefaultValue.png)
+
+[full list of refactorings](Refactorings.md)

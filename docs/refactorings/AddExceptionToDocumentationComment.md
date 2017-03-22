@@ -1,0 +1,14 @@
+## Add exception to documentation comment
+
+Property | Value
+--- | --- 
+Id | RR0009
+Title | Add exception to documentation comment
+Syntax | throw statement
+Enabled by Default | yes
+
+### Usage
+
+![Add exception to documentation comment](../../images/refactorings/AddExceptionToDocumentationComment.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Extract expression from condition
+
+Property | Value
+--- | --- 
+Id | RR0043
+Title | Extract expression from condition
+Syntax | if statement, while statement
+Scope | condition
+Enabled by Default | yes
+
+### Usage
+
+![Extract expression from condition](../../images/refactorings/ExtractExpressionFromCondition.png)
+
+[full list of refactorings](Refactorings.md)

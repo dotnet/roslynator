@@ -1,0 +1,16 @@
+## Format conditional expression
+
+Property | Value
+--- | --- 
+Id | RR0050
+Title | Format conditional expression
+Syntax | conditional expression
+Enabled by Default | yes
+
+### Usage
+
+![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
+
+![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)

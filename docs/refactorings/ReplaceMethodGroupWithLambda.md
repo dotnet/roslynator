@@ -1,0 +1,14 @@
+## Replace method group with lambda
+
+Property | Value
+--- | --- 
+Id | RR0137
+Title | Replace method group with lambda
+Syntax | method group
+Enabled by Default | yes
+
+### Usage
+
+![Replace method group with lambda](../../images/refactorings/ReplaceMethodGroupWithLambda.png)
+
+[full list of refactorings](Refactorings.md)

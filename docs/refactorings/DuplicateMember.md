@@ -1,0 +1,15 @@
+## Duplicate member
+
+Property | Value
+--- | --- 
+Id | RR0031
+Title | Duplicate member
+Syntax | method, constructor, property, indexer, operator, event, namespace, class, struct, interface
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Duplicate member](../../images/refactorings/DuplicateMember.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Remove braces
+
+Property | Value
+--- | --- 
+Id | RR0094
+Title | Remove braces
+Syntax | do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+Scope | block with a single statement
+Enabled by Default | yes
+
+### Usage
+
+![Remove braces](../../images/refactorings/RemoveBraces.png)
+
+[full list of refactorings](Refactorings.md)

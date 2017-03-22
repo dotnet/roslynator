@@ -1,0 +1,14 @@
+## Wrap in else clause
+
+Property | Value
+--- | --- 
+Id | RR0173
+Title | Wrap in else clause
+Syntax | statement
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in else clause](../../images/refactorings/WrapInElseClause.png)
+
+[full list of refactorings](Refactorings.md)

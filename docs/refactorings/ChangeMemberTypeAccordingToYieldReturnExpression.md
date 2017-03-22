@@ -1,0 +1,14 @@
+## Change method/property/indexer type according to yield return expression
+
+Property | Value
+--- | --- 
+Id | RR0020
+Title | Change method/property/indexer type according to yield return expression
+Syntax | yield return statement in method/property/indexer
+Enabled by Default | yes
+
+### Usage
+
+![Change method/property/indexer type according to yield return expression](../../images/refactorings/ChangeMemberTypeAccordingToYieldReturnExpression.png)
+
+[full list of refactorings](Refactorings.md)

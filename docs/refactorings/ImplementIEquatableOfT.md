@@ -1,0 +1,15 @@
+## Implement IEquatable<T>
+
+Property | Value
+--- | --- 
+Id | RR0179
+Title | Implement IEquatable\<T\>
+Syntax | class declaration, struct declaration, interface declaration
+Scope | base list
+Enabled by Default | yes
+
+### Usage
+
+![Implement IEquatable\<T\>](../../images/refactorings/ImplementIEquatableOfT.png)
+
+[full list of refactorings](Refactorings.md)

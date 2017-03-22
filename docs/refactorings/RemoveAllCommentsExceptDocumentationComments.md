@@ -1,0 +1,14 @@
+## Remove all comments (except documentation comments)
+
+Property | Value
+--- | --- 
+Id | RR0087
+Title | Remove all comments \(except documentation comments\)
+Syntax | singleline/multiline comment
+Enabled by Default | yes
+
+### Usage
+
+![Remove all comments \(except documentation comments\)](../../images/refactorings/RemoveAllCommentsExceptDocumentationComments.png)
+
+[full list of refactorings](Refactorings.md)

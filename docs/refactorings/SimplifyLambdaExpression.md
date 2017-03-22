@@ -1,0 +1,15 @@
+## Simplify lambda expression
+
+Property | Value
+--- | --- 
+Id | RR0154
+Title | Simplify lambda expression
+Syntax | lambda expression with block with single single\-line statement
+Scope | body
+Enabled by Default | yes
+
+### Usage
+
+![Simplify lambda expression](../../images/refactorings/SimplifyLambdaExpression.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Extract type declaration to a new file
+
+Property | Value
+--- | --- 
+Id | RR0046
+Title | Extract type declaration to a new file
+Syntax | class declaration, struct declaration, interface declaration, enum declaration, delegate declaration
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Extract type declaration to a new file](../../images/refactorings/ExtractTypeDeclarationToNewFile.png)
+
+[full list of refactorings](Refactorings.md)

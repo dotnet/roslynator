@@ -1,0 +1,15 @@
+## Comment out member
+
+Property | Value
+--- | --- 
+Id | RR0027
+Title | Comment out member
+Syntax | method, constructor, property, indexer, operator, event, namespace, class, struct, interface
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Comment out member](../../images/refactorings/CommentOutMember.png)
+
+[full list of refactorings](Refactorings.md)

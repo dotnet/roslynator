@@ -1,0 +1,14 @@
+## Expand expression body
+
+Property | Value
+--- | --- 
+Id | RR0037
+Title | Expand expression body
+Syntax | expression body
+Enabled by Default | yes
+
+### Usage
+
+![Expand expression body](../../images/refactorings/ExpandExpressionBody.png)
+
+[full list of refactorings](Refactorings.md)

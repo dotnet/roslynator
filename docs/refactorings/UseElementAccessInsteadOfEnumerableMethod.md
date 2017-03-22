@@ -1,0 +1,15 @@
+## Use element access instead of 'First/Last'ElementAt' method
+
+Property | Value
+--- | --- 
+Id | RR0167
+Title | Use element access instead of 'First/Last'ElementAt' method
+Syntax | First/Last/ElementAt method invocation
+Scope | method name
+Enabled by Default | yes
+
+### Usage
+
+![Use element access instead of 'First/Last'ElementAt' method](../../images/refactorings/UseElementAccessInsteadOfEnumerableMethod.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Add using directive
+
+Property | Value
+--- | --- 
+Id | RR0013
+Title | Add using directive
+Syntax | qualified name
+Scope | selected namespace
+Enabled by Default | yes
+
+### Usage
+
+![Add using directive](../../images/refactorings/AddUsingDirective.png)
+
+[full list of refactorings](Refactorings.md)

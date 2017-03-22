@@ -1,0 +1,14 @@
+## Remove parameter name from argument
+
+Property | Value
+--- | --- 
+Id | RR0105
+Title | Remove parameter name from argument
+Syntax | selected argument\(s\)
+Enabled by Default | yes
+
+### Usage
+
+![Remove parameter name from argument](../../images/refactorings/RemoveParameterNameFromArgument.png)
+
+[full list of refactorings](Refactorings.md)

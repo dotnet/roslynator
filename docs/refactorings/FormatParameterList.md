@@ -1,0 +1,16 @@
+## Format parameter list
+
+Property | Value
+--- | --- 
+Id | RR0053
+Title | Format parameter list
+Syntax | parameter list
+Enabled by Default | yes
+
+### Usage
+
+![Format parameter list](../../images/refactorings/FormatEachParameterOnSeparateLine.png)
+
+![Format parameter list](../../images/refactorings/FormatAllParametersOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)

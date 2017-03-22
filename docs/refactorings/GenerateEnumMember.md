@@ -1,0 +1,14 @@
+## Generate enum member
+
+Property | Value
+--- | --- 
+Id | RR0056
+Title | Generate enum member
+Syntax | enum declaration \(with FlagsAttribute\)
+Enabled by Default | yes
+
+### Usage
+
+![Generate enum member](../../images/refactorings/GenerateEnumMember.png)
+
+[full list of refactorings](Refactorings.md)

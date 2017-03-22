@@ -1,0 +1,14 @@
+## Generate switch sections
+
+Property | Value
+--- | --- 
+Id | RR0059
+Title | Generate switch sections
+Syntax | switch statement \(that is empty or contains only default section\)
+Enabled by Default | yes
+
+### Usage
+
+![Generate switch sections](../../images/refactorings/GenerateSwitchSections.png)
+
+[full list of refactorings](Refactorings.md)

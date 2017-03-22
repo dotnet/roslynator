@@ -1,0 +1,14 @@
+## Change method return type to 'void'
+
+Property | Value
+--- | --- 
+Id | RR0021
+Title | Change method return type to 'void'
+Syntax | method
+Enabled by Default | yes
+
+### Usage
+
+![Change method return type to 'void'](../../images/refactorings/ChangeMethodReturnTypeToVoid.png)
+
+[full list of refactorings](Refactorings.md)

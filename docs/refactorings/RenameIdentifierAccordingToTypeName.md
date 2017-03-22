@@ -1,0 +1,17 @@
+## Rename identifier according to type name
+
+Property | Value
+--- | --- 
+Id | RR0112
+Title | Rename identifier according to type name
+Syntax | foreach statement, local/field/constant declaration
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Rename identifier according to type name](../../images/refactorings/RenameForEachIdentifierAccordingToTypeName.png)
+
+![Rename identifier according to type name](../../images/refactorings/RenameFieldIdentifierAccordingToTypeName.png)
+
+[full list of refactorings](Refactorings.md)

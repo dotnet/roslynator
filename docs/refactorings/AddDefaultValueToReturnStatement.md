@@ -1,0 +1,14 @@
+## Add default value to return statement
+
+Property | Value
+--- | --- 
+Id | RR0008
+Title | Add default value to return statement
+Syntax | return statement without expression
+Enabled by Default | yes
+
+### Usage
+
+![Add default value to return statement](../../images/refactorings/AddDefaultValueToReturnStatement.png)
+
+[full list of refactorings](Refactorings.md)

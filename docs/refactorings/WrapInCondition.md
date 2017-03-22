@@ -1,0 +1,14 @@
+## Wrap in condition
+
+Property | Value
+--- | --- 
+Id | RR0172
+Title | Wrap in condition
+Syntax | selected statements
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in condition](../../images/refactorings/WrapInCondition.png)
+
+[full list of refactorings](Refactorings.md)

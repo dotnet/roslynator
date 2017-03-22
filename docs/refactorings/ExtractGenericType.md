@@ -1,0 +1,15 @@
+## Extract generic type
+
+Property | Value
+--- | --- 
+Id | RR0044
+Title | Extract generic type
+Syntax | generic name with single type argument
+Scope | type argument
+Enabled by Default | yes
+
+### Usage
+
+![Extract generic type](../../images/refactorings/ExtractGenericType.png)
+
+[full list of refactorings](Refactorings.md)

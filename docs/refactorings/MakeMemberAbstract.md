@@ -1,0 +1,15 @@
+## Make member abstract
+
+Property | Value
+--- | --- 
+Id | RR0069
+Title | Make member abstract
+Syntax | non\-abstract indexer/method/property in abstract class
+Scope | indexer/method/property header
+Enabled by Default | yes
+
+### Usage
+
+![Make member abstract](../../images/refactorings/MakeMemberAbstract.png)
+
+[full list of refactorings](Refactorings.md)

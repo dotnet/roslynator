@@ -1,0 +1,14 @@
+## Split switch labels
+
+Property | Value
+--- | --- 
+Id | RR0157
+Title | Split switch labels
+Syntax | selected switch labels
+Enabled by Default | yes
+
+### Usage
+
+![Split switch labels](../../images/refactorings/SplitSwitchLabels.png)
+
+[full list of refactorings](Refactorings.md)

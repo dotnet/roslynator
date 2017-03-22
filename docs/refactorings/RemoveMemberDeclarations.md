@@ -1,0 +1,14 @@
+## Remove member declarations above/below
+
+Property | Value
+--- | --- 
+Id | RR0104
+Title | Remove member declarations above/below
+Syntax | empty line between member declarations
+Enabled by Default | yes
+
+### Usage
+
+![Remove member declarations above/below](../../images/refactorings/RemoveMemberDeclarations.png)
+
+[full list of refactorings](Refactorings.md)

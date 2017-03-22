@@ -1,0 +1,14 @@
+## Expand property and add backing field
+
+Property | Value
+--- | --- 
+Id | RR0041
+Title | Expand property and add backing field
+Syntax | auto\-property
+Enabled by Default | yes
+
+### Usage
+
+![Expand property and add backing field](../../images/refactorings/ExpandPropertyAndAddBackingField.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Wrap in #if directive
+
+Property | Value
+--- | --- 
+Id | RR0174
+Title | Wrap in \#if directive
+Syntax | selected lines
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in \#if directive](../../images/refactorings/WrapInIfDirective.png)
+
+[full list of refactorings](Refactorings.md)

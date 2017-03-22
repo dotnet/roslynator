@@ -1,0 +1,14 @@
+## Expand initializer
+
+Property | Value
+--- | --- 
+Id | RR0038
+Title | Expand initializer
+Syntax | initializer
+Enabled by Default | yes
+
+### Usage
+
+![Expand initializer](../../images/refactorings/ExpandInitializer.png)
+
+[full list of refactorings](Refactorings.md)

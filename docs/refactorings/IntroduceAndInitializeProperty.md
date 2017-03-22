@@ -1,0 +1,14 @@
+## Introduce and initialize property
+
+Property | Value
+--- | --- 
+Id | RR0065
+Title | Introduce and initialize property
+Syntax | constructor parameter
+Enabled by Default | yes
+
+### Usage
+
+![Introduce and initialize property](../../images/refactorings/IntroduceAndInitializeProperty.png)
+
+[full list of refactorings](Refactorings.md)

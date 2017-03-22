@@ -1,0 +1,14 @@
+## Merge local declarations
+
+Property | Value
+--- | --- 
+Id | RR0077
+Title | Merge local declarations
+Syntax | local declarations with same type
+Enabled by Default | yes
+
+### Usage
+
+![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
+
+[full list of refactorings](Refactorings.md)

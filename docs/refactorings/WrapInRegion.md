@@ -1,0 +1,14 @@
+## Wrap in region
+
+Property | Value
+--- | --- 
+Id | RR0175
+Title | Wrap in region
+Syntax | selected lines
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in region](../../images/refactorings/WrapInRegion.png)
+
+[full list of refactorings](Refactorings.md)

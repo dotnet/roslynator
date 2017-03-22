@@ -1,0 +1,15 @@
+## Add parameter name to parameter
+
+Property | Value
+--- | --- 
+Id | RR0012
+Title | Add parameter name to parameter
+Syntax | parameter
+Scope | missing identifier
+Enabled by Default | yes
+
+### Usage
+
+![Add parameter name to parameter](../../images/refactorings/AddParameterNameToParameter.png)
+
+[full list of refactorings](Refactorings.md)

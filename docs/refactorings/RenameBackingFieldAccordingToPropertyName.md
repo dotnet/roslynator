@@ -1,0 +1,14 @@
+## Rename backing field according to property name
+
+Property | Value
+--- | --- 
+Id | RR0111
+Title | Rename backing field according to property name
+Syntax | field identifier inside property declaration
+Enabled by Default | yes
+
+### Usage
+
+![Rename backing field according to property name](../../images/refactorings/RenameBackingFieldAccordingToPropertyName.png)
+
+[full list of refactorings](Refactorings.md)

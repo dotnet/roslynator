@@ -1,0 +1,14 @@
+## Negate operator
+
+Property | Value
+--- | --- 
+Id | RR0082
+Title | Negate operator
+Syntax | \!=, &&, ||, \<, \<=, ==, \>, \>=
+Enabled by Default | yes
+
+### Usage
+
+![Negate operator](../../images/refactorings/NegateOperator.png)
+
+[full list of refactorings](Refactorings.md)

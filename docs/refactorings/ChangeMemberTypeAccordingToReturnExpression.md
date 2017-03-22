@@ -1,0 +1,14 @@
+## Change method/property/indexer type according to return expression
+
+Property | Value
+--- | --- 
+Id | RR0019
+Title | Change method/property/indexer type according to return expression
+Syntax | return statement in method/property/indexer
+Enabled by Default | yes
+
+### Usage
+
+![Change method/property/indexer type according to return expression](../../images/refactorings/ChangeMemberTypeAccordingToReturnExpression.png)
+
+[full list of refactorings](Refactorings.md)

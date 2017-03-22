@@ -1,0 +1,14 @@
+## Introduce constructor
+
+Property | Value
+--- | --- 
+Id | RR0066
+Title | Introduce constructor
+Syntax | field, property
+Enabled by Default | no
+
+### Usage
+
+![Introduce constructor](../../images/refactorings/IntroduceConstructor.png)
+
+[full list of refactorings](Refactorings.md)

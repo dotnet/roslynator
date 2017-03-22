@@ -1,0 +1,15 @@
+## Replace switch statement with if-else
+
+Property | Value
+--- | --- 
+Id | RR0147
+Title | Replace switch statement with if\-else
+Syntax | switch statement
+Scope | switch keyword
+Enabled by Default | yes
+
+### Usage
+
+![Replace switch statement with if\-else](../../images/refactorings/ReplaceSwitchWithIfElse.png)
+
+[full list of refactorings](Refactorings.md)

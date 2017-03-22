@@ -1,0 +1,14 @@
+## Merge attributes
+
+Property | Value
+--- | --- 
+Id | RR0074
+Title | Merge attributes
+Syntax | selected attribute lists
+Enabled by Default | yes
+
+### Usage
+
+![Merge attributes](../../images/refactorings/MergeAttributes.png)
+
+[full list of refactorings](Refactorings.md)

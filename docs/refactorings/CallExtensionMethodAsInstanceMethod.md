@@ -1,0 +1,14 @@
+## Call extension method as instance method
+
+Property | Value
+--- | --- 
+Id | RR0016
+Title | Call extension method as instance method
+Syntax | method invocation
+Enabled by Default | yes
+
+### Usage
+
+![Call extension method as instance method](../../images/refactorings/CallExtensionMethodAsInstanceMethod.png)
+
+[full list of refactorings](Refactorings.md)

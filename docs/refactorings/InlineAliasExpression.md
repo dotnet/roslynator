@@ -1,0 +1,15 @@
+## Inline alias expression
+
+Property | Value
+--- | --- 
+Id | RR0061
+Title | Inline alias expression
+Syntax | using alias directive
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Inline alias expression](../../images/refactorings/InlineAliasExpression.png)
+
+[full list of refactorings](Refactorings.md)

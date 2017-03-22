@@ -1,0 +1,14 @@
+## Remove directive and related directives
+
+Property | Value
+--- | --- 
+Id | RR0100
+Title | Remove directive and related directives
+Syntax | preprocessor directive, region directive
+Enabled by Default | yes
+
+### Usage
+
+![Remove directive and related directives](../../images/refactorings/RemoveDirectiveAndRelatedDirectives.png)
+
+[full list of refactorings](Refactorings.md)

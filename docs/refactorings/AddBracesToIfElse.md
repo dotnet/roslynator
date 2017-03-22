@@ -1,0 +1,15 @@
+## Add braces to if-else
+
+Property | Value
+--- | --- 
+Id | RR0003
+Title | Add braces to if\-else
+Syntax | if\-else chain
+Scope | embedded statement
+Enabled by Default | yes
+
+### Usage
+
+![Add braces to if\-else](../../images/refactorings/AddBracesToIfElse.png)
+
+[full list of refactorings](Refactorings.md)

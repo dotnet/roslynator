@@ -1,0 +1,15 @@
+## Remove braces from switch sections
+
+Property | Value
+--- | --- 
+Id | RR0097
+Title | Remove braces from switch sections
+Syntax | switch statement
+Scope | switch keyword
+Enabled by Default | yes
+
+### Usage
+
+![Remove braces from switch sections](../../images/refactorings/RemoveBracesFromSwitchSections.png)
+
+[full list of refactorings](Refactorings.md)

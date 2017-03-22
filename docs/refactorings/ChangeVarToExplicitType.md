@@ -1,0 +1,15 @@
+## Change 'var' to explicit type
+
+Property | Value
+--- | --- 
+Id | RR0023
+Title | Change 'var' to explicit type
+Syntax | variable declaration, foreach statetement
+Scope | type
+Enabled by Default | yes
+
+### Usage
+
+![Change 'var' to explicit type](../../images/refactorings/ChangeVarToExplicitType.png)
+
+[full list of refactorings](Refactorings.md)

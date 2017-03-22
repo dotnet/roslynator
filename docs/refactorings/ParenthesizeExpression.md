@@ -1,0 +1,14 @@
+## Parenthesize expression
+
+Property | Value
+--- | --- 
+Id | RR0084
+Title | Parenthesize expression
+Syntax | selected expression
+Enabled by Default | yes
+
+### Usage
+
+![Parenthesize expression](../../images/refactorings/ParenthesizeExpression.png)
+
+[full list of refactorings](Refactorings.md)

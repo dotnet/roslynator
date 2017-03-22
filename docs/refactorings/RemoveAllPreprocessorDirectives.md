@@ -1,0 +1,14 @@
+## Remove all preprocessor directives
+
+Property | Value
+--- | --- 
+Id | RR0090
+Title | Remove all preprocessor directives
+Syntax | preprocessor directive
+Enabled by Default | yes
+
+### Usage
+
+![Remove all preprocessor directives](../../images/refactorings/RemoveAllPreprocessorDirectives.png)
+
+[full list of refactorings](Refactorings.md)

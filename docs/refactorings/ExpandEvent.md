@@ -1,0 +1,14 @@
+## Expand event
+
+Property | Value
+--- | --- 
+Id | RR0036
+Title | Expand event
+Syntax | event field declaration
+Enabled by Default | yes
+
+### Usage
+
+![Expand event](../../images/refactorings/ExpandEvent.png)
+
+[full list of refactorings](Refactorings.md)

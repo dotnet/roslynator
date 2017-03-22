@@ -1,0 +1,21 @@
+## Sort member declarations
+
+Property | Value
+--- | --- 
+Id | RR0155
+Title | Sort member declarations
+Syntax | namespace declarations, class declarations, struct declarations, interface declarations, enum declarations
+Scope | selected member declarations
+Enabled by Default | yes
+
+### Usage
+
+![Sort member declarations](../../images/refactorings/SortMembersByKind.png)
+
+![Sort member declarations](../../images/refactorings/SortMembersByName.png)
+
+![Sort member declarations](../../images/refactorings/SortEnumMembersByName.png)
+
+![Sort member declarations](../../images/refactorings/SortEnumMembersByValue.png)
+
+[full list of refactorings](Refactorings.md)

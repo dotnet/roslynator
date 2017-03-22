@@ -1,0 +1,14 @@
+## Generate enum values
+
+Property | Value
+--- | --- 
+Id | RR0057
+Title | Generate enum values
+Syntax | enum declaration \(with FlagsAttribute\)
+Enabled by Default | yes
+
+### Usage
+
+![Generate enum values](../../images/refactorings/GenerateEnumValues.png)
+
+[full list of refactorings](Refactorings.md)

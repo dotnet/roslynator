@@ -1,0 +1,14 @@
+## Split attributes
+
+Property | Value
+--- | --- 
+Id | RR0156
+Title | Split attributes
+Syntax | selected attribute list
+Enabled by Default | yes
+
+### Usage
+
+![Split attributes](../../images/refactorings/SplitAttributes.png)
+
+[full list of refactorings](Refactorings.md)

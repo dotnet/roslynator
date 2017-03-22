@@ -1,0 +1,14 @@
+## Replace null literal expression with default expression
+
+Property | Value
+--- | --- 
+Id | RR0139
+Title | Replace null literal expression with default expression
+Syntax | argument
+Enabled by Default | yes
+
+### Usage
+
+![Replace null literal expression with default expression](../../images/refactorings/ReplaceNullLiteralExpressionWithDefaultExpression.png)
+
+[full list of refactorings](Refactorings.md)

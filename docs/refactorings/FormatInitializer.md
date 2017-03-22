@@ -1,0 +1,16 @@
+## Format initializer
+
+Property | Value
+--- | --- 
+Id | RR0052
+Title | Format initializer
+Syntax | initializer
+Enabled by Default | yes
+
+### Usage
+
+![Format initializer](../../images/refactorings/FormatInitializerOnMultipleLines.png)
+
+![Format initializer](../../images/refactorings/FormatInitializerOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Generate combined enum member
+
+Property | Value
+--- | --- 
+Id | RR0055
+Title | Generate combined enum member
+Syntax | enum declaration \(with FlagsAttribute\)
+Enabled by Default | yes
+
+### Usage
+
+![Generate combined enum member](../../images/refactorings/GenerateCombinedEnumMember.png)
+
+[full list of refactorings](Refactorings.md)

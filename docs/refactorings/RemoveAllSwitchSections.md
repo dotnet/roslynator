@@ -1,0 +1,15 @@
+## Remove all switch sections
+
+Property | Value
+--- | --- 
+Id | RR0093
+Title | Remove all switch sections
+Syntax | switch statement
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove all switch sections](../../images/refactorings/RemoveAllSwitchSections.png)
+
+[full list of refactorings](Refactorings.md)

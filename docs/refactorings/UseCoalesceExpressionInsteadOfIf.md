@@ -1,0 +1,14 @@
+## Use coalesce expression instead of if
+
+Property | Value
+--- | --- 
+Id | RR0165
+Title | Use coalesce expression instead of if
+Syntax | if statement
+Enabled by Default | yes
+
+### Usage
+
+![Use coalesce expression instead of if](../../images/refactorings/UseCoalesceExpressionInsteadOfIf.png)
+
+[full list of refactorings](Refactorings.md)

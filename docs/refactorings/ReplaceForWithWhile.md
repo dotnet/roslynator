@@ -1,0 +1,14 @@
+## Replace for statement with while statement
+
+Property | Value
+--- | --- 
+Id | RR0131
+Title | Replace for statement with while statement
+Syntax | for statement
+Enabled by Default | yes
+
+### Usage
+
+![Replace for statement with while statement](../../images/refactorings/ReplaceForWithWhile.png)
+
+[full list of refactorings](Refactorings.md)

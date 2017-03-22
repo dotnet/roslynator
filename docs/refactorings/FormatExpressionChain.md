@@ -1,0 +1,16 @@
+## Format expression chain
+
+Property | Value
+--- | --- 
+Id | RR0051
+Title | Format expression chain
+Syntax | expression chain
+Enabled by Default | yes
+
+### Usage
+
+![Format expression chain](../../images/refactorings/FormatExpressionChainOnMultipleLines.png)
+
+![Format expression chain](../../images/refactorings/FormatExpressionChainOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)
