@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="18c29e93-71e2-4e1f-922f-6082e58e8de3" Version="1.2.51" Language="en-US" Publisher="Josef Pihrt" />
     <DisplayName>Roslynator Refactorings</DisplayName>
-    <Description xml:space="preserve">A collection of 170+ refactorings for C#, powered by Roslyn.</Description>
+    <Description xml:space="preserve">A collection of 180+ refactorings for C#, powered by Roslyn.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
     <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md</ReleaseNotes>
