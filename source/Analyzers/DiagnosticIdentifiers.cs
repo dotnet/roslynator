@@ -13,9 +13,9 @@ namespace Roslynator.CSharp
         public const string SimplifyNestedUsingStatement = Prefix + "1005";
         public const string MergeElseClauseWithNestedIfStatement = Prefix + "1006";
         public const string AvoidEmbeddedStatement = Prefix + "1007";
-        public const string UseExplicitTypeInsteadOfVar = Prefix + "1008";
+        public const string UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = Prefix + "1008";
         public const string UseExplicitTypeInsteadOfVarInForEach = Prefix + "1009";
-        public const string UseVarInsteadOfExplicitType = Prefix + "1010";
+        public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = Prefix + "1010";
         //public const string UseVarInsteadOfExplicitTypeInForEach = Prefix + "1011";
         public const string UseExplicitTypeInsteadOfVarEvenIfObvious = Prefix + "1012";
         public const string UsePredefinedType = Prefix + "1013";
@@ -181,5 +181,7 @@ namespace Roslynator.CSharp
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "1173";
         public const string RemoveRedundantAsyncAwait = Prefix + "1174";
         public const string UnusedThisParameter = Prefix + "1175";
+        public const string UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = Prefix + "1176";
+        public const string UseVarInsteadOfExplicitTypeInForEach = Prefix + "1177";
     }
 }

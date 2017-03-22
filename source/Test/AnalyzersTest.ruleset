@@ -355,5 +355,7 @@
     <Rule Id="RCS1141" Action="Warning" />
     <Rule Id="RCS1142" Action="Warning" />
     <Rule Id="RCS1153" Action="Warning" />
+    <Rule Id="RCS1176" Action="Info" />
+    <Rule Id="RCS1177" Action="Info" />
   </Rules>
 </RuleSet>

@@ -8,12 +8,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ForEachStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class UseExplicitTypeInForEachDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -34,9 +33,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
+            TypeAnalysisFlags flags = CSharpAnalysis.AnalyzeType(forEachStatement, context.SemanticModel, context.CancellationToken);
 
-            if (result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
+            if (flags.IsImplicit()
+                && flags.SupportsExplicit())
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach,

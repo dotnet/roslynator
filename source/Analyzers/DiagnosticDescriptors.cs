@@ -77,8 +77,8 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVar = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
             title: "Use explicit type instead of 'var' (when the type is not obvious).",
             messageFormat: "Use explicit type instead of 'var'.",
             category: DiagnosticCategories.Readability,
@@ -95,8 +95,8 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitType = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseVarInsteadOfExplicitType,
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsObvious = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious,
             title: "Use 'var' instead of explicit type (when the type is obvious).",
             messageFormat: "Use 'var' instead of explicit type.",
             category: DiagnosticCategories.Simplification,
@@ -1633,13 +1633,31 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwaitFadeOut = RemoveRedundantAsyncAwait.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor UnusedThisParameter = new DiagnosticDescriptor(
-        id: DiagnosticIdentifiers.UnusedThisParameter,
-        title: "Unused this parameter.",
-        messageFormat: "Unused this parameter '{0}'.",
-        category: DiagnosticCategories.Redundancy,
-        defaultSeverity: DiagnosticSeverity.Info,
-        isEnabledByDefault: true,
-        customTags: WellKnownDiagnosticTags.Unnecessary
-    );
+            id: DiagnosticIdentifiers.UnusedThisParameter,
+            title: "Unused this parameter.",
+            messageFormat: "Unused this parameter '{0}'.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
+
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
+            title: "Use 'var' instead of explicit type (when the type is not obvious).",
+            messageFormat: "Use 'var' instead of explicit type.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach,
+            title: "Use 'var' instead of explicit type (in foreach).",
+            messageFormat: "Use 'var' instead of explicit type.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

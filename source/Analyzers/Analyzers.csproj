@@ -91,6 +91,8 @@
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseVarInForEachDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseVarWhenTypeIsNotObviousDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -413,7 +415,7 @@
     <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeInForEachCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceExplicitTypeWithVarCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseVarInsteadOfExplicitTypeCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\SimpleMemberAccessExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArgumentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingStatementDiagnosticAnalyzer.cs" />
@@ -429,7 +431,7 @@
     <Compile Include="Refactorings\ParenthesizeConditionInConditionalExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveBracesDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\RemoveBracesCodeFixProvider.cs" />
-    <Compile Include="DiagnosticAnalyzers\ForEachStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseExplicitTypeInForEachDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\VariableDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EmbeddedStatementDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesCodeFixProvider.cs" />

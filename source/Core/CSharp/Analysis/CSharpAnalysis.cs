@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
 {
     public static class CSharpAnalysis
     {
-        public static TypeAnalysisResult AnalyzeType(
+        public static TypeAnalysisFlags AnalyzeType(
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
                 SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
                 if (variables.Count > 0
-                    && !variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration))
+                    && !variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
                 {
                     ExpressionSyntax expression = variables[0].Initializer?.Value;
 
@@ -40,36 +40,52 @@ namespace Roslynator.CSharp.Analysis
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
-                        if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                        if (typeSymbol?.IsErrorType() == false)
                         {
-                            if (variables.Count > 1
-                                || IsLocalConstDeclaration(variableDeclaration.Parent))
+                            var flags = TypeAnalysisFlags.None;
+
+                            if (typeSymbol.IsDynamicType())
                             {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                    : TypeAnalysisResult.None;
-                            }
-                            else if (IsImplicitTypeAllowed(typeSymbol, expression, semanticModel, cancellationToken))
-                            {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.Implicit
-                                    : TypeAnalysisResult.ExplicitButShouldBeImplicit;
+                                flags = TypeAnalysisFlags.Dynamic;
                             }
                             else
                             {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                    : TypeAnalysisResult.Explicit;
+                                flags = TypeAnalysisFlags.ValidSymbol;
+
+                                if (type.IsVar)
+                                {
+                                    flags |= TypeAnalysisFlags.Implicit;
+
+                                    if (typeSymbol.SupportsExplicitDeclaration())
+                                        flags |= TypeAnalysisFlags.SupportsExplicit;
+                                }
+                                else
+                                {
+                                    flags |= TypeAnalysisFlags.Explicit;
+
+                                    if (variables.Count == 1
+                                        && !IsLocalConstDeclaration(variableDeclaration)
+                                        && !expression.IsKind(SyntaxKind.NullLiteralExpression)
+                                        && typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken)))
+                                    {
+                                        flags |= TypeAnalysisFlags.SupportsImplicit;
+                                    }
+                                }
+
+                                if (IsTypeObvious(expression, semanticModel, cancellationToken))
+                                    flags |= TypeAnalysisFlags.TypeObvious;
                             }
+
+                            return flags;
                         }
                     }
                 }
             }
 
-            return TypeAnalysisResult.None;
+            return TypeAnalysisFlags.None;
         }
 
-        public static TypeAnalysisResult AnalyzeType(
+        public static TypeAnalysisFlags AnalyzeType(
             DeclarationExpressionSyntax declarationExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -86,44 +102,58 @@ namespace Roslynator.CSharp.Analysis
             {
                 VariableDesignationSyntax designation = declarationExpression.Designation;
 
-                if (designation != null)
+                if (designation?.IsKind(SyntaxKind.SingleVariableDesignation) == true)
                 {
-                    SyntaxKind kind = designation.Kind();
+                    var symbol = semanticModel.GetDeclaredSymbol((SingleVariableDesignationSyntax)designation, cancellationToken) as ILocalSymbol;
 
-                    if (kind == SyntaxKind.ParenthesizedVariableDesignation)
+                    if (symbol?.IsErrorType() == false)
                     {
-                        return TypeAnalysisResult.None;
-                    }
-                    else if (kind == SyntaxKind.SingleVariableDesignation)
-                    {
-                        var symbol = semanticModel.GetDeclaredSymbol((SingleVariableDesignationSyntax)designation, cancellationToken) as ILocalSymbol;
+                        ITypeSymbol typeSymbol = symbol.Type;
 
-                        if (symbol != null)
+                        if (typeSymbol?.IsErrorType() == false)
                         {
-                            ITypeSymbol typeSymbol = symbol.Type;
+                            var flags = TypeAnalysisFlags.None;
 
-                            if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                            if (typeSymbol.IsDynamicType())
                             {
-                                return (type.IsVar)
-                                    ? TypeAnalysisResult.ImplicitButShouldBeExplicit
-                                    : TypeAnalysisResult.Explicit;
+                                flags = TypeAnalysisFlags.Dynamic;
                             }
+                            else
+                            {
+                                flags = TypeAnalysisFlags.ValidSymbol;
+
+                                if (type.IsVar)
+                                {
+                                    flags |= TypeAnalysisFlags.Implicit;
+
+                                    if (symbol.Type.SupportsExplicitDeclaration())
+                                        flags |= TypeAnalysisFlags.SupportsExplicit;
+                                }
+                                else
+                                {
+                                    flags |= TypeAnalysisFlags.Explicit;
+                                    flags |= TypeAnalysisFlags.SupportsImplicit;
+                                }
+                            }
+
+                            return flags;
                         }
                     }
                 }
             }
 
-            return TypeAnalysisResult.None;
+            return TypeAnalysisFlags.None;
         }
 
-        private static bool IsLocalConstDeclaration(SyntaxNode node)
+        private static bool IsLocalConstDeclaration(VariableDeclarationSyntax variableDeclaration)
         {
-            return node.IsKind(SyntaxKind.LocalDeclarationStatement)
-                && ((LocalDeclarationStatementSyntax)node).IsConst;
+            SyntaxNode parent = variableDeclaration.Parent;
+
+            return parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true
+                && ((LocalDeclarationStatementSyntax)parent).IsConst;
         }
 
-        private static bool IsImplicitTypeAllowed(
-            ITypeSymbol typeSymbol,
+        private static bool IsTypeObvious(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -137,19 +167,18 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.ThisExpression:
                 case SyntaxKind.DefaultExpression:
                     {
-                        return typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken));
+                        return true;
                     }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
-                        return typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken))
-                            && semanticModel.GetSymbol(expression, cancellationToken)?.IsEnumField() == true;
+                        return semanticModel.GetSymbol(expression, cancellationToken)?.IsEnumField() == true;
                     }
             }
 
             return false;
         }
 
-        public static TypeAnalysisResult AnalyzeType(
+        public static TypeAnalysisFlags AnalyzeType(
             ForEachStatementSyntax forEachStatement,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -162,18 +191,45 @@ namespace Roslynator.CSharp.Analysis
 
             TypeSyntax type = forEachStatement.Type;
 
-            if (type == null)
-                return TypeAnalysisResult.None;
+            if (type != null)
+            {
+                ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-            if (!type.IsVar)
-                return TypeAnalysisResult.Explicit;
+                ITypeSymbol typeSymbol = info.ElementType;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+                if (typeSymbol?.IsErrorType() == false)
+                {
+                    var flags = TypeAnalysisFlags.None;
 
-            if (typeSymbol?.SupportsExplicitDeclaration() == true)
-                return TypeAnalysisResult.ImplicitButShouldBeExplicit;
+                    if (typeSymbol.IsDynamicType())
+                    {
+                        flags = TypeAnalysisFlags.Dynamic;
+                    }
+                    else
+                    {
+                        flags = TypeAnalysisFlags.ValidSymbol;
 
-            return TypeAnalysisResult.Implicit;
+                        if (type.IsVar)
+                        {
+                            flags |= TypeAnalysisFlags.Implicit;
+
+                            if (typeSymbol.SupportsExplicitDeclaration())
+                                flags |= TypeAnalysisFlags.SupportsExplicit;
+                        }
+                        else
+                        {
+                            flags |= TypeAnalysisFlags.Explicit;
+
+                            if (info.ElementConversion.IsIdentity)
+                                flags |= TypeAnalysisFlags.SupportsImplicit;
+                        }
+                    }
+
+                    return flags;
+                }
+            }
+
+            return TypeAnalysisFlags.None;
         }
 
         public static BracesAnalysisResult AnalyzeBraces(SwitchSectionSyntax switchSection)

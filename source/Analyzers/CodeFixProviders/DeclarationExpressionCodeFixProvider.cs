@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar,
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious);
             }
         }
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         CodeAction codeAction = CodeAction.Create(
                             $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.SpanStart)}'",
                             cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                            DiagnosticIdentifiers.UseExplicitTypeInsteadOfVar + EquivalenceKeySuffix);
+                            DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious + EquivalenceKeySuffix);
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
                     }
