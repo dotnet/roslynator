@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.Test
 {
-    internal static class WrapInElseRefactoring
+    internal static class WrapInElseClauseRefactoring
     {
         public static string Foo()
         {
