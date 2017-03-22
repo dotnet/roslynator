@@ -1187,4 +1187,9 @@
     </Syntaxes>
     <Scope>base list</Scope>
   </Refactoring>
+  <Refactoring Id="RR0180" Identifier="InlineUsingStatic" Title="Inline using static">
+    <Syntaxes>
+      <Syntax>using static directive</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

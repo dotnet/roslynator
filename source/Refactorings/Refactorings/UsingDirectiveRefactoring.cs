@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings.InlineAliasExpression;
 using Roslynator.Text.Extensions;
 
@@ -31,6 +34,15 @@ namespace Roslynator.CSharp.Refactorings
                             });
                     }
                 }
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineUsingStatic)
+                && usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
+                && usingDirective.IsParentKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration))
+            {
+                context.RegisterRefactoring(
+                    "Inline using static",
+                    cancellationToken => InlineUsingStaticRefactoring.RefactorAsync(context.Document, usingDirective, cancellationToken));
             }
         }
     }

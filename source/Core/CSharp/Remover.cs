@@ -603,14 +603,14 @@ namespace Roslynator.CSharp
             return node.RemoveNodes(emptyNamespaces, removeOptions);
         }
 
-        private static SyntaxRemoveOptions GetRemoveOptions(CSharpSyntaxNode member)
+        internal static SyntaxRemoveOptions GetRemoveOptions(CSharpSyntaxNode node)
         {
             SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
 
-            if (member.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (member.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
             return removeOptions;
