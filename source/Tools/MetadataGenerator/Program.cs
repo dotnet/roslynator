@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
-using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Metadata;
 
@@ -16,6 +14,8 @@ namespace MetadataGenerator
 {
     internal static class Program
     {
+        private static readonly Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
         private static readonly StringComparer _invariantComparer = StringComparer.InvariantCulture;
 
         private static void Main(string[] args)
@@ -49,34 +49,41 @@ namespace MetadataGenerator
 
             SaveFile(
                 Path.Combine(dirPath, @"Analyzers\Analyzers.xml"),
-                CreateAnalyzersXml(analyzers));
+                XmlGenerator.CreateAnalyzersXml(analyzers));
 
-            var htmlGenerator = new HtmlGenerator();
+            //var htmlGenerator = new HtmlGenerator();
 
             SaveFile(
                 Path.Combine(dirPath, @"VisualStudio\description.txt"),
-                File.ReadAllText(@"..\text\RoslynatorDescription.txt", Encoding.UTF8) + htmlGenerator.CreateRoslynatorDescription(analyzers, refactorings));
+                File.ReadAllText(@"..\text\RoslynatorDescription.txt", Encoding.UTF8) /*+ htmlGenerator.CreateRoslynatorDescription(analyzers, refactorings)*/);
 
             SaveFile(
                 Path.Combine(dirPath, @"VisualStudio.Refactorings\description.txt"),
-                File.ReadAllText(@"..\text\RoslynatorRefactoringsDescription.txt", Encoding.UTF8) + htmlGenerator.CreateRoslynatorRefactoringsDescription(refactorings));
+                File.ReadAllText(@"..\text\RoslynatorRefactoringsDescription.txt", Encoding.UTF8) /*+ htmlGenerator.CreateRoslynatorRefactoringsDescription(refactorings)*/);
 
             var markdownGenerator = new MarkdownGenerator();
 
             SaveFile(
                  Path.Combine(Path.GetDirectoryName(dirPath), @"README.md"),
-                markdownGenerator.CreateReadMeMarkDown(analyzers, refactorings));
+                 File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8) /*+ markdownGenerator.CreateReadMeMarkDown(analyzers, refactorings)*/);
 
             foreach (string imagePath in MarkdownGenerator.FindMissingImages(refactorings, Path.Combine(Path.GetDirectoryName(dirPath), @"images\refactorings")))
                 Console.WriteLine($"missing image: {imagePath}");
 
             SaveFile(
-                Path.Combine(dirPath, @"Refactorings\Refactorings.md"),
+                Path.Combine(dirPath, @"..\docs\refactorings\Refactorings.md"),
                 markdownGenerator.CreateRefactoringsMarkDown(refactorings));
 
             SaveFile(
                 Path.Combine(dirPath, @"Refactorings\README.md"),
                 markdownGenerator.CreateRefactoringsReadMe(refactorings));
+
+            foreach (RefactoringDescriptor refactoring in refactorings)
+            {
+                SaveFile(
+                    Path.Combine(dirPath, $@"..\docs\refactorings\{refactoring.Identifier}.md"),
+                    markdownGenerator.CreateRefactoringMarkDown(refactoring), fileMustExists: false);
+            }
 
             SaveFile(
                 Path.Combine(dirPath, @"Analyzers\README.md"),
@@ -92,17 +99,22 @@ namespace MetadataGenerator
 #endif
         }
 
-        public static void SaveFile(string path, string content)
+        public static void SaveFile(string path, string content, bool onlyIfChanges = true, bool fileMustExists = true)
         {
-            if (!File.Exists(path))
+            if (fileMustExists
+                && !File.Exists(path))
             {
                 Console.WriteLine($"file not found '{path}'");
                 return;
             }
 
-            if (!string.Equals(content, File.ReadAllText(path, Encoding.UTF8), StringComparison.Ordinal))
+            Encoding encoding = (Path.HasExtension(".md")) ? _utf8NoBom : Encoding.UTF8;
+
+            if (!onlyIfChanges
+                || !File.Exists(path)
+                || !string.Equals(content, File.ReadAllText(path, encoding), StringComparison.Ordinal))
             {
-                File.WriteAllText(path, content, Encoding.UTF8);
+                File.WriteAllText(path, content, encoding);
                 Console.WriteLine($"file saved: '{path}'");
             }
             else
@@ -151,56 +163,6 @@ namespace MetadataGenerator
             root.ReplaceAll(newElements);
 
             doc.Save(filePath);
-        }
-
-        public static string CreateAnalyzersXml(IEnumerable<AnalyzerDescriptor> analyzers)
-        {
-            FieldInfo[] fieldInfos = typeof(DiagnosticDescriptors).GetFields(BindingFlags.Public | BindingFlags.Static);
-
-            var doc = new XDocument();
-
-            var root = new XElement("Analyzers");
-
-            foreach (FieldInfo fieldInfo in fieldInfos.OrderBy(f => ((DiagnosticDescriptor)f.GetValue(null)).Id))
-            {
-                if (fieldInfo.Name.EndsWith("FadeOut"))
-                    continue;
-
-                var descriptor = (DiagnosticDescriptor)fieldInfo.GetValue(null);
-
-                AnalyzerDescriptor analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, descriptor.Id, StringComparison.CurrentCulture));
-
-                analyzer = new AnalyzerDescriptor(
-                    fieldInfo.Name,
-                    descriptor.Title.ToString(),
-                    descriptor.Id,
-                    descriptor.Category,
-                    descriptor.DefaultSeverity.ToString(),
-                    descriptor.IsEnabledByDefault,
-                    descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Unnecessary),
-                    fieldInfos.Any(f => f.Name == fieldInfo.Name + "FadeOut"));
-
-                root.Add(new XElement(
-                    "Analyzer",
-                    new XAttribute("Identifier", analyzer.Identifier),
-                    new XElement("Id", analyzer.Id),
-                    new XElement("Title", analyzer.Title),
-                    new XElement("Category", analyzer.Category),
-                    new XElement("DefaultSeverity", analyzer.DefaultSeverity),
-                    new XElement("IsEnabledByDefault", analyzer.IsEnabledByDefault),
-                    new XElement("SupportsFadeOut", analyzer.SupportsFadeOut),
-                    new XElement("SupportsFadeOutAnalyzer", analyzer.SupportsFadeOutAnalyzer)
-                ));
-            }
-
-            doc.Add(root);
-
-            using (var sw = new Utf8StringWriter())
-            {
-                doc.Save(sw);
-
-                return sw.ToString();
-            }
         }
     }
 }

@@ -1,15 +1,8 @@
 ## Roslynator
 * A collection of 170+ analyzers and 170+ refactorings for C#, powered by Roslyn.
-* [Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
-* [Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
+* [List of Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
+* [List of Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
-
-### Settings
-
-* Analyzers can be enabled/disabled using **rule set**. Please see [How to Customize Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToCustomizeAnalyzers.md).
-* Refactorings can be enabled/disabled in Visual Studio options
-
-![Refactorings Options](/images/RefactoringsOptions.png)
 
 ### Products
 
@@ -29,3 +22,10 @@
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.2.0.0 (Visual Studio 2017 or higher).
 * [C# Analyzers](http://www.nuget.org/packages/CSharpAnalyzers/) (analyzers only).
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0 (Visual Studio 2015 or higher).
+
+### Settings
+
+* Analyzers can be enabled/disabled using **rule set**. Please see [How to Customize Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToCustomizeAnalyzers.md).
+* Refactorings can be enabled/disabled in Visual Studio options.
+
+![Refactorings Options](/images/RefactoringsOptions.png)
