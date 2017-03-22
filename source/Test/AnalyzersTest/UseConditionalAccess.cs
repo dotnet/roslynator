@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable RCS1023, RCS1029, RCS1118
+#pragma warning disable RCS1002, RCS1023, RCS1029, RCS1118
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -22,6 +22,14 @@ namespace Roslynator.CSharp.Analyzers.Test
             public void Method()
             {
                 Foo x = null;
+
+                if (x != null)
+                    x.Method();
+
+                if (x != null)
+                {
+                    x.Method();
+                }
 
                 //y
 
