@@ -62,14 +62,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisResult result = CSharpAnalysis.AnalyzeType(
-                variableDeclaration,
-                semanticModel,
-                context.CancellationToken);
+            TypeAnalysisFlags flags = CSharpAnalysis.AnalyzeType(variableDeclaration, semanticModel, context.CancellationToken);
 
-            if (result == TypeAnalysisResult.Explicit || result == TypeAnalysisResult.ExplicitButShouldBeImplicit)
+            if (flags.IsExplicit())
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                if (flags.SupportsImplicit()
+                    && flags.IsValidSymbol()
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                 {
                     context.RegisterRefactoring(
                         "Change type to 'var'",
@@ -82,14 +81,13 @@ namespace Roslynator.CSharp.Refactorings
                         });
                 }
             }
-            else if (result == TypeAnalysisResult.Implicit || result == TypeAnalysisResult.ImplicitButShouldBeExplicit)
+            else if (flags.SupportsExplicit()
+                 && flags.IsValidSymbol()
+                 && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
-                {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, context.CancellationToken);
 
-                    ChangeType(context, variableDeclaration, typeSymbol, semanticModel, context.CancellationToken);
-                }
+                ChangeType(context, variableDeclaration, typeSymbol, semanticModel, context.CancellationToken);
             }
         }
 

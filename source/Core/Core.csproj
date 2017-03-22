@@ -43,6 +43,7 @@
     <Compile Include="AsyncMethodNameGenerator.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
+    <Compile Include="CSharp\Analysis\TypeAnalysisFlagsExtensions.cs" />
     <Compile Include="CSharp\CSharpErrorCodes.cs" />
     <Compile Include="CSharp\Documentation\AddBaseOrNewDocumentationCommentRewriter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentInfo.cs" />
@@ -154,7 +155,7 @@
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineRemover.cs" />
-    <Compile Include="CSharp\Analysis\TypeAnalysisResult.cs" />
+    <Compile Include="CSharp\Analysis\TypeAnalysisFlags.cs" />
     <Compile Include="CSharp\Refactorings\ChangeTypeRefactoring.cs" />
     <Compile Include="CSharp\Remover.cs" />
     <Compile Include="CSharp\MemberDeclarationComparer.cs" />
