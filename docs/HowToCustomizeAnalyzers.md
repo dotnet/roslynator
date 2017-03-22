@@ -36,11 +36,13 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 * Skip this step if you already have one.
 * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
+
+![Open Active Rule Set](/images/OpenActiveRuleSet.png)
+
 * Modify rule set.
 * Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
 * Move rule set file to a solution root folder (or any other location).
 
-![Open Active Rule Set](/images/OpenActiveRuleSet.png)
 ![Rule Set Editor](/images/RuleSetEditor.png)
 
 ### 2) Modify Rule Set File Manually
@@ -53,10 +55,11 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 ### 3) Attach Rule Set to Project(s)
 
 * Go to Main Menu - Analysis - Configure Code Analysis - For Solution
-* Change rule set for each project.
-* Change configuration and repeat previous step (optional).
 
 ![Configure Code Analysis for Solution](/images/ConfigureCodeAnalysisForSolution.png)
+
+* Change rule set for each project.
+* Change configuration and repeat previous step (optional).
 
 ![Code Analysis Settings](/images/CodeAnalysisSettings.png)
 
