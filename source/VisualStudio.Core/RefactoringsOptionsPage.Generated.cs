@@ -564,6 +564,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.AddTypeParameter, "Add type parameter", IsEnabled(RefactoringIdentifiers.AddTypeParameter)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.ImplementIEquatableOfT, "Implement IEquatable<T>", IsEnabled(RefactoringIdentifiers.ImplementIEquatableOfT)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.InlineUsingStatic, "Inline using static", IsEnabled(RefactoringIdentifiers.InlineUsingStatic)));
         }
 
         public void ApplyTo(RefactoringSettings settings)
@@ -632,6 +633,7 @@ namespace Roslynator.VisualStudio
             settings.SetRefactoring(RefactoringIdentifiers.InitializeLocalWithDefaultValue, IsEnabled(RefactoringIdentifiers.InitializeLocalWithDefaultValue));
             settings.SetRefactoring(RefactoringIdentifiers.InlineAliasExpression, IsEnabled(RefactoringIdentifiers.InlineAliasExpression));
             settings.SetRefactoring(RefactoringIdentifiers.InlineMethod, IsEnabled(RefactoringIdentifiers.InlineMethod));
+            settings.SetRefactoring(RefactoringIdentifiers.InlineUsingStatic, IsEnabled(RefactoringIdentifiers.InlineUsingStatic));
             settings.SetRefactoring(RefactoringIdentifiers.InsertStringInterpolation, IsEnabled(RefactoringIdentifiers.InsertStringInterpolation));
             settings.SetRefactoring(RefactoringIdentifiers.IntroduceAndInitializeField, IsEnabled(RefactoringIdentifiers.IntroduceAndInitializeField));
             settings.SetRefactoring(RefactoringIdentifiers.IntroduceAndInitializeProperty, IsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty));

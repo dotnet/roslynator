@@ -70,6 +70,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string InitializeLocalWithDefaultValue = Prefix + "0060";
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineMethod = Prefix + "0062";
+        public const string InlineUsingStatic = Prefix + "0180";
         public const string InsertStringInterpolation = Prefix + "0063";
         public const string IntroduceAndInitializeField = Prefix + "0064";
         public const string IntroduceAndInitializeProperty = Prefix + "0065";

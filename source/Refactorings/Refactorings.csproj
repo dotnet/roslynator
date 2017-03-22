@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="InlineUsingStaticRefactoring.cs" />
     <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
     <Compile Include="Refactorings\DeclarationExpressionRefactoring.cs" />

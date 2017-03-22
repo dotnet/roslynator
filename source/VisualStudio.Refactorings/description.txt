@@ -247,6 +247,9 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#inline-method">Inline method</a>
     </li>
     <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#inline-using-static">Inline using static</a>
+    </li>
+    <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#insert-string-interpolation">Insert string interpolation</a>
     </li>
     <li>
