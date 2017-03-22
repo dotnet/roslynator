@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
   <Analyzer Identifier="AddBraces">
     <Id>RCS1001</Id>
@@ -63,7 +63,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitTypeInsteadOfVar">
+  <Analyzer Identifier="UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious">
     <Id>RCS1008</Id>
     <Title>Use explicit type instead of 'var' (when the type is not obvious).</Title>
     <Category>Readability</Category>
@@ -81,7 +81,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseVarInsteadOfExplicitType">
+  <Analyzer Identifier="UseVarInsteadOfExplicitTypeWhenTypeIsObvious">
     <Id>RCS1010</Id>
     <Title>Use 'var' instead of explicit type (when the type is obvious).</Title>
     <Category>Simplification</Category>
@@ -1546,6 +1546,24 @@
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious">
+    <Id>RCS1176</Id>
+    <Title>Use 'var' instead of explicit type (when the type is not obvious).</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseVarInsteadOfExplicitTypeInForEach">
+    <Id>RCS1177</Id>
+    <Title>Use 'var' instead of explicit type (in foreach).</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
 </Analyzers>

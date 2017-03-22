@@ -174,3 +174,5 @@ RCS1172|Use is operator instead of as operator|Simplification|x
 RCS1173|Use coalesce expression instead of if|Simplification|x
 RCS1174|Remove redundant async/await|Redundancy|x
 RCS1175|Unused this parameter|Redundancy|x
+RCS1176|Use 'var' instead of explicit type \(when the type is not obvious\)|Simplification|x
+RCS1177|Use 'var' instead of explicit type \(in foreach\)|Simplification|x

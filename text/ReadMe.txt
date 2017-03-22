@@ -1,5 +1,5 @@
 ## Roslynator
-* A collection of 170+ analyzers and 170+ refactorings for C#, powered by Roslyn.
+* A collection of 170+ analyzers and 180+ refactorings for C#, powered by Roslyn.
 * [List of Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
 * [List of Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md)
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)

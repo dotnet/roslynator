@@ -1,7 +1,7 @@
 <h3>Introduction</h3>
 
 <p>
-    A collection of 170+ refactorings for C#, powered by Roslyn.
+    A collection of 180+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
@@ -50,7 +50,3 @@
 
 <h3>Settings</h3>
 <p>Refactorings can be enabled/disabled in Visual Studio options.</p>
-
-        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/Refactorings.md#inline-using-static">Inline using static</a>
-    </li>
-    <li>

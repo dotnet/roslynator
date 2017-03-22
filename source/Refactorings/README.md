@@ -66,6 +66,7 @@ RR0179|[Implement IEquatable\<T\>](../../docs/refactorings/ImplementIEquatableOf
 RR0060|[Initialize local with default value](../../docs/refactorings/InitializeLocalWithDefaultValue.md)|x
 RR0061|[Inline alias expression](../../docs/refactorings/InlineAliasExpression.md)|x
 RR0062|[Inline method](../../docs/refactorings/InlineMethod.md)|x
+RR0180|[Inline using static](../../docs/refactorings/InlineUsingStatic.md)|x
 RR0063|[Insert string interpolation](../../docs/refactorings/InsertStringInterpolation.md)|x
 RR0064|[Introduce and initialize field](../../docs/refactorings/IntroduceAndInitializeField.md)|x
 RR0065|[Introduce and initialize property](../../docs/refactorings/IntroduceAndInitializeProperty.md)|x
