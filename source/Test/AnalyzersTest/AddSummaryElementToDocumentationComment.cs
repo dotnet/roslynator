@@ -18,6 +18,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         /// <param name="parameter"></param>
         /// <param name="parameter2"></param>
+        /// <include />
         private static void Foo2(object parameter, object parameter2)
         {
         }
@@ -27,7 +28,15 @@ namespace Roslynator.CSharp.Analyzers.Test
             /// <inheritdoc />
             /// <param name="parameter"></param>
             /// <param name="parameter2"></param>
-            private static void Foo2(object parameter, object parameter2)
+            private static void Foo(object parameter, object parameter2)
+            {
+            }
+        }
+
+        private static class Include
+        {
+            /// <include file='' path='[@name=""]' />
+            private static void Foo(object parameter, object parameter2)
             {
             }
         }

@@ -22,7 +22,10 @@ namespace Roslynator.CSharp.Refactorings
         public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
         {
             bool containsInheritDoc = false;
+            bool containsInclude = false;
             bool containsSummaryElement = false;
+
+            bool isFirst = true;
 
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
@@ -36,6 +39,18 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (name != null)
                     {
+                        if (isFirst)
+                        {
+                            if (IsInclude(name))
+                                containsInclude = true;
+
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            containsInclude = false;
+                        }
+
                         if (IsInheritDoc(name))
                         {
                             containsInheritDoc = true;
@@ -64,6 +79,18 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (name != null)
                     {
+                        if (isFirst)
+                        {
+                            if (IsInclude(name))
+                                containsInclude = true;
+
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            containsInclude = false;
+                        }
+
                         if (IsInheritDoc(name))
                         {
                             containsInheritDoc = true;
@@ -84,7 +111,8 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (!containsSummaryElement
-                && !containsInheritDoc)
+                && !containsInheritDoc
+                && !containsInclude)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
@@ -100,6 +128,11 @@ namespace Roslynator.CSharp.Refactorings
         private static bool IsInheritDoc(string name)
         {
             return string.Equals(name, "inheritdoc", StringComparison.Ordinal);
+        }
+
+        private static bool IsInclude(string name)
+        {
+            return string.Equals(name, "include", StringComparison.Ordinal);
         }
 
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)
