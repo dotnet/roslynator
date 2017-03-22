@@ -1,0 +1,14 @@
+## Make member virtual
+
+Property | Value
+--- | --- 
+Id | RR0070
+Title | Make member virtual
+Syntax | method declaration, indexer declaration
+Enabled by Default | yes
+
+### Usage
+
+![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
+
+[full list of refactorings](Refactorings.md)

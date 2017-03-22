@@ -1,0 +1,15 @@
+## Add braces
+
+Property | Value
+--- | --- 
+Id | RR0002
+Title | Add braces
+Syntax | do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
+Scope | embedded statement
+Enabled by Default | yes
+
+### Usage
+
+![Add braces](../../images/refactorings/AddBraces.png)
+
+[full list of refactorings](Refactorings.md)

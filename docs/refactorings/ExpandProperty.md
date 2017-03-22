@@ -1,0 +1,14 @@
+## Expand property
+
+Property | Value
+--- | --- 
+Id | RR0040
+Title | Expand property
+Syntax | auto\-property
+Enabled by Default | yes
+
+### Usage
+
+![Expand property](../../images/refactorings/ExpandProperty.png)
+
+[full list of refactorings](Refactorings.md)

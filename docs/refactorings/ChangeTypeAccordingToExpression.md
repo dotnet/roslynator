@@ -1,0 +1,17 @@
+## Change type according to expression
+
+Property | Value
+--- | --- 
+Id | RR0022
+Title | Change type according to expression
+Syntax | variable declaration, foreach statement
+Scope | type
+Enabled by Default | yes
+
+### Usage
+
+![Change type according to expression](../../images/refactorings/ChangeTypeAccordingToExpression.png)
+
+![Change type according to expression](../../images/refactorings/ChangeForEachTypeAccordingToExpression.png)
+
+[full list of refactorings](Refactorings.md)

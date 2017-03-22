@@ -1,0 +1,15 @@
+## Rename parameter according to its type name
+
+Property | Value
+--- | --- 
+Id | RR0114
+Title | Rename parameter according to its type name
+Syntax | parameter
+Scope | parameter identifier
+Enabled by Default | yes
+
+### Usage
+
+![Rename parameter according to its type name](../../images/refactorings/RenameParameterAccordingToTypeName.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Expand coalesce expression
+
+Property | Value
+--- | --- 
+Id | RR0035
+Title | Expand coalesce expression
+Syntax | coalesce expression
+Scope | ?? operator
+Enabled by Default | yes
+
+### Usage
+
+![Expand coalesce expression](../../images/refactorings/ExpandCoalesceExpression.png)
+
+[full list of refactorings](Refactorings.md)

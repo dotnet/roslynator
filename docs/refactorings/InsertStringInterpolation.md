@@ -1,0 +1,16 @@
+## Insert string interpolation
+
+Property | Value
+--- | --- 
+Id | RR0063
+Title | Insert string interpolation
+Syntax | string literal, interpolated string
+Enabled by Default | yes
+
+### Usage
+
+![Insert string interpolation](../../images/refactorings/InsertInterpolationIntoStringLiteral.png)
+
+![Insert string interpolation](../../images/refactorings/InsertInterpolationIntoInterpolatedString.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Remove parentheses
+
+Property | Value
+--- | --- 
+Id | RR0106
+Title | Remove parentheses
+Syntax | parenthesized expression
+Scope | opening or closing parenthesis
+Enabled by Default | yes
+
+### Usage
+
+![Remove parentheses](../../images/refactorings/RemoveParentheses.png)
+
+[full list of refactorings](Refactorings.md)

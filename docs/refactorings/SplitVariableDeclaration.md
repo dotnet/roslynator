@@ -1,0 +1,14 @@
+## Split variable declaration
+
+Property | Value
+--- | --- 
+Id | RR0158
+Title | Split variable declaration
+Syntax | local declaration, field declaration, event field declaration
+Enabled by Default | yes
+
+### Usage
+
+![Split variable declaration](../../images/refactorings/SplitLocalDeclaration.png)
+
+[full list of refactorings](Refactorings.md)

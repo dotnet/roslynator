@@ -1,0 +1,14 @@
+## Replace prefix operator to postfix operator
+
+Property | Value
+--- | --- 
+Id | RR0140
+Title | Replace prefix operator to postfix operator
+Syntax | prefix/postfix unary expression
+Enabled by Default | yes
+
+### Usage
+
+![Replace prefix operator to postfix operator](../../images/refactorings/ReplacePrefixOperatorWithPostfixOperator.png)
+
+[full list of refactorings](Refactorings.md)

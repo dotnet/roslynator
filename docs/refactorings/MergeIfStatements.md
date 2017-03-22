@@ -1,0 +1,14 @@
+## Merge if statements
+
+Property | Value
+--- | --- 
+Id | RR0075
+Title | Merge if statements
+Syntax | selected if statements
+Enabled by Default | yes
+
+### Usage
+
+![Merge if statements](../../images/refactorings/MergeIfStatements.png)
+
+[full list of refactorings](Refactorings.md)

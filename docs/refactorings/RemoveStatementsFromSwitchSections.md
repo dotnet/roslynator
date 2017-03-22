@@ -1,0 +1,14 @@
+## Remove statements from switch sections
+
+Property | Value
+--- | --- 
+Id | RR0110
+Title | Remove statements from switch sections
+Syntax | selected switch sections
+Enabled by Default | yes
+
+### Usage
+
+![Remove statements from switch sections](../../images/refactorings/RemoveStatementsFromSwitchSections.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Replace increment operator with decrement operator
+
+Property | Value
+--- | --- 
+Id | RR0134
+Title | Replace increment operator with decrement operator
+Syntax | prefix/postfix unary expression
+Enabled by Default | yes
+
+### Usage
+
+![Replace increment operator with decrement operator](../../images/refactorings/ReplaceIncrementOperatorWithDecrementOperator.png)
+
+[full list of refactorings](Refactorings.md)

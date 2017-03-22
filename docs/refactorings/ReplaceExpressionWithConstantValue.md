@@ -1,0 +1,14 @@
+## Replace expression with constant value
+
+Property | Value
+--- | --- 
+Id | RR0127
+Title | Replace expression with constant value
+Syntax | expression that has constant value
+Enabled by Default | yes
+
+### Usage
+
+![Replace expression with constant value](../../images/refactorings/ReplaceExpressionWithConstantValue.png)
+
+[full list of refactorings](Refactorings.md)

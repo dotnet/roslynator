@@ -1,0 +1,14 @@
+## Replace hexadecimal literal with decimal literal
+
+Property | Value
+--- | --- 
+Id | RR0132
+Title | Replace hexadecimal literal with decimal literal
+Syntax | hexadecimal literal
+Enabled by Default | yes
+
+### Usage
+
+![Replace hexadecimal literal with decimal literal](../../images/refactorings/ReplaceHexadecimalLiteralWithDecimalLiteral.png)
+
+[full list of refactorings](Refactorings.md)

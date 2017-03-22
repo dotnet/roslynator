@@ -1,0 +1,14 @@
+## Collapse to initalizer
+
+Property | Value
+--- | --- 
+Id | RR0026
+Title | Collapse to initalizer
+Syntax | object creation followed with assignment\(s\)
+Enabled by Default | yes
+
+### Usage
+
+![Collapse to initalizer](../../images/refactorings/CollapseToInitializer.png)
+
+[full list of refactorings](Refactorings.md)

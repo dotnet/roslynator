@@ -1,0 +1,14 @@
+## Swap member declarations
+
+Property | Value
+--- | --- 
+Id | RR0161
+Title | Swap member declarations
+Syntax | empty line between member declarations
+Enabled by Default | yes
+
+### Usage
+
+![Swap member declarations](../../images/refactorings/SwapMemberDeclarations.png)
+
+[full list of refactorings](Refactorings.md)

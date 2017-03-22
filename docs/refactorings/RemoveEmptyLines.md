@@ -1,0 +1,14 @@
+## Remove empty lines
+
+Property | Value
+--- | --- 
+Id | RR0101
+Title | Remove empty lines
+Syntax | selected lines
+Enabled by Default | yes
+
+### Usage
+
+![Remove empty lines](../../images/refactorings/RemoveEmptyLines.png)
+
+[full list of refactorings](Refactorings.md)

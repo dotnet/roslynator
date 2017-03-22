@@ -1,0 +1,15 @@
+## Swap expressions in conditional expression
+
+Property | Value
+--- | --- 
+Id | RR0160
+Title | Swap expressions in conditional expression
+Syntax | conditional expression
+Scope | condition
+Enabled by Default | yes
+
+### Usage
+
+![Swap expressions in conditional expression](../../images/refactorings/SwapExpressionsInConditionalExpression.png)
+
+[full list of refactorings](Refactorings.md)

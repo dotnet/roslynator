@@ -1,0 +1,14 @@
+## Replace constant with field
+
+Property | Value
+--- | --- 
+Id | RR0121
+Title | Replace constant with field
+Syntax | constant declaration
+Enabled by Default | yes
+
+### Usage
+
+![Replace constant with field](../../images/refactorings/ReplaceConstantWithField.png)
+
+[full list of refactorings](Refactorings.md)

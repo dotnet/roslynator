@@ -1,0 +1,16 @@
+## Format argument list
+
+Property | Value
+--- | --- 
+Id | RR0048
+Title | Format argument list
+Syntax | argument list
+Enabled by Default | yes
+
+### Usage
+
+![Format argument list](../../images/refactorings/FormatEachArgumentOnSeparateLine.png)
+
+![Format argument list](../../images/refactorings/FormatAllArgumentsOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)

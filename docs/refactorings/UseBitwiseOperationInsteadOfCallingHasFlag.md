@@ -1,0 +1,14 @@
+## Use bitwise operation instead of calling 'HasFlag'
+
+Property | Value
+--- | --- 
+Id | RR0164
+Title | Use bitwise operation instead of calling 'HasFlag'
+Syntax | Enum\.HasFlag method invocation
+Enabled by Default | yes
+
+### Usage
+
+![Use bitwise operation instead of calling 'HasFlag'](../../images/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.png)
+
+[full list of refactorings](Refactorings.md)

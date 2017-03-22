@@ -1,0 +1,15 @@
+## Remove condition from last else clause
+
+Property | Value
+--- | --- 
+Id | RR0099
+Title | Remove condition from last else clause
+Syntax | else clause
+Scope | else keyword
+Enabled by Default | yes
+
+### Usage
+
+![Remove condition from last else clause](../../images/refactorings/RemoveConditionFromLastElse.png)
+
+[full list of refactorings](Refactorings.md)

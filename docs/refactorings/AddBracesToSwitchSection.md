@@ -1,0 +1,15 @@
+## Add braces to switch section
+
+Property | Value
+--- | --- 
+Id | RR0004
+Title | Add braces to switch section
+Syntax | switch section
+Scope | statements
+Enabled by Default | yes
+
+### Usage
+
+![Add braces to switch section](../../images/refactorings/AddBracesToSwitchSection.png)
+
+[full list of refactorings](Refactorings.md)

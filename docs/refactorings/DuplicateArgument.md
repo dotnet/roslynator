@@ -1,0 +1,14 @@
+## Duplicate argument
+
+Property | Value
+--- | --- 
+Id | RR0030
+Title | Duplicate argument
+Syntax | missing argument
+Enabled by Default | yes
+
+### Usage
+
+![Duplicate argument](../../images/refactorings/DuplicateArgument.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Remove all region directives
+
+Property | Value
+--- | --- 
+Id | RR0091
+Title | Remove all region directives
+Syntax | region directive
+Enabled by Default | yes
+
+### Usage
+
+![Remove all region directives](../../images/refactorings/RemoveAllRegionDirectives.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Rename property according to type name
+
+Property | Value
+--- | --- 
+Id | RR0115
+Title | Rename property according to type name
+Syntax | property identifier
+Enabled by Default | yes
+
+### Usage
+
+![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
+
+[full list of refactorings](Refactorings.md)

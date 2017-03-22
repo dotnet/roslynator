@@ -1,0 +1,15 @@
+## Replace interpolated string with interpolation expression
+
+Property | Value
+--- | --- 
+Id | RR0135
+Title | Replace interpolated string with interpolation expression
+Syntax | interpolated string with single interpolation and no text
+Scope | interpolation
+Enabled by Default | yes
+
+### Usage
+
+![Replace interpolated string with interpolation expression](../../images/refactorings/ReplaceInterpolatedStringWithInterpolationExpression.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Uncomment
+
+Property | Value
+--- | --- 
+Id | RR0163
+Title | Uncomment
+Syntax | single\-line comment\(s\)
+Enabled by Default | yes
+
+### Usage
+
+![Uncomment](../../images/refactorings/Uncomment.png)
+
+[full list of refactorings](Refactorings.md)

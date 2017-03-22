@@ -1,0 +1,15 @@
+## Replace method with property
+
+Property | Value
+--- | --- 
+Id | RR0138
+Title | Replace method with property
+Syntax | method
+Scope | method header
+Enabled by Default | no
+
+### Usage
+
+![Replace method with property](../../images/refactorings/ReplaceMethodWithProperty.png)
+
+[full list of refactorings](Refactorings.md)

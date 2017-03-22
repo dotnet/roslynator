@@ -1,0 +1,14 @@
+## Check expression for null
+
+Property | Value
+--- | --- 
+Id | RR0024
+Title | Check expression for null
+Syntax | local declaration \(identifier\), assignment expression \(left\)
+Enabled by Default | yes
+
+### Usage
+
+![Check expression for null](../../images/refactorings/CheckExpressionForNull.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Generate event invoking method
+
+Property | Value
+--- | --- 
+Id | RR0058
+Title | Generate event invoking method
+Syntax | event
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Generate event invoking method](../../images/refactorings/GenerateEventInvokingMethod.png)
+
+[full list of refactorings](Refactorings.md)

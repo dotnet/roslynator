@@ -1,0 +1,15 @@
+## Expand lambda expression body
+
+Property | Value
+--- | --- 
+Id | RR0039
+Title | Expand lambda expression body
+Syntax | lambda expression
+Scope | body
+Enabled by Default | yes
+
+### Usage
+
+![Expand lambda expression body](../../images/refactorings/ExpandLambdaExpressionBody.png)
+
+[full list of refactorings](Refactorings.md)

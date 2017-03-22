@@ -1,0 +1,14 @@
+## Introduce and initialize field
+
+Property | Value
+--- | --- 
+Id | RR0064
+Title | Introduce and initialize field
+Syntax | constructor parameter
+Enabled by Default | yes
+
+### Usage
+
+![Introduce and initialize field](../../images/refactorings/IntroduceAndInitializeField.png)
+
+[full list of refactorings](Refactorings.md)

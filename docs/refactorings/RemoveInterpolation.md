@@ -1,0 +1,15 @@
+## Remove interpolation
+
+Property | Value
+--- | --- 
+Id | RR0102
+Title | Remove interpolation
+Syntax | string interpolation
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove interpolation](../../images/refactorings/RemoveInterpolation.png)
+
+[full list of refactorings](Refactorings.md)

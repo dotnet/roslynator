@@ -1,0 +1,17 @@
+## Format accessor braces
+
+Property | Value
+--- | --- 
+Id | RR0047
+Title | Format accessor braces
+Syntax | get accessor, set accessor, add accessor, remove accessor
+Scope | block
+Enabled by Default | yes
+
+### Usage
+
+![Format accessor braces](../../images/refactorings/FormatAccessorBracesOnMultipleLines.png)
+
+![Format accessor braces](../../images/refactorings/FormatAccessorBracesOnSingleLine.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Merge interpolation into interpolated string
+
+Property | Value
+--- | --- 
+Id | RR0076
+Title | Merge interpolation into interpolated string
+Syntax | interpolation
+Enabled by Default | yes
+
+### Usage
+
+![Merge interpolation into interpolated string](../../images/refactorings/MergeInterpolationIntoInterpolatedString.png)
+
+[full list of refactorings](Refactorings.md)

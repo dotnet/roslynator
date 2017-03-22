@@ -1,0 +1,16 @@
+## Copy documentation comment from base member
+
+Property | Value
+--- | --- 
+Id | RR0029
+Title | Copy documentation comment from base member
+Syntax | constructor, method, property, indexer, event
+Enabled by Default | yes
+
+### Usage
+
+![Copy documentation comment from base member](../../images/refactorings/CopyDocumentationCommentFromBaseMember.png)
+
+![Copy documentation comment from base member](../../images/refactorings/CopyDocumentationCommentFromImplementedMember.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Use conditional expression instead of if
+
+Property | Value
+--- | --- 
+Id | RR0166
+Title | Use conditional expression instead of if
+Syntax | if statement
+Enabled by Default | yes
+
+### Usage
+
+![Use conditional expression instead of if](../../images/refactorings/UseConditionalExpressionInsteadOfIf.png)
+
+[full list of refactorings](Refactorings.md)

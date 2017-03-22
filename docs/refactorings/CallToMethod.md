@@ -1,0 +1,14 @@
+## Call 'To...' method (ToString, ToArray, ToList)
+
+Property | Value
+--- | --- 
+Id | RR0017
+Title | Call 'To\.\.\.' method \(ToString, ToArray, ToList\)
+Syntax | argument, assignment expression, return statement, variable declaration
+Enabled by Default | yes
+
+### Usage
+
+![Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](../../images/refactorings/CallToMethod.png)
+
+[full list of refactorings](Refactorings.md)

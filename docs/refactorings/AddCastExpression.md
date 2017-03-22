@@ -1,0 +1,20 @@
+## Add cast expression
+
+Property | Value
+--- | --- 
+Id | RR0006
+Title | Add cast expression
+Syntax | argument, assignment expression, return statement, variable declaration
+Enabled by Default | yes
+
+### Usage
+
+![Add cast expression](../../images/refactorings/AddCastExpressionToArgument.png)
+
+![Add cast expression](../../images/refactorings/AddCastExpressionToAssignmentExpression.png)
+
+![Add cast expression](../../images/refactorings/AddCastExpressionToReturnStatement.png)
+
+![Add cast expression](../../images/refactorings/AddCastExpressionToVariableDeclaration.png)
+
+[full list of refactorings](Refactorings.md)

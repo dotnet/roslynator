@@ -1,0 +1,14 @@
+## Inline method
+
+Property | Value
+--- | --- 
+Id | RR0062
+Title | Inline method
+Syntax | static/extension method invocation
+Enabled by Default | yes
+
+### Usage
+
+![Inline method](../../images/refactorings/InlineMethod.png)
+
+[full list of refactorings](Refactorings.md)

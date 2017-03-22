@@ -1,0 +1,14 @@
+## Add parameter name to argument
+
+Property | Value
+--- | --- 
+Id | RR0011
+Title | Add parameter name to argument
+Syntax | argument list
+Enabled by Default | yes
+
+### Usage
+
+![Add parameter name to argument](../../images/refactorings/AddParameterNameToArgument.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Duplicate parameter
+
+Property | Value
+--- | --- 
+Id | RR0032
+Title | Duplicate parameter
+Syntax | missing parameter
+Enabled by Default | yes
+
+### Usage
+
+![Duplicate parameter](../../images/refactorings/DuplicateParameter.png)
+
+[full list of refactorings](Refactorings.md)

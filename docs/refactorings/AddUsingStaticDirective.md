@@ -1,0 +1,15 @@
+## Add using static directive
+
+Property | Value
+--- | --- 
+Id | RR0014
+Title | Add using static directive
+Syntax | member access expression \(public or internal static class\)
+Scope | selected class name
+Enabled by Default | yes
+
+### Usage
+
+![Add using static directive](../../images/refactorings/AddUsingStaticDirective.png)
+
+[full list of refactorings](Refactorings.md)

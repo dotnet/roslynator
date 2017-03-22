@@ -1,0 +1,14 @@
+## Replace interpolated string with string literal
+
+Property | Value
+--- | --- 
+Id | RR0136
+Title | Replace interpolated string with string literal
+Syntax | Interpolated string without any interpolation
+Enabled by Default | yes
+
+### Usage
+
+![Replace interpolated string with string literal](../../images/refactorings/ReplaceInterpolatedStringWithStringLiteral.png)
+
+[full list of refactorings](Refactorings.md)

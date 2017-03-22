@@ -1,0 +1,14 @@
+## Remove all documentation comments
+
+Property | Value
+--- | --- 
+Id | RR0088
+Title | Remove all documentation comments
+Syntax | singleline/multiline documentation comment
+Enabled by Default | no
+
+### Usage
+
+![Remove all documentation comments](../../images/refactorings/RemoveAllDocumentationComments.png)
+
+[full list of refactorings](Refactorings.md)

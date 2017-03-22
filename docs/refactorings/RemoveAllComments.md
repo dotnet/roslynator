@@ -1,0 +1,14 @@
+## Remove all comments
+
+Property | Value
+--- | --- 
+Id | RR0086
+Title | Remove all comments
+Syntax | singleline/multiline comment, singleline/multiline documentation documentation comment
+Enabled by Default | yes
+
+### Usage
+
+![Remove all comments](../../images/refactorings/RemoveAllComments.png)
+
+[full list of refactorings](Refactorings.md)

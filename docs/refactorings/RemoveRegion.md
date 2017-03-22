@@ -1,0 +1,14 @@
+## Remove region
+
+Property | Value
+--- | --- 
+Id | RR0108
+Title | Remove region
+Syntax | region directive
+Enabled by Default | yes
+
+### Usage
+
+![Remove region](../../images/refactorings/RemoveRegion.png)
+
+[full list of refactorings](Refactorings.md)

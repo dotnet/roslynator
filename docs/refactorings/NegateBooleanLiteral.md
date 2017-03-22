@@ -1,0 +1,14 @@
+## Negate boolean literal
+
+Property | Value
+--- | --- 
+Id | RR0080
+Title | Negate boolean literal
+Syntax | boolean literal
+Enabled by Default | yes
+
+### Usage
+
+![Negate boolean literal](../../images/refactorings/NegateBooleanLiteral.png)
+
+[full list of refactorings](Refactorings.md)

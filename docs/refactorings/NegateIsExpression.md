@@ -1,0 +1,15 @@
+## Negate is expression
+
+Property | Value
+--- | --- 
+Id | RR0081
+Title | Negate is expression
+Syntax | is expression
+Scope | operator
+Enabled by Default | yes
+
+### Usage
+
+![Negate is expression](../../images/refactorings/NegateIsExpression.png)
+
+[full list of refactorings](Refactorings.md)

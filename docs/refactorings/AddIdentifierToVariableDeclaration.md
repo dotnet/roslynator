@@ -1,0 +1,14 @@
+## Add identifier to variable declaration
+
+Property | Value
+--- | --- 
+Id | RR0010
+Title | Add identifier to variable declaration
+Syntax | variable declaration
+Enabled by Default | yes
+
+### Usage
+
+![Add identifier to variable declaration](../../images/refactorings/AddIdentifierToVariableDeclaration.png)
+
+[full list of refactorings](Refactorings.md)

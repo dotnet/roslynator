@@ -1,0 +1,14 @@
+## Replace cast expression with as expression
+
+Property | Value
+--- | --- 
+Id | RR0118
+Title | Replace cast expression with as expression
+Syntax | cast expression
+Enabled by Default | yes
+
+### Usage
+
+![Replace cast expression with as expression](../../images/refactorings/ReplaceCastWithAs.png)
+
+[full list of refactorings](Refactorings.md)

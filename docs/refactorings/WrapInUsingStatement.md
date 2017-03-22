@@ -1,0 +1,14 @@
+## Wrap in using statement
+
+Property | Value
+--- | --- 
+Id | RR0177
+Title | Wrap in using statement
+Syntax | local declaration of type that implements IDisposable
+Enabled by Default | yes
+
+### Usage
+
+![Wrap in using statement](../../images/refactorings/WrapInUsingStatement.png)
+
+[full list of refactorings](Refactorings.md)

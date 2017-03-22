@@ -1,0 +1,15 @@
+## Replace conditional expression with expression
+
+Property | Value
+--- | --- 
+Id | RR0119
+Title | Replace conditional expression with expression
+Syntax | conditional expression
+Scope | selected true/false expression
+Enabled by Default | yes
+
+### Usage
+
+![Replace conditional expression with expression](../../images/refactorings/ReplaceConditionalExpressionWithExpression.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Simplify if
+
+Property | Value
+--- | --- 
+Id | RR0153
+Title | Simplify if
+Syntax | if statement
+Enabled by Default | yes
+
+### Usage
+
+![Simplify if](../../images/refactorings/SimplifyIf.png)
+
+[full list of refactorings](Refactorings.md)

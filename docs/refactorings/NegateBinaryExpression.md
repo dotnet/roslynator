@@ -1,0 +1,14 @@
+## Negate binary expression
+
+Property | Value
+--- | --- 
+Id | RR0079
+Title | Negate binary expression
+Syntax | logical and/or expression
+Enabled by Default | yes
+
+### Usage
+
+![Negate binary expression](../../images/refactorings/NegateBinaryExpression.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Check parameter for null
+
+Property | Value
+--- | --- 
+Id | RR0025
+Title | Check parameter for null
+Syntax | parameter
+Scope | parameter identifier
+Enabled by Default | yes
+
+### Usage
+
+![Check parameter for null](../../images/refactorings/CheckParameterForNull.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Replace regular string literal with verbatim string literal
+
+Property | Value
+--- | --- 
+Id | RR0142
+Title | Replace regular string literal with verbatim string literal
+Syntax | regular string literal
+Enabled by Default | yes
+
+### Usage
+
+![Replace regular string literal with verbatim string literal](../../images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
+
+[full list of refactorings](Refactorings.md)

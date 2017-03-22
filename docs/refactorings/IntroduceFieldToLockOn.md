@@ -1,0 +1,15 @@
+## Introduce field to lock on
+
+Property | Value
+--- | --- 
+Id | RR0067
+Title | Introduce field to lock on
+Syntax | lock statement
+Scope | missing expression
+Enabled by Default | yes
+
+### Usage
+
+![Introduce field to lock on](../../images/refactorings/IntroduceFieldToLockOn.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Remove comment
+
+Property | Value
+--- | --- 
+Id | RR0098
+Title | Remove comment
+Syntax | singleline/multiline comment, singleline/multiline xml documentation comment
+Enabled by Default | yes
+
+### Usage
+
+![Remove comment](../../images/refactorings/RemoveComment.png)
+
+[full list of refactorings](Refactorings.md)

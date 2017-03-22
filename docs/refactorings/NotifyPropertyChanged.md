@@ -1,0 +1,15 @@
+## Notify property changed
+
+Property | Value
+--- | --- 
+Id | RR0083
+Title | Notify property changed
+Syntax | property in class/struct that implements INotifyPropertyChanged
+Scope | setter
+Enabled by Default | yes
+
+### Usage
+
+![Notify property changed](../../images/refactorings/NotifyPropertyChanged.png)
+
+[full list of refactorings](Refactorings.md)

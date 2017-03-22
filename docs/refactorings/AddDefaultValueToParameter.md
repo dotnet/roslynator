@@ -1,0 +1,15 @@
+## Add default value to parameter
+
+Property | Value
+--- | --- 
+Id | RR0007
+Title | Add default value to parameter
+Syntax | parameter without default value
+Scope | identifier
+Enabled by Default | yes
+
+### Usage
+
+![Add default value to parameter](../../images/refactorings/AddDefaultValueToParameter.png)
+
+[full list of refactorings](Refactorings.md)

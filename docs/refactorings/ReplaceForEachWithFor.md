@@ -1,0 +1,14 @@
+## Replace foreach statement with for statement
+
+Property | Value
+--- | --- 
+Id | RR0129
+Title | Replace foreach statement with for statement
+Syntax | foreach statement
+Enabled by Default | yes
+
+### Usage
+
+![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
+
+[full list of refactorings](Refactorings.md)

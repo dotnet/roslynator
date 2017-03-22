@@ -1,0 +1,14 @@
+## Rename method according to type name
+
+Property | Value
+--- | --- 
+Id | RR0113
+Title | Rename method according to type name
+Syntax | method
+Enabled by Default | yes
+
+### Usage
+
+![Rename method according to type name](../../images/refactorings/RenameMethodAccordingToTypeName.png)
+
+[full list of refactorings](Refactorings.md)

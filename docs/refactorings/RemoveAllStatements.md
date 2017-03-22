@@ -1,0 +1,15 @@
+## Remove all statements
+
+Property | Value
+--- | --- 
+Id | RR0092
+Title | Remove all statements
+Syntax | method, constructor, operator
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove all statements](../../images/refactorings/RemoveAllStatements.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,14 @@
+## Reverse for loop
+
+Property | Value
+--- | --- 
+Id | RR0152
+Title | Reverse for loop
+Syntax | for statement
+Enabled by Default | yes
+
+### Usage
+
+![Reverse for loop](../../images/refactorings/ReverseForLoop.png)
+
+[full list of refactorings](Refactorings.md)

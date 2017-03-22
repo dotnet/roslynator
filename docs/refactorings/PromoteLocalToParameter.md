@@ -1,0 +1,14 @@
+## Promote local to parameter
+
+Property | Value
+--- | --- 
+Id | RR0085
+Title | Promote local to parameter
+Syntax | local declaration in method
+Enabled by Default | yes
+
+### Usage
+
+![Promote local to parameter](../../images/refactorings/PromoteLocalToParameter.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Swap expressions in binary expression
+
+Property | Value
+--- | --- 
+Id | RR0159
+Title | Swap expressions in binary expression
+Syntax | logical and/or expression
+Scope | binary operator
+Enabled by Default | yes
+
+### Usage
+
+![Swap expressions in binary expression](../../images/refactorings/SwapExpressionsInBinaryExpression.png)
+
+[full list of refactorings](Refactorings.md)

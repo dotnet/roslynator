@@ -1,0 +1,15 @@
+## Remove braces from if-else
+
+Property | Value
+--- | --- 
+Id | RR0095
+Title | Remove braces from if\-else
+Syntax | if\-else chain
+Scope | embedded statement
+Enabled by Default | yes
+
+### Usage
+
+![Remove braces from if\-else](../../images/refactorings/RemoveBracesFromIfElse.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,0 +1,15 @@
+## Remove member
+
+Property | Value
+--- | --- 
+Id | RR0103
+Title | Remove member
+Syntax | method, constructor, property, indexer, operator, event, namespace, class, struct, interface
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove member](../../images/refactorings/RemoveMember.png)
+
+[full list of refactorings](Refactorings.md)

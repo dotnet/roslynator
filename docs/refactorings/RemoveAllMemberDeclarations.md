@@ -1,0 +1,15 @@
+## Remove all member declarations
+
+Property | Value
+--- | --- 
+Id | RR0089
+Title | Remove all member declarations
+Syntax | namespace, class, struct, interface
+Scope | opening or closing brace
+Enabled by Default | yes
+
+### Usage
+
+![Remove all member declarations](../../images/refactorings/RemoveAllMemberDeclarations.png)
+
+[full list of refactorings](Refactorings.md)
