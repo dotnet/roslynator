@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Utf8StringWriter.cs" />
+    <Compile Include="XmlGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

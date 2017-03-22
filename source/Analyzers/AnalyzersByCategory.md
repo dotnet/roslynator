@@ -1,4 +1,4 @@
-﻿## Roslynator Analyzers by Category
+## Roslynator Analyzers by Category
 
  Category | Title | Id | Enabled by Default 
  --- | --- | --- |:---:
