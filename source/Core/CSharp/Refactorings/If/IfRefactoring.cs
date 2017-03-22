@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Syntax;
 using Roslynator.Extensions;
 using static Roslynator.CSharp.Refactorings.If.IfRefactoringHelper;
 
@@ -299,24 +300,22 @@ namespace Roslynator.CSharp.Refactorings.If
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentInfo info1 = SimpleAssignmentInfo.FromStatement(ifStatement.GetSingleStatementOrDefault());
-
-                    if (info1.IsValid)
+                    SimpleAssignmentExpression assignment1;
+                    if (SimpleAssignmentExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
                     {
-                        SimpleAssignmentInfo info2 = SimpleAssignmentInfo.FromStatement(elseClause.GetSingleStatementOrDefault());
-
-                        if (info2.IsValid
-                            && info1.Left.IsKind(SyntaxKind.IdentifierName)
-                            && info2.Left.IsKind(SyntaxKind.IdentifierName))
+                        SimpleAssignmentExpression assignment2;
+                        if (SimpleAssignmentExpression.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
+                            && assignment1.Left.IsKind(SyntaxKind.IdentifierName)
+                            && assignment2.Left.IsKind(SyntaxKind.IdentifierName))
                         {
-                            string identifier1 = ((IdentifierNameSyntax)info1.Left).Identifier.ValueText;
-                            string identifier2 = ((IdentifierNameSyntax)info2.Left).Identifier.ValueText;
+                            string identifier1 = ((IdentifierNameSyntax)assignment1.Left).Identifier.ValueText;
+                            string identifier2 = ((IdentifierNameSyntax)assignment2.Left).Identifier.ValueText;
 
                             if (string.Equals(identifier1, identifier2, StringComparison.Ordinal)
                                 && string.Equals(identifier1, declarator.Identifier.ValueText, StringComparison.Ordinal)
                                 && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(localDeclarationStatement.SpanStart, ifStatement.Span.End)))
                             {
-                                return new LocalDeclarationAndIfElseAssignmentWithConditionalExpression(localDeclarationStatement, ifStatement, info1.Right, info2.Right).ToImmutableArray();
+                                return new LocalDeclarationAndIfElseAssignmentWithConditionalExpression(localDeclarationStatement, ifStatement, assignment1.Right, assignment2.Right).ToImmutableArray();
                             }
                         }
                     }
@@ -331,26 +330,23 @@ namespace Roslynator.CSharp.Refactorings.If
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options)
         {
-            SimpleAssignmentInfo info = SimpleAssignmentInfo.FromStatement(expressionStatement);
-
-            if (info.IsValid)
+            SimpleAssignmentExpression assignment;
+            if (SimpleAssignmentExpression.TryCreate(expressionStatement, out assignment))
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentInfo info1 = SimpleAssignmentInfo.FromStatement(ifStatement.GetSingleStatementOrDefault());
-
-                    if (info1.IsValid)
+                    SimpleAssignmentExpression assignment1;
+                    if (SimpleAssignmentExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
                     {
-                        SimpleAssignmentInfo info2 = SimpleAssignmentInfo.FromStatement(elseClause.GetSingleStatementOrDefault());
-
-                        if (info2.IsValid
-                            && info1.Left.IsEquivalentTo(info2.Left, topLevel: false)
-                            && info1.Left.IsEquivalentTo(info.Left, topLevel: false)
+                        SimpleAssignmentExpression assignment2;
+                        if (SimpleAssignmentExpression.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
+                            && assignment1.Left.IsEquivalentTo(assignment2.Left, topLevel: false)
+                            && assignment1.Left.IsEquivalentTo(assignment.Left, topLevel: false)
                             && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
                         {
-                            return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, info.Right, ifStatement, info1.Right, info2.Right).ToImmutableArray();
+                            return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, assignment.Right, ifStatement, assignment1.Right, assignment2.Right).ToImmutableArray();
                         }
                     }
                 }

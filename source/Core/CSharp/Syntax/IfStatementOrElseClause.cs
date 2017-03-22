@@ -60,7 +60,12 @@ namespace Roslynator.CSharp.Syntax
 
         public StatementSyntax Statement
         {
-            get { return (IsIf) ? AsIf().Statement : AsElse().Statement; }
+            get
+            {
+                var self = this;
+
+                return (self.IsIf) ? self.AsIf().Statement : self.AsElse().Statement;
+            }
         }
 
         public IfStatementSyntax AsIf()
@@ -91,12 +96,12 @@ namespace Roslynator.CSharp.Syntax
 
         public static bool operator ==(IfStatementOrElseClause left, IfStatementOrElseClause right)
         {
-            return left.Node == right.Node;
+            return left.Equals(right);
         }
 
         public static bool operator !=(IfStatementOrElseClause left, IfStatementOrElseClause right)
         {
-            return !(left == right);
+            return !left.Equals(right);
         }
 
         public static implicit operator IfStatementOrElseClause(IfStatementSyntax ifStatement)
