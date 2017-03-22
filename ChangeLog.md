@@ -1,3 +1,18 @@
+### 1.2.52 (2017-03-22)
+
+#### Analyzers
+
+##### New Analyzers
+
+* UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious (RCS1176)
+* UseVarInsteadOfExplicitTypeInForEach (RCS1177)
+
+#### Refactorings
+
+##### New Refactorings
+
+* InlineUsingStatic (RR0180)
+
 ### 1.2.51 (2017-03-14)
 
 * Bug fixes.
