@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
@@ -28,15 +27,14 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                 if (comment != null)
                 {
-                    bool containsInheritDoc = false;
-                    HashSet<string> names = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "name", out containsInheritDoc);
+                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "name");
 
-                    if (!containsInheritDoc)
+                    if (!values.IsDefault)
                     {
                         foreach (ParameterSyntax parameter in parameters)
                         {
                             if (!parameter.IsMissing
-                                && names?.Contains(parameter.Identifier.ValueText) != true)
+                                && !values.Contains(parameter.Identifier.ValueText))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.AddParameterToDocumentationComment,

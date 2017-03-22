@@ -30,6 +30,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         }
 
         /// <typeparam name="T"></typeparam>
+        /// <include file='' path='[@name=""]' />
         public void Foo3<T>(object parameter)
         {
         }
@@ -64,6 +65,19 @@ namespace Roslynator.CSharp.Analyzers.Test
             /// <inheritdoc />
             /// <typeparam name="T"></typeparam>
             public void Foo3<T>(object parameter)
+            {
+            }
+        }
+
+        private class Include
+        {
+            /// <include file='' path='[@name=""]' />
+            public void Foo(object parameter)
+            {
+            }
+
+            /// <include file='' path='[@name=""]' />
+            public void Foo(object parameter, object parameter2)
             {
             }
         }

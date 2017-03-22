@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,10 +13,12 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal static class DocumentationCommentRefactoring
     {
-        public static HashSet<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName, string attributeName, out bool containsInheritDoc)
+        public static ImmutableArray<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName, string attributeName)
         {
-            containsInheritDoc = false;
-            HashSet<string> elements = null;
+            HashSet<string> values = null;
+
+            bool containsInclude = false;
+            bool isFirst = true;
 
             foreach (XmlNodeSyntax node in comment.Content)
             {
@@ -29,17 +32,28 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                     if (name != null)
                     {
-                        if (IsInheritDoc(name))
+                        if (isFirst)
                         {
-                            containsInheritDoc = true;
-                            return null;
+                            if (NameEquals(name, "include"))
+                                containsInclude = true;
+
+                            isFirst = false;
                         }
-                        else if (string.Equals(name, elementName, StringComparison.Ordinal))
+                        else
+                        {
+                            containsInclude = false;
+                        }
+
+                        if (NameEquals(name, "inheritdoc"))
+                        {
+                            return default(ImmutableArray<string>);
+                        }
+                        else if (NameEquals(name, elementName))
                         {
                             string value = GetAttributeValue(element, attributeName);
 
                             if (value != null)
-                                (elements ?? (elements = new HashSet<string>())).Add(value);
+                                (values ?? (values = new HashSet<string>())).Add(value);
                         }
                     }
                 }
@@ -50,21 +64,30 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                     string name = element?.Name?.LocalName.ValueText;
 
-                    if (name != null
-                        && IsInheritDoc(name))
+                    if (name != null)
                     {
-                        containsInheritDoc = true;
-                        return null;
+                        if (isFirst)
+                        {
+                            if (NameEquals(name, "include"))
+                                containsInclude = true;
+
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            containsInclude = false;
+                        }
+
+                        if (NameEquals(name, "inheritdoc"))
+                            return default(ImmutableArray<string>);
                     }
                 }
             }
 
-            return elements;
-        }
+            if (!containsInclude)
+                return values?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
 
-        private static bool IsInheritDoc(string name)
-        {
-            return string.Equals(name, "inheritdoc", StringComparison.Ordinal);
+            return default(ImmutableArray<string>);
         }
 
         public static string GetAttributeValue(XmlElementSyntax element, string attributeName)
@@ -91,6 +114,11 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             }
 
             return null;
+        }
+
+        private static bool NameEquals(string name1, string name2)
+        {
+            return string.Equals(name1, name2, StringComparison.Ordinal);
         }
     }
 }
