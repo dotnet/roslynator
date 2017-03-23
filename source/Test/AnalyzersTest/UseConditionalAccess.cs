@@ -41,6 +41,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
                 if (x != null && !x.IsFoo && x.IsFoo) { }
 
+                if (x != null && x.Value is object y) { }
                 //n
 
                 if (x != null && (x.Value == ("x")) && x.IsFoo) { }
@@ -48,6 +49,8 @@ namespace Roslynator.CSharp.Analyzers.Test
                 if (x != null && (x.Value == (NonNullConst)) && x.IsFoo) { }
 
                 if (x != null && (x.Value != (null)) && x.IsFoo) { }
+
+                if (x != null && (x.Value == null) is object y2) { }
 
                 if (x != null && x.Value == null && x.IsFoo) { }
 

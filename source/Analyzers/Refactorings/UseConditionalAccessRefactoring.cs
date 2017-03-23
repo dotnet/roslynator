@@ -208,6 +208,7 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.GreaterThanOrEqualExpression:
                     case SyntaxKind.IsExpression:
                     case SyntaxKind.AsExpression:
+                    case SyntaxKind.IsPatternExpression:
                         break;
                     default:
                         {
