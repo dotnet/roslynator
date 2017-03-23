@@ -24,15 +24,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            NotEqualsToNullExpression notEqualsToNull;
-            if (NotEqualsToNullExpression.TryCreate(ifStatement.Condition, out notEqualsToNull))
+            if (ifStatement.IsSimpleIf())
             {
-                MemberInvocationExpression memberInvocation;
-                if (MemberInvocationExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
-                    && notEqualsToNull.Left.IsEquivalentTo(memberInvocation.Expression, topLevel: false)
-                    && !ifStatement.SpanContainsDirectives())
+                NotEqualsToNullExpression notEqualsToNull;
+                if (NotEqualsToNullExpression.TryCreate(ifStatement.Condition, out notEqualsToNull))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, ifStatement);
+                    MemberInvocationExpression memberInvocation;
+                    if (MemberInvocationExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
+                        && notEqualsToNull.Left.IsEquivalentTo(memberInvocation.Expression, topLevel: false)
+                        && !ifStatement.SpanContainsDirectives())
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, ifStatement);
+                    }
                 }
             }
         }
