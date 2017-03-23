@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Syntax
         public ExpressionSyntax Left { get; }
         public ExpressionSyntax Right { get; }
 
-        public AssignmentExpressionSyntax AssignmentExpression
+        public AssignmentExpressionSyntax Expression
         {
             get { return (AssignmentExpressionSyntax)Parent; }
         }
