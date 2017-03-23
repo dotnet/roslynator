@@ -229,8 +229,6 @@
     <Rule Id="IDE0027WithoutSuggestion" Action="None" />
     <Rule Id="IDE0028" Action="Info" />
     <Rule Id="IDE0029" Action="Info" />
-    <Rule Id="IDE0030" Action="None" />
-    <Rule Id="IDE0030WithoutSuggestion" Action="None" />
     <Rule Id="IDE0031" Action="Info" />
     <Rule Id="IDE1005" Action="Info" />
     <Rule Id="IDE1006" Action="Info" />
