@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
             ClassDeclarationSyntax classDeclaration,
             Diagnostic diagnostic)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
