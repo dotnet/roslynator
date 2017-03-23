@@ -414,7 +414,7 @@
     <Compile Include="CodeFixProviders\FormatBinaryOperatorOnNextLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AttributeArgumentListCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeInForEachCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseExplicitTypeInsteadOfVarInForEachCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseVarInsteadOfExplicitTypeCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\SimpleMemberAccessExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArgumentDiagnosticAnalyzer.cs" />
