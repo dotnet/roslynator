@@ -2,13 +2,13 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes.Extensions;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -35,31 +35,27 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<DeclarationExpressionSyntax>();
 
+            Debug.Assert(declarationExpression != null, $"{nameof(declarationExpression)} is null");
+
             if (declarationExpression == null)
                 return;
 
             TypeSyntax type = declarationExpression.Type;
 
-            if (type.IsVar)
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+
+            ITypeSymbol typeSymbol = localSymbol.Type;
+
+            foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                CodeAction codeAction = CodeAction.Create(
+                    $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.SpanStart)}'",
+                    cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
+                    diagnostic.Id + EquivalenceKeySuffix);
 
-                var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
-
-                if (localSymbol != null)
-                {
-                    ITypeSymbol typeSymbol = localSymbol.Type;
-
-                    if (typeSymbol != null)
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.SpanStart)}'",
-                            cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                            DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious + EquivalenceKeySuffix);
-
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
-                    }
-                }
+                context.RegisterCodeFix(codeAction, context.Diagnostics);
             }
         }
     }
