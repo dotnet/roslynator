@@ -32,17 +32,18 @@
       <Setter Property="Margin" Value="0,5,5,0"/>
     </Style>
   </UserControl.Resources>
-  <DockPanel Focusable="False" LastChildFill="True">
+  <DockPanel Focusable="False">
+    <TextBox DockPanel.Dock="Top" MinHeight="20" Margin="0,0,0,2" Name="tbxFilter" TextChanged="FilterTextBox_TextChanged" />
     <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
       <Button Content="Enable All" Click="EnableAllButton_Click" />
       <Button Content="Disable All" Click="DisableAllButton_Click" />
     </WrapPanel>
-    <ListView Grid.Row="0" Grid.Column="0"
-              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-              ScrollViewer.VerticalScrollBarVisibility="Auto"
-              Name="lsvRefactorings" 
+    <ListView Name="lsvRefactorings"
+              DockPanel.Dock="Top"
               ItemsSource="{Binding Refactorings}" 
               SelectionMode="Single"
+              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+              ScrollViewer.VerticalScrollBarVisibility="Auto"
               GridViewColumnHeader.Click="GridViewColumnHeader_Click">
       <ListView.View>
         <GridView>

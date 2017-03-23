@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -84,6 +85,21 @@ namespace Roslynator.VisualStudio
             dataView.Refresh();
         }
 
+        private bool FilterRefactorings(object item)
+        {
+            string s = tbxFilter.Text?.Trim();
+
+            if (!string.IsNullOrEmpty(s))
+            {
+                var refactoring = (RefactoringModel)item;
+
+                return refactoring.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1
+                    || refactoring.Title.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1;
+            }
+
+            return true;
+        }
+
         private void EnableAllButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (RefactoringModel refactoring in Refactorings)
@@ -94,6 +110,15 @@ namespace Roslynator.VisualStudio
         {
             foreach (RefactoringModel refactoring in Refactorings)
                 refactoring.Enabled = false;
+        }
+
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var view = (CollectionView)CollectionViewSource.GetDefaultView(lsvRefactorings.ItemsSource);
+
+            view.Filter = view.Filter ?? FilterRefactorings;
+
+            view.Refresh();
         }
     }
 }
