@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
-                    DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
+                    DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsObvious,
                     DiagnosticDescriptors.UseVarInsteadOfExplicitTypeWhenTypeIsObvious);
             }
         }
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 if (flags.IsTypeObvious())
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseExplicitTypeInsteadOfVarEvenIfObvious,
+                        DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsObvious,
                         declarationExpression.Type);
                 }
                 else if (flags.IsValidSymbol())

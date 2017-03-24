@@ -105,9 +105,9 @@ namespace Roslynator.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarEvenIfObvious = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious,
-            title: "Use explicit type instead of 'var' (even if the type is obvious).",
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsObvious = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious,
+            title: "Use explicit type instead of 'var' (when the type is obvious).",
             messageFormat: "Use explicit type instead of 'var'.",
             category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Hidden,
