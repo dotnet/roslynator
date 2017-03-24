@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes.Extensions;
 using Roslynator.CSharp.Extensions;
@@ -32,21 +33,43 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            VariableDeclarationSyntax variableDeclaration = root
+            SyntaxNode node = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<VariableDeclarationSyntax>();
+                .FirstAncestorOrSelf(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression);
 
-            Debug.Assert(variableDeclaration != null, $"{nameof(variableDeclaration)} is null");
+            Debug.Assert(node != null, $"{nameof(node)} is null");
 
-            if (variableDeclaration == null)
+            if (node == null)
                 return;
 
-            TypeSyntax type = variableDeclaration.Type;
+            if (node.IsKind(SyntaxKind.VariableDeclaration))
+            {
+                var variableDeclaration = (VariableDeclarationSyntax)node;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                TypeSyntax type = variableDeclaration.Type;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+                RegisterCodeFix(context, type, typeSymbol, semanticModel);
+            }
+            else
+            {
+                var declarationExpression = (DeclarationExpressionSyntax)node;
+
+                TypeSyntax type = declarationExpression.Type;
+
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
+
+                RegisterCodeFix(context, type, localSymbol.Type, semanticModel);
+            }
+        }
+
+        private static void RegisterCodeFix(CodeFixContext context, TypeSyntax type, ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 CodeAction codeAction = CodeAction.Create(

@@ -57,7 +57,6 @@
     <Compile Include="CodeFixProviders\RemoveUnreachableCodeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\TypeParameterCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\DeclarationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
