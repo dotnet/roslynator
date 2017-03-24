@@ -1311,7 +1311,7 @@ namespace Roslynator.CSharp
             title: "Add exception to documentation comment.",
             messageFormat: "Add exception to documentation comment.",
             category: DiagnosticCategories.Maintainability,
-            defaultSeverity: DiagnosticSeverity.Info,
+            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
@@ -1506,7 +1506,7 @@ namespace Roslynator.CSharp
             title: "Enum member should declare explicit value.",
             messageFormat: "Enum member should declare explicit value.",
             category: DiagnosticCategories.Readability,
-            defaultSeverity: DiagnosticSeverity.Info,
+            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
