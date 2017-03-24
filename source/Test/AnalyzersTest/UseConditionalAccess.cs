@@ -42,6 +42,7 @@ namespace Roslynator.CSharp.Analyzers.Test
                 if (x != null && !x.IsFoo && x.IsFoo) { }
 
                 if (x != null && x.Value is object y) { }
+
                 //n
 
                 if (x != null && (x.Value == ("x")) && x.IsFoo) { }
@@ -97,6 +98,11 @@ namespace Roslynator.CSharp.Analyzers.Test
             if (dic != null && dic[0].Length > 1) { }
 
             if (dic != null && !dic[0].StartsWith("a")) { }
+
+            // n
+
+            string value;
+            string result = (dic != null && dic.TryGetValue(0, out value)) ? value : null;
         }
     }
 }
