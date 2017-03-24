@@ -51,7 +51,8 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax right = logicalAndExpression.Right;
 
                 if (right != null
-                    && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken))
+                    && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
+                    && !ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
                 {
                     SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
 
@@ -128,6 +129,30 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return true;
             }
+        }
+
+        private static bool ContainsOutArgumentWithLocal(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (SyntaxNode node in expression.DescendantNodes())
+            {
+                if (node.IsKind(SyntaxKind.Argument))
+                {
+                    var argument = (ArgumentSyntax)node;
+
+                    if (argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
+                    {
+                        ExpressionSyntax argumentExpression = argument.Expression;
+
+                        if (argumentExpression?.IsMissing == false
+                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.IsLocal() == true)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static bool HasConstantNonNullValue(this ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
