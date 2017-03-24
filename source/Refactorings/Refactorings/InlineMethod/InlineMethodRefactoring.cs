@@ -40,6 +40,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                             if (parameterInfos != null)
                             {
+                                if (invocation.SyntaxTree != method.SyntaxTree)
+                                    semanticModel = await context.Solution.GetDocument(method.SyntaxTree).GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+
                                 context.RegisterRefactoring(
                                     "Inline method",
                                     c => InlineMethodAsync(context.Document, invocation, expression, methodSymbol, parameterInfos.ToArray(), semanticModel, c));
@@ -61,6 +64,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                 if (parameterInfos != null)
                                 {
                                     var expressionStatement = (ExpressionStatementSyntax)invocation.Parent;
+
+                                    if (invocation.SyntaxTree != method.SyntaxTree)
+                                        semanticModel = await context.Solution.GetDocument(method.SyntaxTree).GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
                                     context.RegisterRefactoring(
                                         "Inline method",
@@ -275,7 +281,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (invocation.SyntaxTree.Equals(methodDeclaration.SyntaxTree))
+            if (invocation.SyntaxTree == methodDeclaration.SyntaxTree)
             {
                 DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
@@ -309,7 +315,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (expressionStatement.SyntaxTree.Equals(methodDeclaration.SyntaxTree))
+            if (expressionStatement.SyntaxTree == methodDeclaration.SyntaxTree)
             {
                 DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
