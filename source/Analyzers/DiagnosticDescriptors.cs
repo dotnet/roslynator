@@ -1182,16 +1182,16 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithInitialization = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MergeLocalDeclarationWithInitialization,
-            title: "Merge local declaration with initialization.",
-            messageFormat: "Merge local declaration with initialization.",
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment,
+            title: "Merge local declaration with assignment.",
+            messageFormat: "Merge local declaration with assignment.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithInitializationFadeOut = MergeLocalDeclarationWithInitialization.CreateFadeOut();
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignmentFadeOut = MergeLocalDeclarationWithAssignment.CreateFadeOut();
 
         public static readonly DiagnosticDescriptor UseCoalesceExpression = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseCoalesceExpression,

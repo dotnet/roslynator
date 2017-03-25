@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+#pragma warning disable CS0219, RCS1010, RCS1118, RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-    public static class MergeLocalDeclarationWithInitialization
+    public static class MergeLocalDeclarationWithAssignment
     {
         private const bool BoolConst = false;
         private const char CharConst = '\0';

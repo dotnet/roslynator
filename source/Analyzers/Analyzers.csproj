@@ -148,7 +148,7 @@
     <Compile Include="DiagnosticAnalyzers\DeclarationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InlineLocalVariableDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkMemberAsStaticDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithInitializationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\MergeLocalDeclarationWithAssignmentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantFieldInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\MemberTypeMustMatchOverriddenMemberTypeRefactoring.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="Refactorings\Documentation\ParamElementInfo.cs" />
     <Compile Include="Refactorings\Documentation\TypeParamElementInfo.cs" />
     <Compile Include="Refactorings\RemoveRedundantFieldInitializationRefactoring.cs" />
-    <Compile Include="Refactorings\MergeLocalDeclarationWithInitializationRefactoring.cs" />
+    <Compile Include="Refactorings\MergeLocalDeclarationWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\InlineLocalVariableRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ThrowExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\ReplaceReturnWithYieldReturnRefactoring.cs" />
