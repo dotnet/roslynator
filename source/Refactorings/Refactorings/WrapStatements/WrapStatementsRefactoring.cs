@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
             SelectedStatementCollection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = selectedStatements.Container;
+            IStatementContainer container = selectedStatements.Container;
 
             StatementSyntax[] statements = selectedStatements.ToArray();
 

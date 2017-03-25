@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = StatementContainer.Create(IfStatement);
+            IStatementContainer container = StatementContainer.Create(IfStatement);
 
             SyntaxList<StatementSyntax> statements = container.Statements;
 

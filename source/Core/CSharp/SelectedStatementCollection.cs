@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
 {
     public class SelectedStatementCollection : SelectedNodeCollection<StatementSyntax>
     {
-        private SelectedStatementCollection(StatementContainer container, TextSpan span)
+        private SelectedStatementCollection(IStatementContainer container, TextSpan span)
              : base(container.Statements, span)
         {
             Container = container;
@@ -34,6 +34,6 @@ namespace Roslynator.CSharp
             return new SelectedStatementCollection(container, span);
         }
 
-        public StatementContainer Container { get; }
+        public IStatementContainer Container { get; }
     }
 }

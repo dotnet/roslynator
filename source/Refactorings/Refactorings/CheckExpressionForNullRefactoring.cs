@@ -233,8 +233,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (!EmbeddedStatement.IsEmbeddedStatement(statement))
             {
-                StatementContainer container;
-
+                IStatementContainer container;
                 if (StatementContainer.TryCreate(statement, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;
@@ -287,7 +286,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                StatementContainer container;
+                IStatementContainer container;
                 if (StatementContainer.TryCreate(statement, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;
@@ -327,7 +326,7 @@ namespace Roslynator.CSharp.Refactorings
             int statementCount,
             CancellationToken cancellationToken)
         {
-            StatementContainer container;
+            IStatementContainer container;
             if (StatementContainer.TryCreate(statement, out container))
             {
                 SyntaxList<StatementSyntax> statements = container.Statements;
@@ -351,7 +350,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ExpressionSyntax expression,
             SyntaxList<StatementSyntax> statements,
-            StatementContainer container,
+            IStatementContainer container,
             int statementIndex,
             int lastStatementIndex,
             CancellationToken cancellationToken)

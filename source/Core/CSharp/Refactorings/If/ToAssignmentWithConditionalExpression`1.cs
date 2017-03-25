@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings.If
             Document document,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = StatementContainer.Create(IfStatement);
+            IStatementContainer container = StatementContainer.Create(IfStatement);
 
             SyntaxList<StatementSyntax> statements = container.Statements;
 
