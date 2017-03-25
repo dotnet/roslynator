@@ -2,11 +2,11 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes.Extensions;
 using Roslynator.CSharp.Extensions;
@@ -14,9 +14,9 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReplaceVarWithExplicitTypeCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExplicitTypeInsteadOfVarCodeFixProvider))]
     [Shared]
-    public class ReplaceVarWithExplicitTypeCodeFixProvider : BaseCodeFixProvider
+    public class UseExplicitTypeInsteadOfVarCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -36,21 +36,23 @@ namespace Roslynator.CSharp.CodeFixProviders
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<VariableDeclarationSyntax>();
 
+            Debug.Assert(variableDeclaration != null, $"{nameof(variableDeclaration)} is null");
+
             if (variableDeclaration == null)
                 return;
 
             TypeSyntax type = variableDeclaration.Type;
 
-            if (type.IsVar)
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+            foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
-
                 CodeAction codeAction = CodeAction.Create(
                     $"Change type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, type.Span.Start)}'",
                     cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious + EquivalenceKeySuffix);
+                    diagnostic.Id + EquivalenceKeySuffix);
 
                 context.RegisterCodeFix(codeAction, context.Diagnostics);
             }

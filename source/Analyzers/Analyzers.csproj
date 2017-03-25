@@ -327,7 +327,7 @@
     <Compile Include="CodeFixProviders\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReplaceIfStatementWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNotExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceVarWithExplicitTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseExplicitTypeInsteadOfVarCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ConditionalExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEnumDefaultBaseTypeCodeFixProvider.cs" />
