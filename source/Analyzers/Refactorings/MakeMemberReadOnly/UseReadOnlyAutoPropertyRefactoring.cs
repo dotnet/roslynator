@@ -34,7 +34,8 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                 {
                     var propertySymbol = (IPropertySymbol)members[i];
 
-                    if (!propertySymbol.IsReadOnly
+                    if (!propertySymbol.IsIndexer
+                        && !propertySymbol.IsReadOnly
                         && !propertySymbol.IsImplicitlyDeclared
                         && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
                         && !propertySymbol.HasAttributeByMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute, context.Compilation))
