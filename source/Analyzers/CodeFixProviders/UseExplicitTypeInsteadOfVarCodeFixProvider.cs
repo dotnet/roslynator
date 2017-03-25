@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
-                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarEvenIfObvious);
+                    DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious);
             }
         }
 

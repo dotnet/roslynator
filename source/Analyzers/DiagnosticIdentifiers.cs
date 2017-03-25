@@ -17,7 +17,7 @@ namespace Roslynator.CSharp
         public const string UseExplicitTypeInsteadOfVarInForEach = Prefix + "1009";
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = Prefix + "1010";
         //public const string UseVarInsteadOfExplicitTypeInForEach = Prefix + "1011";
-        public const string UseExplicitTypeInsteadOfVarEvenIfObvious = Prefix + "1012";
+        public const string UseExplicitTypeInsteadOfVarWhenTypeIsObvious = Prefix + "1012";
         public const string UsePredefinedType = Prefix + "1013";
         public const string AvoidImplicitlyTypedArray = Prefix + "1014";
         public const string UseNameOfOperator = Prefix + "1015";
