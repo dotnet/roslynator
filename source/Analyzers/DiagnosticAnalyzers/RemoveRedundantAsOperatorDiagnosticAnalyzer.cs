@@ -23,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAsExpression(f), SyntaxKind.AsExpression);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeAsExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            RemoveRedundantAsOperatorRefactoring.Analyze(context, binaryExpression);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveRedundantAsOperatorRefactoring.Analyze(f, (BinaryExpressionSyntax)f.Node),
+                SyntaxKind.AsExpression);
         }
     }
 }

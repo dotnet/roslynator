@@ -23,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIdentifierName(f), SyntaxKind.GenericName);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var genericName = (GenericNameSyntax)context.Node;
-
-            SimplifyNullableOfTRefactoring.Analyze(context, genericName);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyNullableOfTRefactoring.Analyze(f, (GenericNameSyntax)f.Node),
+                SyntaxKind.GenericName);
         }
     }
 }

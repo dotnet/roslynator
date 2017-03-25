@@ -24,26 +24,23 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
         }
 
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             SyntaxNode node = context.Node;
 
             if (!((IfStatementSyntax)node).IsSimpleIf())
                 Analyze(context, node);
         }
 
-        private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             Analyze(context, context.Node);
         }
 

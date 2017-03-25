@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.FormatDeclarationBracesRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -23,39 +23,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
-        }
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
 
-        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var declaration = (ClassDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
-        }
-
-        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var declaration = (StructDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
-        }
-
-        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var declaration = (InterfaceDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ClassDeclarationSyntax)f.Node), SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (StructDeclarationSyntax)f.Node), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (InterfaceDeclarationSyntax)f.Node), SyntaxKind.InterfaceDeclaration);
         }
     }
 }

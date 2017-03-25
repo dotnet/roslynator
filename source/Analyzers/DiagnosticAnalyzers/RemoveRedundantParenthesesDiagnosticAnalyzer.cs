@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantParenthesesRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -28,191 +28,42 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeParenthesizedExpression(f), SyntaxKind.ParenthesizedExpression);
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzerForEachStatement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ParenthesizedExpressionSyntax)f.Node), SyntaxKind.ParenthesizedExpression);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeYieldReturnStatement(f), SyntaxKind.YieldReturnStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeExpressionStatement(f), SyntaxKind.ExpressionStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeArgument(f), SyntaxKind.Argument);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgument(f), SyntaxKind.AttributeArgument);
-            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAwaitExpression(f), SyntaxKind.AwaitExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
-            context.RegisterSyntaxNodeAction(f => AnalyzeInterpolation(f), SyntaxKind.Interpolation);
-            context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.ArrayInitializerExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.CollectionInitializerExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (WhileStatementSyntax)f.Node), SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (DoStatementSyntax)f.Node), SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (UsingStatementSyntax)f.Node), SyntaxKind.UsingStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (LockStatementSyntax)f.Node), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (IfStatementSyntax)f.Node), SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (SwitchStatementSyntax)f.Node), SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ForEachStatementSyntax)f.Node), SyntaxKind.ForEachStatement);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SimpleAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AddAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SubtractAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.MultiplyAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.DivideAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.ModuloAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.AndAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.ExclusiveOrAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.OrAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.LeftShiftAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.RightShiftAssignmentExpression);
-        }
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ReturnStatementSyntax)f.Node), SyntaxKind.ReturnStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (YieldStatementSyntax)f.Node), SyntaxKind.YieldReturnStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ExpressionStatementSyntax)f.Node), SyntaxKind.ExpressionStatement);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ArgumentSyntax)f.Node), SyntaxKind.Argument);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AttributeArgumentSyntax)f.Node), SyntaxKind.AttributeArgument);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (EqualsValueClauseSyntax)f.Node), SyntaxKind.EqualsValueClause);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AwaitExpressionSyntax)f.Node), SyntaxKind.AwaitExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (ArrowExpressionClauseSyntax)f.Node), SyntaxKind.ArrowExpressionClause);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (InterpolationSyntax)f.Node), SyntaxKind.Interpolation);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (InitializerExpressionSyntax)f.Node), SyntaxKind.ArrayInitializerExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (InitializerExpressionSyntax)f.Node), SyntaxKind.CollectionInitializerExpression);
 
-        private void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ParenthesizedExpressionSyntax)context.Node);
-        }
-
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (WhileStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (DoStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (UsingStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (LockStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (IfStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
-        }
-
-        private void AnalyzerForEachStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ForEachStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ReturnStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (YieldStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ExpressionStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeArgument(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ArgumentSyntax)context.Node);
-        }
-
-        private void AnalyzeAttributeArgument(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (AttributeArgumentSyntax)context.Node);
-        }
-
-        private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (EqualsValueClauseSyntax)context.Node);
-        }
-
-        private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (AwaitExpressionSyntax)context.Node);
-        }
-
-        private void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (ArrowExpressionClauseSyntax)context.Node);
-        }
-
-        private void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (InterpolationSyntax)context.Node);
-        }
-
-        private void AnalyzeInitializer(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (InitializerExpressionSyntax)context.Node);
-        }
-
-        private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantParenthesesRefactoring.Analyze(context, (AssignmentExpressionSyntax)context.Node);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.SimpleAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.SubtractAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.MultiplyAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.DivideAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.ModuloAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.AndAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.ExclusiveOrAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.OrAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.LeftShiftAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (AssignmentExpressionSyntax)f.Node), SyntaxKind.RightShiftAssignmentExpression);
         }
     }
 }

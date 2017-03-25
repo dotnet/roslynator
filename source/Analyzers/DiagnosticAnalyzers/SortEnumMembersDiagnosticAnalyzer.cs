@@ -22,15 +22,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            SortEnumMembersRefactoring.AnalyzeEnumDeclaration(context);
+            context.RegisterSyntaxNodeAction(f => SortEnumMembersRefactoring.AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         }
     }
 }

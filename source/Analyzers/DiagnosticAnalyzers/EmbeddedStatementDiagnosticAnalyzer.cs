@@ -29,6 +29,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeForEachStatement(f), SyntaxKind.ForEachStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
@@ -41,9 +44,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var ifStatement = (IfStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, ifStatement);
@@ -53,9 +53,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, forEachStatement);
@@ -65,9 +62,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var forStatement = (ForStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, forStatement);
@@ -77,9 +71,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var usingStatement = (UsingStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, usingStatement);
@@ -89,9 +80,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var whileStatement = (WhileStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, whileStatement);
@@ -101,9 +89,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var doStatement = (DoStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, doStatement);
@@ -112,9 +97,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var lockStatement = (LockStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, lockStatement);
@@ -124,9 +106,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var fixedStatement = (FixedStatementSyntax)context.Node;
 
             FormatEmbeddedStatementOnSeparateLineRefactoring.Analyze(context, fixedStatement);

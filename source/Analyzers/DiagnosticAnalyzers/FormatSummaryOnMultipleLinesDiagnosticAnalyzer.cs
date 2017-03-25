@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.FormatSummary;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -24,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeDocumentationComment(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeDocumentationComment(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
-
-            FormatSummaryOnMultipleLinesRefactoring.Analyze(context, documentationComment);
+            context.RegisterSyntaxNodeAction(
+                f => FormatSummaryOnMultipleLinesRefactoring.Analyze(f, (DocumentationCommentTriviaSyntax)f.Node),
+                SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
     }
 }

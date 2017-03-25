@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -23,6 +22,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
+
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f),
                 SyntaxKind.SimpleAssignmentExpression,
@@ -42,9 +44,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
             if (assignment.Right is AssignmentExpressionSyntax
@@ -56,9 +55,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var equalsValue = (EqualsValueClauseSyntax)context.Node;
 
             if (equalsValue.Value is AssignmentExpressionSyntax)

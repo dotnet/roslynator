@@ -23,14 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeContinueStatement(f), SyntaxKind.ContinueStatement);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeContinueStatement(SyntaxNodeAnalysisContext context)
-        {
-            var continueStatement = (ContinueStatementSyntax)context.Node;
-
-            RemoveRedundantContinueStatementRefactoring.Analyze(context, continueStatement);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveRedundantContinueStatementRefactoring.Analyze(f, (ContinueStatementSyntax)f.Node),
+                SyntaxKind.ContinueStatement);
         }
     }
 }

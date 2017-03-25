@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings.UnusedSyntax;
+using static Roslynator.CSharp.Refactorings.UnusedSyntax.UnusedTypeParameterRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -22,15 +22,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UnusedTypeParameterRefactoring.AnalyzeMethodDeclaration(context);
         }
     }
 }

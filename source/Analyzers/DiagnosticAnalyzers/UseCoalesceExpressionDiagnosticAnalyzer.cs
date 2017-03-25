@@ -22,15 +22,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseCoalesceExpressionRefactoring.AnalyzeIfStatement(context);
+            context.RegisterSyntaxNodeAction(f => UseCoalesceExpressionRefactoring.AnalyzeIfStatement(f), SyntaxKind.IfStatement);
         }
     }
 }

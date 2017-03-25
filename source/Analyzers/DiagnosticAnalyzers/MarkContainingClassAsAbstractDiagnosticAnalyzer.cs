@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -26,6 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
@@ -34,9 +36,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             if (MarkContainingClassAsAbstractRefactoring.CanRefactor(methodDeclaration))
@@ -45,9 +44,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             if (MarkContainingClassAsAbstractRefactoring.CanRefactor(propertyDeclaration))
@@ -56,9 +52,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             if (MarkContainingClassAsAbstractRefactoring.CanRefactor(indexerDeclaration))
@@ -67,9 +60,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
             if (MarkContainingClassAsAbstractRefactoring.CanRefactor(eventFieldDeclaration))

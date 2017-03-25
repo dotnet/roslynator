@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -28,14 +27,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeVariableDeclaration(f), SyntaxKind.VariableDeclaration);
         }
 
         private void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
             if (SplitVariableDeclarationRefactoring.CanRefactor(variableDeclaration))

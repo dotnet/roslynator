@@ -28,17 +28,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => Analyze(f), SyntaxKind.ParenthesizedLambdaExpression);
-        }
+            base.Initialize(context);
 
-        private void Analyze(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var lambda = (ParenthesizedLambdaExpressionSyntax)context.Node;
-
-            SimplifyLambdaExpressionParameterListRefactoring.Analyze(context, lambda);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyLambdaExpressionParameterListRefactoring.Analyze(f, (ParenthesizedLambdaExpressionSyntax)f.Node),
+                SyntaxKind.ParenthesizedLambdaExpression);
         }
     }
 }

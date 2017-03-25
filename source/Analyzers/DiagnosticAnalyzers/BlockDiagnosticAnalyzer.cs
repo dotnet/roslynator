@@ -29,14 +29,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
         }
 
         private void AnalyzeBlock(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var block = (BlockSyntax)context.Node;
 
             RemoveRedundantEmptyLineRefactoring.Analyze(context, block);

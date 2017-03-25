@@ -22,20 +22,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => AvoidSemicolonAtEndOfDeclarationRefactoring.Analyze(f, f.Node),
                 SyntaxKind.NamespaceDeclaration,
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.InterfaceDeclaration,
                 SyntaxKind.StructDeclaration,
                 SyntaxKind.EnumDeclaration);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            AvoidSemicolonAtEndOfDeclarationRefactoring.Analyze(context, context.Node);
         }
     }
 }

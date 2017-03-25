@@ -28,14 +28,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var symbol = (INamedTypeSymbol)context.Symbol;
 
             RemovePartialModifierFromTypeWithSinglePartRefactoring.Analyze(context, symbol);

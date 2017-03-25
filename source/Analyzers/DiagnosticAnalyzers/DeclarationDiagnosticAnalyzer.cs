@@ -23,7 +23,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => AddEmptyLineBetweenDeclarationsRefactoring.Analyze(f, (MemberDeclarationSyntax)f.Node),
                 SyntaxKind.ConstructorDeclaration,
                 SyntaxKind.DestructorDeclaration,
                 SyntaxKind.EventDeclaration,
@@ -37,16 +40,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.StructDeclaration,
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.NamespaceDeclaration);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var member = (MemberDeclarationSyntax)context.Node;
-
-            AddEmptyLineBetweenDeclarationsRefactoring.Analyze(context, member);
         }
     }
 }

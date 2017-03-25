@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBreakStatement(f), SyntaxKind.BreakStatement);
         }
 
         private void AnalyzeBreakStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var breakStatement = (BreakStatementSyntax)context.Node;
 
             SyntaxNode node = breakStatement.Parent;

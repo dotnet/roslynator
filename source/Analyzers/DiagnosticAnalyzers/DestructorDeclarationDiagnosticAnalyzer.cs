@@ -23,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.DestructorDeclaration);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var destructor = (DestructorDeclarationSyntax)context.Node;
-
-            RemoveEmptyDestructorRefactoring.Analyze(context, destructor);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveEmptyDestructorRefactoring.Analyze(f, (DestructorDeclarationSyntax)f.Node),
+                SyntaxKind.DestructorDeclaration);
         }
     }
 }

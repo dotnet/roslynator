@@ -21,17 +21,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSymbolAction(f => AnalyzeField(f), SymbolKind.Field);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeField(SymbolAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var fieldSymbol = (IFieldSymbol)context.Symbol;
-
-            RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.Analyze(context, fieldSymbol);
+            context.RegisterSymbolAction(
+                f => RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.Analyze(f, (IFieldSymbol)f.Symbol),
+                SymbolKind.Field);
         }
     }
 }

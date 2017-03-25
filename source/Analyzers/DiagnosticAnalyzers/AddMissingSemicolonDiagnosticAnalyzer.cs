@@ -25,6 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeConversionOperatorDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
@@ -52,9 +55,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             if (methodDeclaration.ExpressionBody != null)
@@ -63,9 +63,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
             if (operatorDeclaration.ExpressionBody != null)
@@ -74,9 +71,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             if (conversionOperatorDeclaration.ExpressionBody != null)
@@ -85,9 +79,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             if (propertyDeclaration.ExpressionBody != null
@@ -99,9 +90,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             if (indexerDeclaration.ExpressionBody != null)
@@ -110,9 +98,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
             AnalyzeSemicolon(context, fieldDeclaration, fieldDeclaration.SemicolonToken);
@@ -120,9 +105,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
             AnalyzeSemicolon(context, eventFieldDeclaration, eventFieldDeclaration.SemicolonToken);
@@ -130,9 +112,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeBreakStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var breakStatement = (BreakStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, breakStatement, breakStatement.SemicolonToken);
@@ -140,9 +119,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeContinueStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var continueStatement = (ContinueStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, continueStatement, continueStatement.SemicolonToken);
@@ -150,9 +126,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var doStatement = (DoStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, doStatement, doStatement.SemicolonToken);
@@ -160,9 +133,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var expressionStatement = (ExpressionStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, expressionStatement, expressionStatement.SemicolonToken);
@@ -170,9 +140,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeGotoStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var gotoStatement = (GotoStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, gotoStatement, gotoStatement.SemicolonToken);
@@ -180,9 +147,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var localDeclarationStatement = (LocalDeclarationStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, localDeclarationStatement, localDeclarationStatement.SemicolonToken);
@@ -190,9 +154,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var returnStatement = (ReturnStatementSyntax)context.Node;
 
             if (returnStatement.Expression != null)
@@ -201,9 +162,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var throwStatement = (ThrowStatementSyntax)context.Node;
 
             if (throwStatement.Expression != null)
@@ -212,9 +170,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeYieldStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var yieldStatement = (YieldStatementSyntax)context.Node;
 
             AnalyzeSemicolon(context, yieldStatement, yieldStatement.SemicolonToken);
@@ -222,9 +177,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeUsingDirective(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var usingDirective = (UsingDirectiveSyntax)context.Node;
 
             AnalyzeSemicolon(context, usingDirective, usingDirective.SemicolonToken);
@@ -232,9 +184,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeExternAliasDirective(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var externAliasDirective = (ExternAliasDirectiveSyntax)context.Node;
 
             AnalyzeSemicolon(context, externAliasDirective, externAliasDirective.SemicolonToken);

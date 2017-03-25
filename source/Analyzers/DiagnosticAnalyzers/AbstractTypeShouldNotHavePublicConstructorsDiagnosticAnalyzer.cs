@@ -22,15 +22,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            AbstractTypeShouldNotHavePublicConstructorsRefactoring.AnalyzeConstructorDeclaration(context);
+            context.RegisterSyntaxNodeAction(
+                f => AbstractTypeShouldNotHavePublicConstructorsRefactoring.AnalyzeConstructorDeclaration(f),
+                SyntaxKind.ConstructorDeclaration);
         }
     }
 }

@@ -23,51 +23,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeEventDeclaration(f), SyntaxKind.EventDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeEventFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
-        }
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
 
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            Analyze(context, (MethodDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            Analyze(context, (PropertyDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            Analyze(context, (IndexerDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            Analyze(context, (EventDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            Analyze(context, (EventFieldDeclarationSyntax)context.Node);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (MethodDeclarationSyntax)f.Node), SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (PropertyDeclarationSyntax)f.Node), SyntaxKind.PropertyDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (IndexerDeclarationSyntax)f.Node), SyntaxKind.IndexerDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (EventDeclarationSyntax)f.Node), SyntaxKind.EventDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (EventFieldDeclarationSyntax)f.Node), SyntaxKind.EventFieldDeclaration);
         }
     }
 }

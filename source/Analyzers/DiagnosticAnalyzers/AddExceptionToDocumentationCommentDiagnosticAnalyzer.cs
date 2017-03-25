@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -24,6 +23,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
+
+            base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f), SyntaxKind.ThrowStatement);
         }

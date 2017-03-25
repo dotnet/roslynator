@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings.UnusedSyntax;
+using static Roslynator.CSharp.Refactorings.UnusedSyntax.UnusedParameterRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -27,33 +27,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
-        }
-
-        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UnusedParameterRefactoring.AnalyzeConstructorDeclaration(context);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UnusedParameterRefactoring.AnalyzeMethodDeclaration(context);
-        }
-
-        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UnusedParameterRefactoring.AnalyzeIndexerDeclaration(context);
         }
     }
 }

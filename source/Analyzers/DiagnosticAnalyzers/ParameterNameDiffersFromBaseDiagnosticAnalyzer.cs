@@ -4,7 +4,7 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.ParameterNameDiffersFromBaseRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -21,24 +21,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSymbolAction(f => AnalyzeMethodSymbol(f), SymbolKind.Method);
             context.RegisterSymbolAction(f => AnalyzePropertySymbol(f), SymbolKind.Property);
-        }
-
-        private void AnalyzeMethodSymbol(SymbolAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            ParameterNameDiffersFromBaseRefactoring.AnalyzeMethodSymbol(context);
-        }
-
-        private void AnalyzePropertySymbol(SymbolAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            ParameterNameDiffersFromBaseRefactoring.AnalyzePropertySymbol(context);
         }
     }
 }

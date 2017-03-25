@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.UseStringComparisonRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -22,33 +22,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeEqualsExpression(f), SyntaxKind.EqualsExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeNotEqualsExpression(f), SyntaxKind.NotEqualsExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeInvocationExpression(f), SyntaxKind.InvocationExpression);
-        }
-
-        private void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseStringComparisonRefactoring.AnalyzeEqualsExpression(context);
-        }
-
-        private void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseStringComparisonRefactoring.AnalyzeNotEqualsExpression(context);
-        }
-
-        private void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseStringComparisonRefactoring.AnalyzeInvocationExpression(context);
         }
     }
 }

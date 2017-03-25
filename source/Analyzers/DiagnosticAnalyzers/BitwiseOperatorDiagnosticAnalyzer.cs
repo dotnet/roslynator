@@ -25,6 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
                 SyntaxKind.BitwiseAndExpression,
                 SyntaxKind.BitwiseOrExpression,

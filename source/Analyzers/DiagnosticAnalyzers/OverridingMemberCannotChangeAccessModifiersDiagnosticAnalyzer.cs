@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.OverridingMemberCannotChangeAccessModifiersRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -22,51 +22,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEventDeclaration(f), SyntaxKind.EventDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEventFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            OverridingMemberCannotChangeAccessModifiersRefactoring.AnalyzeMethodDeclaration(context);
-        }
-
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            OverridingMemberCannotChangeAccessModifiersRefactoring.AnalyzePropertyDeclaration(context);
-        }
-
-        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            OverridingMemberCannotChangeAccessModifiersRefactoring.AnalyzeIndexerDeclaration(context);
-        }
-
-        private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            OverridingMemberCannotChangeAccessModifiersRefactoring.AnalyzeEventDeclaration(context);
-        }
-
-        private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            OverridingMemberCannotChangeAccessModifiersRefactoring.AnalyzeEventFieldDeclaration(context);
         }
     }
 }

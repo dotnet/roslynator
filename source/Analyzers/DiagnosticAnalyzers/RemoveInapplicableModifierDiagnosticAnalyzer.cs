@@ -25,6 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeConversionOperatorDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
@@ -44,11 +47,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeEventAccessorDeclaration(f), SyntaxKind.RemoveAccessorDeclaration);
         }
 
-        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (ClassDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -70,11 +70,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (ConstructorDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -131,11 +128,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -163,11 +157,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (DelegateDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -193,11 +184,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (DestructorDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -227,11 +215,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (EnumDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -258,11 +243,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (EventDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -293,11 +275,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (EventFieldDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -330,11 +309,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (FieldDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -385,11 +361,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (IndexerDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -428,11 +401,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (InterfaceDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -457,11 +427,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (MethodDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -523,11 +490,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (OperatorDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)
@@ -555,11 +519,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (PropertyDeclarationSyntax)context.Node;
 
             SyntaxTokenList modifiers = declaration.Modifiers;
@@ -597,11 +558,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var declaration = (StructDeclarationSyntax)context.Node;
 
             foreach (SyntaxToken modifier in declaration.Modifiers)

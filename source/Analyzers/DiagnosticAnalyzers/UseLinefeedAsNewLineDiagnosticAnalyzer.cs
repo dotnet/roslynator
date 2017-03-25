@@ -21,15 +21,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
-        }
+            base.Initialize(context);
 
-        private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseLinefeedAsNewLineRefactoring.Analyze(context);
+            context.RegisterSyntaxTreeAction(f => UseLinefeedAsNewLineRefactoring.Analyze(f));
         }
     }
 }

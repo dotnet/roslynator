@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.If;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -32,14 +31,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
         }
 
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var ifStatement = (IfStatementSyntax)context.Node;
 
             foreach (IfRefactoring refactoring in IfRefactoring.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))

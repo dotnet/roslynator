@@ -40,9 +40,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
             ExpressionSyntax left = binaryExpression.Left;

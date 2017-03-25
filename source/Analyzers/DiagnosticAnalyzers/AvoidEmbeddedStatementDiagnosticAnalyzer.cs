@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeNode(f),
                 SyntaxKind.IfStatement,
                 SyntaxKind.ElseClause,
                 SyntaxKind.ForEachStatement,
@@ -36,12 +38,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.FixedStatement);
         }
 
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
+        private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-           StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(context.Node);
+            StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(context.Node);
 
             if (statement != null)
             {

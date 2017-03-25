@@ -27,7 +27,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => RemoveBracesRefactoring.Analyze(f),
                 SyntaxKind.IfStatement,
                 SyntaxKind.ForEachStatement,
                 SyntaxKind.ForStatement,
@@ -36,14 +39,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.DoStatement,
                 SyntaxKind.LockStatement,
                 SyntaxKind.FixedStatement);
-        }
-
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveBracesRefactoring.Analyze(context);
         }
     }
 }

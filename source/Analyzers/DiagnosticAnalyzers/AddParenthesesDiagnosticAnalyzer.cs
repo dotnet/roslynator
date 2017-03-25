@@ -23,7 +23,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => AddParenthesesAccordingToOperatorPrecedenceRefactoring.Analyze(f, (BinaryExpressionSyntax)f.Node),
                 SyntaxKind.MultiplyExpression,
                 SyntaxKind.DivideExpression,
                 SyntaxKind.ModuloExpression,
@@ -42,16 +45,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.BitwiseOrExpression,
                 SyntaxKind.LogicalAndExpression,
                 SyntaxKind.LogicalOrExpression);
-        }
-
-        private void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            AddParenthesesAccordingToOperatorPrecedenceRefactoring.Analyze(context, binaryExpression);
         }
     }
 }

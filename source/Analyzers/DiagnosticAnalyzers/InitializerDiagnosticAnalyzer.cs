@@ -23,20 +23,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f),
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(
+                f => RemoveRedundantCommaInInitializerRefactoring.Analyze(f, (InitializerExpressionSyntax)f.Node),
                 SyntaxKind.ArrayInitializerExpression,
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var initializer = (InitializerExpressionSyntax)context.Node;
-
-            RemoveRedundantCommaInInitializerRefactoring.Analyze(context, initializer);
         }
     }
 }

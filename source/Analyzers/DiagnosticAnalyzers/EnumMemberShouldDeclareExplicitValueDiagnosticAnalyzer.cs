@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
-using static Roslynator.CSharp.Refactorings.EnumMemberShouldDeclareExplicitValueRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -23,15 +22,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumMemberDeclaration(f), SyntaxKind.EnumMemberDeclaration);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            EnumMemberShouldDeclareExplicitValueRefactoring.AnalyzeEnumMemberDeclaration(context);
+            context.RegisterSyntaxNodeAction(
+                f => EnumMemberShouldDeclareExplicitValueRefactoring.AnalyzeEnumMemberDeclaration(f),
+                SyntaxKind.EnumMemberDeclaration);
         }
     }
 }

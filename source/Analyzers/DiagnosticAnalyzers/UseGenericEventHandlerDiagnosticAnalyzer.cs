@@ -4,7 +4,7 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.UseGenericEventHandlerRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -21,15 +21,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSymbolAction(f => AnalyzeEvent(f), SymbolKind.Event);
-        }
-
-        private void AnalyzeEvent(SymbolAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseGenericEventHandlerRefactoring.AnalyzeEvent(context);
         }
     }
 }

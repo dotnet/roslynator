@@ -23,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalNotExpression(f), SyntaxKind.LogicalNotExpression);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeLogicalNotExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
-
-            SimplifyLogicalNotExpressionRefactoring.Analyze(context, logicalNot);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyLogicalNotExpressionRefactoring.Analyze(f, (PrefixUnaryExpressionSyntax)f.Node),
+                SyntaxKind.LogicalNotExpression);
         }
     }
 }

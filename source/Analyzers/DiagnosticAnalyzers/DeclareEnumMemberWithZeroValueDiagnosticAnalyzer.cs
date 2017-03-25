@@ -21,7 +21,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSymbolAction(f => DeclareEnumMemberWithZeroValueRefactoring.Analyze(f), SymbolKind.NamedType);
+            base.Initialize(context);
+
+            context.RegisterSymbolAction(
+                f => DeclareEnumMemberWithZeroValueRefactoring.Analyze(f),
+                SymbolKind.NamedType);
         }
     }
 }

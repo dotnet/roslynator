@@ -28,14 +28,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeDocumentationComment(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeDocumentationComment(SyntaxNodeAnalysisContext context)
-        {
-            var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
-
-            AddSummaryToDocumentationCommentRefactoring.Analyze(context, documentationComment);
+            context.RegisterSyntaxNodeAction(
+                f => AddSummaryToDocumentationCommentRefactoring.Analyze(f, (DocumentationCommentTriviaSyntax)f.Node),
+                SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.UseConditionalAccessRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -22,24 +22,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeLogicalAndExpression(f), SyntaxKind.LogicalAndExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-        }
-
-        private void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseConditionalAccessRefactoring.AnalyzeLogicalAndExpression(context);
-        }
-
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            UseConditionalAccessRefactoring.AnalyzeIfStatement(context);
         }
     }
 }

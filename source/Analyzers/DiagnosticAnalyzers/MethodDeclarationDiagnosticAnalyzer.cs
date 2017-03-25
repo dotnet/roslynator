@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -34,14 +33,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.MethodDeclaration);
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             if (AddReturnStatementThatReturnsDefaultValueRefactoring.CanRefactor(methodDeclaration, context.SemanticModel, context.CancellationToken))

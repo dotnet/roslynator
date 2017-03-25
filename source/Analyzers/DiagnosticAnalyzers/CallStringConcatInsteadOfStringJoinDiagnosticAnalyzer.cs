@@ -23,17 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeInvocationExpression(f), SyntaxKind.InvocationExpression);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var invocation = (InvocationExpressionSyntax)context.Node;
-
-            CallStringConcatInsteadOfStringJoinRefactoring.Analyze(context, invocation);
+            context.RegisterSyntaxNodeAction(
+                f => CallStringConcatInsteadOfStringJoinRefactoring.Analyze(f, (InvocationExpressionSyntax)f.Node),
+                SyntaxKind.InvocationExpression);
         }
     }
 }

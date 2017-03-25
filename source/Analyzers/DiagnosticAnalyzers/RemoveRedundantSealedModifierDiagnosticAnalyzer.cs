@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantSealedModifierRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -23,25 +23,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-        }
-
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantSealedModifierRefactoring.Analyze(context, (PropertyDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            RemoveRedundantSealedModifierRefactoring.Analyze(context, (MethodDeclarationSyntax)context.Node);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (PropertyDeclarationSyntax)f.Node), SyntaxKind.PropertyDeclaration);
+            context.RegisterSyntaxNodeAction(f => Analyze(f, (MethodDeclarationSyntax)f.Node), SyntaxKind.MethodDeclaration);
         }
     }
 }

@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -26,6 +25,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeFieldDeclaration(f), SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
@@ -36,9 +37,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
@@ -56,9 +54,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(methodDeclaration))
@@ -71,9 +66,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
@@ -86,9 +78,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(eventDeclaration))
@@ -101,9 +90,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(eventFieldDeclaration))
@@ -121,9 +107,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
             if (MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))

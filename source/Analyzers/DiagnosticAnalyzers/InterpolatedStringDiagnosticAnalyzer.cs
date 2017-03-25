@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -26,14 +25,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.InterpolatedStringExpression);
+            base.Initialize(context);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeInterpolatedStringExpression(f), SyntaxKind.InterpolatedStringExpression);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
 
             if (ReplaceInterpolatedStringWithStringLiteralRefactoring.CanRefactor(interpolatedString))

@@ -28,17 +28,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.LocalDeclarationStatement);
-        }
+            base.Initialize(context);
 
-        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
-            var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
-
-            InlineLocalVariableRefactoring.Analyze(context, localDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => InlineLocalVariableRefactoring.Analyze(f, (LocalDeclarationStatementSyntax)f.Node),
+                SyntaxKind.LocalDeclarationStatement);
         }
     }
 }

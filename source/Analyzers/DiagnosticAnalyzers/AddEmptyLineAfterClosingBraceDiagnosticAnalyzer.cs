@@ -27,6 +27,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
@@ -44,9 +47,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeBlock(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var block = (BlockSyntax)context.Node;
 
             if (block.IsParentKind(SyntaxKind.Block))
@@ -55,9 +55,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var whileStatement = (WhileStatementSyntax)context.Node;
 
             if (whileStatement.IsParentKind(SyntaxKind.Block))
@@ -71,9 +68,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var forStatement = (ForStatementSyntax)context.Node;
 
             if (forStatement.IsParentKind(SyntaxKind.Block))
@@ -87,9 +81,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
             if (forEachStatement.IsParentKind(SyntaxKind.Block))
@@ -103,9 +94,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var usingStatement = (UsingStatementSyntax)context.Node;
 
             if (usingStatement.IsParentKind(SyntaxKind.Block))
@@ -119,9 +107,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var fixedStatement = (FixedStatementSyntax)context.Node;
 
             if (fixedStatement.IsParentKind(SyntaxKind.Block))
@@ -135,9 +120,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeCheckedStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var checkedStatement = (CheckedStatementSyntax)context.Node;
 
             if (checkedStatement.IsParentKind(SyntaxKind.Block))
@@ -146,9 +128,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeUnsafeStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var unsafeStatement = (UnsafeStatementSyntax)context.Node;
 
             if (unsafeStatement.IsParentKind(SyntaxKind.Block))
@@ -157,9 +136,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var lockStatement = (LockStatementSyntax)context.Node;
 
             if (lockStatement.IsParentKind(SyntaxKind.Block))
@@ -173,9 +149,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var ifStatement = (IfStatementSyntax)context.Node;
 
             if (ifStatement.IsParentKind(SyntaxKind.Block))
@@ -189,9 +162,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
             if (switchStatement.IsParentKind(SyntaxKind.Block))
@@ -200,9 +170,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
         {
-            if (GeneratedCodeAnalyzer?.IsGeneratedCode(context) == true)
-                return;
-
             var tryStatement = (TryStatementSyntax)context.Node;
 
             if (tryStatement.IsParentKind(SyntaxKind.Block))
