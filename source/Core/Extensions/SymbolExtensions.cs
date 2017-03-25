@@ -395,6 +395,46 @@ namespace Roslynator.Extensions
                 .GetSyntax(cancellationToken);
         }
 
+        public static bool HasAttributeByMetadataName(this ISymbol symbol, string fullyQualifiedMetadataName, Compilation compilation)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (compilation == null)
+                throw new ArgumentNullException(nameof(compilation));
+
+            INamedTypeSymbol attributeSymbol = compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
+
+            if (attributeSymbol != null)
+            {
+                ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
+
+                for (int i = 0; i < attributes.Length; i++)
+                {
+                    if (attributes[i].AttributeClass.Equals(attributeSymbol))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool HasAttribute(this ISymbol symbol, INamedTypeSymbol attributeSymbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
+
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                if (attributes[i].AttributeClass.Equals(attributeSymbol))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
         {
             if (fieldSymbol == null)
