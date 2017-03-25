@@ -13,6 +13,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             Alpha = 1,
             Beta = 2,
             Gamma = 4,
+            Delta = 8
         }
     }
 }
