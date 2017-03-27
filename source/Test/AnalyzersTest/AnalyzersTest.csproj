@@ -108,7 +108,7 @@
     <Compile Include="MergeInterpolationIntoInterpolatedString.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnMultipleLines.cs" />
     <Compile Include="FormatDocumentationSummary\FormatDocumentationSummaryOnSingleLine.cs" />
-    <Compile Include="MergeLocalDeclarationWithInitialization.cs" />
+    <Compile Include="MergeLocalDeclarationWithAssignment.cs" />
     <Compile Include="MergeLocalDeclarationWithReturnStatement.cs" />
     <Compile Include="MergeSwitchSectionsWithEquivalentContent.cs" />
     <Compile Include="RemoveImplementationFromAbstractOrInterfaceMember.cs" />

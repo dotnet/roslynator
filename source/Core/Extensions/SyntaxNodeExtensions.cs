@@ -71,6 +71,24 @@ namespace Roslynator.Extensions
                 && !node.GetTrailingTrivia().Any(f => f.IsDirective);
         }
 
+        public static bool SpanOrLeadingTriviaContainsDirectives(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.ContainsDirectives
+                && !node.GetTrailingTrivia().Any(f => f.IsDirective);
+        }
+
+        public static bool SpanOrTrailingTriviaContainsDirectives(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.ContainsDirectives
+                && !node.GetLeadingTrivia().Any(f => f.IsDirective);
+        }
+
         public static bool ContainsDirectives(this SyntaxNode node, TextSpan span)
         {
             return node.ContainsDirectives
