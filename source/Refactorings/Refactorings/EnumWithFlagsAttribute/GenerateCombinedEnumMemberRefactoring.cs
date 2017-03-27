@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Extensions;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
 {
@@ -22,187 +24,219 @@ namespace Roslynator.CSharp.Refactorings.EnumWithFlagsAttribute
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                List<IFieldSymbol> fieldSymbols = GetFieldSymbols(selectedMembers, semanticModel, context.CancellationToken);
+                INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
 
-                if (fieldSymbols.Count > 1)
+                if (enumSymbol != null
+                    && SymbolUtility.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
                 {
-                    var enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken) as INamedTypeSymbol;
+                    IFieldSymbol[] fieldSymbols = selectedMembers
+                        .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
+                        .ToArray();
 
-                    if (enumSymbol != null)
+                    object[] constantValues = fieldSymbols
+                        .Where(f => f.HasConstantValue)
+                        .Select(f => f.ConstantValue)
+                        .ToArray();
+
+                    object combinedValue = GetCombinedValue(constantValues, enumSymbol);
+
+                    if (combinedValue != null
+                        && !EnumHelper.IsValueDefined(enumSymbol, combinedValue))
                     {
-                        object combinedValue = GetCombinedValue(fieldSymbols, enumSymbol);
+                        SeparatedSyntaxList<EnumMemberDeclarationSyntax> enumMembers = enumDeclaration.Members;
 
-                        if (combinedValue != null
-                            && !EnumHelper.IsValueDefined(enumSymbol, combinedValue))
-                        {
-                            string name = GetCombinedName(fieldSymbols);
+                        string name = Identifier.EnsureUniqueEnumMemberName(
+                            enumSymbol,
+                            string.Concat(selectedMembers.Select(f => f.Identifier.ValueText)));
 
-                            EnumMemberDeclarationSyntax newEnumMember = GenerateEnumHelper.CreateEnumMember(enumSymbol, name, combinedValue);
+                        EnumMemberDeclarationSyntax newEnumMember = CreateEnumMember(name, selectedMembers);
 
-                            int insertIndex = enumDeclaration.Members.IndexOf(selectedMembers.Last()) + 1;
+                        int insertIndex = enumMembers.IndexOf(selectedMembers.Last()) + 1;
 
-                            context.RegisterRefactoring(
-                                $"Generate enum member '{name}'",
-                                cancellationToken => RefactorAsync(context.Document, enumDeclaration, newEnumMember, insertIndex, cancellationToken));
-                        }
+                        context.RegisterRefactoring(
+                            $"Generate enum member '{name}'",
+                            cancellationToken => RefactorAsync(context.Document, enumDeclaration, newEnumMember, insertIndex, cancellationToken));
                     }
                 }
             }
         }
 
-        private static List<IFieldSymbol> GetFieldSymbols(
-            EnumMemberDeclarationSyntax[] enumMembers,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            var fieldSymbols = new List<IFieldSymbol>();
-
-            foreach (EnumMemberDeclarationSyntax enumMember in enumMembers)
-            {
-                IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
-
-                if (fieldSymbol.HasConstantValue)
-                {
-                    object value = fieldSymbol.ConstantValue;
-
-                    if (value is sbyte)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((sbyte)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is byte)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((byte)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is ushort)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((ushort)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is short)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((short)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is uint)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((uint)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is int)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((int)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is ulong)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((ulong)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                    else if (value is long)
-                    {
-                        if (EnumHelper.IsPowerOfTwo((long)value))
-                            fieldSymbols.Add(fieldSymbol);
-                    }
-                }
-            }
-
-            return fieldSymbols;
-        }
-
-        private static object GetCombinedValue(IEnumerable<IFieldSymbol> fieldSymbols, INamedTypeSymbol enumSymbol)
+        private static object GetCombinedValue(IEnumerable<object> constantValues, INamedTypeSymbol enumSymbol)
         {
             switch (enumSymbol.EnumUnderlyingType.SpecialType)
             {
                 case SpecialType.System_SByte:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<sbyte>().Aggregate((f, g) => (sbyte)(f + g));
+                        sbyte[] values = constantValues.OfType<sbyte>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return values.Aggregate((f, g) => (sbyte)(f + g));
                     }
                 case SpecialType.System_Byte:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<byte>().Aggregate((f, g) => (byte)(f + g));
+                        byte[] values = constantValues.OfType<byte>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<byte>().Aggregate((f, g) => (byte)(f + g));
                     }
                 case SpecialType.System_Int16:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<short>().Aggregate((f, g) => (short)(f + g));
+                        short[] values = constantValues.OfType<short>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<short>().Aggregate((f, g) => (short)(f + g));
                     }
                 case SpecialType.System_UInt16:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<ushort>().Aggregate((f, g) => (ushort)(f + g));
+                        ushort[] values = constantValues.OfType<ushort>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<ushort>().Aggregate((f, g) => (ushort)(f + g));
                     }
                 case SpecialType.System_Int32:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<int>().Aggregate((f, g) => f + g);
+                        int[] values = constantValues.OfType<int>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<int>().Aggregate((f, g) => f + g);
                     }
                 case SpecialType.System_UInt32:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<uint>().Aggregate((f, g) => f + g);
+                        uint[] values = constantValues.OfType<uint>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<uint>().Aggregate((f, g) => f + g);
                     }
                 case SpecialType.System_Int64:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<long>().Aggregate((f, g) => f + g);
+                        long[] values = constantValues.OfType<long>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<long>().Aggregate((f, g) => f + g);
                     }
                 case SpecialType.System_UInt64:
                     {
-                        return fieldSymbols
-                            .Where(f => f.HasConstantValue)
-                            .Select(f => f.ConstantValue)
-                            .OfType<ulong>().Aggregate((f, g) => f + g);
+                        ulong[] values = constantValues.OfType<ulong>().ToArray();
+
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            for (int j = 0; j < values.Length; j++)
+                            {
+                                if (j != i
+                                    && (values[i] & values[j]) != 0)
+                                {
+                                    return null;
+                                }
+                            }
+                        }
+
+                        return constantValues.OfType<ulong>().Aggregate((f, g) => f + g);
                     }
             }
 
             return null;
         }
 
-        public static string GetCombinedName(IEnumerable<IFieldSymbol> fieldSymbols)
+        public static EnumMemberDeclarationSyntax CreateEnumMember(string name, EnumMemberDeclarationSyntax[] enumMembers)
         {
-            string s = "";
+            ExpressionSyntax expression = IdentifierName(enumMembers.Last().Identifier.WithoutTrivia());
 
-            foreach (IFieldSymbol fieldSymbol in fieldSymbols)
-            {
-                string name = fieldSymbol.Name;
+            for (int i = enumMembers.Length - 2; i >= 0; i--)
+                expression = BitwiseOrExpression(IdentifierName(enumMembers[i].Identifier.WithoutTrivia()), expression);
 
-                if (name != null)
-                    s += fieldSymbol.Name;
-            }
-
-            return s;
+            return EnumMemberDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                Identifier(name).WithRenameAnnotation(),
+                EqualsValueClause(expression));
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             EnumMemberDeclarationSyntax newEnumMember,
             int insertIndex,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(enumDeclaration.Members.Insert(insertIndex, newEnumMember));
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
         }
 
         private static IEnumerable<EnumMemberDeclarationSyntax> GetSelectedMembers(EnumDeclarationSyntax enumDeclaration, TextSpan span)
