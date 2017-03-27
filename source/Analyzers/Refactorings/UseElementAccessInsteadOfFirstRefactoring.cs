@@ -20,23 +20,56 @@ namespace Roslynator.CSharp.Refactorings
     {
         internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
         {
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            if (semanticModel
-                .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
-                .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
+            ExpressionSyntax memberAccessExpression = memberAccess.Expression;
+            if (memberAccessExpression?.IsMissing == false)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, cancellationToken);
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
 
-                if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
+                if (semanticModel
+                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                    .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseElementAccessInsteadOfFirst,
-                        memberAccess.Name);
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken);
+
+                    if (typeSymbol?.IsErrorType() == false
+                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, typeSymbol, semanticModel)))
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberAccess.Name);
+                    }
                 }
             }
+        }
+
+        private static bool ExistsApplicableIndexer(
+            ExpressionSyntax expression,
+            ITypeSymbol containingType,
+            SemanticModel semanticModel)
+        {
+            foreach (ISymbol member in containingType.GetMembers("this[]"))
+            {
+                var propertySymbol = (IPropertySymbol)member;
+
+                if (!propertySymbol.IsWriteOnly
+                    && semanticModel.IsAccessible(expression.SpanStart, propertySymbol.GetMethod)
+                    && semanticModel.IsImplicitConversion(expression, propertySymbol.Type))
+                {
+                    switch (propertySymbol.SingleParameterOrDefault()?.Type.SpecialType)
+                    {
+                        case SpecialType.System_SByte:
+                        case SpecialType.System_Byte:
+                        case SpecialType.System_Int16:
+                        case SpecialType.System_UInt16:
+                        case SpecialType.System_Int32:
+                        case SpecialType.System_UInt32:
+                        case SpecialType.System_Int64:
+                        case SpecialType.System_UInt64:
+                            return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static Task<Document> RefactorAsync(

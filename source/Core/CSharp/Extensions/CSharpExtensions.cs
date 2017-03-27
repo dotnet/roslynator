@@ -92,6 +92,26 @@ namespace Roslynator.CSharp.Extensions
             return false;
         }
 
+        internal static bool IsImplicitConversion(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            ITypeSymbol destinationType,
+            bool isExplicitInSource = false)
+        {
+            if (!destinationType.IsErrorType()
+                && !destinationType.IsVoid())
+            {
+                Conversion conversion = semanticModel.ClassifyConversion(
+                    expression,
+                    destinationType,
+                    isExplicitInSource);
+
+                return conversion.IsImplicit;
+            }
+
+            return false;
+        }
+
         public static IParameterSymbol DetermineParameter(
             this SemanticModel semanticModel,
             ArgumentSyntax argument,

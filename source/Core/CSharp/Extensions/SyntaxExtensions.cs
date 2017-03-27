@@ -538,6 +538,14 @@ namespace Roslynator.CSharp.Extensions
                 .Setter();
         }
 
+        internal static IndexerDeclarationSyntax WithoutSemicolonToken(this IndexerDeclarationSyntax indexerDeclaration)
+        {
+            if (indexerDeclaration == null)
+                throw new ArgumentNullException(nameof(indexerDeclaration));
+
+            return indexerDeclaration.WithSemicolonToken(default(SyntaxToken));
+        }
+
         public static TextSpan HeaderSpan(this InterfaceDeclarationSyntax interfaceDeclaration)
         {
             if (interfaceDeclaration == null)
