@@ -148,8 +148,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Roslynator.Analyzers.1.3.0-beta\analyzers\dotnet\cs\Roslynator.Core.dll" />
-    <Analyzer Include="..\packages\Roslynator.Analyzers.1.3.0-beta\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
+    <Analyzer Include="..\packages\Roslynator.Analyzers.1.3.0-rc\analyzers\dotnet\cs\Roslynator.Core.dll" />
+    <Analyzer Include="..\packages\Roslynator.Analyzers.1.3.0-rc\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
