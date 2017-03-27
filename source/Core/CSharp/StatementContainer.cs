@@ -1,34 +1,15 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    public abstract class StatementContainer
+    public static class StatementContainer
     {
-        internal StatementContainer(SyntaxNode node)
-        {
-            Node = node;
-        }
-
-        public SyntaxNode Node { get; }
-
-        public abstract SyntaxList<StatementSyntax> Statements { get; }
-
-        public abstract StatementContainer WithStatements(SyntaxList<StatementSyntax> statements);
-
-        public abstract SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements);
-
-        public virtual SyntaxNode NodeWithStatements(IEnumerable<StatementSyntax> statements)
-        {
-            return NodeWithStatements(SyntaxFactory.List(statements));
-        }
-
-        public static bool TryCreate(StatementSyntax statement, out StatementContainer container)
+        public static bool TryCreate(StatementSyntax statement, out IStatementContainer container)
         {
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
@@ -55,7 +36,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static StatementContainer Create(StatementSyntax statement)
+        public static IStatementContainer Create(StatementSyntax statement)
         {
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));

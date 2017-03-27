@@ -1,33 +1,47 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
 {
-    internal class BlockStatementContainer : StatementContainer
+    internal struct BlockStatementContainer : IStatementContainer
     {
-        private readonly BlockSyntax _block;
-
         public BlockStatementContainer(BlockSyntax block)
-            : base(block)
         {
-            _block = block;
+            Block = block;
+            Statements = block.Statements;
         }
 
-        public override SyntaxList<StatementSyntax> Statements
+        SyntaxNode IStatementContainer.Node
         {
-            get { return _block.Statements; }
+            get { return Block; }
         }
 
-        public override SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements)
+        public BlockSyntax Block { get; }
+
+        public SyntaxList<StatementSyntax> Statements { get; }
+
+        public SyntaxNode NodeWithStatements(IEnumerable<StatementSyntax> statements)
         {
-            return _block.WithStatements(statements);
+            return NodeWithStatements(List(statements));
         }
 
-        public override StatementContainer WithStatements(SyntaxList<StatementSyntax> statements)
+        public SyntaxNode NodeWithStatements(SyntaxList<StatementSyntax> statements)
         {
-            return new BlockStatementContainer(_block.WithStatements(statements));
+            return Block.WithStatements(statements);
+        }
+
+        public IStatementContainer WithStatements(IEnumerable<StatementSyntax> statements)
+        {
+            return WithStatements(List(statements));
+        }
+
+        public IStatementContainer WithStatements(SyntaxList<StatementSyntax> statements)
+        {
+            return new BlockStatementContainer(Block.WithStatements(statements));
         }
     }
 }

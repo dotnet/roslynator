@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 declaration = VariableDeclaration(type, SeparatedList(variables));
 
-                StatementContainer container;
+                IStatementContainer container;
                 if (StatementContainer.TryCreate(whileStatement, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;

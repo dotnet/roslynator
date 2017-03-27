@@ -19,8 +19,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null)
             {
-                StatementContainer container;
-
+                IStatementContainer container;
                 if (StatementContainer.TryCreate(returnStatement, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;
@@ -88,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             IfStatementSyntax ifStatement,
             ReturnStatementSyntax returnStatement,
-            StatementContainer container,
+            IStatementContainer container,
             CancellationToken cancellationToken)
         {
             SyntaxList<StatementSyntax> statements = container.Statements;

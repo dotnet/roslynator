@@ -258,7 +258,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             statements[0] = statements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-            StatementContainer container;
+            IStatementContainer container;
             if (StatementContainer.TryCreate(expressionStatement, out container))
             {
                 SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, statements));
@@ -329,7 +329,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
                 newStatements[statements.Length - 1] = newStatements[statements.Length - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-                StatementContainer container;
+                IStatementContainer container;
                 if (StatementContainer.TryCreate(expressionStatement, out container))
                 {
                     SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, newStatements));

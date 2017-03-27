@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Refactorings
             SelectedStatementCollection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = selectedStatements.Container;
+            IStatementContainer container = selectedStatements.Container;
 
             ExpressionStatementSyntax[] expressionStatements = selectedStatements
                 .Skip(1)

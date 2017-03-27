@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                 }
                                 else if (kind == SyntaxKind.LogicalOrExpression)
                                 {
-                                    StatementContainer container = GetStatementContainer((StatementSyntax)parent);
+                                    IStatementContainer container = GetStatementContainer((StatementSyntax)parent);
                                     if (container != null)
                                     {
                                         var refactoring = new ExtractConditionFromIfToIfRefactoring();
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                     }
                                     else if (kind == SyntaxKind.LogicalOrExpression)
                                     {
-                                        StatementContainer container = GetStatementContainer((StatementSyntax)parent);
+                                        IStatementContainer container = GetStatementContainer((StatementSyntax)parent);
                                         if (container != null)
                                         {
                                             var refactoring = new ExtractConditionFromIfToIfRefactoring();
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                 {
                                     if (kind == SyntaxKind.LogicalAndExpression)
                                     {
-                                        StatementContainer container = GetStatementContainer((StatementSyntax)parent);
+                                        IStatementContainer container = GetStatementContainer((StatementSyntax)parent);
                                         if (container != null)
                                         {
                                             var refactoring = new ExtractConditionFromWhileToNestedIfRefactoring();
@@ -129,10 +129,9 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             }
         }
 
-        private static StatementContainer GetStatementContainer(StatementSyntax statement)
+        private static IStatementContainer GetStatementContainer(StatementSyntax statement)
         {
-            StatementContainer container;
-
+            IStatementContainer container;
             if (StatementContainer.TryCreate(statement, out container))
                 return container;
 
