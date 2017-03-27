@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 || typeSymbol.GetMethods(WellKnownMemberNames.EqualityOperatorName).Any())
             {
                 newNode = typeSymbol.ToDefaultExpression(semanticModel, right.SpanStart)
-                    .WithTriviaFrom(binaryExpression)
+                    .WithTriviaFrom(right)
                     .WithFormatterAnnotation();
 
                 return await document.ReplaceNodeAsync(right, newNode, cancellationToken).ConfigureAwait(false);
