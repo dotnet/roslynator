@@ -34,7 +34,16 @@ namespace Roslynator.CSharp.Refactorings
             if (propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {
-                Analyze(context, propertyDeclaration, propertyDeclaration.AccessorList);
+                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
+
+                if (expressionBody != null)
+                {
+                    ReportDiagnostic(context, propertyDeclaration, expressionBody);
+                }
+                else
+                {
+                    Analyze(context, propertyDeclaration, propertyDeclaration.AccessorList);
+                }
             }
         }
 
@@ -43,7 +52,16 @@ namespace Roslynator.CSharp.Refactorings
             if (indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {
-                Analyze(context, indexerDeclaration, indexerDeclaration.AccessorList);
+                ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
+
+                if (expressionBody != null)
+                {
+                    ReportDiagnostic(context, indexerDeclaration, expressionBody);
+                }
+                else
+                {
+                    Analyze(context, indexerDeclaration, indexerDeclaration.AccessorList);
+                }
             }
         }
 
@@ -95,13 +113,36 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                        CSharpSyntaxNode body = methodDeclaration.BodyOrExpressionBody();
+                        MethodDeclarationSyntax newNode = methodDeclaration
+                            .WithBody(null)
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(SemicolonToken());
 
-                        MethodDeclarationSyntax newMethodDeclaration = methodDeclaration.RemoveNode(body, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+                        return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        var propertyDeclaration = (PropertyDeclarationSyntax)node;
+                        ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
-                        newMethodDeclaration = newMethodDeclaration.WithSemicolonToken(SemicolonToken());
+                        PropertyDeclarationSyntax newNode = propertyDeclaration
+                            .WithExpressionBody(null)
+                            .WithoutSemicolonToken()
+                            .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody));
 
-                        return await document.ReplaceNodeAsync(methodDeclaration, newMethodDeclaration, cancellationToken).ConfigureAwait(false);
+                        return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        var indexerDeclaration = (IndexerDeclarationSyntax)node;
+                        ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
+
+                        IndexerDeclarationSyntax newNode = indexerDeclaration
+                            .WithExpressionBody(null)
+                            .WithoutSemicolonToken()
+                            .WithAccessorList(AccessorList(AutoGetAccessorDeclaration()).WithTriviaFrom(expressionBody));
+
+                        return await document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken).ConfigureAwait(false);
                     }
                 case SyntaxKind.EventDeclaration:
                     {
@@ -123,11 +164,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var accessor = (AccessorDeclarationSyntax)node;
 
-                        CSharpSyntaxNode body = accessor.BodyOrExpressionBody();
-
-                        AccessorDeclarationSyntax newAccessor = accessor.RemoveNode(body, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-
-                        newAccessor = newAccessor.WithSemicolonToken(SemicolonToken());
+                        AccessorDeclarationSyntax newAccessor = accessor
+                            .WithBody(null)
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(SemicolonToken());
 
                         return await document.ReplaceNodeAsync(accessor, newAccessor, cancellationToken).ConfigureAwait(false);
                     }

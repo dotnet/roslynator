@@ -16,17 +16,23 @@ namespace Roslynator.CSharp.Analyzers.Test
                 return "";
             }
 
+            string MethodName2() => null;
+
             string PropertyName
             {
                 get { }
                 set { }
             }
 
+            string PropertyName2 => null;
+
             object this[int index]
             {
                 get {  }
                 set {  }
             }
+
+            object this[long index] => null;
 
             event EventHandler EventName
             {
@@ -42,17 +48,23 @@ namespace Roslynator.CSharp.Analyzers.Test
                 return "";
             }
 
+            public abstract string MethodName2() => null;
+
             public abstract string PropertyName
             {
                 get {  }
                 set {  }
             }
 
+            public abstract string PropertyName2 => null;
+
             public abstract object this[int index]
             {
                 get {  }
                 set {  }
             }
+
+            public abstract object this[long index] => null;
 
             public abstract event EventHandler EventName
             {
