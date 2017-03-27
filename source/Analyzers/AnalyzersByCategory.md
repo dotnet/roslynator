@@ -80,9 +80,9 @@ Readability|Enum member should declare explicit value|RCS1161|x
 Readability|Reorder modifiers|RCS1019|
 Readability|Sort enum members|RCS1154|x
 Readability|Split variable declaration|RCS1081|
-Readability|Use explicit type instead of 'var' \(even if the type is obvious\)|RCS1012|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x
 Readability|Use explicit type instead of 'var' \(when the type is not obvious\)|RCS1008|x
+Readability|Use explicit type instead of 'var' \(when the type is obvious\)|RCS1012|
 Redundancy|Avoid interpolated string with no interpolation|RCS1062|x
 Redundancy|Avoid semicolon at the end of declaration|RCS1055|x
 Redundancy|Remove empty attribute argument list|RCS1039|x
@@ -125,7 +125,7 @@ Simplification|Inline local variable|RCS1124|x
 Simplification|Merge else clause with nested if statement|RCS1006|x
 Simplification|Merge if statement with nested if statement|RCS1061|x
 Simplification|Merge interpolation into interpolated string|RCS1105|x
-Simplification|Merge local declaration with initialization|RCS1127|x
+Simplification|Merge local declaration with assignment|RCS1127|x
 Simplification|Merge local declaration with return statement|RCS1054|x
 Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace if statement with assignment|RCS1103|x

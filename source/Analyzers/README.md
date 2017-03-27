@@ -12,7 +12,7 @@ RCS1007|Avoid embedded statement|Style|
 RCS1008|Use explicit type instead of 'var' \(when the type is not obvious\)|Readability|x
 RCS1009|Use explicit type instead of 'var' \(foreach variable\)|Readability|x
 RCS1010|Use 'var' instead of explicit type \(when the type is obvious\)|Simplification|x
-RCS1012|Use explicit type instead of 'var' \(even if the type is obvious\)|Readability|
+RCS1012|Use explicit type instead of 'var' \(when the type is obvious\)|Readability|
 RCS1013|Use predefined type|Usage|
 RCS1014|Avoid implicitly\-typed array|Readability|
 RCS1015|Use nameof operator|Maintainability|x
@@ -125,7 +125,7 @@ RCS1123|Add parentheses according to operator precedence|Readability|x
 RCS1124|Inline local variable|Simplification|x
 RCS1125|Mark member as static|ErrorFix|x
 RCS1126|Avoid embedded statement in if\-else|Style|
-RCS1127|Merge local declaration with initialization|Simplification|x
+RCS1127|Merge local declaration with assignment|Simplification|x
 RCS1128|Use coalesce expression|Simplification|x
 RCS1129|Remove redundant field initalization|Redundancy|x
 RCS1130|Bitwise operation on enum without Flags attribute|General|x
