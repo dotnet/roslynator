@@ -1,48 +1,56 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseElementAccessInsteadOfFirstRefactoring
+    internal static class UseElementAccessInsteadOfElementAtRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+        public static bool CanRefactor(
+            InvocationExpressionSyntax invocation,
+            ArgumentListSyntax argumentList,
+            MemberAccessExpressionSyntax memberAccess,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            ExpressionSyntax memberAccessExpression = memberAccess.Expression;
-            if (memberAccessExpression?.IsMissing == false)
-            {
-                SemanticModel semanticModel = context.SemanticModel;
-                CancellationToken cancellationToken = context.CancellationToken;
+            ExpressionSyntax argumentExpression = argumentList.Arguments[0].Expression;
 
-                if (semanticModel
-                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
-                    .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
+            if (argumentExpression?.IsMissing == false)
+            {
+                ExpressionSyntax memberAccessExpression = memberAccess.Expression;
+
+                if (memberAccessExpression?.IsMissing == false
+                    && semanticModel
+                        .GetExtensionMethodInfo(invocation, cancellationToken)
+                        .IsLinqElementAt(allowImmutableArrayExtension: true))
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken);
 
                     if (typeSymbol?.IsErrorType() == false
-                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, typeSymbol, semanticModel)))
+                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, argumentExpression, typeSymbol, semanticModel)))
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberAccess.Name);
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
 
         private static bool ExistsApplicableIndexer(
             ExpressionSyntax expression,
+            ExpressionSyntax argumentExpression,
             ITypeSymbol containingType,
             SemanticModel semanticModel)
         {
@@ -54,17 +62,12 @@ namespace Roslynator.CSharp.Refactorings
                     && semanticModel.IsAccessible(expression.SpanStart, propertySymbol.GetMethod)
                     && semanticModel.IsImplicitConversion(expression, propertySymbol.Type))
                 {
-                    switch (propertySymbol.SingleParameterOrDefault()?.Type.SpecialType)
+                    ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+
+                    if (parameters.Length == 1
+                        && semanticModel.IsImplicitConversion(argumentExpression, parameters[0].Type))
                     {
-                        case SpecialType.System_SByte:
-                        case SpecialType.System_Byte:
-                        case SpecialType.System_Int16:
-                        case SpecialType.System_UInt16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                            return true;
+                        return true;
                     }
                 }
             }
@@ -94,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                 expression = expression.WithTrailingTrivia(trivia);
             }
 
-            ExpressionSyntax argumentExpression = NumericLiteralExpression(0);
+            ExpressionSyntax argumentExpression = argumentList.Arguments[0].Expression;
 
             ElementAccessExpressionSyntax elementAccess = ElementAccessExpression(
                 expression,

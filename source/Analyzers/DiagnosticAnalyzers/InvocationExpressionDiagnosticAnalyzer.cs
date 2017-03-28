@@ -89,7 +89,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             case "First":
                                 {
                                     SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    UseElementAccessInsteadOfFirstRefactoring.Analyze(context, invocation, memberAccess);
+
+                                    if (UseElementAccessInsteadOfFirstRefactoring.CanRefactor(invocation, memberAccess, context.SemanticModel, context.CancellationToken))
+                                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberAccess.Name);
+
                                     break;
                                 }
                             case "FirstOrDefault":
@@ -110,7 +113,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         {
                             case "ElementAt":
                                 {
-                                    UseElementAccessInsteadOfElementAtRefactoring.Analyze(context, invocation, argumentList, memberAccess);
+                                    if (UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(invocation, argumentList, memberAccess, context.SemanticModel, context.CancellationToken))
+                                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, memberAccess.Name);
+
                                     break;
                                 }
                             case "FirstOrDefault":

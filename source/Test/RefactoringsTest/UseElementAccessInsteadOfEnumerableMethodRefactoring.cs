@@ -29,7 +29,15 @@ namespace Roslynator.CSharp.Refactorings.Test
 
 
             string s = "abc";
-            char ch = s.First();
+            char ch1 = s.First();
+            char ch2 = s.Last();
+
+            // n
+
+            var dic = new Dictionary<string, string>();
+            KeyValuePair<string, string> kvp1 = dic.First();
+            KeyValuePair<string, string> kvp2 = dic.Last();
+            KeyValuePair<string, string> kvp3 = dic.ElementAt(1);
         }
     }
 }
