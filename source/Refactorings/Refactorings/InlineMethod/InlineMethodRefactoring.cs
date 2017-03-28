@@ -230,6 +230,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ExpressionSyntax newExpression = RewriteExpression(
+                invocation,
                 expression,
                 methodSymbol,
                 parameterInfos,
@@ -285,7 +286,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 DocumentEditor editor = await DocumentEditor.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
-                ExpressionSyntax newExpression = RewriteExpression(expression, methodSymbol, parameterInfos, semanticModel, cancellationToken);
+                ExpressionSyntax newExpression = RewriteExpression(invocation, expression, methodSymbol, parameterInfos, semanticModel, cancellationToken);
 
                 editor.ReplaceNode(invocation, newExpression);
 
@@ -358,6 +359,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         }
 
         private static ExpressionSyntax RewriteExpression(
+            InvocationExpressionSyntax invocation,
             ExpressionSyntax expression,
             IMethodSymbol methodSymbol,
             ParameterInfo[] parameterInfos,
@@ -369,6 +371,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             return newExpression
                 .WithoutTrivia()
                 .Parenthesize()
+                .WithTriviaFrom(invocation)
                 .WithSimplifierAnnotation()
                 .WithFormatterAnnotation();
         }
