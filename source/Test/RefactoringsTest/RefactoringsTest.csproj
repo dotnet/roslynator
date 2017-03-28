@@ -174,7 +174,7 @@
     <Compile Include="InsertInterpolationIntoStringLiteralRefactoring.cs" />
     <Compile Include="ReplaceRegularStringLiteralWithVerbatimStringLiteralRefactoring.cs" />
     <Compile Include="ReplaceFieldWithConstantRefactoring.cs" />
-    <Compile Include="ReplaceForeachWithForRefactoring.cs" />
+    <Compile Include="ReplaceForEachWithForRefactoring.cs" />
     <Compile Include="ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithStringLiteralRefactoring.cs" />
     <Compile Include="ReplaceForWithForeachRefactoring.cs" />
