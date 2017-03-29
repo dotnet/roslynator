@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
+using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -33,7 +34,32 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return typeSymbol.IsString()
                    || typeSymbol.IsArrayType()
-                   || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(forEachStatement.SpanStart, semanticModel) == true;
+                   || typeSymbol.Implements(SpecialType.System_Collections_Generic_IList_T)
+                   || (HasApplicableIndexer(typeSymbol, forEachStatement, semanticModel)
+                        && typeSymbol.Implements(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_ICollection)));
+            }
+
+            return false;
+        }
+
+        private static bool HasApplicableIndexer(
+            ITypeSymbol containingType,
+            ForEachStatementSyntax forEachStatement,
+            SemanticModel semanticModel)
+        {
+            ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
+
+            foreach (ISymbol member in containingType.GetMembers("this[]"))
+            {
+                var propertySymbol = (IPropertySymbol)member;
+
+                if (!propertySymbol.IsWriteOnly
+                    && semanticModel.IsAccessible(forEachStatement.SpanStart, propertySymbol.GetMethod)
+                    && propertySymbol.Type.Equals(info.ElementType)
+                    && propertySymbol.SingleParameterOrDefault()?.Type.IsInt32() == true)
+                {
+                    return true;
+                }
             }
 
             return false;
