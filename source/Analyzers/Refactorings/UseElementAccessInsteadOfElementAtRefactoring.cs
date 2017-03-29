@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,25 +19,58 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseElementAccessInsteadOfElementAtRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+        internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, ArgumentListSyntax argumentList, MemberAccessExpressionSyntax memberAccess)
         {
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            if (semanticModel
-                .GetExtensionMethodInfo(invocation, cancellationToken)
-                .IsLinqElementAt(allowImmutableArrayExtension: true))
+            ExpressionSyntax argumentExpression = argumentList.Arguments[0].Expression;
+            if (argumentExpression?.IsMissing == false)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, cancellationToken);
-
-                if (typeSymbol != null
-                    && (typeSymbol.IsArrayType() || SymbolUtility.FindGetItemMethodWithInt32Parameter(typeSymbol)?.IsAccessible(invocation.SpanStart, semanticModel) == true))
+                ExpressionSyntax memberAccessExpression = memberAccess.Expression;
+                if (memberAccessExpression?.IsMissing == false)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseElementAccessInsteadOfElementAt,
-                        memberAccess.Name);
+                    SemanticModel semanticModel = context.SemanticModel;
+                    CancellationToken cancellationToken = context.CancellationToken;
+
+                    if (semanticModel
+                        .GetExtensionMethodInfo(invocation, cancellationToken)
+                        .IsLinqElementAt(allowImmutableArrayExtension: true))
+                    {
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken);
+
+                        if (typeSymbol?.IsErrorType() == false
+                            && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, argumentExpression, typeSymbol, semanticModel)))
+                        {
+                            context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, memberAccess.Name);
+                        }
+                    }
                 }
             }
+        }
+
+        private static bool ExistsApplicableIndexer(
+            ExpressionSyntax expression,
+            ExpressionSyntax argumentExpression,
+            ITypeSymbol containingType,
+            SemanticModel semanticModel)
+        {
+            foreach (ISymbol member in containingType.GetMembers("this[]"))
+            {
+                var propertySymbol = (IPropertySymbol)member;
+
+                if (!propertySymbol.IsWriteOnly
+                    && semanticModel.IsAccessible(expression.SpanStart, propertySymbol.GetMethod)
+                    && semanticModel.IsImplicitConversion(expression, propertySymbol.Type))
+                {
+                    ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+
+                    if (parameters.Length == 1
+                        && semanticModel.IsImplicitConversion(argumentExpression, parameters[0].Type))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static Task<Document> RefactorAsync(

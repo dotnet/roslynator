@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
+#pragma warning disable RCS1118, RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class UseElementAccessInsteadOfElementAt
@@ -22,6 +24,11 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             string s = "";
             char ch = s.ElementAt(1);
+
+            // n
+
+            var dic = new Dictionary<string, string>();
+            KeyValuePair<string, string> kvp = dic.ElementAt(1);
         }
     }
 }

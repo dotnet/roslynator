@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         {
                             case "ElementAt":
                                 {
-                                    UseElementAccessInsteadOfElementAtRefactoring.Analyze(context, invocation, memberAccess);
+                                    UseElementAccessInsteadOfElementAtRefactoring.Analyze(context, invocation, argumentList, memberAccess);
                                     break;
                                 }
                             case "FirstOrDefault":
