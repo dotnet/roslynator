@@ -44,23 +44,6 @@ namespace Roslynator
                     .Any(f => f.AttributeClass.Equals(semanticModel.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)));
         }
 
-        public static IMethodSymbol FindGetItemMethodWithInt32Parameter(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            foreach (IMethodSymbol methodSymbol in typeSymbol.GetMethods("get_Item"))
-            {
-                if (!methodSymbol.IsStatic
-                    && methodSymbol.SingleParameterOrDefault()?.Type.IsInt32() == true)
-                {
-                    return methodSymbol;
-                }
-            }
-
-            return null;
-        }
-
         public static bool IsEventHandlerOrConstructedFromEventHandlerOfT(
             ITypeSymbol typeSymbol,
             SemanticModel semanticModel)
