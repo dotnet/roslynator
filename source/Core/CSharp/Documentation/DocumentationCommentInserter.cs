@@ -18,6 +18,8 @@ namespace Roslynator.CSharp.Documentation
             Indent = indent;
         }
 
+        public static DocumentationCommentInserter Default { get; } = new DocumentationCommentInserter(default(SyntaxTriviaList), 0, "");
+
         public SyntaxTriviaList LeadingTrivia { get; }
         public int Index { get; }
         public string Indent { get; }
@@ -29,30 +31,22 @@ namespace Roslynator.CSharp.Documentation
 
         public static DocumentationCommentInserter Create(SyntaxTriviaList leadingTrivia)
         {
-            int index = 0;
-
-            string indent = "";
-
             if (leadingTrivia.Any())
             {
-                index = leadingTrivia.Count - 1;
+                int index = leadingTrivia.Count;
 
-                for (int i = leadingTrivia.Count - 1; i >= 0; i--)
+                while (index >= 1
+                    && leadingTrivia[index - 1].IsWhitespaceTrivia())
                 {
-                    if (leadingTrivia[i].IsWhitespaceTrivia())
-                    {
-                        index = i;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    index--;
                 }
 
-                indent = string.Concat(leadingTrivia.Skip(index));
+                string indent = string.Concat(leadingTrivia.Skip(index));
+
+                return new DocumentationCommentInserter(leadingTrivia, index, indent);
             }
 
-            return new DocumentationCommentInserter(leadingTrivia, index, indent);
+            return Default;
         }
 
         public SyntaxTriviaList Insert(SyntaxTrivia comment, bool indent = false)
