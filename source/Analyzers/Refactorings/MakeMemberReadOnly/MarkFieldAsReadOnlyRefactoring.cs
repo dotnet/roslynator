@@ -23,27 +23,34 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 
         public override HashSet<ISymbol> GetAnalyzableSymbols(SymbolAnalysisContext context, INamedTypeSymbol containingType)
         {
-            using (IEnumerator<IFieldSymbol> en = containingType
-                .GetFields()
-                .Where(f => !f.IsConst
-                    && f.IsPrivate()
-                    && !f.IsReadOnly
-                    && !f.IsVolatile
-                    && !f.IsImplicitlyDeclared)
-                .GetEnumerator())
+            HashSet<ISymbol> analyzableFields = null;
+            var spinLockSymbol = default(Deferred<INamedTypeSymbol>);
+
+            foreach (ISymbol member in containingType.GetMembers())
             {
-                if (en.MoveNext())
+                if (member.IsField())
                 {
-                    var fieldSymbols = new HashSet<ISymbol>() { en.Current };
+                    var fieldSymbol = (IFieldSymbol)member;
 
-                    while (en.MoveNext())
-                        fieldSymbols.Add(en.Current);
+                    if (!fieldSymbol.IsConst
+                        && fieldSymbol.IsPrivate()
+                        && !fieldSymbol.IsReadOnly
+                        && !fieldSymbol.IsVolatile
+                        && !fieldSymbol.IsImplicitlyDeclared)
+                    {
+                        if (!spinLockSymbol.IsSet)
+                            spinLockSymbol = new Deferred<INamedTypeSymbol>(context.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_SpinLock));
 
-                    return fieldSymbols;
+                        if (spinLockSymbol.Value == null
+                            || !fieldSymbol.Type.Equals(spinLockSymbol.Value))
+                        {
+                            (analyzableFields ?? (analyzableFields = new HashSet<ISymbol>())).Add(fieldSymbol);
+                        }
+                    }
                 }
             }
 
-            return null;
+            return analyzableFields;
         }
 
         protected override bool ValidateSymbol(ISymbol symbol)

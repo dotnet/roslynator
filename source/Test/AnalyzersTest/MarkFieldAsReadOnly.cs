@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 #pragma warning disable RCS1016, RCS1048, RCS1081, RCS1163
 
@@ -15,6 +16,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             private string _f;
             private string _f2, _f3;
             private static string _staticAssignedInInstanceConstructor;
+            private SpinLock _spinLock;
             private string _assigned;
             private string _inSimpleLambda;
             private string _inParenthesizedLambda;
@@ -30,6 +32,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
                 _f = null;
                 _f2 = null;
+                _spinLock = new SpinLock();
                 _staticAssignedInInstanceConstructor = null;
             }
 
