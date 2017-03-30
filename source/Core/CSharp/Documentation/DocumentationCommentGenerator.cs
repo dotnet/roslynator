@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -14,6 +15,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Extensions;
 using Roslynator.Extensions;
+using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Documentation
 {
@@ -352,20 +354,40 @@ namespace Roslynator.CSharp.Documentation
         {
             settings = settings ?? DocumentationCommentGeneratorSettings.Default;
 
+            ImmutableArray<string> comments = settings.Comments;
+
             var sb = new StringBuilder();
 
             sb.Append(settings.Indent);
             sb.Append(@"/// <summary>");
 
-            if (settings.SingleLineSummary)
+            if (settings.SingleLineSummary
+                && comments.Length <= 1)
             {
+                if (comments.Length == 1)
+                    sb.Append(comments[0]);
+
                 sb.AppendLine(@"</summary>");
             }
             else
             {
                 sb.AppendLine();
-                sb.Append(settings.Indent);
-                sb.AppendLine(@"/// ");
+
+                if (comments.Any())
+                {
+                    foreach (string comment in comments)
+                    {
+                        sb.Append(settings.Indent);
+                        sb.Append(@"/// ");
+                        sb.AppendLine(comment);
+                    }
+                }
+                else
+                {
+                    sb.Append(settings.Indent);
+                    sb.AppendLine(@"/// ");
+                }
+
                 sb.Append(settings.Indent);
                 sb.AppendLine(@"/// </summary>");
             }
