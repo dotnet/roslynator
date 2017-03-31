@@ -4,16 +4,16 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.AvoidStaticMemberInGenericTypesRefactoring;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidStaticMemberInGenericTypesDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class StaticMemberInGenericTypeShouldUseTypeParameterDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidStaticMembersInGenericTypes); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.StaticMemberInGenericTypeShouldUseTypeParameter); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
+            context.RegisterSymbolAction(
+                f => StaticMemberInGenericTypeShouldUseTypeParameterRefactoring.AnalyzeNamedType(f),
+                SymbolKind.NamedType);
         }
     }
 }

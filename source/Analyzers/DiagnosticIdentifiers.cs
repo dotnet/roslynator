@@ -163,7 +163,7 @@ namespace Roslynator.CSharp
         public const string UseStringComparison = Prefix + "1155";
         public const string UseStringLengthInsteadOfComparisonWithEmptyString = Prefix + "1156";
         public const string CompositeEnumValueContainsUndefinedFlag = Prefix + "1157";
-        public const string AvoidStaticMembersInGenericTypes = Prefix + "1158";
+        public const string StaticMemberInGenericTypeShouldUseTypeParameter = Prefix + "1158";
         public const string UseGenericEventHandler = Prefix + "1159";
         public const string AbstractTypeShouldNotHavePublicConstructors = Prefix + "1160";
         public const string EnumMemberShouldDeclareExplicitValue = Prefix + "1161";

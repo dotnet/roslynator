@@ -82,7 +82,7 @@
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\AvoidStaticMemberInGenericTypesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\StaticMemberInGenericTypeShouldUseTypeParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsyncAwaitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyLazilyInitializedPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="Refactorings\EnumMemberShouldDeclareExplicitValueRefactoring.cs" />
     <Compile Include="Refactorings\AbstractTypeShouldNotHavePublicConstructorsRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseGenericEventHandlerDiagnosticAnalyzer.cs" />
-    <Compile Include="Refactorings\AvoidStaticMemberInGenericTypesRefactoring.cs" />
+    <Compile Include="Refactorings\StaticMemberInGenericTypeShouldUseTypeParameterRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />

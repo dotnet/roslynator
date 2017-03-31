@@ -52,7 +52,7 @@
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AddExceptionToDocumentationComment.cs" />
     <Compile Include="AddMissingSemicolon.cs" />
-    <Compile Include="AvoidStaticMembersInGenericTypes.cs" />
+    <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
     <Compile Include="AvoidChainOfAssignments.cs" />
     <Compile Include="BitwiseOperationOnEnumWithoutFlagsAttribute.cs" />
     <Compile Include="AddParameterToDocumentationComment.cs" />
