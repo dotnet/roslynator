@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (ifStatement.Else == null
+            if (ifStatement.IsSimpleIf()
                 && CheckCondition(ifStatement.Condition))
             {
                 IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
