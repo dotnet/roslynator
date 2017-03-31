@@ -1648,7 +1648,7 @@ namespace Roslynator.CSharp
             messageFormat: "Use 'var' instead of explicit type.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = new DiagnosticDescriptor(
@@ -1657,7 +1657,7 @@ namespace Roslynator.CSharp
             messageFormat: "Use 'var' instead of explicit type.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
     }
 }
