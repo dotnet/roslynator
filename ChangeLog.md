@@ -1,3 +1,12 @@
+### 1.3.0 (2017-04-02)
+
+* Add support for configuration file.
+
+#### Analyzers
+
+* Disable UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious (RCS1176) by default.
+* Disable UseVarInsteadOfExplicitTypeInForEach (RCS1177) by default.
+
 ### 1.2.53 (2017-03-27)
 
 * Filter list of refactorings in options.
