@@ -5,13 +5,13 @@
 Design|Abstract type should not have public constructors|RCS1160|x
 Design|Avoid empty catch clause that catches System\.Exception|RCS1075|x
 Design|Avoid locking on publicly accessible instance|RCS1059|x
-Design|Avoid static members in generic types|RCS1158|x
 Design|Call 'ConfigureAwait\(false\)'|RCS1090|x
 Design|Composite enum value contains undefined flag|RCS1157|x
 Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Mark class as static|RCS1102|x
 Design|Mark field as read\-only|RCS1169|x
+Design|Static member in generic type should use a type parameter|RCS1158|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
 ErrorFix|Add break statement to switch section|RCS1116|x
 ErrorFix|Add missing semicolon|RCS1122|
@@ -148,8 +148,8 @@ Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use is operator instead of as operator|RCS1172|x
 Simplification|Use postfix unary operator instead of assignment|RCS1089|x
-Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|x
-Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|x
+Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|
+Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|
 Simplification|Use 'var' instead of explicit type \(when the type is obvious\)|RCS1010|x
 Style|Add braces to if\-else|RCS1003|x
 Style|Add braces to switch section with multiple statements|RCS1111|

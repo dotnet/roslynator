@@ -156,7 +156,7 @@ RCS1154|Sort enum members|Readability|x
 RCS1155|Use StringComparison when comparing strings|Usage|x
 RCS1156|Use string\.Length instead of comparison with empty string|Usage|x
 RCS1157|Composite enum value contains undefined flag|Design|x
-RCS1158|Avoid static members in generic types|Design|x
+RCS1158|Static member in generic type should use a type parameter|Design|x
 RCS1159|Use EventHandler\<T\>|Usage|x
 RCS1160|Abstract type should not have public constructors|Design|x
 RCS1161|Enum member should declare explicit value|Readability|x
@@ -174,5 +174,5 @@ RCS1172|Use is operator instead of as operator|Simplification|x
 RCS1173|Use coalesce expression instead of if|Simplification|x
 RCS1174|Remove redundant async/await|Redundancy|x
 RCS1175|Unused this parameter|Redundancy|x
-RCS1176|Use 'var' instead of explicit type \(when the type is not obvious\)|Simplification|x
-RCS1177|Use 'var' instead of explicit type \(in foreach\)|Simplification|x
+RCS1176|Use 'var' instead of explicit type \(when the type is not obvious\)|Simplification|
+RCS1177|Use 'var' instead of explicit type \(in foreach\)|Simplification|

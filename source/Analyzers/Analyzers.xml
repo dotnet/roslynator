@@ -1386,9 +1386,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidStaticMembersInGenericTypes">
+  <Analyzer Identifier="StaticMemberInGenericTypeShouldUseTypeParameter">
     <Id>RCS1158</Id>
-    <Title>Avoid static members in generic types.</Title>
+    <Title>Static member in generic type should use a type parameter.</Title>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1553,7 +1553,7 @@
     <Title>Use 'var' instead of explicit type (when the type is not obvious).</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
@@ -1562,7 +1562,7 @@
     <Title>Use 'var' instead of explicit type (in foreach).</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
