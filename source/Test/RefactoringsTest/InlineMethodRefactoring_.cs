@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Linq;
+using static System.Math;
+
 namespace Roslynator.CSharp.Refactorings.Test
 {
     public partial class InlineMethodRefactoring
@@ -26,6 +30,17 @@ namespace Roslynator.CSharp.Refactorings.Test
 #if DEBUG
                 var a = p1 + p2 + p2;
                 var b = p1 + p2 + p2;
+                Entity.Method(p1, p2);
+                Method(p1, p2);
+                Method3(p1, p2);
+                InlineMethodRefactoringExtensions.ExtensionMethod(p1, p1, p2);
+                var x = Sqrt(2);
+                var y = Sqrt(2);
+                Action<int> z = (f) =>
+                {
+                    var x2 = x;
+                    var y2 = y;
+                };
             }
 #endif
         }

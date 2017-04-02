@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Linq;
+using static System.Math;
+
 #pragma warning disable RCS1138, RCS1141
 
 namespace Roslynator.CSharp.Refactorings.Test
@@ -11,6 +15,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             Method();
 
             Entity x = null;
+            Entity x2 = null;
             Entity y = null;
             Entity z = null;
 
@@ -76,10 +81,19 @@ namespace Roslynator.CSharp.Refactorings.Test
             public static void VoidMethod(Entity p1, Entity p2)
             {
 #if DEBUG
-                Entity.Method(p1, p2);
-                Method(p1, p2);
                 var a = p1 + p2 + p2;
                 var b = p1 + p2 + p2;
+                Entity.Method(p1, p2);
+                Method(p1, p2);
+                Method3(p1, p2);
+                InlineMethodRefactoringExtensions.ExtensionMethod(p1, p1, p2);
+                var x = Sqrt(2);
+                var y = Sqrt(2);
+                Action<int> z = (f) =>
+                {
+                    var x2 = x;
+                    var y2 = y;
+                };
             }
 #endif
             public static Entity MethodWithExpressionBody(Entity p1, Entity p2) => p1 + p2 + p2;
