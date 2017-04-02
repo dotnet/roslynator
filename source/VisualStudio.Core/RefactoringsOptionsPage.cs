@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
+using Roslynator.Configuration;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.VisualStudio
@@ -16,12 +17,13 @@ namespace Roslynator.VisualStudio
     {
         private const string RefactoringCategory = "Refactoring";
 
-        private readonly RefactoringsControl _refactoringsControl = new RefactoringsControl();
+        private bool _isActive;
+        private readonly RefactoringsOptionsPageControl _control = new RefactoringsOptionsPageControl();
         private readonly HashSet<string> _disabledRefactorings = new HashSet<string>();
 
         protected override UIElement Child
         {
-            get { return _refactoringsControl; }
+            get { return _control; }
         }
 
         [Category(RefactoringCategory)]
@@ -41,21 +43,37 @@ namespace Roslynator.VisualStudio
             }
         }
 
+        internal IEnumerable<string> GetDisabledRefactorings()
+        {
+            foreach (string id in _disabledRefactorings)
+                yield return id;
+        }
+
         protected override void OnActivate(CancelEventArgs e)
         {
             base.OnActivate(e);
 
-            Fill(_refactoringsControl.Refactorings);
+            if (!_isActive)
+            {
+                Fill(_control.Refactorings);
+                _isActive = true;
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _isActive = false;
         }
 
         protected override void OnApply(PageApplyEventArgs e)
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                foreach (RefactoringModel refactoring in _refactoringsControl.Refactorings)
+                foreach (RefactoringModel refactoring in _control.Refactorings)
                     SetIsEnabled(refactoring.Id, refactoring.Enabled);
 
-                ApplyTo(RefactoringSettings.Current);
+                SettingsManager.Instance.UpdateVisualStudioSettings(this);
+                SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
             }
 
             base.OnApply(e);

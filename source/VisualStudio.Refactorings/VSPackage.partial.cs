@@ -1,9 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
+using System.Security;
+using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Roslynator.Configuration;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.VisualStudio
@@ -28,7 +32,7 @@ namespace Roslynator.VisualStudio
     public sealed partial class VSPackage : Package, IVsSolutionEvents
     {
         private uint _cookie;
-        private bool _settingsLoaded;
+        private FileSystemWatcher _watcher;
 
         public VSPackage()
         {
@@ -46,48 +50,113 @@ namespace Roslynator.VisualStudio
         {
             base.Initialize();
 
+            InitializeSettings();
+
             IVsSolution solution = GetService(typeof(SVsSolution)) as IVsSolution;
 
             if (solution != null)
                 solution.AdviseSolutionEvents(this, out _cookie);
         }
 
-        private void ReloadSettings()
+        private void InitializeSettings()
         {
-            RefactoringSettings settings = RefactoringSettings.Current;
-
-            settings.Reset();
-
-            RefactoringsOptionsPage.SetRefactoringsDisabledByDefault(settings);
-
             var generalOptionsPage = (GeneralOptionsPage)GetDialogPage(typeof(GeneralOptionsPage));
             var refactoringsOptionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
 
-            if (!_settingsLoaded)
+            Version version;
+            if (!Version.TryParse(generalOptionsPage.ApplicationVersion, out version)
+                || version.Major < 1
+                || version.Minor < 2
+                || version.Build < 50)
             {
-                Version version;
-                if (!Version.TryParse(generalOptionsPage.ApplicationVersion, out version)
-                    || version.Major < 1
-                    || version.Minor < 2
-                    || version.Build < 50)
-                {
-                    refactoringsOptionsPage.MigrateValuesFromIdentifierProperties();
-                    refactoringsOptionsPage.SaveSettingsToStorage();
-                }
-
-                Version currentVersion = typeof(GeneralOptionsPage).Assembly.GetName().Version;
-
-                if (version == null || version < currentVersion)
-                {
-                    generalOptionsPage.ApplicationVersion = currentVersion.ToString();
-                    generalOptionsPage.SaveSettingsToStorage();
-                }
-
-                _settingsLoaded = true;
+                refactoringsOptionsPage.MigrateValuesFromIdentifierProperties();
+                refactoringsOptionsPage.SaveSettingsToStorage();
             }
 
-            generalOptionsPage.ApplyTo(RefactoringSettings.Current);
-            refactoringsOptionsPage.ApplyTo(RefactoringSettings.Current);
+            Version currentVersion = typeof(GeneralOptionsPage).Assembly.GetName().Version;
+
+            if (version == null || version < currentVersion)
+            {
+                generalOptionsPage.ApplicationVersion = currentVersion.ToString();
+                generalOptionsPage.SaveSettingsToStorage();
+            }
+
+            SettingsManager.Instance.UpdateVisualStudioSettings(generalOptionsPage);
+            SettingsManager.Instance.UpdateVisualStudioSettings(refactoringsOptionsPage);
+            SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
+        }
+
+        private void UpdateSettingsAfterConfigFileChanged()
+        {
+            SettingsManager.Instance.ConfigFileSettings.Update(LoadConfigFileSettings() ?? new ConfigFileSettings());
+            SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
+        }
+
+        private ConfigFileSettings LoadConfigFileSettings()
+        {
+            var dte = GetService(typeof(DTE)) as DTE;
+
+            if (dte != null)
+            {
+                string path = dte.Solution.FullName;
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string directoryPath = Path.GetDirectoryName(path);
+
+                    if (!string.IsNullOrEmpty(directoryPath))
+                    {
+                        path = Path.Combine(directoryPath, ConfigFileSettings.FileName);
+
+                        if (File.Exists(path))
+                        {
+                            try
+                            {
+                                return ConfigFileSettings.Load(path);
+                            }
+                            catch (IOException)
+                            {
+                            }
+                            catch (UnauthorizedAccessException)
+                            {
+                            }
+                            catch (SecurityException)
+                            {
+                            }
+                        }
+                    }
+                }
+            }
+
+            return default(ConfigFileSettings);
+        }
+
+        private void WatchConfigFile()
+        {
+            var dte = GetService(typeof(DTE)) as DTE;
+
+            if (dte != null)
+            {
+                string path = dte.Solution.FullName;
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string directoryPath = Path.GetDirectoryName(path);
+
+                    if (!string.IsNullOrEmpty(directoryPath))
+                    {
+                        _watcher = new FileSystemWatcher(directoryPath, ConfigFileSettings.FileName)
+                        {
+                            EnableRaisingEvents = true,
+                            IncludeSubdirectories = false
+                        };
+
+                        _watcher.Changed += (object sender, FileSystemEventArgs e) => UpdateSettingsAfterConfigFileChanged();
+                        _watcher.Created += (object sender, FileSystemEventArgs e) => UpdateSettingsAfterConfigFileChanged();
+                        _watcher.Deleted += (object sender, FileSystemEventArgs e) => UpdateSettingsAfterConfigFileChanged();
+                    }
+                }
+            }
         }
 
         public int OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
@@ -122,7 +191,9 @@ namespace Roslynator.VisualStudio
 
         public int OnAfterOpenSolution(object pUnkReserved, int fNewSolution)
         {
-            ReloadSettings();
+            UpdateSettingsAfterConfigFileChanged();
+
+            WatchConfigFile();
 
             return VSConstants.S_OK;
         }
@@ -139,6 +210,12 @@ namespace Roslynator.VisualStudio
 
         public int OnAfterCloseSolution(object pUnkReserved)
         {
+            if (_watcher != null)
+            {
+                _watcher.Dispose();
+                _watcher = null;
+            }
+
             return VSConstants.S_OK;
         }
     }

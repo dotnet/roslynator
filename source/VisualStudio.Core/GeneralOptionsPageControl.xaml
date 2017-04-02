@@ -6,9 +6,15 @@
              xmlns:local="clr-namespace:Roslynator.VisualStudio"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <Style TargetType="{x:Type CheckBox}">
+      <Setter Property="Margin" Value="0,5,0,0" />
+    </Style>
+  </UserControl.Resources>
   <Grid>
-    <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+    <StackPanel Orientation="Vertical" Margin="0,15,0,0">
       <CheckBox IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
+      <CheckBox IsChecked="{Binding UseConfigFile}">Use config file</CheckBox>
     </StackPanel>
   </Grid>
 </UserControl>

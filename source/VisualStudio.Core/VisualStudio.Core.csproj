@@ -120,6 +120,13 @@
       <DependentUpon>GeneralOptionsPageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RefactoringModel.cs" />
+    <Compile Include="Configuration\ConfigFileSettings.cs" />
+    <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Configuration\SettingsManager.cs" />
+    <Compile Include="RefactoringsOptionsPageControl.xaml.cs">
+      <DependentUpon>RefactoringsOptionsPageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XElementExtensions.cs" />
     <Compile Include="TypeConverters\YesNoConverter.cs" />
     <Compile Include="TypeConverters\EnabledDisabledConverter.cs" />
     <Compile Include="TypeConverters\TrueFalseConverter.cs" />
@@ -129,9 +136,6 @@
     </Compile>
     <Compile Include="RefactoringsOptionsPage.Generated.cs">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RefactoringsControl.xaml.cs">
-      <DependentUpon>RefactoringsControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +153,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RefactoringsControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="RefactoringsOptionsPageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
