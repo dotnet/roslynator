@@ -1474,10 +1474,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor AvoidStaticMembersInGenericTypes = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AvoidStaticMembersInGenericTypes,
-            title: "Avoid static members in generic types.",
-            messageFormat: "Avoid static members in generic types.",
+        public static readonly DiagnosticDescriptor StaticMemberInGenericTypeShouldUseTypeParameter = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.StaticMemberInGenericTypeShouldUseTypeParameter,
+            title: "Static member in generic type should use a type parameter.",
+            messageFormat: "Static member in generic type should use a type parameter.",
             category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
