@@ -86,6 +86,10 @@ namespace MetadataGenerator
             }
 
             SaveFile(
+                Path.Combine(dirPath, @"Refactorings\DefaultConfigFile.xml"),
+                XmlGenerator.CreateDefaultConfigFile(refactorings));
+
+            SaveFile(
                 Path.Combine(dirPath, @"Analyzers\README.md"),
                 markdownGenerator.CreateAnalyzersReadMe(analyzers));
 

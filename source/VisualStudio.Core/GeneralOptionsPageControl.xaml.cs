@@ -8,6 +8,7 @@ namespace Roslynator.VisualStudio
     public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
         private bool _prefixFieldIdentifierWithUnderscore;
+        private bool _useConfigFile;
 
         public GeneralOptionsPageControl()
         {
@@ -16,10 +17,11 @@ namespace Roslynator.VisualStudio
             DataContext = this;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public bool PrefixFieldIdentifierWithUnderscore
         {
             get { return _prefixFieldIdentifierWithUnderscore; }
-
             set
             {
                 if (_prefixFieldIdentifierWithUnderscore != value)
@@ -30,7 +32,18 @@ namespace Roslynator.VisualStudio
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public bool UseConfigFile
+        {
+            get { return _useConfigFile; }
+            set
+            {
+                if (_useConfigFile != value)
+                {
+                    _useConfigFile = value;
+                    OnPropertyChanged(nameof(UseConfigFile));
+                }
+            }
+        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

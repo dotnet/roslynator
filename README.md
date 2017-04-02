@@ -29,9 +29,7 @@
 * [C# Analyzers](http://www.nuget.org/packages/CSharpAnalyzers/) (analyzers only).
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0 (Visual Studio 2015 or higher).
 
-### Settings
+### Configuration
 
-* Analyzers can be enabled/disabled using **rule set**. Please see [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md).
-* Refactorings can be enabled/disabled in Visual Studio options.
-
-![Refactorings Options](/images/RefactoringsOptions.png)
+* [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)
+* [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)

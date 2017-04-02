@@ -95,14 +95,6 @@ namespace CodeGenerator
                                     ParseExpression($"refactorings.Add(new RefactoringModel(RefactoringIdentifiers.{refactoring.Identifier}, \"{StringUtility.EscapeQuote(refactoring.Title)}\", IsEnabled(RefactoringIdentifiers.{refactoring.Identifier})))"));
                             }))));
 
-            yield return MethodDeclaration(VoidType(), "ApplyTo")
-                .WithModifiers(Modifiers.Public())
-                .WithParameterList(ParameterList(Parameter(IdentifierName("RefactoringSettings"), Identifier("settings"))))
-                .WithBody(
-                    Block(refactorings
-                        .OrderBy(f => f.Identifier, InvariantComparer)
-                        .Select(refactoring => ExpressionStatement(ParseExpression($"settings.SetRefactoring(RefactoringIdentifiers.{refactoring.Identifier}, IsEnabled(RefactoringIdentifiers.{refactoring.Identifier}))")))));
-
             foreach (RefactoringDescriptor info in refactorings
                 .Where(f => ShouldGenerateProperty(f))
                 .OrderBy(f => f.Identifier, InvariantComparer))
