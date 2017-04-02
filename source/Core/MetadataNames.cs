@@ -35,6 +35,7 @@ namespace Roslynator
         public const string System_Runtime_Serialization_DataMemberAttribute = "System.Runtime.Serialization.DataMemberAttribute";
         public const string System_String = "System.String";
         public const string System_StringComparison = "System.StringComparison";
+        public const string System_Threading_SpinLock = "System.Threading.SpinLock";
         public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
         public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";
     }
