@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Roslynator.Extensions
 {
@@ -157,6 +158,66 @@ namespace Roslynator.Extensions
                 SpeculativeBindingOption.BindAsExpression);
 
             return symbolInfo.Symbol as IMethodSymbol;
+        }
+
+        internal static ImmutableArray<ISymbol> GetSymbolsDeclaredInEnclosingSymbol(
+            this SemanticModel semanticModel,
+            int position,
+            bool excludeAnonymousTypeProperty = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode container = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
+
+            return GetDeclaredSymbols(semanticModel, container, excludeAnonymousTypeProperty, cancellationToken);
+        }
+
+        private static SyntaxNode GetEnclosingSymbolSyntax(SemanticModel semanticModel, int position, CancellationToken cancellationToken)
+        {
+            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+
+            ImmutableArray<SyntaxReference> syntaxReferences = enclosingSymbol.DeclaringSyntaxReferences;
+
+            if (syntaxReferences.Length == 1)
+            {
+                return syntaxReferences[0].GetSyntax(cancellationToken);
+            }
+            else
+            {
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                {
+                    SyntaxNode syntax = syntaxReference.GetSyntax(cancellationToken);
+
+                    if (syntax.SyntaxTree == semanticModel.SyntaxTree)
+                        return syntax;
+                }
+            }
+
+            return null;
+        }
+
+        internal static ImmutableArray<ISymbol> GetDeclaredSymbols(
+            this SemanticModel semanticModel,
+            SyntaxNode container,
+            bool excludeAnonymousTypeProperty = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            HashSet<ISymbol> symbols = null;
+
+            foreach (SyntaxNode node in container.DescendantNodesAndSelf())
+            {
+                ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+
+                if (symbol != null)
+                {
+                    if (!excludeAnonymousTypeProperty
+                        || !symbol.IsAnonymousTypeProperty())
+                    {
+                        (symbols ?? (symbols = new HashSet<ISymbol>())).Add(symbol);
+                    }
+                }
+            }
+
+            return symbols?.ToImmutableArray() ?? ImmutableArray<ISymbol>.Empty;
         }
     }
 }
