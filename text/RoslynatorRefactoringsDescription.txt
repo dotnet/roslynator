@@ -49,4 +49,9 @@
 </ul>
 
 <h3>Configuration</h3>
-<p><a href="http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md">How to Configure Refactorings</a></p>
+
+<ul>
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md">How to Configure Refactorings</a>
+    </li>  
+</ul>

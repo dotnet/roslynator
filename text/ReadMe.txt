@@ -9,6 +9,7 @@
 
 * [Analyzers vs. Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzersVsRefactorings.md)
 * [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)
+* [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)
 
 ### Products
 
@@ -27,9 +28,4 @@
 * [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) (analyzers only).
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.2.0.0 (Visual Studio 2017 or higher).
 * [C# Analyzers](http://www.nuget.org/packages/CSharpAnalyzers/) (analyzers only).
-  * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0 (Visual Studio 2015 or higher).
-
-### Configuration
-
-* [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)
-* [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)
+  * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.1.3.1 (Visual Studio 2015 or higher).
