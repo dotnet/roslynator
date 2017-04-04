@@ -45,6 +45,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEventAccessorDeclaration(f), SyntaxKind.AddAccessorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEventAccessorDeclaration(f), SyntaxKind.RemoveAccessorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLocalFunction(f), SyntaxKind.LocalFunctionStatement);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -576,6 +577,37 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     case SyntaxKind.ExternKeyword:
                     case SyntaxKind.VolatileKeyword:
                     case SyntaxKind.AsyncKeyword:
+                        {
+                            ReportDiagnostic(context, modifier);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static void AnalyzeLocalFunction(SyntaxNodeAnalysisContext context)
+        {
+            var localFunction = (LocalFunctionStatementSyntax)context.Node;
+
+            foreach (SyntaxToken modifier in localFunction.Modifiers)
+            {
+                switch (modifier.Kind())
+                {
+                    case SyntaxKind.NewKeyword:
+                    case SyntaxKind.PublicKeyword:
+                    case SyntaxKind.ProtectedKeyword:
+                    case SyntaxKind.InternalKeyword:
+                    case SyntaxKind.PrivateKeyword:
+                    case SyntaxKind.ConstKeyword:
+                    case SyntaxKind.StaticKeyword:
+                    case SyntaxKind.VirtualKeyword:
+                    case SyntaxKind.SealedKeyword:
+                    case SyntaxKind.OverrideKeyword:
+                    case SyntaxKind.AbstractKeyword:
+                    case SyntaxKind.ReadOnlyKeyword:
+                    case SyntaxKind.ExternKeyword:
+                    case SyntaxKind.VolatileKeyword:
+                    case SyntaxKind.PartialKeyword:
                         {
                             ReportDiagnostic(context, modifier);
                             break;
