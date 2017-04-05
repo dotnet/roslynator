@@ -95,6 +95,7 @@
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Refactorings\CombineEnumerableWhereAndAnyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\UseReadOnlyAutoPropertyRefactoring.cs" />
