@@ -252,7 +252,9 @@ namespace Roslynator.CSharp.Refactorings
                                 SyntaxKind.ParenthesizedLambdaExpression,
                                 SyntaxKind.AnonymousMethodExpression,
                                 SyntaxKind.LocalFunctionStatement,
-                                SyntaxKind.DelegateDeclaration) != false, parent?.Kind().ToString());
+                                SyntaxKind.DelegateDeclaration,
+                                SyntaxKind.OperatorDeclaration,
+                                SyntaxKind.ConversionOperatorDeclaration) != false, parent?.Kind().ToString());
 
                             break;
                         }
