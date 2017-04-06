@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -58,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             {
                 TSyntax syntax = separatedList.First(f => !f.IsMissing);
 
-                if (!HasReference(node, list, syntax, semanticModel, cancellationToken)
+                if (IsFixable(node, list, syntax, semanticModel, cancellationToken)
                     && !syntax.SpanContainsDirectives())
                 {
                     return ImmutableArray.Create(syntax);
@@ -66,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             }
             else if (count > 1)
             {
-                return FindSyntaxWithoutReference(node, list, separatedList, count, semanticModel, cancellationToken)
+                return FindFixableSyntaxes(node, list, separatedList, count, semanticModel, cancellationToken)
                     .Where(f => !f.SpanContainsDirectives())
                     .ToImmutableArray();
             }
@@ -74,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             return ImmutableArray<TSyntax>.Empty;
         }
 
-        private bool HasReference(
+        private bool IsFixable(
             SyntaxNode node,
             TListSyntax list,
             TSyntax syntax,
@@ -91,21 +92,21 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 {
                     if (EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
                     {
-                        symbol = (TSymbol)semanticModel.GetSymbol(syntax, cancellationToken);
+                        symbol = (TSymbol)semanticModel.GetDeclaredSymbol(syntax, cancellationToken);
 
-                        if (!(symbol is TSymbol))
-                            return true;
+                        if (EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
+                            return false;
                     }
 
                     if (semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(symbol) == true)
-                        return true;
+                        return false;
                 }
             }
 
-            return false;
+            return true;
         }
 
-        private IEnumerable<TSyntax> FindSyntaxWithoutReference(
+        private IEnumerable<TSyntax> FindFixableSyntaxes(
             SyntaxNode node,
             TListSyntax list,
             SeparatedSyntaxList<TSyntax> separatedList,
@@ -143,11 +144,11 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 
                         if (EqualityComparer<TSymbol>.Default.Equals(info.Symbol, default(TSymbol)))
                         {
-                            ISymbol symbol = semanticModel.GetSymbol(info.Syntax, cancellationToken);
+                            var symbol = (TSymbol)semanticModel.GetDeclaredSymbol(info.Syntax, cancellationToken);
 
-                            if (symbol is TSymbol)
+                            if (!EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
                             {
-                                infos[i] = info.WithSymbol((TSymbol)symbol);
+                                infos[i] = info.WithSymbol(symbol);
                             }
                             else
                             {
