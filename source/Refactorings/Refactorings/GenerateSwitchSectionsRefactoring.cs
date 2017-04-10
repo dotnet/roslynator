@@ -17,23 +17,27 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateSwitchSectionsRefactoring
     {
-        public static async Task<bool> CanRefactorAsync(
-            RefactoringContext context,
-            SwitchStatementSyntax switchStatement)
+        public static bool CanRefactor(
+            SwitchStatementSyntax switchStatement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             ExpressionSyntax expression = switchStatement.Expression;
 
             if (expression != null
                 && IsEmptyOrContainsOnlyDefaultSection(switchStatement))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                if (typeSymbol?.IsEnum() == true
-                    && typeSymbol.GetFields().Any())
+                if (symbol?.IsErrorType() == false)
                 {
-                    return true;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+                    if (typeSymbol?.IsEnum() == true
+                        && typeSymbol.GetFields().Any())
+                    {
+                        return true;
+                    }
                 }
             }
 
