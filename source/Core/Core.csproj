@@ -99,6 +99,8 @@
     <Compile Include="CSharp\Refactorings\If\IfReturnToReturnWithConditionalExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression`1.cs" />
     <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression.cs" />
+    <Compile Include="CSharp\Syntax\MemberInvocationWithSingleParameter.cs" />
+    <Compile Include="CSharp\Syntax\LambdaWithSingleParameter.cs" />
     <Compile Include="CSharp\Syntax\NotEqualsToNullExpression.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentExpression.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringKind.cs" />
@@ -153,8 +155,8 @@
     <Compile Include="Extensions\DiagnosticExtensions.cs" />
     <Compile Include="CodeFixes\Extensions\CodeFixContextExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Deferred`1.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="SymbolUtility.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />

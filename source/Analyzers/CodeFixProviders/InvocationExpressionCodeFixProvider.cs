@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes.Extensions;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 
@@ -55,28 +53,35 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                            switch (memberAccess.Name.Identifier.ValueText)
+                            string name = memberAccess.Name.Identifier.ValueText;
+
+                            if (name == "Cast")
                             {
-                                case "Cast":
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Simplify method chain",
-                                            cancellationToken => CallOfTypeInsteadOfWhereAndCastRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                            diagnostic.Id + EquivalenceKeySuffix);
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Simplify method chain",
+                                    cancellationToken => CallOfTypeInsteadOfWhereAndCastRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                    diagnostic.Id + EquivalenceKeySuffix);
 
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Simplify method chain",
-                                            cancellationToken => SimplifyLinqMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                            diagnostic.Id + EquivalenceKeySuffix);
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else if (name == "Any"
+                                && invocation.ArgumentList.Arguments.Count == 1)
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Simplify method chain",
+                                    cancellationToken => CombineEnumerableWhereAndAnyRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                    diagnostic.Id + EquivalenceKeySuffix);
 
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Simplify method chain",
+                                    cancellationToken => SimplifyLinqMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                    diagnostic.Id + EquivalenceKeySuffix);
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
                             }
 
                             break;

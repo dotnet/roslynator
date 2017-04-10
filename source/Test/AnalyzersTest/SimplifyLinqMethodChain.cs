@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
+#pragma warning disable RCS1021, RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class SimplifyLinqMethodChain
@@ -48,7 +50,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = items.Where(f => true).SingleOrDefault();
         }
 
-        private static void ReplaceWhereAndCastWithOfType()
+        private static void UseOfTypeInsteadOfWhereAndCast()
         {
             var items = new List<string>();
 
@@ -60,6 +62,17 @@ namespace Roslynator.CSharp.Analyzers.Test
             }).Cast<object>();
 
             q = items.Where(f => f is string).Cast<object>();
+        }
+
+        private static void CombineWhereAndAny()
+        {
+            var items = new List<string>();
+            ImmutableArray<string> ia = ImmutableArray<string>.Empty;
+
+            bool any = items.Where(f => f.StartsWith("a")).Any(f => f.StartsWith("b"));
+            bool any2 = ia.Where(f => f.StartsWith("a")).Any(f => f.StartsWith("b"));
+
+            bool any3 = items.Where(f => f.StartsWith("a")).Any(g => g.StartsWith("b"));
         }
     }
 }

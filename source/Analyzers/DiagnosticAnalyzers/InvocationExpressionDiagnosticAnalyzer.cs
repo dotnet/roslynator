@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
 using Roslynator.Diagnostics.Extensions;
@@ -147,6 +148,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             RemoveRedundantToStringCallRefactoring.Analyze(context, invocation);
 
             RemoveRedundantStringToCharArrayCallRefactoring.Analyze(context, invocation);
+
+            CombineEnumerableWhereAndAnyRefactoring.AnalyzeInvocationExpression(context);
         }
     }
 }
