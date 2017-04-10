@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!string.IsNullOrEmpty(newName)
                     && !string.Equals(name, newName, StringComparison.Ordinal))
                 {
-                    newName = await Identifier.EnsureUniqueParameterNameAsync(parameterSymbol, newName, context.Solution, context.CancellationToken).ConfigureAwait(false);
+                    newName = Identifier.EnsureUniqueLocalName(newName, parameter.SpanStart, semanticModel, context.CancellationToken);
 
                     context.RegisterRefactoring(
                         $"Rename '{name}' to '{newName}'",
