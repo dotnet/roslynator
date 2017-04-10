@@ -51,6 +51,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             /// <param name="parameter1"></param>
             /// <param name="parameter2"></param>
             public void Bar7(object parameter1, object parameter2) { }
+
+            public void Bar8(object parameter1, object parameter2) { Bar7(parameter1: null, parameter2: null); }
         }
 
         private partial class Foo2 : Foo
