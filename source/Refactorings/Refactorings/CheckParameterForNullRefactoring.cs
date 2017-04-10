@@ -251,7 +251,9 @@ namespace Roslynator.CSharp.Refactorings
                             Debug.Assert(parent?.IsKind(
                                 SyntaxKind.ParenthesizedLambdaExpression,
                                 SyntaxKind.AnonymousMethodExpression,
-                                SyntaxKind.DelegateDeclaration) != false, parent?.Kind().ToString());
+                                SyntaxKind.DelegateDeclaration,
+                                SyntaxKind.OperatorDeclaration,
+                                SyntaxKind.ConversionOperatorDeclaration) != false, parent?.Kind().ToString());
                             break;
                         }
                 }
