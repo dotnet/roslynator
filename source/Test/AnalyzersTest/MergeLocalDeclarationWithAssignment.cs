@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-#pragma warning disable CS0219, RCS1010, RCS1118, RCS1176
+#pragma warning disable CS0219, RCS1010, RCS1104, RCS1118, RCS1124, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -120,6 +120,12 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             decimal dl = (decimal)0;
             dl = 1;
+        }
+
+        private static void Foo2()
+        {
+            bool f2 = false;
+            f2 = (f2) ? true : false;
         }
     }
 }

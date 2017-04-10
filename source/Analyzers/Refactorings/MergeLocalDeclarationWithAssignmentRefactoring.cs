@@ -44,17 +44,18 @@ namespace Roslynator.CSharp.Refactorings
                                 SemanticModel semanticModel = context.SemanticModel;
                                 CancellationToken cancellationToken = context.CancellationToken;
 
-                                VariableDeclaratorSyntax declarator = FindInitializedVariable((IdentifierNameSyntax)assignment.Left, variables, semanticModel, cancellationToken);
+                                LocalInfo localInfo = FindInitializedVariable((IdentifierNameSyntax)assignment.Left, variables, semanticModel, cancellationToken);
 
-                                if (declarator != null)
+                                if (localInfo.IsValid)
                                 {
-                                    EqualsValueClauseSyntax initializer = declarator.Initializer;
+                                    EqualsValueClauseSyntax initializer = localInfo.Declarator.Initializer;
                                     ExpressionSyntax value = initializer?.Value;
 
                                     if (value == null
-                                        || IsDefaultValue(declaration.Type, value, semanticModel, cancellationToken))
+                                        || (IsDefaultValue(declaration.Type, value, semanticModel, cancellationToken)
+                                            && !IsReferenced(localInfo.Symbol, assignment.Right, semanticModel, cancellationToken)))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, declarator.Identifier);
+                                        context.ReportDiagnostic(DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, localInfo.Declarator.Identifier);
 
                                         if (value != null)
                                         {
@@ -73,7 +74,27 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static VariableDeclaratorSyntax FindInitializedVariable(
+        private static bool IsReferenced(
+            ILocalSymbol localSymbol,
+            SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            foreach (SyntaxNode descendantOrSelf in node.DescendantNodesAndSelf())
+            {
+                if (descendantOrSelf.IsKind(SyntaxKind.IdentifierName)
+                    && semanticModel
+                        .GetSymbol((IdentifierNameSyntax)descendantOrSelf, cancellationToken)?
+                        .Equals(localSymbol) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static LocalInfo FindInitializedVariable(
             IdentifierNameSyntax identifierName,
             SeparatedSyntaxList<VariableDeclaratorSyntax> declarators,
             SemanticModel semanticModel,
@@ -92,15 +113,15 @@ namespace Roslynator.CSharp.Refactorings
                         localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
 
                         if (localSymbol == null)
-                            return null;
+                            return default(LocalInfo);
                     }
 
                     if (localSymbol.Equals(semanticModel.GetDeclaredSymbol(declarator, cancellationToken)))
-                        return declarator;
+                        return new LocalInfo(declarator, localSymbol);
                 }
             }
 
-            return null;
+            return default(LocalInfo);
         }
 
         private static bool IsDefaultValue(TypeSyntax type, ExpressionSyntax value, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -170,6 +191,27 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveAt(index + 1);
 
             return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+        }
+
+        private struct LocalInfo
+        {
+            public LocalInfo(VariableDeclaratorSyntax declarator, ILocalSymbol symbol)
+            {
+                Declarator = declarator;
+                Symbol = symbol;
+            }
+
+            public bool IsValid
+            {
+                get
+                {
+                    return Declarator != null
+                        && Symbol != null;
+                }
+            }
+
+            public VariableDeclaratorSyntax Declarator { get; }
+            public ILocalSymbol Symbol { get; }
         }
     }
 }
