@@ -38,7 +38,8 @@ namespace Roslynator.Internal
             if (name.Length > 1
                 && UsePlural(typeSymbol2))
             {
-                name = Identifier.RemoveSuffix(name, "Collection");
+                if (!Identifier.TryRemoveSuffix(name, "Collection", out name))
+                    Identifier.TryRemoveSuffix(name, "List", out name);
 
                 if (name.EndsWith("s", StringComparison.Ordinal) || name.EndsWith("x", StringComparison.Ordinal))
                 {
