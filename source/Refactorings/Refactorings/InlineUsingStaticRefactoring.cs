@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int index = usings.IndexOf(usingDirective);
 
-            List<SimpleNameSyntax> names = CollectNames(parent, usingDirective, classSymbol, semanticModel, cancellationToken);
+            List<SimpleNameSyntax> names = CollectNames(parent, classSymbol, semanticModel, cancellationToken);
 
             SyntaxNode newNode = parent.ReplaceNodes(names, (node, modifiedNode) =>
             {
@@ -46,7 +46,6 @@ namespace Roslynator.CSharp.Refactorings
 
         private static List<SimpleNameSyntax> CollectNames(
             SyntaxNode node,
-            UsingDirectiveSyntax usingDirective,
             INamedTypeSymbol classSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -62,8 +61,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
-                        if (symbol?.ContainingType?.Equals(classSymbol) == true)
+                        if (symbol?.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property) == true
+                            && symbol.ContainingType?.Equals(classSymbol) == true)
+                        {
                             names.Add(name);
+                        }
                     }
                 }
             }
