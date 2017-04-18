@@ -2,17 +2,13 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CodeFixes.Extensions;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -155,9 +151,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                             string title = null;
 
                             if (typeSymbol.IsPredefinedValueType()
-                                || typeSymbol.GetMethods(WellKnownMemberNames.EqualityOperatorName).Any())
+                                || typeSymbol.ExistsMethod(WellKnownMemberNames.EqualityOperatorName))
                             {
-                                ExpressionSyntax expression = typeSymbol.ToDefaultExpression(semanticModel, binaryExpression.Right.SpanStart);
+                                ExpressionSyntax expression = typeSymbol.ToDefaultValueSyntax(semanticModel, binaryExpression.Right.SpanStart);
 
                                 title = $"Replace 'null' with '{expression}'";
                             }

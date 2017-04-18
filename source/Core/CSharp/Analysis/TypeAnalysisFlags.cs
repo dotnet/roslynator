@@ -5,7 +5,7 @@ using System;
 namespace Roslynator.CSharp.Analysis
 {
     [Flags]
-    public enum TypeAnalysisFlags
+    internal enum TypeAnalysisFlags
     {
         None = 0,
         Implicit = 1,

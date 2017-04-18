@@ -10,9 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -20,14 +18,16 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MarkLocalVariableAsConstRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, LocalDeclarationStatementSyntax localDeclaration)
+        public static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
         {
+            var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
+
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
             if (!localDeclaration.IsConst)
             {
-                IStatementContainer container;
+                StatementContainer container;
                 if (StatementContainer.TryCreate(localDeclaration, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;

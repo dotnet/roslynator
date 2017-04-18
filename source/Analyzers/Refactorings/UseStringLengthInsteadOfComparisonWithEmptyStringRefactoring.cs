@@ -7,9 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -32,15 +29,15 @@ namespace Roslynator.CSharp.Refactorings
                     SemanticModel semanticModel = context.SemanticModel;
                     CancellationToken cancellationToken = context.CancellationToken;
 
-                    if (CSharpAnalysis.IsEmptyString(left, semanticModel, cancellationToken))
+                    if (CSharpUtility.IsEmptyString(left, semanticModel, cancellationToken))
                     {
                         if (IsString(right, semanticModel, cancellationToken))
                             ReportDiagnostic(context, equalsExpression);
                     }
-                    else if (CSharpAnalysis.IsEmptyString(right, semanticModel, cancellationToken))
+                    else if (CSharpUtility.IsEmptyString(right, semanticModel, cancellationToken)
+                        && IsString(left, semanticModel, cancellationToken))
                     {
-                        if (IsString(left, semanticModel, cancellationToken))
-                            ReportDiagnostic(context, equalsExpression);
+                        ReportDiagnostic(context, equalsExpression);
                     }
                 }
             }
@@ -75,13 +72,13 @@ namespace Roslynator.CSharp.Refactorings
 
             BinaryExpressionSyntax newNode = binaryExpression;
 
-            if (CSharpAnalysis.IsEmptyString(left, semanticModel, cancellationToken))
+            if (CSharpUtility.IsEmptyString(left, semanticModel, cancellationToken))
             {
                 newNode = binaryExpression
                     .WithLeft(NumericLiteralExpression(0))
                     .WithRight(CreateConditionalAccess(right));
             }
-            else if (CSharpAnalysis.IsEmptyString(right, semanticModel, cancellationToken))
+            else if (CSharpUtility.IsEmptyString(right, semanticModel, cancellationToken))
             {
                 newNode = binaryExpression
                     .WithLeft(CreateConditionalAccess(left))

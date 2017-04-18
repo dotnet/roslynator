@@ -7,8 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -44,17 +42,17 @@ namespace Roslynator.CSharp.Refactorings
 
                             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                            if (typeSymbol?.IsErrorType() == false)
-                            {
-                                string name = Identifier.CreateName(typeSymbol, firstCharToLower: true);
-                                name = Identifier.EnsureUniqueLocalName(name, declarator.SpanStart, semanticModel, context.CancellationToken);
+                            string name = NameGenerator.Default.CreateUniqueLocalName(
+                                typeSymbol,
+                                semanticModel,
+                                declarator.SpanStart,
+                                cancellationToken: context.CancellationToken);
 
-                                if (!string.IsNullOrEmpty(name))
-                                {
-                                    context.RegisterRefactoring(
-                                        $"Add identifier '{name}'",
-                                        c => RefactorAsync(context.Document, type, name, c));
-                                }
+                            if (name != null)
+                            {
+                                context.RegisterRefactoring(
+                                    $"Add identifier '{name}'",
+                                    c => RefactorAsync(context.Document, type, name, c));
                             }
                         }
                     }
@@ -72,17 +70,17 @@ namespace Roslynator.CSharp.Refactorings
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                if (typeSymbol?.IsErrorType() == false)
-                {
-                    string name = Identifier.CreateName(typeSymbol, firstCharToLower: true);
-                    name = Identifier.EnsureUniqueLocalName(name, expression.SpanStart, semanticModel, context.CancellationToken);
+                string name = NameGenerator.Default.CreateUniqueLocalName(
+                    typeSymbol,
+                    semanticModel,
+                    expression.SpanStart,
+                    cancellationToken: context.CancellationToken);
 
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        context.RegisterRefactoring(
-                            $"Add identifier '{name}'",
-                            c => RefactorAsync(context.Document, expressionStatement, name, c));
-                    }
+                if (name != null)
+                {
+                    context.RegisterRefactoring(
+                        $"Add identifier '{name}'",
+                        c => RefactorAsync(context.Document, expressionStatement, name, c));
                 }
             }
         }

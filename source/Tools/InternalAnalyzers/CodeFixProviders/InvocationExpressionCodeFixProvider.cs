@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Internal.DiagnosticAnalyzers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -20,10 +19,14 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
     public class InvocationExpressionCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.ReplaceIsKindMethodInvocation);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReplaceIsKindMethodInvocation); }
+        }
 
         public override FixAllProvider GetFixAllProvider()
-            => WellKnownFixAllProviders.BatchFixer;
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -85,23 +88,28 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
             InvocationExpressionSyntax invocation,
             string newName)
         {
-            if (invocation.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
-            {
-                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+            ExpressionSyntax expression = invocation.Expression;
 
-                return invocation
-                    .WithExpression(
-                        memberAccess.WithName(IdentifierName(newName)))
-                    .WithArgumentList();
-            }
-            else if (invocation.Expression.IsKind(SyntaxKind.MemberBindingExpression))
+            switch (expression.Kind())
             {
-                var memberBinding = (MemberBindingExpressionSyntax)invocation.Expression;
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                return invocation
-                    .WithExpression(
-                        memberBinding.WithName(IdentifierName(newName)))
-                    .WithArgumentList();
+                        return invocation
+                            .WithExpression(
+                                memberAccess.WithName(IdentifierName(newName)))
+                            .WithArgumentList(ArgumentList());
+                    }
+                case SyntaxKind.MemberBindingExpression:
+                    {
+                        var memberBinding = (MemberBindingExpressionSyntax)expression;
+
+                        return invocation
+                            .WithExpression(
+                                memberBinding.WithName(IdentifierName(newName)))
+                            .WithArgumentList(ArgumentList());
+                    }
             }
 
             return invocation;

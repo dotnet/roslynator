@@ -5,14 +5,12 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    public static class Negator
+    internal static class Negator
     {
         public static ExpressionSyntax LogicallyNegate(this ExpressionSyntax booleanExpression)
         {
@@ -276,7 +274,7 @@ namespace Roslynator.CSharp
         private static ExpressionSyntax ParenthesizeIfNecessary(this ExpressionSyntax expression, SyntaxKind kind)
         {
             if (expression != null
-                && CSharpAnalysis.GetOperatorPrecedence(expression) > CSharpAnalysis.GetOperatorPrecedence(kind))
+                && CSharpUtility.GetOperatorPrecedence(expression) > CSharpUtility.GetOperatorPrecedence(kind))
             {
                 expression = expression.Parenthesize(moveTrivia: true);
             }

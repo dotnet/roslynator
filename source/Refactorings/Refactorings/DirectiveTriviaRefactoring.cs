@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -34,8 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                         title,
                         cancellationToken =>
                         {
-                            return Remover.RemoveDirectivesAsync(
-                                context.Document,
+                            return context.Document.RemoveDirectivesAsync(
                                 directives.ToImmutableArray(),
                                 cancellationToken);
                         });

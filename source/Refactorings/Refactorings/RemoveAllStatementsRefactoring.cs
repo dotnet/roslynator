@@ -6,8 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -95,25 +94,25 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (MethodDeclarationSyntax)member;
 
-                        return declaration.WithBody(declaration.Body.WithoutStatements());
+                        return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
                         var declaration = (OperatorDeclarationSyntax)member;
 
-                        return declaration.WithBody(declaration.Body.WithoutStatements());
+                        return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
                         var declaration = (ConversionOperatorDeclarationSyntax)member;
 
-                        return declaration.WithBody(declaration.Body.WithoutStatements());
+                        return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
                         var declaration = (ConstructorDeclarationSyntax)member;
 
-                        return declaration.WithBody(declaration.Body.WithoutStatements());
+                        return declaration.WithBody(declaration.Body.WithStatements(List<StatementSyntax>()));
                     }
             }
 

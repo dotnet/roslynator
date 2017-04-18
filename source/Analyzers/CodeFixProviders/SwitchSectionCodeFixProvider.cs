@@ -31,9 +31,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            SyntaxNode root = await context.Document
-                .GetSyntaxRootAsync(context.CancellationToken)
-                .ConfigureAwait(false);
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             SwitchSectionSyntax switchSection = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?

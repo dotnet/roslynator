@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -22,14 +21,11 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.MergeAttributes)
                 && !member.IsKind(SyntaxKind.NamespaceDeclaration))
             {
-                SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
-
-                if (lists.Any())
+                SyntaxListSelection<AttributeListSyntax> selectedAttributeLists;
+                if (SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out selectedAttributeLists))
                 {
-                    var selectedLists = new SelectedNodeCollection<AttributeListSyntax>(lists, context.Span);
-
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes)
-                        && selectedLists.Any(f => f.Attributes.Count > 1))
+                        && selectedAttributeLists.Any(f => f.Attributes.Count > 1))
                     {
                         context.RegisterRefactoring(
                             "Split attributes",
@@ -38,13 +34,13 @@ namespace Roslynator.CSharp.Refactorings
                                 return SplitAsync(
                                     context.Document,
                                     member,
-                                    selectedLists.ToArray(),
+                                    selectedAttributeLists.ToArray(),
                                     cancellationToken);
                             });
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes)
-                        && selectedLists.IsMultiple)
+                        && selectedAttributeLists.Count > 1)
                     {
                         context.RegisterRefactoring(
                             "Merge attributes",
@@ -53,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                                 return MergeAsync(
                                     context.Document,
                                     member,
-                                    selectedLists.ToArray(),
+                                    selectedAttributeLists.ToArray(),
                                     cancellationToken);
                             });
                     }

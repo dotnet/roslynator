@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using static Roslynator.CSharp.Refactorings.RemoveRedundantEmptyLineRefactoring;
 
@@ -26,24 +25,24 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (ClassDeclarationSyntax)f.Node), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (StructDeclarationSyntax)f.Node), SyntaxKind.StructDeclaration);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (InterfaceDeclarationSyntax)f.Node), SyntaxKind.InterfaceDeclaration);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (NamespaceDeclarationSyntax)f.Node), SyntaxKind.NamespaceDeclaration);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (SwitchStatementSyntax)f.Node), SyntaxKind.SwitchStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (TryStatementSyntax)f.Node), SyntaxKind.TryStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (ElseClauseSyntax)f.Node), SyntaxKind.ElseClause);
+            context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeTryStatement(f), SyntaxKind.TryStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
 
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (IfStatementSyntax)f.Node), SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (ForEachStatementSyntax)f.Node), SyntaxKind.ForEachStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (ForStatementSyntax)f.Node), SyntaxKind.ForStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (UsingStatementSyntax)f.Node), SyntaxKind.UsingStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (WhileStatementSyntax)f.Node), SyntaxKind.WhileStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (DoStatementSyntax)f.Node), SyntaxKind.DoStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (LockStatementSyntax)f.Node), SyntaxKind.LockStatement);
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (FixedStatementSyntax)f.Node), SyntaxKind.FixedStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForEachStement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
 
-            context.RegisterSyntaxNodeAction(f => Analyze(f, (AccessorListSyntax)f.Node), SyntaxKind.AccessorList);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
@@ -37,12 +36,12 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             IfStatementSyntax ifStatement,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSpan binaryExpressionSpan,
+            BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken)
         {
-            IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSpan);
+            IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSelection);
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSpan.ToString());
+            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSelection.ToString());
 
             newNode = AddNestedIf(newNode, expression)
                 .WithFormatterAnnotation();

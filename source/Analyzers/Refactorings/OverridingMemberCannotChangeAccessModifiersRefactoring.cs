@@ -3,16 +3,13 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -184,7 +181,7 @@ namespace Roslynator.CSharp.Refactorings
             if (index == -1)
             {
                 foreach (SyntaxToken modifier in Modifiers.FromAccessibility(newAccessibility))
-                    newModifiers = Inserter.InsertModifier(newModifiers, modifier);
+                    newModifiers = newModifiers.InsertModifier(modifier, ModifierComparer.Instance);
             }
             else
             {
@@ -214,7 +211,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return document.ReplaceNodeAsync(memberDeclaration, memberDeclaration.SetModifiers(newModifiers), cancellationToken);
+            return document.ReplaceNodeAsync(memberDeclaration, memberDeclaration.WithModifiers(newModifiers), cancellationToken);
         }
 
         private static SyntaxToken CreateAccessModifier(Accessibility accessibility)
@@ -230,7 +227,7 @@ namespace Roslynator.CSharp.Refactorings
                 case Accessibility.Public:
                     return PublicKeyword();
                 default:
-                    return NoneToken();
+                    return default(SyntaxToken);
             }
         }
 

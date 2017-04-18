@@ -7,16 +7,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class SimplifyLogicalNotExpressionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, PrefixUnaryExpressionSyntax logicalNot)
+        public static void AnalyzeLogicalNotExpression(SyntaxNodeAnalysisContext context)
         {
+            var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
+
             ExpressionSyntax operand = logicalNot.Operand;
 
             switch (operand?.Kind())

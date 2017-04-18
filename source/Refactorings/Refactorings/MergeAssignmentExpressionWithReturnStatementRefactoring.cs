@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeAssignmentExpressionWithReturnStatementRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static void ComputeRefactorings(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
             using (IEnumerator<StatementSyntax> en = selectedStatements.GetEnumerator())
             {

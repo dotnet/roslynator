@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -73,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxTriviaList triviaList = token.TrailingTrivia;
 
                     if (!triviaList.Contains(SyntaxKind.EndOfLineTrivia))
-                        return token.WithTrailingTrivia(triviaList.TrimEnd().Add(CSharpFactory.NewLineTrivia()));
+                        return token.WithTrailingTrivia(triviaList.TrimEnd().Add(CSharpFactory.NewLine()));
                 }
 
                 return base.VisitToken(token);

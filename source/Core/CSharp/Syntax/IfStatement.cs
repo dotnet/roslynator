@@ -5,12 +5,10 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Syntax
 {
-    public struct IfStatement : IEquatable<IfStatement>
+    internal struct IfStatement : IEquatable<IfStatement>
     {
         public ImmutableArray<IfStatementOrElseClause> Nodes { get; }
 

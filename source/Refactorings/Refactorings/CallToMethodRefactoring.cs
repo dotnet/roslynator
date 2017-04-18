@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -34,21 +31,26 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IMethodSymbol GetMethodSymbol(ITypeSymbol destinationType, string methodName)
         {
-            foreach (IMethodSymbol methodSymbol in destinationType.GetMethods(methodName))
+            foreach (ISymbol symbol in destinationType.GetMembers(methodName))
             {
-                if (methodSymbol.IsPublic())
+                if (symbol.IsMethod())
                 {
-                    if (methodSymbol.IsStatic)
+                    var methodSymbol = (IMethodSymbol)symbol;
+
+                    if (methodSymbol.IsPublic())
                     {
-                        if (methodSymbol.IsExtensionMethod
-                            && methodSymbol.Parameters.Length == 1)
+                        if (methodSymbol.IsStatic)
+                        {
+                            if (methodSymbol.IsExtensionMethod
+                                && methodSymbol.Parameters.Length == 1)
+                            {
+                                return methodSymbol;
+                            }
+                        }
+                        else if (!methodSymbol.Parameters.Any())
                         {
                             return methodSymbol;
                         }
-                    }
-                    else if (!methodSymbol.Parameters.Any())
-                    {
-                        return methodSymbol;
                     }
                 }
             }
@@ -83,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamespaceSymbol namespaceSymbol = methodSymbol.ContainingNamespace;
 
                 if (namespaceSymbol != null
-                    && !CSharpAnalysis.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken))
+                    && !CSharpUtility.IsNamespaceInScope(expression, namespaceSymbol, semanticModel, cancellationToken))
                 {
                     newRoot = ((CompilationUnitSyntax)newRoot)
                         .AddUsings(UsingDirective(ParseName(namespaceSymbol.ToString())));

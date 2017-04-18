@@ -7,68 +7,105 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
-using static Roslynator.CSharp.CSharpFactory;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidSemicolonAtEndOfDeclarationRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SyntaxNode node)
+        public static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            SyntaxToken semicolon = GetSemicolon(node);
+            var declaration = (NamespaceDeclarationSyntax)context.Node;
 
-            if (!semicolon.IsKind(SyntaxKind.None) && !semicolon.IsMissing)
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (!semicolon.IsKind(SyntaxKind.None)
+                && !semicolon.IsMissing)
             {
-                SyntaxToken closeBrace = GetCloseBrace(node);
+                SyntaxToken closeBrace = declaration.CloseBraceToken;
 
-                if (!closeBrace.IsKind(SyntaxKind.None) && !closeBrace.IsMissing)
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && !closeBrace.IsMissing)
                 {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration,
-                        semicolon);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
                 }
             }
         }
 
-        private static SyntaxToken GetSemicolon(SyntaxNode node)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            switch (node.Kind())
-            {
-                case SyntaxKind.NamespaceDeclaration:
-                    return ((NamespaceDeclarationSyntax)node).SemicolonToken;
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).SemicolonToken;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).SemicolonToken;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).SemicolonToken;
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).SemicolonToken;
-            }
+            var declaration = (ClassDeclarationSyntax)context.Node;
 
-            return default(SyntaxToken);
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (!semicolon.IsKind(SyntaxKind.None)
+                && !semicolon.IsMissing)
+            {
+                SyntaxToken closeBrace = declaration.CloseBraceToken;
+
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && !closeBrace.IsMissing)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                }
+            }
         }
 
-        private static SyntaxToken GetCloseBrace(SyntaxNode node)
+        public static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            switch (node.Kind())
-            {
-                case SyntaxKind.NamespaceDeclaration:
-                    return ((NamespaceDeclarationSyntax)node).CloseBraceToken;
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).CloseBraceToken;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).CloseBraceToken;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).CloseBraceToken;
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).CloseBraceToken;
-            }
+            var declaration = (InterfaceDeclarationSyntax)context.Node;
 
-            return default(SyntaxToken);
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (!semicolon.IsKind(SyntaxKind.None)
+                && !semicolon.IsMissing)
+            {
+                SyntaxToken closeBrace = declaration.CloseBraceToken;
+
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && !closeBrace.IsMissing)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                }
+            }
+        }
+
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var declaration = (StructDeclarationSyntax)context.Node;
+
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (!semicolon.IsKind(SyntaxKind.None)
+                && !semicolon.IsMissing)
+            {
+                SyntaxToken closeBrace = declaration.CloseBraceToken;
+
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && !closeBrace.IsMissing)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                }
+            }
+        }
+
+        public static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var declaration = (EnumDeclarationSyntax)context.Node;
+
+            SyntaxToken semicolon = declaration.SemicolonToken;
+
+            if (!semicolon.IsKind(SyntaxKind.None)
+                && !semicolon.IsMissing)
+            {
+                SyntaxToken closeBrace = declaration.CloseBraceToken;
+
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && !closeBrace.IsMissing)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                }
+            }
         }
 
         public static Task<Document> RefactorAsync(
@@ -89,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (NamespaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(NoneToken())
+                            .WithSemicolonToken(default(SyntaxToken))
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -97,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (ClassDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(NoneToken())
+                            .WithSemicolonToken(default(SyntaxToken))
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -105,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (InterfaceDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(NoneToken())
+                            .WithSemicolonToken(default(SyntaxToken))
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -113,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (StructDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(NoneToken())
+                            .WithSemicolonToken(default(SyntaxToken))
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }
@@ -121,7 +158,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var declaration = (EnumDeclarationSyntax)memberDeclaration;
                         return declaration
-                            .WithSemicolonToken(NoneToken())
+                            .WithSemicolonToken(default(SyntaxToken))
                             .WithCloseBraceToken(declaration.CloseBraceToken
                                 .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
                     }

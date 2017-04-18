@@ -7,9 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -72,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int index = trailingTrivia.IndexOf(SyntaxKind.EndOfLineTrivia);
 
-            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLineTrivia());
+            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLine());
 
             StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
 

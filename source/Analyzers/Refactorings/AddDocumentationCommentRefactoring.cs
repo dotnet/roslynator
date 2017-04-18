@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -124,13 +123,13 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                BaseDocumentationCommentInfo info = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
+                BaseDocumentationCommentData data = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
 
-                if (info.Success)
-                    newNode = Inserter.InsertDocumentationComment(memberDeclaration, info.Trivia, indent: true);
+                if (data.Success)
+                    newNode = memberDeclaration.WithDocumentationComment(data.Comment, indent: true);
             }
 
-            newNode = newNode ?? DocumentationCommentGenerator.AddNewDocumentationComment(memberDeclaration);
+            newNode = newNode ?? memberDeclaration.WithNewSingleLineDocumentationComment();
 
             return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }

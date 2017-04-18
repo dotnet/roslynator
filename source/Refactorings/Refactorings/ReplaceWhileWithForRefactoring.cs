@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -25,16 +23,16 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(context.Document, null, null, whileStatement, cancellationToken));
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
-            if (selectedStatements.IsMultiple)
+            if (selectedStatements.Count > 1)
             {
-                StatementSyntax lastStatement = selectedStatements.Last;
+                StatementSyntax lastStatement = selectedStatements.Last();
 
                 if (lastStatement.IsKind(SyntaxKind.WhileStatement))
                 {
                     IEnumerable<StatementSyntax> statements = selectedStatements
-                        .Take(selectedStatements.LastIndex - selectedStatements.FirstIndex);
+                        .Take(selectedStatements.EndIndex - selectedStatements.StartIndex);
 
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -49,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var localDeclaration = (LocalDeclarationStatementSyntax)statement;
 
-                            if (!IsAnySymbolReferenced(localDeclaration, selectedStatements.ToImmutableArray(), selectedStatements.LastIndex + 1, semanticModel, context.CancellationToken))
+                            if (!IsAnySymbolReferenced(localDeclaration, selectedStatements.ToImmutableArray(), selectedStatements.EndIndex + 1, semanticModel, context.CancellationToken))
                             {
                                 (localDeclarations ?? (localDeclarations = new List<LocalDeclarationStatementSyntax>())).Add(localDeclaration);
                             }
@@ -172,7 +170,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 declaration = VariableDeclaration(type, SeparatedList(variables));
 
-                IStatementContainer container;
+                StatementContainer container;
                 if (StatementContainer.TryCreate(whileStatement, out container))
                 {
                     SyntaxList<StatementSyntax> statements = container.Statements;

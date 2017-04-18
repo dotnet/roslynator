@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSymbolAction(
-                f => RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.Analyze(f, (IFieldSymbol)f.Symbol),
+                f => RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.AnalyzeFieldSymbol(f),
                 SymbolKind.Field);
         }
     }

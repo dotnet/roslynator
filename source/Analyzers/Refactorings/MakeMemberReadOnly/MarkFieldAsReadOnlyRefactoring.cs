@@ -8,8 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 {
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
         public override void ReportFixableSymbols(SymbolAnalysisContext context, INamedTypeSymbol containingType, HashSet<ISymbol> symbols)
         {
             foreach (IGrouping<VariableDeclarationSyntax, SyntaxNode> grouping in symbols
-                .Select(f => f.GetFirstSyntax(context.CancellationToken))
+                .Select(f => f.GetSyntax(context.CancellationToken))
                 .GroupBy(f => (VariableDeclarationSyntax)f.Parent))
             {
                 int count = grouping.Count();
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
             FieldDeclarationSyntax fieldDeclaration,
             CancellationToken cancellationToken)
         {
-            FieldDeclarationSyntax newNode = Inserter.InsertModifier(fieldDeclaration, SyntaxKind.ReadOnlyKeyword);
+            FieldDeclarationSyntax newNode = fieldDeclaration.InsertModifier(SyntaxKind.ReadOnlyKeyword, ModifierComparer.Instance);
 
             return document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken);
         }

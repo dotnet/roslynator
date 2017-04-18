@@ -6,9 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -16,8 +14,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class SimplifyNullableOfTRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, GenericNameSyntax genericName)
+        public static void AnalyzeGenericName(SyntaxNodeAnalysisContext context)
         {
+            var genericName = (GenericNameSyntax)context.Node;
+
             if (!genericName.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.UsingDirective))
             {
                 TypeArgumentListSyntax typeArgumentList = genericName.TypeArgumentList;

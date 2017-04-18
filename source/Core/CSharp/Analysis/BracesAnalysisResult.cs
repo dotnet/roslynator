@@ -5,7 +5,7 @@ using System;
 namespace Roslynator.CSharp.Analysis
 {
     [Flags]
-    public enum BracesAnalysisResult
+    internal enum BracesAnalysisResult
     {
         None = 0,
         AddBraces = 1,

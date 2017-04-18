@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveEmptyStatementRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SyntaxNode emptyStatement)
+        public static void AnalyzeEmptyStatement(SyntaxNodeAnalysisContext context)
         {
+            SyntaxNode emptyStatement = context.Node;
+
             SyntaxNode parent = emptyStatement.Parent;
 
             if (parent != null
-                && !EmbeddedStatement.CanContainEmbeddedStatement(parent))
+                && !EmbeddedStatementHelper.CanContainEmbeddedStatement(parent))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
             }

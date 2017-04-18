@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    public static class SymbolDisplay
+    internal static class SymbolDisplay
     {
         public static string GetString(ITypeSymbol typeSymbol)
         {

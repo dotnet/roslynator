@@ -7,16 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantFieldInitializationRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, FieldDeclarationSyntax fieldDeclaration)
+        internal static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
+
             SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
             if (!modifiers.Contains(SyntaxKind.ConstKeyword))

@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Roslynator.CSharp.Refactorings.If.IfRefactoringHelper;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -47,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings.If
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (IfElseChain.IsTopmostIf(ifStatement))
+            if (ifStatement.IsTopmostIf())
             {
                 ExpressionSyntax condition = ifStatement.Condition;
 
@@ -236,7 +234,7 @@ namespace Roslynator.CSharp.Refactorings.If
         }
 
         public static ImmutableArray<IfRefactoring> Analyze(
-            SelectedStatementCollection selectedStatements,
+            StatementContainerSelection selectedStatements,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -244,7 +242,7 @@ namespace Roslynator.CSharp.Refactorings.If
         }
 
         public static ImmutableArray<IfRefactoring> Analyze(
-            SelectedStatementCollection selectedStatements,
+            StatementContainerSelection selectedStatements,
             IfAnalysisOptions options,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -256,30 +254,34 @@ namespace Roslynator.CSharp.Refactorings.If
                 StatementSyntax statement1 = statements[0];
                 StatementSyntax statement2 = statements[1];
 
-                SyntaxKind kind1 = statement1.Kind();
-                SyntaxKind kind2 = statement2.Kind();
-
-                if (kind1 == SyntaxKind.IfStatement)
+                if (!statement1.ContainsDiagnostics
+                    && !statement2.ContainsDiagnostics)
                 {
-                    if (kind2 == SyntaxKind.ReturnStatement)
-                    {
-                        var ifStatement = (IfStatementSyntax)statement1;
+                    SyntaxKind kind1 = statement1.Kind();
+                    SyntaxKind kind2 = statement2.Kind();
 
-                        if (ifStatement.IsSimpleIf())
-                            return Analyze(ifStatement, (ReturnStatementSyntax)statement2, options, semanticModel, cancellationToken);
-                    }
-                }
-                else if (options.UseConditionalExpression)
-                {
-                    if (kind1 == SyntaxKind.LocalDeclarationStatement)
+                    if (kind1 == SyntaxKind.IfStatement)
                     {
-                        if (kind2 == SyntaxKind.IfStatement)
-                            return Analyze((LocalDeclarationStatementSyntax)statement1, (IfStatementSyntax)statement2, options);
+                        if (kind2 == SyntaxKind.ReturnStatement)
+                        {
+                            var ifStatement = (IfStatementSyntax)statement1;
+
+                            if (ifStatement.IsSimpleIf())
+                                return Analyze(ifStatement, (ReturnStatementSyntax)statement2, options, semanticModel, cancellationToken);
+                        }
                     }
-                    else if (kind1 == SyntaxKind.ExpressionStatement)
+                    else if (options.UseConditionalExpression)
                     {
-                        if (kind2 == SyntaxKind.IfStatement)
+                        if (kind1 == SyntaxKind.LocalDeclarationStatement)
+                        {
+                            if (kind2 == SyntaxKind.IfStatement)
+                                return Analyze((LocalDeclarationStatementSyntax)statement1, (IfStatementSyntax)statement2, options);
+                        }
+                        else if (kind1 == SyntaxKind.ExpressionStatement
+                            && kind2 == SyntaxKind.IfStatement)
+                        {
                             return Analyze((ExpressionStatementSyntax)statement1, (IfStatementSyntax)statement2, options);
+                        }
                     }
                 }
             }
@@ -300,11 +302,11 @@ namespace Roslynator.CSharp.Refactorings.If
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentExpression assignment1;
-                    if (SimpleAssignmentExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
+                    SimpleAssignmentStatement assignment1;
+                    if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
                     {
-                        SimpleAssignmentExpression assignment2;
-                        if (SimpleAssignmentExpression.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
+                        SimpleAssignmentStatement assignment2;
+                        if (SimpleAssignmentStatement.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
                             && assignment1.Left.IsKind(SyntaxKind.IdentifierName)
                             && assignment2.Left.IsKind(SyntaxKind.IdentifierName))
                         {
@@ -330,18 +332,18 @@ namespace Roslynator.CSharp.Refactorings.If
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options)
         {
-            SimpleAssignmentExpression assignment;
-            if (SimpleAssignmentExpression.TryCreate(expressionStatement, out assignment))
+            SimpleAssignmentStatement assignment;
+            if (SimpleAssignmentStatement.TryCreate(expressionStatement, out assignment))
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentExpression assignment1;
-                    if (SimpleAssignmentExpression.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
+                    SimpleAssignmentStatement assignment1;
+                    if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
                     {
-                        SimpleAssignmentExpression assignment2;
-                        if (SimpleAssignmentExpression.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
+                        SimpleAssignmentStatement assignment2;
+                        if (SimpleAssignmentStatement.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
                             && assignment1.Left.IsEquivalentTo(assignment2.Left, topLevel: false)
                             && assignment1.Left.IsEquivalentTo(assignment.Left, topLevel: false)
                             && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))

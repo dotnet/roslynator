@@ -3,14 +3,14 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Rename;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -34,10 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            Document document = context.Document;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             MethodDeclarationSyntax methodDeclaration = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
@@ -46,9 +43,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (methodDeclaration == null)
                 return;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
             Debug.Assert(methodSymbol != null, $"{nameof(methodSymbol)} is null");
 
@@ -62,15 +59,15 @@ namespace Roslynator.CSharp.CodeFixProviders
                             {
                                 string oldName = methodDeclaration.Identifier.ValueText;
 
-                                string newName = await Identifier.EnsureUniqueAsyncMethodNameAsync(
-                                    methodSymbol,
+                                string newName = await NameGenerators.AsyncMethod.EnsureUniqueMemberNameAsync(
                                     oldName,
-                                    document.Project.Solution,
-                                    cancellationToken).ConfigureAwait(false);
+                                    methodSymbol,
+                                    context.Solution(),
+                                    cancellationToken: context.CancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename '{oldName}' to '{newName}'",
-                                    c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
+                                    c => Renamer.RenameSymbolAsync(context.Solution(), methodSymbol, newName, default(OptionSet), c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -80,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Add return statement that returns default value",
-                                    c => AddReturnStatementThatReturnsDefaultValueRefactoring.RefactorAsync(document, methodDeclaration, c),
+                                    c => AddReturnStatementThatReturnsDefaultValueRefactoring.RefactorAsync(context.Document, methodDeclaration, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -91,15 +88,15 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 string name = methodDeclaration.Identifier.ValueText;
                                 string newName = name.Remove(name.Length - AsyncSuffix.Length);
 
-                                newName = await Identifier.EnsureUniqueMemberNameAsync(
-                                    methodSymbol,
+                                newName = await NameGenerator.Default.EnsureUniqueMemberNameAsync(
                                     newName,
-                                    document.Project.Solution,
-                                    cancellationToken).ConfigureAwait(false);
+                                    methodSymbol,
+                                    context.Solution(),
+                                    cancellationToken: context.CancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename '{name}' to '{newName}'",
-                                    c => Renamer.RenameSymbolAsync(document, methodSymbol, newName, c),
+                                    c => Renamer.RenameSymbolAsync(context.Solution(), methodSymbol, newName, default(OptionSet), c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

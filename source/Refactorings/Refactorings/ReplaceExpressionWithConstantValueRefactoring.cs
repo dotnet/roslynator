@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -33,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             object constantValue,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newExpression = CSharpFactory.ConstantExpression(constantValue);
+            ExpressionSyntax newExpression = CSharpFactory.LiteralExpression(constantValue);
 
             return document.ReplaceNodeAsync(expression, newExpression.WithTriviaFrom(expression), cancellationToken);
         }

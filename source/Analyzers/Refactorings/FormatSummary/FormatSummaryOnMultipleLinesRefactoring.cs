@@ -7,16 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.FormatSummary
 {
     internal static class FormatSummaryOnMultipleLinesRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
+        public static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
         {
+            var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
+
             XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             if (summaryElement?.StartTag?.IsMissing == false

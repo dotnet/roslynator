@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -31,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (typeSymbol?.IsClass() == true
                         && typeSymbol.IsStatic
                         && (typeSymbol.DeclaredAccessibility == Accessibility.Public || typeSymbol.DeclaredAccessibility == Accessibility.Internal)
-                        && !CSharpAnalysis.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
+                        && !CSharpUtility.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))
                     {
                         context.RegisterRefactoring($"using static {typeSymbol};",
                             cancellationToken =>
@@ -59,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newRoot = oldRoot.ReplaceNode(memberAccess, newNode);
 
-            newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(CSharpFactory.UsingStaticDirective(name));
+            newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(CSharpFactory.UsingStaticDirective(SyntaxFactory.ParseName(name)));
 
             return document.WithSyntaxRoot(newRoot);
         }

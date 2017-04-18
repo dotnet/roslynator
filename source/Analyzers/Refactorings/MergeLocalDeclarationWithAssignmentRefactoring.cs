@@ -10,19 +10,20 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeLocalDeclarationWithAssignmentRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, LocalDeclarationStatementSyntax localDeclaration)
+        public static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
         {
+            var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
+
             if (!localDeclaration.IsConst
+                && !localDeclaration.ContainsDiagnostics
                 && !localDeclaration.SpanOrTrailingTriviaContainsDirectives())
             {
                 VariableDeclarationSyntax declaration = localDeclaration.Declaration;
@@ -35,10 +36,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         StatementSyntax nextStatement = localDeclaration.NextStatement();
 
-                        if (nextStatement?.SpanOrLeadingTriviaContainsDirectives() == false)
+                        if (!nextStatement.ContainsDiagnostics
+                            && nextStatement?.SpanOrLeadingTriviaContainsDirectives() == false)
                         {
-                            SimpleAssignmentExpression assignment;
-                            if (SimpleAssignmentExpression.TryCreate(nextStatement, out assignment)
+                            SimpleAssignmentStatement assignment;
+                            if (SimpleAssignmentStatement.TryCreate(nextStatement, out assignment)
                                 && assignment.Left.IsKind(SyntaxKind.IdentifierName))
                             {
                                 SemanticModel semanticModel = context.SemanticModel;
@@ -60,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                                         if (value != null)
                                         {
                                             context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, initializer);
-                                            context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignment.Expression.OperatorToken);
+                                            context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignment.AssignmentExpression.OperatorToken);
                                         }
 
                                         context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localDeclaration.SemicolonToken);
@@ -147,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var localDeclaration = (LocalDeclarationStatementSyntax)declaration.Parent;
 
-            IStatementContainer container = StatementContainer.Create(localDeclaration);
+            StatementContainer container = StatementContainer.Create(localDeclaration);
 
             SyntaxList<StatementSyntax> statements = container.Statements;
 

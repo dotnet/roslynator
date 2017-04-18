@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
@@ -19,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public Task<Document> RefactorAsync(
             Document document,
-            IStatementContainer container,
+            StatementContainer container,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -36,17 +35,17 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public Task<Document> RefactorAsync(
             Document document,
-            IStatementContainer container,
+            StatementContainer container,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSpan binaryExpressionSpan,
+            BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken)
         {
             var ifStatement = (IfStatementSyntax)condition.Parent;
 
-            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSpan)
+            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSelection)
                 .WithFormatterAnnotation();
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSpan.ToString());
+            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSelection.ToString());
 
             SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
 
@@ -54,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
         }
 
         private static SyntaxNode AddNextIf(
-            IStatementContainer container,
+            StatementContainer container,
             IfStatementSyntax ifStatement,
             IfStatementSyntax newIfStatement,
             ExpressionSyntax expression)

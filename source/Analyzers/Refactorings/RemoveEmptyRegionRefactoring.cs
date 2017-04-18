@@ -8,15 +8,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveEmptyRegionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, RegionDirectiveTriviaSyntax region)
+        public static void AnalyzeRegionDirective(SyntaxNodeAnalysisContext context)
         {
+            var region = (RegionDirectiveTriviaSyntax)context.Node;
+
             if (region.IsKind(SyntaxKind.RegionDirectiveTrivia))
             {
                 List<DirectiveTriviaSyntax> relatedDirectives = region.GetRelatedDirectives();
@@ -30,9 +31,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SyntaxTrivia trivia = region.ParentTrivia;
 
-                        SyntaxTriviaList list = trivia.GetContainingList();
-
-                        if (list.Any())
+                        SyntaxTriviaList list;
+                        if (trivia.TryGetContainingList(out list))
                         {
                             EndRegionDirectiveTriviaSyntax endRegion2 = FindEndRegion(list, list.IndexOf(trivia));
 
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
             RegionDirectiveTriviaSyntax regionDirective,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Remover.RemoveRegionAsync(document, regionDirective, cancellationToken);
+            return document.RemoveRegionAsync(regionDirective, cancellationToken);
         }
     }
 }

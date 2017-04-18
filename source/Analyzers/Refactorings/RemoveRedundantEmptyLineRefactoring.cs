@@ -6,16 +6,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantEmptyLineRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ClassDeclarationSyntax classDeclaration)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var classDeclaration = (ClassDeclarationSyntax)context.Node;
+
             AnalyzeDeclaration(
                 context,
                 classDeclaration.Members,
@@ -23,8 +23,10 @@ namespace Roslynator.CSharp.Refactorings
                 classDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, StructDeclarationSyntax structDeclaration)
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var structDeclaration = (StructDeclarationSyntax)context.Node;
+
             AnalyzeDeclaration(
                 context,
                 structDeclaration.Members,
@@ -32,8 +34,10 @@ namespace Roslynator.CSharp.Refactorings
                 structDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, InterfaceDeclarationSyntax interfaceDeclaration)
+        public static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
+
             AnalyzeDeclaration(
                 context,
                 interfaceDeclaration.Members,
@@ -41,8 +45,10 @@ namespace Roslynator.CSharp.Refactorings
                 interfaceDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, NamespaceDeclarationSyntax namespaceDeclaration)
+        public static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
+
             SyntaxList<MemberDeclarationSyntax> members = namespaceDeclaration.Members;
             SyntaxList<ExternAliasDirectiveSyntax> externs = namespaceDeclaration.Externs;
 
@@ -68,8 +74,10 @@ namespace Roslynator.CSharp.Refactorings
                 AnalyzeEnd(context, members.Last(), namespaceDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, SwitchStatementSyntax switchStatement)
+        public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
             if (sections.Any())
@@ -92,8 +100,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, TryStatementSyntax tryStatement)
+        public static void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
         {
+            var tryStatement = (TryStatementSyntax)context.Node;
+
             BlockSyntax block = tryStatement.Block;
 
             if (block != null)
@@ -119,8 +129,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
+        public static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
         {
+            var elseClause = (ElseClauseSyntax)context.Node;
+
             SyntaxNode parent = elseClause.Parent;
 
             if (parent?.IsKind(SyntaxKind.IfStatement) == true)
@@ -139,50 +151,66 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax node)
+        internal static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var ifStatement = (IfStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, ifStatement.CloseParenToken, ifStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, ForEachStatementSyntax node)
+        internal static void AnalyzeForEachStement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var forEachStatement = (ForEachStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, forEachStatement.CloseParenToken, forEachStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, ForStatementSyntax node)
+        internal static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var forStatement = (ForStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, forStatement.CloseParenToken, forStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, UsingStatementSyntax node)
+        internal static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var usingStatement = (UsingStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, usingStatement.CloseParenToken, usingStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, WhileStatementSyntax node)
+        internal static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var whileStatement = (WhileStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, whileStatement.CloseParenToken, whileStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, DoStatementSyntax node)
+        internal static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.DoKeyword, node.Statement);
+            var doStatement = (DoStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, doStatement.DoKeyword, doStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, LockStatementSyntax node)
+        internal static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var lockStatement = (LockStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, lockStatement.CloseParenToken, lockStatement.Statement);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, FixedStatementSyntax node)
+        internal static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeEmbeddedStatement(context, node.CloseParenToken, node.Statement);
+            var fixedStatement = (FixedStatementSyntax)context.Node;
+
+            AnalyzeEmbeddedStatement(context, fixedStatement.CloseParenToken, fixedStatement.Statement);
         }
 
         private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
         {
             if (statement != null
-                && EmbeddedStatement.IsEmbeddedStatement(statement))
+                && EmbeddedStatementHelper.IsEmbeddedStatement(statement))
             {
                 Analyze(context, token, statement);
             }
@@ -270,8 +298,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
+        public static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
         {
+            var accessorList = (AccessorListSyntax)context.Node;
+
             SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 
             if (accessors.Any())

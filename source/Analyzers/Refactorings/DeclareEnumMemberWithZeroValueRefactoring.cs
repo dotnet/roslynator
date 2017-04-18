@@ -8,24 +8,19 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Roslynator.CSharp.CSharpFactory;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class DeclareEnumMemberWithZeroValueRefactoring
     {
-        public static void Analyze(SymbolAnalysisContext context)
+        public static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (namedTypeSymbol.IsEnum()
-                && namedTypeSymbol
-                    .GetAttributes()
-                    .Any(f => f.AttributeClass.Equals(context.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)))
+            if (namedTypeSymbol.IsEnumWithFlagsAttribute(context.Compilation)
                 && !ContainsMemberWithZeroValue(namedTypeSymbol))
             {
                 SyntaxReference syntaxReference = namedTypeSymbol.DeclaringSyntaxReferences.FirstOrDefault();
@@ -55,21 +50,21 @@ namespace Roslynator.CSharp.Refactorings
             switch (enumUnderlyingType.SpecialType)
             {
                 case SpecialType.System_SByte:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((sbyte)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((sbyte)0));
                 case SpecialType.System_Byte:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((byte)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((byte)0));
                 case SpecialType.System_Int16:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((short)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((short)0));
                 case SpecialType.System_UInt16:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((ushort)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((ushort)0));
                 case SpecialType.System_Int32:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((int)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((int)0));
                 case SpecialType.System_UInt32:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((uint)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((uint)0));
                 case SpecialType.System_Int64:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((long)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((long)0));
                 case SpecialType.System_UInt64:
-                    return namedTypeSymbol.GetFields().Any(f => f.HasConstantValue((ulong)0));
+                    return namedTypeSymbol.ExistsField(f => f.HasConstantValue((ulong)0));
                 default:
                     {
                         Debug.Assert(false, enumUnderlyingType.SpecialType.ToString());
@@ -87,13 +82,13 @@ namespace Roslynator.CSharp.Refactorings
 
             INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
 
-            string name = Identifier.EnsureUniqueEnumMemberName(symbol, "None");
+            string name = NameGenerator.Default.EnsureUniqueEnumMemberName("None", symbol);
 
             EnumMemberDeclarationSyntax enumMember = EnumMemberDeclaration(
                 Identifier(name).WithRenameAnnotation(),
                 NumericLiteralExpression(0));
 
-            enumMember = enumMember.WithTrailingTrivia(NewLineTrivia());
+            enumMember = enumMember.WithTrailingTrivia(NewLine());
 
             EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(enumDeclaration.Members.Insert(0, enumMember));
 

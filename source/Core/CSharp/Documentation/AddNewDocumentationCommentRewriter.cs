@@ -3,29 +3,30 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
 
 namespace Roslynator.CSharp.Documentation
 {
     internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
     {
-        public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings)
+        public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true)
         {
             Settings = settings ?? DocumentationCommentGeneratorSettings.Default;
+            SkipNamespaceDeclaration = skipNamespaceDeclaration;
         }
 
+        public bool SkipNamespaceDeclaration { get; }
         public DocumentationCommentGeneratorSettings Settings { get; }
 
         protected virtual MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
         {
-            return DocumentationCommentGenerator.AddNewDocumentationComment(memberDeclaration, Settings);
+            return memberDeclaration.WithNewSingleLineDocumentationComment(Settings);
         }
 
         public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
             node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
 
-            if (!Settings.SkipNamespaceDeclaration
+            if (!SkipNamespaceDeclaration
                 && !node.HasSingleLineDocumentationComment())
             {
                 return AddDocumentationComment(node);

@@ -6,16 +6,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UsePredefinedTypeRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, IdentifierNameSyntax identifierName)
+        public static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
         {
+            var identifierName = (IdentifierNameSyntax)context.Node;
+
             if (!identifierName.IsVar
                 && !identifierName.IsParentKind(
                     SyntaxKind.SimpleMemberAccessExpression,

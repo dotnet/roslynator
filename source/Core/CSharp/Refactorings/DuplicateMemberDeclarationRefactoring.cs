@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -48,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
                         return parent.WithMembers(members.Insert(index + 1, member));
@@ -62,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
                         return parent.WithMembers(members.Insert(index + 1, member));
@@ -76,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
                         return parent.WithMembers(members.Insert(index + 1, member));
@@ -90,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (index == 0
                             && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                         {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLineTrivia()));
+                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
                         return parent.WithMembers(members.Insert(index + 1, member));

@@ -6,17 +6,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddParenthesesAccordingToOperatorPrecedenceRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
+        public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
             SyntaxKind kind = binaryExpression.Kind();
 
             Analyze(context, kind, binaryExpression.Left);
@@ -27,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (expression != null
                 && GetGroupNumber(kind) == GetGroupNumber(expression.Kind())
-                && CSharpAnalysis.GetOperatorPrecedence(expression) < CSharpAnalysis.GetOperatorPrecedence(kind))
+                && CSharpUtility.GetOperatorPrecedence(expression) < CSharpUtility.GetOperatorPrecedence(kind))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence,

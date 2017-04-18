@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -19,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (semanticModel.ContainsDiagnostic(CSharpErrorCodes.CannotImplicitlyConvertType, literalExpression.Span, context.CancellationToken))
+                if (semanticModel.ContainsCompilerDiagnostic(CSharpErrorCodes.CannotImplicitlyConvertType, literalExpression.Span, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
                         "Replace string literal with character literal",

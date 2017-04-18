@@ -9,11 +9,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CodeFixes.Extensions;
 using Roslynator.CSharp.DiagnosticAnalyzers;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.If;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {

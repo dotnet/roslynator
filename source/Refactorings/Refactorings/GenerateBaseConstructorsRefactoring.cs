@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -78,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = classDeclaration.Identifier.ValueText;
 
-            int insertIndex = Inserter.GetMemberInsertIndex(members, SyntaxKind.ConstructorDeclaration);
+            int insertIndex = MemberDeclarationComparer.ByKind.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
 
             int position = (insertIndex == 0)
                 ? classDeclaration.OpenBraceToken.FullSpan.End
@@ -106,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (parameterSymbol.HasExplicitDefaultValue)
                 {
-                    ExpressionSyntax defaultValue = parameterSymbol.ToDefaultExpression();
+                    ExpressionSyntax defaultValue = parameterSymbol.GetDefaultValueSyntax();
 
                     if (defaultValue != null)
                         @default = EqualsValueClause(defaultValue.WithSimplifierAnnotation());

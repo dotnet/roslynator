@@ -6,9 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -33,11 +31,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static StatementSyntax GetEmbeddedStatementThatShouldBeInsideBlock(SyntaxNode node)
         {
-            StatementSyntax statement = EmbeddedStatement.GetBlockOrEmbeddedStatement(node);
+            StatementSyntax statement = EmbeddedStatementHelper.GetBlockOrEmbeddedStatement(node);
 
             if (statement?.IsKind(SyntaxKind.Block) == false)
             {
-                if (!statement.IsSingleLine() || !EmbeddedStatement.FormattingSupportsEmbeddedStatement(node))
+                if (!statement.IsSingleLine() || !EmbeddedStatementHelper.FormattingSupportsEmbeddedStatement(node))
                     return statement;
             }
 

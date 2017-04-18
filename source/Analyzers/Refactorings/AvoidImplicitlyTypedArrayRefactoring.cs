@@ -7,16 +7,15 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidImplicitlyTypedArrayRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ImplicitArrayCreationExpressionSyntax expression)
+        public static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
+            var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
+
             SyntaxToken newKeyword = expression.NewKeyword;
             SyntaxToken openBracket = expression.OpenBracketToken;
             SyntaxToken closeBracket = expression.CloseBracketToken;

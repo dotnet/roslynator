@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -162,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
 
             modifiers = AddAbstractKeywordIfNotPresent(modifiers);
 
-            if (!ModifierComparer.IsListSorted(modifiers))
+            if (!ModifierComparer.Instance.IsListSorted(modifiers))
                 modifiers = TokenList(modifiers.OrderBy(f => f, ModifierComparer.Instance));
 
             return modifiers;

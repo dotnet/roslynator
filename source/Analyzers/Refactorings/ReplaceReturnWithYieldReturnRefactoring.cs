@@ -1,16 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -138,22 +134,26 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.ForEachStatement:
                     {
-                        string identifier = Identifier.EnsureUniqueLocalName(Identifier.DefaultForEachVariableName, returnStatement.SpanStart, semanticModel, cancellationToken);
+                        string name = NameGenerator.Default.EnsureUniqueLocalName(
+                            DefaultNames.ForEachVariable,
+                            semanticModel,
+                            returnStatement.SpanStart,
+                            cancellationToken: cancellationToken);
 
                         YieldStatementSyntax yieldReturnStatement = YieldStatement(
                             SyntaxKind.YieldReturnStatement,
                             Token(default(SyntaxTriviaList), SyntaxKind.YieldKeyword, TriviaList(Space)),
                             returnKeyword.WithoutLeadingTrivia(),
-                            IdentifierName(identifier),
+                            IdentifierName(name),
                             returnStatement.SemicolonToken.WithoutTrailingTrivia());
 
                         StatementSyntax newNode = ForEachStatement(
                             VarType(),
-                            identifier,
+                            name,
                             expression,
                             Block(yieldReturnStatement));
 
-                        if (EmbeddedStatement.IsEmbeddedStatement(returnStatement))
+                        if (EmbeddedStatementHelper.IsEmbeddedStatement(returnStatement))
                             newNode = Block(newNode);
 
                         newNode = newNode.WithTriviaFrom(returnStatement);

@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Extensions;
+using Roslynator.Utilities;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -23,18 +23,17 @@ namespace Roslynator.CSharp.Refactorings
         {
             var namedType = (INamedTypeSymbol)context.Symbol;
 
-            if (namedType.IsEnum()
-                && namedType
-                    .GetAttributes()
-                    .Any(f => f.AttributeClass.Equals(context.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute))))
-            {
+            if (namedType.IsEnumWithFlagsAttribute(context.Compilation))
                 Analyze(context, namedType);
-            }
         }
 
         private static void Analyze(SymbolAnalysisContext context, INamedTypeSymbol enumType)
         {
-            IFieldSymbol[] fields = enumType.GetFields().ToArray();
+            IFieldSymbol[] fields = enumType
+                .GetMembers()
+                .Where(f => f.IsField())
+                .Cast<IFieldSymbol>()
+                .ToArray();
 
             switch (enumType.EnumUnderlyingType.SpecialType)
             {
@@ -45,9 +44,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (sbyte value in EnumHelper.Decompose(values[i]))
+                                foreach (sbyte value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -64,9 +63,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (byte value in EnumHelper.Decompose(values[i]))
+                                foreach (byte value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -83,9 +82,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (short value in EnumHelper.Decompose(values[i]))
+                                foreach (short value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -102,9 +101,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (ushort value in EnumHelper.Decompose(values[i]))
+                                foreach (ushort value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -121,9 +120,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (int value in EnumHelper.Decompose(values[i]))
+                                foreach (int value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -140,9 +139,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (uint value in EnumHelper.Decompose(values[i]))
+                                foreach (uint value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -159,9 +158,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (long value in EnumHelper.Decompose(values[i]))
+                                foreach (long value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -178,9 +177,9 @@ namespace Roslynator.CSharp.Refactorings
                         for (int i = 0; i < values.Length; i++)
                         {
                             if (values[i] != 0
-                                && EnumHelper.IsComposite(values[i]))
+                                && FlagsUtility.IsComposite(values[i]))
                             {
-                                foreach (ulong value in EnumHelper.Decompose(values[i]))
+                                foreach (ulong value in FlagsUtility.Decompose(values[i]))
                                 {
                                     if (Array.IndexOf(values, value) == -1)
                                         ReportDiagnostic(context, fields[i], value.ToString());
@@ -254,13 +253,13 @@ namespace Roslynator.CSharp.Refactorings
 
             INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
 
-            string name = Identifier.EnsureUniqueEnumMemberName(symbol, Identifier.DefaultEnumMemberName);
+            string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, symbol);
 
             EnumMemberDeclarationSyntax enumMember = EnumMemberDeclaration(
                 Identifier(name).WithRenameAnnotation(),
                 ParseExpression(value));
 
-            enumMember = enumMember.WithTrailingTrivia(NewLineTrivia());
+            enumMember = enumMember.WithTrailingTrivia(NewLine());
 
             EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(enumDeclaration.Members.Add(enumMember));
 

@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => SortEnumMembersRefactoring.AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => SortEnumMembersRefactoring.AnalyzeEnumDeclaration(f),
+                SyntaxKind.EnumDeclaration);
         }
     }
 }

@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (IfElseChain.IsTopmostIf(ifStatement))
+            if (ifStatement.IsTopmostIf())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -39,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<IfStatementSyntax> GetIfStatements(IfStatementSyntax ifStatement)
         {
-            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in ifStatement.GetChain())
             {
                 if (ifOrElse.IsIf)
                     yield return ifOrElse.AsIf();
@@ -219,7 +217,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(IfStatementSyntax ifStatement)
         {
-            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in ifStatement.GetChain())
             {
                 if (ifOrElse.IsIf)
                 {

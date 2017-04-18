@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -50,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysisFlags flags = CSharpAnalysis.AnalyzeType(forEachStatement, semanticModel, context.CancellationToken);
+            TypeAnalysisFlags flags = CSharpAnalysis.AnalyzeType(forEachStatement, semanticModel);
 
             if (flags.IsExplicit())
             {
@@ -95,20 +93,20 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         string oldName = identifier.ValueText;
 
-                        string newName = Identifier.CreateName(
+                        string newName = NameGenerator.Default.CreateUniqueLocalName(
                             typeSymbol,
-                            firstCharToLower: true);
+                            oldName,
+                            semanticModel,
+                            forEachStatement.SpanStart,
+                            cancellationToken: context.CancellationToken);
 
-                        if (!string.IsNullOrEmpty(newName)
-                            && !string.Equals(newName, oldName, StringComparison.Ordinal))
+                        if (newName != null)
                         {
-                            newName = Identifier.EnsureUniqueLocalName(newName, forEachStatement.SpanStart, semanticModel, context.CancellationToken);
-
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
                             context.RegisterRefactoring(
                                 $"Rename '{oldName}' to '{newName}'",
-                                cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
+                                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken));
                         }
                     }
                 }

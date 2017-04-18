@@ -54,26 +54,10 @@ namespace Roslynator.CSharp.CodeFixProviders
             }
 
             var tcs = new TaskCompletionSource<object>();
-
             tcs.SetResult(null);
 
             return tcs.Task;
         }
-
-        //private static async Task<Document> RefactorAsync(
-        //    Document document,
-        //    TextSpan span,
-        //    string newLine,
-        //    CancellationToken cancellationToken = default(CancellationToken))
-        //{
-        //    SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-        //    var textChange = new TextChange(span, newLine);
-
-        //    SourceText newSourceText = sourceText.WithChanges(textChange);
-
-        //    return document.WithText(newSourceText);
-        //}
     }
 }
 

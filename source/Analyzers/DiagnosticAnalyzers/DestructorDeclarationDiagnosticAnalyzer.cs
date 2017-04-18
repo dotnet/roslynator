@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -26,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => RemoveEmptyDestructorRefactoring.Analyze(f, (DestructorDeclarationSyntax)f.Node),
+                f => RemoveEmptyDestructorRefactoring.AnalyzeDestructorDeclaration(f),
                 SyntaxKind.DestructorDeclaration);
         }
     }

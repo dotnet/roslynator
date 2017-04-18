@@ -2,7 +2,7 @@
 
 namespace Roslynator
 {
-    public static class MetadataNames
+    internal static class MetadataNames
     {
         public const string System_ArgumentException = "System.ArgumentException";
         public const string System_ArgumentNullException = "System.ArgumentNullException";

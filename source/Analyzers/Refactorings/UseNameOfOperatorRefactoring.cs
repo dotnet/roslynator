@@ -9,17 +9,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseNameOfOperatorRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ArgumentSyntax argument)
+        public static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
+            var argument = (ArgumentSyntax)context.Node;
+
             ExpressionSyntax expression = argument.Expression;
 
             if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true)
@@ -161,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken)
         {
-            InvocationExpressionSyntax newNode = CSharpFactory.NameOf(literalExpression.Token.ValueText)
+            InvocationExpressionSyntax newNode = CSharpFactory.NameOfExpression(literalExpression.Token.ValueText)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);

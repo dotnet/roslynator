@@ -8,16 +8,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddEmptyLineBetweenDeclarationsRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration)
+        public static void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var declaration = (MemberDeclarationSyntax)context.Node;
+
             if (!declaration.IsParentKind(SyntaxKind.CompilationUnit))
             {
                 TokenPair tokenPair = GetTokenPair(declaration);
@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             MemberDeclarationSyntax newNode = memberDeclaration
-                .WithTrailingTrivia(memberDeclaration.GetTrailingTrivia().Add(CSharpFactory.NewLineTrivia()));
+                .WithTrailingTrivia(memberDeclaration.GetTrailingTrivia().Add(CSharpFactory.NewLine()));
 
             return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }

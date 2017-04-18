@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             PropertyDeclarationSyntax newNode = propertyDeclaration
                 .WithInitializer(null)
-                .WithSemicolonToken(NoneToken())
+                .WithSemicolonToken(default(SyntaxToken))
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 

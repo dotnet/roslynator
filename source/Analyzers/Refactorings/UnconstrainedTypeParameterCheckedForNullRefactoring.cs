@@ -6,9 +6,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -28,14 +27,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
         {
-            ExpressionSyntax left = binaryExpression.Left;
-
-            if (left?.IsMissing == false)
+            if (!binaryExpression.ContainsDiagnostics)
             {
-                ExpressionSyntax right = binaryExpression.Right;
-
-                if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true
-                    && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(left, context.CancellationToken))
+                EqualsToNullExpression equalsToNull;
+                if (EqualsToNullExpression.TryCreate(binaryExpression, out equalsToNull)
+                    && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(equalsToNull.Left, context.CancellationToken))
                     && !binaryExpression.SpanContainsDirectives())
                 {
                     context.ReportDiagnostic(DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);

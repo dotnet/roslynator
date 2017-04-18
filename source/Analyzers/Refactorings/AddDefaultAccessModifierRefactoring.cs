@@ -10,9 +10,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -220,7 +219,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxTokenList newModifiers = GetNewModifiers(modifiers, accessibility);
 
-            MemberDeclarationSyntax newNode = memberDeclaration.SetModifiers(newModifiers);
+            MemberDeclarationSyntax newNode = memberDeclaration.WithModifiers(newModifiers);
 
             return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
@@ -231,24 +230,24 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case Accessibility.Public:
                     {
-                        return Inserter.InsertModifier(modifiers, SyntaxKind.PublicKeyword);
+                        return modifiers.InsertModifier(SyntaxKind.PublicKeyword, ModifierComparer.Instance);
                     }
                 case Accessibility.Internal:
                     {
-                        return Inserter.InsertModifier(modifiers, SyntaxKind.InternalKeyword);
+                        return modifiers.InsertModifier(SyntaxKind.InternalKeyword, ModifierComparer.Instance);
                     }
                 case Accessibility.Protected:
                     {
-                        return Inserter.InsertModifier(modifiers, SyntaxKind.ProtectedKeyword);
+                        return modifiers.InsertModifier(SyntaxKind.ProtectedKeyword, ModifierComparer.Instance);
                     }
                 case Accessibility.ProtectedOrInternal:
                     {
-                        modifiers = Inserter.InsertModifier(modifiers, SyntaxKind.ProtectedKeyword);
-                        return Inserter.InsertModifier(modifiers, SyntaxKind.InternalKeyword);
+                        modifiers = modifiers.InsertModifier(SyntaxKind.ProtectedKeyword, ModifierComparer.Instance);
+                        return modifiers.InsertModifier(SyntaxKind.InternalKeyword, ModifierComparer.Instance);
                     }
                 case Accessibility.Private:
                     {
-                        return Inserter.InsertModifier(modifiers, SyntaxKind.PrivateKeyword);
+                        return modifiers.InsertModifier(SyntaxKind.PrivateKeyword, ModifierComparer.Instance);
                     }
                 default:
                     {

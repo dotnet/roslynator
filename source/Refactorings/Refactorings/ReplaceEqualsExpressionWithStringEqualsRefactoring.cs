@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -59,9 +57,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            INamedTypeSymbol symbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
-
-            IFieldSymbol fieldSymbol = GetDefaultFieldSymbol(symbol);
+            IFieldSymbol fieldSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison).FindFieldWithConstantValue(0);
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
@@ -82,27 +78,6 @@ namespace Roslynator.CSharp.Refactorings
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static IFieldSymbol GetDefaultFieldSymbol(INamedTypeSymbol symbol)
-        {
-            foreach (IFieldSymbol fieldSymbol in symbol.GetFields())
-            {
-                if (fieldSymbol.HasConstantValue)
-                {
-                    object constantValue = fieldSymbol.ConstantValue;
-
-                    if (constantValue is int)
-                    {
-                        var value = (int)constantValue;
-
-                        if (value == 0)
-                            return fieldSymbol;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

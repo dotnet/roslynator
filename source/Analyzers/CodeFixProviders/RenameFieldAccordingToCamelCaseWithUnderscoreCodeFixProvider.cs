@@ -8,8 +8,8 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CodeFixes.Extensions;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -38,9 +38,13 @@ namespace Roslynator.CSharp.CodeFixProviders
             ISymbol symbol = semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
             string oldName = declarator.Identifier.ValueText;
-            string newName = Identifier.ToCamelCase(oldName, prefixWithUnderscore: true);
+            string newName = StringUtility.ToCamelCase(oldName, prefixWithUnderscore: true);
 
-            newName = Identifier.EnsureUniqueMemberName(newName, declarator.Identifier.SpanStart, semanticModel, context.CancellationToken);
+            newName = NameGenerator.Default.EnsureUniqueMemberName(
+                newName,
+                semanticModel,
+                declarator.Identifier.SpanStart,
+                cancellationToken: context.CancellationToken);
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename '{oldName}' to '{newName}'",

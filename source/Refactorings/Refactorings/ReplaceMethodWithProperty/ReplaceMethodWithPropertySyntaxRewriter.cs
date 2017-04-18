@@ -5,8 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -153,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
             AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
             if (singleline)
-                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);
+                accessorList = accessorList.RemoveWhitespaceOrEndOfLineTrivia();
 
             return accessorList;
         }

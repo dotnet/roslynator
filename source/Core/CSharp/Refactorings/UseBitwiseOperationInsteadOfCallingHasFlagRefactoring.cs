@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -31,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                     MethodInfo info = semanticModel.GetMethodInfo(memberAccess, cancellationToken);
 
                     if (info.IsValid
-                        && info.HasName("HasFlag")
+                        && info.IsName("HasFlag")
                         && !info.IsExtensionMethod
                         && info.IsReturnType(SpecialType.System_Boolean)
                         && info.Symbol.SingleParameterOrDefault()?.Type.SpecialType == SpecialType.System_Enum

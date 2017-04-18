@@ -11,8 +11,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -103,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             if (statements.Any())
             {
                 if (count > 0)
-                    ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLineTrivia());
+                    ifStatements[0] = ifStatements[0].WithLeadingTrivia(NewLine());
 
                 if (count != statements.Count)
                 {
@@ -119,11 +117,11 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (lineCount <= 2)
                     {
-                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(TriviaList(NewLineTrivia(), NewLineTrivia()));
+                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(TriviaList(NewLine(), NewLine()));
                     }
                     else if (lineCount == 3)
                     {
-                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLineTrivia());
+                        ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(NewLine());
                     }
                 }
             }
@@ -148,13 +146,13 @@ namespace Roslynator.CSharp.Refactorings
                     ThrowStatement(
                         ObjectCreationExpression(
                             type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
-                            argumentList: ArgumentList(Argument(NameOf(parameters[i].Identifier.ValueText))),
+                            argumentList: ArgumentList(Argument(NameOfExpression(parameters[i].Identifier.ValueText))),
                             initializer: default(InitializerExpressionSyntax))));
 
                 if (i > 0)
                 {
-                    ifStatements[i - 1] = ifStatements[i - 1].WithTrailingTrivia(NewLineTrivia());
-                    ifStatement = ifStatement.WithLeadingTrivia(NewLineTrivia());
+                    ifStatements[i - 1] = ifStatements[i - 1].WithTrailingTrivia(NewLine());
+                    ifStatement = ifStatement.WithLeadingTrivia(NewLine());
                 }
 
                 ifStatements.Add(ifStatement);

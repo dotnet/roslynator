@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -32,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var methodSymbol = semanticModel.GetSymbol(expression, cancellationToken) as IMethodSymbol;
 
-                return methodSymbol?.ReturnType.IsTaskOrDerivedFromTask(semanticModel) == true
+                return methodSymbol?.ReturnType.IsTaskOrInheritsFromTask(semanticModel) == true
                     && semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) != null;
             }
 

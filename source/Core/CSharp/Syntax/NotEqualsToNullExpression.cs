@@ -4,8 +4,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Syntax
 {
@@ -30,41 +28,58 @@ namespace Roslynator.CSharp.Syntax
             get { return Left?.Parent; }
         }
 
-        public static bool TryCreate(ExpressionSyntax equalsExpression, out NotEqualsToNullExpression notEqualsToNull)
+        public static NotEqualsToNullExpression Create(BinaryExpressionSyntax notEqualsExpression)
         {
-            if (equalsExpression?.IsKind(SyntaxKind.NotEqualsExpression) == true)
-                return TryCreateCore((BinaryExpressionSyntax)equalsExpression, out notEqualsToNull);
+            if (notEqualsExpression == null)
+                throw new ArgumentNullException(nameof(notEqualsExpression));
 
-            notEqualsToNull = default(NotEqualsToNullExpression);
-            return false;
-        }
+            if (!notEqualsExpression.IsKind(SyntaxKind.NotEqualsExpression))
+                throw new ArgumentException("", nameof(notEqualsExpression));
 
-        public static bool TryCreate(BinaryExpressionSyntax equalsExpression, out NotEqualsToNullExpression notEqualsToNull)
-        {
-            if (equalsExpression?.IsKind(SyntaxKind.NotEqualsExpression) == true)
-                return TryCreateCore(equalsExpression, out notEqualsToNull);
+            ExpressionSyntax left = notEqualsExpression.Left;
 
-            notEqualsToNull = default(NotEqualsToNullExpression);
-            return false;
-        }
+            ExpressionSyntax right = notEqualsExpression.Right;
 
-        private static bool TryCreateCore(BinaryExpressionSyntax equalsExpression, out NotEqualsToNullExpression notEqualsToNull)
-        {
-            ExpressionSyntax left = equalsExpression.Left;
-
-            if (left?.IsMissing == false)
+            if (right == null
+                || !right.IsKind(SyntaxKind.NullLiteralExpression))
             {
-                ExpressionSyntax right = equalsExpression.Right;
-
-                if (right?.IsMissing == false
-                    && right.IsKind(SyntaxKind.NullLiteralExpression))
-                {
-                    notEqualsToNull = new NotEqualsToNullExpression(left, right);
-                    return true;
-                }
+                throw new ArgumentException("", nameof(notEqualsExpression));
             }
 
-            notEqualsToNull = default(NotEqualsToNullExpression);
+            return new NotEqualsToNullExpression(left, right);
+        }
+
+        public static bool TryCreate(SyntaxNode notEqualsExpression, out NotEqualsToNullExpression result)
+        {
+            if (notEqualsExpression?.IsKind(SyntaxKind.NotEqualsExpression) == true)
+                return TryCreateCore((BinaryExpressionSyntax)notEqualsExpression, out result);
+
+            result = default(NotEqualsToNullExpression);
+            return false;
+        }
+
+        public static bool TryCreate(BinaryExpressionSyntax notEqualsExpression, out NotEqualsToNullExpression result)
+        {
+            if (notEqualsExpression?.IsKind(SyntaxKind.NotEqualsExpression) == true)
+                return TryCreateCore(notEqualsExpression, out result);
+
+            result = default(NotEqualsToNullExpression);
+            return false;
+        }
+
+        private static bool TryCreateCore(BinaryExpressionSyntax notEqualsExpression, out NotEqualsToNullExpression result)
+        {
+            ExpressionSyntax left = notEqualsExpression.Left;
+
+            ExpressionSyntax right = notEqualsExpression.Right;
+
+            if (right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+            {
+                result = new NotEqualsToNullExpression(left, right);
+                return true;
+            }
+
+            result = default(NotEqualsToNullExpression);
             return false;
         }
 

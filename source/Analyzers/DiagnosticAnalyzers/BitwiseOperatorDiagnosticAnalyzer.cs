@@ -2,13 +2,10 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -62,30 +59,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                return IsEnumWithoutFlags(typeSymbol, context.SemanticModel);
-            }
-
-            return false;
-        }
-
-        public static bool IsEnumWithoutFlags(ITypeSymbol typeSymbol, SemanticModel semanticModel)
-        {
-            if (typeSymbol?.IsEnum() == true)
-            {
-                ImmutableArray<AttributeData> attributes = typeSymbol.GetAttributes();
-
-                if (attributes.Any())
-                {
-                    INamedTypeSymbol flagsAttribute = semanticModel.GetTypeByMetadataName("System.FlagsAttribute");
-
-                    for (int i = 0; i < attributes.Length; i++)
-                    {
-                        if (attributes[i].AttributeClass.Equals(flagsAttribute))
-                            return false;
-                    }
-                }
-
-                return true;
+                return typeSymbol?.IsEnum() == true
+                    && !typeSymbol.HasAttribute(context.SemanticModel.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute));
             }
 
             return false;

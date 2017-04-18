@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -64,10 +62,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        INamedTypeSymbol containingType = semanticModel.GetDeclaredSymbol(property, context.CancellationToken)?.ContainingType;
-
-                        return containingType != null
-                            && SymbolUtility.ImplementsINotifyPropertyChanged(containingType, semanticModel);
+                        return semanticModel
+                            .GetDeclaredSymbol(property, context.CancellationToken)?
+                            .ContainingType?
+                            .Implements(semanticModel.GetTypeByMetadataName(MetadataNames.System_ComponentModel_INotifyPropertyChanged)) == true;
                     }
                 }
             }
@@ -101,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (supportsCSharp6)
             {
-                argumentExpression = NameOf(propertyName);
+                argumentExpression = NameOfExpression(propertyName);
             }
             else
             {

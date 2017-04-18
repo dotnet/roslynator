@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Extensions
+namespace Roslynator
 {
     public static class DiagnosticExtensions
     {

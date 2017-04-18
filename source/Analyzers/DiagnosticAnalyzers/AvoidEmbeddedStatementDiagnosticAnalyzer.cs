@@ -6,8 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -40,7 +38,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            StatementSyntax statement = EmbeddedStatement.GetEmbeddedStatement(context.Node);
+            StatementSyntax statement = EmbeddedStatementHelper.GetEmbeddedStatement(context.Node);
 
             if (statement != null)
             {

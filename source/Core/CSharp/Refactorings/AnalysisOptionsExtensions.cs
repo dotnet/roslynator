@@ -2,7 +2,6 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {

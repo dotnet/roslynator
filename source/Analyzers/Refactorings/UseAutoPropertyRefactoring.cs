@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,8 +17,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseAutoPropertyRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
+        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var property = (PropertyDeclarationSyntax)context.Node;
+
             IFieldSymbol fieldSymbol = GetBackingFieldSymbol(context, property);
 
             if (fieldSymbol != null)
@@ -132,14 +132,22 @@ namespace Roslynator.CSharp.Refactorings
 
         private static NameSyntax GetIdentifierFromGetter(AccessorDeclarationSyntax getter)
         {
-            if (getter != null
-                && getter.Body != null
-                && getter.Body.Statements.Count == 1
-                && getter.Body.Statements[0].IsKind(SyntaxKind.ReturnStatement))
+            if (getter != null)
             {
-                var returnStatement = (ReturnStatementSyntax)getter.Body.Statements[0];
+                BlockSyntax body = getter.Body;
 
-                return GetIdentifierFromExpression(returnStatement.Expression);
+                if (body != null)
+                {
+                    SyntaxList<StatementSyntax> statements = body.Statements;
+
+                    if (statements.Count == 1
+                        && statements[0].IsKind(SyntaxKind.ReturnStatement))
+                    {
+                        var returnStatement = (ReturnStatementSyntax)statements[0];
+
+                        return GetIdentifierFromExpression(returnStatement.Expression);
+                    }
+                }
             }
 
             return null;
@@ -147,21 +155,33 @@ namespace Roslynator.CSharp.Refactorings
 
         private static NameSyntax GetIdentifierFromSetter(AccessorDeclarationSyntax setter)
         {
-            if (setter != null
-                && setter.Body != null
-                && setter.Body.Statements.Count == 1
-                && setter.Body.Statements[0].IsKind(SyntaxKind.ExpressionStatement))
+            if (setter != null)
             {
-                var statement = (ExpressionStatementSyntax)setter.Body.Statements[0];
+                BlockSyntax body = setter.Body;
 
-                if (statement.Expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+                if (body != null)
                 {
-                    var assignment = (AssignmentExpressionSyntax)statement.Expression;
+                    SyntaxList<StatementSyntax> statements = body.Statements;
 
-                    if (assignment.Right?.IsKind(SyntaxKind.IdentifierName) == true
-                        && ((IdentifierNameSyntax)assignment.Right).Identifier.ValueText == "value")
+                    if (statements.Count == 1
+                        && statements[0].IsKind(SyntaxKind.ExpressionStatement))
                     {
-                        return GetIdentifierFromExpression(assignment.Left);
+                        var statement = (ExpressionStatementSyntax)statements[0];
+
+                        ExpressionSyntax expression = statement.Expression;
+
+                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+                        {
+                            var assignment = (AssignmentExpressionSyntax)expression;
+
+                            ExpressionSyntax right = assignment.Right;
+
+                            if (right?.IsKind(SyntaxKind.IdentifierName) == true
+                                && ((IdentifierNameSyntax)right).Identifier.ValueText == "value")
+                            {
+                                return GetIdentifierFromExpression(assignment.Left);
+                            }
+                        }
                     }
                 }
             }
@@ -222,23 +242,21 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
         {
-            DiagnosticDescriptor descriptor = DiagnosticDescriptors.UseAutoPropertyFadeOut;
-
             if (property.ExpressionBody != null)
             {
-                context.ReportNode(descriptor, property.ExpressionBody);
+                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
             }
             else
             {
                 AccessorDeclarationSyntax getter = property.Getter();
 
                 if (getter != null)
-                    context.ReportNode(descriptor, getter.Body);
+                    context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, getter.Body);
 
                 AccessorDeclarationSyntax setter = property.Setter();
 
                 if (setter != null)
-                    context.ReportNode(descriptor, setter.Body);
+                    context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, setter.Body);
             }
         }
 
@@ -263,7 +281,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int fieldIndex = members.IndexOf((FieldDeclarationSyntax)variableDeclaration.Parent);
 
-            ImmutableArray<SyntaxNode> oldNodes = await document.FindSymbolNodesAsync(fieldSymbol, cancellationToken).ConfigureAwait(false);
+            ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             IdentifierNameSyntax newNode = IdentifierName(property.Identifier);
 
@@ -290,7 +308,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 members = members.Replace(field, newField.WithFormatterAnnotation());
 
-                newParentMember = newParentMember.SetMembers(members);
+                newParentMember = newParentMember.WithMembers(members);
             }
 
             members = newParentMember.GetMembers();
@@ -301,7 +319,7 @@ namespace Roslynator.CSharp.Refactorings
 
             members = members.Replace(property, newProperty);
 
-            newParentMember = newParentMember.SetMembers(members);
+            newParentMember = newParentMember.WithMembers(members);
 
             return await document.ReplaceNodeAsync(parentMember, newParentMember, cancellationToken).ConfigureAwait(false);
         }
@@ -328,7 +346,7 @@ namespace Roslynator.CSharp.Refactorings
                 .DescendantTrivia()
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);
+                accessorList = accessorList.RemoveWhitespaceOrEndOfLineTrivia();
             }
 
             PropertyDeclarationSyntax newProperty = property

@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Text.Extensions;
+using Roslynator.CSharp.Comparers;
+using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -45,24 +44,29 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
 
-                                    if (eventArgsSymbol != null
-                                        && !MethodExists(eventSymbol, containingType, eventArgsSymbol))
+                                    if (eventArgsSymbol != null)
                                     {
                                         string methodName = "On" + eventSymbol.Name;
-                                        methodName = Identifier.EnsureUniqueMemberName(methodName, containingType);
 
-                                        context.RegisterRefactoring(
-                                            $"Generate '{methodName}' method",
-                                            cancellationToken =>
-                                            {
-                                                return RefactorAsync(
-                                                    context.Document,
-                                                    eventFieldDeclaration,
-                                                    eventSymbol,
-                                                    eventArgsSymbol,
-                                                    context.SupportsCSharp6,
-                                                    cancellationToken);
-                                            });
+                                        if (!containingType.ExistsMethod(
+                                            $"On{eventSymbol.Name}",
+                                            methodSymbol => eventArgsSymbol.Equals(methodSymbol.SingleParameterOrDefault()?.Type)))
+                                        {
+                                            methodName = NameGenerator.Default.EnsureUniqueMemberName(methodName, containingType);
+
+                                            context.RegisterRefactoring(
+                                                $"Generate '{methodName}' method",
+                                                cancellationToken =>
+                                                {
+                                                    return RefactorAsync(
+                                                        context.Document,
+                                                        eventFieldDeclaration,
+                                                        eventSymbol,
+                                                        eventArgsSymbol,
+                                                        context.SupportsCSharp6,
+                                                        cancellationToken);
+                                                });
+                                        }
                                     }
                                 }
                             }
@@ -70,17 +74,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        private static bool MethodExists(IEventSymbol eventSymbol, INamedTypeSymbol containingType, ITypeSymbol eventArgsSymbol)
-        {
-            foreach (IMethodSymbol methodSymbol in containingType.GetMethods($"On{eventSymbol.Name}"))
-            {
-                if (eventArgsSymbol.Equals(methodSymbol.SingleParameterOrDefault()?.Type))
-                    return true;
-            }
-
-            return false;
         }
 
         private static ITypeSymbol GetEventArgsSymbol(INamedTypeSymbol eventHandlerType, SemanticModel semanticModel)
@@ -114,9 +107,9 @@ namespace Roslynator.CSharp.Refactorings
             MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6)
                 .WithFormatterAnnotation();
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = Inserter.InsertMember(members, method);
+            SyntaxList<MemberDeclarationSyntax> newMembers = members.InsertMember(method, MemberDeclarationComparer.ByKind);
 
-            return document.ReplaceNodeAsync(containingMember, containingMember.SetMembers(newMembers), cancellationToken);
+            return document.ReplaceNodeAsync(containingMember, containingMember.WithMembers(newMembers), cancellationToken);
         }
 
         private static MethodDeclarationSyntax CreateOnEventMethod(
@@ -135,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),
                 default(TypeParameterListSyntax),
-                ParameterList(Parameter(eventArgsType, Identifier(Identifier.DefaultEventArgsVariableName))),
+                ParameterList(Parameter(eventArgsType, Identifier(DefaultNames.EventArgsVariable))),
                 default(SyntaxList<TypeParameterConstraintClauseSyntax>),
                 Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
                 default(ArrowExpressionClauseSyntax));
@@ -154,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
                             MemberBindingExpression(IdentifierName("Invoke")),
                             ArgumentList(
                                 Argument(ThisExpression()),
-                                Argument(IdentifierName(Identifier.DefaultEventArgsVariableName))))));
+                                Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
             }
             else
             {
@@ -162,17 +155,17 @@ namespace Roslynator.CSharp.Refactorings
                     VariableDeclaration(
                         eventSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
                         VariableDeclarator(
-                            Identifier(Identifier.DefaultEventHandlerVariableName),
+                            Identifier(DefaultNames.EventHandlerVariable),
                             EqualsValueClause(IdentifierName(eventSymbol.Name)))));
 
                 yield return IfStatement(
                     NotEqualsExpression(
-                        IdentifierName(Identifier.DefaultEventHandlerVariableName),
+                        IdentifierName(DefaultNames.EventHandlerVariable),
                         NullLiteralExpression()),
                     ExpressionStatement(
                         InvocationExpression(
-                            IdentifierName(Identifier.DefaultEventHandlerVariableName),
-                            ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(Identifier.DefaultEventArgsVariableName))))));
+                            IdentifierName(DefaultNames.EventHandlerVariable),
+                            ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
             }
         }
     }

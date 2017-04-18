@@ -3,13 +3,11 @@
 using System;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Extensions
+namespace Roslynator.CSharp
 {
     public static class SymbolExtensions
     {
@@ -18,19 +16,58 @@ namespace Roslynator.CSharp.Extensions
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
 
-        public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat = null)
+        #region IParameterSymbol
+        internal static ExpressionSyntax GetDefaultValueSyntax(this IParameterSymbol parameterSymbol)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (parameterSymbol.HasExplicitDefaultValue)
+            {
+                object value = parameterSymbol.ExplicitDefaultValue;
+
+                ITypeSymbol type = parameterSymbol.Type;
+
+                if (type.IsEnum())
+                {
+                    if (value != null)
+                    {
+                        IFieldSymbol fieldSymbol = type.FindField(f => f.HasConstantValue && value.Equals(f.ConstantValue));
+
+                        if (fieldSymbol != null)
+                        {
+                            return SimpleMemberAccessExpression(type.ToTypeSyntax(), IdentifierName(fieldSymbol.Name));
+                        }
+                        else
+                        {
+                            return CastExpression(type.ToTypeSyntax().WithSimplifierAnnotation(), LiteralExpression(value));
+                        }
+                    }
+                }
+                else
+                {
+                    return LiteralExpression(value);
+                }
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region ITypeSymbol
+        public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat format = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            symbolDisplayFormat = symbolDisplayFormat ?? DefaultSymbolDisplayFormat;
+            format = format ?? DefaultSymbolDisplayFormat;
 
-            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, format);
 
-            return ParseTypeName(typeSymbol.ToDisplayString(symbolDisplayFormat));
+            return ParseTypeName(typeSymbol.ToDisplayString(format));
         }
 
-        public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat symbolDisplayFormat = null)
+        public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -38,22 +75,28 @@ namespace Roslynator.CSharp.Extensions
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            symbolDisplayFormat = symbolDisplayFormat ?? DefaultSymbolDisplayFormat;
+            format = format ?? DefaultSymbolDisplayFormat;
 
-            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, symbolDisplayFormat);
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, format);
 
-            return ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, symbolDisplayFormat));
+            return ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, format));
         }
 
-        public static ExpressionSyntax ToDefaultExpression(this ITypeSymbol typeSymbol, TypeSyntax type = null)
+        private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol, SymbolDisplayFormat format)
+        {
+            if (!typeSymbol.SupportsExplicitDeclaration())
+                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(format)}' does not support explicit declaration.", nameof(typeSymbol));
+        }
+
+        public static ExpressionSyntax ToDefaultValueSyntax(this ITypeSymbol typeSymbol, TypeSyntax type = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            return ToDefaultExpression(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
+            return ToDefaultValueSyntax(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
         }
 
-        public static ExpressionSyntax ToDefaultExpression(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        public static ExpressionSyntax ToDefaultValueSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
@@ -61,10 +104,10 @@ namespace Roslynator.CSharp.Extensions
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            return ToDefaultExpression(typeSymbol, default(TypeSyntax), semanticModel, position, format);
+            return ToDefaultValueSyntax(typeSymbol, default(TypeSyntax), semanticModel, position, format);
         }
 
-        private static ExpressionSyntax ToDefaultExpression(ITypeSymbol typeSymbol, TypeSyntax type, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        private static ExpressionSyntax ToDefaultValueSyntax(ITypeSymbol typeSymbol, TypeSyntax type, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (typeSymbol.IsErrorType())
                 return null;
@@ -122,48 +165,6 @@ namespace Roslynator.CSharp.Extensions
             Debug.Assert(type != null);
 
             return DefaultExpression(type);
-        }
-
-        public static ExpressionSyntax ToDefaultExpression(this IParameterSymbol parameterSymbol)
-        {
-            if (parameterSymbol == null)
-                throw new ArgumentNullException(nameof(parameterSymbol));
-
-            if (parameterSymbol.HasExplicitDefaultValue)
-            {
-                object value = parameterSymbol.ExplicitDefaultValue;
-
-                ITypeSymbol type = parameterSymbol.Type;
-
-                if (type.IsEnum())
-                {
-                    if (value != null)
-                    {
-                        foreach (IFieldSymbol fieldSymbol in type.GetFields())
-                        {
-                            if (fieldSymbol.HasConstantValue
-                                && value.Equals(fieldSymbol.ConstantValue))
-                            {
-                                return SimpleMemberAccessExpression(type.ToTypeSyntax(), IdentifierName(fieldSymbol.Name));
-                            }
-                        }
-
-                        return CastExpression(type.ToTypeSyntax().WithSimplifierAnnotation(), ConstantExpression(value));
-                    }
-                }
-                else
-                {
-                    return ConstantExpression(value);
-                }
-            }
-
-            return null;
-        }
-
-        private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol, SymbolDisplayFormat symbolDisplayFormat)
-        {
-            if (!typeSymbol.SupportsExplicitDeclaration())
-                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(symbolDisplayFormat)}' does not support explicit declaration.", nameof(typeSymbol));
         }
 
         public static bool SupportsPredefinedType(this ITypeSymbol typeSymbol)
@@ -245,5 +246,6 @@ namespace Roslynator.CSharp.Extensions
 
             return typeSymbol.IsEnum();
         }
+        #endregion
     }
 }

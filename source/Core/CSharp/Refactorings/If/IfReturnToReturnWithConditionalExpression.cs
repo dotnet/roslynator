@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -36,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            IStatementContainer container = StatementContainer.Create(IfStatement);
+            StatementContainer container = StatementContainer.Create(IfStatement);
 
             SyntaxList<StatementSyntax> statements = container.Statements;
 

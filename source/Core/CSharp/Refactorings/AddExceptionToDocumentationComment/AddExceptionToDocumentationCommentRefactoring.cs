@@ -10,8 +10,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
@@ -42,16 +40,13 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            if (exceptionSymbol?.IsErrorType() == false
-                && SymbolUtility.IsException(exceptionSymbol, semanticModel))
+            if (exceptionSymbol.InheritsFromException(semanticModel))
             {
                 ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
                 if (declarationSymbol != null)
                 {
-                    var containingMember = declarationSymbol
-                        .DeclaringSyntaxReferences[0]
-                        .GetSyntax(cancellationToken) as MemberDeclarationSyntax;
+                    var containingMember = declarationSymbol.GetSyntax(cancellationToken) as MemberDeclarationSyntax;
 
                     if (containingMember != null)
                     {
@@ -115,8 +110,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-                if (typeSymbol?.IsErrorType() == false
-                    && SymbolUtility.IsException(typeSymbol, semanticModel))
+                if (typeSymbol.InheritsFromException(semanticModel))
                 {
                     DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
 
@@ -133,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
         private static bool ContainsException(DocumentationCommentTriviaSyntax comment, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            foreach (XmlElementSyntax xmlElement in comment.ExceptionElements())
+            foreach (XmlElementSyntax xmlElement in comment.Elements("exception"))
             {
                 XmlElementStartTagSyntax startTag = xmlElement.StartTag;
 

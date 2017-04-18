@@ -7,15 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantCommaInInitializerRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, InitializerExpressionSyntax initializer)
+        public static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
         {
+            var initializer = (InitializerExpressionSyntax)context.Node;
+
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
             if (expressions.Any()

@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveEmptyDestructorRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, DestructorDeclarationSyntax destructor)
+        public static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var destructor = (DestructorDeclarationSyntax)context.Node;
+
             if (destructor.Body?.Statements.Count == 0
                 && !destructor.SpanContainsDirectives())
             {
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             DestructorDeclarationSyntax destructorDeclaration,
             CancellationToken cancellationToken)
         {
-            return Remover.RemoveMemberAsync(document, destructorDeclaration, cancellationToken);
+            return document.RemoveMemberAsync(destructorDeclaration, cancellationToken);
         }
     }
 }

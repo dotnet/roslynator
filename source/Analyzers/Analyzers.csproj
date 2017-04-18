@@ -93,7 +93,6 @@
     <Compile Include="DiagnosticAnalyzers\UseVarWhenTypeIsNotObviousDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereAndAnyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
@@ -373,7 +372,7 @@
     <Compile Include="DiagnosticAnalyzers\ThrowStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsingDirectiveDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="Extensions\DiagnosticDescriptorExtensions.cs" />
+    <Compile Include="DiagnosticDescriptorExtensions.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBooleanLiteralRefactoring.cs" />

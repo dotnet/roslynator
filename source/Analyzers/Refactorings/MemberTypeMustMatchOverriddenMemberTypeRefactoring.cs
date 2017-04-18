@@ -7,71 +7,66 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MemberTypeMustMatchOverriddenMemberTypeRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        internal static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
-            {
-                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-                if (methodSymbol?.OverriddenMethod != null)
-                    Analyze(context, methodDeclaration.Identifier);
+            if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                && ((IMethodSymbol)context.ContainingSymbol)?.OverriddenMethod != null)
+            {
+                Analyze(context, methodDeclaration.Identifier);
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax propertyDeclaration)
+        internal static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
-            {
-                IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-                if (propertySymbol?.OverriddenProperty != null)
-                    Analyze(context, propertyDeclaration.Identifier);
+            if (propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
+            {
+                Analyze(context, propertyDeclaration.Identifier);
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, IndexerDeclarationSyntax indexerDeclaration)
+        internal static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
-            {
-                IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(indexerDeclaration, context.CancellationToken);
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-                if (propertySymbol?.OverriddenProperty != null)
-                    Analyze(context, indexerDeclaration.ThisKeyword);
+            if (indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
+            {
+                Analyze(context, indexerDeclaration.ThisKeyword);
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, EventDeclarationSyntax eventDeclaration)
+        internal static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
-            {
-                IEventSymbol eventSymbol = context.SemanticModel.GetDeclaredSymbol(eventDeclaration, context.CancellationToken);
+            var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
-                if (eventSymbol?.OverriddenEvent != null)
-                    Analyze(context, eventDeclaration.Identifier);
+            if (eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
+            {
+                Analyze(context, eventDeclaration.Identifier);
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
+        internal static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
+            var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
+
+            if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
             {
                 VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.FirstOrDefault();
 
                 if (declarator != null)
-                {
-                    var eventSymbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken) as IEventSymbol;
-
-                    if (eventSymbol?.OverriddenEvent != null)
-                        Analyze(context, declarator.Identifier);
-                }
+                    Analyze(context, declarator.Identifier);
             }
         }
 

@@ -11,10 +11,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.CSharp.Syntax;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -200,7 +197,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             HashSet<AwaitExpressionSyntax> awaitExpressions = null;
 
-            foreach (IfStatementOrElseClause ifOrElse in IfElseChain.GetChain(ifStatement))
+            foreach (IfStatementOrElseClause ifOrElse in ifStatement.GetChain())
             {
                 if (ifOrElse.IsElse
                     && !endsWithElse)
@@ -231,7 +228,7 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (SwitchSectionSyntax section in switchStatement.Sections)
             {
-                if (section.IsDefault())
+                if (section.ContainsDefaultLabel())
                 {
                     if (containsDefaultSection)
                     {
@@ -422,7 +419,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             MethodDeclarationSyntax newNode = AwaitRemover.Visit(methodDeclaration, semanticModel, cancellationToken);
 
-            newNode = Remover.RemoveModifier(newNode, SyntaxKind.AsyncKeyword);
+            newNode = newNode.RemoveModifier(SyntaxKind.AsyncKeyword);
 
             return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
         }

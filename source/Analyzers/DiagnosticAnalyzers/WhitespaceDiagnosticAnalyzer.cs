@@ -6,8 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -63,9 +61,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         if (previousLineIsEmpty)
                         {
                             if (emptyLines.IsEmpty)
+                            {
                                 emptyLines = endOfLine.Span;
+                            }
                             else
+                            {
                                 emptyLines = TextSpan.FromBounds(emptyLines.Start, endOfLine.Span.End);
+                            }
                         }
                     }
                     else

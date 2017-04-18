@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
@@ -51,12 +50,12 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSpan binaryExpressionSpan,
+            BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, binaryExpressionSpan);
+            WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, binaryExpressionSelection);
 
-            newNode = AddNestedIf(newNode, binaryExpressionSpan)
+            newNode = AddNestedIf(newNode, binaryExpressionSelection)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(whileStatement, newNode, cancellationToken);

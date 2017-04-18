@@ -6,9 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -82,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             MemberDeclarationSyntax newNode = member
-                .SetMembers(default(SyntaxList<MemberDeclarationSyntax>))
+                .WithMembers(default(SyntaxList<MemberDeclarationSyntax>))
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(member, newNode, cancellationToken);

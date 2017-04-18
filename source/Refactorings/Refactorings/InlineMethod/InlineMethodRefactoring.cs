@@ -8,8 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.InlineMethod
 {
@@ -241,7 +239,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                     {
                         if (parameterSymbol.HasExplicitDefaultValue)
                         {
-                            parameterInfos.Add(new ParameterInfo(parameterSymbol, parameterSymbol.ToDefaultExpression()));
+                            parameterInfos.Add(new ParameterInfo(parameterSymbol, parameterSymbol.GetDefaultValueSyntax()));
                         }
                         else
                         {

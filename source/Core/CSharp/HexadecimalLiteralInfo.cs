@@ -99,7 +99,7 @@ namespace Roslynator.CSharp
 
         internal LiteralExpressionSyntax ToDecimalLiteral()
         {
-            return ConstantExpression(Value);
+            return LiteralExpression(Value);
         }
 
         private string ParseSuffix()

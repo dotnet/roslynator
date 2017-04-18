@@ -6,8 +6,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
@@ -32,8 +31,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             {
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
 
-                if (methodSymbol != null
-                    && !SymbolUtility.IsEventHandlerMethod(methodSymbol, semanticModel)
+                if (methodSymbol?.IsEventHandler(semanticModel) == false
                     && !methodSymbol.ImplementsInterfaceMember())
                 {
                     return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);

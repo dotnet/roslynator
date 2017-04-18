@@ -2,7 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Extensions
+namespace Roslynator
 {
     public static class FileLinePositionSpanExtensions
     {
@@ -26,7 +26,7 @@ namespace Roslynator.Extensions
             return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
         }
 
-        public static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)
+        internal static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)
         {
             return fileLinePositionSpan.EndLine() - fileLinePositionSpan.StartLine() + 1;
         }

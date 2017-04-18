@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
@@ -51,9 +49,9 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
         protected TStatement RemoveExpressionsFromCondition(
             TStatement statement,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSpan binaryExpressionSpan)
+            BinaryExpressionSelection binaryExpressionSelection)
         {
-            var binaryExpression = (BinaryExpressionSyntax)binaryExpressionSpan.SelectedExpressions[0].Parent;
+            var binaryExpression = (BinaryExpressionSyntax)binaryExpressionSelection.Expressions[0].Parent;
 
             return statement.ReplaceNode(
                 condition,
@@ -62,9 +60,9 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         protected TStatement AddNestedIf(
             TStatement statement,
-            BinaryExpressionSpan binaryExpressionSpan)
+            BinaryExpressionSelection binaryExpressionSelection)
         {
-            ExpressionSyntax expression = ParseExpression(binaryExpressionSpan.ToString());
+            ExpressionSyntax expression = ParseExpression(binaryExpressionSelection.ToString());
 
             return AddNestedIf(statement, expression);
         }

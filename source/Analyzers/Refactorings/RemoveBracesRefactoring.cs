@@ -7,9 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BlockSyntax GetBlockThatCanBeEmbeddedStatement(SyntaxNode node)
         {
-            StatementSyntax childStatement = EmbeddedStatement.GetBlockOrEmbeddedStatement(node);
+            StatementSyntax childStatement = EmbeddedStatementHelper.GetBlockOrEmbeddedStatement(node);
 
             if (childStatement?.IsKind(SyntaxKind.Block) == true)
             {
@@ -57,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false
                     && statement.IsSingleLine()
-                    && EmbeddedStatement.FormattingSupportsEmbeddedStatement(node))
+                    && EmbeddedStatementHelper.FormattingSupportsEmbeddedStatement(node))
                 {
                     return block;
                 }

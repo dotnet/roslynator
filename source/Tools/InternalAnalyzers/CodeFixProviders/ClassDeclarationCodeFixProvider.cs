@@ -9,8 +9,8 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CodeFixes.Extensions;
-using Roslynator.Rename;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 
 namespace Roslynator.CSharp.Internal.CodeFixProviders
 {
@@ -30,7 +30,9 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
         }
 
         public override FixAllProvider GetFixAllProvider()
-            => WellKnownFixAllProviders.BatchFixer;
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -71,7 +73,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken),
+                cancellationToken => Renamer.RenameSymbolAsync(context.Document.Project.Solution, symbol, newName, default(OptionSet), cancellationToken),
                 DiagnosticIdentifiers.AddCodeFixProviderSuffix);
 
             context.RegisterCodeFix(codeAction, diagnostic);

@@ -5,7 +5,7 @@ namespace Roslynator.CSharp
     public enum AutoPropertyKind
     {
         None,
-        WithPrivateSet,
+        PrivateSet,
         ReadOnly,
     }
 }
