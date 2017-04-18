@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.Refactorings
                 foreach (ISymbol member in namedType.GetMembers())
                 {
                     if (!member.IsImplicitlyDeclared
-                        && member.IsStatic)
+                        && member.IsStatic
+                        && member.IsDeclaredAccessibility(Accessibility.Public, Accessibility.Internal, Accessibility.ProtectedOrInternal))
                     {
                         switch (member.Kind)
                         {
