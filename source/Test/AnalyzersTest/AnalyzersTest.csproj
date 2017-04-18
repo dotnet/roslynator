@@ -45,6 +45,7 @@
     <Compile Include="AbstractTypeShouldNotHavePublicConstructors.cs" />
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
+    <Compile Include="ReplaceCommentWithDocumentationComment.cs" />
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddEmptyLineAfterClosingBrace.cs" />
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />
