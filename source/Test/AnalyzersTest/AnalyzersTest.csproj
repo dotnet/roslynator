@@ -65,6 +65,7 @@
     <Compile Include="AvoidEmbeddedStatement.cs" />
     <Compile Include="AvoidEmbeddedStatementInIfElse.cs" />
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
+    <Compile Include="CallDebugFailInsteadOfDebugAssert.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
     <Compile Include="MarkFieldAsReadOnly.cs" />
     <Compile Include="RemoveFileWithNoCode2.cs" />

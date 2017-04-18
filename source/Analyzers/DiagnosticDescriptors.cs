@@ -1659,5 +1659,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor CallDebugFailInsteadOfDebugAssert = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert,
+            title: "Call Debug.Fail instead of Debug.Assert.",
+            messageFormat: "Call Debug.Fail instead of Debug.Assert.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
