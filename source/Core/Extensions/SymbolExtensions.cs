@@ -314,6 +314,34 @@ namespace Roslynator
 
             return false;
         }
+
+        public static bool IsDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility)
+        {
+            return symbol?.DeclaredAccessibility == accessibility;
+        }
+
+        public static bool IsDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility1, Accessibility accessibility2)
+        {
+            if (symbol == null)
+                return false;
+
+            Accessibility accessibility = symbol.DeclaredAccessibility;
+
+            return accessibility == accessibility1
+                || accessibility == accessibility2;
+        }
+
+        public static bool IsDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility1, Accessibility accessibility2, Accessibility accessibility3)
+        {
+            if (symbol == null)
+                return false;
+
+            Accessibility accessibility = symbol.DeclaredAccessibility;
+
+            return accessibility == accessibility1
+                || accessibility == accessibility2
+                || accessibility == accessibility3;
+        }
         #endregion
 
         #region IFieldSymbol
