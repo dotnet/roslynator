@@ -58,7 +58,6 @@
     <None Include="Microsoft.CodeAnalysis\SyntaxTrivia.snippet" />
     <None Include="Microsoft.CodeAnalysis\SyntaxTriviaList.snippet" />
     <None Include="Microsoft.CodeAnalysis\UsingStaticSyntaxFactory.snippet" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\Roslynator.Analyzers.1.3.0\analyzers\dotnet\cs\Roslynator.Core.dll" />
