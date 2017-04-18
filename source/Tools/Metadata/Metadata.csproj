@@ -43,7 +43,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <None Include="packages.config" />
     <None Include="Roslynator.Metadata.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -52,10 +51,6 @@
     <Compile Include="RefactoringDescriptor.cs" />
     <Compile Include="ImageDescriptor.cs" />
     <Compile Include="SyntaxDescriptor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.1.3.0\analyzers\dotnet\cs\Roslynator.Core.dll" />
-    <Analyzer Include="..\..\packages\CSharpAnalyzers.1.3.0\analyzers\dotnet\cs\Roslynator.CSharp.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
