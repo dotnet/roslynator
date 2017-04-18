@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Helpers
 
                     if (symbol != null)
                     {
-                        ImmutableArray<IParameterSymbol> parameters = GetParameters(symbol);
+                        ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
                         string name = argument.NameColon?.Name?.Identifier.ValueText;
 
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Helpers
 
                         if (symbol != null)
                         {
-                            ImmutableArray<IParameterSymbol> parameters = GetParameters(symbol);
+                            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
 
                             string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
 
@@ -154,19 +154,6 @@ namespace Roslynator.CSharp.Helpers
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
             return default(SymbolInfo);
-        }
-
-        private static ImmutableArray<IParameterSymbol> GetParameters(ISymbol symbol)
-        {
-            switch (symbol.Kind)
-            {
-                case SymbolKind.Method:
-                    return ((IMethodSymbol)symbol).Parameters;
-                case SymbolKind.Property:
-                    return ((IPropertySymbol)symbol).Parameters;
-                default:
-                    return ImmutableArray<IParameterSymbol>.Empty;
-            }
         }
     }
 }
