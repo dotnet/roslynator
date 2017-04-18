@@ -8,8 +8,8 @@ namespace Roslynator.CSharp.Documentation
 {
     internal class AddBaseOrNewDocumentationCommentRewriter : AddNewDocumentationCommentRewriter
     {
-        public AddBaseOrNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
-            : base(settings)
+        public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default(CancellationToken))
+            : base(settings, skipNamespaceDeclaration)
         {
             SemanticModel = semanticModel;
             CancellationToken = cancellationToken;
@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Documentation
 
         protected override MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
         {
-            return DocumentationCommentGenerator.AddNewDocumentationComment(memberDeclaration, Settings, SemanticModel, CancellationToken);
+            return memberDeclaration.WithBaseOrNewSingleLineDocumentationComment(SemanticModel, Settings, CancellationToken);
         }
     }
 }

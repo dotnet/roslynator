@@ -30,14 +30,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.UsingStatement);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            var usingStatement = (UsingStatementSyntax)context.Node;
-
-            SimplifyNestedUsingStatementRefactoring.Analyze(context, usingStatement);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyNestedUsingStatementRefactoring.Analyze(f, (UsingStatementSyntax)f.Node),
+                SyntaxKind.UsingStatement);
         }
     }
 }

@@ -25,14 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f), SyntaxKind.ThrowExpression);
-        }
-
-        private void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context)
-        {
-            var throwExpression = (ThrowExpressionSyntax)context.Node;
-
-            ThrowingOfNewNotImplementedExceptionRefactoring.Analyze(context, throwExpression);
+            context.RegisterSyntaxNodeAction(
+                f => ThrowingOfNewNotImplementedExceptionRefactoring.Analyze(f, (ThrowExpressionSyntax)f.Node),
+                SyntaxKind.ThrowExpression);
         }
     }
 }

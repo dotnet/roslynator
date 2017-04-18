@@ -11,16 +11,17 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddSummaryToDocumentationCommentRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, DocumentationCommentTriviaSyntax documentationComment)
+        public static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
         {
+            var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
+
             bool containsInheritDoc = false;
             bool containsInclude = false;
             bool containsSummaryElement = false;

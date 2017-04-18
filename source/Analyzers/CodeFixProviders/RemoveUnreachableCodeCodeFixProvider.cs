@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CodeFixes.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -36,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove unreachable code",
-                cancellationToken => Remover.RemoveStatementAsync(context.Document, statement, cancellationToken),
+                cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
                 DiagnosticIdentifiers.RemoveUnreachableCode + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

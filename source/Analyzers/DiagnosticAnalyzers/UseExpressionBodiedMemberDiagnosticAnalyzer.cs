@@ -7,10 +7,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -25,11 +23,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseExpressionBodiedMember,
                     DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut);
             }
-        }
-
-        private static DiagnosticDescriptor FadeOutDescriptor
-        {
-            get { return DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut; }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -151,8 +144,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                             {
                                 ReportDiagnostic(context, accessorList, expression);
-                                context.ReportToken(FadeOutDescriptor, accessor.Keyword);
-                                context.ReportBraces(FadeOutDescriptor, body);
+                                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
+                                context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, body);
                             }
 
                             return;
@@ -191,9 +184,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNode parent = expression.Parent;
 
             if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.ReportToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
+                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, ((ReturnStatementSyntax)parent).ReturnKeyword);
 
-            context.ReportBraces(FadeOutDescriptor, block);
+            context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, block);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList, ExpressionSyntax expression)
@@ -205,9 +198,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             SyntaxNode parent = expression.Parent;
 
             if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.ReportToken(FadeOutDescriptor, ((ReturnStatementSyntax)parent).ReturnKeyword);
+                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, ((ReturnStatementSyntax)parent).ReturnKeyword);
 
-            context.ReportBraces(FadeOutDescriptor, accessorList);
+            context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessorList);
         }
     }
 }

@@ -2,22 +2,21 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantOverridingMemberRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
             SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
             if (modifiers.Contains(SyntaxKind.OverrideKeyword)
@@ -125,8 +124,10 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax propertyDeclaration)
+        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+
             SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
 
             if (modifiers.Contains(SyntaxKind.OverrideKeyword)
@@ -246,8 +247,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, IndexerDeclarationSyntax indexerDeclaration)
+        public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+
             SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
 
             if (modifiers.Contains(SyntaxKind.OverrideKeyword)

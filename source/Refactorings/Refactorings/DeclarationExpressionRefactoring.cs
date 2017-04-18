@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Rename;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -45,22 +43,20 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (localSymbol?.IsErrorType() == false)
                         {
-                            ITypeSymbol typeSymbol = localSymbol.Type;
+                            string oldName = identifier.ValueText;
 
-                            if (typeSymbol != null)
+                            string newName = NameGenerator.Default.CreateUniqueLocalName(
+                                localSymbol.Type,
+                                oldName,
+                                semanticModel,
+                                singleVariableDesignation.SpanStart,
+                                cancellationToken: context.CancellationToken);
+
+                            if (newName != null)
                             {
-                                string oldName = identifier.ValueText;
-                                string newName = Identifier.CreateName(typeSymbol, firstCharToLower: true);
-
-                                if (!string.IsNullOrEmpty(newName)
-                                    && !string.Equals(oldName, newName, StringComparison.Ordinal))
-                                {
-                                    newName = Identifier.EnsureUniqueLocalName(newName, singleVariableDesignation.SpanStart, semanticModel, context.CancellationToken);
-
-                                    context.RegisterRefactoring(
-                                        $"Rename '{oldName}' to '{newName}'",
-                                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, localSymbol, newName, cancellationToken));
-                                }
+                                context.RegisterRefactoring(
+                                    $"Rename '{oldName}' to '{newName}'",
+                                    cancellationToken => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), cancellationToken));
                             }
                         }
                     }

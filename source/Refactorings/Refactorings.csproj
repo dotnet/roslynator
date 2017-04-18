@@ -42,7 +42,6 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodRewriter.cs" />
@@ -59,11 +58,10 @@
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LocalFunctionStatementRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumHelper.cs" />
-    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateCombinedEnumMemberRefactoring.cs" />
-    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumMemberRefactoring.cs" />
+    <Compile Include="Refactorings\GenerateCombinedEnumMemberRefactoring.cs" />
+    <Compile Include="Refactorings\GenerateEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\EnumMemberDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\EnumWithFlagsAttribute\GenerateEnumValuesRefactoring.cs" />
+    <Compile Include="Refactorings\GenerateEnumValuesRefactoring.cs" />
     <Compile Include="Refactorings\DestructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />

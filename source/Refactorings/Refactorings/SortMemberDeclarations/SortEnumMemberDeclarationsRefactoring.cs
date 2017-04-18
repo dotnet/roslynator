@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 {
@@ -49,8 +49,6 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             ImmutableArray<EnumMemberDeclarationSyntax> selectedMembers,
             CancellationToken cancellationToken)
         {
-            var comparer = new EnumMemberDeclarationNameComparer();
-
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
             int firstIndex = members.IndexOf(selectedMembers[0]);
@@ -58,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = members
                 .Take(firstIndex)
-                .Concat(selectedMembers.OrderBy(f => f, comparer))
+                .Concat(selectedMembers.OrderBy(f => f, EnumMemberDeclarationNameComparer.Instance))
                 .Concat(members.Skip(lastIndex + 1))
                 .ToSeparatedSyntaxList();
 

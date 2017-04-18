@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.ImplicitArrayCreationExpression);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
-
-            AvoidImplicitlyTypedArrayRefactoring.Analyze(context, expression);
+            context.RegisterSyntaxNodeAction(
+                f => AvoidImplicitlyTypedArrayRefactoring.AnalyzeImplicitArrayCreationExpression(f),
+                SyntaxKind.ImplicitArrayCreationExpression);
         }
     }
 }

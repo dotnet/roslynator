@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
 {
     internal class TriviaRemover : CSharpSyntaxRewriter
     {
-        private static readonly TriviaRemover _instance = new TriviaRemover();
+        private static readonly TriviaRemover _defaultInstance = new TriviaRemover();
 
         private readonly TextSpan? _span;
 
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
 
             if (span == null)
             {
-                return (TNode)_instance.Visit(node);
+                return (TNode)_defaultInstance.Visit(node);
             }
             else
             {
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
         {
             if (_span == null || _span.Value.Contains(trivia.Span))
             {
-                return CSharpFactory.EmptyWhitespaceTrivia();
+                return CSharpFactory.EmptyWhitespace();
             }
             else
             {

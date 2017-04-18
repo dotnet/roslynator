@@ -9,16 +9,15 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantAsOperatorRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
+        public static void AnalyzeAsExpression(SyntaxNodeAnalysisContext context)
         {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
             ExpressionSyntax expression = binaryExpression.Left;
 
             if (expression != null)

@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -67,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-                ExpressionSyntax expression = methodSymbol.ReturnType.ToDefaultExpression(returnType);
+                ExpressionSyntax expression = methodSymbol.ReturnType.ToDefaultValueSyntax(returnType);
 
                 body = body.AddStatements(ReturnStatement(expression));
             }
@@ -107,8 +104,9 @@ namespace Roslynator.CSharp.Refactorings
 
             AccessorListSyntax accessorList = AccessorList(List(accessors));
 
-            accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList)
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
+            accessorList = accessorList
+                .RemoveWhitespaceOrEndOfLineTrivia()
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
             return indexerDeclaration
                 .WithSemicolonToken(default(SyntaxToken))

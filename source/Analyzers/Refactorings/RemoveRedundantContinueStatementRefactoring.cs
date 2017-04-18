@@ -6,16 +6,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantContinueStatementRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ContinueStatementSyntax continueStatement)
+        public static void Analyze(SyntaxNodeAnalysisContext context)
         {
+            var continueStatement = (ContinueStatementSyntax)context.Node;
+
             SyntaxNode parent = continueStatement.Parent;
 
             if (parent?.IsKind(SyntaxKind.Block) == true)
@@ -40,9 +40,9 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var elseClause = (ElseClauseSyntax)parent;
 
-                        if (IfElseChain.IsEndOfChain(elseClause))
+                        if (!elseClause.ContinuesWithIf())
                         {
-                            IfStatementSyntax ifStatement = IfElseChain.GetTopmostIf(elseClause);
+                            IfStatementSyntax ifStatement = elseClause.GetTopmostIf();
 
                             parent = ifStatement.Parent;
 
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var block = (BlockSyntax)continueStatement.Parent;
 
-            SyntaxNode newBlock = Remover.RemoveStatement(block, continueStatement);
+            SyntaxNode newBlock = block.RemoveStatement(continueStatement);
 
             return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }

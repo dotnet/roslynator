@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -76,9 +73,13 @@ namespace Roslynator.CSharp.Refactorings
             if (addAwait)
                 typeSymbol = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
 
-            string identifier = Identifier.CreateName(typeSymbol, firstCharToLower: true) ?? Identifier.DefaultVariableName;
+            string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-            identifier = Identifier.EnsureUniqueLocalName(identifier, expressionStatement.SpanStart, semanticModel, cancellationToken);
+            name = NameGenerator.Default.EnsureUniqueLocalName(
+                name,
+                semanticModel,
+                expressionStatement.SpanStart,
+                cancellationToken: cancellationToken);
 
             ExpressionSyntax value = expressionStatement.Expression;
 
@@ -87,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
 
             LocalDeclarationStatementSyntax newNode = LocalDeclarationStatement(
                 VarType(),
-                Identifier(identifier).WithRenameAnnotation(),
+                Identifier(name).WithRenameAnnotation(),
                 value);
 
             newNode = newNode

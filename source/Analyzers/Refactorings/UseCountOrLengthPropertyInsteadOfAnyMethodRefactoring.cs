@@ -10,8 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -28,6 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (semanticModel
                     .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                    .MethodInfo
                     .IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
                 {
                     string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, cancellationToken);
@@ -84,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol.IsArrayType())
                     return "Length";
 
-                if (SymbolUtility.ImplementsICollectionOfT(typeSymbol))
+                if (typeSymbol.ImplementsICollectionOfT())
                     return "Count";
             }
 

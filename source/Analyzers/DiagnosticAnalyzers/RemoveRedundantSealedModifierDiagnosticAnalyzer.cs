@@ -4,9 +4,8 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantSealedModifierRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -27,18 +26,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-        }
-
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantSealedModifierRefactoring.Analyze(context, (PropertyDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantSealedModifierRefactoring.Analyze(context, (MethodDeclarationSyntax)context.Node);
         }
     }
 }

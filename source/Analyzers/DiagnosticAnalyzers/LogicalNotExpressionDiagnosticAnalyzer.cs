@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalNotExpression(f), SyntaxKind.LogicalNotExpression);
-        }
-
-        private void AnalyzeLogicalNotExpression(SyntaxNodeAnalysisContext context)
-        {
-            var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
-
-            SimplifyLogicalNotExpressionRefactoring.Analyze(context, logicalNot);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyLogicalNotExpressionRefactoring.AnalyzeLogicalNotExpression(f),
+                SyntaxKind.LogicalNotExpression);
         }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeFieldDeclaration(f), SyntaxKind.FieldDeclaration);
-        }
-
-        private void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
-
-            RemoveRedundantFieldInitializationRefactoring.Analyze(context, fieldDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveRedundantFieldInitializationRefactoring.AnalyzeFieldDeclaration(f),
+                SyntaxKind.FieldDeclaration);
         }
     }
 }

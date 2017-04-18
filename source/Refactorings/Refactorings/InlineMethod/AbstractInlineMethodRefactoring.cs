@@ -7,8 +7,6 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.InlineMethod
 {
@@ -147,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                         foreach (ISymbol symbol in symbols)
                         {
-                            string newName = Identifier.EnsureUniqueName(symbol.Name, reservedNames);
+                            string newName = NameGenerator.Default.EnsureUniqueName(symbol.Name, reservedNames);
 
                             symbolMap.Add(symbol, newName);
 

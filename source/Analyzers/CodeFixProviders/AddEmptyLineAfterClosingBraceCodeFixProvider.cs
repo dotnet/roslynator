@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Roslynator.CodeFixes.Extensions;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -47,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             SyntaxToken token,
             CancellationToken cancellationToken)
         {
-            SyntaxToken newToken = token.AppendToTrailingTrivia(CSharpFactory.NewLineTrivia());
+            SyntaxToken newToken = token.AppendToTrailingTrivia(CSharpFactory.NewLine());
 
             return document.ReplaceTokenAsync(token, newToken, cancellationToken);
         }

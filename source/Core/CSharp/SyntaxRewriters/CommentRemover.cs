@@ -9,11 +9,6 @@ namespace Roslynator.CSharp.SyntaxRewriters
 {
     internal class CommentRemover : CSharpSyntaxRewriter
     {
-        private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions)
-            : this(node, removeOptions, node.FullSpan)
-        {
-        }
-
         private CommentRemover(SyntaxNode node, CommentRemoveOptions removeOptions, TextSpan span)
             : base(visitIntoStructuredTrivia: true)
         {
@@ -26,22 +21,17 @@ namespace Roslynator.CSharp.SyntaxRewriters
         public CommentRemoveOptions RemoveOptions { get; }
         public TextSpan Span { get; }
 
-        public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, TextSpan? span = null) where TNode : SyntaxNode
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            var remover = new CommentRemover(node, removeOptions, node.FullSpan);
-
-            return (TNode)remover.Visit(node);
+            return RemoveComments(node, CommentRemoveOptions.All, span);
         }
 
-        public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan span) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, CommentRemoveOptions removeOptions, TextSpan? span = null) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            var remover = new CommentRemover(node, removeOptions, span);
+            var remover = new CommentRemover(node, removeOptions, span ?? node.FullSpan);
 
             return (TNode)remover.Visit(node);
         }
@@ -58,7 +48,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
                     case SyntaxKind.MultiLineCommentTrivia:
                         {
                             if (RemoveOptions != CommentRemoveOptions.Documentation)
-                                return CSharpFactory.EmptyWhitespaceTrivia();
+                                return CSharpFactory.EmptyWhitespace();
 
                             break;
                         }
@@ -66,7 +56,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
                     case SyntaxKind.MultiLineDocumentationCommentTrivia:
                         {
                             if (RemoveOptions != CommentRemoveOptions.AllExceptDocumentation)
-                                return CSharpFactory.EmptyWhitespaceTrivia();
+                                return CSharpFactory.EmptyWhitespace();
 
                             break;
                         }
@@ -75,7 +65,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
                             if (RemoveOptions != CommentRemoveOptions.Documentation
                                 && ShouldRemoveEndOfLine(span))
                             {
-                                return CSharpFactory.EmptyWhitespaceTrivia();
+                                return CSharpFactory.EmptyWhitespace();
                             }
 
                             break;

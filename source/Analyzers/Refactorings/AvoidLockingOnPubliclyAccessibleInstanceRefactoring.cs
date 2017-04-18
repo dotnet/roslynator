@@ -6,16 +6,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidLockingOnPubliclyAccessibleInstanceRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, LockStatementSyntax lockStatement)
+        public static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
+            var lockStatement = (LockStatementSyntax)context.Node;
+
             ExpressionSyntax expression = lockStatement.Expression;
 
             if (expression?.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression) == true)

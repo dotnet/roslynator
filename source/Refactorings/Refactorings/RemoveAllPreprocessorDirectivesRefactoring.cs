@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveAllPreprocessorDirectivesRefactoring
@@ -10,12 +11,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove all directives",
-                    cancellationToken =>
-                    {
-                        return Remover.RemoveDirectivesAsync(
-                            context.Document,
-                            context.CancellationToken);
-                    });
+                    cancellationToken => context.Document.RemoveDirectivesAsync(DirectiveRemoveOptions.All, context.CancellationToken));
             }
         }
     }

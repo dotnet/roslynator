@@ -25,14 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeCoalesceExpression(f), SyntaxKind.CoalesceExpression);
-        }
-
-        private void AnalyzeCoalesceExpression(SyntaxNodeAnalysisContext context)
-        {
-            var coalesceExpression = (BinaryExpressionSyntax)context.Node;
-
-            SimplifyCoalesceExpressionRefactoring.Analyze(context, coalesceExpression);
+            context.RegisterSyntaxNodeAction(
+                f => SimplifyCoalesceExpressionRefactoring.Analyze(f, (BinaryExpressionSyntax)f.Node),
+                SyntaxKind.CoalesceExpression);
         }
     }
 }

@@ -28,11 +28,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
 
-            var tcs = new TaskCompletionSource<object>();
-
-            tcs.SetResult(null);
-
-            return tcs.Task;
+            return Task.CompletedTask;
         }
     }
 }

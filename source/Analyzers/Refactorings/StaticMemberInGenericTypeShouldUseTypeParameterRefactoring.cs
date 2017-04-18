@@ -8,8 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -148,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void ReportDiagnostic(SymbolAnalysisContext context, ISymbol member)
         {
-            SyntaxNode node = member.GetFirstSyntaxOrDefault(context.CancellationToken);
+            SyntaxNode node = member.GetSyntaxOrDefault(context.CancellationToken);
 
             Debug.Assert(node != null, member.ToString());
 

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Internal.Refactoring
+namespace Roslynator.CSharp.Refactoring
 {
     internal static class AddCodeFileHeaderRefactoring
     {
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Internal.Refactoring
                 .WithLeadingTrivia(
                     compilationUnit
                         .GetLeadingTrivia()
-                        .Insert(0, CSharpFactory.NewLineTrivia())
+                        .Insert(0, CSharpFactory.NewLine())
                         .Insert(0, HeaderTrivia));
 
             root = root.ReplaceNode(compilationUnit, newNode);

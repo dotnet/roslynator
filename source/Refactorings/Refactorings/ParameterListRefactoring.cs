@@ -3,11 +3,9 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.CSharp.Formatting;
 using Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
 using Roslynator.CSharp.Refactorings.NodeInList;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {

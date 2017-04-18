@@ -25,14 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.UsingDirective);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            var usingDirective = (UsingDirectiveSyntax)context.Node;
-
-            AvoidUsageOfUsingAliasDirectiveRefactoring.Analyze(context, usingDirective);
+            context.RegisterSyntaxNodeAction(
+                f => AvoidUsageOfUsingAliasDirectiveRefactoring.Analyze(f, (UsingDirectiveSyntax)f.Node),
+                SyntaxKind.UsingDirective);
         }
     }
 }

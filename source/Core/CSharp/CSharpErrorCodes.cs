@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp
 {
-    public static class CSharpErrorCodes
+    internal static class CSharpErrorCodes
     {
         private const string Prefix = "CS";
 

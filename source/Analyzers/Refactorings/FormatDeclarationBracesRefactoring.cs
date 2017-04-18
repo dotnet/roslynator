@@ -8,28 +8,31 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class FormatDeclarationBracesRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ClassDeclarationSyntax classDeclaration)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var classDeclaration = (ClassDeclarationSyntax)context.Node;
+
             if (!classDeclaration.Members.Any())
                 Analyze(context, classDeclaration, classDeclaration.OpenBraceToken, classDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, StructDeclarationSyntax structDeclaration)
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var structDeclaration = (StructDeclarationSyntax)context.Node;
+
             if (!structDeclaration.Members.Any())
                 Analyze(context, structDeclaration, structDeclaration.OpenBraceToken, structDeclaration.CloseBraceToken);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, InterfaceDeclarationSyntax interfaceDeclaration)
+        public static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
+
             if (!interfaceDeclaration.Members.Any())
                 Analyze(context, interfaceDeclaration, interfaceDeclaration.OpenBraceToken, interfaceDeclaration.CloseBraceToken);
         }
@@ -78,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         return classDeclaration
                             .WithOpenBraceToken(classDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(classDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+                            .WithCloseBraceToken(classDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
@@ -86,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         return structDeclaration
                             .WithOpenBraceToken(structDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(structDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+                            .WithCloseBraceToken(structDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
@@ -94,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         return interfaceDeclaration
                             .WithOpenBraceToken(interfaceDeclaration.OpenBraceToken.WithoutTrailingTrivia())
-                            .WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+                            .WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
                     }
             }
 

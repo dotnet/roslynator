@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode newRoot = root.RemoveNode(memberDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-            newRoot = Remover.RemoveEmptyNamespaces(newRoot, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            newRoot = RemoveEmptyNamespaces(newRoot, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
             document = document.WithSyntaxRoot(newRoot);
 
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                  membersToRemove,
                  SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-            return Remover.RemoveEmptyNamespaces(newCompilationUnit, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            return RemoveEmptyNamespaces(newCompilationUnit, SyntaxRemoveOptions.KeepUnbalancedDirectives);
         }
 
         private static string GetDocumentName(MemberDeclarationSyntax memberDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -163,6 +163,17 @@ namespace Roslynator.CSharp.Refactorings
         public static string GetTitle(string name)
         {
             return $"Extract '{name}' to a new file";
+        }
+
+        private static SyntaxNode RemoveEmptyNamespaces(SyntaxNode node, SyntaxRemoveOptions removeOptions)
+        {
+            IEnumerable<NamespaceDeclarationSyntax> emptyNamespaces = node
+                .DescendantNodes()
+                .Where(f => f.IsKind(SyntaxKind.NamespaceDeclaration))
+                .Cast<NamespaceDeclarationSyntax>()
+                .Where(f => !f.Members.Any());
+
+            return node.RemoveNodes(emptyNamespaces, removeOptions);
         }
     }
 }

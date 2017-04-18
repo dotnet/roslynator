@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -48,7 +47,11 @@ namespace Roslynator.CSharp.Refactorings
 
                     SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    string name = Identifier.EnsureUniqueMemberName(LockObjectName, lockStatement.Expression.SpanStart, semanticModel, cancellationToken);
+                    string name = NameGenerator.Default.EnsureUniqueMemberName(
+                        LockObjectName,
+                        semanticModel,
+                        lockStatement.Expression.SpanStart,
+                        cancellationToken: cancellationToken);
 
                     LockStatementSyntax newLockStatement = lockStatement
                         .WithExpression(IdentifierName(Identifier(name).WithRenameAnnotation()));
@@ -62,9 +65,9 @@ namespace Roslynator.CSharp.Refactorings
 
                     SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(index, newContainingMember);
 
-                    newMembers = Inserter.InsertMember(newMembers, field);
+                    newMembers = newMembers.InsertMember(field, MemberDeclarationComparer.ByKind);
 
-                    MemberDeclarationSyntax newNode = containingDeclaration.SetMembers(newMembers);
+                    MemberDeclarationSyntax newNode = containingDeclaration.WithMembers(newMembers);
 
                     return await document.ReplaceNodeAsync(containingDeclaration, newNode, cancellationToken).ConfigureAwait(false);
                 }

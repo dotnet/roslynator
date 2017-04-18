@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.AbstractTypeShouldNotHavePublicConstructorsRefactoring;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AbstractTypeShouldNotHavePublicConstructorsRefactoring.AnalyzeConstructorDeclaration(f),
+                SyntaxKind.ConstructorDeclaration);
         }
     }
 }

@@ -10,8 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.Utilities;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -44,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (value != null)
             {
-                EqualsValueClauseSyntax equalsValue = EqualsValueClause(ConstantExpression(value));
+                EqualsValueClauseSyntax equalsValue = EqualsValueClause(LiteralExpression(value));
 
                 EnumMemberDeclarationSyntax newNode = enumMember.WithEqualsValue(equalsValue);
 
@@ -63,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
             INamedTypeSymbol enumSymbol = fieldSymbol.ContainingType;
 
-            if (SymbolUtility.IsEnumWithFlagsAttribute(enumSymbol, semanticModel))
+            if (enumSymbol.IsEnumWithFlagsAttribute(semanticModel))
             {
                 return GetFlagsValue(enumMember, enumSymbol, semanticModel, cancellationToken);
             }
@@ -79,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
             object[] values = GetExplicitValues(enumDeclaration, semanticModel, cancellationToken).ToArray();
             SpecialType specialType = enumSymbol.EnumUnderlyingType.SpecialType;
 
-            Optional<object> optional = EnumHelper.GetUniquePowerOfTwo(
+            Optional<object> optional = FlagsUtility.GetUniquePowerOfTwo(
                 specialType,
                 values,
                 startFromHighestExistingValue: false);
@@ -143,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (value != null)
                 {
-                    var fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken) as IFieldSymbol;
+                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
 
                     if (fieldSymbol?.HasConstantValue == true)
                         yield return fieldSymbol.ConstantValue;

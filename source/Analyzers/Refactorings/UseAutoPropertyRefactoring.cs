@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,13 +17,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseAutoPropertyRefactoring
     {
-        public static DiagnosticDescriptor FadeOutDescriptor
+        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            get { return DiagnosticDescriptors.UseAutoPropertyFadeOut; }
-        }
+            var property = (PropertyDeclarationSyntax)context.Node;
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
-        {
             IFieldSymbol fieldSymbol = GetBackingFieldSymbol(property, context.SemanticModel, context.CancellationToken);
 
             if (fieldSymbol != null)
@@ -50,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (property.ExpressionBody != null)
                         {
-                            context.ReportNode(FadeOutDescriptor, property.ExpressionBody);
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
                         }
                         else
                         {
@@ -81,21 +76,21 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case SyntaxKind.ReturnStatement:
                         {
-                            context.ReportNode(FadeOutDescriptor, ((ReturnStatementSyntax)statement).Expression);
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ReturnStatementSyntax)statement).Expression);
                             break;
                         }
                     case SyntaxKind.ExpressionStatement:
                         {
-                            context.ReportNode(FadeOutDescriptor, ((ExpressionStatementSyntax)statement).Expression);
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ExpressionStatementSyntax)statement).Expression);
                             break;
                         }
                 }
 
-                context.ReportBraces(FadeOutDescriptor, body);
+                context.ReportBraces(DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
             }
             else
             {
-                context.ReportNode(FadeOutDescriptor, getter.ExpressionBody);
+                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, getter.ExpressionBody);
             }
         }
 
@@ -333,7 +328,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int fieldIndex = members.IndexOf((FieldDeclarationSyntax)variableDeclaration.Parent);
 
-            ImmutableArray<SyntaxNode> oldNodes = await document.FindSymbolNodesAsync(fieldSymbol, cancellationToken).ConfigureAwait(false);
+            ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             IdentifierNameSyntax newNode = IdentifierName(property.Identifier);
 
@@ -360,7 +355,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 members = members.Replace(field, newField.WithFormatterAnnotation());
 
-                newParentMember = newParentMember.SetMembers(members);
+                newParentMember = newParentMember.WithMembers(members);
             }
 
             members = newParentMember.GetMembers();
@@ -371,7 +366,7 @@ namespace Roslynator.CSharp.Refactorings
 
             members = members.Replace(property, newProperty);
 
-            newParentMember = newParentMember.SetMembers(members);
+            newParentMember = newParentMember.WithMembers(members);
 
             return await document.ReplaceNodeAsync(parentMember, newParentMember, cancellationToken).ConfigureAwait(false);
         }
@@ -411,7 +406,7 @@ namespace Roslynator.CSharp.Refactorings
                 .DescendantTrivia()
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList);
+                accessorList = accessorList.RemoveWhitespaceOrEndOfLineTrivia();
             }
 
             PropertyDeclarationSyntax newProperty = property

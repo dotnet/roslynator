@@ -7,9 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -17,8 +14,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveImplementationFromAbstractMemberRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
             if (methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || methodDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {
@@ -29,8 +28,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax propertyDeclaration)
+        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+
             if (propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {
@@ -47,8 +48,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, IndexerDeclarationSyntax indexerDeclaration)
+        public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+
             if (indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || indexerDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {
@@ -65,8 +68,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, EventDeclarationSyntax eventDeclaration)
+        public static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var eventDeclaration = (EventDeclarationSyntax)context.Node;
+
             eventDeclaration = (EventDeclarationSyntax)context.Node;
 
             if (eventDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)

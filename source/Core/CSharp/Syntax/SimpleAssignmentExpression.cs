@@ -4,8 +4,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Syntax
 {
@@ -20,7 +18,7 @@ namespace Roslynator.CSharp.Syntax
         public ExpressionSyntax Left { get; }
         public ExpressionSyntax Right { get; }
 
-        public AssignmentExpressionSyntax Expression
+        public AssignmentExpressionSyntax AssignmentExpression
         {
             get { return (AssignmentExpressionSyntax)Parent; }
         }
@@ -30,52 +28,43 @@ namespace Roslynator.CSharp.Syntax
             get { return Left?.Parent; }
         }
 
-        public static bool TryCreate(StatementSyntax assignmentStatement, out SimpleAssignmentExpression simpleAssignment)
+        public static SimpleAssignmentExpression Create(AssignmentExpressionSyntax assignmentExpression)
         {
-            if (assignmentStatement?.IsKind(SyntaxKind.ExpressionStatement) == true)
-                return TryCreate((ExpressionStatementSyntax)assignmentStatement, out simpleAssignment);
+            if (assignmentExpression == null)
+                throw new ArgumentNullException(nameof(assignmentExpression));
 
-            simpleAssignment = default(SimpleAssignmentExpression);
+            if (!assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
+                throw new ArgumentException("", nameof(assignmentExpression));
+
+            return new SimpleAssignmentExpression(assignmentExpression.Left, assignmentExpression.Right);
+        }
+
+        public static bool TryCreate(SyntaxNode assignmentExpression, out SimpleAssignmentExpression result)
+        {
+            if (assignmentExpression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+                return TryCreateCore((AssignmentExpressionSyntax)assignmentExpression, out result);
+
+            result = default(SimpleAssignmentExpression);
             return false;
         }
 
-        public static bool TryCreate(ExpressionStatementSyntax assignmentStatement, out SimpleAssignmentExpression simpleAssignment)
+        public static bool TryCreate(AssignmentExpressionSyntax assignmentExpression, out SimpleAssignmentExpression result)
         {
-            ExpressionSyntax expression = assignmentStatement?.Expression;
+            if (assignmentExpression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+                return TryCreateCore(assignmentExpression, out result);
 
-            if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                return TryCreateCore((AssignmentExpressionSyntax)expression, out simpleAssignment);
-
-            simpleAssignment = default(SimpleAssignmentExpression);
+            result = default(SimpleAssignmentExpression);
             return false;
         }
 
-        public static bool TryCreate(AssignmentExpressionSyntax assignment, out SimpleAssignmentExpression simpleAssignment)
+        private static bool TryCreateCore(AssignmentExpressionSyntax assignmentExpression, out SimpleAssignmentExpression simpleAssignment)
         {
-            if (assignment?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                return TryCreateCore(assignment, out simpleAssignment);
+            ExpressionSyntax left = assignmentExpression.Left;
 
-            simpleAssignment = default(SimpleAssignmentExpression);
-            return false;
-        }
+            ExpressionSyntax right = assignmentExpression.Right;
 
-        private static bool TryCreateCore(AssignmentExpressionSyntax assignment, out SimpleAssignmentExpression simpleAssignment)
-        {
-            ExpressionSyntax left = assignment.Left;
-
-            if (left?.IsMissing == false)
-            {
-                ExpressionSyntax right = assignment.Right;
-
-                if (right?.IsMissing == false)
-                {
-                    simpleAssignment = new SimpleAssignmentExpression(left, right);
-                    return true;
-                }
-            }
-
-            simpleAssignment = default(SimpleAssignmentExpression);
-            return false;
+            simpleAssignment = new SimpleAssignmentExpression(left, right);
+            return true;
         }
 
         public bool Equals(SimpleAssignmentExpression other)

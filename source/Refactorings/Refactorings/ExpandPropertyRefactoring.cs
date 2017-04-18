@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -55,11 +52,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             AccessorListSyntax accessorList = AccessorList(List(CreateAccessors(propertyDeclaration)));
 
-            accessorList = Remover.RemoveWhitespaceOrEndOfLine(accessorList)
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLineTrivia()));
+            accessorList = accessorList
+                .RemoveWhitespaceOrEndOfLineTrivia()
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
 
             return propertyDeclaration
-                .WithoutInitializer()
+                .WithInitializer(null)
                 .WithoutSemicolonToken()
                 .WithAccessorList(accessorList);
         }

@@ -25,14 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
-        }
-
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
-        {
-            var whileStatement = (WhileStatementSyntax)context.Node;
-
-            AvoidUsageOfWhileStatementToCreateInfiniteLoopRefactoring.Analyze(context, whileStatement);
+            context.RegisterSyntaxNodeAction(
+                f => AvoidUsageOfWhileStatementToCreateInfiniteLoopRefactoring.Analyze(f, (WhileStatementSyntax)f.Node),
+                SyntaxKind.WhileStatement);
         }
     }
 }

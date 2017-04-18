@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (statement != null)
                 {
-                    if (!EmbeddedStatement.IsEmbeddedStatement(statement)
+                    if (!EmbeddedStatementHelper.IsEmbeddedStatement(statement)
                         && statement.IsParentKind(SyntaxKind.Block))
                     {
                         RegisterRefactoring(context, statement);
@@ -124,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var ifStatement = (IfStatementSyntax)parent;
 
-                        if (IfElseChain.IsTopmostIf(ifStatement)
+                        if (ifStatement.IsTopmostIf()
                             && block.OpenBraceToken.Span.Contains(context.Span))
                         {
                             return ifStatement;
@@ -143,7 +141,7 @@ namespace Roslynator.CSharp.Refactorings
                         var elseClause = (ElseClauseSyntax)parent;
 
                         if (block.CloseBraceToken.Span.Contains(context.Span))
-                            return IfElseChain.GetTopmostIf(elseClause);
+                            return elseClause.GetTopmostIf();
 
                         break;
                     }
@@ -203,7 +201,7 @@ namespace Roslynator.CSharp.Refactorings
             if (index == 0
                 && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
             {
-                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLineTrivia()));
+                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine()));
             }
 
             BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));
@@ -213,7 +211,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
         {
-            SyntaxRemoveOptions removeOptions = Remover.DefaultRemoveOptions;
+            SyntaxRemoveOptions removeOptions = RemoveHelper.DefaultRemoveOptions;
 
             if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;

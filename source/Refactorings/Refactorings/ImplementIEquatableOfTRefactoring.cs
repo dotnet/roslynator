@@ -6,8 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -125,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax classType = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
 
-            newNode = Inserter.InsertMember(newNode, CreateEqualsMethod(classType, semanticModel, position));
+            newNode = newNode.InsertMember(CreateEqualsMethod(classType, semanticModel, position), MemberDeclarationComparer.ByKind);
 
             return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
         }
@@ -203,7 +202,7 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax classType = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
 
-            newNode = Inserter.InsertMember(newNode, CreateEqualsMethod(classType, semanticModel, position));
+            newNode = newNode.InsertMember(CreateEqualsMethod(classType, semanticModel, position), MemberDeclarationComparer.ByKind);
 
             return document.ReplaceNodeAsync(structDeclaration, newNode, cancellationToken);
         }

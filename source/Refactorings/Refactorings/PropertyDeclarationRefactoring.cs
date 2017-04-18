@@ -5,11 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
-using Roslynator.Extensions;
-using Roslynator.Rename;
-using Roslynator.Text.Extensions;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -116,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (typeSymbol?.IsErrorType() == false)
                         {
-                            string newName = Identifier.CreateName(typeSymbol);
+                            string newName = NameGenerator.CreateName(typeSymbol);
 
                             if (!string.IsNullOrEmpty(newName))
                             {
@@ -128,17 +127,15 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
-                                    bool isUnique = await Identifier.IsUniqueMemberNameAsync(
-                                        symbol,
+                                    if (await NameGenerator.IsUniqueMemberNameAsync(
                                         newName,
+                                        symbol,
                                         context.Solution,
-                                        context.CancellationToken).ConfigureAwait(false);
-
-                                    if (isUnique)
+                                        cancellationToken: context.CancellationToken).ConfigureAwait(false))
                                     {
                                         context.RegisterRefactoring(
                                             $"Rename '{oldName}' to '{newName}'",
-                                            cancellationToken => Renamer.RenameSymbolAsync(context.Document, symbol, newName, cancellationToken));
+                                            cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken));
                                     }
                                 }
                             }

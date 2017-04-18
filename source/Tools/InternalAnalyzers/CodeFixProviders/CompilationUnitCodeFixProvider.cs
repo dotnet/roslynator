@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Internal.Refactoring;
+using Roslynator.CSharp.Refactoring;
 
 namespace Roslynator.CSharp.Internal.CodeFixProviders
 {
@@ -16,10 +16,14 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
     public class CompilationUnitCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
-            => ImmutableArray.Create(DiagnosticIdentifiers.AddCodeFileHeader);
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddCodeFileHeader); }
+        }
 
         public override FixAllProvider GetFixAllProvider()
-            => WellKnownFixAllProviders.BatchFixer;
+        {
+            return WellKnownFixAllProviders.BatchFixer;
+        }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

@@ -25,14 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
-        }
-
-        private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
-        {
-            var returnStatement = (ReturnStatementSyntax)context.Node;
-
-            ReplaceReturnWithYieldReturnRefactoring.Analyze(context, returnStatement);
+            context.RegisterSyntaxNodeAction(
+                f => ReplaceReturnWithYieldReturnRefactoring.Analyze(f, (ReturnStatementSyntax)f.Node),
+                SyntaxKind.ReturnStatement);
         }
     }
 }

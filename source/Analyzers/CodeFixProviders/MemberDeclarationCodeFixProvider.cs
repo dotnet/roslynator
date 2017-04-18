@@ -10,8 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CodeFixes.Extensions;
-using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.MakeMemberReadOnly;
 
@@ -101,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove redundant overridding {memberDeclaration.GetTitle()}",
-                                cancellationToken => Remover.RemoveMemberAsync(context.Document, memberDeclaration, cancellationToken),
+                                cancellationToken => context.Document.RemoveMemberAsync(memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

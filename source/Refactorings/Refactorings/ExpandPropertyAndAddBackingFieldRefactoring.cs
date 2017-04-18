@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
+using Roslynator.Utilities;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -21,13 +21,17 @@ namespace Roslynator.CSharp.Refactorings
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            string fieldName = Identifier.ToCamelCase(
+            string fieldName = StringUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            fieldName = Identifier.EnsureUniqueMemberName(fieldName, propertyDeclaration.SpanStart, semanticModel, cancellationToken);
+            fieldName = NameGenerator.Default.EnsureUniqueMemberName(
+                fieldName,
+                semanticModel,
+                propertyDeclaration.SpanStart,
+                cancellationToken: cancellationToken);
 
             FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
                 .WithFormatterAnnotation();
@@ -49,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                ImmutableArray<SyntaxNode> oldNodes = await document.FindSymbolNodesAsync(propertySymbol, cancellationToken).ConfigureAwait(false);
+                ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(propertySymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 IdentifierNameSyntax newNode = IdentifierName(fieldName);
 
@@ -60,9 +64,9 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
 
-            newMembers = Inserter.InsertMember(newMembers, fieldDeclaration);
+            newMembers = newMembers.InsertMember(fieldDeclaration, MemberDeclarationComparer.ByKind);
 
-            return await document.ReplaceNodeAsync(parentMember, parentMember.SetMembers(newMembers), cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(parentMember, parentMember.WithMembers(newMembers), cancellationToken).ConfigureAwait(false);
         }
 
         private static bool IsReadOnlyAutoProperty(PropertyDeclarationSyntax propertyDeclaration)
@@ -85,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 propertyDeclaration = propertyDeclaration
                     .ReplaceNode(getter, newGetter)
-                    .WithoutInitializer()
+                    .WithInitializer(null)
                     .WithoutSemicolonToken();
             }
 
@@ -103,8 +107,9 @@ namespace Roslynator.CSharp.Refactorings
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
-            AccessorListSyntax accessorList = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration.AccessorList)
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLineTrivia()));
+            AccessorListSyntax accessorList = propertyDeclaration.AccessorList
+                .RemoveWhitespaceOrEndOfLineTrivia()
+                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
             return propertyDeclaration
                 .WithAccessorList(accessorList);

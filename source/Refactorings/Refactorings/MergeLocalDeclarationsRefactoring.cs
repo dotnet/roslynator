@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeLocalDeclarationsRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
-            if (selectedStatements.IsMultiple)
+            if (selectedStatements.Count > 1)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -73,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            IStatementContainer container,
+            StatementContainer container,
             LocalDeclarationStatementSyntax[] localDeclarations,
             CancellationToken cancellationToken = default(CancellationToken))
         {

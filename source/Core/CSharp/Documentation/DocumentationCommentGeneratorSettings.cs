@@ -11,14 +11,12 @@ namespace Roslynator.CSharp.Documentation
             IEnumerable<string> comments = null,
             string indent = null,
             bool singleLineSummary = false,
-            bool skipNamespaceDeclaration = true,
             bool generateReturns = true
             )
         {
             Comments = (comments != null) ? ImmutableArray.CreateRange(comments) : ImmutableArray<string>.Empty;
             Indent = indent ?? "";
             SingleLineSummary = singleLineSummary;
-            SkipNamespaceDeclaration = skipNamespaceDeclaration;
             GenerateReturns = generateReturns;
         }
 
@@ -27,7 +25,6 @@ namespace Roslynator.CSharp.Documentation
         public ImmutableArray<string> Comments { get; }
         public string Indent { get; }
         public bool SingleLineSummary { get; }
-        public bool SkipNamespaceDeclaration { get; }
         public bool GenerateReturns { get; }
 
         public DocumentationCommentGeneratorSettings WithComments(IEnumerable<string> comments)
@@ -36,7 +33,6 @@ namespace Roslynator.CSharp.Documentation
                 comments: comments,
                 indent: Indent,
                 singleLineSummary: SingleLineSummary,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration,
                 generateReturns: GenerateReturns);
         }
 
@@ -46,7 +42,6 @@ namespace Roslynator.CSharp.Documentation
                 comments: Comments,
                 indent: indent,
                 singleLineSummary: SingleLineSummary,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration,
                 generateReturns: GenerateReturns);
         }
 
@@ -56,17 +51,6 @@ namespace Roslynator.CSharp.Documentation
                 comments: Comments,
                 indent: Indent,
                 singleLineSummary: singleLineSummary,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration,
-                generateReturns: GenerateReturns);
-        }
-
-        public DocumentationCommentGeneratorSettings WithSkipNamespaceDeclaration(bool skipNamespaceDeclaration)
-        {
-            return new DocumentationCommentGeneratorSettings(
-                comments: Comments,
-                indent: Indent,
-                singleLineSummary: SingleLineSummary,
-                skipNamespaceDeclaration: skipNamespaceDeclaration,
                 generateReturns: GenerateReturns);
         }
 
@@ -76,7 +60,6 @@ namespace Roslynator.CSharp.Documentation
                 comments: Comments,
                 indent: Indent,
                 singleLineSummary: SingleLineSummary,
-                skipNamespaceDeclaration: SkipNamespaceDeclaration,
                 generateReturns: generateReturns);
         }
     }

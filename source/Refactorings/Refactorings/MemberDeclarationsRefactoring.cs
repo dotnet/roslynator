@@ -7,8 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -42,8 +40,8 @@ namespace Roslynator.CSharp.Refactorings
                         int startLine = fileLinePositionSpan.StartLine();
                         int endLine = fileLinePositionSpan.EndLine();
 
-                        if (startLine > tree.GetSpanEndLine(members[index].TrimmedSpan(), context.CancellationToken)
-                            && endLine < tree.GetSpanStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
+                        if (startLine > tree.GetEndLine(members[index].TrimmedSpan(), context.CancellationToken)
+                            && endLine < tree.GetStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
                         {
                             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
                             {
@@ -134,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return document.ReplaceNodeAsync(
                 parentMember,
-                parentMember.SetMembers(newMembers),
+                parentMember.WithMembers(newMembers),
                 cancellationToken);
         }
 
@@ -146,7 +144,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             return document.ReplaceNodeAsync(
                 parentMember,
-                parentMember.SetMembers(newMembers),
+                parentMember.WithMembers(newMembers),
                 cancellationToken);
         }
     }

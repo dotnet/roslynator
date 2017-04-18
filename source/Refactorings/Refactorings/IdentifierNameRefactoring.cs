@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Rename;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -48,22 +48,18 @@ namespace Roslynator.CSharp.Refactorings
                             && fieldSymbol.IsStatic == propertySymbol.IsStatic
                             && fieldSymbol.ContainingType == propertySymbol.ContainingType)
                         {
-                            string newName = Identifier.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                            string newName = StringUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);
 
-                            if (!string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal))
-                            {
-                                bool isUnique = await Identifier.IsUniqueMemberNameAsync(
-                                    fieldSymbol,
+                            if (!string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal)
+                                && await NameGenerator.IsUniqueMemberNameAsync(
                                     newName,
+                                    fieldSymbol,
                                     context.Solution,
-                                    context.CancellationToken).ConfigureAwait(false);
-
-                                if (isUnique)
-                                {
-                                    context.RegisterRefactoring(
-                                        $"Rename '{fieldSymbol.Name}' to '{newName}'",
-                                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, fieldSymbol, newName, cancellationToken));
-                                }
+                                    cancellationToken: context.CancellationToken).ConfigureAwait(false))
+                            {
+                                context.RegisterRefactoring(
+                                    $"Rename '{fieldSymbol.Name}' to '{newName}'",
+                                    cancellationToken => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), cancellationToken));
                             }
                         }
                     }

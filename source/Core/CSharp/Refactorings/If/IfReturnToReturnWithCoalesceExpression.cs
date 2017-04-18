@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -43,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public override async Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken)
         {
-            IStatementContainer container = StatementContainer.Create(IfStatement);
+            StatementContainer container = StatementContainer.Create(IfStatement);
 
             SyntaxList<StatementSyntax> statements = container.Statements;
 

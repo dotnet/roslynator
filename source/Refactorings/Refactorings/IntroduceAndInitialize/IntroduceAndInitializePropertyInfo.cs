@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.CodeAnalysis.CSharp;
+﻿using Microsoft.CodeAnalysis.CSharp;
 // Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Utilities;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
@@ -33,9 +33,9 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         {
             AutoPropertyKind propertyKind = (SupportsCSharp6)
                 ? AutoPropertyKind.ReadOnly
-                : AutoPropertyKind.WithPrivateSet;
+                : AutoPropertyKind.PrivateSet;
 
-            return AutoPropertyDeclaration(propertyKind, Modifiers.Public(), Type, Name);
+            return AutoPropertyDeclaration(propertyKind, Modifiers.Public(), Type, SyntaxFactory.Identifier(Name));
         }
     }
 }

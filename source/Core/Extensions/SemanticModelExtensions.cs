@@ -5,27 +5,13 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Roslynator.Extensions
+namespace Roslynator
 {
     public static class SemanticModelExtensions
     {
-        public static IEnumerable<Diagnostic> GetCompilerDiagnostics(
-            this SemanticModel semanticModel,
-            TextSpan? span = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return semanticModel
-                .GetDiagnostics(span, cancellationToken)
-                .Where(f => f.IsCompilerDiagnostic());
-        }
-
         public static bool ContainsDiagnostic(
             this SemanticModel semanticModel,
             string id,
@@ -146,7 +132,7 @@ namespace Roslynator.Extensions
                 .GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
 
-        public static IMethodSymbol GetSpeculativeMethodSymbol(
+        internal static IMethodSymbol GetSpeculativeMethodSymbol(
             this SemanticModel semanticModel,
             int position,
             SyntaxNode expression)
@@ -166,9 +152,9 @@ namespace Roslynator.Extensions
             bool excludeAnonymousTypeProperty = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode container = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
+            SyntaxNode node = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
 
-            return GetDeclaredSymbols(semanticModel, container, excludeAnonymousTypeProperty, cancellationToken);
+            return GetDeclaredSymbols(semanticModel, node, excludeAnonymousTypeProperty, cancellationToken);
         }
 
         private static SyntaxNode GetEnclosingSymbolSyntax(SemanticModel semanticModel, int position, CancellationToken cancellationToken)
@@ -185,10 +171,13 @@ namespace Roslynator.Extensions
             {
                 foreach (SyntaxReference syntaxReference in syntaxReferences)
                 {
-                    SyntaxNode syntax = syntaxReference.GetSyntax(cancellationToken);
+                    SyntaxNode node = syntaxReference.GetSyntax(cancellationToken);
 
-                    if (syntax.SyntaxTree == semanticModel.SyntaxTree)
-                        return syntax;
+                    if (node.SyntaxTree == semanticModel.SyntaxTree
+                        && node.FullSpan.Contains(position))
+                    {
+                        return node;
+                    }
                 }
             }
 

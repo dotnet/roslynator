@@ -9,16 +9,17 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeSwitchSectionsRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SwitchStatementSyntax switchStatement)
+        public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
             if (sections.Count > 1)
@@ -163,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings
             IEnumerable<SwitchSectionSyntax> sectionsWithoutStatements = sections
                 .Skip(index)
                 .Take(numberOfAdditionalSectionsToMerge + 1)
-                .Select(f => f.WithoutStatements());
+                .Select(f => f.WithStatements(List<StatementSyntax>()));
 
             SyntaxList<SwitchSectionSyntax> newSections = sections.Take(index)
                 .Concat(sectionsWithoutStatements)

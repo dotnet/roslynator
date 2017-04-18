@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
-        }
-
-        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
-        {
-            var lockStatement = (LockStatementSyntax)context.Node;
-
-            AvoidLockingOnPubliclyAccessibleInstanceRefactoring.Analyze(context, lockStatement);
+            context.RegisterSyntaxNodeAction(
+                f => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.AnalyzeLockStatement(f),
+                SyntaxKind.LockStatement);
         }
     }
 }

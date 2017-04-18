@@ -6,8 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -35,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var symbol = context.SemanticModel.GetSymbol(simpleBaseType.Type, context.CancellationToken) as INamedTypeSymbol;
 
-                            if (symbol?.IsInt32() == true)
+                            if (symbol?.IsInt() == true)
                                 return baseType;
                         }
                     }

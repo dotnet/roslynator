@@ -4,9 +4,8 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantOverridingMemberRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -29,24 +28,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
-        }
-
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-            RemoveRedundantOverridingMemberRefactoring.Analyze(context, methodDeclaration);
-        }
-
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
-            RemoveRedundantOverridingMemberRefactoring.Analyze(context, propertyDeclaration);
-        }
-
-        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
-            RemoveRedundantOverridingMemberRefactoring.Analyze(context, indexerDeclaration);
         }
     }
 }

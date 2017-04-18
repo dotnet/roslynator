@@ -4,10 +4,8 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -26,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLocalDeclarationStatement(f), SyntaxKind.LocalDeclarationStatement);
-        }
-
-        private void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
-        {
-            var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
-
-            MarkLocalVariableAsConstRefactoring.Analyze(context, localDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => MarkLocalVariableAsConstRefactoring.AnalyzeLocalDeclarationStatement(f),
+                SyntaxKind.LocalDeclarationStatement);
         }
     }
 }

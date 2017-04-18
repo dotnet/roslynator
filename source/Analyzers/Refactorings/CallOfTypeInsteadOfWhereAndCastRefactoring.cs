@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -45,9 +43,11 @@ namespace Roslynator.CSharp.Refactorings
 
                             if (semanticModel
                                     .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                                    .MethodInfo
                                     .IsLinqCast()
                                 && semanticModel
                                     .GetExtensionMethodInfo(invocation2, ExtensionMethodKind.Reduced, cancellationToken)
+                                    .MethodInfo
                                     .IsLinqWhere())
                             {
                                 BinaryExpressionSyntax isExpression = GetIsExpression(arguments.First().Expression);

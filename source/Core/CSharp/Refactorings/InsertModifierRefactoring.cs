@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -35,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxToken modifier = Token(modifierKind);
 
-                ClassDeclarationSyntax newClassDeclaration = Inserter.InsertModifier(classDeclaration, modifier);
+                ClassDeclarationSyntax newClassDeclaration = classDeclaration.InsertModifier(modifier, ModifierComparer.Instance);
 
                 return await document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken).ConfigureAwait(false);
             }

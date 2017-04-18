@@ -4,7 +4,7 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.UseGenericEventHandlerRefactoring;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSymbolAction(f => AnalyzeEvent(f), SymbolKind.Event);
+            context.RegisterSymbolAction(f => UseGenericEventHandlerRefactoring.AnalyzeEvent(f), SymbolKind.Event);
         }
     }
 }

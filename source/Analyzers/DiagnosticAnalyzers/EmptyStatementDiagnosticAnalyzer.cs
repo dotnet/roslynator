@@ -24,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSyntaxNode(f), SyntaxKind.EmptyStatement);
-        }
-
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
-        {
-            SyntaxNode emptyStatement = context.Node;
-
-            RemoveEmptyStatementRefactoring.Analyze(context, emptyStatement);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveEmptyStatementRefactoring.AnalyzeEmptyStatement(f),
+                SyntaxKind.EmptyStatement);
         }
     }
 }

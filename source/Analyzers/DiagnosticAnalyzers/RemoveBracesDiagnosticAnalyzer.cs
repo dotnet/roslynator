@@ -29,7 +29,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
+            context.RegisterSyntaxNodeAction(
+                f => RemoveBracesRefactoring.Analyze(f),
                 SyntaxKind.IfStatement,
                 SyntaxKind.ForEachStatement,
                 SyntaxKind.ForEachVariableStatement,
@@ -39,11 +40,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 SyntaxKind.DoStatement,
                 SyntaxKind.LockStatement,
                 SyntaxKind.FixedStatement);
-        }
-
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveBracesRefactoring.Analyze(context);
         }
     }
 }

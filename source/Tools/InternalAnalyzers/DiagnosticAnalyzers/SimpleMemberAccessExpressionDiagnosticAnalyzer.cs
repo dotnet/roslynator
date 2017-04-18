@@ -7,9 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 {
@@ -54,7 +51,7 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
                         ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(expression, ExtensionMethodKind.Reduced, cancellationToken);
 
                         if (info.IsValid
-                            && info.HasName("GetTypeInfo")
+                            && string.Equals(info.Symbol.Name, "GetTypeInfo", StringComparison.Ordinal)
                             && info.Symbol.ReturnType == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.TypeInfo"))
                         {
                             ImmutableArray<IParameterSymbol> parameters = info.Symbol.Parameters;

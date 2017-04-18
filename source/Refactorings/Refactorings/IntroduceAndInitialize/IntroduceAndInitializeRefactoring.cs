@@ -9,8 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 {
@@ -130,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
             return await document.ReplaceNodeAsync(
                 containingMember,
-                containingMember.SetMembers(newMembers),
+                containingMember.WithMembers(newMembers),
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -153,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                     ImmutableArray<ISymbol> members = containingType.GetMembers();
 
                     return Infos
-                        .Where(f => Identifier.IsUniqueMemberName(f.Name, containingType, isCaseSensitive: true))
+                        .Where(f => NameGenerator.IsUniqueMemberName(f.Name, containingType, isCaseSensitive: true))
                         .Select(f => f.CreateDeclaration());
                 }
             }

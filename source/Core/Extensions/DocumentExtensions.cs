@@ -4,75 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Extensions
+namespace Roslynator
 {
     public static class DocumentExtensions
     {
-        public static Task<IEnumerable<ReferencedSymbol>> FindSymbolReferencesAsync(
-            this Document document,
-            ISymbol symbol,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            return SymbolFinder.FindReferencesAsync(
-                symbol,
-                document.Project.Solution,
-                ImmutableHashSet.Create(document),
-                cancellationToken);
-        }
-
-        public static async Task<ImmutableArray<SyntaxNode>> FindSymbolNodesAsync(
-            this Document document,
-            ISymbol symbol,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            List<SyntaxNode> nodes = null;
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            IEnumerable<ReferencedSymbol> referencedSymbols = await document.FindSymbolReferencesAsync(symbol, cancellationToken).ConfigureAwait(false);
-
-            foreach (Location location in referencedSymbols
-                .SelectMany(f => f.Locations)
-                .Select(f => f.Location)
-                .Where(f => f.IsInSource))
-            {
-                SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
-
-                Debug.Assert(node != null);
-
-                if (node != null)
-                    (nodes ?? (nodes = new List<SyntaxNode>())).Add(node);
-            }
-
-            if (nodes != null)
-            {
-                return ImmutableArray.CreateRange(nodes);
-            }
-            else
-            {
-                return ImmutableArray<SyntaxNode>.Empty;
-            }
-        }
-
         public static async Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,
@@ -122,20 +64,6 @@ namespace Roslynator.Extensions
             SourceText newSourceText = sourceText.WithChanges(textChanges);
 
             return document.WithText(newSourceText);
-        }
-
-        public static Task<Solution> RemoveFromSolutionAsync(this Document document)
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            var tcs = new TaskCompletionSource<Solution>();
-
-            Solution newSolution = document.Project.Solution.RemoveDocument(document.Id);
-
-            tcs.SetResult(newSolution);
-
-            return tcs.Task;
         }
 
         public static async Task<Document> ReplaceNodeAsync(
@@ -361,6 +289,58 @@ namespace Roslynator.Extensions
         internal static Solution Solution(this Document document)
         {
             return document.Project.Solution;
+        }
+
+        internal static async Task<ImmutableArray<SyntaxNode>> FindNodesAsync(
+            this Document document,
+            ISymbol symbol,
+            bool allowCandidate = false,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            List<SyntaxNode> nodes = null;
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
+                symbol,
+                document.Solution(),
+                ImmutableHashSet.Create(document),
+                cancellationToken).ConfigureAwait(false))
+            {
+                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
+                {
+                    if (!referenceLocation.IsImplicit
+                        && (allowCandidate || !referenceLocation.IsCandidateLocation))
+                    {
+                        Location location = referenceLocation.Location;
+
+                        if (location.IsInSource)
+                        {
+                            SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+
+                            Debug.Assert(node != null);
+
+                            if (node != null)
+                                (nodes ?? (nodes = new List<SyntaxNode>())).Add(node);
+                        }
+                    }
+                }
+            }
+
+            if (nodes != null)
+            {
+                return ImmutableArray.CreateRange(nodes);
+            }
+            else
+            {
+                return ImmutableArray<SyntaxNode>.Empty;
+            }
         }
     }
 }

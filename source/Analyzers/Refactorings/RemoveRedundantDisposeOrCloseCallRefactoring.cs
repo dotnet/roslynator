@@ -6,16 +6,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantDisposeOrCloseCallRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, UsingStatementSyntax usingStatement)
+        public static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
+            var usingStatement = (UsingStatementSyntax)context.Node;
+
             StatementSyntax statement = usingStatement.Statement;
 
             if (statement?.IsKind(SyntaxKind.Block) == true)
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var block = (BlockSyntax)expressionStatement.Parent;
 
-            BlockSyntax newBlock = Remover.RemoveStatement(block, expressionStatement);
+            BlockSyntax newBlock = block.RemoveStatement(expressionStatement);
 
             return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }

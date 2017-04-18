@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -53,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (node.IsKind(SyntaxKind.ElseClause))
             {
-                return IfElseChain.GetTopmostIf((ElseClauseSyntax)node)?.Parent;
+                return ((ElseClauseSyntax)node).GetTopmostIf()?.Parent;
             }
             else
             {
@@ -79,9 +78,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.UncheckedStatement:
                     return true;
                 case SyntaxKind.IfStatement:
-                    return IfElseChain.IsTopmostIf((IfStatementSyntax)node);
+                    return ((IfStatementSyntax)node).IsTopmostIf();
                 case SyntaxKind.ElseClause:
-                    return IfElseChain.IsEndOfChain((ElseClauseSyntax)node);
+                    return !((ElseClauseSyntax)node).ContinuesWithIf();
             }
 
             return false;
@@ -97,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
-                IfStatementSyntax ifStatement = IfElseChain.GetTopmostIf((ElseClauseSyntax)statement.Parent);
+                IfStatementSyntax ifStatement = ((ElseClauseSyntax)statement.Parent).GetTopmostIf();
                 var block = (BlockSyntax)ifStatement.Parent;
                 int index = block.Statements.IndexOf(ifStatement);
 
@@ -119,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (statement.Parent.IsKind(SyntaxKind.ElseClause))
             {
-                list = new List<SyntaxTrivia>() { CSharpFactory.NewLineTrivia() };
+                list = new List<SyntaxTrivia>() { CSharpFactory.NewLine() };
             }
             else
             {

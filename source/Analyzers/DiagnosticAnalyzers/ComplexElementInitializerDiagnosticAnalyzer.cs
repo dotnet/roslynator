@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.ComplexElementInitializerExpression);
-        }
-
-        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            var initializer = (InitializerExpressionSyntax)context.Node;
-
-            UseCSharp6DictionaryInitializerRefactoring.Analyze(context, initializer);
+            context.RegisterSyntaxNodeAction(
+                f => UseCSharp6DictionaryInitializerRefactoring.AnalyzeComplexElementInitializerExpression(f),
+                SyntaxKind.ComplexElementInitializerExpression);
         }
     }
 }

@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 {
@@ -38,13 +35,13 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                         && !propertySymbol.IsReadOnly
                         && !propertySymbol.IsImplicitlyDeclared
                         && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                        && !propertySymbol.HasAttributeByMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute, context.Compilation))
+                        && !propertySymbol.HasAttribute(context.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute)))
                     {
                         IMethodSymbol setMethod = propertySymbol.SetMethod;
 
                         if (setMethod?.IsPrivate() == true)
                         {
-                            var accessor = setMethod.GetFirstSyntaxOrDefault(context.CancellationToken) as AccessorDeclarationSyntax;
+                            var accessor = setMethod.GetSyntaxOrDefault(context.CancellationToken) as AccessorDeclarationSyntax;
 
                             if (accessor != null
                                 && accessor.BodyOrExpressionBody() == null)
@@ -66,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 
         public override void ReportFixableSymbols(SymbolAnalysisContext context, INamedTypeSymbol containingType, HashSet<ISymbol> symbols)
         {
-            foreach (PropertyDeclarationSyntax node in symbols.Select(f => f.GetFirstSyntax(context.CancellationToken)))
+            foreach (PropertyDeclarationSyntax node in symbols.Select(f => f.GetSyntax(context.CancellationToken)))
             {
                 AccessorDeclarationSyntax setter = node.Setter();
 

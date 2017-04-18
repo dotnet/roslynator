@@ -7,16 +7,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MemberTypeMustMatchOverriddenMemberTypeRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        internal static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
             if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
                 && ((IMethodSymbol)context.ContainingSymbol)?.OverriddenMethod != null)
             {
@@ -24,8 +23,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax propertyDeclaration)
+        internal static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
                 && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
             {
@@ -33,8 +34,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, IndexerDeclarationSyntax indexerDeclaration)
+        internal static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+
             if (indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
                 && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
             {
@@ -42,8 +45,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, EventDeclarationSyntax eventDeclaration)
+        internal static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var eventDeclaration = (EventDeclarationSyntax)context.Node;
+
             if (eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
                 && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
             {
@@ -51,8 +56,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
+        internal static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
+
             if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
                 && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
             {

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.InlineMethod
@@ -36,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
             newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-            IStatementContainer container;
+            StatementContainer container;
             if (StatementContainer.TryCreate(expressionStatement, out container))
             {
                 SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, newStatements));
@@ -64,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
                 newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
 
-                IStatementContainer container;
+                StatementContainer container;
                 if (StatementContainer.TryCreate(expressionStatement, out container))
                 {
                     SyntaxNode newNode = container.NodeWithStatements(container.Statements.ReplaceRange(expressionStatement, newStatements));
@@ -86,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 DocumentId documentId = Document.Solution().GetDocumentId(MethodDeclaration.SyntaxTree);
 
-                newDocument = await Remover.RemoveMemberAsync(newDocument.Solution().GetDocument(documentId), MethodDeclaration, CancellationToken).ConfigureAwait(false);
+                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(MethodDeclaration, CancellationToken).ConfigureAwait(false);
 
                 return newDocument.Solution();
             }

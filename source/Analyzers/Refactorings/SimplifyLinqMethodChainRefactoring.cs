@@ -7,9 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -37,9 +35,11 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (semanticModel
                                 .GetExtensionMethodInfo(invocation, cancellationToken)
+                                .MethodInfo
                                 .IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodName)
                             && semanticModel
                                 .GetExtensionMethodInfo(invocation2, cancellationToken)
+                                .MethodInfo
                                 .IsLinqWhere(allowImmutableArrayExtension: true))
                         {
                             TextSpan span = TextSpan.FromBounds(memberAccess2.Name.Span.Start, invocation.Span.End);

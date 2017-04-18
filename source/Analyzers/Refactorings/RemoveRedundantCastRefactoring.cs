@@ -9,17 +9,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using System.Collections.Immutable;
-using Roslynator.Diagnostics.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantCastRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, CastExpressionSyntax castExpression)
+        public static void AnalyzeCastExpression(SyntaxNodeAnalysisContext context)
         {
+            var castExpression = (CastExpressionSyntax)context.Node;
+
             SyntaxNode parent = castExpression.Parent;
 
             if (parent?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
@@ -46,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.RemoveRedundantCast,
-                                    Location.Create(castExpression.SyntaxTree, castExpression.BracesSpan()));
+                                    Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
                             }
                         }
                     }
@@ -119,8 +118,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        internal static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
         {
+            var invocation = (InvocationExpressionSyntax)context.Node;
+
             ExpressionSyntax expression = invocation.Expression;
 
             if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
@@ -148,9 +149,9 @@ namespace Roslynator.CSharp.Refactorings
 
                                 ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken);
 
-                                if (info.IsLinqCast())
+                                if (info.MethodInfo.IsLinqCast())
                                 {
-                                    ImmutableArray<ITypeSymbol> typeArguments = info.OriginalSymbol.TypeArguments;
+                                    ImmutableArray<ITypeSymbol> typeArguments = info.ReducedSymbol.TypeArguments;
 
                                     if (typeArguments.Length == 1)
                                     {

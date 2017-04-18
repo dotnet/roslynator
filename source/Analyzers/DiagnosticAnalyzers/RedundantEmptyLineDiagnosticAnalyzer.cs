@@ -4,9 +4,8 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantEmptyLineRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -35,8 +34,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStatement(f), SyntaxKind.ForEachVariableStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStement(f), SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeCommonForEachStement(f), SyntaxKind.ForEachVariableStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeUsingStatement(f), SyntaxKind.UsingStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
@@ -45,86 +44,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
-        }
-
-        public void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ClassDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (StructDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (InterfaceDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (NamespaceDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (SwitchStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (TryStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ElseClauseSyntax)context.Node);
-        }
-
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (IfStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (CommonForEachStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (ForStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (UsingStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (WhileStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (DoStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (LockStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (FixedStatementSyntax)context.Node);
-        }
-
-        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, (AccessorListSyntax)context.Node);
         }
     }
 }

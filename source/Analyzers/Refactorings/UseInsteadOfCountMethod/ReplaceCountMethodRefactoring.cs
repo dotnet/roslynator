@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 {
@@ -24,6 +22,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
             if (semanticModel
                 .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                .MethodInfo
                 .IsLinqExtensionOfIEnumerableOfTWithoutParameters("Count"))
             {
                 string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, cancellationToken);
@@ -84,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                     return "Length";
                 }
 
-                if (SymbolUtility.ImplementsICollectionOfT(typeSymbol))
+                if (typeSymbol.ImplementsICollectionOfT())
                     return "Count";
             }
 

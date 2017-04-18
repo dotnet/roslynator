@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Extensions;
-using Roslynator.Rename;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -40,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (span.Contains(context.Span))
                     {
-                        string name = Identifier.CreateName(parameterSymbol.Type, firstCharToLower: true);
+                        string name = NameGenerator.CreateName(parameterSymbol.Type, firstCharToLower: true);
 
                         if (!string.IsNullOrEmpty(name))
                         {
@@ -54,17 +53,19 @@ namespace Roslynator.CSharp.Refactorings
             else if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
-                string name = parameter.Identifier.ValueText;
-                string newName = Identifier.CreateName(parameterSymbol.Type, firstCharToLower: true);
+                string oldName = parameter.Identifier.ValueText;
 
-                if (!string.IsNullOrEmpty(newName)
-                    && !string.Equals(name, newName, StringComparison.Ordinal))
+                string newName = NameGenerator.Default.CreateUniqueParameterName(
+                    oldName,
+                    parameterSymbol,
+                    semanticModel,
+                    cancellationToken: context.CancellationToken);
+
+                if (newName != null)
                 {
-                    newName = Identifier.EnsureUniqueLocalName(newName, parameter.SpanStart, semanticModel, context.CancellationToken);
-
                     context.RegisterRefactoring(
-                        $"Rename '{name}' to '{newName}'",
-                        cancellationToken => Renamer.RenameSymbolAsync(context.Document, parameterSymbol, newName, cancellationToken));
+                        $"Rename '{oldName}' to '{newName}'",
+                        cancellationToken => Renamer.RenameSymbolAsync(context.Solution, parameterSymbol, newName, default(OptionSet), cancellationToken));
                 }
             }
         }

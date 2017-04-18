@@ -8,8 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -56,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!propertySymbol.IsWriteOnly
                     && semanticModel.IsAccessible(forEachStatement.SpanStart, propertySymbol.GetMethod)
                     && propertySymbol.Type.Equals(info.ElementType)
-                    && propertySymbol.SingleParameterOrDefault()?.Type.IsInt32() == true)
+                    && propertySymbol.SingleParameterOrDefault()?.Type.IsInt() == true)
                 {
                     return true;
                 }
@@ -85,7 +83,16 @@ namespace Roslynator.CSharp.Refactorings
                 document.Project.Solution,
                 cancellationToken).ConfigureAwait(false);
 
-            string identifier = Identifier.EnsureUniqueLocalName(Identifier.DefaultForVariableName, forEachStatement.Statement.SpanStart, semanticModel, cancellationToken);
+            string name = NameGenerator.Default.EnsureUniqueLocalName(
+                DefaultNames.ForVariable,
+                semanticModel,
+                forEachStatement.Statement.SpanStart,
+                cancellationToken: cancellationToken);
+
+            SyntaxToken identifier = Identifier(name);
+
+            if (name != DefaultNames.ForVariable)
+                identifier = identifier.WithRenameAnnotation();
 
             ForStatementSyntax forStatement = ForStatement(
                 declaration: VariableDeclaration(
@@ -94,13 +101,13 @@ namespace Roslynator.CSharp.Refactorings
                     EqualsValueClause(NumericLiteralExpression(0))),
                 initializers: default(SeparatedSyntaxList<ExpressionSyntax>),
                 condition: LessThanExpression(
-                    IdentifierName(identifier),
+                    IdentifierName(name),
                     SimpleMemberAccessExpression(
                         IdentifierName(forEachStatement.Expression.ToString()),
                         IdentifierName(GetCountOrLengthPropertyName(forEachStatement.Expression, semanticModel, cancellationToken)))),
                 incrementors: SingletonSeparatedList<ExpressionSyntax>(
                     PostIncrementExpression(
-                        IdentifierName(identifier))),
+                        IdentifierName(name))),
                 statement: forEachStatement.Statement.ReplaceNodes(
                     GetIdentifiers(root, referencedSymbols),
                     (f, g) =>
@@ -108,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
                         return ElementAccessExpression(
                             IdentifierName(forEachStatement.Expression.ToString()),
                             BracketedArgumentList(
-                                SingletonSeparatedList(Argument(IdentifierName(identifier))))
+                                SingletonSeparatedList(Argument(IdentifierName(name))))
                         ).WithTriviaFrom(f);
                     }));
 

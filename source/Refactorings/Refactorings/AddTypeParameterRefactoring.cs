@@ -6,9 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -259,7 +257,7 @@ namespace Roslynator.CSharp.Refactorings
 
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-            string name = GetMethodTypeParameterName(methodDeclaration.BodyOrExpressionBody().SpanStart, semanticModel, cancellationToken);
+            string name = GetMethodTypeParameterName(semanticModel, methodDeclaration.BodyOrExpressionBody().SpanStart, cancellationToken);
 
             MethodDeclarationSyntax newNode = methodDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
@@ -363,7 +361,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(localFunctionStatement, cancellationToken);
 
-            string name = GetMethodTypeParameterName(localFunctionStatement.BodyOrExpressionBody().SpanStart, semanticModel, cancellationToken);
+            string name = GetMethodTypeParameterName(semanticModel, localFunctionStatement.BodyOrExpressionBody().SpanStart, cancellationToken);
 
             LocalFunctionStatementSyntax newNode = localFunctionStatement.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
@@ -375,18 +373,18 @@ namespace Roslynator.CSharp.Refactorings
 
         private static string GetTypeParameterName(int position, SemanticModel semanticModel)
         {
-            return Identifier.EnsureUniqueName(
-                Identifier.DefaultTypeParameterName,
+            return NameGenerator.Default.EnsureUniqueName(
+                DefaultNames.TypeParameter,
                 semanticModel.LookupSymbols(position));
         }
 
-        private static string GetMethodTypeParameterName(int position, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static string GetMethodTypeParameterName(SemanticModel semanticModel, int position, CancellationToken cancellationToken)
         {
-            return Identifier.EnsureUniqueLocalName(
-                Identifier.DefaultTypeParameterName,
-                position,
+            return NameGenerator.Default.EnsureUniqueLocalName(
+                DefaultNames.TypeParameter,
                 semanticModel,
-                cancellationToken);
+                position,
+                cancellationToken: cancellationToken);
         }
 
         private static TypeParameterConstraintSyntax CreateConstraint(ConstraintKind constraintKind)

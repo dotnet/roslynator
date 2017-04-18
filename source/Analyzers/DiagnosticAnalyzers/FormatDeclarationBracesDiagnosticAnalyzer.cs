@@ -4,9 +4,8 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.FormatDeclarationBracesRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -29,27 +28,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
-        }
-
-        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var declaration = (ClassDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
-        }
-
-        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var declaration = (StructDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
-        }
-
-        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var declaration = (InterfaceDeclarationSyntax)context.Node;
-
-            FormatDeclarationBracesRefactoring.Analyze(context, declaration);
         }
     }
 }

@@ -32,6 +32,12 @@ using System.Runtime.InteropServices;
     + "8183943c6eb96fce9d8773c4acfaa27abdf712580c89f284de3cb440abc59a7152501d5c4dabf4"
     + "83721eba")]
 
+[assembly: InternalsVisibleTo("CodeGenerator, PublicKey=0024000004800000940000000602000000240000525341310004000001000100f7ddb070181153"
+    + "f2204a6efb917a34ec8b9ab77d2ff11bd3cec4948eee9d9e6f24e3955f8b2e5d9150e50e4611fd"
+    + "82f1d0fda7f59eae4e3fe6e519d3d006f698542095113ae825cc9b2935696470eccb32cb193b70"
+    + "031d380e418739fc62775e0ea5e9e713f6633b3081ee35a67ccb44da275eea1ab5d6ab11e3b467"
+    + "605365be")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,14 +24,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.DestructorDeclaration);
-        }
-
-        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
-        {
-            var destructor = (DestructorDeclarationSyntax)context.Node;
-
-            RemoveEmptyDestructorRefactoring.Analyze(context, destructor);
+            context.RegisterSyntaxNodeAction(
+                f => RemoveEmptyDestructorRefactoring.AnalyzeDestructorDeclaration(f),
+                SyntaxKind.DestructorDeclaration);
         }
     }
 }

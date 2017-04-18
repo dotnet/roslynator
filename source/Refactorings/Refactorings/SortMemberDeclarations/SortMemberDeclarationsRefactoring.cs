@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
+using Roslynator.CSharp.Comparers;
 using Roslynator.CSharp.SyntaxRewriters.SortMembers;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 {
@@ -18,31 +17,40 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
     {
         public static void ComputeRefactoring(RefactoringContext context, NamespaceDeclarationSyntax namespaceDeclaration)
         {
-            ComputeRefactoring(context, SelectedMemberDeclarationCollection.Create(namespaceDeclaration, context.Span));
+            MemberDeclarationSelection selectedMembers;
+            if (MemberDeclarationSelection.TryCreate(namespaceDeclaration, context.Span, out selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            ComputeRefactoring(context, SelectedMemberDeclarationCollection.Create(classDeclaration, context.Span));
+            MemberDeclarationSelection selectedMembers;
+            if (MemberDeclarationSelection.TryCreate(classDeclaration, context.Span, out selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
-            ComputeRefactoring(context, SelectedMemberDeclarationCollection.Create(structDeclaration, context.Span));
+            MemberDeclarationSelection selectedMembers;
+            if (MemberDeclarationSelection.TryCreate(structDeclaration, context.Span, out selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
         {
-            ComputeRefactoring(context, SelectedMemberDeclarationCollection.Create(interfaceDeclaration, context.Span));
+            MemberDeclarationSelection selectedMembers;
+            if (MemberDeclarationSelection.TryCreate(interfaceDeclaration, context.Span, out selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
+
         }
 
-        private static void ComputeRefactoring(RefactoringContext context, SelectedMemberDeclarationCollection selectedMembers)
+        private static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSelection selectedMembers)
         {
-            if (selectedMembers.IsMultiple)
+            if (selectedMembers.Count > 1)
             {
-                ImmutableArray<MemberDeclarationSyntax> selectedMemberArray = selectedMembers.ToImmutableArray();
+                ImmutableArray<MemberDeclarationSyntax> members = selectedMembers.Nodes;
 
-                SyntaxKind kind = GetSingleKindOrDefault(selectedMemberArray);
+                SyntaxKind kind = GetSingleKindOrDefault(members);
 
                 if (kind != SyntaxKind.None)
                 {
@@ -53,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                             MemberDeclarationSortMode.ByKindThenByName,
                             "Sort members by name",
                             selectedMembers,
-                            selectedMemberArray);
+                            members);
                     }
                 }
                 else
@@ -63,14 +71,14 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                         MemberDeclarationSortMode.ByKind,
                         "Sort members by kind",
                         selectedMembers,
-                        selectedMemberArray);
+                        members);
 
                     ComputeRefactoring(
                         context,
                         MemberDeclarationSortMode.ByKindThenByName,
                         "Sort members by kind then by name",
                         selectedMembers,
-                        selectedMemberArray);
+                        members);
                 }
             }
         }
@@ -79,10 +87,10 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             RefactoringContext context,
             MemberDeclarationSortMode sortMode,
             string title,
-            SelectedMemberDeclarationCollection selectedMembers,
-            ImmutableArray<MemberDeclarationSyntax> selectedMemberArray)
+            MemberDeclarationSelection selectedMembers,
+            ImmutableArray<MemberDeclarationSyntax> members)
         {
-            if (!MemberDeclarationComparer.IsSorted(selectedMemberArray, sortMode))
+            if (!MemberDeclarationComparer.GetInstance(sortMode).IsSorted(members))
             {
                 context.RegisterRefactoring(
                     title,
@@ -92,23 +100,23 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
         private static Task<Document> RefactorAsync(
             Document document,
-            SelectedMemberDeclarationCollection selectedMembers,
+            MemberDeclarationSelection selectedMembers,
             MemberDeclarationSortMode sortMode,
             CancellationToken cancellationToken)
         {
-            var comparer = new MemberDeclarationComparer(sortMode);
+            MemberDeclarationComparer comparer = MemberDeclarationComparer.GetInstance(sortMode);
 
             MemberDeclarationSyntax containingMember = selectedMembers.ContainingMember;
 
             SyntaxList<MemberDeclarationSyntax> members = containingMember.GetMembers();
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members
-                .Take(selectedMembers.FirstIndex)
+                .Take(selectedMembers.StartIndex)
                 .Concat(selectedMembers.OrderBy(f => f, comparer))
-                .Concat(members.Skip(selectedMembers.LastIndex + 1))
+                .Concat(members.Skip(selectedMembers.EndIndex + 1))
                 .ToSyntaxList();
 
-            MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
+            MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
 
             return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }

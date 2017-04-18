@@ -6,22 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class CollapseToInitializerRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
-            StatementSyntax firstStatement = selectedStatements.First;
-            SemanticModel semanticModel = null;
-            ISymbol symbol = null;
-            ObjectCreationExpressionSyntax objectCreation = null;
-
-            if (selectedStatements.IsMultiple)
+            if (selectedStatements.Count > 1)
             {
+                StatementSyntax firstStatement = selectedStatements.First();
+
+                SemanticModel semanticModel = null;
+                ISymbol symbol = null;
+                ObjectCreationExpressionSyntax objectCreation = null;
+
                 SyntaxKind kind = firstStatement.Kind();
 
                 if (kind == SyntaxKind.LocalDeclarationStatement)
@@ -116,26 +115,26 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
-            SelectedStatementCollection selectedStatements,
+            StatementContainerSelection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            IStatementContainer container = selectedStatements.Container;
+            StatementContainer container = selectedStatements.Container;
 
             ExpressionStatementSyntax[] expressionStatements = selectedStatements
                 .Skip(1)
                 .Cast<ExpressionStatementSyntax>()
                 .ToArray();
 
-            StatementSyntax firstNode = selectedStatements.First;
+            StatementSyntax firstStatement = selectedStatements.First();
 
             SyntaxList<StatementSyntax> newStatements = container.Statements.Replace(
-                firstNode,
-                firstNode.ReplaceNode(
+                firstStatement,
+                firstStatement.ReplaceNode(
                     objectCreation,
                     objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements))));
 
             int count = expressionStatements.Length;
-            int index = selectedStatements.FirstIndex + 1;
+            int index = selectedStatements.StartIndex + 1;
 
             while (count > 0)
             {

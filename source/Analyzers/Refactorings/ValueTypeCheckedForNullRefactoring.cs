@@ -1,15 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -72,9 +69,9 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = null;
 
             if (typeSymbol.IsPredefinedValueType()
-                || typeSymbol.GetMethods(WellKnownMemberNames.EqualityOperatorName).Any())
+                || typeSymbol.ExistsMethod(WellKnownMemberNames.EqualityOperatorName))
             {
-                newNode = typeSymbol.ToDefaultExpression(semanticModel, right.SpanStart)
+                newNode = typeSymbol.ToDefaultValueSyntax(semanticModel, right.SpanStart)
                     .WithTriviaFrom(right)
                     .WithFormatterAnnotation();
 

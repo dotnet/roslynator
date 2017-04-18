@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {

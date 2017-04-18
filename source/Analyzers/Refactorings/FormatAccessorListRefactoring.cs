@@ -9,17 +9,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class FormatAccessorListRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
+        public static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
         {
+            var accessorList = (AccessorListSyntax)context.Node;
+
             SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 
             if (accessors.Any(f => f.BodyOrExpressionBody() != null))
@@ -167,7 +166,7 @@ namespace Roslynator.CSharp.Refactorings
                                 propertyDeclaration.Identifier.Span.End,
                                 accessorList.CloseBraceToken.Span.Start);
 
-                            PropertyDeclarationSyntax newNode = Remover.RemoveWhitespaceOrEndOfLine(propertyDeclaration, span);
+                            PropertyDeclarationSyntax newNode = propertyDeclaration.RemoveWhitespaceOrEndOfLineTrivia(span);
 
                             newNode = newNode.WithFormatterAnnotation();
 
@@ -181,7 +180,7 @@ namespace Roslynator.CSharp.Refactorings
                                 indexerDeclaration.ParameterList.CloseBracketToken.Span.End,
                                 accessorList.CloseBraceToken.Span.Start);
 
-                            IndexerDeclarationSyntax newNode = Remover.RemoveWhitespaceOrEndOfLine(indexerDeclaration, span);
+                            IndexerDeclarationSyntax newNode = indexerDeclaration.RemoveWhitespaceOrEndOfLineTrivia(span);
 
                             newNode = newNode.WithFormatterAnnotation();
 
@@ -217,7 +216,7 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxTriviaList trailingTrivia = accessor.GetTrailingTrivia();
 
                 if (accessorList.SyntaxTree.IsSingleLineSpan(trailingTrivia.Span, cancellationToken))
-                    return newAccessorList.ReplaceNode(accessor, accessor.AppendToTrailingTrivia(NewLineTrivia()));
+                    return newAccessorList.ReplaceNode(accessor, accessor.AppendToTrailingTrivia(NewLine()));
             }
 
             return newAccessorList;
@@ -230,9 +229,10 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxTriviaList triviaList = accessorList
                     .CloseBraceToken
                     .LeadingTrivia
-                    .Add(NewLineTrivia());
+                    .Add(NewLine());
 
-                return Remover.RemoveWhitespaceOrEndOfLine(accessorList)
+                return accessorList
+                    .RemoveWhitespaceOrEndOfLineTrivia()
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(triviaList));
             }
             else
@@ -241,7 +241,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (ShouldBeFormatted(f))
                     {
-                        return Remover.RemoveWhitespaceOrEndOfLine(f, f.Span);
+                        return f.RemoveWhitespaceOrEndOfLineTrivia(f.Span);
                     }
                     else
                     {

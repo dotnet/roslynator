@@ -15,9 +15,9 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.WrapInRegion,
                 RefactoringIdentifiers.WrapInIfDirective))
             {
-                SelectedTextLineCollection lines = await SelectedLinesRefactoring.GetSelectedLinesAsync(context).ConfigureAwait(false);
+                TextLineCollectionSelection selectedLines = await SelectedLinesRefactoring.GetSelectedLinesAsync(context).ConfigureAwait(false);
 
-                if (lines?.Any() == true)
+                if (selectedLines?.Any() == true)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
                     {
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                            {
                                var refactoring = new WrapInRegionRefactoring();
 
-                               return refactoring.RefactorAsync(context.Document, lines, cancellationToken);
+                               return refactoring.RefactorAsync(context.Document, selectedLines, cancellationToken);
                            });
                     }
 
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                            {
                                var refactoring = new WrapInIfDirectiveRefactoring();
 
-                               return refactoring.RefactorAsync(context.Document, lines, cancellationToken);
+                               return refactoring.RefactorAsync(context.Document, selectedLines, cancellationToken);
                            });
                     }
                 }

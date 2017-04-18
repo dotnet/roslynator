@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -25,15 +23,20 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string identifier = Identifier.EnsureUniqueLocalName(Identifier.DefaultForEachVariableName, statement.SpanStart, semanticModel, cancellationToken);
-            IdentifierNameSyntax identifierName = IdentifierName(identifier);
+            string name = NameGenerator.Default.EnsureUniqueLocalName(
+                DefaultNames.ForEachVariable,
+                semanticModel,
+                statement.SpanStart,
+                cancellationToken: cancellationToken);
+
+            IdentifierNameSyntax identifierName = IdentifierName(name);
 
             var condition = (BinaryExpressionSyntax)forStatement.Condition;
             var memberAccessExpression = (MemberAccessExpressionSyntax)condition.Right;
             ExpressionSyntax expression = memberAccessExpression.Expression;
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables.First(), cancellationToken);
-            ImmutableArray<SyntaxNode> nodes = await document.FindSymbolNodesAsync(symbol, cancellationToken).ConfigureAwait(false);
+            ImmutableArray<SyntaxNode> nodes = await document.FindNodesAsync(symbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             StatementSyntax newStatement = statement.ReplaceNodes(
                 nodes.Select(f => f.Parent.Parent.Parent),
@@ -41,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
                 VarType(),
-                identifier,
+                name,
                 expression,
                 newStatement);
 
@@ -112,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
 
-                ImmutableArray<SyntaxNode> nodes = await context.Document.FindSymbolNodesAsync(variableSymbol, context.CancellationToken).ConfigureAwait(false);
+                ImmutableArray<SyntaxNode> nodes = await context.Document.FindNodesAsync(variableSymbol, cancellationToken: context.CancellationToken).ConfigureAwait(false);
 
                 StatementSyntax statement = forStatement.Statement;
 

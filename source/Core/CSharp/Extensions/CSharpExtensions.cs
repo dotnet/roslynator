@@ -1,15 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Internal;
-using Roslynator.Extensions;
+using Roslynator.CSharp.Helpers;
 
-namespace Roslynator.CSharp.Extensions
+namespace Roslynator.CSharp
 {
     public static class CSharpExtensions
     {
@@ -63,7 +61,7 @@ namespace Roslynator.CSharp.Extensions
                 .Type;
         }
 
-        public static bool IsExplicitConversion(
+        internal static bool IsExplicitConversion(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
@@ -171,30 +169,11 @@ namespace Roslynator.CSharp.Extensions
                 case SpecialType.System_Decimal:
                 case SpecialType.System_Single:
                 case SpecialType.System_Double:
-                    return semanticModel.IsConstantValue(expression, cancellationToken);
+                    return semanticModel.IsZeroConstantValue(expression, cancellationToken);
             }
 
             if (typeSymbol.IsEnum())
-            {
-                INamedTypeSymbol underlyingType = ((INamedTypeSymbol)typeSymbol).EnumUnderlyingType;
-
-                switch (underlyingType.SpecialType)
-                {
-                    case SpecialType.System_SByte:
-                    case SpecialType.System_Byte:
-                    case SpecialType.System_Int16:
-                    case SpecialType.System_UInt16:
-                    case SpecialType.System_Int32:
-                    case SpecialType.System_UInt32:
-                    case SpecialType.System_Int64:
-                    case SpecialType.System_UInt64:
-                        return semanticModel.IsConstantValue(expression, cancellationToken);
-                }
-
-                Debug.Assert(false, underlyingType.SpecialType.ToString());
-
-                return false;
-            }
+                return semanticModel.IsZeroConstantValue(expression, cancellationToken);
 
             if (typeSymbol.IsReferenceType)
             {
@@ -230,14 +209,8 @@ namespace Roslynator.CSharp.Extensions
             return false;
         }
 
-        public static bool IsConstantValue(this SemanticModel semanticModel, ExpressionSyntax expression, CancellationToken cancellationToken = default(CancellationToken))
+        private static bool IsZeroConstantValue(this SemanticModel semanticModel, ExpressionSyntax expression, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
             Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
             if (optional.HasValue)

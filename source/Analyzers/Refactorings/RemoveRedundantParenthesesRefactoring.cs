@@ -9,96 +9,128 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantParenthesesRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
+        public static void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context)
         {
+            var parenthesizedExpression = (ParenthesizedExpressionSyntax)context.Node;
+
             AnalyzeExpression(context, parenthesizedExpression.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, WhileStatementSyntax whileStatement)
+        public static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
+            var whileStatement = (WhileStatementSyntax)context.Node;
+
             AnalyzeExpression(context, whileStatement.Condition);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, DoStatementSyntax doStatement)
+        public static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
+            var doStatement = (DoStatementSyntax)context.Node;
+
             AnalyzeExpression(context, doStatement.Condition);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, UsingStatementSyntax usingStatement)
+        public static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
+            var usingStatement = (UsingStatementSyntax)context.Node;
+
             AnalyzeExpression(context, usingStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, LockStatementSyntax lockStatement)
+        public static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
+            var lockStatement = (LockStatementSyntax)context.Node;
+
             AnalyzeExpression(context, lockStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
+            var ifStatement = (IfStatementSyntax)context.Node;
+
             AnalyzeExpression(context, ifStatement.Condition);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, SwitchStatementSyntax switchStatement)
+        public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
             AnalyzeExpression(context, switchStatement.Expression);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, CommonForEachStatementSyntax forEachStatement)
+        internal static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
+            var forEachStatement = (CommonForEachStatementSyntax)context.Node;
+
             AnalyzeExpression(context, forEachStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, ReturnStatementSyntax returnStatement)
+        public static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
+            var returnStatement = (ReturnStatementSyntax)context.Node;
+
             AnalyzeExpression(context, returnStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, YieldStatementSyntax yieldStatement)
+        public static void AnalyzeYieldStatement(SyntaxNodeAnalysisContext context)
         {
+            var yieldStatement = (YieldStatementSyntax)context.Node;
+
             AnalyzeExpression(context, yieldStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, ExpressionStatementSyntax expressionStatement)
+        public static void AnalyzeExpressionStatement(SyntaxNodeAnalysisContext context)
         {
+            var expressionStatement = (ExpressionStatementSyntax)context.Node;
+
             AnalyzeExpression(context, expressionStatement.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, ArgumentSyntax argument)
+        public static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
+            var argument = (ArgumentSyntax)context.Node;
+
             AnalyzeExpression(context, argument.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, AttributeArgumentSyntax attributeArgument)
+        public static void AnalyzeAttributeArgument(SyntaxNodeAnalysisContext context)
         {
+            var attributeArgument = (AttributeArgumentSyntax)context.Node;
+
             AnalyzeExpression(context, attributeArgument.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, EqualsValueClauseSyntax equalsValueClause)
+        public static void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
+            var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
+
             AnalyzeExpression(context, equalsValueClause.Value);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, AwaitExpressionSyntax awaitExpression)
+        public static void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
         {
+            var awaitExpression = (AwaitExpressionSyntax)context.Node;
+
             AnalyzeExpression(context, awaitExpression.Expression);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, InitializerExpressionSyntax initializerExpression)
+        internal static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
         {
+            var initializerExpression = (InitializerExpressionSyntax)context.Node;
+
             foreach (ExpressionSyntax expression in initializerExpression.Expressions)
                 AnalyzeExpression(context, expression);
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, InterpolationSyntax interpolation)
+        internal static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
         {
+            var interpolation = (InterpolationSyntax)context.Node;
+
             ExpressionSyntax expression = interpolation.Expression;
 
             if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
@@ -110,13 +142,17 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void Analyze(SyntaxNodeAnalysisContext context, ArrowExpressionClauseSyntax arrowExpressionClause)
+        internal static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
         {
+            var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
+
             AnalyzeExpression(context, arrowExpressionClause.Expression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment)
+        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
+            var assignment = (AssignmentExpressionSyntax)context.Node;
+
             AnalyzeExpression(context, assignment.Left);
             AnalyzeExpression(context, assignment.Right);
         }

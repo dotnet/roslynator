@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,8 +17,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseCSharp6DictionaryInitializerRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, InitializerExpressionSyntax initializer)
+        public static void AnalyzeComplexElementInitializerExpression(SyntaxNodeAnalysisContext context)
         {
+            var initializer = (InitializerExpressionSyntax)context.Node;
+
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
             if (expressions.Count == 2)

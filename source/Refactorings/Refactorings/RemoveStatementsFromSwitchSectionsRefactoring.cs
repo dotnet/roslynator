@@ -7,8 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -26,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Select(section =>
                 {
                     return (sections.Contains(section))
-                        ? section.WithoutStatements()
+                        ? section.WithStatements(List<StatementSyntax>())
                         : section;
                 });
 

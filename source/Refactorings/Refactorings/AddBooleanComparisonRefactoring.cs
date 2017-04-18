@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -17,9 +16,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            foreach (Diagnostic diagnostic in semanticModel.GetCompilerDiagnostics(expression.Span, context.CancellationToken))
+            foreach (Diagnostic diagnostic in semanticModel.GetDiagnostics(expression.Span, context.CancellationToken))
             {
-                if (diagnostic.Id == CSharpErrorCodes.CannotImplicitlyConvertTypeExplicitConversionExists)
+                if (diagnostic.Id == CSharpErrorCodes.CannotImplicitlyConvertTypeExplicitConversionExists
+                    && diagnostic.IsCompilerDiagnostic())
                 {
                     if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
                     {
@@ -34,11 +34,13 @@ namespace Roslynator.CSharp.Refactorings
                                 || IsCondition(expression))
                             {
                                 RegisterRefactoring(context, expression);
+                                break;
                             }
                         }
                     }
                 }
-                else if (diagnostic.Id == CSharpErrorCodes.OperatorCannotBeAppliedToOperands)
+                else if (diagnostic.Id == CSharpErrorCodes.OperatorCannotBeAppliedToOperands
+                    && diagnostic.IsCompilerDiagnostic())
                 {
                     if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
                     {
@@ -55,6 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (semanticModel.GetTypeSymbol(left, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
                                     RegisterRefactoring(context, left);
+                                    break;
                                 }
                             }
                             else
@@ -65,6 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                                     && semanticModel.GetTypeSymbol(right, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
                                     RegisterRefactoring(context, right);
+                                    break;
                                 }
                             }
                         }

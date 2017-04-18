@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -102,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
                 declaration,
                 SplitFieldDeclaration(declaration));
 
-            MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
+            MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
 
             return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }
@@ -120,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
                 declaration,
                 SplitEventFieldDeclaration(declaration));
 
-            MemberDeclarationSyntax newNode = containingMember.SetMembers(newMembers);
+            MemberDeclarationSyntax newNode = containingMember.WithMembers(newMembers);
 
             return document.ReplaceNodeAsync(containingMember, newNode, cancellationToken);
         }

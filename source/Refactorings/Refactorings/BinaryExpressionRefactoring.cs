@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ExtractCondition;
 using Roslynator.CSharp.Refactorings.ReplaceEqualsExpression;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -79,15 +77,15 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ExtractExpressionFromCondition,
                     RefactoringIdentifiers.MergeStringExpressions))
             {
-                BinaryExpressionSpan binaryExpressionSpan = BinaryExpressionSpan.Create(binaryExpression, context.Span);
+                BinaryExpressionSelection binaryExpressionSelection = BinaryExpressionSelection.Create(binaryExpression, context.Span);
 
-                if (binaryExpressionSpan.SelectedExpressions.Length > 1)
+                if (binaryExpressionSelection.Expressions.Length > 1)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
-                        ExtractConditionRefactoring.ComputeRefactoring(context, binaryExpressionSpan);
+                        ExtractConditionRefactoring.ComputeRefactoring(context, binaryExpressionSelection);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions))
-                        await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, binaryExpressionSpan).ConfigureAwait(false);
+                        await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, binaryExpressionSelection).ConfigureAwait(false);
                 }
             }
         }

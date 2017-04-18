@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                         MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
 
                         if (info.IsValid
-                            && info.HasName("ToString")
+                            && info.IsName("ToString")
                             && info.IsPublic
                             && info.IsInstance
                             && info.IsReturnType(SpecialType.System_String)

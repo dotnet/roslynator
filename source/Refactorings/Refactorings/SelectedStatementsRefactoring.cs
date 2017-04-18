@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor);
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
             if (selectedStatements.Any())
             {

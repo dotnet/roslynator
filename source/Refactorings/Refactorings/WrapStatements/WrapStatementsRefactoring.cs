@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
@@ -16,14 +15,14 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
         public Task<Document> RefactorAsync(
             Document document,
-            SelectedStatementCollection selectedStatements,
+            StatementContainerSelection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            IStatementContainer container = selectedStatements.Container;
+            StatementContainer container = selectedStatements.Container;
 
             StatementSyntax[] statements = selectedStatements.ToArray();
 
-            int index = selectedStatements.FirstIndex;
+            int index = selectedStatements.StartIndex;
 
             SyntaxTriviaList leadingTrivia = statements[0].GetLeadingTrivia();
             SyntaxTriviaList trailingTrivia = statements[statements.Length - 1].GetTrailingTrivia();

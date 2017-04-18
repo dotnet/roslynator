@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator
 {
+    [Obsolete]
     internal class GeneratedCodeAnalyzer
     {
         public virtual StringComparison StringComparison { get; } = StringComparison.OrdinalIgnoreCase;

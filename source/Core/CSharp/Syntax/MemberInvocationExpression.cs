@@ -4,8 +4,6 @@ using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 
 namespace Roslynator.CSharp.Syntax
 {
@@ -37,54 +35,62 @@ namespace Roslynator.CSharp.Syntax
             get { return ArgumentList?.Parent; }
         }
 
-        public static bool TryCreate(StatementSyntax invocationStatement, out MemberInvocationExpression memberInvocation)
+        public static MemberInvocationExpression Create(InvocationExpressionSyntax invocationExpression)
         {
-            if (invocationStatement?.IsKind(SyntaxKind.ExpressionStatement) == true)
-                return TryCreate((ExpressionStatementSyntax)invocationStatement, out memberInvocation);
+            if (invocationExpression == null)
+                throw new ArgumentNullException(nameof(invocationExpression));
 
-            memberInvocation = default(MemberInvocationExpression);
-            return false;
-        }
+            ExpressionSyntax expression = invocationExpression.Expression;
 
-        public static bool TryCreate(ExpressionStatementSyntax invocationStatement, out MemberInvocationExpression memberInvocation)
-        {
-            ExpressionSyntax expression = invocationStatement?.Expression;
-
-            if (expression?.IsKind(SyntaxKind.InvocationExpression) == true)
-                return TryCreate((InvocationExpressionSyntax)expression, out memberInvocation);
-
-            memberInvocation = default(MemberInvocationExpression);
-            return false;
-        }
-
-        public static bool TryCreate(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression memberInvocation)
-        {
-            ArgumentListSyntax argumentList = invocationExpression?.ArgumentList;
-
-            if (argumentList?.IsMissing == false)
+            if (expression == null
+                || !expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
-                ExpressionSyntax expression = invocationExpression?.Expression;
-
-                if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
-
-                    ExpressionSyntax memberAccessExpression = memberAccess.Expression;
-
-                    if (memberAccessExpression?.IsMissing == false)
-                    {
-                        SimpleNameSyntax memberAccessName = memberAccess.Name;
-
-                        if (memberAccessName?.IsMissing == false)
-                        {
-                            memberInvocation = new MemberInvocationExpression(memberAccessExpression, memberAccessName, invocationExpression.ArgumentList);
-                            return true;
-                        }
-                    }
-                }
+                throw new ArgumentException("", nameof(invocationExpression));
             }
 
-            memberInvocation = default(MemberInvocationExpression);
+            var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
+
+            return new MemberInvocationExpression(
+                memberAccessExpression.Expression,
+                memberAccessExpression.Name,
+                invocationExpression.ArgumentList);
+        }
+
+        public static bool TryCreate(SyntaxNode invocationExpression, out MemberInvocationExpression result)
+        {
+            if (invocationExpression?.IsKind(SyntaxKind.InvocationExpression) == true)
+                return TryCreateCore((InvocationExpressionSyntax)invocationExpression, out result);
+
+            result = default(MemberInvocationExpression);
+            return false;
+        }
+
+        public static bool TryCreate(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
+        {
+            if (invocationExpression != null)
+                return TryCreateCore(invocationExpression, out result);
+
+            result = default(MemberInvocationExpression);
+            return false;
+        }
+
+        public static bool TryCreateCore(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
+        {
+            ExpressionSyntax expression = invocationExpression.Expression;
+
+            if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                result = new MemberInvocationExpression(
+                    memberAccess.Expression,
+                    memberAccess.Name,
+                    invocationExpression.ArgumentList);
+
+                return true;
+            }
+
+            result = default(MemberInvocationExpression);
             return false;
         }
 

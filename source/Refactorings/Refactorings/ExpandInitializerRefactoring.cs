@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -95,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax initializer,
             ExpressionSyntax expression)
         {
-            IStatementContainer container;
+            StatementContainer container;
             if (StatementContainer.TryCreate(statement, out container))
             {
                 context.RegisterRefactoring(
@@ -175,18 +173,20 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol != null)
             {
-                foreach (IMethodSymbol methodSymbol in typeSymbol.GetMethods("Add"))
+                foreach (ISymbol symbol in typeSymbol.GetMembers("Add"))
                 {
-                    if (methodSymbol.IsPublic()
-                        && !methodSymbol.IsStatic)
+                    if (symbol.IsMethod())
                     {
-                        ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+                        var methodSymbol = (IMethodSymbol)symbol;
 
-                        if (parameters.Length == 1)
+                        if (methodSymbol.IsPublic()
+                            && !methodSymbol.IsStatic
+                            && methodSymbol
+                                .SingleParameterOrDefault()?
+                                .Type
+                                .Equals(semanticModel.GetTypeInfo(expression, cancellationToken)) == true)
                         {
-                            ITypeSymbol expressionSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
-
-                            return expressionSymbol?.Equals(parameters[0].Type) == true;
+                            return true;
                         }
                     }
                 }
@@ -233,7 +233,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            IStatementContainer statementContainer,
+            StatementContainer statementContainer,
             StatementSyntax statement,
             InitializerExpressionSyntax initializer,
             ExpressionSyntax expression,

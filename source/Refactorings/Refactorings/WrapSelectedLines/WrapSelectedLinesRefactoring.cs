@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {

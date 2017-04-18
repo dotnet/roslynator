@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Extensions;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -16,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeIfStatementsRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, SelectedStatementCollection selectedStatements)
+        public static void ComputeRefactorings(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
             List<IfStatementSyntax> ifStatements = GetIfStatements(selectedStatements);
 
@@ -59,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            IStatementContainer container,
+            StatementContainer container,
             ImmutableArray<IfStatementSyntax> ifStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {

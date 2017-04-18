@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -29,8 +27,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, cancellationToken);
 
-                if (typeSymbol != null
-                    && SymbolUtility.IsEventHandlerOrConstructedFromEventHandlerOfT(typeSymbol, semanticModel))
+                if (typeSymbol?.IsEventHandlerOrConstructedFromEventHandlerOfT(semanticModel) == true)
                 {
                     ArgumentListSyntax argumentList = objectCreation.ArgumentList;
 

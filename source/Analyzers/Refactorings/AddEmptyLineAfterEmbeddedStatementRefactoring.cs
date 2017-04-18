@@ -8,9 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Diagnostics.Extensions;
-using Roslynator.Extensions;
+using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -59,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false
                 && context.SyntaxTree().IsMultiLineSpan(TextSpan.FromBounds(elseKeyword.SpanStart, statement.SpanStart)))
             {
-                IfStatementSyntax topmostIf = IfElseChain.GetTopmostIf(elseClause);
+                IfStatementSyntax topmostIf = elseClause.GetTopmostIf();
 
                 if (topmostIf != null)
                     Analyze(context, topmostIf, elseKeyword, statement);
@@ -113,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             StatementSyntax newNode = statement
-                .AppendToTrailingTrivia(CSharpFactory.NewLineTrivia())
+                .AppendToTrailingTrivia(CSharpFactory.NewLine())
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(statement, newNode, cancellationToken);

@@ -3,8 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Extensions;
-using Roslynator.Text.Extensions;
+using Roslynator.Text;
 using static Roslynator.CSharp.Refactorings.ReplaceStringLiteralRefactoring;
 
 namespace Roslynator.CSharp.Refactorings
