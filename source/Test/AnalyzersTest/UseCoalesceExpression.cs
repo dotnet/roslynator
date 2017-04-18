@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1002, RCS1016
+#pragma warning disable RCS1002, RCS1016, RCS1176
     public static class UseCoalesceExpression
     {
         private static void IfStatement()

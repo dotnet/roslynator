@@ -1677,5 +1677,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor InlineLazyInitialization = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.InlineLazyInitialization,
+            title: "Inline lazy initialization.",
+            messageFormat: "Inline lazy initialization.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

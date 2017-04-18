@@ -25,6 +25,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
                     DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
                     DiagnosticIdentifiers.UseCoalesceExpression,
+                    DiagnosticIdentifiers.InlineLazyInitialization,
                     DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
                     DiagnosticIdentifiers.RemoveRedundantContinueStatement);
             }
@@ -105,6 +106,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     return UseCoalesceExpressionRefactoring.RefactorAsync(
                                         context.Document,
                                         statement,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.InlineLazyInitialization:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Inline lazy initialization",
+                                cancellationToken =>
+                                {
+                                    return UseCoalesceExpressionRefactoring.InlineLazyInitializationAsync(
+                                        context.Document,
+                                        (IfStatementSyntax)statement,
                                         cancellationToken);
                                 },
                                 diagnostic.Id + EquivalenceKeySuffix);

@@ -14,7 +14,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseCoalesceExpression); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.UseCoalesceExpression,
+                    DiagnosticDescriptors.InlineLazyInitialization);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
