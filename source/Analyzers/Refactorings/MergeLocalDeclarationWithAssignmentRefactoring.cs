@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         StatementSyntax nextStatement = localDeclaration.NextStatement();
 
-                        if (!nextStatement.ContainsDiagnostics
+                        if (nextStatement?.ContainsDiagnostics == false
                             && nextStatement?.SpanOrLeadingTriviaContainsDirectives() == false)
                         {
                             SimpleAssignmentStatement assignment;
