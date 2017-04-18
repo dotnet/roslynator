@@ -110,6 +110,33 @@ namespace Roslynator
                 || kind == kind3;
         }
 
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4)
+        {
+            if (symbol == null)
+                return false;
+
+            SymbolKind kind = symbol.Kind;
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4;
+        }
+
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4, SymbolKind kind5)
+        {
+            if (symbol == null)
+                return false;
+
+            SymbolKind kind = symbol.Kind;
+
+            return kind == kind1
+                || kind == kind2
+                || kind == kind3
+                || kind == kind4
+                || kind == kind5;
+        }
+
         public static bool IsPublic(this ISymbol symbol)
         {
             return symbol?.DeclaredAccessibility == Accessibility.Public;
