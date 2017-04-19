@@ -53,6 +53,7 @@
     <Compile Include="AddEmptyLineAfterLastStatementInDoStatement.cs" />
     <Compile Include="AddExceptionToDocumentationComment.cs" />
     <Compile Include="AddMissingSemicolon.cs" />
+    <Compile Include="FormatConditionalExpressionOperatorsOnNextLine.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
     <Compile Include="AvoidChainOfAssignments.cs" />
     <Compile Include="BitwiseOperationOnEnumWithoutFlagsAttribute.cs" />

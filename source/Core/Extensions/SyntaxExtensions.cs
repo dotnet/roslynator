@@ -305,6 +305,22 @@ namespace Roslynator
         {
             return s.Substring(span.Start - node.SpanStart, span.Length);
         }
+
+        internal static TextSpan LeadingTriviaSpan(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return TextSpan.FromBounds(node.FullSpan.Start, node.Span.Start);
+        }
+
+        internal static TextSpan TrailingTriviaSpan(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
+        }
         #endregion
 
         #region SyntaxNodeOrToken
@@ -446,6 +462,16 @@ namespace Roslynator
             return token
                 .WithLeadingTrivia(node.GetLeadingTrivia())
                 .WithTrailingTrivia(node.GetTrailingTrivia());
+        }
+
+        internal static TextSpan LeadingTriviaSpan(this SyntaxToken token)
+        {
+            return TextSpan.FromBounds(token.FullSpan.Start, token.Span.Start);
+        }
+
+        internal static TextSpan TrailingTriviaSpan(this SyntaxToken token)
+        {
+            return TextSpan.FromBounds(token.Span.End, token.FullSpan.End);
         }
         #endregion
 
