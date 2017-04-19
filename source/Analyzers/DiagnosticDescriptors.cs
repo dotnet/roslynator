@@ -1723,5 +1723,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor AvoidSingleLineBlock = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidSingleLineBlock,
+            title: "Avoid single-line block.",
+            messageFormat: "Avoid single-line block.",
+            category: DiagnosticCategories.Formatting,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
