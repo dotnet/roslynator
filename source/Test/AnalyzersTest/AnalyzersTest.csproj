@@ -68,6 +68,7 @@
     <Compile Include="AvoidUsageOfWhileStatementToCreateInfiniteLoop.cs" />
     <Compile Include="CallDebugFailInsteadOfDebugAssert.cs" />
     <Compile Include="CallFindMethodInsteadOfFirstOrDefaultMethod.cs" />
+    <Compile Include="FormatInitializerWithSingleExpressionOnSingleLine.cs" />
     <Compile Include="MarkFieldAsReadOnly.cs" />
     <Compile Include="RemoveFileWithNoCode2.cs" />
     <Compile Include="RemoveRedundantAsyncAwait.cs" />
