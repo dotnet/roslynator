@@ -1046,6 +1046,38 @@ namespace Roslynator
             return false;
         }
 
+        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceSpecialType1, SpecialType interfaceSpecialType2)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+            for (int i = 0; i < allInterfaces.Length; i++)
+            {
+                if (allInterfaces[i].ConstructedFrom.IsSpecialType(interfaceSpecialType1, interfaceSpecialType2))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceSpecialType1, SpecialType interfaceSpecialType2, SpecialType interfaceSpecialType3)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+
+            for (int i = 0; i < allInterfaces.Length; i++)
+            {
+                if (allInterfaces[i].ConstructedFrom.IsSpecialType(interfaceSpecialType1, interfaceSpecialType2, interfaceSpecialType3))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool Implements(this ITypeSymbol typeSymbol, ITypeSymbol interfaceSymbol)
         {
             if (typeSymbol == null)

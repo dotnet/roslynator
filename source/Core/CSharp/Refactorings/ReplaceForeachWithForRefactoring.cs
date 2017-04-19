@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return typeSymbol.IsString()
                    || typeSymbol.IsArrayType()
-                   || typeSymbol.Implements(SpecialType.System_Collections_Generic_IList_T)
+                   || typeSymbol.ImplementsAny(SpecialType.System_Collections_Generic_IList_T, SpecialType.System_Collections_Generic_IReadOnlyList_T)
                    || (HasApplicableIndexer(typeSymbol, forEachStatement, semanticModel)
                         && typeSymbol.Implements(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_ICollection)));
             }
