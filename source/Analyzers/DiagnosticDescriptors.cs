@@ -1695,5 +1695,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantBaseInterface = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantBaseInterface,
+            title: "Remove redundant base interface.",
+            messageFormat: "Interface '{0}' is already implemented by '{1}'.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
