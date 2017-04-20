@@ -188,7 +188,7 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     default:
                         {
-                            Debug.Assert(false, parent.Kind().ToString());
+                            Debug.Fail(parent.Kind().ToString());
                             return document;
                         }
                 }

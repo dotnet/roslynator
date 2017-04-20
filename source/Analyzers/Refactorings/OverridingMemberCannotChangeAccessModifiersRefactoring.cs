@@ -295,7 +295,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, memberDeclaration.Kind().ToString());
+                        Debug.Fail(memberDeclaration.Kind().ToString());
 
                         return null;
                     }
@@ -318,7 +318,7 @@ namespace Roslynator.CSharp.Refactorings
                     return "public";
                 default:
                     {
-                        Debug.Assert(false, accessibility.ToString());
+                        Debug.Fail(accessibility.ToString());
                         return "";
                     }
             }

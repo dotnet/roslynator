@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
                     return expression;
             }
 
-            Debug.Assert(false, methodDeclaration.ToString());
+            Debug.Fail(methodDeclaration.ToString());
 
             return Block();
         }

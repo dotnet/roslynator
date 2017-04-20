@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Comparers
                     return ((long)x).CompareTo((long)y);
             }
 
-            Debug.Assert(false, $"{nameof(EnumMemberDeclarationValueComparer)} cannot compare {x.GetType()} with {y.GetType()}");
+            Debug.Fail($"{nameof(EnumMemberDeclarationValueComparer)} cannot compare {x.GetType()} with {y.GetType()}");
 
             return 0;
         }

@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Assert(false, assignment.Kind().ToString());
+            Debug.Fail(assignment.Kind().ToString());
 
             return trivia;
         }
@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.PostDecrementExpression;
             }
 
-            Debug.Assert(false, assignment.Kind().ToString());
+            Debug.Fail(assignment.Kind().ToString());
 
             return SyntaxKind.None;
         }
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings
                     return "--";
                 default:
                     {
-                        Debug.Assert(false, kind.ToString());
+                        Debug.Fail(kind.ToString());
                         return "";
                     }
             }

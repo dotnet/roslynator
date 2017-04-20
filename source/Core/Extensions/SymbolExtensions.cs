@@ -931,7 +931,7 @@ namespace Roslynator
                             }
                         default:
                             {
-                                Debug.Assert(false, type.TypeKind.ToString());
+                                Debug.Fail(type.TypeKind.ToString());
                                 break;
                             }
                     }

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     default:
                         {
-                            Debug.Assert(false, methodSymbol.MethodKind.ToString());
+                            Debug.Fail(methodSymbol.MethodKind.ToString());
                             break;
                         }
                 }

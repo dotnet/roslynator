@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             catch (Exception ex) when (!(ex is OperationCanceledException))
             {
                 Debug.WriteLine(ex.ToString());
-                Debug.Assert(false, nameof(DefaultCodeRefactoringProvider));
+                Debug.Fail(nameof(DefaultCodeRefactoringProvider));
                 throw;
             }
 #endif

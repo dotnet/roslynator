@@ -270,7 +270,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return node;
                     }
             }

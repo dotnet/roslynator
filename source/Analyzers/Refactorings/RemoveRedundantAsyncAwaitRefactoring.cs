@@ -431,7 +431,7 @@ namespace Roslynator.CSharp.Refactorings
                     return await RefactorAsync(document, (AnonymousMethodExpressionSyntax)node, semanticModel, cancellationToken).ConfigureAwait(false);
             }
 
-            Debug.Assert(false, node.Kind().ToString());
+            Debug.Fail(node.Kind().ToString());
 
             return document;
         }

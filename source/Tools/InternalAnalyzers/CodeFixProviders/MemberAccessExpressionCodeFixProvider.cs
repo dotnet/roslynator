@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Internal.CodeFixProviders
                     return "GetConvertedTypeSymbol";
                 default:
                     {
-                        Debug.Assert(false, memberAccess.Name.Identifier.ValueText);
+                        Debug.Fail(memberAccess.Name.Identifier.ValueText);
                         return "";
                     }
             }

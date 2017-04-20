@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Assert(false, node.Parent?.Kind().ToString());
+            Debug.Fail(node.Parent?.Kind().ToString());
 
             return node;
         }

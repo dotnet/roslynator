@@ -191,7 +191,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, enumType.EnumUnderlyingType.SpecialType.ToString());
+                        Debug.Fail(enumType.EnumUnderlyingType.SpecialType.ToString());
                         break;
                     }
             }

@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Assert(false, "");
+            Debug.Fail("");
 
             return document;
         }

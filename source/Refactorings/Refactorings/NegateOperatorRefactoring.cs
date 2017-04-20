@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.GreaterThanToken;
                 default:
                     {
-                        Debug.Assert(false, operatorToken.Kind().ToString());
+                        Debug.Fail(operatorToken.Kind().ToString());
                         return operatorToken.Kind();
                     }
             }

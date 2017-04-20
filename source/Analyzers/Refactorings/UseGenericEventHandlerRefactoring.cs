@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Assert(false, node?.Kind().ToString());
+            Debug.Fail(node?.Kind().ToString());
             return default(TypeSyntax);
         }
 

@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.Refactorings
                 return await document.WithTextChangeAsync(textChange).ConfigureAwait(false);
             }
 
-            Debug.Assert(false, "");
+            Debug.Fail("");
 
             return document;
         }

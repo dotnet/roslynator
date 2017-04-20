@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ((DelegateDeclarationSyntax)memberDeclaration).Identifier;
             }
 
-            Debug.Assert(false, memberDeclaration.Kind().ToString());
+            Debug.Fail(memberDeclaration.Kind().ToString());
 
             return default(SyntaxToken);
         }

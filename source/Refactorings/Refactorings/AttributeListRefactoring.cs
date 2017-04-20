@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ((AccessorDeclarationSyntax)node).AttributeLists;
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return default(SyntaxList<AttributeListSyntax>);
                     }
             }
@@ -219,7 +219,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return node;
                     }
             }

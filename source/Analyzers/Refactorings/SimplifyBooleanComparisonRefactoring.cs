@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithTrailingTrivia(trailingTrivia);
             }
 
-            Debug.Assert(false, binaryExpression.ToString());
+            Debug.Fail(binaryExpression.ToString());
 
             return binaryExpression;
         }

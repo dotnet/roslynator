@@ -162,7 +162,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, "");
+                        Debug.Fail("");
                         return document;
                     }
             }

@@ -225,7 +225,7 @@ namespace Roslynator.CSharp
                     throw new NotSupportedException($"Value '{accessibility}' is not supported.)");
                 default:
                     {
-                        Debug.Assert(false, accessibility.ToString());
+                        Debug.Fail(accessibility.ToString());
                         return default(SyntaxTokenList);
                     }
             }

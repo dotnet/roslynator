@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Comparers
                     return 16;
                 default:
                     {
-                        Debug.Assert(false, $"unknown modifier '{kind}'");
+                        Debug.Fail($"unknown modifier '{kind}'");
                         return _maxOrderIndex;
                     }
             }

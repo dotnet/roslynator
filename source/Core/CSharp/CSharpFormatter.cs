@@ -87,7 +87,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Assert(false, parent.Kind().ToString());
+                        Debug.Fail(parent.Kind().ToString());
 
                         return await document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken).ConfigureAwait(false);
                     }

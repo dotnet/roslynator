@@ -1221,7 +1221,7 @@ namespace Roslynator.CSharp
                     return ((IncompleteMemberSyntax)member).Modifiers;
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
+                        Debug.Fail(member.Kind().ToString());
                         return default(SyntaxTokenList);
                     }
             }
@@ -1268,7 +1268,7 @@ namespace Roslynator.CSharp
                     return ((IncompleteMemberSyntax)member).WithModifiers(modifiers);
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
+                        Debug.Fail(member.Kind().ToString());
                         return member;
                     }
             }
@@ -1298,7 +1298,7 @@ namespace Roslynator.CSharp
                     return ((InterfaceDeclarationSyntax)member).Members;
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
+                        Debug.Fail(member.Kind().ToString());
                         return default(SyntaxList<MemberDeclarationSyntax>);
                     }
             }
@@ -1321,7 +1321,7 @@ namespace Roslynator.CSharp
                     return ((InterfaceDeclarationSyntax)member).WithMembers(newMembers);
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
+                        Debug.Fail(member.Kind().ToString());
                         return member;
                     }
             }
@@ -2253,7 +2253,7 @@ namespace Roslynator.CSharp
                     return ((ParameterSyntax)node).Modifiers;
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return default(SyntaxTokenList);
                     }
             }
@@ -2312,7 +2312,7 @@ namespace Roslynator.CSharp
                     return ((ParameterSyntax)node).WithModifiers(modifiers);
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return node;
                     }
             }
@@ -2391,7 +2391,7 @@ namespace Roslynator.CSharp
                     return "enum";
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
 
                         if (node is StatementSyntax)
                             return "statement";

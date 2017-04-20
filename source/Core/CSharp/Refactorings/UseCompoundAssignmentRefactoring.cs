@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.CaretEqualsToken;
                 default:
                     {
-                        Debug.Assert(false, binaryExpression.Kind().ToString());
+                        Debug.Fail(binaryExpression.Kind().ToString());
                         return SyntaxKind.None;
                     }
             }
@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.ExclusiveOrAssignmentExpression;
                 default:
                     {
-                        Debug.Assert(false, binaryExpression.Kind().ToString());
+                        Debug.Fail(binaryExpression.Kind().ToString());
                         return SyntaxKind.None;
                     }
             }

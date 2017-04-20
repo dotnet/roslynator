@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Helpers
                 return token.WithTrailingTrivia(token.TrailingTrivia.RemoveAt(index));
             }
 
-            Debug.Assert(false, "comment trivia not found");
+            Debug.Fail("comment trivia not found");
 
             return token;
         }

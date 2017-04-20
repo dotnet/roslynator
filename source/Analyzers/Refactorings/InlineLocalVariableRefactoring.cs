@@ -262,7 +262,7 @@ namespace Roslynator.CSharp.Refactorings
                 return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
             }
 
-            Debug.Assert(false, "");
+            Debug.Fail("");
 
             return document;
         }
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, "");
+                        Debug.Fail("");
                         return statement;
                     }
             }

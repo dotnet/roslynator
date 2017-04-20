@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     }
                                 default:
                                     {
-                                        Debug.Assert(false, statement.Kind().ToString());
+                                        Debug.Fail(statement.Kind().ToString());
                                         break;
                                     }
                             }

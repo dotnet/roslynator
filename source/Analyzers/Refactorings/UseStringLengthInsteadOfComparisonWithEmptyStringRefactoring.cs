@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                Debug.Assert(false, binaryExpression.ToString());
+                Debug.Fail(binaryExpression.ToString());
                 return document;
             }
 

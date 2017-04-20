@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ((EnumDeclarationSyntax)node).Identifier;
                 default:
                     {
-                        Debug.Assert(false, symbol.TypeKind.ToString());
+                        Debug.Fail(symbol.TypeKind.ToString());
                         return default(SyntaxToken);
                     }
             }

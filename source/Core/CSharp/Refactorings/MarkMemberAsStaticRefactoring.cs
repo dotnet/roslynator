@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
                     return await RefactorAsync(document, (ConstructorDeclarationSyntax)memberDeclaration, cancellationToken).ConfigureAwait(false);
             }
 
-            Debug.Assert(false, "");
+            Debug.Fail("");
             return document;
         }
 

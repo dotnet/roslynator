@@ -1385,7 +1385,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Assert(false, kind.ToString());
+                        Debug.Fail(kind.ToString());
                         throw new ArgumentOutOfRangeException(nameof(kind));
                     }
             }

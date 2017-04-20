@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                 }
             }
 
-            Debug.Assert(false, "");
+            Debug.Fail("");
 
             return document;
         }

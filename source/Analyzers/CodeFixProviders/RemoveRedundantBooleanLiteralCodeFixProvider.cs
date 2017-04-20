@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return binaryExpression.ToString(TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End));
             }
 
-            Debug.Assert(false, binaryExpression.ToString());
+            Debug.Fail(binaryExpression.ToString());
 
             return "";
         }

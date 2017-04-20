@@ -241,7 +241,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, accessor.Kind().ToString());
+                        Debug.Fail(accessor.Kind().ToString());
                         return false;
                     }
             }
@@ -359,7 +359,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, accessor.Kind().ToString());
+                        Debug.Fail(accessor.Kind().ToString());
                         return false;
                     }
             }

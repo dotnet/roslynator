@@ -117,7 +117,7 @@ namespace Roslynator.CSharp
                     {
                         if (expression != null)
                         {
-                            Debug.Assert(false, $"Negate {expression.Kind()}");
+                            Debug.Fail($"Negate {expression.Kind()}");
                             return LogicalNotExpressionWithParentheses(expression);
                         }
                         else
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp
                     return SyntaxKind.BarBarToken;
                 default:
                     {
-                        Debug.Assert(false, kind.ToString());
+                        Debug.Fail(kind.ToString());
                         return kind;
                     }
             }
@@ -240,7 +240,7 @@ namespace Roslynator.CSharp
                     return SyntaxKind.LogicalOrExpression;
                 default:
                     {
-                        Debug.Assert(false, binaryExpression.Kind().ToString());
+                        Debug.Fail(binaryExpression.Kind().ToString());
                         return binaryExpression.Kind();
                     }
             }
@@ -298,7 +298,7 @@ namespace Roslynator.CSharp
                 return LogicalNotExpression(expression);
             }
 
-            Debug.Assert(false, expression.Kind().ToString());
+            Debug.Fail(expression.Kind().ToString());
 
             return expression;
         }

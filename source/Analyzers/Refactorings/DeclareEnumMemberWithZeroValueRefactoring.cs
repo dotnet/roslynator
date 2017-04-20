@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                     return namedTypeSymbol.ExistsField(f => f.HasConstantValue((ulong)0));
                 default:
                     {
-                        Debug.Assert(false, enumUnderlyingType.SpecialType.ToString());
+                        Debug.Fail(enumUnderlyingType.SpecialType.ToString());
                         return false;
                     }
             }

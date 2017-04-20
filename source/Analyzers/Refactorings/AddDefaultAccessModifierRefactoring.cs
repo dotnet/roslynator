@@ -251,7 +251,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Assert(false, accessibility.ToString());
+                        Debug.Fail(accessibility.ToString());
                         return modifiers;
                     }
             }

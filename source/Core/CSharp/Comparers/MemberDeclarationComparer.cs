@@ -192,7 +192,7 @@ namespace Roslynator.CSharp.Comparers
                     return 17;
                 default:
                     {
-                        Debug.Assert(false, $"unknown member '{memberDeclaration.Kind()}'");
+                        Debug.Fail($"unknown member '{memberDeclaration.Kind()}'");
                         return _maxOrderIndex;
                     }
             }
@@ -238,7 +238,7 @@ namespace Roslynator.CSharp.Comparers
                     return 17;
                 default:
                     {
-                        Debug.Assert(false, $"unknown member '{kind}'");
+                        Debug.Fail($"unknown member '{kind}'");
                         return _maxOrderIndex;
                     }
             }
@@ -325,7 +325,7 @@ namespace Roslynator.CSharp.Comparers
                     return "";
                 default:
                     {
-                        Debug.Assert(false, $"unknown member '{member.Kind()}'");
+                        Debug.Fail($"unknown member '{member.Kind()}'");
                         return "";
                     }
             }
@@ -356,7 +356,7 @@ namespace Roslynator.CSharp.Comparers
                     return false;
                 default:
                     {
-                        Debug.Assert(false, $"unknown member '{kind}'");
+                        Debug.Fail($"unknown member '{kind}'");
                         return false;
                     }
             }

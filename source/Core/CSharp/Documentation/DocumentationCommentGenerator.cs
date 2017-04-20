@@ -580,7 +580,7 @@ namespace Roslynator.CSharp.Documentation
                     }
                 }
 
-                Debug.Assert(false, xmlString);
+                Debug.Fail(xmlString);
             }
 
             return default(SyntaxTrivia);
@@ -626,7 +626,7 @@ namespace Roslynator.CSharp.Documentation
                                 return reader.ReadInnerXml();
                             default:
                                 {
-                                    Debug.Assert(false, reader.Name);
+                                    Debug.Fail(reader.Name);
                                     break;
                                 }
                         }

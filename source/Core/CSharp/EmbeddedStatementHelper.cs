@@ -186,7 +186,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Assert(false, containingNode.Kind().ToString());
+                        Debug.Fail(containingNode.Kind().ToString());
                         return false;
                     }
             }

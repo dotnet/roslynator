@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     return "accessors";
             }
 
-            Debug.Assert(false, node.Kind().ToString());
+            Debug.Fail(node.Kind().ToString());
             return "";
         }
     }

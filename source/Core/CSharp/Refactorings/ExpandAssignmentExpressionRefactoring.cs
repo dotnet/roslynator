@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.RightShiftExpression;
             }
 
-            Debug.Assert(false, assignmentExpression.Kind().ToString());
+            Debug.Fail(assignmentExpression.Kind().ToString());
             return SyntaxKind.None;
         }
     }

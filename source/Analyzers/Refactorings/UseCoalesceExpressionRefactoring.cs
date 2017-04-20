@@ -268,7 +268,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            Debug.Assert(false, statement.Kind().ToString());
+            Debug.Fail(statement.Kind().ToString());
 
             return document;
         }

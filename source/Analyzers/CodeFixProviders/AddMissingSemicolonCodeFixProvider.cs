@@ -149,7 +149,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     return ((ExternAliasDirectiveSyntax)node).WithSemicolonToken(semicolonToken);
                 default:
                     {
-                        Debug.Assert(false, node.Kind().ToString());
+                        Debug.Fail(node.Kind().ToString());
                         return node;
                     }
             }
