@@ -43,6 +43,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixProviders\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BlockCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterClosingBraceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="DiagnosticAnalyzers\StaticMemberInGenericTypeShouldUseTypeParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsyncAwaitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceCommentWithDocumentationCommentDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveRedundantBaseInterfaceDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyLazilyInitializedPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
@@ -104,6 +106,7 @@
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.AwaitRemover.cs" />
     <Compile Include="Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantBaseInterfaceRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLazilyInitializedPropertyRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedIndexerParameterRefactoring.cs" />
