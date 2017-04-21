@@ -348,6 +348,6 @@ namespace Roslynator
 
         public Accessibility DeclaredAccessibility => Symbol.DeclaredAccessibility;
 
-        #endregion
+        #endregion IMethodSymbol
     }
 }

@@ -58,7 +58,7 @@ namespace Roslynator
 
             return true;
         }
-        #endregion
+        #endregion SeparatedSyntaxList<T>
 
         #region SyntaxList<T>
         public static SyntaxList<TNode> ReplaceAt<TNode>(this SyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
@@ -104,7 +104,7 @@ namespace Roslynator
 
             return true;
         }
-        #endregion
+        #endregion SyntaxList<T>
 
         #region SyntaxNode
         public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxNode node)
@@ -321,7 +321,7 @@ namespace Roslynator
 
             return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
         }
-        #endregion
+        #endregion SyntaxNode
 
         #region SyntaxNodeOrToken
         public static SyntaxNodeOrToken WithoutLeadingTrivia(this SyntaxNodeOrToken nodeOrToken)
@@ -347,7 +347,7 @@ namespace Roslynator
                 return nodeOrToken.AsToken().WithoutTrailingTrivia();
             }
         }
-        #endregion
+        #endregion SyntaxNodeOrToken
 
         #region SyntaxToken
         public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
@@ -473,14 +473,14 @@ namespace Roslynator
         {
             return TextSpan.FromBounds(token.Span.End, token.FullSpan.End);
         }
-        #endregion
+        #endregion SyntaxToken
 
         #region SyntaxTokenList
         public static SyntaxTokenList ReplaceAt(this SyntaxTokenList tokenList, int index, SyntaxToken newToken)
         {
             return tokenList.Replace(tokenList[index], newToken);
         }
-        #endregion
+        #endregion SyntaxTokenList
 
         #region SyntaxTrivia
         public static bool TryGetContainingList(this SyntaxTrivia trivia, out SyntaxTriviaList triviaList)
@@ -558,13 +558,13 @@ namespace Roslynator
                 return -1;
             }
         }
-        #endregion
+        #endregion SyntaxTrivia
 
         #region SyntaxTriviaList
         public static SyntaxTriviaList ReplaceAt(this SyntaxTriviaList triviaList, int index, SyntaxTrivia newTrivia)
         {
             return triviaList.Replace(triviaList[index], newTrivia);
         }
-        #endregion
+        #endregion SyntaxTriviaList
     }
 }

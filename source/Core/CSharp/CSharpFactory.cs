@@ -29,7 +29,7 @@ namespace Roslynator.CSharp
                     return CarriageReturnLineFeed;
             }
         }
-        #endregion
+        #endregion Trivia
 
         #region Token
         public static SyntaxToken TildeToken()
@@ -1036,7 +1036,7 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.Token(syntaxKind);
         }
-        #endregion
+        #endregion Token
 
         #region PredefinedType
         public static PredefinedTypeSyntax BoolType()
@@ -1123,7 +1123,7 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.PredefinedType(Token(syntaxKind));
         }
-        #endregion
+        #endregion PredefinedType
 
         #region List
         public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
@@ -1235,7 +1235,7 @@ namespace Roslynator.CSharp
         {
             return SyntaxFactory.BaseList(colonToken, SeparatedList(types));
         }
-        #endregion
+        #endregion List
 
         #region MemberDeclaration
         public static EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, ExpressionSyntax value)
@@ -1390,7 +1390,7 @@ namespace Roslynator.CSharp
                     }
             }
         }
-        #endregion
+        #endregion MemberDeclaration
 
         #region AccessorDeclaration
         public static AccessorDeclarationSyntax GetAccessorDeclaration(BlockSyntax body)
@@ -1452,7 +1452,7 @@ namespace Roslynator.CSharp
                     throw new ArgumentOutOfRangeException();
             }
         }
-        #endregion
+        #endregion AccessorDeclaration
 
         #region Statement
         public static LocalDeclarationStatementSyntax LocalDeclarationStatement(TypeSyntax type, string identifier, ExpressionSyntax value = null)
@@ -1509,7 +1509,7 @@ namespace Roslynator.CSharp
         {
             return ExpressionStatement(SimpleAssignmentExpression(left, operatorToken, right));
         }
-        #endregion
+        #endregion Statement
 
         #region BinaryExpression
         public static BinaryExpressionSyntax AddExpression(ExpressionSyntax left, ExpressionSyntax right)
@@ -1721,7 +1721,7 @@ namespace Roslynator.CSharp
         {
             return BinaryExpression(SyntaxKind.CoalesceExpression, left, operatorToken, right);
         }
-        #endregion
+        #endregion BinaryExpression
 
         #region PrefixUnaryExpression
         public static PrefixUnaryExpressionSyntax UnaryPlusExpression(ExpressionSyntax operand)
@@ -1803,7 +1803,7 @@ namespace Roslynator.CSharp
         {
             return PrefixUnaryExpression(SyntaxKind.PointerIndirectionExpression, operatorToken, operand);
         }
-        #endregion
+        #endregion PrefixUnaryExpression
 
         #region PostfixUnaryExpression
         public static PostfixUnaryExpressionSyntax PostIncrementExpression(ExpressionSyntax operand)
@@ -1825,7 +1825,7 @@ namespace Roslynator.CSharp
         {
             return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand, operatorToken);
         }
-        #endregion
+        #endregion PostfixUnaryExpression
 
         #region AssignmentExpression
         public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
@@ -1937,7 +1937,7 @@ namespace Roslynator.CSharp
         {
             return AssignmentExpression(SyntaxKind.RightShiftAssignmentExpression, left, operatorToken, right);
         }
-        #endregion
+        #endregion AssignmentExpression
 
         #region LiteralExpression
         public static LiteralExpressionSyntax StringLiteralExpression(string value)
@@ -2071,7 +2071,7 @@ namespace Roslynator.CSharp
 
             return StringLiteralExpression(value.ToString());
         }
-        #endregion
+        #endregion LiteralExpression
 
         #region Expression
         public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, ArgumentListSyntax argumentList)
@@ -2111,7 +2111,7 @@ namespace Roslynator.CSharp
                 ArgumentList(
                     Argument(IdentifierName(identifier))));
         }
-        #endregion
+        #endregion Expression
 
         public static IdentifierNameSyntax VarType()
         {

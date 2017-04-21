@@ -59,7 +59,7 @@ namespace Roslynator.CSharp
 
             return body ?? (CSharpSyntaxNode)accessorDeclaration.ExpressionBody;
         }
-        #endregion
+        #endregion AccessorDeclarationSyntax
 
         #region AccessorListSyntax
         public static AccessorDeclarationSyntax Getter(this AccessorListSyntax accessorList)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp
                 .Accessors
                 .FirstOrDefault(accessor => accessor.IsKind(kind));
         }
-        #endregion
+        #endregion AccessorListSyntax
 
         #region BlockSyntax
         public static StatementSyntax SingleStatementOrDefault(this BlockSyntax body)
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp
 
             return TextSpan.FromBounds(block.OpenBraceToken.SpanStart, block.CloseBraceToken.Span.End);
         }
-        #endregion
+        #endregion BlockSyntax
 
         #region CastExpressionSyntax
         public static TextSpan ParenthesesSpan(this CastExpressionSyntax castExpression)
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp
                 castExpression.OpenParenToken.Span.Start,
                 castExpression.CloseParenToken.Span.End);
         }
-        #endregion
+        #endregion CastExpressionSyntax
 
         #region ClassDeclarationSyntax
         internal static ClassDeclarationSyntax WithMembers(
@@ -213,7 +213,7 @@ namespace Roslynator.CSharp
 
             return classDeclaration.WithMembers(classDeclaration.Members.InsertMember(member, comparer));
         }
-        #endregion
+        #endregion ClassDeclarationSyntax
 
         #region CommonForEachStatementSyntax
         public static TextSpan ParenthesesSpan(this CommonForEachStatementSyntax forEachStatement)
@@ -223,7 +223,7 @@ namespace Roslynator.CSharp
 
             return TextSpan.FromBounds(forEachStatement.OpenParenToken.Span.Start, forEachStatement.CloseParenToken.Span.End);
         }
-        #endregion
+        #endregion CommonForEachStatementSyntax
 
         #region CompilationUnitSyntax
         internal static CompilationUnitSyntax WithMembers(
@@ -334,7 +334,7 @@ namespace Roslynator.CSharp
 
             return compilationUnit.WithMembers(compilationUnit.Members.InsertMember(member, comparer));
         }
-        #endregion
+        #endregion CompilationUnitSyntax
 
         #region ConstructorDeclarationSyntax
         public static TextSpan HeaderSpan(this ConstructorDeclarationSyntax constructorDeclaration)
@@ -389,7 +389,7 @@ namespace Roslynator.CSharp
 
             return constructorDeclaration.WithModifiers(constructorDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion ConstructorDeclarationSyntax
 
         #region ConversionOperatorDeclarationSyntax
         public static TextSpan HeaderSpan(this ConversionOperatorDeclarationSyntax operatorDeclaration)
@@ -429,7 +429,7 @@ namespace Roslynator.CSharp
 
             return conversionOperatorDeclaration.WithModifiers(conversionOperatorDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion ConversionOperatorDeclarationSyntax
 
         #region DelegateDeclarationSyntax
         public static DelegateDeclarationSyntax InsertModifier(this DelegateDeclarationSyntax delegateDeclaration, SyntaxToken modifier, IModifierComparer comparer)
@@ -452,7 +452,7 @@ namespace Roslynator.CSharp
         {
             return delegateDeclaration?.ReturnType?.IsVoid() == true;
         }
-        #endregion
+        #endregion DelegateDeclarationSyntax
 
         #region DestructorDeclarationSyntax
         public static CSharpSyntaxNode BodyOrExpressionBody(this DestructorDeclarationSyntax destructorDeclaration)
@@ -480,7 +480,7 @@ namespace Roslynator.CSharp
 
             return destructorDeclaration.WithModifiers(destructorDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion DestructorDeclarationSyntax
 
         #region DocumentationCommentTriviaSyntax
         internal static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
@@ -525,7 +525,7 @@ namespace Roslynator.CSharp
                 }
             }
         }
-        #endregion
+        #endregion DocumentationCommentTriviaSyntax
 
         #region ElseClauseSyntax
         internal static StatementSyntax GetSingleStatementOrDefault(this ElseClauseSyntax elseClause)
@@ -553,7 +553,7 @@ namespace Roslynator.CSharp
 
             return elseClause.Statement?.IsKind(SyntaxKind.IfStatement) == true;
         }
-        #endregion
+        #endregion ElseClauseSyntax
 
         #region EnumDeclarationSyntax
         public static TextSpan BracesSpan(this EnumDeclarationSyntax enumDeclaration)
@@ -581,7 +581,7 @@ namespace Roslynator.CSharp
 
             return enumDeclaration.WithModifiers(enumDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion EnumDeclarationSyntax
 
         #region EventDeclarationSyntax
         public static TextSpan HeaderSpan(this EventDeclarationSyntax eventDeclaration)
@@ -614,7 +614,7 @@ namespace Roslynator.CSharp
 
             return eventDeclaration.WithModifiers(eventDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion EventDeclarationSyntax
 
         #region EventFieldDeclarationSyntax
         public static bool IsStatic(this EventFieldDeclarationSyntax eventFieldDeclaration)
@@ -637,7 +637,7 @@ namespace Roslynator.CSharp
 
             return eventFieldDeclaration.WithModifiers(eventFieldDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion EventFieldDeclarationSyntax
 
         #region ExpressionSyntax
         public static ParenthesizedExpressionSyntax Parenthesize(this ExpressionSyntax expression, bool moveTrivia = false)
@@ -692,7 +692,7 @@ namespace Roslynator.CSharp
                     return false;
             }
         }
-        #endregion
+        #endregion ExpressionSyntax
 
         #region FieldDeclarationSyntax
         public static bool IsConst(this FieldDeclarationSyntax fieldDeclaration)
@@ -720,7 +720,7 @@ namespace Roslynator.CSharp
 
             return fieldDeclaration.WithModifiers(fieldDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion FieldDeclarationSyntax
 
         #region ForStatementSyntax
         public static TextSpan ParenthesesSpan(this ForStatementSyntax forStatement)
@@ -730,7 +730,7 @@ namespace Roslynator.CSharp
 
             return TextSpan.FromBounds(forStatement.OpenParenToken.Span.Start, forStatement.CloseParenToken.Span.End);
         }
-        #endregion
+        #endregion ForStatementSyntax
 
         #region IfStatementSyntax
         internal static StatementSyntax GetSingleStatementOrDefault(this IfStatementSyntax ifStatement)
@@ -843,7 +843,7 @@ namespace Roslynator.CSharp
 
             return null;
         }
-        #endregion
+        #endregion IfStatementSyntax
 
         #region IEnumerable<T>
         public static SyntaxList<TNode> ToSyntaxList<TNode>(this IEnumerable<TNode> nodes) where TNode : SyntaxNode
@@ -860,7 +860,7 @@ namespace Roslynator.CSharp
         {
             return SeparatedList<TNode>(nodesAndTokens);
         }
-        #endregion
+        #endregion IEnumerable<T>
 
         #region IndexerDeclarationSyntax
         public static TextSpan HeaderSpan(this IndexerDeclarationSyntax indexerDeclaration)
@@ -916,7 +916,7 @@ namespace Roslynator.CSharp
 
             return indexerDeclaration.WithModifiers(indexerDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion IndexerDeclarationSyntax
 
         #region InterfaceDeclarationSyntax
         public static TextSpan HeaderSpan(this InterfaceDeclarationSyntax interfaceDeclaration)
@@ -1009,7 +1009,7 @@ namespace Roslynator.CSharp
 
             return interfaceDeclaration.WithModifiers(interfaceDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion InterfaceDeclarationSyntax
 
         #region InterpolatedStringExpressionSyntax
         public static bool IsVerbatim(this InterpolatedStringExpressionSyntax interpolatedString)
@@ -1019,7 +1019,7 @@ namespace Roslynator.CSharp
 
             return interpolatedString.StringStartToken.ValueText.Contains("@");
         }
-        #endregion
+        #endregion InterpolatedStringExpressionSyntax
 
         #region LiteralExpressionSyntax
         public static bool IsVerbatimStringLiteral(this LiteralExpressionSyntax literalExpression)
@@ -1075,7 +1075,7 @@ namespace Roslynator.CSharp
             return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
                 && literalExpression.Token.Text.StartsWith("0x", StringComparison.OrdinalIgnoreCase);
         }
-        #endregion
+        #endregion LiteralExpressionSyntax
 
         #region LocalFunctionStatementSyntax
         public static CSharpSyntaxNode BodyOrExpressionBody(this LocalFunctionStatementSyntax localFunctionStatement)
@@ -1092,7 +1092,7 @@ namespace Roslynator.CSharp
         {
             return localFunctionStatement?.ReturnType?.IsVoid() == true;
         }
-        #endregion
+        #endregion LocalFunctionStatementSyntax
 
         #region MemberDeclarationSyntax
         public static SyntaxTrivia GetSingleLineDocumentationCommentTrivia(this MemberDeclarationSyntax member)
@@ -1721,7 +1721,7 @@ namespace Roslynator.CSharp
 
             return member.WithModifiers(member.GetModifiers().InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion MemberDeclarationSyntax
 
         #region MethodDeclarationSyntax
         public static bool ReturnsVoid(this MethodDeclarationSyntax methodDeclaration)
@@ -1779,7 +1779,7 @@ namespace Roslynator.CSharp
 
             return methodDeclaration.WithModifiers(methodDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion MethodDeclarationSyntax
 
         #region NamespaceDeclarationSyntax
         public static MemberDeclarationSyntax RemoveMemberAt(this NamespaceDeclarationSyntax namespaceDeclaration, int index)
@@ -1856,7 +1856,7 @@ namespace Roslynator.CSharp
 
             return namespaceDeclaration.WithMembers(namespaceDeclaration.Members.InsertMember(member, comparer));
         }
-        #endregion
+        #endregion NamespaceDeclarationSyntax
 
         #region OperatorDeclarationSyntax
         public static TextSpan HeaderSpan(this OperatorDeclarationSyntax operatorDeclaration)
@@ -1899,14 +1899,14 @@ namespace Roslynator.CSharp
         {
             return operatorDeclaration?.ReturnType?.IsVoid() == true;
         }
-        #endregion
+        #endregion OperatorDeclarationSyntax
 
         #region ParameterSyntax
         public static bool IsThis(this ParameterSyntax parameter)
         {
             return parameter?.Modifiers.Contains(SyntaxKind.ThisKeyword) == true;
         }
-        #endregion
+        #endregion ParameterSyntax
 
         #region PropertyDeclarationSyntax
         internal static PropertyDeclarationSyntax WithAttributeLists(
@@ -1971,7 +1971,7 @@ namespace Roslynator.CSharp
 
             return propertyDeclaration.WithModifiers(propertyDeclaration.Modifiers.InsertModifier(modifierKind, comparer));
         }
-        #endregion
+        #endregion PropertyDeclarationSyntax
 
         #region SeparatedSyntaxList<T>
         public static int LastIndexOf<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
@@ -1983,7 +1983,7 @@ namespace Roslynator.CSharp
         {
             return list.IndexOf(kind) != -1;
         }
-        #endregion
+        #endregion SeparatedSyntaxList<T>
 
         #region StatementSyntax
         private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
@@ -2068,7 +2068,7 @@ namespace Roslynator.CSharp
                     }
             }
         }
-        #endregion
+        #endregion StatementSyntax
 
         #region StructDeclarationSyntax
         internal static StructDeclarationSyntax WithMembers(
@@ -2161,7 +2161,7 @@ namespace Roslynator.CSharp
 
             return structDeclaration.WithMembers(structDeclaration.Members.InsertMember(member, comparer));
         }
-        #endregion
+        #endregion StructDeclarationSyntax
 
         #region SwitchSectionSyntax
         public static StatementSyntax SingleStatementOrDefault(this SwitchSectionSyntax switchSection)
@@ -2180,7 +2180,7 @@ namespace Roslynator.CSharp
         {
             return switchSection?.Labels.Any(f => f.IsKind(SyntaxKind.DefaultSwitchLabel)) == true;
         }
-        #endregion
+        #endregion SwitchSectionSyntax
 
         #region SyntaxList<T>
         public static int LastIndexOf<TNode>(this SyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
@@ -2197,7 +2197,7 @@ namespace Roslynator.CSharp
         {
             return members.Insert(comparer.GetInsertIndex(members, member), member);
         }
-        #endregion
+        #endregion SyntaxList<T>
 
         #region SyntaxNode
         public static SyntaxTokenList GetModifiers(this SyntaxNode node)
@@ -2856,7 +2856,7 @@ namespace Roslynator.CSharp
         {
             return WhitespaceOrEndOfLineTriviaRemover.RemoveWhitespaceOrEndOfLineTrivia(node, span);
         }
-        #endregion
+        #endregion SyntaxNode
 
         #region SyntaxToken
         public static bool IsAccessModifier(this SyntaxToken token)
@@ -3012,7 +3012,7 @@ namespace Roslynator.CSharp
         {
             return IsKind(token.Parent, kind1, kind2, kind3);
         }
-        #endregion
+        #endregion SyntaxToken
 
         #region SyntaxTokenList
         internal static SyntaxTokenList InsertModifier(this SyntaxTokenList modifiers, SyntaxKind modifierKind, IModifierComparer comparer)
@@ -3091,7 +3091,7 @@ namespace Roslynator.CSharp
 
             return accessModifier;
         }
-        #endregion
+        #endregion SyntaxTokenList
 
         #region SyntaxTrivia
         public static bool IsKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2)
@@ -3158,7 +3158,7 @@ namespace Roslynator.CSharp
         {
             return trivia.IsWhitespaceTrivia() || trivia.IsEndOfLineTrivia();
         }
-        #endregion
+        #endregion SyntaxTrivia
 
         #region SyntaxTriviaList
         public static int LastIndexOf(this SyntaxTriviaList triviaList, SyntaxKind kind)
@@ -3248,7 +3248,7 @@ namespace Roslynator.CSharp
                 return triviaList;
             }
         }
-        #endregion
+        #endregion SyntaxTriviaList
 
         #region TypeSyntax
         public static bool IsVoid(this TypeSyntax type)
@@ -3256,7 +3256,7 @@ namespace Roslynator.CSharp
             return type?.IsKind(SyntaxKind.PredefinedType) == true
                 && ((PredefinedTypeSyntax)type).Keyword.IsKind(SyntaxKind.VoidKeyword);
         }
-        #endregion
+        #endregion TypeSyntax
 
         #region UsingStatementSyntax
         public static CSharpSyntaxNode DeclarationOrExpression(this UsingStatementSyntax usingStatement)
@@ -3268,7 +3268,7 @@ namespace Roslynator.CSharp
 
             return declaration ?? usingStatement.Expression;
         }
-        #endregion
+        #endregion UsingStatementSyntax
 
         #region VariableDeclarationSyntax
         public static VariableDeclaratorSyntax SingleVariableOrDefault(this VariableDeclarationSyntax declaration)
@@ -3282,7 +3282,7 @@ namespace Roslynator.CSharp
                 ? variables.First()
                 : null;
         }
-        #endregion
+        #endregion VariableDeclarationSyntax
 
         #region YieldStatementSyntax
         public static bool IsYieldReturn(this YieldStatementSyntax yieldStatement)
@@ -3294,6 +3294,6 @@ namespace Roslynator.CSharp
         {
             return yieldStatement?.ReturnOrBreakKeyword.IsKind(SyntaxKind.BreakKeyword) == true;
         }
-        #endregion
+        #endregion YieldStatementSyntax
     }
 }
