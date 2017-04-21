@@ -1668,5 +1668,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseReturnInsteadOfAssignment,
+            title: "Use return instead of assignment.",
+            messageFormat: "Use return instead of assignment.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

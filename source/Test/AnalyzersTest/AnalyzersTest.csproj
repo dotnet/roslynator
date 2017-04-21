@@ -78,6 +78,7 @@
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
+    <Compile Include="UseReturnInsteadOfAssignment.cs" />
     <Compile Include="ValueTypeCheckedForNull.cs" />
     <Compile Include="NullCheckOfUnconstrainedTypeParameter.cs" />
     <Compile Include="SimplifyCoalesceExpression.cs" />
