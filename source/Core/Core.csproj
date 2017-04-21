@@ -155,6 +155,7 @@
     <Compile Include="Utilities\Deferred`1.cs" />
     <Compile Include="MethodInfo.cs" />
     <Compile Include="Utilities\SymbolUtility.cs" />
+    <Compile Include="NodeWriter.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Refactorings\InlineAliasExpressionRefactoring.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineTriviaRemover.cs" />

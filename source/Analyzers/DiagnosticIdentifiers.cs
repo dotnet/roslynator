@@ -189,5 +189,6 @@ namespace Roslynator.CSharp
         public const string ReplaceCommentWithDocumentationComment = Prefix + "1181";
         public const string RemoveRedundantBaseInterface = Prefix + "1182";
         public const string FormatInitializerWithSingleExpressionOnSingleLine = Prefix + "1183";
+        public const string FormatConditionalExpression = Prefix + "1184";
     }
 }

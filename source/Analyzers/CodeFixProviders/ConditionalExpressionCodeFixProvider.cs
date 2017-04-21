@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
-                    DiagnosticIdentifiers.SimplifyConditionalExpression);
+                    DiagnosticIdentifiers.SimplifyConditionalExpression,
+                    DiagnosticIdentifiers.FormatConditionalExpression);
             }
         }
 
@@ -71,6 +72,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 cancellationToken =>
                                 {
                                     return SimplifyConditionalExpressionRefactoring.RefactorAsync(
+                                        context.Document,
+                                        conditionalExpression,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.FormatConditionalExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Format ? and : on next line",
+                                cancellationToken =>
+                                {
+                                    return FormatConditionalExpressionRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);

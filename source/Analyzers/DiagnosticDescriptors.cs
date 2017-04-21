@@ -1714,5 +1714,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor FormatConditionalExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatConditionalExpression,
+            title: "Format conditional expression (format ? and : on next line).",
+            messageFormat: "Format conditional expression.",
+            category: DiagnosticCategories.Formatting,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
