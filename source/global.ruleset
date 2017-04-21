@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Global Ruleset" ToolsVersion="14.0">
+<RuleSet Name="Global Ruleset" ToolsVersion="15.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1000" Action="Warning" />
     <Rule Id="CA1001" Action="Warning" />
@@ -210,14 +210,35 @@
     <Rule Id="CA2243" Action="Warning" />
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
+    <Rule Id="IDE0011" Action="None" />
+    <Rule Id="IDE0011WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0021" Action="None" />
+    <Rule Id="IDE0021WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0022" Action="None" />
+    <Rule Id="IDE0022WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0023" Action="None" />
+    <Rule Id="IDE0023WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0024" Action="None" />
+    <Rule Id="IDE0024WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0025" Action="None" />
+    <Rule Id="IDE0025WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0026" Action="None" />
+    <Rule Id="IDE0026WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0027" Action="None" />
+    <Rule Id="IDE0027WithoutSuggestion" Action="None" />
     <Rule Id="IDE0028" Action="Info" />
     <Rule Id="IDE0029" Action="Info" />
     <Rule Id="IDE0031" Action="Info" />
     <Rule Id="IDE1005" Action="Info" />
     <Rule Id="IDE1006" Action="Info" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.Features" RuleNamespace="Microsoft.CodeAnalysis.Features">
+    <Rule Id="IDE0010" Action="None" />
+    <Rule Id="IDE0010WithoutSuggestion" Action="None" />
     <Rule Id="IDE0033" Action="Info" />
+  </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
-    <Rule Id="RECS0002" Action="None" />
     <Rule Id="RECS0008" Action="None" />
     <Rule Id="RECS0012" Action="None" />
     <Rule Id="RECS0014" Action="None" />
@@ -293,7 +314,10 @@
     <Rule Id="RCS1143" Action="Info" />
     <Rule Id="RCS1145" Action="Info" />
     <Rule Id="RCS1153" Action="Info" />
-    <Rule Id="RCS1161" Action="Hidden" />
     <Rule Id="RCS1162" Action="Info" />
+    <Rule Id="RCS1178" Action="None" />
+    <Rule Id="RCS1183" Action="Info" />
+    <Rule Id="RCS1184" Action="Info" />
+    <Rule Id="RCS1185" Action="Info" />
   </Rules>
 </RuleSet>
