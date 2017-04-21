@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class AnalysisOptionsExtensions
+    internal static class AnalysisOptionsExtensions
     {
         public static bool CheckSpanDirectives(this AnalysisOptions options, SyntaxNode node)
         {

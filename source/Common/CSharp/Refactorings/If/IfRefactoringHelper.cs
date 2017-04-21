@@ -8,7 +8,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
-    public static class IfRefactoringHelper
+    internal static class IfRefactoringHelper
     {
         public static bool IsEquivalent(SyntaxNode node1, SyntaxNode node2)
         {
