@@ -185,5 +185,6 @@ namespace Roslynator.CSharp
         public const string UseVarInsteadOfExplicitTypeInForEach = Prefix + "1177";
         public const string CallDebugFailInsteadOfDebugAssert = Prefix + "1178";
         public const string UseReturnInsteadOfAssignment = Prefix + "1179";
+        public const string InlineLazyInitialization = Prefix + "1180";
     }
 }

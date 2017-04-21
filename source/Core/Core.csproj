@@ -52,12 +52,12 @@
     <Compile Include="CSharp\Documentation\DocumentationCommentInserter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentOrigin.cs" />
     <Compile Include="CSharp\Extensions\DocumentExtensions.cs" />
+    <Compile Include="CSharp\Syntax\EqualsToNullExpression.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfLastRefactoring.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
     <Compile Include="DirectiveRemoveOptions.cs" />
-    <Compile Include="CSharp\Syntax\EqualsToNullExpression.cs" />
     <Compile Include="CSharp\CSharpFormatter.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentGeneratorSettings.cs" />
@@ -97,10 +97,10 @@
     <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression`1.cs" />
     <Compile Include="CSharp\Refactorings\If\ToAssignmentWithConditionalExpression.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationStatement.cs" />
+    <Compile Include="CSharp\Syntax\SimpleAssignmentExpression.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationExpressionWithSingleParameter.cs" />
     <Compile Include="CSharp\Syntax\LambdaExpressionWithSingleParameter.cs" />
     <Compile Include="CSharp\Syntax\NotEqualsToNullExpression.cs" />
-    <Compile Include="CSharp\Syntax\SimpleAssignmentExpression.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringKind.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToReturnWithCoalesceExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfToReturnWithBooleanExpression.cs" />

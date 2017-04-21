@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -24,23 +23,23 @@ namespace Roslynator.CSharp.Refactorings
             var ifStatement = (IfStatementSyntax)context.Node;
 
             if (ifStatement.IsSimpleIf()
-                && !ifStatement.ContainsDiagnostics
-                && !IsPartOfLazyInitialization(ifStatement))
+                && !ifStatement.ContainsDiagnostics)
             {
-                EqualsToNullExpression equalsToNull;
-                if (EqualsToNullExpression.TryCreate(ifStatement.Condition, out equalsToNull))
+                SyntaxList<StatementSyntax> statements;
+                if (ifStatement.TryGetContainingList(out statements)
+                    && !IsPartOfLazyInitialization(ifStatement, statements))
                 {
-                    SimpleAssignmentStatement assignment;
-                    if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment)
-                        && assignment.Left.IsEquivalentTo(equalsToNull.Left, topLevel: false)
-                        && assignment.Right.IsSingleLine()
-                        && !ifStatement.SpanContainsDirectives())
+                    EqualsToNullExpression equalsToNull;
+                    if (EqualsToNullExpression.TryCreate(ifStatement.Condition, out equalsToNull))
                     {
-                        StatementSyntax fixableStatement = ifStatement;
-
-                        SyntaxList<StatementSyntax> statements;
-                        if (ifStatement.TryGetContainingList(out statements))
+                        SimpleAssignmentStatement assignment;
+                        if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment)
+                            && assignment.Left.IsEquivalentTo(equalsToNull.Left, topLevel: false)
+                            && assignment.Right.IsSingleLine()
+                            && !ifStatement.SpanContainsDirectives())
                         {
+                            StatementSyntax fixableStatement = ifStatement;
+
                             int index = statements.IndexOf(ifStatement);
 
                             if (index > 0)
@@ -53,19 +52,33 @@ namespace Roslynator.CSharp.Refactorings
                                     fixableStatement = previousStatement;
                                 }
                             }
-                        }
 
-                        context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, fixableStatement);
+                            if (index < statements.Count - 1)
+                            {
+                                StatementSyntax nextStatement = statements[index + 1];
+
+                                if (!nextStatement.ContainsDiagnostics)
+                                {
+                                    MemberInvocationStatement memberInvocation;
+                                    if (MemberInvocationStatement.TryCreate(nextStatement, out memberInvocation)
+                                        && equalsToNull.Left.IsEquivalentTo(memberInvocation.Expression, topLevel: false)
+                                        && !ifStatement.Parent.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, nextStatement.Span.End)))
+                                    {
+                                        context.ReportDiagnostic(DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
+                                    }
+                                }
+                            }
+
+                            context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, fixableStatement);
+                        }
                     }
                 }
             }
         }
 
-        private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement)
+        private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement, SyntaxList<StatementSyntax> statements)
         {
-            SyntaxList<StatementSyntax> statements;
-            return ifStatement.TryGetContainingList(out statements)
-                && statements.Count == 2
+            return statements.Count == 2
                 && statements.IndexOf(ifStatement) == 0
                 && statements[1].IsKind(SyntaxKind.ReturnStatement);
         }
@@ -135,12 +148,51 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
+        public static Task<Document> InlineLazyInitializationAsync(
+            Document document,
+            IfStatementSyntax ifStatement,
+            CancellationToken cancellationToken)
+        {
+            StatementContainer container = StatementContainer.Create(ifStatement);
+
+            SyntaxList<StatementSyntax> statements = container.Statements;
+
+            int index = statements.IndexOf(ifStatement);
+
+            StatementSyntax expressionStatement = (ExpressionStatementSyntax)statements[index + 1];
+
+            MemberInvocationStatement invocation = MemberInvocationStatement.Create((ExpressionStatementSyntax)expressionStatement);
+
+            ExpressionSyntax expression = invocation.Expression;
+
+            SimpleAssignmentStatement assignment = SimpleAssignmentStatement.Create((ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault());
+
+            BinaryExpressionSyntax coalesceExpression = CSharpFactory.CoalesceExpression(expression.WithoutTrivia(), ParenthesizedExpression(assignment.AssignmentExpression));
+
+            ParenthesizedExpressionSyntax newExpression = ParenthesizedExpression(coalesceExpression)
+                .WithTriviaFrom(expression);
+
+            StatementSyntax newExpressionStatement = expressionStatement.ReplaceNode(expression, newExpression);
+
+            IEnumerable<SyntaxTrivia> trivia = container.Node.DescendantTrivia(TextSpan.FromBounds(ifStatement.FullSpan.Start, expressionStatement.FullSpan.Start));
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                newExpressionStatement = newExpressionStatement.PrependToLeadingTrivia(trivia);
+
+            SyntaxList<StatementSyntax> newStatements = statements
+                .Replace(expressionStatement, newExpressionStatement)
+                .RemoveAt(index);
+
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
             StatementContainer container;
+
             if (StatementContainer.TryCreate(statement, out container))
             {
                 SyntaxList<StatementSyntax> statements = container.Statements;

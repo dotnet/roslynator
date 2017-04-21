@@ -78,6 +78,7 @@ namespace Roslynator.CSharp.Syntax
                 var simpleAssignment = (AssignmentExpressionSyntax)expression;
 
                 result = new SimpleAssignmentStatement(simpleAssignment, simpleAssignment.Left, simpleAssignment.Right);
+                return true;
             }
 
             result = default(SimpleAssignmentStatement);
