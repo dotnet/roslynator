@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
                     DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt,
                     DiagnosticIdentifiers.UseElementAccessInsteadOfFirst,
-                    DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin);
+                    DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin,
+                    DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert);
             }
         }
 
@@ -194,6 +195,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Concat' instead of 'Join'",
                                 cancellationToken => CallStringConcatInsteadOfStringJoinRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Call 'Fail' instead of 'Assert'",
+                                cancellationToken => CallDebugFailInsteadOfDebugAssertRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -76,6 +76,7 @@
     <Compile Include="CSharp\Comparers\MemberDeclarationSortMode.cs" />
     <Compile Include="CSharp\Helpers\RemoveModifierHelper.cs" />
     <Compile Include="CSharp\Negator.cs" />
+    <Compile Include="CSharp\Refactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddBracesToSwitchSectionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentAnalysis.cs" />
     <Compile Include="CSharp\Refactorings\AddExceptionToDocumentationComment\AddExceptionToDocumentationCommentRefactoring.cs" />

@@ -1,0 +1,75 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Diagnostics;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+
+namespace Roslynator.CSharp
+{
+    internal static class Refactoring
+    {
+        public static InvocationExpressionSyntax ChangeInvokedMethodName(InvocationExpressionSyntax invocation, string newName)
+        {
+            if (invocation == null)
+                throw new ArgumentNullException(nameof(invocation));
+
+            ExpressionSyntax expression = invocation.Expression;
+
+            if (expression != null)
+            {
+                SyntaxKind kind = expression.Kind();
+
+                if (kind == SyntaxKind.SimpleMemberAccessExpression)
+                {
+                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+                    SimpleNameSyntax simpleName = memberAccess.Name;
+
+                    if (simpleName != null)
+                    {
+                        SimpleNameSyntax newSimpleName = ChangeName(simpleName, newName);
+
+                        return invocation.WithExpression(memberAccess.WithName(newSimpleName));
+                    }
+                }
+                else if (kind == SyntaxKind.MemberBindingExpression)
+                {
+                    var memberBinding = (MemberBindingExpressionSyntax)expression;
+                    SimpleNameSyntax simpleName = memberBinding.Name;
+
+                    if (simpleName != null)
+                    {
+                        SimpleNameSyntax newSimpleName = ChangeName(simpleName, newName);
+
+                        return invocation.WithExpression(memberBinding.WithName(newSimpleName));
+                    }
+                }
+                else
+                {
+                    var simpleName = expression as SimpleNameSyntax;
+
+                    if (simpleName != null)
+                    {
+                        SimpleNameSyntax newSimpleName = ChangeName(simpleName, newName);
+
+                        return invocation.WithExpression(newSimpleName);
+                    }
+
+                    Debug.Assert(false, kind.ToString());
+                }
+            }
+
+            return invocation;
+        }
+
+        private static SimpleNameSyntax ChangeName(SimpleNameSyntax simpleName, string newName)
+        {
+            return simpleName.WithIdentifier(
+                Identifier(
+                    simpleName.GetLeadingTrivia(),
+                    newName,
+                    simpleName.GetTrailingTrivia()));
+        }
+    }
+}
