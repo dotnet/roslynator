@@ -68,7 +68,7 @@ namespace Roslynator
                 if (reducedFrom != null)
                 {
                     if ((allowedKinds & ExtensionMethodKind.Reduced) != 0)
-                        return new ExtensionMethodInfo(methodSymbol, reducedFrom, semanticModel);
+                        return new ExtensionMethodInfo(reducedFrom, methodSymbol, semanticModel);
                 }
                 else if ((allowedKinds & ExtensionMethodKind.Ordinary) != 0)
                 {
