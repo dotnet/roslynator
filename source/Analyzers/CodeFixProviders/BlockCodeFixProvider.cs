@@ -18,7 +18,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLazilyInitializedProperty); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.SimplifyLazilyInitializedProperty,
+                    DiagnosticIdentifiers.AvoidSingleLineBlock);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -34,12 +39,33 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (block == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Simplify lazy initialization",
-                cancellationToken => SimplifyLazilyInitializedPropertyRefactoring.RefactorAsync(context.Document, block, cancellationToken),
-                DiagnosticIdentifiers.SimplifyLazilyInitializedProperty + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.SimplifyLazilyInitializedProperty:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Simplify lazy initialization",
+                                cancellationToken => SimplifyLazilyInitializedPropertyRefactoring.RefactorAsync(context.Document, block, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AvoidSingleLineBlock:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Format block",
+                                cancellationToken => AvoidSingleLineBlockRefactoring.RefactorAsync(context.Document, block, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+
+                        }
+                }
+            }
         }
     }
 }
