@@ -14,7 +14,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantCommaInInitializer); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemoveRedundantCommaInInitializer,
+                    DiagnosticDescriptors.FormatInitializerWithSingleExpressionOnSingleLine);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -23,9 +28,16 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(
                 f => RemoveRedundantCommaInInitializerRefactoring.AnalyzeInitializerExpression(f),
+                SyntaxKind.ArrayInitializerExpression,
+                SyntaxKind.ObjectInitializerExpression,
+                SyntaxKind.CollectionInitializerExpression);
+
+            context.RegisterSyntaxNodeAction(
+                f => FormatInitializerWithSingleExpressionOnSingleLineRefactoring.AnalyzeInitializerExpression(f),
                 SyntaxKind.ArrayInitializerExpression,
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression);

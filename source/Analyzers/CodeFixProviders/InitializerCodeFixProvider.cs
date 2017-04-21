@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantCommaInInitializer,
-                    DiagnosticIdentifiers.UseCSharp6DictionaryInitializer);
+                    DiagnosticIdentifiers.UseCSharp6DictionaryInitializer,
+                    DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine);
             }
         }
 
@@ -58,6 +59,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Use C# 6.0 dictionary initializer",
                                 cancellationToken => UseCSharp6DictionaryInitializerRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Format initializer on a single line",
+                                cancellationToken => FormatInitializerWithSingleExpressionOnSingleLineRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

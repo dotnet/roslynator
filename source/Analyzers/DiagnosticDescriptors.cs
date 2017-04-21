@@ -1705,5 +1705,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor FormatInitializerWithSingleExpressionOnSingleLine = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine,
+            title: "Format initializer with single expression on single line.",
+            messageFormat: "Format initializer with single expression on single line.",
+            category: DiagnosticCategories.Formatting,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }
