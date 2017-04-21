@@ -385,7 +385,7 @@ namespace Roslynator
                     return ImmutableArray<IParameterSymbol>.Empty;
             }
         }
-        #endregion
+        #endregion ISymbol
 
         #region IFieldSymbol
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, bool value)
@@ -611,7 +611,7 @@ namespace Roslynator
 
             return false;
         }
-        #endregion
+        #endregion IFieldSymbol
 
         #region IMethodSymbol
         public static IEnumerable<IMethodSymbol> OverriddenMethods(this IMethodSymbol methodSymbol)
@@ -668,7 +668,7 @@ namespace Roslynator
 
             return false;
         }
-        #endregion
+        #endregion IMethodSymbol
 
         #region IParameterSymbol
         public static bool IsParamsOf(this IParameterSymbol parameterSymbol, SpecialType elementType)
@@ -721,7 +721,7 @@ namespace Roslynator
 
             return false;
         }
-        #endregion
+        #endregion IParameterSymbol
 
         #region IPropertySymbol
         public static IParameterSymbol SingleParameterOrDefault(this IPropertySymbol propertySymbol)
@@ -735,7 +735,7 @@ namespace Roslynator
                 ? parameters[0]
                 : null;
         }
-        #endregion
+        #endregion IPropertySymbol
 
         #region INamedTypeSymbol
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
@@ -860,7 +860,7 @@ namespace Roslynator
             return IsIEnumerable(namedTypeSymbol)
                 || IsConstructedFromIEnumerableOfT(namedTypeSymbol);
         }
-        #endregion
+        #endregion INamedTypeSymbol
 
         #region INamespaceSymbol
         public static IEnumerable<INamespaceSymbol> ContainingNamespacesAndSelf(this INamespaceSymbol @namespace)
@@ -876,7 +876,7 @@ namespace Roslynator
 
             } while (@namespace != null);
         }
-        #endregion
+        #endregion INamespaceSymbol
 
         #region ITypeParameterSymbol
         internal static bool VerifyConstraint(this ITypeParameterSymbol typeParameterSymbol, bool allowReference, bool allowValueType, bool allowConstructor)
@@ -951,7 +951,7 @@ namespace Roslynator
                 && (allowValueType || !typeParameterSymbol.HasValueTypeConstraint)
                 && (allowConstructor || !typeParameterSymbol.HasConstructorConstraint);
         }
-        #endregion
+        #endregion ITypeParameterSymbol
 
         #region ITypeSymbol
         public static bool IsNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
@@ -1642,6 +1642,6 @@ namespace Roslynator
             return IsIEnumerable(typeSymbol)
                 || IsConstructedFromIEnumerableOfT(typeSymbol);
         }
-        #endregion
+        #endregion ITypeSymbol
     }
 }

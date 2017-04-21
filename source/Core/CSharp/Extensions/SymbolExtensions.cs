@@ -52,7 +52,7 @@ namespace Roslynator.CSharp
 
             return null;
         }
-        #endregion
+        #endregion IParameterSymbol
 
         #region ITypeSymbol
         public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat format = null)
@@ -246,6 +246,6 @@ namespace Roslynator.CSharp
 
             return typeSymbol.IsEnum();
         }
-        #endregion
+        #endregion ITypeSymbol
     }
 }

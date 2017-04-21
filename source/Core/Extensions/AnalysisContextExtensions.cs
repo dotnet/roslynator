@@ -59,7 +59,7 @@ namespace Roslynator
         {
             return context.Compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
-        #endregion
+        #endregion SymbolAnalysisContextExtensions
 
         #region SyntaxNodeAnalysisContextExtensions
         public static void ReportDiagnostic(
@@ -168,7 +168,7 @@ namespace Roslynator
             ReportToken(context, descriptor, argumentList.OpenParenToken);
             ReportToken(context, descriptor, argumentList.CloseParenToken);
         }
-        #endregion
+        #endregion SyntaxNodeAnalysisContextExtensions
 
         #region SyntaxTreeAnalysisContextExtensions
         public static void ReportDiagnostic(
@@ -213,6 +213,6 @@ namespace Roslynator
             context.ReportDiagnostic(
                 Diagnostic.Create(descriptor, location, messageArgs));
         }
-        #endregion
+        #endregion SyntaxTreeAnalysisContextExtensions
     }
 }
