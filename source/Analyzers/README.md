@@ -176,3 +176,11 @@ RCS1174|Remove redundant async/await|Redundancy|x
 RCS1175|Unused this parameter|Redundancy|x
 RCS1176|Use 'var' instead of explicit type \(when the type is not obvious\)|Simplification|
 RCS1177|Use 'var' instead of explicit type \(in foreach\)|Simplification|
+RCS1178|Call Debug\.Fail instead of Debug\.Assert|Usage|x
+RCS1179|Use return instead of assignment|Simplification|x
+RCS1180|Inline lazy initialization|Simplification|x
+RCS1181|Replace comment with documentation comment|General|x
+RCS1182|Remove redundant base interface|Redundancy|x
+RCS1183|Format initializer with single expression on single line|Formatting|x
+RCS1184|Format conditional expression \(format ? and : on next line\)|Formatting|
+RCS1185|Avoid single\-line block|Formatting|

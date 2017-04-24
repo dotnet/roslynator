@@ -28,8 +28,10 @@ Formatting|Add empty line after closing brace|RCS1153|
 Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
 Formatting|Add empty line between declarations|RCS1057|x
+Formatting|Avoid single\-line block|RCS1185|
 Formatting|Format accessor list|RCS1024|x
 Formatting|Format binary operator on next line|RCS1029|x
+Formatting|Format conditional expression \(format ? and : on next line\)|RCS1184|
 Formatting|Format declaration braces|RCS1076|x
 Formatting|Format documentation summary on a single line|RCS1100|
 Formatting|Format documentation summary on multiple lines|RCS1101|
@@ -37,10 +39,12 @@ Formatting|Format each enum member on a separate line|RCS1025|
 Formatting|Format each statement on a separate line|RCS1026|
 Formatting|Format embedded statement on a separate line|RCS1027|
 Formatting|Format empty block|RCS1023|x
+Formatting|Format initializer with single expression on single line|RCS1183|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Bitwise operation on enum without Flags attribute|RCS1130|x
 General|Mark local variable as const|RCS1118|x
 General|Remove unreachable code|RCS1148|x
+General|Replace comment with documentation comment|RCS1181|x
 General|Throwing of new NotImplementedException|RCS1079|x
 General|Use "" instead of string\.Empty|RCS1078|
 General|Use carriage return \+ linefeed as newline|RCS1087|
@@ -99,6 +103,7 @@ Redundancy|Remove partial modifier from type with a single part|RCS1043|x
 Redundancy|Remove redundant 'as' operator|RCS1145|x
 Redundancy|Remove redundant async/await|RCS1174|x
 Redundancy|Remove redundant base constructor call|RCS1071|x
+Redundancy|Remove redundant base interface|RCS1182|x
 Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant cast|RCS1151|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
@@ -121,6 +126,7 @@ Redundancy|Unused this parameter|RCS1175|x
 Redundancy|Unused type parameter|RCS1164|x
 Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
+Simplification|Inline lazy initialization|RCS1180|x
 Simplification|Inline local variable|RCS1124|x
 Simplification|Merge else clause with nested if statement|RCS1006|x
 Simplification|Merge if statement with nested if statement|RCS1061|x
@@ -148,6 +154,7 @@ Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use is operator instead of as operator|RCS1172|x
 Simplification|Use postfix unary operator instead of assignment|RCS1089|x
+Simplification|Use return instead of assignment|RCS1179|x
 Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|
 Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|
 Simplification|Use 'var' instead of explicit type \(when the type is obvious\)|RCS1010|x
@@ -165,6 +172,7 @@ Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
+Usage|Call Debug\.Fail instead of Debug\.Assert|RCS1178|x
 Usage|Unconstrained type parameter checked for null|RCS1165|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
 Usage|Use conditional access|RCS1146|x
