@@ -1,3 +1,22 @@
+### 1.3.10 (2017-04-24)
+
+#### Analyzers
+
+* Improve analyzer RemoveInapplicableModifier (RCS1147) - Analyze local function.
+* Improve analyzer SimplifyMethodChain (RCS1077) - Merge combination of Where and Any.
+* Improve analyzer StaticMemberInGenericTypeShouldUseTypeParameter (RCS1158) - Member must be public, internal or protected internal.
+
+##### New Analyzers
+
+* CallDebugFailInsteadOfDebugAssert (RCS1178)
+* UseReturnInsteadOfAssignment (RCS1179)
+* InlineLazyInitialization (RCS1180)
+* ReplaceCommentWithDocumentationComment (RCS1181)
+* RemoveRedundantBaseInterface (RCS1182)
+* FormatInitializerWithSingleExpressionOnSingleLine (RCS1183)
+* FormatConditionalExpression (RCS1184)
+* AvoidSingleLineBlock (RCS1185)
+
 ### 1.3.0 (2017-04-02)
 
 * Add support for configuration file.
