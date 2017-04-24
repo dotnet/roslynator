@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -97,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                             return false;
                     }
 
-                    if (semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(symbol) == true)
+                    if (GetSymbol(identifierName, semanticModel, cancellationToken)?.Equals(symbol) == true)
                         return false;
                 }
             }
@@ -155,7 +154,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                             }
                         }
 
-                        if (infos[i].Symbol?.Equals(semanticModel.GetSymbol(identifierName, cancellationToken)) == true)
+                        if (infos[i].Symbol?.Equals(GetSymbol(identifierName, semanticModel, cancellationToken)) == true)
                             names[i] = null;
 
                         break;
@@ -168,6 +167,11 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 if (names[i] != null)
                     yield return infos[i].Syntax;
             }
+        }
+
+        public virtual ISymbol GetSymbol(IdentifierNameSyntax identifierName, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return semanticModel.GetSymbol(identifierName, cancellationToken);
         }
 
         private static IEnumerable<IdentifierNameSyntax> DescendantIdentifierNames(SyntaxNode node, TextSpan excludedSpan)
