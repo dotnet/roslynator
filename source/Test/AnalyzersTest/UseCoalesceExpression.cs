@@ -24,6 +24,23 @@ namespace Roslynator.CSharp.Analyzers.Test
                 y = "";
         }
 
+        private static void IfStatement2()
+        {
+            Base x = null;
+            Derived y = null;
+            Derived2 z = null;
+
+            // a
+            if (x == null)
+            {
+                // b
+                x = y;
+            }
+
+            if (x == null)
+                x = z;
+        }
+
         private static void LocalDeclarationStatement()
         {
             string x = GetValueOrDefault();
@@ -37,6 +54,21 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             if (y == null)
                 y = "";
+        }
+
+        private static void LocalDeclarationStatement2()
+        {
+            Base x = GetValueOrDefault2();
+
+            if (x == null)
+            {
+                x = default(Derived2);
+            }
+
+            Base x2 = GetValueOrDefault2();
+
+            if (x2 == null)
+                x2 = default(Derived2);
         }
 
         private static void ExpressionStatement()
@@ -58,6 +90,25 @@ namespace Roslynator.CSharp.Analyzers.Test
                 y = "";
         }
 
+        private static void ExpressionStatement2()
+        {
+            Base x = null;
+            Base x2 = null;
+
+            x = GetValueOrDefault2();
+
+            if (x == null)
+            {
+                x = default(Derived2);
+            }
+
+            x2 = GetValueOrDefault2();
+
+            // ...
+            if (x2 == null)
+                x2 = default(Derived2);
+        }
+
         private static void SingleIfStatement(string value)
         {
             if (value == null)
@@ -75,6 +126,23 @@ namespace Roslynator.CSharp.Analyzers.Test
         private static string GetValueOrDefault()
         {
             return null;
+        }
+
+        private static Derived GetValueOrDefault2()
+        {
+            return null;
+        }
+
+        private class Base
+        {
+        }
+
+        private class Derived : Base
+        {
+        }
+
+        private class Derived2 : Base
+        {
         }
     }
 }

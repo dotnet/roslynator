@@ -191,86 +191,82 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            StatementContainer container;
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (StatementContainer.TryCreate(statement, out container))
+            StatementContainer container = StatementContainer.Create(statement);
+
+            SyntaxList<StatementSyntax> statements = container.Statements;
+
+            int index = statements.IndexOf(statement);
+
+            switch (statement.Kind())
             {
-                SyntaxList<StatementSyntax> statements = container.Statements;
+                case SyntaxKind.IfStatement:
+                    {
+                        var ifStatement = (IfStatementSyntax)statement;
 
-                int index = statements.IndexOf(statement);
+                        var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
-                switch (statement.Kind())
-                {
-                    case SyntaxKind.IfStatement:
+                        var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
+                        ExpressionSyntax left = assignment.Left;
+                        ExpressionSyntax right = assignment.Right;
+
+                        ExpressionSyntax newLeft = left
+                            .WithoutLeadingTrivia()
+                            .WithTrailingTrivia(Space);
+
+                        ExpressionSyntax newRight = right.WithLeadingTrivia(Space);
+
+                        BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(left, left, right, newLeft, newRight, semanticModel, ifStatement.SpanStart, cancellationToken);
+
+                        AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
+
+                        ExpressionStatementSyntax newNode = expressionStatement.WithExpression(newAssignment);
+
+                        IEnumerable<SyntaxTrivia> trivia = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, expressionStatement.SpanStart));
+
+                        if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
-                            var ifStatement = (IfStatementSyntax)statement;
-
-                            var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
-
-                            var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
-
-                            ExpressionSyntax left = assignment.Left;
-                            ExpressionSyntax right = assignment.Right;
-
-                            ParenthesizedExpressionSyntax newLeft = left
-                                .WithoutLeadingTrivia()
-                                .WithTrailingTrivia(Space)
-                                .Parenthesize(moveTrivia: true)
-                                .WithSimplifierAnnotation();
-
-                            ParenthesizedExpressionSyntax newRight = right
-                                    .WithLeadingTrivia(Space)
-                                    .Parenthesize(moveTrivia: true)
-                                    .WithSimplifierAnnotation();
-
-                            BinaryExpressionSyntax coalesceExpression = CSharpFactory.CoalesceExpression(newLeft, newRight);
-
-                            AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
-
-                            ExpressionStatementSyntax newNode = expressionStatement.WithExpression(newAssignment);
-
-                            IEnumerable<SyntaxTrivia> trivia = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, expressionStatement.SpanStart));
-
-                            if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                            {
-                                newNode = newNode.WithLeadingTrivia(ifStatement.GetLeadingTrivia());
-                            }
-                            else
-                            {
-                                newNode = newNode
-                                    .WithLeadingTrivia(ifStatement.GetLeadingTrivia().Concat(trivia))
-                                    .WithFormatterAnnotation();
-                            }
-
-                            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+                            newNode = newNode.WithLeadingTrivia(ifStatement.GetLeadingTrivia());
                         }
-                    case SyntaxKind.ExpressionStatement:
+                        else
                         {
-                            var expressionStatement = (ExpressionStatementSyntax)statement;
-
-                            var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
-
-                            return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, container, assignment.Right, cancellationToken).ConfigureAwait(false);
+                            newNode = newNode
+                                .WithLeadingTrivia(ifStatement.GetLeadingTrivia().Concat(trivia))
+                                .WithFormatterAnnotation();
                         }
-                    case SyntaxKind.LocalDeclarationStatement:
-                        {
-                            var localDeclaration = (LocalDeclarationStatementSyntax)statement;
 
-                            ExpressionSyntax value = localDeclaration
-                                .Declaration
-                                .Variables
-                                .First()
-                                .Initializer
-                                .Value;
+                        return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
+                    }
+                case SyntaxKind.ExpressionStatement:
+                    {
+                        var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                            return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)statements[index + 1], index, container, value, cancellationToken).ConfigureAwait(false);
-                        }
-                }
+                        var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
+                        return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, container, assignment.Right, semanticModel, cancellationToken).ConfigureAwait(false);
+                    }
+                case SyntaxKind.LocalDeclarationStatement:
+                    {
+                        var localDeclaration = (LocalDeclarationStatementSyntax)statement;
+
+                        ExpressionSyntax value = localDeclaration
+                            .Declaration
+                            .Variables
+                            .First()
+                            .Initializer
+                            .Value;
+
+                        return await RefactorAsync(document, localDeclaration, (IfStatementSyntax)statements[index + 1], index, container, value, semanticModel, cancellationToken).ConfigureAwait(false);
+                    }
+                default:
+                    {
+                        Debug.Assert(false, statement.Kind().ToString());
+
+                        return document;
+                    }
             }
-
-            Debug.Assert(false, statement.Kind().ToString());
-
-            return document;
         }
 
         private static Task<Document> RefactorAsync(
@@ -280,23 +276,20 @@ namespace Roslynator.CSharp.Refactorings
             int statementIndex,
             StatementContainer container,
             ExpressionSyntax expression,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
             var expressionStatement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-            ExpressionSyntax left = expression
-                .WithoutTrailingTrivia()
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation();
+            ExpressionSyntax left = assignment.Left;
+            ExpressionSyntax right = assignment.Right;
 
-            ExpressionSyntax right = assignment.Right
-                .WithTrailingTrivia(expression.GetTrailingTrivia())
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation();
+            ExpressionSyntax newLeft = expression.WithoutTrailingTrivia();
+            ExpressionSyntax newRight = right.WithTrailingTrivia(expression.GetTrailingTrivia());
 
-            BinaryExpressionSyntax newNode = CSharpFactory.CoalesceExpression(left, right);
+            BinaryExpressionSyntax newNode = CreateCoalesceExpression(left, expression, right, newLeft, newRight, semanticModel, statement.SpanStart, cancellationToken);
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 
@@ -317,6 +310,56 @@ namespace Roslynator.CSharp.Refactorings
                 .ReplaceAt(statementIndex, newStatement);
 
             return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+        }
+
+        private static BinaryExpressionSyntax CreateCoalesceExpression(
+            ExpressionSyntax expression,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            ExpressionSyntax newLeft,
+            ExpressionSyntax newRight,
+            SemanticModel semanticModel,
+            int position,
+            CancellationToken cancellationToken)
+        {
+            newRight = AddCastExpressionIfNecessary(expression, left, right, newRight, semanticModel, position, cancellationToken);
+
+            return CSharpFactory.CoalesceExpression(
+                newLeft.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                newRight.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+        }
+
+        private static ExpressionSyntax AddCastExpressionIfNecessary(
+            ExpressionSyntax expression,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            ExpressionSyntax newRight,
+            SemanticModel semanticModel,
+            int position,
+            CancellationToken cancellationToken)
+        {
+            ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (expressionType?.IsErrorType() == false)
+            {
+                ITypeSymbol leftType = semanticModel.GetTypeSymbol(left, cancellationToken);
+
+                if (leftType?.IsErrorType() == false
+                    && !expressionType.Equals(leftType))
+                {
+                    ITypeSymbol rightType = semanticModel.GetTypeSymbol(right, cancellationToken);
+
+                    if (rightType?.IsErrorType() == false
+                        && !leftType.Equals(rightType))
+                    {
+                        return CastExpression(
+                            expressionType.ToMinimalTypeSyntax(semanticModel, position),
+                            newRight.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+                    }
+                }
+            }
+
+            return newRight;
         }
     }
 }
