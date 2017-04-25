@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,48 +18,36 @@ namespace Roslynator.CSharp.Refactorings
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
-
-            if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && !modifiers.Contains(SyntaxKind.SealedKeyword)
-                && !modifiers.Contains(SyntaxKind.PartialKeyword))
+            if (!methodDeclaration.ContainsDirectives
+                && !methodDeclaration.ContainsDiagnostics)
             {
-                ExpressionSyntax expression = GetMethodExpression(methodDeclaration);
+                SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
-                if (expression?.IsKind(SyntaxKind.InvocationExpression) == true)
+                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
+                    && !modifiers.ContainsAny(SyntaxKind.SealedKeyword, SyntaxKind.PartialKeyword)
+                    && !methodDeclaration.HasDocumentationComment())
                 {
-                    var invocation = (InvocationExpressionSyntax)expression;
+                    ExpressionSyntax expression = GetMethodExpression(methodDeclaration);
 
-                    ExpressionSyntax invocationExpression = invocation.Expression;
-
-                    if (invocationExpression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                    MemberInvocationExpression memberInvocation;
+                    if (MemberInvocationExpression.TryCreate(expression, out memberInvocation)
+                        && memberInvocation.Expression.IsKind(SyntaxKind.BaseExpression))
                     {
-                        var memberAccess = (MemberAccessExpressionSyntax)invocationExpression;
+                        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-                        if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) == true)
+                        IMethodSymbol overriddenMethod = methodSymbol?.OverriddenMethod;
+
+                        if (overriddenMethod != null)
                         {
-                            SimpleNameSyntax simpleName = memberAccess.Name;
+                            ISymbol symbol = context.SemanticModel.GetSymbol(memberInvocation.Name, context.CancellationToken);
 
-                            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-                            if (methodSymbol != null)
+                            if (overriddenMethod.Equals(symbol)
+                                && CheckDefaultValues(methodSymbol, overriddenMethod))
                             {
-                                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
-
-                                if (overriddenMethod != null)
-                                {
-                                    ISymbol symbol = context.SemanticModel.GetSymbol(simpleName, context.CancellationToken);
-
-                                    if (overriddenMethod.Equals(symbol)
-                                        && CheckDefaultValues(methodSymbol, overriddenMethod)
-                                        && !methodDeclaration.ContainsDirectives)
-                                    {
-                                        context.ReportDiagnostic(
-                                            DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                                            methodDeclaration,
-                                            methodDeclaration.GetTitle());
-                                    }
-                                }
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                                    methodDeclaration,
+                                    methodDeclaration.GetTitle());
                             }
                         }
                     }
@@ -128,20 +117,24 @@ namespace Roslynator.CSharp.Refactorings
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
-
-            if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && !modifiers.Contains(SyntaxKind.SealedKeyword)
-                && propertyDeclaration
-                    .AccessorList?
-                    .Accessors
-                    .All(accessor => CanRefactor(propertyDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true
-                && !propertyDeclaration.ContainsDirectives)
+            if (!propertyDeclaration.ContainsDirectives
+                && !propertyDeclaration.ContainsDiagnostics)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                    propertyDeclaration,
-                    propertyDeclaration.GetTitle());
+                SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
+                    && !modifiers.Contains(SyntaxKind.SealedKeyword)
+                    && !propertyDeclaration.HasDocumentationComment()
+                    && propertyDeclaration
+                        .AccessorList?
+                        .Accessors
+                        .All(accessor => CanRefactor(propertyDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                        propertyDeclaration,
+                        propertyDeclaration.GetTitle());
+                }
             }
         }
 
@@ -251,20 +244,24 @@ namespace Roslynator.CSharp.Refactorings
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
-
-            if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && !modifiers.Contains(SyntaxKind.SealedKeyword)
-                && indexerDeclaration
-                    .AccessorList?
-                    .Accessors
-                    .All(accessor => CanRefactor(indexerDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true
-                && !indexerDeclaration.ContainsDirectives)
+            if (!indexerDeclaration.ContainsDirectives
+                && indexerDeclaration.ContainsDiagnostics)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                    indexerDeclaration,
-                    indexerDeclaration.GetTitle());
+                SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
+                    && !modifiers.Contains(SyntaxKind.SealedKeyword)
+                    && !indexerDeclaration.HasDocumentationComment()
+                    && indexerDeclaration
+                        .AccessorList?
+                        .Accessors
+                        .All(accessor => CanRefactor(indexerDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                        indexerDeclaration,
+                        indexerDeclaration.GetTitle());
+                }
             }
         }
 
