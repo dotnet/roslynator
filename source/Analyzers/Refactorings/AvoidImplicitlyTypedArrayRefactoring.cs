@@ -16,23 +16,20 @@ namespace Roslynator.CSharp.Refactorings
         {
             var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 
-            SyntaxToken newKeyword = expression.NewKeyword;
-            SyntaxToken openBracket = expression.OpenBracketToken;
-            SyntaxToken closeBracket = expression.CloseBracketToken;
-
-            if (!newKeyword.IsMissing
-                && !openBracket.IsMissing
-                && !closeBracket.IsMissing)
+            if (!expression.ContainsDiagnostics)
             {
                 var typeSymbol = context.SemanticModel.GetTypeSymbol(expression) as IArrayTypeSymbol;
 
                 if (typeSymbol?.ElementType?.IsErrorType() == false)
                 {
-                    TextSpan span = TextSpan.FromBounds(newKeyword.Span.Start, closeBracket.Span.End);
+                    TextSpan span = TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End);
 
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.AvoidImplicitlyTypedArray,
-                        Location.Create(expression.SyntaxTree, span));
+                    if (!expression.ContainsDirectives(span))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.AvoidImplicitlyTypedArray,
+                            Location.Create(expression.SyntaxTree, span));
+                    }
                 }
             }
         }
@@ -46,11 +43,18 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            var arrayType = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart) as ArrayTypeSyntax;
+            var arrayType = (ArrayTypeSyntax)typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
+
+            SyntaxToken newKeyword = expression.NewKeyword;
+
+            if (!newKeyword.HasTrailingTrivia)
+                newKeyword = newKeyword.WithTrailingTrivia(SyntaxFactory.Space);
 
             ArrayCreationExpressionSyntax newNode = SyntaxFactory.ArrayCreationExpression(
-                expression.NewKeyword,
-                arrayType.WithTrailingTrivia(expression.CloseBracketToken.TrailingTrivia),
+                newKeyword,
+                arrayType
+                    .WithLeadingTrivia(expression.OpenBracketToken.LeadingTrivia)
+                    .WithTrailingTrivia(expression.CloseBracketToken.TrailingTrivia),
                 expression.Initializer);
 
             newNode = newNode.WithFormatterAnnotation();
