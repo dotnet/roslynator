@@ -535,7 +535,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseCompoundAssignment = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UseCompoundAssignment,
             title: "Use compound assignment.",
-            messageFormat: "Use {0} operator.",
+            messageFormat: "Use compound assignment.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -915,7 +915,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
             title: "Avoid 'null' on the left side of a binary expression.",
-            messageFormat: "Swap the left and right part of a binary expression so that 'null' is on the right side.",
+            messageFormat: "'null' should be on the right side of a binary expression.",
             category: DiagnosticCategories.Readability,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
@@ -1432,7 +1432,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor AddEmptyLineAfterClosingBrace = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AddEmptyLineAfterClosingBrace,
             title: "Add empty line after closing brace.",
-            messageFormat: "Consider adding empty line after closing brace.",
+            messageFormat: "Add empty line after closing brace.",
             category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
