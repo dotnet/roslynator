@@ -72,16 +72,20 @@ namespace Roslynator.CSharp.Refactorings
 
                 var typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
 
-                if (typeSymbol?.ConstructedFrom.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T)) == true)
+                if (typeSymbol != null)
                 {
-                    var invocation = expression as InvocationExpressionSyntax;
-
-                    if (invocation != null)
+                    if (typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable))
+                        || typeSymbol.ConstructedFrom.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T)))
                     {
-                        var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
+                        var invocation = expression as InvocationExpressionSyntax;
 
-                        if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
-                            expression = memberAccess.Expression;
+                        if (invocation != null)
+                        {
+                            var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
+
+                            if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
+                                expression = memberAccess.Expression;
+                        }
                     }
                 }
 

@@ -3,7 +3,7 @@
 using System;
 using System.Threading.Tasks;
 
-#pragma warning disable CS0168, CS0219, RCS1004, RCS1016, RCS1021, RCS1048, RCS1054, RCS1090, RCS1118, RCS1136
+#pragma warning disable CS0168, CS0219, RCS1004, RCS1016, RCS1021, RCS1048, RCS1054, RCS1090, RCS1118, RCS1124, RCS1136, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -127,10 +127,143 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
         }
 
+        public static async Task DoAsync()
+        {
+            return await DoAsync().ConfigureAwait(false);
+        }
+
         public static async Task<object> GetValueAsync()
         {
             object value = await GetAsync().ConfigureAwait(false);
             return value;
+        }
+
+        public static class RemoveRedundantAsyncAwait2
+        {
+            public static Task<object> GetAsync() => Task.FromResult(default(object));
+
+            public static Task<object> GetAsync(object parameter) => Task.FromResult(parameter);
+
+            public static async Task<object> MethodWitBodyAsync()
+            {
+                return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+
+                async Task<object> LocalWithBodyAsync()
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                }
+
+                async Task<object> LocalWithExpressionBodyAsync() => await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+            }
+
+            public static async Task<object> MethodWithExpressionBodyAsync() => await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+
+            public static async Task<object> Get2Async()
+            {
+                return await GetAsync(await GetAsync().ConfigureAwait(false));
+
+                async Task<object> LocalAsync(object parameter)
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false));
+                }
+            }
+
+            private static void Foo()
+            {
+                Func<object, Task<object>> func = async f =>
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                };
+
+                Func<object, Task<object>> func2 = async f => await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+
+                Func<object, Task<object>> func3 = async (f) =>
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                };
+
+                Func<object, Task<object>> func4 = async (f) => await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+
+                Func<object, Task<object>> func5 = async delegate (object f)
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                };
+            }
+
+            public static async Task<object> IfAndReturnAsync()
+            {
+                bool f = false;
+
+                if (f)
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                }
+                else if (f)
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                }
+
+                return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+            }
+
+            public static async Task<object> IfElseAsync()
+            {
+                bool f = false;
+
+                if (f)
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                }
+                else
+                {
+                    return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                }
+            }
+
+            public static async Task<object> SwitchAndReturnAsync()
+            {
+                bool f = false;
+
+                switch (f)
+                {
+                    case true:
+                        {
+                            return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                        }
+                    case false:
+                        {
+                            return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                        }
+                }
+
+                return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+            }
+
+            public static async Task<object> SwitchWithDefaultAsync()
+            {
+                bool f = false;
+
+                switch (f)
+                {
+                    case true:
+                        {
+                            return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                        }
+                    case false:
+                        {
+                            return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                        }
+                    default:
+                        {
+                            return await GetAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+                        }
+                }
+            }
+
+            public static async Task DoAsync(object parameter)
+            {
+                return await DoAsync(await GetAsync().ConfigureAwait(false)).ConfigureAwait(false);
+            }
         }
     }
 }
