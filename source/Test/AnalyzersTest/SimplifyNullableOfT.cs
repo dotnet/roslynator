@@ -4,6 +4,11 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
+    /// <summary>
+    /// <see cref="Nullable{T}"/>
+    /// <see cref="System.Nullable{T}"/>
+    /// <see cref="global::System.Nullable{T}"/>
+    /// </summary>
     public static class SimplifyNullableOfT
     {
         public static void Foo()
@@ -12,7 +17,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             Nullable<System.Int32> y = null;
 
-            System.Nullable<System.Int32> y = null;
+            System.Nullable<System.Int32> z = null;
         }
     }
 }

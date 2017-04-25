@@ -18,7 +18,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             var genericName = (GenericNameSyntax)context.Node;
 
-            if (!genericName.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.UsingDirective))
+            if (!genericName.IsParentKind(
+                SyntaxKind.QualifiedName,
+                SyntaxKind.UsingDirective,
+                SyntaxKind.NameMemberCref))
             {
                 TypeArgumentListSyntax typeArgumentList = genericName.TypeArgumentList;
 
