@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
@@ -51,9 +52,16 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
         public override SeparatedSyntaxList<ParameterSyntax> GetContainingList(ParameterSyntax node)
         {
-            var parameterList = (ParameterListSyntax)node.Parent;
+            SyntaxNode parent = node.Parent;
 
-            return parameterList.Parameters;
+            if (parent.IsKind(SyntaxKind.ParameterList))
+            {
+                return ((ParameterListSyntax)parent).Parameters;
+            }
+            else
+            {
+                return ((BracketedParameterListSyntax)parent).Parameters;
+            }
         }
 
         public override string GetName(ParameterSyntax node)

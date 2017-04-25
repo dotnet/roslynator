@@ -35,6 +35,12 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
         }
 
+        /// <summary>
+        /// x
+        /// </summary>
+        /// <returns></returns>
+        public string this[int index] => "";
+
         private class InheritDoc
         {
             /// <inheritdoc />
