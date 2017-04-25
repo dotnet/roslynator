@@ -1109,6 +1109,20 @@ namespace Roslynator.CSharp
             return default(SyntaxTrivia);
         }
 
+        public static SyntaxTrivia GetDocumentationCommentTrivia(this MemberDeclarationSyntax member)
+        {
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            foreach (SyntaxTrivia trivia in member.GetLeadingTrivia())
+            {
+                if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+                    return trivia;
+            }
+
+            return default(SyntaxTrivia);
+        }
+
         public static DocumentationCommentTriviaSyntax GetSingleLineDocumentationComment(this MemberDeclarationSyntax member)
         {
             if (member == null)
@@ -1127,6 +1141,24 @@ namespace Roslynator.CSharp
             return null;
         }
 
+        public static DocumentationCommentTriviaSyntax GetDocumentationComment(this MemberDeclarationSyntax member)
+        {
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            SyntaxTrivia trivia = member.GetDocumentationCommentTrivia();
+
+            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+            {
+                var comment = trivia.GetStructure() as DocumentationCommentTriviaSyntax;
+
+                if (comment?.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia) == true)
+                    return comment;
+            }
+
+            return null;
+        }
+
         public static bool HasSingleLineDocumentationComment(this MemberDeclarationSyntax member)
         {
             if (member == null)
@@ -1135,6 +1167,16 @@ namespace Roslynator.CSharp
             return member
                 .GetLeadingTrivia()
                 .Any(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia));
+        }
+
+        public static bool HasDocumentationComment(this MemberDeclarationSyntax member)
+        {
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            return member
+                .GetLeadingTrivia()
+                .Any(f => f.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia));
         }
 
         public static MemberDeclarationSyntax RemoveMemberAt(this MemberDeclarationSyntax containingMember, int index)
@@ -2548,6 +2590,24 @@ namespace Roslynator.CSharp
                 && IsKind(node.Parent, kind1, kind2, kind3);
         }
 
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        {
+            return node != null
+                && IsKind(node.Parent, kind1, kind2, kind3, kind4);
+        }
+
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        {
+            return node != null
+                && IsKind(node.Parent, kind1, kind2, kind3, kind4, kind5);
+        }
+
+        public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+        {
+            return node != null
+                && IsKind(node.Parent, kind1, kind2, kind3, kind4, kind5, kind6);
+        }
+
         public static bool IsSingleLine(
             this SyntaxNode node,
             bool includeExteriorTrivia = true,
@@ -2855,6 +2915,22 @@ namespace Roslynator.CSharp
         public static TNode RemoveWhitespaceOrEndOfLineTrivia<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
         {
             return WhitespaceOrEndOfLineTriviaRemover.RemoveWhitespaceOrEndOfLineTrivia(node, span);
+        }
+
+        internal static bool IsPartOfDocumentationComment(this SyntaxNode node)
+        {
+            while (node != null)
+            {
+                if (node.IsStructuredTrivia
+                    && node.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia, SyntaxKind.MultiLineDocumentationCommentTrivia))
+                {
+                    return true;
+                }
+
+                node = node.Parent;
+            }
+
+            return false;
         }
         #endregion SyntaxNode
 
