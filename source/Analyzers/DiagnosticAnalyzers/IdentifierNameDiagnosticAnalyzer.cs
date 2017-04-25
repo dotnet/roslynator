@@ -23,10 +23,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(
                 f => UsePredefinedTypeRefactoring.AnalyzeIdentifierName(f),
                 SyntaxKind.IdentifierName);
+
+            context.RegisterSyntaxNodeAction(
+                f => UsePredefinedTypeRefactoring.AnalyzeXmlCrefAttribute(f),
+                SyntaxKind.XmlCrefAttribute);
         }
     }
 }

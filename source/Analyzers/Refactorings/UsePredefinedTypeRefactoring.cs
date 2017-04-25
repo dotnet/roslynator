@@ -19,7 +19,8 @@ namespace Roslynator.CSharp.Refactorings
                 && !identifierName.IsParentKind(
                     SyntaxKind.SimpleMemberAccessExpression,
                     SyntaxKind.QualifiedName,
-                    SyntaxKind.UsingDirective))
+                    SyntaxKind.UsingDirective)
+                && !identifierName.IsPartOfDocumentationComment())
             {
                 var typeSymbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) as ITypeSymbol;
 
@@ -31,6 +32,66 @@ namespace Roslynator.CSharp.Refactorings
                         ReportDiagnostic(context, identifierName);
                 }
             }
+        }
+
+        internal static void AnalyzeXmlCrefAttribute(SyntaxNodeAnalysisContext context)
+        {
+            var xmlCrefAttribute = (XmlCrefAttributeSyntax)context.Node;
+
+            CrefSyntax cref = xmlCrefAttribute.Cref;
+
+            switch (cref?.Kind())
+            {
+                case SyntaxKind.NameMemberCref:
+                    {
+                        var nameMemberCref = (NameMemberCrefSyntax)cref;
+
+                        TypeSyntax name = nameMemberCref.Name;
+
+                        if (name?.IsKind(SyntaxKind.PredefinedType) == false
+                            && IsFixable(context, name))
+                        {
+                            ReportDiagnostic(context, cref);
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.QualifiedCref:
+                    {
+                        var qualifiedCref = (QualifiedCrefSyntax)cref;
+
+                        MemberCrefSyntax memberCref = qualifiedCref.Member;
+
+                        if (memberCref?.IsKind(SyntaxKind.NameMemberCref) == true)
+                        {
+                            var nameMemberCref = (NameMemberCrefSyntax)memberCref;
+
+                            TypeSyntax name = nameMemberCref.Name;
+
+                            if (name != null
+                                && IsFixable(context, name))
+                            {
+                                ReportDiagnostic(context, cref);
+                            }
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        private static bool IsFixable(SyntaxNodeAnalysisContext context, TypeSyntax name)
+        {
+            var typeSymbol = context.SemanticModel.GetSymbol(name, context.CancellationToken) as ITypeSymbol;
+
+            if (typeSymbol?.SupportsPredefinedType() == true)
+            {
+                IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(name, context.CancellationToken);
+
+                return aliasSymbol == null;
+            }
+
+            return false;
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context, QualifiedNameSyntax qualifiedName)
@@ -69,9 +130,9 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.UsePredefinedType, expression);
+            context.ReportDiagnostic(DiagnosticDescriptors.UsePredefinedType, node);
         }
 
         public static Task<Document> RefactorAsync(
@@ -80,11 +141,23 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TypeSyntax newType = typeSymbol.ToTypeSyntax()
+            SyntaxNode newNode = GetNewNode(node, typeSymbol.ToTypeSyntax())
                 .WithTriviaFrom(node)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(node, newType, cancellationToken);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+        }
+
+        private static SyntaxNode GetNewNode(SyntaxNode node, TypeSyntax type)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.NameMemberCref:
+                case SyntaxKind.QualifiedCref:
+                    return SyntaxFactory.NameMemberCref(type);
+                default:
+                    return type;
+            }
         }
     }
 }

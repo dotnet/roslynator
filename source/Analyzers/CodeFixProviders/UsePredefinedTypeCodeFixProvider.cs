@@ -29,7 +29,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (node?.IsKind(
                     SyntaxKind.QualifiedName,
                     SyntaxKind.IdentifierName,
-                    SyntaxKind.SimpleMemberAccessExpression) == true)
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.NameMemberCref,
+                    SyntaxKind.QualifiedCref) == true)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
