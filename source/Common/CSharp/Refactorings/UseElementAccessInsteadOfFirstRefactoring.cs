@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -14,20 +15,18 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class UseElementAccessInsteadOfFirstRefactoring
     {
-        public static bool CanRefactor(InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static bool CanRefactor(MemberInvocationExpression memberInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ExpressionSyntax memberAccessExpression = memberAccess.Expression;
-
-            if (memberAccessExpression?.IsMissing == false
+            if (memberInvocation.Expression?.IsMissing == false
                 && semanticModel
-                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
+                    .GetExtensionMethodInfo(memberInvocation.InvocationExpression, ExtensionMethodKind.Reduced, cancellationToken)
                     .MethodInfo
                     .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
-                    && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, typeSymbol, semanticModel)))
+                    && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, typeSymbol, semanticModel)))
                 {
                     return true;
                 }

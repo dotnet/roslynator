@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -86,14 +87,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     break;
                                 }
                             case "First":
-                                {
-                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-
-                                    if (UseElementAccessInsteadOfFirstRefactoring.CanRefactor(invocation, memberAccess, context.SemanticModel, context.CancellationToken))
-                                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberAccess.Name);
-
-                                    break;
-                                }
                             case "FirstOrDefault":
                             case "Last":
                             case "LastOrDefault":
@@ -110,13 +103,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     {
                         switch (methodName)
                         {
-                            case "ElementAt":
-                                {
-                                    if (UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(invocation, argumentList, memberAccess, context.SemanticModel, context.CancellationToken))
-                                        context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, memberAccess.Name);
-
-                                    break;
-                                }
                             case "FirstOrDefault":
                                 {
                                     CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.Analyze(context, invocation, memberAccess);
@@ -148,6 +134,55 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             RemoveRedundantStringToCharArrayCallRefactoring.Analyze(context, invocation);
 
             CombineEnumerableWhereAndAnyRefactoring.AnalyzeInvocationExpression(context);
+
+            if (!invocation.ContainsDiagnostics)
+            {
+                MemberInvocationExpression memberInvocation;
+                if (MemberInvocationExpression.TryCreate(invocation, out memberInvocation))
+                {
+                    string methodName = memberInvocation.Name.Identifier.ValueText;
+
+                    switch (memberInvocation.ArgumentList.Arguments.Count)
+                    {
+                        case 0:
+                            {
+                                switch (methodName)
+                                {
+                                    case "First":
+                                        {
+                                            if (!memberInvocation.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                                && UseElementAccessInsteadOfFirstRefactoring.CanRefactor(memberInvocation, context.SemanticModel, context.CancellationToken))
+                                            {
+                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberInvocation.Name);
+                                            }
+
+                                            break;
+                                        }
+                                }
+
+                                break;
+                            }
+                        case 1:
+                            {
+                                switch (methodName)
+                                {
+                                    case "ElementAt":
+                                        {
+                                            if (!memberInvocation.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                                && UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(memberInvocation, context.SemanticModel, context.CancellationToken))
+                                            {
+                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, memberInvocation.Name);
+                                            }
+
+                                            break;
+                                        }
+                                }
+
+                                break;
+                            }
+                    }
+                }
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Syntax
 {
-    internal struct MemberInvocationExpression : IEquatable<MemberInvocationExpression>
+    public struct MemberInvocationExpression : IEquatable<MemberInvocationExpression>
     {
         public MemberInvocationExpression(ExpressionSyntax expression, SimpleNameSyntax name, ArgumentListSyntax argumentList)
         {
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
-        public static bool TryCreateCore(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
+        internal static bool TryCreateCore(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
         {
             ExpressionSyntax expression = invocationExpression.Expression;
 

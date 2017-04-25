@@ -2,8 +2,8 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -11,66 +11,59 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            ExpressionSyntax expression = invocation.Expression;
-
-            if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+            MemberInvocationExpression memberInvocation;
+            if (MemberInvocationExpression.TryCreate(invocation, out memberInvocation)
+                && memberInvocation.ArgumentList != null)
             {
-                ArgumentListSyntax argumentList = invocation.ArgumentList;
-
-                if (argumentList != null)
+                switch (memberInvocation.Name?.Identifier.ValueText)
                 {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+                    case "First":
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    switch (memberAccess.Name?.Identifier.ValueText)
-                    {
-                        case "First":
+                            if (memberInvocation.ArgumentList.Arguments.Count == 0
+                                && UseElementAccessInsteadOfFirstRefactoring.CanRefactor(memberInvocation, semanticModel, context.CancellationToken))
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                context.RegisterRefactoring(
+                                    "Use [] instead of calling 'First'",
+                                    cancellationToken => UseElementAccessInsteadOfFirstRefactoring.RefactorAsync(context.Document, invocation, cancellationToken));
+                            }
 
-                                if (argumentList.Arguments.Count == 0
-                                    && UseElementAccessInsteadOfFirstRefactoring.CanRefactor(invocation, memberAccess, semanticModel, context.CancellationToken))
+                            break;
+                        }
+                    case "Last":
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (memberInvocation.ArgumentList.Arguments.Count == 0
+                                && UseElementAccessInsteadOfLastRefactoring.CanRefactor(memberInvocation, semanticModel, context.CancellationToken))
+                            {
+                                string propertyName = UseElementAccessInsteadOfLastRefactoring.GetCountOrLengthPropertyName(memberInvocation.Expression, semanticModel, context.CancellationToken);
+
+                                if (propertyName != null)
                                 {
                                     context.RegisterRefactoring(
-                                        "Use [] instead of calling 'First'",
-                                        cancellationToken => UseElementAccessInsteadOfFirstRefactoring.RefactorAsync(context.Document, invocation, cancellationToken));
+                                        "Use [] instead of calling 'Last'",
+                                        cancellationToken => UseElementAccessInsteadOfLastRefactoring.RefactorAsync(context.Document, invocation, propertyName, cancellationToken));
                                 }
-
-                                break;
                             }
-                        case "Last":
+
+                            break;
+                        }
+                    case "ElementAt":
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (memberInvocation.ArgumentList.Arguments.Count == 1
+                                && UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(memberInvocation, semanticModel, context.CancellationToken))
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                if (argumentList.Arguments.Count == 0
-                                    && UseElementAccessInsteadOfLastRefactoring.CanRefactor(invocation, memberAccess, semanticModel, context.CancellationToken))
-                                {
-                                    string propertyName = UseElementAccessInsteadOfLastRefactoring.GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, context.CancellationToken);
-
-                                    if (propertyName != null)
-                                    {
-                                        context.RegisterRefactoring(
-                                            "Use [] instead of calling 'Last'",
-                                            cancellationToken => UseElementAccessInsteadOfLastRefactoring.RefactorAsync(context.Document, invocation, propertyName, cancellationToken));
-                                    }
-                                }
-
-                                break;
+                                context.RegisterRefactoring(
+                                    "Use [] instead of calling 'ElementAt'",
+                                    cancellationToken => UseElementAccessInsteadOfElementAtRefactoring.RefactorAsync(context.Document, invocation, cancellationToken));
                             }
-                        case "ElementAt":
-                            {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                if (argumentList.Arguments.Count == 1
-                                    && UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(invocation, argumentList, memberAccess, semanticModel, context.CancellationToken))
-                                {
-                                    context.RegisterRefactoring(
-                                        "Use [] instead of calling 'ElementAt'",
-                                        cancellationToken => UseElementAccessInsteadOfElementAtRefactoring.RefactorAsync(context.Document, invocation, cancellationToken));
-                                }
-
-                                break;
-                            }
-                    }
+                            break;
+                        }
                 }
             }
         }
