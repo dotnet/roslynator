@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -16,31 +17,25 @@ namespace Roslynator.CSharp.Refactorings
     public static class UseElementAccessInsteadOfElementAtRefactoring
     {
         public static bool CanRefactor(
-            InvocationExpressionSyntax invocation,
-            ArgumentListSyntax argumentList,
-            MemberAccessExpressionSyntax memberAccess,
+            MemberInvocationExpression memberInvocation,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax argumentExpression = argumentList.Arguments[0].Expression;
+            ExpressionSyntax argumentExpression = memberInvocation.ArgumentList.Arguments[0].Expression;
 
-            if (argumentExpression?.IsMissing == false)
-            {
-                ExpressionSyntax memberAccessExpression = memberAccess.Expression;
-
-                if (memberAccessExpression?.IsMissing == false
+            if (argumentExpression?.IsMissing == false
+                && memberInvocation.Expression?.IsMissing == false
                     && semanticModel
-                        .GetExtensionMethodInfo(invocation, cancellationToken)
+                        .GetExtensionMethodInfo(memberInvocation.InvocationExpression, cancellationToken)
                         .MethodInfo
                         .IsLinqElementAt(allowImmutableArrayExtension: true))
-                {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken);
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
 
-                    if (typeSymbol?.IsErrorType() == false
-                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(invocation, argumentExpression, typeSymbol, semanticModel)))
-                    {
-                        return true;
-                    }
+                if (typeSymbol?.IsErrorType() == false
+                    && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, argumentExpression, typeSymbol, semanticModel)))
+                {
+                    return true;
                 }
             }
 

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-#pragma warning disable RCS1118, RCS1176
+#pragma warning disable RCS1097, RCS1118, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class UseElementAccessInsteadOfFirst
     {
-        public static void SomeMethod()
+        public static void Foo()
         {
             var items = new List<int>() { 0, 1, 2 };
 
@@ -24,8 +24,22 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             string s = "";
             char ch = s.First();
+        }
 
-            // n
+        public static void Foo2()
+        {
+            var items = new List<int>() { 0, 1, 2 };
+
+            int first = items.ToList().First();
+
+            var a = new int[] { 0 };
+            first = a.ToArray().First();
+
+            ImmutableArray<int> ia = ImmutableArray.Create(1);
+            first = ia.ToImmutableArray().First();
+
+            string s = "";
+            char ch = s.ToString().First();
 
             var dic = new Dictionary<string, string>();
             KeyValuePair<string, string> kvp = dic.First();
