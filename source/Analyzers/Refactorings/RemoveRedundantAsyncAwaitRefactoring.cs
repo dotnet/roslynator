@@ -93,6 +93,7 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxToken asyncKeyword = lambda.AsyncKeyword;
 
                     if (asyncKeyword.IsKind(SyntaxKind.AsyncKeyword)
+                        && !ContainsAwaitExpression(awaitExpression)
                         && !lambda.SpanContainsDirectives())
                     {
                         ReportDiagnostic(context, asyncKeyword, awaitExpression);
@@ -128,12 +129,10 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var returnStatement = (ReturnStatementSyntax)statement;
 
-                            ExpressionSyntax expression = returnStatement.Expression;
+                            AwaitExpressionSyntax awaitExpression = GetAwaitExpressionOrDefault(returnStatement);
 
-                            if (expression?.IsKind(SyntaxKind.AwaitExpression) == true)
+                            if (awaitExpression != null)
                             {
-                                var awaitExpression = (AwaitExpressionSyntax)expression;
-
                                 HashSet<AwaitExpressionSyntax> awaitExpressions = CollectAwaitExpressions(body, TextSpan.FromBounds(body.SpanStart, returnStatement.SpanStart));
 
                                 if (awaitExpressions == null)
@@ -302,13 +301,28 @@ namespace Roslynator.CSharp.Refactorings
                         StatementSyntax last = statements.Last();
 
                         if (last.IsKind(SyntaxKind.ReturnStatement))
-                            return ((ReturnStatementSyntax)last).Expression as AwaitExpressionSyntax;
+                            return GetAwaitExpressionOrDefault((ReturnStatementSyntax)last);
                     }
                 }
                 else if (kind == SyntaxKind.ReturnStatement)
                 {
-                    return ((ReturnStatementSyntax)statement).Expression as AwaitExpressionSyntax;
+                    return GetAwaitExpressionOrDefault((ReturnStatementSyntax)statement);
                 }
+            }
+
+            return null;
+        }
+
+        private static AwaitExpressionSyntax GetAwaitExpressionOrDefault(ReturnStatementSyntax returnStatement)
+        {
+            ExpressionSyntax expression = returnStatement.Expression;
+
+            if (expression?.IsKind(SyntaxKind.AwaitExpression) == true)
+            {
+                var awaitExpression = (AwaitExpressionSyntax)expression;
+
+                if (!ContainsAwaitExpression(awaitExpression))
+                    return awaitExpression;
             }
 
             return null;
@@ -325,10 +339,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax expression = expressionBody.Expression;
 
-                if (expression?.IsKind(SyntaxKind.AwaitExpression) == true
-                    && !node.SpanContainsDirectives())
+                if (expression?.IsKind(SyntaxKind.AwaitExpression) == true)
                 {
-                    ReportDiagnostic(context, asyncKeyword, (AwaitExpressionSyntax)expression);
+                    var awaitExpression = (AwaitExpressionSyntax)expression;
+
+                    if (!ContainsAwaitExpression(awaitExpression)
+                        && !node.SpanContainsDirectives())
+                    {
+                        ReportDiagnostic(context, asyncKeyword, awaitExpression);
+                    }
                 }
             }
         }
@@ -381,6 +400,13 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        private static bool ContainsAwaitExpression(AwaitExpressionSyntax awaitExpression)
+        {
+            return awaitExpression
+                .DescendantNodes(f => !f.IsNestedMethod())
+                .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
+        }
+
         private static HashSet<AwaitExpressionSyntax> CollectAwaitExpressions(BlockSyntax body, TextSpan span)
         {
             HashSet<AwaitExpressionSyntax> awaitExpressions = null;
@@ -388,26 +414,17 @@ namespace Roslynator.CSharp.Refactorings
             foreach (SyntaxNode node in body.DescendantNodes(span, f => !f.IsNestedMethod()))
             {
                 if (node.IsKind(SyntaxKind.AwaitExpression))
-                    (awaitExpressions ?? (awaitExpressions = new HashSet<AwaitExpressionSyntax>())).Add((AwaitExpressionSyntax)node);
+                {
+                    var awaitExpression = (AwaitExpressionSyntax)node;
+
+                    if (ContainsAwaitExpression(awaitExpression))
+                        return null;
+
+                    (awaitExpressions ?? (awaitExpressions = new HashSet<AwaitExpressionSyntax>())).Add(awaitExpression);
+                }
             }
 
             return awaitExpressions;
-        }
-
-        private static bool ContainsOtherAwait(BlockSyntax body, SyntaxList<StatementSyntax> statements, StatementSyntax statement)
-        {
-            int index = statements.IndexOf(statement);
-
-            if (index > 0)
-            {
-                TextSpan span = TextSpan.FromBounds(body.SpanStart, statements[index - 1].Span.End);
-
-                return body
-                    .DescendantNodes(span, f => !f.IsNestedMethod())
-                    .Any(f => f.IsKind(SyntaxKind.AwaitExpression));
-            }
-
-            return false;
         }
 
         public static async Task<Document> RefactorAsync(
