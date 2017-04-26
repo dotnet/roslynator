@@ -45,6 +45,12 @@ namespace Roslynator.CSharp.Analyzers.Test
                 get { return _items[index]; }
                 set { _items[index] = value; }
             }
+
+            public virtual string this[int index, int index2 = 0]
+            {
+                get { return _items[index]; }
+                set { _items[index] = value; }
+            }
         }
 
         public class Derived : Base
@@ -75,14 +81,20 @@ namespace Roslynator.CSharp.Analyzers.Test
                 get { return base.ReadOnlyProperty; }
             }
 
-            public string MethodWithArray_() => MethodWithArray(1, 2, 3);
-
-            public string MethodWithParams2_() => MethodWithParams2(1, 2, 3);
-
             public override string this[int index]
             {
                 get { return base[index]; }
                 set { base[index] = value; }
+            }
+
+            public string MethodWithArray_() => MethodWithArray(1, 2, 3);
+
+            public string MethodWithParams2_() => MethodWithParams2(1, 2, 3);
+
+            public override string this[int index, int index2 = 1]
+            {
+                get => base[index, index2];
+                set => base[index, index2] = value;
             }
         }
 
