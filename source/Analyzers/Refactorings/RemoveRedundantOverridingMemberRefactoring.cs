@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
                             ISymbol symbol = context.SemanticModel.GetSymbol(memberInvocation.Name, context.CancellationToken);
 
                             if (overriddenMethod.Equals(symbol)
-                                && CheckDefaultValues(methodSymbol, overriddenMethod))
+                                && CheckParameters(methodDeclaration.ParameterList, memberInvocation.ArgumentList, context.SemanticModel, context.CancellationToken)
+                                && CheckDefaultValues(methodSymbol.Parameters, overriddenMethod.Parameters))
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.RemoveRedundantOverridingMember,
@@ -55,12 +56,72 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool CheckDefaultValues(IMethodSymbol methodSymbol, IMethodSymbol baseMethodSymbol)
+        private static bool CheckParameters(
+            BaseParameterListSyntax parameterList,
+            BaseArgumentListSyntax argumentList,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            ImmutableArray<IParameterSymbol> baseParameters = baseMethodSymbol.Parameters;
+            if (parameters.Count != arguments.Count)
+                return false;
 
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                if (semanticModel
+                    .GetDeclaredSymbol(parameters[i], cancellationToken)?
+                    .Equals(GetParameterSymbol(arguments[i].Expression, semanticModel, cancellationToken)) != true)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static IParameterSymbol GetParameterSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (expression != null)
+            {
+                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                if (symbol?.IsParameter() == true)
+                {
+                    var parameterSymbol = (IParameterSymbol)symbol;
+
+                    ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
+
+                    if (containingSymbol?.IsMethod() == true)
+                    {
+                        var methodSymbol = (IMethodSymbol)containingSymbol;
+
+                        ISymbol associatedSymbol = methodSymbol.AssociatedSymbol;
+
+                        if (associatedSymbol?.IsKind(SymbolKind.Property) == true)
+                        {
+                            var propertySymbol = (IPropertySymbol)associatedSymbol;
+
+                            if (propertySymbol.IsIndexer)
+                            {
+                                ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+
+                                if (parameters.Length > parameterSymbol.Ordinal)
+                                    return propertySymbol.Parameters[parameterSymbol.Ordinal];
+                            }
+                        }
+                    }
+
+                    return parameterSymbol;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool CheckDefaultValues(ImmutableArray<IParameterSymbol> parameters, ImmutableArray<IParameterSymbol> baseParameters)
+        {
             for (int i = 0; i < parameters.Length; i++)
             {
                 if (parameters[i].HasExplicitDefaultValue)
@@ -245,7 +306,7 @@ namespace Roslynator.CSharp.Refactorings
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             if (!indexerDeclaration.ContainsDirectives
-                && indexerDeclaration.ContainsDiagnostics)
+                && !indexerDeclaration.ContainsDiagnostics)
             {
                 SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
 
@@ -294,8 +355,12 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                                        if (overriddenProperty.Equals(symbol))
+                                        if (overriddenProperty.Equals(symbol)
+                                            && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                                            && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters))
+                                        {
                                             return true;
+                                        }
                                     }
                                 }
                             }
@@ -338,8 +403,12 @@ namespace Roslynator.CSharp.Refactorings
                                                 {
                                                     ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                                                    if (overriddenProperty.Equals(symbol))
+                                                    if (overriddenProperty.Equals(symbol)
+                                                        && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                                                        && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters))
+                                                    {
                                                         return true;
+                                                    }
                                                 }
                                             }
                                         }
