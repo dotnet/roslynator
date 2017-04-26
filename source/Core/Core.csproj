@@ -56,6 +56,7 @@
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineTriviaRewriter.cs" />
     <Compile Include="CSharp\Syntax\EqualsToNullExpression.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
+    <Compile Include="CSharp\Syntax\SingleLocalDeclarationStatement.cs" />
     <Compile Include="DirectiveRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFormatter.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.cs" />
