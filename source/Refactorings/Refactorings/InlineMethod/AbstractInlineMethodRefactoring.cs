@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                         {
                             foreach (ParameterInfo parameterInfo in ParameterInfos)
                             {
-                                if (parameterInfo.ParameterSymbol.Equals(symbol))
+                                if (parameterInfo.ParameterSymbol.OriginalDefinition.Equals(symbol))
                                 {
                                     replacementMap.Add(identifierName, parameterInfo.Expression);
                                     break;
