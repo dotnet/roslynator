@@ -2,6 +2,7 @@
 // xxx
 
 using System;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// 
@@ -10,6 +11,9 @@ namespace Roslynator.CSharp.Analyzers.Test
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using static Math;
+    using static Regex;
+    using static System.Nullable;
 
     internal static class DeclareUsingDirectiveOnTopLevel
     {
