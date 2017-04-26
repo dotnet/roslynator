@@ -34,6 +34,9 @@ namespace Roslynator.CSharp.Analyzers.Test
             var entities = new Entity[]
             {
                 new Entity()
+                {
+                    Name = new string('a', 1)
+                }
             };
 
             var items = new List<string>()
