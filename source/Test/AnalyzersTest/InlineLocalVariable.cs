@@ -3,34 +3,55 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1118
+#pragma warning disable RCS1118, RCS1176, RCS1177, RCS1185
     public static class InlineLocalVariable
     {
-        private static void Foo()
+        private static void FooLocalDeclaration()
         {
             // ...
-            string s = "";
+            string i = "i";
 
-            string x = s;
+            string s = i;
 
-            // ...
-            const string s2 = "";
-
-            x = s2;
-
-            string s3 = "";
-            #region
-            x = s3;
-            #endregion
+            Expression<Func<object, bool>> e = f => false;
+            LambdaExpression l = e;
         }
 
-        private static void Foo2()
+        private static void LocalDeclaration2()
+        {
+            string i = "i";
+            string s = i;
+        }
+
+        private static void FooExpressionStatement()
         {
             string s = "";
-            string x = s;
+            LambdaExpression l = null;
+
+            // ...
+            const string i = "i";
+
+            s = i;
+
+            Expression<Func<object, bool>> e = f => false;
+            l = e;
+
+            string s2 = "";
+#if DEBUG
+            s = s2;
+#endif
+        }
+
+        private static void FooExpressionStatement2()
+        {
+            string s = null;
+
+            string i = "i";
+            s = i;
         }
 
         private static void FooForEach()
@@ -43,28 +64,35 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         private static bool FooSwitch()
         {
-            string x = "";
+            string i = "i";
 
-            switch (x)
+            switch (i)
             {
-                case "a":
+                case "i":
                     return true;
-                case "b":
+                case "i2":
                     return false;
             }
 
             return false;
         }
 
-        private static void Foo3()
+        private static string FooReturn()
         {
-            string x = null;
+            string i = "i";
 
-            string s2 = "";
-            x = s2;
+            return i;
         }
 
-        private static void Foo4()
+        public static LambdaExpression FooReturn2()
+        {
+            Expression<Func<object, bool>> e = f => false;
+            return e;
+        }
+
+        // n
+
+        private static void Foo()
         {
             string s = "";
             string x = s;
@@ -72,7 +100,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             string x2 = s;
         }
 
-        private static void Foo44()
+        private static void Foo_()
         {
             IEnumerable<int> items = Enumerable.Range(0, 10);
             foreach (int item in items)
@@ -82,7 +110,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             items = null;
         }
 
-        private static void Foo5()
+        private static void Foo__()
         {
             string x = null;
 
@@ -91,5 +119,4 @@ namespace Roslynator.CSharp.Analyzers.Test
             x = s2;
         }
     }
-#pragma warning restore RCS1118
 }
