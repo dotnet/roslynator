@@ -39,7 +39,9 @@ namespace Roslynator.CSharp
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            InitializerExpressionSyntax newInitializer = ToSingleLine(initializer);
+            InitializerExpressionSyntax newInitializer = initializer
+                .ReplaceWhitespaceOrEndOfLineTrivia(ElasticSpace, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End))
+                .WithFormatterAnnotation();
 
             SyntaxNode parent = initializer.Parent;
             SyntaxNode newParent = parent;

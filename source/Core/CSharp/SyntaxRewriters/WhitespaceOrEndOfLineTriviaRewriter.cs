@@ -7,14 +7,18 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.SyntaxRewriters
 {
-    internal class WhitespaceOrEndOfLineTriviaRemover : CSharpSyntaxRewriter
+    internal class WhitespaceOrEndOfLineTriviaRewriter : CSharpSyntaxRewriter
     {
-        private static readonly WhitespaceOrEndOfLineTriviaRemover _instance = new WhitespaceOrEndOfLineTriviaRemover();
-
+        private readonly SyntaxTrivia _replacementTrivia;
         private readonly TextSpan? _span;
 
-        private WhitespaceOrEndOfLineTriviaRemover(TextSpan? span = null)
+        private static readonly SyntaxTrivia _defaultReplacementTrivia = CSharpFactory.EmptyWhitespace();
+
+        public static WhitespaceOrEndOfLineTriviaRewriter Default { get; } = new WhitespaceOrEndOfLineTriviaRewriter(_defaultReplacementTrivia);
+
+        private WhitespaceOrEndOfLineTriviaRewriter(SyntaxTrivia replacementTrivia, TextSpan? span = null)
         {
+            _replacementTrivia = replacementTrivia;
             _span = span;
         }
 
@@ -25,14 +29,24 @@ namespace Roslynator.CSharp.SyntaxRewriters
 
             if (span == null)
             {
-                return (TNode)_instance.Visit(node);
+                return (TNode)Default.Visit(node);
             }
             else
             {
-                var remover = new WhitespaceOrEndOfLineTriviaRemover(span);
+                var remover = new WhitespaceOrEndOfLineTriviaRewriter(_defaultReplacementTrivia, span);
 
                 return (TNode)remover.Visit(node);
             }
+        }
+
+        public static TNode ReplaceWhitespaceOrEndOfLineTrivia<TNode>(TNode node, SyntaxTrivia replacementTrivia, TextSpan? span = null) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            var rewriter = new WhitespaceOrEndOfLineTriviaRewriter(replacementTrivia, span);
+
+            return (TNode)rewriter.Visit(node);
         }
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
@@ -40,7 +54,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
             if (trivia.IsWhitespaceOrEndOfLineTrivia()
                 && (_span == null || _span.Value.Contains(trivia.Span)))
             {
-                return CSharpFactory.EmptyWhitespace();
+                return _replacementTrivia;
             }
             else
             {

@@ -2914,7 +2914,12 @@ namespace Roslynator.CSharp
 
         public static TNode RemoveWhitespaceOrEndOfLineTrivia<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
         {
-            return WhitespaceOrEndOfLineTriviaRemover.RemoveWhitespaceOrEndOfLineTrivia(node, span);
+            return WhitespaceOrEndOfLineTriviaRewriter.RemoveWhitespaceOrEndOfLineTrivia(node, span);
+        }
+
+        public static TNode ReplaceWhitespaceOrEndOfLineTrivia<TNode>(this TNode node, SyntaxTrivia replacementTrivia, TextSpan? span = null) where TNode : SyntaxNode
+        {
+            return WhitespaceOrEndOfLineTriviaRewriter.ReplaceWhitespaceOrEndOfLineTrivia(node, replacementTrivia, span);
         }
 
         internal static bool IsPartOfDocumentationComment(this SyntaxNode node)
