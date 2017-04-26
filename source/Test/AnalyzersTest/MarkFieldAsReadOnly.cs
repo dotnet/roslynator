@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         public partial class Foo
         {
             private static string _sf;
-            private string _f;
+            private int _f;
             private string _f2, _f3;
             private static string _staticAssignedInInstanceConstructor;
             private SpinLock _spinLock;
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public Foo()
             {
-                _f = null;
+                _f = 0;
                 _f2 = null;
                 _spinLock = new SpinLock();
                 _staticAssignedInInstanceConstructor = null;
