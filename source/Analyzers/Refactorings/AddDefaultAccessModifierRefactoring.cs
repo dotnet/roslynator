@@ -10,8 +10,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Comparers;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -211,48 +211,128 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            MemberDeclarationSyntax memberDeclaration,
+            MemberDeclarationSyntax member,
             Accessibility accessibility,
             CancellationToken cancellationToken)
         {
-            SyntaxTokenList modifiers = memberDeclaration.GetModifiers();
+            MemberDeclarationSyntax newNode = GetNewMemberDeclaration(member, accessibility, ModifierComparer.Instance);
 
-            SyntaxTokenList newModifiers = GetNewModifiers(modifiers, accessibility);
-
-            MemberDeclarationSyntax newNode = memberDeclaration.WithModifiers(newModifiers);
-
-            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(member, newNode, cancellationToken);
         }
 
-        private static SyntaxTokenList GetNewModifiers(SyntaxTokenList modifiers, Accessibility accessibility)
+        private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax member, Accessibility accessibility, IModifierComparer comparer)
+        {
+            SyntaxKind modifierKind = GetFirstModifierKind(accessibility);
+
+            switch (member.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    {
+                        ClassDeclarationSyntax declaration = ((ClassDeclarationSyntax)member)
+                            .InsertModifier(modifierKind, comparer);
+
+                        if (accessibility == Accessibility.ProtectedOrInternal)
+                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
+
+                        return declaration;
+                    }
+                case SyntaxKind.ConstructorDeclaration:
+                    {
+                        return ((ConstructorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    {
+                        return ((ConversionOperatorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.DelegateDeclaration:
+                    {
+                        return ((DelegateDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.EnumDeclaration:
+                    {
+                        return ((EnumDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.EventDeclaration:
+                    {
+                        return ((EventDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.EventFieldDeclaration:
+                    {
+                        return ((EventFieldDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.FieldDeclaration:
+                    {
+                        return ((FieldDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.IndexerDeclaration:
+                    {
+                        return ((IndexerDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        InterfaceDeclarationSyntax declaration = ((InterfaceDeclarationSyntax)member)
+                            .InsertModifier(modifierKind, comparer);
+
+                        if (accessibility == Accessibility.ProtectedOrInternal)
+                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
+
+                        return declaration;
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        return ((MethodDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.OperatorDeclaration:
+                    {
+                        return ((OperatorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.PropertyDeclaration:
+                    {
+                        return ((PropertyDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
+                    }
+                case SyntaxKind.StructDeclaration:
+                    {
+                        StructDeclarationSyntax declaration = ((StructDeclarationSyntax)member)
+                            .InsertModifier(modifierKind, comparer);
+
+                        if (accessibility == Accessibility.ProtectedOrInternal)
+                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
+
+                        return declaration;
+                    }
+                default:
+                    {
+                        Debug.Assert(false, member.Kind().ToString());
+                        return member;
+                    }
+            }
+        }
+
+        private static SyntaxKind GetFirstModifierKind(Accessibility accessibility)
         {
             switch (accessibility)
             {
                 case Accessibility.Public:
                     {
-                        return modifiers.InsertModifier(SyntaxKind.PublicKeyword, ModifierComparer.Instance);
+                        return SyntaxKind.PublicKeyword;
                     }
                 case Accessibility.Internal:
                     {
-                        return modifiers.InsertModifier(SyntaxKind.InternalKeyword, ModifierComparer.Instance);
+                        return SyntaxKind.InternalKeyword;
                     }
                 case Accessibility.Protected:
-                    {
-                        return modifiers.InsertModifier(SyntaxKind.ProtectedKeyword, ModifierComparer.Instance);
-                    }
                 case Accessibility.ProtectedOrInternal:
                     {
-                        modifiers = modifiers.InsertModifier(SyntaxKind.ProtectedKeyword, ModifierComparer.Instance);
-                        return modifiers.InsertModifier(SyntaxKind.InternalKeyword, ModifierComparer.Instance);
+                        return SyntaxKind.ProtectedKeyword;
                     }
                 case Accessibility.Private:
                     {
-                        return modifiers.InsertModifier(SyntaxKind.PrivateKeyword, ModifierComparer.Instance);
+                        return SyntaxKind.PrivateKeyword;
                     }
                 default:
                     {
                         Debug.Assert(false, accessibility.ToString());
-                        return modifiers;
+                        return SyntaxKind.None;
                     }
             }
         }
