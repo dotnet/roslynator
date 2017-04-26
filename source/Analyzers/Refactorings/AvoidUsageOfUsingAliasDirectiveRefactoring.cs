@@ -13,7 +13,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, UsingDirectiveSyntax usingDirective)
         {
-            if (usingDirective.Alias != null)
+            if (usingDirective.Alias != null
+                && !usingDirective.ContainsDiagnostics
+                && !usingDirective.SpanContainsDirectives())
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective,

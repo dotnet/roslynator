@@ -1,137 +1,101 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 {
     public static class InlineAliasExpressionRefactoring
     {
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken)
         {
-            return InlineAliasExpressionSyntaxRewriter.VisitAsync(document, usingDirective, cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            IAliasSymbol aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken);
+
+            SyntaxNode parent = usingDirective.Parent;
+
+            Debug.Assert(parent.IsKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration), "");
+
+            SyntaxList<UsingDirectiveSyntax> usings = GetUsings(parent);
+
+            int index = usings.IndexOf(usingDirective);
+
+            List<IdentifierNameSyntax> names = CollectNames(parent, aliasSymbol, semanticModel, cancellationToken);
+
+            NameSyntax name = usingDirective.Name;
+
+            SyntaxNode newNode = parent.ReplaceNodes(names, (f, g) => name.WithTriviaFrom(f));
+
+            newNode = RemoveUsingDirective(newNode, index);
+
+            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private class InlineAliasExpressionSyntaxRewriter : CSharpSyntaxRewriter
+        private static List<IdentifierNameSyntax> CollectNames(
+            SyntaxNode node,
+            IAliasSymbol aliasSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            private readonly UsingDirectiveSyntax _usingDirective;
-            private readonly IdentifierNameSyntax[] _identifierNames;
+            var names = new List<IdentifierNameSyntax>();
 
-            public InlineAliasExpressionSyntaxRewriter(UsingDirectiveSyntax usingDirective, IdentifierNameSyntax[] identifierNames)
+            foreach (SyntaxNode descendant in node.DescendantNodes())
             {
-                if (usingDirective == null)
-                    throw new ArgumentNullException(nameof(usingDirective));
+                if (descendant.IsKind(SyntaxKind.IdentifierName))
+                {
+                    IAliasSymbol symbol = semanticModel.GetAliasInfo(descendant, cancellationToken);
 
-                if (identifierNames == null)
-                    throw new ArgumentNullException(nameof(identifierNames));
-
-                _usingDirective = usingDirective;
-                _identifierNames = identifierNames;
+                    if (symbol?.Equals(aliasSymbol) == true)
+                        names.Add((IdentifierNameSyntax)descendant);
+                }
             }
 
-            public static async Task<Document> VisitAsync(
-                Document document,
-                UsingDirectiveSyntax usingDirective,
-                CancellationToken cancellationToken = default(CancellationToken))
+            return names;
+        }
+
+        private static SyntaxList<UsingDirectiveSyntax> GetUsings(SyntaxNode node)
+        {
+            switch (node.Kind())
             {
-                if (document == null)
-                    throw new ArgumentNullException(nameof(document));
+                case SyntaxKind.CompilationUnit:
+                    return ((CompilationUnitSyntax)node).Usings;
+                case SyntaxKind.NamespaceDeclaration:
+                    return ((NamespaceDeclarationSyntax)node).Usings;
+            }
 
-                if (usingDirective == null)
-                    throw new ArgumentNullException(nameof(usingDirective));
+            return default(SyntaxList<UsingDirectiveSyntax>);
+        }
 
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
-
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                IAliasSymbol aliasSymbol = semanticModel.GetDeclaredSymbol(usingDirective, cancellationToken);
-
-                var identifierNames = new List<IdentifierNameSyntax>();
-
-                IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(aliasSymbol, document.Project.Solution, cancellationToken).ConfigureAwait(false);
-
-                foreach (TextSpan span in GetSymbolSpans(referencedSymbols, tree))
-                {
-                    IdentifierNameSyntax identifierName = root
-                       .FindNode(span, getInnermostNodeForTie: true)
-                       .FirstAncestorOrSelf<IdentifierNameSyntax>();
-
-                    if (identifierName != null
-                        && aliasSymbol == semanticModel.GetAliasInfo(identifierName, cancellationToken))
+        private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.CompilationUnit:
                     {
-                        identifierNames.Add(identifierName);
+                        var compilationUnit = (CompilationUnitSyntax)node;
+
+                        UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
+                        return compilationUnit.RemoveNode(usingDirective, RemoveHelper.GetRemoveOptions(usingDirective));
                     }
-                }
-
-                var rewriter = new InlineAliasExpressionSyntaxRewriter(usingDirective, identifierNames.ToArray());
-
-                SyntaxNode newRoot = rewriter.Visit(root);
-
-                usingDirective = (UsingDirectiveSyntax)newRoot.FindNode(usingDirective.Span);
-
-                newRoot = newRoot.RemoveNode(usingDirective, GetRemoveOptions(usingDirective));
-
-                return document.WithSyntaxRoot(newRoot);
-            }
-
-            internal static SyntaxRemoveOptions GetRemoveOptions(UsingDirectiveSyntax usingDirective)
-            {
-                SyntaxRemoveOptions removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives;
-
-                if (!usingDirective.HasLeadingTrivia)
-                    removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-
-                SyntaxTriviaList trailingTrivia = usingDirective.GetTrailingTrivia();
-
-                if (trailingTrivia.Count == 1
-                    && trailingTrivia.First().IsEndOfLineTrivia())
-                {
-                    removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-                }
-
-                return removeOptions;
-            }
-
-            private static IEnumerable<TextSpan> GetSymbolSpans(IEnumerable<ReferencedSymbol> referencedSymbols, SyntaxTree syntaxTree)
-            {
-                foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
-                {
-                    foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
+                case SyntaxKind.NamespaceDeclaration:
                     {
-                        if (!referenceLocation.IsImplicit)
-                        {
-                            Location location = referenceLocation.Location;
+                        var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
 
-                            if (location.SourceTree == syntaxTree)
-                                yield return location.SourceSpan;
-                        }
+                        UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
+                        return namespaceDeclaration.RemoveNode(usingDirective, RemoveHelper.GetRemoveOptions(usingDirective));
                     }
-                }
             }
 
-            public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
-            {
-                if (Array.IndexOf(_identifierNames, node) != -1)
-                {
-                    return _usingDirective.Name
-                       .WithTriviaFrom(node)
-                       .WithSimplifierAnnotation();
-                }
-
-                return base.VisitIdentifierName(node);
-            }
+            return node;
         }
     }
 }
