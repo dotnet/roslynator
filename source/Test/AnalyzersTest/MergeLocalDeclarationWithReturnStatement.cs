@@ -1,23 +1,27 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+
+#pragma warning disable RCS1016, RCS1176, RCS1118, RCS1124
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class MergeLocalDeclarationWithReturnStatement
     {
-        public static bool Foo()
+        private static string FooReturn()
         {
-            bool condition = false;
+            string i = "i";
 
-            return condition;
+            return i;
         }
 
-        public static bool Foo()
+        public static LambdaExpression FooReturn2()
         {
-            bool condition = false;
-
-            bool condition2 = false;
-
-            return condition;
+            Expression<Func<object, bool>> e = f => false;
+            return e;
         }
     }
 }
