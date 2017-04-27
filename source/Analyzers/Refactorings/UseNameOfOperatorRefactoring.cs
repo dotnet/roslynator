@@ -163,6 +163,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             InvocationExpressionSyntax newNode = CSharpFactory.NameOfExpression(literalExpression.Token.ValueText)
+                .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);

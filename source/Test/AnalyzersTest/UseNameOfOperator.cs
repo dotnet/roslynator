@@ -16,7 +16,11 @@ namespace Roslynator.CSharp.Analyzers.Test
             public Foo(object parameter)
             {
                 if (parameter == null)
-                    throw new ArgumentNullException("parameter", "message");
+                {
+                    throw new ArgumentNullException(
+                       "parameter",
+                       "message");
+                }
             }
 
             private static void FooMethod(object parameter)
