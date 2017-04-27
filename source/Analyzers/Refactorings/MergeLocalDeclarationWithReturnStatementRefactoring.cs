@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken)
@@ -116,20 +116,49 @@ namespace Roslynator.CSharp.Refactorings
 
             var returnStatement = (ReturnStatementSyntax)statements[index + 1];
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ExpressionSyntax expression = GetExpressionToInline(localDeclaration, semanticModel, cancellationToken);
+
             ReturnStatementSyntax newReturnStatement = returnStatement
-                .WithExpression(localDeclaration.Declaration.Variables[0].Initializer.Value.WithoutTrivia())
+                .WithExpression(expression)
                 .WithLeadingTrivia(localDeclaration.GetLeadingTrivia())
                 .WithTrailingTrivia(returnStatement.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
             SyntaxList<StatementSyntax> newStatements = statements
-                .RemoveAt(index)
-                .RemoveAt(index)
-                .Insert(index, newReturnStatement);
+                .Replace(returnStatement, newReturnStatement)
+                .RemoveAt(index);
 
             BlockSyntax newBlock = block.WithStatements(newStatements);
 
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
+            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static ExpressionSyntax GetExpressionToInline(LocalDeclarationStatementSyntax localDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
+
+            ExpressionSyntax value = variableDeclaration
+                .Variables
+                .First()
+                .Initializer
+                .Value;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
+
+            if (typeSymbol.SupportsExplicitDeclaration())
+            {
+                value = value.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
+
+                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
+
+                return SyntaxFactory.CastExpression(type, value).WithSimplifierAnnotation();
+            }
+            else
+            {
+                return value;
+            }
         }
     }
 }
