@@ -62,7 +62,9 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public void Bar()
             {
-                Bar();
+                Action<object> action = f => { };
+                Action<object> action2 = (f) => { };
+                Action<object> action3 = delegate { };
             }
 
             public static explicit operator Foo2(string value)

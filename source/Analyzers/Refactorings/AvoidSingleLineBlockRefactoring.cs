@@ -15,7 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             var block = (BlockSyntax)context.Node;
 
-            if (!(block.Parent is AccessorDeclarationSyntax))
+            if (!(block.Parent is AccessorDeclarationSyntax)
+                && !(block.Parent is AnonymousFunctionExpressionSyntax))
             {
                 SyntaxList<StatementSyntax> statements = block.Statements;
 
