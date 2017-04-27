@@ -18,9 +18,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!expression.ContainsDiagnostics)
             {
-                var typeSymbol = context.SemanticModel.GetTypeSymbol(expression) as IArrayTypeSymbol;
+                var typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
 
-                if (typeSymbol?.ElementType?.IsErrorType() == false)
+                if (typeSymbol?.ElementType.SupportsExplicitDeclaration() == true)
                 {
                     TextSpan span = TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End);
 
