@@ -7,7 +7,8 @@ namespace Roslynator.CSharp.Analyzers.Test
         public static void MethodName()
         {
             var items = new[] { "" };
-            var items2 = new[] { abcde };
+            var items2 = new[] { new { Value = "" } };
+            var items3 = new[] { abcde };
         }
 
         private static readonly string[][] _values = new[]
