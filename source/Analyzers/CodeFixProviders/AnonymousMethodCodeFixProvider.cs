@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Replace anonymous method with lambda expression",
+                "Use lambda expression instead of anonymous method",
                 cancellationToken => UseLambdaExpressionInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, cancellationToken),
                 DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod + EquivalenceKeySuffix);
 
