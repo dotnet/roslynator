@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (conditionalExpression.Condition?.IsMissing == false
-                && CanBeReplacedWithCoalesceExpression(conditionalExpression)
+            if (!conditionalExpression.ContainsDiagnostics
+                && IsFixable(conditionalExpression)
                 && conditionalExpression
                     .DescendantTrivia(conditionalExpression.Span)
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
@@ -27,30 +27,34 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool CanBeReplacedWithCoalesceExpression(ConditionalExpressionSyntax conditionalExpression)
+        private static bool IsFixable(ConditionalExpressionSyntax conditionalExpression)
         {
             ExpressionSyntax condition = conditionalExpression.Condition.WalkDownParentheses();
 
-            if (condition.IsKind(SyntaxKind.EqualsExpression))
+            SyntaxKind kind = condition.Kind();
+
+            if (kind == SyntaxKind.EqualsExpression)
             {
                 var binaryExpression = (BinaryExpressionSyntax)condition;
+                ExpressionSyntax left = binaryExpression.Left;
 
-                if (binaryExpression.Left?.IsMissing == false
+                if (left?.IsMissing == false
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
-                    return binaryExpression.Left.IsEquivalentTo(
+                    return left.IsEquivalentTo(
                         conditionalExpression.WhenFalse.WalkDownParentheses(),
                         topLevel: false);
                 }
             }
-            else if (condition.IsKind(SyntaxKind.NotEqualsExpression))
+            else if (kind == SyntaxKind.NotEqualsExpression)
             {
                 var binaryExpression = (BinaryExpressionSyntax)condition;
+                ExpressionSyntax left = binaryExpression.Left;
 
-                if (binaryExpression.Left?.IsMissing == false
+                if (left?.IsMissing == false
                     && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
                 {
-                    return binaryExpression.Left.IsEquivalentTo(
+                    return left.IsEquivalentTo(
                         conditionalExpression.WhenTrue.WalkDownParentheses(),
                         topLevel: false);
                 }
@@ -75,8 +79,8 @@ namespace Roslynator.CSharp.Refactorings
                 : conditionalExpression.WhenFalse;
 
             BinaryExpressionSyntax newNode = CSharpFactory.CoalesceExpression(
-                left.WithoutTrivia(),
-                right.WithoutTrivia());
+                left.WithoutTrivia().Parenthesize().WithSimplifierAnnotation(),
+                right.WithoutTrivia().Parenthesize().WithSimplifierAnnotation());
 
             return document.ReplaceNodeAsync(
                 conditionalExpression,

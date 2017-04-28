@@ -80,6 +80,7 @@
     <Compile Include="ParameterNameDiffersFromBase.cs" />
     <Compile Include="OverridingMethodCannotChangeAccessModifiers.cs" />
     <Compile Include="InlineLazyInitialization.cs" />
+    <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
