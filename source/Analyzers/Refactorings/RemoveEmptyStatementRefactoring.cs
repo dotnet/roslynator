@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -16,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode parent = emptyStatement.Parent;
 
-            if (parent != null
+            if (parent?.IsKind(SyntaxKind.LabeledStatement) == false
                 && !EmbeddedStatementHelper.CanContainEmbeddedStatement(parent))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
