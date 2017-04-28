@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         private ulong _l3 = ULongConst;
         private RegexOptions _ro2 = 0;
         private RegexOptions _ro3 = RegexOptions.None;
-        private RegexOptions _ro4;
+        private RegexOptions _ro4 = (RegexOptions)0;
         private string _s2 = null;
         private string _s3 = default(string);
         private string _s4 = StringConst;
