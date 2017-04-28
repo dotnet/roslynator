@@ -195,5 +195,28 @@ namespace Roslynator.CSharp.Analyzers.Test
                 set { base[index] = value; }
             }
         }
+
+        public class Derived6 : Base
+        {
+            public override string Method()
+            {
+                // x
+                return base.Method();
+            }
+
+            public override string Property
+            {
+                // x
+                get { return base.Property; }
+                set { base.Property = value; }
+            }
+
+            public override string this[int index]
+            {
+                // x
+                get { return base[index]; }
+                set { base[index] = value; }
+            }
+        }
     }
 }
