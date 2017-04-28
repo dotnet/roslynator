@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
@@ -46,19 +45,9 @@ namespace Roslynator.CSharp.Refactorings.If
 
             int index = statements.IndexOf(IfStatement);
 
-            ExpressionSyntax left = Left.WithoutTrivia();
-            ExpressionSyntax right = Right.WithoutTrivia();
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            right = AddCastExpressionIfNecessary(right, semanticModel, IfStatement.SpanStart, cancellationToken);
-
-            StatementSyntax newNode = CreateStatement(
-                CoalesceExpression(
-                    left.Parenthesize().WithSimplifierAnnotation(),
-                    right.Parenthesize().WithSimplifierAnnotation()));
-
-            newNode = newNode
+            StatementSyntax newNode = CreateStatement(CreateCoalesceExpression(semanticModel, cancellationToken))
                 .WithLeadingTrivia(IfStatement.GetLeadingTrivia())
                 .WithTrailingTrivia(statements[index + 1].GetTrailingTrivia())
                 .WithFormatterAnnotation();
