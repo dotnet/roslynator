@@ -65,16 +65,17 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (statementKind == SyntaxKind.IfStatement)
                         {
-                            SemanticModel semanticModel = context.SemanticModel;
-                            CancellationToken cancellationToken = context.CancellationToken;
+                            var ifStatement = (IfStatementSyntax)statements[i - 1];
 
-                            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-                            if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, containingNode, semanticModel, cancellationToken))
+                            if (!ifStatement.IsSimpleIf())
                             {
-                                var ifStatement = (IfStatementSyntax)statements[i - 1];
+                                SemanticModel semanticModel = context.SemanticModel;
+                                CancellationToken cancellationToken = context.CancellationToken;
 
-                                if (ifStatement.GetChain().All(ifOrElse => IsValueAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken))
+                                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                                if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, containingNode, semanticModel, cancellationToken)
+                                    && ifStatement.GetChain().All(ifOrElse => IsValueAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken))
                                     && !containingNode.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))
                                 {
                                     context.ReportDiagnostic(
