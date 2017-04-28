@@ -18,7 +18,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment,
+                    DiagnosticIdentifiers.RemoveRedundantFieldInitialization);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,12 +36,35 @@ namespace Roslynator.CSharp.CodeFixProviders
 
             Debug.Assert(declarator != null, $"{nameof(declarator)} is null");
 
-            CodeAction codeAction = CodeAction.Create(
-                "Merge local declaration with assignment",
-                cancellationToken => MergeLocalDeclarationWithAssignmentRefactoring.RefactorAsync(context.Document, declarator, cancellationToken),
-                DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment + EquivalenceKeySuffix);
+            if (declarator == null)
+                return;
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Merge local declaration with assignment",
+                                cancellationToken => MergeLocalDeclarationWithAssignmentRefactoring.RefactorAsync(context.Document, declarator, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.RemoveRedundantFieldInitialization:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove redundant field initialization",
+                                cancellationToken => RemoveRedundantFieldInitializationRefactoring.RefactorAsync(context.Document, declarator, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
     }
 }

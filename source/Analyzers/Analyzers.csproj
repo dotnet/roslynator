@@ -61,7 +61,6 @@
     <Compile Include="CodeFixProviders\AddMissingSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\EqualsValueClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />

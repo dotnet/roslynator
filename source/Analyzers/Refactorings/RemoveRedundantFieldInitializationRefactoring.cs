@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,9 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
-            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
-
-            if (!modifiers.Contains(SyntaxKind.ConstKeyword))
+            if (!fieldDeclaration.ContainsDiagnostics
+                && !fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
             {
                 VariableDeclarationSyntax declaration = fieldDeclaration.Declaration;
                 if (declaration != null)
@@ -26,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                     foreach (VariableDeclaratorSyntax declarator in declaration.Variables)
                     {
                         EqualsValueClauseSyntax initializer = declarator.Initializer;
-                        if (initializer != null)
+                        if (initializer?.ContainsDirectives == false)
                         {
                             ExpressionSyntax value = initializer.Value;
                             if (value != null)
@@ -37,8 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, cancellationToken);
 
                                 if (typeSymbol?.IsErrorType() == false
-                                    && semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken)
-                                    && !initializer.ContainsDirectives)
+                                    && semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken))
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.RemoveRedundantFieldInitialization,
@@ -53,18 +50,24 @@ namespace Roslynator.CSharp.Refactorings
 
         internal static Task<Document> RefactorAsync(
             Document document,
-            EqualsValueClauseSyntax equalsValueClause,
+            VariableDeclaratorSyntax variableDeclarator,
             CancellationToken cancellationToken)
         {
+            EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
+
             var removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
 
-            if (equalsValueClause.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (equalsValueClause.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (initializer.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
-            return document.RemoveNodeAsync(equalsValueClause, removeOptions, cancellationToken);
+            VariableDeclaratorSyntax newNode = variableDeclarator
+                .RemoveNode(initializer, removeOptions)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken);
         }
     }
 }
