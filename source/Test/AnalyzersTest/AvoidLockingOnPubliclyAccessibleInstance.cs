@@ -9,6 +9,8 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public void MethodName()
         {
+            string _lockObject = "";
+
             lock (this)
             {
             }
