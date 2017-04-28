@@ -96,14 +96,22 @@ namespace Roslynator.CSharp.Refactorings
                                             }
                                         case SyntaxKind.ForEachStatement:
                                             {
-                                                var forEachStatement = (ForEachStatementSyntax)nextStatement;
-                                                Analyze(context, statements, localDeclaration, forEachStatement.Expression);
+                                                if (value.IsSingleLine())
+                                                {
+                                                    var forEachStatement = (ForEachStatementSyntax)nextStatement;
+                                                    Analyze(context, statements, localDeclaration, forEachStatement.Expression);
+                                                }
+
                                                 break;
                                             }
                                         case SyntaxKind.SwitchStatement:
                                             {
-                                                var switchStatement = (SwitchStatementSyntax)nextStatement;
-                                                Analyze(context, statements, localDeclaration, switchStatement.Expression);
+                                                if (value.IsSingleLine())
+                                                {
+                                                    var switchStatement = (SwitchStatementSyntax)nextStatement;
+                                                    Analyze(context, statements, localDeclaration, switchStatement.Expression);
+                                                }
+
                                                 break;
                                             }
                                     }
@@ -285,9 +293,16 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
 
-            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
+            if (typeSymbol.SupportsExplicitDeclaration())
+            {
+                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
 
-            return SyntaxFactory.CastExpression(type, value).WithSimplifierAnnotation();
+                return SyntaxFactory.CastExpression(type, value).WithSimplifierAnnotation();
+            }
+            else
+            {
+                return value;
+            }
         }
 
         private static StatementSyntax GetStatementWithInlinedExpression(StatementSyntax statement, ExpressionSyntax expression)
