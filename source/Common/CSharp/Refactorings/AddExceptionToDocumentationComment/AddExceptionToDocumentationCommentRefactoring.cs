@@ -261,7 +261,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                     throwInfos.Add(info);
             }
 
-            string indent = GetIndent(trivia, sourceText, cancellationToken);
+            string indent = GetIndent(memberDeclaration.GetLeadingTrivia());
 
             var sb = new StringBuilder();
 
@@ -281,11 +281,22 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             return document.WithText(newSourceText);
         }
 
-        private static string GetIndent(SyntaxTrivia trivia, SourceText sourceText, CancellationToken cancellationToken)
+        private static string GetIndent(SyntaxTriviaList leadingTrivia)
         {
-            int lineIndex = trivia.GetSpanStartLine(cancellationToken);
+            if (leadingTrivia.Any())
+            {
+                int index = leadingTrivia.Count;
 
-            return new string(' ', trivia.FullSpan.Start - sourceText.Lines[lineIndex].Start);
+                while (index >= 1
+                    && leadingTrivia[index - 1].IsWhitespaceTrivia())
+                {
+                    index--;
+                }
+
+                return string.Concat(leadingTrivia.Skip(index));
+            }
+
+            return "";
         }
 
         private static void AppendExceptionDocumentation(
