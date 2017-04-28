@@ -12,12 +12,37 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class DeclareUsingDirectiveOnTopLevelRefactoring
     {
+        private static SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+
         public static void Analyze(SyntaxNodeAnalysisContext context, NamespaceDeclarationSyntax declaration)
         {
             SyntaxList<UsingDirectiveSyntax> usings = declaration.Usings;
 
             if (usings.Any())
             {
+                for (int i = 0; i < usings.Count; i++)
+                {
+                    if (usings[i].ContainsDiagnostics)
+                        return;
+
+                    if (i == 0)
+                    {
+                        if (usings[i].SpanOrTrailingTriviaContainsDirectives())
+                            return;
+                    }
+                    else if (i == usings.Count - 1)
+                    {
+                        if (usings[i].SpanOrLeadingTriviaContainsDirectives())
+                            return;
+                    }
+                    else if (usings[i].ContainsDirectives)
+                    {
+                        return;
+                    }
+                }
+
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel,
                     Location.Create(declaration.SyntaxTree, usings.Span));
@@ -38,8 +63,11 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<UsingDirectiveSyntax> usings = namespaceDeclaration.Usings;
 
             UsingDirectiveSyntax[] newUsings = usings
-                .Select(f => CheckUnqualifiedUsingStatic(f, semanticModel, cancellationToken).WithFormatterAnnotation())
+                .Select(f => EnsureFullyQualifiedName(f, semanticModel, cancellationToken).WithFormatterAnnotation())
                 .ToArray();
+
+            newUsings[0] = newUsings[0].WithoutLeadingTrivia();
+            newUsings[newUsings.Length - 1] = newUsings[newUsings.Length - 1].WithoutTrailingTrivia();
 
             CompilationUnitSyntax newCompilationUnit = compilationUnit
                 .RemoveNodes(usings, SyntaxRemoveOptions.KeepUnbalancedDirectives)
@@ -50,30 +78,34 @@ namespace Roslynator.CSharp.Refactorings
             return document.WithSyntaxRoot(newCompilationUnit);
         }
 
-        private static UsingDirectiveSyntax CheckUnqualifiedUsingStatic(
+        private static UsingDirectiveSyntax EnsureFullyQualifiedName(
             UsingDirectiveSyntax usingDirective,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword))
+            NameSyntax name = usingDirective.Name;
+
+            if (name != null)
             {
-                NameSyntax name = usingDirective.Name;
+                ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
-                if (name?.IsKind(SyntaxKind.IdentifierName) == true)
+                if (symbol != null)
                 {
-                    ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-                    INamespaceSymbol containingNamespace = symbol?.ContainingNamespace;
-
-                    if (containingNamespace != null)
+                    if (semanticModel.GetAliasInfo(name, cancellationToken) != null
+                        || !symbol.ContainingNamespace.IsGlobalNamespace)
                     {
-                        var identifierName = (IdentifierNameSyntax)name;
+                        if (symbol.IsNamespace())
+                        {
+                            NameSyntax newName = SyntaxFactory.ParseName(symbol.ToString());
 
-                        name = SyntaxFactory.QualifiedName(
-                            SyntaxFactory.ParseName(containingNamespace.ToString()),
-                            identifierName.WithoutTrivia());
+                            return usingDirective.WithName(newName.WithTriviaFrom(name));
+                        }
+                        else if (symbol.IsNamedType())
+                        {
+                            var newName = (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat);
 
-                        return usingDirective.WithName(name.WithTriviaFrom(identifierName));
+                            return usingDirective.WithName(newName.WithTriviaFrom(name));
+                        }
                     }
                 }
             }

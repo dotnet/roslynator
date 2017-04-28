@@ -2,20 +2,31 @@
 // xxx
 
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using s = System;
+using us = System.String;
 
 /// <summary>
 /// 
 /// </summary>
 namespace Roslynator.CSharp.Analyzers.Test
 {
+    #region
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Test2;
+    using Test2.Test3;
+    using s;
+    using static System.Nullable;
     using static Math;
     using static Regex;
-    using static System.Nullable;
+    using static DeclareUsingDirectiveOnTopLevel<IEnumerable<object>>;
+    using static Test.DeclareUsingDirectiveOnTopLevel<IEnumerable<object>>;
+    using static us;
+    #endregion
 
-    internal static class DeclareUsingDirectiveOnTopLevel
+    internal static class DeclareUsingDirectiveOnTopLevel<T>
     {
         public static void Foo()
         {
@@ -25,6 +36,13 @@ namespace Roslynator.CSharp.Analyzers.Test
         private static Task<object> GetValueAsync()
         {
             return Task.FromResult(new object());
+        }
+    }
+
+    namespace Test2
+    {
+        namespace Test3
+        {
         }
     }
 }
