@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -70,6 +71,25 @@ namespace Roslynator.CSharp
                     simpleName.GetLeadingTrivia(),
                     newName,
                     simpleName.GetTrailingTrivia()));
+        }
+
+        public static BinaryExpressionSyntax CreateCoalesceExpression(
+            ITypeSymbol targetType,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            int position,
+            SemanticModel semanticModel)
+        {
+            if (targetType?.SupportsExplicitDeclaration() == true)
+            {
+                right = CastExpression(
+                    targetType.ToMinimalTypeSyntax(semanticModel, position),
+                    right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation()).WithSimplifierAnnotation();
+            }
+
+            return CSharpFactory.CoalesceExpression(
+                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
         }
     }
 }

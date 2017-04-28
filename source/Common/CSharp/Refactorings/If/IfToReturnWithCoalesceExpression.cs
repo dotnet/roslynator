@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
@@ -50,16 +48,9 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public override async Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax left = Left.WithoutTrivia();
-            ExpressionSyntax right = Right.WithoutTrivia();
-
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            right = AddCastExpressionIfNecessary(right, semanticModel, IfStatement.SpanStart, cancellationToken);
-
-            BinaryExpressionSyntax coalesceExpression = CoalesceExpression(
-                left.Parenthesize().WithSimplifierAnnotation(),
-                right.Parenthesize().WithSimplifierAnnotation());
+            BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(semanticModel, cancellationToken);
 
             StatementSyntax newNode = CreateStatement(coalesceExpression)
                 .WithTriviaFrom(IfStatement)
@@ -68,61 +59,46 @@ namespace Roslynator.CSharp.Refactorings.If
             return await document.ReplaceNodeAsync(IfStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        protected ExpressionSyntax AddCastExpressionIfNecessary(ExpressionSyntax expression, SemanticModel semanticModel, int position, CancellationToken cancellationToken)
+        protected BinaryExpressionSyntax CreateCoalesceExpression(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ITypeSymbol leftSymbol = semanticModel.GetTypeSymbol(Left, cancellationToken);
+            int position = IfStatement.SpanStart;
 
-            if (leftSymbol?.IsErrorType() == false)
+            return Refactoring.CreateCoalesceExpression(
+                GetTargetType(position, semanticModel, cancellationToken),
+                Left.WithoutTrivia(),
+                Right.WithoutTrivia(),
+                position,
+                semanticModel);
+        }
+
+        protected ITypeSymbol GetTargetType(int position, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            IMethodSymbol methodSymbol = semanticModel.GetEnclosingSymbol<IMethodSymbol>(position, cancellationToken);
+
+            Debug.Assert(methodSymbol != null, "");
+
+            if (methodSymbol?.IsErrorType() == false)
             {
-                ITypeSymbol rightSymbol = semanticModel.GetTypeSymbol(Right, cancellationToken);
+                ITypeSymbol returnType = methodSymbol.ReturnType;
 
-                if (rightSymbol?.IsErrorType() == false
-                    && !leftSymbol.Equals(rightSymbol))
+                if (!returnType.IsErrorType())
                 {
-                    IMethodSymbol methodSymbol = semanticModel.GetEnclosingSymbol<IMethodSymbol>(IfStatement.SpanStart, cancellationToken);
-
-                    Debug.Assert(methodSymbol != null, "");
-
-                    if (methodSymbol?.IsErrorType() == false)
+                    if (!IsYield)
                     {
-                        ITypeSymbol returnType = methodSymbol.ReturnType;
-
-                        if (!returnType.IsErrorType())
-                        {
-                            ITypeSymbol castType = GetCastType(returnType, semanticModel);
-
-                            if (castType?.IsErrorType() == false)
-                            {
-                                return SyntaxFactory.CastExpression(
-                                    castType.ToMinimalTypeSyntax(semanticModel, position),
-                                    expression);
-                            }
-                        }
+                        return returnType;
+                    }
+                    else if (returnType.IsIEnumerable())
+                    {
+                        return semanticModel.Compilation.ObjectType;
+                    }
+                    else if (returnType.IsConstructedFromIEnumerableOfT())
+                    {
+                        return ((INamedTypeSymbol)returnType).TypeArguments[0];
                     }
                 }
             }
 
-            return expression;
-        }
-
-        private ITypeSymbol GetCastType(ITypeSymbol returnType, SemanticModel semanticModel)
-        {
-            if (!IsYield)
-            {
-                return returnType;
-            }
-            else if (returnType.IsIEnumerable())
-            {
-                return semanticModel.Compilation.ObjectType;
-            }
-            else if (returnType.IsConstructedFromIEnumerableOfT())
-            {
-                return ((INamedTypeSymbol)returnType).TypeArguments[0];
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

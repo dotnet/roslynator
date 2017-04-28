@@ -212,13 +212,12 @@ namespace Roslynator.CSharp.Refactorings
                         ExpressionSyntax left = assignment.Left;
                         ExpressionSyntax right = assignment.Right;
 
-                        ExpressionSyntax newLeft = left
-                            .WithoutLeadingTrivia()
-                            .WithTrailingTrivia(Space);
-
-                        ExpressionSyntax newRight = right.WithLeadingTrivia(Space);
-
-                        BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(left, left, right, newLeft, newRight, semanticModel, ifStatement.SpanStart, cancellationToken);
+                        BinaryExpressionSyntax coalesceExpression = Refactoring.CreateCoalesceExpression(
+                            semanticModel.GetTypeSymbol(left, cancellationToken),
+                            left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
+                            right.WithLeadingTrivia(Space),
+                            ifStatement.SpanStart,
+                            semanticModel);
 
                         AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
 
@@ -283,13 +282,12 @@ namespace Roslynator.CSharp.Refactorings
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-            ExpressionSyntax left = assignment.Left;
-            ExpressionSyntax right = assignment.Right;
-
-            ExpressionSyntax newLeft = expression.WithoutTrailingTrivia();
-            ExpressionSyntax newRight = right.WithTrailingTrivia(expression.GetTrailingTrivia());
-
-            BinaryExpressionSyntax newNode = CreateCoalesceExpression(left, expression, right, newLeft, newRight, semanticModel, statement.SpanStart, cancellationToken);
+            BinaryExpressionSyntax newNode = Refactoring.CreateCoalesceExpression(
+                semanticModel.GetTypeSymbol(assignment.Left, cancellationToken),
+                expression.WithoutTrailingTrivia(),
+                assignment.Right.WithTrailingTrivia(expression.GetTrailingTrivia()),
+                statement.SpanStart,
+                semanticModel);
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 
@@ -310,56 +308,6 @@ namespace Roslynator.CSharp.Refactorings
                 .ReplaceAt(statementIndex, newStatement);
 
             return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
-        }
-
-        private static BinaryExpressionSyntax CreateCoalesceExpression(
-            ExpressionSyntax expression,
-            ExpressionSyntax left,
-            ExpressionSyntax right,
-            ExpressionSyntax newLeft,
-            ExpressionSyntax newRight,
-            SemanticModel semanticModel,
-            int position,
-            CancellationToken cancellationToken)
-        {
-            newRight = AddCastExpressionIfNecessary(expression, left, right, newRight, semanticModel, position, cancellationToken);
-
-            return CSharpFactory.CoalesceExpression(
-                newLeft.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
-                newRight.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
-        }
-
-        private static ExpressionSyntax AddCastExpressionIfNecessary(
-            ExpressionSyntax expression,
-            ExpressionSyntax left,
-            ExpressionSyntax right,
-            ExpressionSyntax newRight,
-            SemanticModel semanticModel,
-            int position,
-            CancellationToken cancellationToken)
-        {
-            ITypeSymbol expressionType = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            if (expressionType?.IsErrorType() == false)
-            {
-                ITypeSymbol leftType = semanticModel.GetTypeSymbol(left, cancellationToken);
-
-                if (leftType?.IsErrorType() == false
-                    && !expressionType.Equals(leftType))
-                {
-                    ITypeSymbol rightType = semanticModel.GetTypeSymbol(right, cancellationToken);
-
-                    if (rightType?.IsErrorType() == false
-                        && !leftType.Equals(rightType))
-                    {
-                        return CastExpression(
-                            expressionType.ToMinimalTypeSyntax(semanticModel, position),
-                            newRight.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
-                    }
-                }
-            }
-
-            return newRight;
         }
     }
 }
