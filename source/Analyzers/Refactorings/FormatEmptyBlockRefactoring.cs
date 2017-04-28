@@ -16,7 +16,8 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<StatementSyntax> statements = block.Statements;
 
             if (!statements.Any()
-                && !(block.Parent is AccessorDeclarationSyntax))
+                && !(block.Parent is AccessorDeclarationSyntax)
+                && !(block.Parent is AnonymousFunctionExpressionSyntax))
             {
                 int startLine = block.OpenBraceToken.GetSpanStartLine();
                 int endLine = block.CloseBraceToken.GetSpanEndLine();
