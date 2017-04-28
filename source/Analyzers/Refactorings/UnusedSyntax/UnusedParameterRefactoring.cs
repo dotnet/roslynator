@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 ReportUnusedParameter(context, parameter);
         }
 
-        public static void LocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
             var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
 

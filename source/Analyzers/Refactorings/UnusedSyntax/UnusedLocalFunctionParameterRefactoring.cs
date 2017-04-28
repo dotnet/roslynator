@@ -3,12 +3,11 @@
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
-    internal class UnusedLocalFunctionParameterRefactoring : UnusedSyntaxRefactoring<LocalFunctionStatementSyntax, ParameterListSyntax, ParameterSyntax, IParameterSymbol>
+    internal class UnusedLocalFunctionParameterRefactoring : UnusedLocalFunctionSyntaxRefactoring<ParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
         private UnusedLocalFunctionParameterRefactoring()
         {
@@ -33,11 +32,6 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             }
         }
 
-        protected override CSharpSyntaxNode GetBody(LocalFunctionStatementSyntax node)
-        {
-            return node.BodyOrExpressionBody();
-        }
-
         protected override string GetIdentifier(ParameterSyntax syntax)
         {
             return syntax.Identifier.ValueText;
@@ -46,11 +40,6 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         protected override ParameterListSyntax GetList(LocalFunctionStatementSyntax node)
         {
             return node.ParameterList;
-        }
-
-        protected override SyntaxTokenList GetModifiers(LocalFunctionStatementSyntax node)
-        {
-            return node.Modifiers;
         }
 
         protected override SeparatedSyntaxList<ParameterSyntax> GetSeparatedList(ParameterListSyntax list)

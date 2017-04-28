@@ -31,14 +31,17 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 
         public ImmutableArray<TSyntax> FindUnusedSyntax(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            TListSyntax list = GetList(node);
-
-            if (list != null)
+            if (!node.ContainsDiagnostics)
             {
-                SeparatedSyntaxList<TSyntax> separatedList = GetSeparatedList(list);
+                TListSyntax list = GetList(node);
 
-                if (separatedList.Any())
-                    return FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                if (list != null)
+                {
+                    SeparatedSyntaxList<TSyntax> separatedList = GetSeparatedList(list);
+
+                    if (separatedList.Any())
+                        return FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                }
             }
 
             return ImmutableArray<TSyntax>.Empty;

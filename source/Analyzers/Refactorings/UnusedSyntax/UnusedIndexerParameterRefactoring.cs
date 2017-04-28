@@ -26,21 +26,25 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             CancellationToken cancellationToken)
         {
             if (!node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                && GetBody(node) != null
                 && !GetModifiers(node).ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword)
-                && semanticModel.GetDeclaredSymbol(node, cancellationToken)?.ImplementsInterfaceMember() == false)
+                && GetBody(node) != null
+                && !UnusedSyntaxHelper.ContainsOnlyThrowNewException(node, semanticModel, cancellationToken))
             {
-                return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+
+                if (propertySymbol?.ExplicitInterfaceImplementations.IsDefaultOrEmpty == true
+                    && !propertySymbol.ImplementsInterfaceMember())
+                {
+                    return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                }
             }
-            else
-            {
-                return ImmutableArray<ParameterSyntax>.Empty;
-            }
+
+            return ImmutableArray<ParameterSyntax>.Empty;
         }
 
         protected override CSharpSyntaxNode GetBody(IndexerDeclarationSyntax node)
         {
-            return (CSharpSyntaxNode)node.AccessorList ?? node.ExpressionBody;
+            return node.AccessorList ?? (CSharpSyntaxNode)node.ExpressionBody;
         }
 
         protected override string GetIdentifier(ParameterSyntax syntax)
