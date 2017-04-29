@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -106,7 +107,11 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
-            return InsertModifierRefactoring.RefactorAsync(document, classDeclaration, SyntaxKind.StaticKeyword, cancellationToken);
+            ClassDeclarationSyntax newNode = classDeclaration
+                .InsertModifier(SyntaxKind.StaticKeyword, ModifierComparer.Instance)
+                .RemoveModifier(SyntaxKind.SealedKeyword);
+
+            return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
         }
     }
 }

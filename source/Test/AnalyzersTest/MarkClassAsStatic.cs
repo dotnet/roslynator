@@ -56,5 +56,12 @@ namespace Roslynator.CSharp.Analyzers.Test
         public partial class Foo3
         {
         }
+
+        public sealed class Foo4
+        {
+            public static void Foo()
+            {
+            }
+        }
     }
 }
