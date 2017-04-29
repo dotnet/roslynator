@@ -91,11 +91,15 @@ namespace Roslynator.CSharp.Syntax
                         StatementSyntax singleStatement = ((BlockSyntax)statement).SingleStatementOrDefault();
 
                         if (singleStatement != null)
+                        {
                             result = new SimpleIfStatementWithSingleStatement(ifStatement.Condition, statement, singleStatement);
+                            return true;
+                        }
                     }
                     else
                     {
                         result = new SimpleIfStatementWithSingleStatement(ifStatement.Condition, statement, statement);
+                        return true;
                     }
                 }
             }

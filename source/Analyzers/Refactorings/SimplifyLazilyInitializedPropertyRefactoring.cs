@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
-using static Roslynator.CSharp.CSharpFactory;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -31,29 +31,26 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxNode node, BlockSyntax body)
         {
-            if (body != null)
+            if (body?.ContainsDiagnostics == false)
             {
                 SyntaxList<StatementSyntax> statements = body.Statements;
 
-                if (statements.Count == 2)
+                if (statements.Count == 2
+                    && statements[0].IsKind(SyntaxKind.IfStatement)
+                    && statements[1].IsKind(SyntaxKind.ReturnStatement))
                 {
-                    var ifStatement = statements[0] as IfStatementSyntax;
+                    var ifStatement = (IfStatementSyntax)statements[0];
+                    var returnStatement = (ReturnStatementSyntax)statements[1];
 
-                    if (ifStatement != null)
+                    if (CanRefactor(context, ifStatement, returnStatement))
                     {
-                        var returnStatement = statements[1] as ReturnStatementSyntax;
+                        TextSpan span = TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End);
 
-                        if (returnStatement != null
-                            && CanRefactor(context, ifStatement, returnStatement))
+                        if (!body.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))
                         {
-                            TextSpan span = TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End);
-
-                            if (!body.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.SimplifyLazilyInitializedProperty,
-                                    Location.Create(node.SyntaxTree, span));
-                            }
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.SimplifyLazilyInitializedProperty,
+                                Location.Create(node.SyntaxTree, span));
                         }
                     }
                 }
@@ -62,15 +59,13 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactor(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, ReturnStatementSyntax returnStatement)
         {
-            ExpressionSyntax condition = ifStatement.Condition;
-
-            if (condition?.IsKind(SyntaxKind.EqualsExpression) == true)
+            SimpleIfStatementWithSingleStatement simpleIf;
+            if (SimpleIfStatementWithSingleStatement.TryCreate(ifStatement, out simpleIf))
             {
-                var equalsExpression = (BinaryExpressionSyntax)condition;
-
-                if (equalsExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+                EqualsToNullExpression equalsToNull;
+                if (EqualsToNullExpression.TryCreate(simpleIf.Condition, out equalsToNull))
                 {
-                    IdentifierNameSyntax identifierName = GetIdentifierName(equalsExpression.Left);
+                    IdentifierNameSyntax identifierName = GetIdentifierName(equalsToNull.Left);
 
                     if (identifierName != null)
                     {
@@ -81,27 +76,14 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (fieldSymbol != null)
                         {
-                            string fieldName = identifierName.Identifier.ValueText;
-
-                            StatementSyntax statement = ifStatement.GetSingleStatementOrDefault();
-
-                            if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
+                            SimpleAssignmentStatement assignment;
+                            if (SimpleAssignmentStatement.TryCreate(simpleIf.SingleStatement, out assignment))
                             {
-                                var expressionStatement = (ExpressionStatementSyntax)statement;
+                                string fieldName = identifierName.Identifier.ValueText;
 
-                                ExpressionSyntax expression = expressionStatement.Expression;
-
-                                if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                                {
-                                    var assignment = (AssignmentExpressionSyntax)expression;
-
-                                    ExpressionSyntax right = assignment.Right;
-
-                                    return right?.IsMissing == false
-                                        && right.IsSingleLine()
-                                        && IsBackingField(GetIdentifierName(assignment.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
-                                        && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
-                                }
+                                return assignment.Right.IsSingleLine()
+                                    && IsBackingField(GetIdentifierName(assignment.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
+                                    && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
                             }
                         }
                     }
@@ -168,9 +150,9 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = returnStatement.Expression.WithoutTrivia();
 
-            BinaryExpressionSyntax coalesceExpression = CoalesceExpression(
+            BinaryExpressionSyntax coalesceExpression = CSharpFactory.CoalesceExpression(
                 expression,
-                SimpleAssignmentExpression(expression, assignment.Right.WithoutTrivia()).Parenthesize());
+                CSharpFactory.SimpleAssignmentExpression(expression, assignment.Right.WithoutTrivia()).Parenthesize());
 
             ReturnStatementSyntax newReturnStatement = returnStatement
                 .WithExpression(coalesceExpression)
