@@ -2,7 +2,7 @@
 
 using System;
 
-#pragma warning disable RCS1002, RCS1016
+#pragma warning disable RCS1002, RCS1016, RCS1040, RCS1163
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -42,6 +42,63 @@ namespace Roslynator.CSharp.Analyzers.Test
                     if (_value == null)
                     {
                         _value = Initialize();
+                    }
+
+                    return _value;
+                }
+            }
+
+            private object Initialize()
+            {
+                return new object();
+            }
+        }
+
+        // n
+
+        public class Foo2
+        {
+            private object _value;
+
+            public object LazyMethod()
+            {
+                if (_value == null)
+                {
+                    _value = Initialize();
+                }
+                else
+                {
+                }
+
+                return _value;
+            }
+
+            public object LazyProperty
+            {
+                get
+                {
+                    if (_value == null)
+                    {
+                        _value = Initialize();
+                    }
+                    else
+                    {
+                    }
+
+                    return _value;
+                }
+            }
+
+            public object this[int index]
+            {
+                get
+                {
+                    if (_value == null)
+                    {
+                        _value = Initialize();
+                    }
+                    else
+                    {
                     }
 
                     return _value;
