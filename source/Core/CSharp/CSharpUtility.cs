@@ -10,6 +10,10 @@ namespace Roslynator.CSharp
 {
     internal static class CSharpUtility
     {
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+
         public static bool IsNamespaceInScope(
             SyntaxNode node,
             INamespaceSymbol namespaceSymbol,
@@ -301,6 +305,32 @@ namespace Roslynator.CSharp
             }
 
             return false;
+        }
+
+        public static NameSyntax EnsureFullyQualifiedName(
+            NameSyntax name,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+
+            if (symbol != null)
+            {
+                if (semanticModel.GetAliasInfo(name, cancellationToken) != null
+                    || !symbol.ContainingNamespace.IsGlobalNamespace)
+                {
+                    if (symbol.IsNamespace())
+                    {
+                        return SyntaxFactory.ParseName(symbol.ToString()).WithTriviaFrom(name);
+                    }
+                    else if (symbol.IsNamedType())
+                    {
+                        return (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat).WithTriviaFrom(name);
+                    }
+                }
+            }
+
+            return name;
         }
     }
 }
